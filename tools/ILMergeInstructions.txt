@@ -1,0 +1,17 @@
+Download ilmerge, if you dont have it, from the official site:
+https://www.microsoft.com/en-us/research/people/mbarnett/
+
+Install ILMerge to the following folder: C:\Program Files (x86)\Microsoft\ILMerge\
+
+1. Correct DoNotInternalize.txt with the list of namespaces or exact classes which you do NOT want to be internalized
+2. run merge.bat file
+
+Notice: 
+since the new combined file is named Sportradar.OddsFeed.SDK, 
+the oddsFeedSection section type, in the DemoProject's config file, should be changed also.
+
+May be:
+^((?!Internal).)*$   - regular expression (to exclude everything in the '.Internal' namespace)
+Sportradar.OddsFeed.SDK.Entities.REST.*		- namespace with asterix
+Sportradar.OddsFeed.SDK.Entities.REST.IMatch	- full class name
+

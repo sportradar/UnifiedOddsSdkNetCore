@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.feedSportEventStatus">
+    <Position X="4.75" Y="6.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>rIQlq8RDx6JNMyJAYFCtNeaKVCsig40PaUh690vSIMI=</HashCode>
+      <FileName>Internal\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="clock" />
+      <Property Name="period_scores" />
+      <Property Name="results" />
+      <Property Name="statistics" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.periodScoreType">
+    <Position X="8.5" Y="6.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAIAABAAEAAAgAAAAAIAAEBAAAAAA=</HashCode>
+      <FileName>Internal\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.clockType">
+    <Position X="8.5" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACACAAAAAAAAAAICEAAAAQACQCAEQAAAIAAAQAAAAIA=</HashCode>
+      <FileName>Internal\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.resultType">
+    <Position X="8.5" Y="13.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAEAAAgAAAAAIAAEBAAAAAA=</HashCode>
+      <FileName>Internal\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.oddsChangeMarket">
+    <Position X="1" Y="12.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QBQIAIBAAEAAAAAAgACQAAQAAABgALACAAAggAAAIgA=</HashCode>
+      <FileName>Internal\Feed\FeedMarket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.fixture_change">
+    <Position X="11.75" Y="6.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAEACAgAgBBIQQAQRBCAAAAAgDEAAAQAAUAAgAABQA=</HashCode>
+      <FileName>Internal\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.statisticsType">
+    <Position X="8.5" Y="15.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAAAAAAYACAAAAAAAAAAAAAAACAQAQAAAA=</HashCode>
+      <FileName>Internal\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="corners" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.statisticsScoreType">
+    <Position X="11.75" Y="15.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAEAAAAIAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Internal\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.REST.cashoutOdds">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQgAAAAAAoBBAgAACAAAAAAAAQAAEAAAAAAAAAA=</HashCode>
+      <FileName>Internal\REST\CashoutMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.REST.cashout">
+    <Position X="5.25" Y="2.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAACAgCgBBAQQAQBBAAAAAAkDAAAgQAEUAAAAAAAA=</HashCode>
+      <FileName>Internal\REST\CashoutMessages.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="odds" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Internal.Feed.odds_changeOdds">
+    <Position X="3" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAQgAAAAAAoBBAgAACAAAAAAAAQAAEAAAAAAAAAA=</HashCode>
+      <FileName>Internal\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

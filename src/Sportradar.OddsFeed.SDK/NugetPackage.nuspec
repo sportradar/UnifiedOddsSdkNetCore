@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Sportradar.OddsFeed.SDK</id>
+    <version>1.24.1.0</version>
+    <title>Odds Feed SDK</title>
+    <authors>Sportradar AG</authors>
+    <owners>Sportradar AG</owners>
+    <projectUrl>http://sdk.sportradar.com/</projectUrl>
+    <licenseUrl>http://sdk.sportradar.com</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The SDK simplifying the consumption of Sportradar's Unified Odds feed.</description>
+    <releaseNotes>Release 1.24.1.0</releaseNotes>
+    <copyright>Copyright © Sportradar AG 2016</copyright>
+    <tags>SportRadar OddsFeed UnifiedFeed SDK</tags>
+
+    <dependencies>
+      <dependency id="Common.Logging" version="3.4.1"  />
+    </dependencies>
+    </metadata>
+  <files>
+    <file src="Readme.txt" target="" />
+    <file src="lib\**" target="lib" />
+  </files>
+</package>

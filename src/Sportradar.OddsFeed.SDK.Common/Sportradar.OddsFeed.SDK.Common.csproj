@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyVersion>1.0.14.7216</AssemblyVersion>
+    <FileVersion>1.0.14.7216</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Internal\Metrics\Reports\**" />
+    <EmbeddedResource Remove="Internal\Metrics\Reports\**" />
+    <None Remove="Internal\Metrics\Reports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Internal\Metrics\FormatHelper.cs" />
+    <Compile Remove="Internal\Metrics\MetricsReporter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Core" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Health.Core" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.TextFile" Version="3.1.0" />
+    <PackageReference Include="Common.Logging" Version="3.4.1" />
+    <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
+  </ItemGroup>
+
+</Project>

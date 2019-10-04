@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBgABABACBAAQgBAAAAEBAAGAQAQAAAQAAAAAQBBA=</HashCode>
+      <FileName>Internal\Caching\CI\PlayerProfileCI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI">
+    <Position X="12" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGAAgCAACIAIAAAgFAEIAURAAAgERQAQIAYQAAAABBA=</HashCode>
+      <FileName>Internal\Caching\CI\CompetitorCI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SportEntityCI">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Internal\Caching\CI\SportEntityCI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PlayerCompetitorDTO">
+    <Position X="9.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Internal\DTO\PlayerCompetitorDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PlayerDTO">
+    <Position X="9.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Internal\DTO\PlayerDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IPlayer">
+    <Position X="2.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>IPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAABAAAAAAAAAAAAAAAACAQAAAAAQBAAAAAAAA=</HashCode>
+      <FileName>IPlayerProfile.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IEntityPrinter" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IEntityPrinter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ITeamCompetitor">
+    <Position X="3.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITeamCompetitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IAssist">
+    <Position X="5.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>IAssist.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor">
+    <Position X="0.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAIAIAAAQAAEAAQQAAAASBAAAAAIAAAAAAAA=</HashCode>
+      <FileName>ICompetitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
