@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/sport_event_status.xsd" />
+    <xs:complexType name="sportEventStatus">
+        <xs:complexContent>
+            <xs:extension base="sportEventStatusBase" >
+                <xs:attribute type="xs:double" name="home_score" use="optional"/>
+                <xs:attribute type="xs:double" name="away_score" use="optional"/>
+                <xs:attribute type="xs:double" name="aggregate_home_score" use="optional"/>
+                <xs:attribute type="xs:double" name="aggregate_away_score" use="optional"/>
+                <xs:attribute type="competitorUrn" name="aggregate_winner_id" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="periodScore">
+        <xs:complexContent>
+            <xs:extension base="periodScoreBase" >
+                <xs:attribute type="xs:double" name="home_score" use="required"/>
+                <xs:attribute type="xs:double" name="away_score" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="periodScores">
+        <xs:sequence>
+            <xs:element type="periodScore" name="period_score" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

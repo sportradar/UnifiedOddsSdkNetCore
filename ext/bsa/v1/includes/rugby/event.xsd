@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/event_player.xsd" />
+    <xs:complexType name="timelineEvent">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element type="eventPlayer" name="player" minOccurs="0" />
+        </xs:choice>
+        <xs:attribute type="xs:int" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:dateTime" name="time" use="required"/>
+        <xs:attribute type="xs:string" name="period_name" use="optional"/>
+        <xs:attribute type="xs:int" name="match_time" use="optional"/>
+        <xs:attribute type="xs:string" name="match_clock" use="optional"/>
+        <xs:attribute type="xs:string" name="team" use="optional"/>
+        <xs:attribute type="xs:int" name="x" use="optional"/>
+        <xs:attribute type="xs:int" name="y" use="optional"/>
+        <xs:attribute type="xs:double" name="home_score" use="optional"/>
+        <xs:attribute type="xs:double" name="away_score" use="optional"/>
+        <xs:attribute type="xs:string" name="period" use="optional"/>
+        <xs:attribute type="xs:string" name="status" use="optional"/>
+    </xs:complexType>
+</xs:schema>

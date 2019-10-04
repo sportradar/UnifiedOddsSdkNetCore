@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/icehockey" xmlns="http://schemas.sportradar.com/sportsapi/v1/icehockey" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/category.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/common/season_coverage_info.xsd" />
+    <xs:element name="tournament_leaders" type="tournamentLeadersEndpoint" />
+    <xs:complexType name="tournamentLeadersEndpoint">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" name="tournament" minOccurs="1" maxOccurs="1" />
+            <xs:element type="seasonCoverageInfo" minOccurs="0" name="season_coverage_info" />
+            <xs:element type="topPoints" name="top_points" minOccurs="0" />
+            <xs:element type="topGoals" name="top_goals" minOccurs="0" />
+            <xs:element type="topAssists" name="top_assists" minOccurs="0" />
+            <xs:element type="topOwnGoals" name="top_own_goals" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="topPoints">
+        <xs:sequence>
+            <xs:element type="pointsPlayer" name="points" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="pointsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="goals" use="required"/>
+        <xs:attribute type="xs:int" name="assists" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required" />
+    </xs:complexType>
+    <xs:complexType name="topGoals">
+        <xs:sequence>
+            <xs:element type="goalsPlayer" name="goals" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="goalsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="goals" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required" />
+    </xs:complexType>
+    <xs:complexType name="topAssists">
+        <xs:sequence>
+            <xs:element type="assistsPlayer" name="assists" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="assistsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="assists" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required" />
+    </xs:complexType>
+    <xs:complexType name="topOwnGoals">
+        <xs:sequence>
+            <xs:element type="ownGoalsPlayer" name="own_goals" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ownGoalsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="own_goals" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required" />
+    </xs:complexType>
+</xs:schema>

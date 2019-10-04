@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/team.xsd"/>
+    <xs:include schemaLocation="player.xsd"/>
+    <xs:complexType name="doubleTeamsExtended">
+        <xs:sequence>
+            <xs:element type="doubleTeam" name="double_team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="singlePlayersExtended">
+        <xs:sequence>
+            <xs:element type="tennisPlayerExtended" name="player" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bracketPlayerCompetitor">
+        <xs:complexContent>
+            <xs:extension base="tennisPlayer" >
+                <xs:attribute type="xs:int" name="seed" use="optional" />
+                <xs:attribute type="xs:string" name="qualification_path" use="optional" />
+                <xs:attribute type="xs:int" name="bracket_number" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="bracketDoubleTeamCompetitor">
+        <xs:complexContent>
+            <xs:extension base="tennisPlayer" >
+                <xs:sequence>
+                    <xs:element type="bracketPlayerCompetitor" name="player" minOccurs="0" maxOccurs="2" />
+                </xs:sequence>
+                <xs:attribute type="xs:int" name="seed" use="optional" />
+                <xs:attribute type="xs:string" name="qualification_path" use="optional" />
+                <xs:attribute type="xs:int" name="bracket_number" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="playerCompetitor">
+        <xs:complexContent>
+            <xs:extension base="tennisPlayer" >
+                <xs:attribute type="xs:int" name="seed" use="optional" />
+                <xs:attribute type="xs:int" name="bracket_number" use="optional" />
+                <xs:attribute type="xs:string" name="qualifier" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="doubleTeamCompetitor">
+        <xs:complexContent>
+            <xs:extension base="playerCompetitor" >
+                <xs:sequence>
+                    <xs:element type="tennisPlayer" name="player" minOccurs="0" maxOccurs="2" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="doubleTeam">
+        <xs:complexContent>
+            <xs:extension base="team" >
+                <xs:sequence>
+                    <xs:element type="tennisPlayerExtended" name="player" minOccurs="0" maxOccurs="2" />
+                </xs:sequence>
+                <xs:attribute type="xs:string" name="nationality" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

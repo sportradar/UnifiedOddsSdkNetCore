@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/cricket/player.xsd" />
+    <xs:element name="player_profile" type="playerProfileEndpoint" />
+    <xs:complexType name="playerProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="cricketPlayerExtended" name="player" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="teamsExtended" name="teams" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="roles" name="roles" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="statisticsType" name="statistics" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="statisticsType">
+        <xs:sequence>
+            <xs:element type="tournamentsType" name="tournaments" maxOccurs="1" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="tournamentsType">
+        <xs:sequence>
+            <xs:element type="tournamentStatisticsType" name="tournament" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="tournamentStatisticsType">
+        <xs:sequence>
+            <xs:element type="playerProfileBattingStatisticsType" name="batting" maxOccurs="1" minOccurs="1" />
+            <xs:element type="playerProfileBowlingStatisticsType" name="bowling" maxOccurs="1" minOccurs="1" />
+            <xs:element type="playerProfileFieldingStatisticsType" name="fielding" maxOccurs="1" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileBattingStatisticsType">
+        <xs:attribute type="xs:int" name="matches" use="required"/>
+        <xs:attribute type="xs:int" name="innings" use="required"/>
+        <xs:attribute type="xs:int" name="balls_faced" use="required"/>
+        <xs:attribute type="xs:int" name="not_outs" use="required"/>
+        <xs:attribute type="xs:int" name="runs" use="required"/>
+        <xs:attribute type="xs:double" name="average" use="required"/>
+        <xs:attribute type="xs:double" name="strike_rate" use="required"/>
+        <xs:attribute type="xs:int" name="highest_score" use="required"/>
+        <xs:attribute type="xs:int" name="hundreds" use="required"/>
+        <xs:attribute type="xs:int" name="fifties" use="required"/>
+        <xs:attribute type="xs:int" name="fours" use="required"/>
+        <xs:attribute type="xs:int" name="sixes" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileBowlingStatisticsType">
+        <xs:attribute type="xs:int" name="matches" use="required"/>
+        <xs:attribute type="xs:int" name="innings" use="required"/>
+        <xs:attribute type="xs:string" name="overs" use="required"/>
+        <xs:attribute type="xs:int" name="balls_bowled" use="required"/>
+        <xs:attribute type="xs:int" name="maidens" use="required"/>
+        <xs:attribute type="xs:int" name="runs" use="required"/>
+        <xs:attribute type="xs:int" name="wickets" use="required"/>
+        <xs:attribute type="xs:double" name="average" use="required"/>
+        <xs:attribute type="xs:double" name="strike_rate" use="required"/>
+        <xs:attribute type="xs:double" name="economy" use="required"/>
+        <xs:attribute type="xs:int" name="best_bowling" use="required"/>
+        <xs:attribute type="xs:int" name="four_wicket_hauls" use="required"/>
+        <xs:attribute type="xs:int" name="five_wicket_hauls" use="required"/>
+        <xs:attribute type="xs:int" name="ten_wicket_hauls" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileFieldingStatisticsType">
+        <xs:attribute type="xs:int" name="catches" use="required"/>
+        <xs:attribute type="xs:int" name="stumpings" use="required"/>
+        <xs:attribute type="xs:int" name="runouts" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="teams">
+        <xs:sequence>
+            <xs:element type="team" name="team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="roles">
+        <xs:sequence>
+            <xs:element type="role" name="role" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="role">
+        <xs:sequence>
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:string" name="active" use="required"/>
+        <xs:attribute type="xs:date" name="start_date" use="optional"/>
+        <xs:attribute type="xs:date" name="end_date" use="optional"/>
+        <xs:attribute type="competitorUrn" name="team_id" use="optional"/>
+        <xs:attribute type="xs:string" name="team_name" use="optional"/>
+        <xs:attribute type="xs:int" name="jersey_number" use="optional"/>
+    </xs:complexType>
+</xs:schema>

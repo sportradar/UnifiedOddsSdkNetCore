@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../urn.xsd" />
+    <xs:include schemaLocation="result.xsd" />
+    <xs:complexType name="stageSportEventStatus">
+        <xs:sequence>
+            <xs:element name="results" type="stageResult" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="status" type="xs:string" />
+        <xs:attribute name="winner_id" type="unifiedCompetitorUrn" use="optional" />
+    </xs:complexType>
+</xs:schema>

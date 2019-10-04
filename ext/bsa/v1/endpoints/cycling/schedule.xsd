@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/cycling/race.xsd" />
+    <xs:element name="schedule" type="scheduleEndpoint" />
+    <xs:complexType name="scheduleEndpoint">
+        <xs:sequence>
+            <xs:element type="raceEvents" name="race_events" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="raceEvents">
+        <xs:sequence>
+            <xs:element type="race" name="race" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

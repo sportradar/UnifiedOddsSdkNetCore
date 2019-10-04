@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/weather_info.xsd" />
+    <xs:include schemaLocation="../common/venue.xsd" />
+    <xs:include schemaLocation="../common/referee.xsd" />
+    <xs:complexType name="olympicsIceHockeySportEventConditions">
+        <xs:sequence>
+            <xs:element type="officials" name="officials" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="referee" name="referee" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="venue" name="venue" minOccurs="0" maxOccurs="1" />
+            <xs:element type="weatherInfo" minOccurs="0" name="weather_info"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="attendance" use="optional"/>
+        <xs:attribute type="xs:string" name="match_mode" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="officials">
+        <xs:sequence>
+            <xs:element type="official" name="official" minOccurs="0" maxOccurs="4"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="official">
+        <xs:attribute type="refereeUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nationality" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+</xs:schema>

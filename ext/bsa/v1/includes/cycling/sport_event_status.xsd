@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="sportEventStatus">
+        <xs:attribute type="status" name="status" use="required" />
+    </xs:complexType>
+    <xs:simpleType name="status">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="cancelled"/>
+            <xs:enumeration value="closed" />
+            <xs:enumeration value="completed" />
+            <xs:enumeration value="finished" />
+            <xs:enumeration value="not_started" />
+            <xs:enumeration value="preliminary" />
+            <xs:enumeration value="running" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

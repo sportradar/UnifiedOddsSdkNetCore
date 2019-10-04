@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/csgo" xmlns="http://schemas.sportradar.com/sportsapi/v1/csgo" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:element name="player_profile" type="playerProfileEndpoint" />
+    <xs:complexType name="playerProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="playerExtended" name="player" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="teamsExtended" name="teams" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="roles" name="roles" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="profileImage" name="image" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="socialMediaLinks" name="social_media_links" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="playerStatistic" name="statistics" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="teams">
+        <xs:sequence>
+            <xs:element type="team" name="team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="roles">
+        <xs:sequence>
+            <xs:element type="role" name="role" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="role">
+        <xs:sequence>
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:string" name="active" use="required"/>
+        <xs:attribute type="xs:date" name="start_date" use="optional"/>
+        <xs:attribute type="xs:date" name="end_date" use="optional"/>
+        <xs:attribute type="competitorUrn" name="team_id" use="optional"/>
+        <xs:attribute type="xs:string" name="team_name" use="optional"/>
+        <xs:attribute type="xs:int" name="jersey_number" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="profileImage">
+        <xs:attribute type="xs:string" name="url" use="required" />
+    </xs:complexType>
+    <xs:complexType name="playerStatistic">
+        <xs:attribute type="competitorUrn" name="team" use="required" />
+        <xs:attribute type="xs:int" name="maps_played" use="required" />
+        <xs:attribute type="xs:int" name="maps_won" use="required" />
+        <xs:attribute type="xs:int" name="maps_lost" use="required" />
+        <xs:attribute type="xs:int" name="rounds_played" use="required" />
+        <xs:attribute type="xs:int" name="rounds_won" use="required" />
+        <xs:attribute type="xs:int" name="rounds_lost" use="required" />
+        <xs:attribute type="xs:int" name="kills" use="required" />
+        <xs:attribute type="xs:int" name="deaths" use="required" />
+        <xs:attribute type="xs:int" name="assists" use="required" />
+        <xs:attribute type="xs:int" name="headshots" use="required" />
+        <xs:attribute type="xs:string" name="best_map" use="required" />
+        <xs:attribute type="xs:string" name="worst_map" use="required" />
+    </xs:complexType>
+    <xs:complexType name="socialMediaLink">
+        <xs:attribute type="xs:string" name="type" use="required" />
+        <xs:attribute type="xs:string" name="value" use="required" />
+    </xs:complexType>
+    <xs:complexType name="socialMediaLinks">
+        <xs:sequence>
+            <xs:element type="socialMediaLink" name="link" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

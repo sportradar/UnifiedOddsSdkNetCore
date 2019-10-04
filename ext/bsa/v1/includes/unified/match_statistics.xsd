@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd"/>
+    <xs:complexType name="matchStatistics">
+        <xs:sequence>
+            <xs:element type="statisticsTotals" name="totals" minOccurs="0"/>
+            <xs:element type="statisticsPeriods" name="periods" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="statisticsTotals">
+        <xs:sequence>
+            <xs:element type="statisticsTeam" name="teams" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="statisticsPeriods">
+        <xs:sequence>
+            <xs:element type="matchPeriod" name="period" maxOccurs="unbounded" minOccurs="0" >
+        </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="statisticsTeam">
+        <xs:sequence>
+            <xs:element type="teamStatistics" name="team" minOccurs="0" maxOccurs="2" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="teamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute name="cards" type="xs:string" />
+                    <xs:attribute name="corner_kicks" type="xs:string" />
+                    <xs:attribute name="yellow_cards" type="xs:string" />
+                    <xs:attribute name="yellow_red_cards" type="xs:string" />
+                    <xs:attribute name="red_cards" type="xs:string" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="unifiedCompetitorUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="matchPeriod">
+        <xs:sequence>
+            <xs:element type="statisticsTeam" name="teams" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+
+</xs:schema>

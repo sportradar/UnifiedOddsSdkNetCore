@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/category.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:element name="tournament_team_statistics" type="tournamentTeamStatisticsEndpoint" />
+    <xs:complexType name="playersStatistics">
+        <xs:sequence>
+            <xs:element name="player" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="statistics" type="tournamentPlayerStatistics" />
+                    </xs:sequence>
+                    <xs:attribute name="id" type="playerUrn" use="required" />
+                    <xs:attribute name="name" type="xs:string" use="required" />
+                    <xs:attribute name="matches_played" type="xs:int" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="period">
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:int" name="value" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentTeamStatisticsEndpoint">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" minOccurs="1" name="tournament" />
+            <xs:element type="teamExtended" minOccurs="1" name="team" />
+            <xs:element type="teamSeasonCoverage" minOccurs="0" name="team_season_coverage" />
+            <xs:element type="tournamentTeamStatistics" minOccurs="0" name="team_statistics" />
+            <xs:element type="playersStatistics" minOccurs="0" name="player_statistics" />
+            <xs:element type="goalTimeStatistics" minOccurs="0" name="goaltime_statistics" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentTeamStatistics">
+        <xs:all>
+            <xs:element type="datapoint" name="goal_attempts" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_on_goal" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_off_goal" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_on_post" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_on_bar" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="goals_by_foot" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="goals_by_head" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="corner_kicks" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="ball_possession" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_blocked" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="cards_given" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="free_kicks" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="offsides" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="goals_scored" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="goals_conceded" maxOccurs="1" minOccurs="0" />
+        </xs:all>
+        <xs:attribute type="xs:int" name="matches_played"/>
+        <xs:attribute type="xs:int" name="matches_won"/>
+        <xs:attribute type="xs:string" name="form"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentPlayerStatistics">
+        <xs:all>
+            <xs:element type="datapoint" name="goals_scored" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="corner_kicks" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="cards_given" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="offsides" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_on_goal" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="substituted_in" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="substituted_out" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_off_goal" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_blocked" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="goals_by_head" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="goal_attempts" maxOccurs="1" minOccurs="0" />
+
+            <xs:element type="datapoint" name="goal_line_clearances" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="interceptions" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="chances_created" maxOccurs="1" minOccurs="0" />
+
+            <xs:element type="datapointWithSuccess" name="passes_short" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapointWithSuccess" name="passes_medium" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapointWithSuccess" name="passes_long" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapointWithSuccess" name="duels_header" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapointWithSuccess" name="duels_sprint" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapointWithSuccess" name="duels_tackle" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapointWithSuccess" name="crosses" maxOccurs="1" minOccurs="0" />
+
+            <xs:element type="datapoint" name="goals_conceded" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_saved" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_faced" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="clean_sheets" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="penalties_faced" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="penalties_saved" maxOccurs="1" minOccurs="0" />
+
+            <xs:element type="datapoint" name="assists" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="own_goals" maxOccurs="1" minOccurs="0" />
+
+            <xs:element type="fouls" name="fouls" maxOccurs="1" minOccurs="0" />
+            <xs:element type="substitutions" name="substitutions" maxOccurs="1" minOccurs="0" />
+
+            <xs:element type="performanceScore" name="performance_score" minOccurs="0" maxOccurs="1" />
+
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="datapoint">
+        <xs:attribute type="xs:int" name="total" use="required"/>
+        <xs:attribute type="xs:int" name="matches" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="fouls">
+        <xs:attribute type="xs:int" name="committed" use="required"/>
+        <xs:attribute type="xs:int" name="was_fouled" use="required"/>
+        <xs:attribute type="xs:int" name="matches" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="cards">
+        <xs:attribute type="xs:int" name="yellow" use="required"/>
+        <xs:attribute type="xs:int" name="yellow_red" use="required"/>
+        <xs:attribute type="xs:int" name="red" use="required"/>
+        <xs:attribute type="xs:int" name="total" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="substitutions">
+        <xs:attribute type="xs:int" name="in" use="required"/>
+        <xs:attribute type="xs:int" name="out" use="required"/>
+        <xs:attribute type="xs:int" name="matches" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="datapointWithSuccess">
+        <xs:attribute type="xs:int" name="total" use="required"/>
+        <xs:attribute type="xs:int" name="successful" use="required"/>
+        <xs:attribute type="xs:int" name="matches" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="goalTimeStatistics">
+        <xs:sequence>
+            <xs:element type="periodInfo" name="scored" maxOccurs="1" minOccurs="1" />
+            <xs:element type="periodInfo" name="conceded" maxOccurs="1" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="performanceScore">
+        <xs:attribute type="xs:double" name="average" use="required" />
+        <xs:attribute type="xs:int" name="matches" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="periodInfo">
+        <xs:sequence>
+            <xs:element type="period" name="period" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="total" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="teamSeasonCoverage">
+        <xs:attribute type="xs:int" name="scheduled" use="required"/>
+        <xs:attribute type="xs:int" name="played" use="optional"/>
+        <xs:attribute type="xs:int" name="platinum" use="optional"/>
+        <xs:attribute type="xs:int" name="gold" use="optional"/>
+        <xs:attribute type="xs:int" name="silver" use="optional"/>
+        <xs:attribute type="xs:int" name="bronze" use="optional"/>
+    </xs:complexType>
+</xs:schema>

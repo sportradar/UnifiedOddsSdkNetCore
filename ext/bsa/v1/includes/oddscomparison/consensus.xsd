@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="market.xsd" />
+    <xs:complexType name="consensus">
+        <xs:sequence>
+            <xs:element name="bet_percentage_outcomes" type="betPercentageOutcomes" minOccurs="0" />
+            <xs:element name="lines" type="lines" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="betPercentageOutcomes">
+        <xs:sequence>
+            <xs:element name="market" type="consensusMarket" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="lines">
+        <xs:sequence>
+            <xs:element name="line" type="line" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="consensusMarket">
+        <xs:sequence>
+            <xs:element name="outcome" type="outcome" minOccurs="2" maxOccurs="2" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="line">
+        <xs:sequence>
+            <xs:element name="outcome" type="outcome" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="handicap" type="xs:string" />
+        <xs:attribute name="total" type="xs:string" />
+        <xs:attribute name="spread" type="xs:string" />
+    </xs:complexType>
+</xs:schema>

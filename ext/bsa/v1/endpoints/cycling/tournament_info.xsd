@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/cycling/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/competitor.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/coverage_info.xsd" />
+    <xs:element name="tournament_info" type="tournamentInfoEndpoint" />
+    <xs:complexType name="tournamentInfoEndpoint">
+        <xs:sequence>
+            <xs:element type="tournament" minOccurs="1" name="tournament" />
+            <xs:element type="coverageInfo" minOccurs="1" maxOccurs="1" name="coverage_info" />
+            <xs:element type="competitors" minOccurs="1" maxOccurs="1" name="competitors" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="info">
+        <xs:attribute type="raceTournamentUrn" name="previous_season" use="optional" />
+        <xs:attribute type="riderUrn" name="previous_winner_id" use="optional" />
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd"/>
+    <xs:include schemaLocation="category.xsd"/>
+    <xs:include schemaLocation="sport.xsd"/>
+    <xs:complexType name="team">
+        <xs:attribute type="competitorUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="abbreviation" use="required"/>
+        <xs:attribute type="xs:string" name="country" use="optional"/>
+        <xs:attribute type="countryCode" name="country_code" use="optional" />
+        <xs:attribute type="iocCountryCode" name="ioc_code" use="optional" />
+        <xs:attribute type="xs:boolean" name="virtual" use="optional" />
+        <xs:attribute type="xs:int" name="rotation_number" use="optional" />
+        <xs:attribute type="xs:string" name="active" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="teamExtended">
+        <xs:complexContent>
+            <xs:extension base="team" >
+                <xs:sequence>
+                    <xs:element type="sport" name="sport" minOccurs="0" />
+                    <xs:element type="category" name="category" minOccurs="0" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="teamsExtended">
+        <xs:sequence>
+            <xs:element type="teamExtended" name="team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="teamCompetitor">
+        <xs:complexContent>
+            <xs:extension base="team" >
+                <xs:attribute type="xs:string" name="qualifier" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="raceTeam">
+        <xs:complexContent>
+            <xs:extension base="team">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

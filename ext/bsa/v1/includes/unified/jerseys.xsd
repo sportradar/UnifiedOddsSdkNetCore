@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="jerseys">
+        <xs:sequence>
+            <xs:element type="jersey" name="jersey" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="jersey">
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:string" name="base" use="required"/>
+        <xs:attribute type="xs:string" name="sleeve" use="required"/>
+        <xs:attribute type="xs:string" name="number" use="required"/>
+        <xs:attribute type="xs:boolean" name="stripes" use="optional"/>
+        <xs:attribute type="xs:string" name="stripes_color" use="optional"/>
+        <xs:attribute type="xs:boolean" name="horizontal_stripes" use="optional"/>
+        <xs:attribute type="xs:string" name="horizontal_stripes_color" use="optional"/>
+        <xs:attribute type="xs:boolean" name="squares" use="optional"/>
+        <xs:attribute type="xs:string" name="squares_color" use="optional"/>
+        <xs:attribute type="xs:boolean" name="split" use="optional"/>
+        <xs:attribute type="xs:string" name="split_color" use="optional"/>
+        <xs:attribute type="xs:string" name="shirt_type" use="optional"/>
+        <xs:attribute type="xs:string" name="sleeve_detail" use="optional"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/lol" xmlns="http://schemas.sportradar.com/sportsapi/v1/lol" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:element name="match_lineups" type="matchLineupsEndpoint" />
+    <xs:complexType name="matchLineupsEndpoint">
+        <xs:sequence>
+            <xs:element type="sportEvent" name="sport_event" />
+            <xs:element type="lineup" name="lineup" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="lineup">
+        <xs:sequence>
+            <xs:element type="playerLineup" name="player" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="team" use="required"/>
+    </xs:complexType>
+</xs:schema>

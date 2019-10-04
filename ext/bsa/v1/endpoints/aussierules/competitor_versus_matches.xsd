@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           targetNamespace="http://schemas.sportradar.com/sportsapi/v1/aussierules"
+           xmlns="http://schemas.sportradar.com/sportsapi/v1/aussierules"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/aussierules/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd"/>
+    <xs:include schemaLocation="../../includes/aussierules/sport_event_status.xsd"/>
+    <xs:include schemaLocation="../../includes/aussierules/match_statistics.xsd"/>
+    <xs:element name="competitor_versus_matches" type="competitorVersusMatchesEndpoint" />
+    <xs:complexType name="competitorVersusMatchesEndpoint">
+        <xs:sequence>
+            <xs:element type="competitors" name="competitors" />
+            <xs:element type="aussieRulesSummary" name="last_meetings" minOccurs="0" maxOccurs="10" />
+            <xs:element type="aussieRulesSummary" name="next_meetings" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="competitors">
+        <xs:sequence>
+            <xs:element type="team" name="competitor" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="meetingsType">
+        <xs:sequence>
+            <xs:element type="aussieRulesSportEvent" name="sport_event" maxOccurs="1" minOccurs="0" />
+            <xs:element type="sportEventStatus" name="sport_event_status" maxOccurs="1"/>
+            <xs:element type="aussieRulesMatchStatistics" name="statistics" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="aussieRulesSummary">
+        <xs:sequence>
+            <xs:element name="summary" type="meetingsType" minOccurs="0" maxOccurs="10"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="tournament.xsd" />
+    <xs:complexType name="matchStatistics">
+        <xs:sequence>
+            <xs:element name="teams" minOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="team" type="teamStatistics" minOccurs="2" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="teamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute type="xs:int" name="aces" use="optional" />
+                    <xs:attribute type="xs:int" name="double_faults" use="optional" />
+                    <xs:attribute type="xs:int" name="max_points_in_a_row" use="required" />
+                    <xs:attribute type="xs:int" name="points_won" use="required" />
+                    <xs:attribute type="xs:int" name="first_serve_points_won" use="required" />
+                    <xs:attribute type="xs:int" name="second_serve_points_won" use="required" />
+                    <xs:attribute type="xs:int" name="breakpoints_won" use="required" />
+                    <xs:attribute type="xs:int" name="max_games_in_a_row" use="required" />
+                    <xs:attribute type="xs:int" name="games_won" use="required" />
+                    <xs:attribute type="xs:int" name="tiebreaks_won" use="required" />
+                    <xs:attribute type="xs:int" name="first_serve_successful" use="required" />
+                    <xs:attribute type="xs:int" name="receiver_points_won" use="required" />
+                    <xs:attribute type="xs:int" name="second_serve_successful" use="optional" />
+                    <xs:attribute type="xs:int" name="service_points_won" use="required" />
+                    <xs:attribute type="xs:int" name="service_games_won" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="abbreviation" type="xs:string" use="required" />
+        <xs:attribute name="qualifier" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="playerStatistics">
+        <xs:sequence>
+            <xs:element name="periods" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="seasonStatistic" name="period" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="seasonTotalStatistic">
+        <xs:attribute type="xs:int" name="tournaments_played" use="optional" />
+        <xs:attribute type="xs:int" name="tournaments_won" use="optional" />
+        <xs:attribute type="xs:int" name="matches_played" use="optional" />
+        <xs:attribute type="xs:int" name="matches_won" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="seasonStatistic">
+        <xs:sequence>
+            <xs:element name="surfaces" type="surfaces" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="statistics" type="seasonTotalStatistic" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="year" type="xs:gYear" use="required" />
+    </xs:complexType>
+    <xs:complexType name="surfaces">
+        <xs:sequence>
+            <xs:element type="surfaceStatistic" name="surface" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="tournamentsPlayed">
+        <xs:sequence>
+            <xs:element type="tournament" name="tournament" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="surfaceStatistic">
+        <xs:sequence>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:attribute type="xs:int" name="tournaments_played" use="optional" />
+                    <xs:attribute type="xs:int" name="tournaments_won" use="optional" />
+                    <xs:attribute type="xs:int" name="matches_played" use="optional" />
+                    <xs:attribute type="xs:int" name="matches_won" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required" />
+    </xs:complexType>
+</xs:schema>

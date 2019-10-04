@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/winterolympics/athlete.xsd" />
+
+    <xs:element name="participants" type="participantsEndpoint" />
+
+    <xs:complexType name="participantsEndpoint">
+        <xs:sequence>
+            <xs:element type="participantsCountry" name="country" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+
+    <xs:complexType name="participantsCountry">
+        <xs:sequence>
+            <xs:element name="athletes" type="athletes" />
+            <xs:element name="sports" type="participantsSports" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="id" />
+        <xs:attribute type="xs:string" name="name" />
+        <xs:attribute type="xs:string" name="ioc_code"/>
+    </xs:complexType>
+
+    <xs:complexType name="participantsSports">
+        <xs:sequence>
+            <xs:element name="sport" type="participantsSport" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="participantsSport">
+        <xs:sequence>
+            <xs:element type="participantsCompetitions" name="competitions" />
+        </xs:sequence>
+        <xs:attribute name="id" type="sportUrn" />
+        <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="participantsCompetitions">
+        <xs:sequence>
+            <xs:element type="participantsCompetition" name="competition" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="participantsCompetition">
+        <xs:sequence>
+            <xs:element type="athletes" name="athletes" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" />
+        <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+
+</xs:schema>

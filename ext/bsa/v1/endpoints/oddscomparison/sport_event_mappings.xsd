@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:element name="sport_event_mappings" type="sportEventMappingsEndpoint" />
+    <xs:complexType name="sportEventMappingsEndpoint">
+        <xs:sequence>
+            <xs:element type="sportEventMapping" name="mappings" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="sportEventMapping">
+        <xs:sequence>
+            <xs:element name="mapping" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="us_id" type="xs:string"/>
+                    <xs:attribute name="id" type="matchUrn" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

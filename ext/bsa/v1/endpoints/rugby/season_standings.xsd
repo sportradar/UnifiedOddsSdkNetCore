@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/rugby/standings.xsd" />
+    <xs:element name="season_standings" type="seasonStandings" />
+    <xs:complexType name="seasonStandings">
+        <xs:sequence>
+            <xs:element type="standings" name="standings" maxOccurs="3" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/basketball" xmlns="http://schemas.sportradar.com/sportsapi/v1/basketball" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/season.xsd" />
+    <xs:include schemaLocation="../../includes/common/match_round.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament_coverages.xsd" />
+    <xs:include schemaLocation="../../includes/common/season_coverage_info.xsd"/>
+    <xs:element name="tournament_info" type="tournamentInfoEndpoint" />
+    <xs:complexType name="tournamentInfoEndpoint">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" minOccurs="1" name="tournament" />
+            <xs:element type="seasonExtended" minOccurs="0" name="season" />
+            <xs:element type="tournamentCoverageInfo" minOccurs="0" name="tournament_coverages" />
+            <xs:element type="matchRound" minOccurs="0" name="round" />
+            <xs:element type="seasonCoverageInfo" minOccurs="0" name="season_coverage_info" />
+            <xs:element type="tournamentLiveCoverageInfo" minOccurs="1" name="coverage_info" />
+            <xs:element type="tournamentGroups" minOccurs="1" name="groups" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentLiveCoverageInfo">
+        <xs:attribute type="xs:string" name="live_coverage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentGroups">
+        <xs:sequence>
+            <xs:element type="tournamentGroup" name="group" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="tournamentGroup">
+        <xs:sequence>
+            <xs:element type="team" name="team" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+</xs:schema>

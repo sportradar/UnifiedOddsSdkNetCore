@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="tournament.xsd" />
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="stage.xsd" />
+    <xs:include schemaLocation="course.xsd" />
+    <xs:complexType name="race">
+        <xs:sequence>
+            <xs:element type="tournament" name="tournament" minOccurs="0" maxOccurs="1" />
+            <xs:element type="course" name="course" minOccurs="0" maxOccurs="1" />
+            <xs:element type="stages" name="stages" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="raceUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:date" name="scheduled" use="required" />
+        <xs:attribute type="xs:date" name="scheduled_end" use="required" />
+        <xs:attribute type="xs:boolean" name="single_event" use="required" />
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="tennisPlayer">
+        <xs:attribute type="competitorUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="abbreviation" use="optional"/>
+        <xs:attribute type="xs:string" name="nationality" use="optional" />
+        <xs:attribute type="countryCode" name="country_code" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="tennisPlayerRanking">
+         <xs:attribute type="xs:int" name="rank"/>
+         <xs:attribute type="xs:int" name="points" />
+         <xs:attribute type="xs:string" name="tour" />
+    </xs:complexType>
+    <xs:complexType name="tennisPlayerExtended">
+        <xs:complexContent>
+            <xs:extension base="tennisPlayer" >
+                <xs:attribute type="xs:string" name="gender" use="optional"/>
+                <xs:attribute type="xs:date" name="date_of_birth" use="optional" />
+                <xs:attribute type="xs:gYear" name="pro_year" use="optional" />
+                <xs:attribute type="xs:string" name="handedness" use="optional" />
+                <xs:attribute type="xs:int" name="height" use="optional" />
+                <xs:attribute type="xs:int" name="weight" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

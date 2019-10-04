@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/tennis/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/tennis/player.xsd" />
+    <xs:include schemaLocation="../../includes/tennis/statistics.xsd" />
+    <xs:include schemaLocation="../../includes/tennis/ranking.xsd" />
+    <xs:include schemaLocation="../../includes/common/season.xsd" />
+    <xs:include schemaLocation="../../includes/common/season_coverage_info.xsd"/>
+    <xs:element name="player_profile" type="playerProfileEndpoint" />
+    <xs:complexType name="playerProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="tennisPlayerExtended" name="player" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="rankingsExtended" name="rankings" minOccurs="0" maxOccurs="1" />
+            <xs:element type="playerStatistics" name="statistics" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="tournamentsPlayed" name="tournaments_played" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

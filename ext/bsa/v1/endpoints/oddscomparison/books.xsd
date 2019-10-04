@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/oddscomparison/bookmaker.xsd" />
+    <xs:element name="books" type="booksEndpoint" />
+    <xs:complexType name="booksEndpoint">
+        <xs:sequence>
+            <xs:element type="bookmaker" name="book" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

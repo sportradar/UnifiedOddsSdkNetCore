@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/winterolympics/competitor.xsd" />
+
+    <xs:element name="medals" type="medalsEndpoint" />
+
+    <xs:complexType name="medalsEndpoint">
+        <xs:sequence>
+            <xs:element type="medalsByCountry" name="medals_by_country" />
+            <xs:element type="medalsBySport" name="medals_by_sport" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+
+    <xs:complexType name="medalsByCountry">
+        <xs:sequence>
+            <xs:element type="medalInfo" name="medal_info" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="medalInfo">
+        <xs:attribute name="country" type="xs:string" />
+        <xs:attribute name="country_id" type="xs:int" />
+        <xs:attribute name="country_code" type="xs:string" />
+        <xs:attribute name="ioc_code" type="xs:string" />
+        <xs:attribute name="total_ranking" type="xs:int" />
+        <xs:attribute name="gold_ranking" type="xs:int" />
+        <xs:attribute name="total" type="xs:int" />
+        <xs:attribute name="gold" type="xs:int" />
+        <xs:attribute name="silver" type="xs:int" />
+        <xs:attribute name="bronze" type="xs:int" />
+    </xs:complexType>
+
+    <xs:complexType name="medalsBySport">
+        <xs:sequence>
+            <xs:element type="medalSport" name="sport" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="medalSport">
+        <xs:sequence>
+            <xs:element type="medalCompetitions" name="competitions" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="sportUrn" name="id" />
+        <xs:attribute type="xs:string" name="name" />
+    </xs:complexType>
+
+    <xs:complexType name="medalCompetitions">
+        <xs:sequence>
+            <xs:element type="medalCompetition" name="competition" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="medalCompetition">
+        <xs:sequence>
+            <xs:element type="medalMedals" name="medals" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" />
+        <xs:attribute type="xs:string" name="name" />
+    </xs:complexType>
+
+    <xs:complexType name="medalMedals">
+        <xs:sequence>
+            <xs:element type="medalMedal" name="medal" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="medalMedal">
+        <xs:sequence>
+            <xs:element type="competitor" name="competitor" />
+        </xs:sequence>
+        <xs:attribute name="type" type="medalType" />
+    </xs:complexType>
+
+    <xs:simpleType name="medalType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="gold"/>
+            <xs:enumeration value="silver"/>
+            <xs:enumeration value="bronze"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

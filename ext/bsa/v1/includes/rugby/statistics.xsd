@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="rugbyMatchStatistics">
+        <xs:sequence>
+            <xs:element name="competitors" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="competitor" type="rugbyTeamStatistics" minOccurs="0" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rugbyTeamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute type="xs:int" name="ball_possession" use="optional" />
+                    <xs:attribute type="xs:int" name="tackles" use="optional" />
+                    <xs:attribute type="xs:int" name="turnovers" use="optional" />
+                    <xs:attribute type="xs:int" name="lineouts_awarded" use="optional" />
+                    <xs:attribute type="xs:int" name="lineouts_won" use="optional" />
+                    <xs:attribute type="xs:int" name="scrums_won" use="optional" />
+                    <xs:attribute type="xs:int" name="penalty_tries" use="optional" />
+                    <xs:attribute type="xs:int" name="penalties_conceded" use="optional" />
+                    <xs:attribute type="xs:int" name="yellow_cards" use="optional" />
+                    <xs:attribute type="xs:int" name="red_cards" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="abbreviation" type="xs:string" use="required" />
+        <xs:attribute name="qualifier" type="xs:string" use="required" />
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/tennis/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/tennis/team.xsd"/>
+    <xs:include schemaLocation="../../includes/tennis/result.xsd" />
+    <xs:element name="player_versus_matches" type="teamVersusMatchesEndpoint" />
+    <xs:complexType name="teamVersusMatchesEndpoint">
+        <xs:sequence>
+            <xs:element type="singlePlayersExtended" name="players" />
+            <xs:element type="lastMeetings" name="last_meetings" minOccurs="0" maxOccurs="5" />
+            <xs:element type="nextMeetings" name="next_meetings" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

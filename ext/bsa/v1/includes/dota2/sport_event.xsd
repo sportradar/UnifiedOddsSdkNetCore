@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="../common/tournament.xsd" />
+    <xs:include schemaLocation="../common/team.xsd" />
+    <xs:include schemaLocation="../common/season.xsd" />
+    <xs:include schemaLocation="match_round.xsd" />
+    <xs:include schemaLocation="../common/venue.xsd" />
+    <xs:include schemaLocation="../common/stream.xsd" />
+
+    <xs:complexType name="dota2SportEvent">
+        <xs:sequence>
+            <xs:element type="dota2MatchRound" name="tournament_round" minOccurs="0" />
+            <xs:element type="seasonExtended" name="season" minOccurs="0"  />
+            <xs:element type="tournament" name="tournament" />
+            <xs:element type="dota2SportEventCompetitors" name="competitors" />
+            <xs:element type="venue" name="venue" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="sportEventStreams" name="streams" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute type="matchUrn" name="id" use="required"/>
+        <xs:attribute type="xs:dateTime" name="scheduled"/>
+        <xs:attribute type="xs:boolean" name="start_time_tbd" use="required" />
+        <xs:attribute type="matchUrn" name="replaced_by" use="optional" />
+        <xs:attribute type="xs:string" name="status" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="dota2SportEventCompetitors">
+        <xs:sequence>
+            <xs:element type="teamCompetitor" name="team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="sportEventStreams">
+        <xs:sequence>
+            <xs:element type="stream" name="stream" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

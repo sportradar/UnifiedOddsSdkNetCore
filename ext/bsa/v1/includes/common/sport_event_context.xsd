@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd"/>
+    <xs:include schemaLocation="sport.xsd" />
+    <xs:include schemaLocation="category.xsd" />
+    <xs:include schemaLocation="competition.xsd" />
+    <xs:include schemaLocation="season.xsd" />
+    <xs:include schemaLocation="sport_event_context_stage.xsd" />
+    <xs:include schemaLocation="sport_event_context_group.xsd" />
+    <xs:complexType name="sportEventContext">
+        <xs:sequence>
+            <xs:element type="sport" name="sport" />
+            <xs:element type="category" name="category" />
+            <xs:element type="competitionType" name="competition" />
+            <xs:element type="seasonExtended" name="season" minOccurs="0" />
+            <xs:element type="sportEventContextStageType" name="stage" minOccurs="0" />
+            <xs:element type="sportEventContextGroupType" name="group" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="tournament.xsd" />
+    <xs:include schemaLocation="team.xsd" />
+    <xs:include schemaLocation="../oddscomparison/season.xsd" />
+    <xs:include schemaLocation="../common/match_round.xsd" />
+    <xs:include schemaLocation="./market.xsd" />
+    <xs:include schemaLocation="./consensus.xsd" />
+    <xs:include schemaLocation="../oddscomparison/venue.xsd" />
+    <xs:complexType name="sportEvent">
+        <xs:all>
+            <xs:element type="matchRound" name="tournament_round" minOccurs="0"/>
+            <xs:element type="oddsComparisonSeason" name="season" minOccurs="0" />
+            <xs:element type="tournament" name="tournament" minOccurs="0" />
+            <xs:element type="sportEventCompetitors" name="competitors" minOccurs="0"/>
+            <xs:element type="markets" name="markets" minOccurs="0" />
+            <xs:element type="consensus" name="consensus" minOccurs="0" />
+            <xs:element type="venue" name="venue" minOccurs="0"/>
+        </xs:all>
+        <xs:attribute type="matchUrn" name="id" use="required"/>
+        <xs:attribute type="xs:dateTime" name="scheduled"/>
+        <xs:attribute type="xs:boolean" name="start_time_tbd" use="required" />
+        <xs:attribute type="xs:string" name="status" use="optional" />
+        <xs:attribute type="matchUrn" name="replaced_by" use="optional" />
+        <xs:attribute type="xs:string" name="uuids" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="sportEventCompetitors">
+        <xs:sequence>
+            <xs:element type="teamCompetitor" name="competitor" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

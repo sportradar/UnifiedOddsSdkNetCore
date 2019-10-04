@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/dota2" xmlns="http://schemas.sportradar.com/sportsapi/v1/dota2" xmlns:xs="http://www.w3.org/2001/XMLSchema">    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:element name="team_profile" type="teamProfileEndpoint" />
+    <xs:complexType name="teamProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="teamExtended" name="team"/>
+            <xs:element type="logo" name="logo" minOccurs="0" />
+            <xs:element type="players" name="players" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="players">
+        <xs:sequence>
+            <xs:element type="playerExtended" name="player" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="logo">
+        <xs:attribute type="xs:string" name="url" use="required" />
+    </xs:complexType>
+</xs:schema>

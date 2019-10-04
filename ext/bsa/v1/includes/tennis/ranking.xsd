@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="player.xsd" />
+    <xs:include schemaLocation="team.xsd" />
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="ranking">
+        <xs:sequence>
+            <xs:element type="playerRanking" name="player_ranking" maxOccurs="500" minOccurs="0" />
+            <xs:element type="doubleTeamRanking" name="double_team_ranking" maxOccurs="500" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:int" name="year"/>
+        <xs:attribute type="xs:int" name="week"/>
+        <xs:attribute type="categoryUrn" name="category_id" />
+    </xs:complexType>
+    <xs:complexType name="playerRanking">
+        <xs:sequence>
+            <xs:element type="tennisPlayer" name="player" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="points" use="required"/>
+        <xs:attribute type="xs:int" name="ranking_movement" use="required"/>
+        <xs:attribute type="xs:int" name="tournaments_played" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="doubleTeamRanking">
+        <xs:sequence>
+            <xs:element type="doubleTeam" name="double_team" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="points" use="required"/>
+        <xs:attribute type="xs:int" name="ranking_movement" use="required"/>
+        <xs:attribute type="xs:int" name="tournaments_played" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="rankingExtended">
+        <xs:attribute name="player_id" type="competitorUrn" use="required" />
+        <xs:attribute name="points" type="xs:int" use="required" />
+        <xs:attribute name="rank" type="xs:int" use="required" />
+        <xs:attribute name="race_ranking" type="xs:boolean" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="type" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="rankingsExtended">
+        <xs:sequence>
+            <xs:element name="ranking" type="rankingExtended" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

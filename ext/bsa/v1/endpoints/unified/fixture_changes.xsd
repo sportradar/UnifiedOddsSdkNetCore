@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/unified/urn.xsd" />
+    <xs:element name="fixture_changes" type="fixtureChangesEndpoint" />
+    <xs:complexType name="fixtureChangesEndpoint">
+        <xs:sequence>
+            <xs:element type="fixtureChange" name="fixture_change" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="fixtureChange">
+        <xs:attribute type="unifiedSportEventUrn" name="sport_event_id" use="required"/>
+        <xs:attribute type="xs:dateTime" name="update_time" use="required"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd"/>
+    <xs:include schemaLocation="team.xsd" />
+    <xs:complexType name="competitor">
+        <xs:sequence>
+            <xs:element type="team" name="team" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="riderUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nationality" use="optional" />
+        <xs:attribute type="xs:string" name="country_code" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="competitors">
+        <xs:sequence>
+            <xs:element type="competitor" name="competitor" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/event_player.xsd" />
+    <xs:include schemaLocation="../common/player.xsd" />
+    <xs:include schemaLocation="phrase.xsd" />
+    <xs:complexType name="timelineEvent">
+        <xs:sequence>
+            <xs:element type="phrase" name="commentary" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="dismissalParams" name="dismissal_params" minOccurs="0" />
+            <xs:element type="battingParams" name="batting_params" minOccurs="0" />
+            <xs:element type="bowlingParams" name="bowling_params" minOccurs="0" />
+            <xs:element type="fieldingParams" name="fielding_params" minOccurs="0" />
+            <xs:element type="umpiringParams" name="umpiring_params" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:dateTime" name="time" use="required"/>
+        <xs:attribute type="xs:string" name="period_number" use="optional" />
+        <xs:attribute type="xs:string" name="period_name" use="optional" />
+        <xs:attribute type="xs:int" name="inning" use="optional" />
+        <xs:attribute type="xs:string" name="display_score" use="optional" />
+        <xs:attribute type="xs:string" name="display_overs" use="optional" />
+        <xs:attribute type="xs:int" name="ball_number" use="optional" />
+        <xs:attribute type="xs:int" name="over_number" use="optional" />
+        <xs:attribute type="xs:int" name="delivery" use="optional" />
+        <xs:attribute type="xs:int" name="dismissals_home" use="optional" />
+        <xs:attribute type="xs:int" name="dismissals_away" use="optional" />
+        <xs:attribute type="xs:boolean" name="drs" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="dismissalParams">
+        <xs:sequence>
+            <xs:element name="player" type="playerExtended" minOccurs="0" />
+            <xs:element name="dismissal_details">
+                <xs:complexType>
+                    <xs:attribute name="on_strike" type="xs:boolean" use="optional" />
+                    <xs:attribute name="fielding_position" type="xs:string" use="optional" />
+                    <xs:attribute name="type" type="xs:string" use="optional" />
+                    <xs:attribute name="bowler_id" type="playerUrn" use="optional" />
+                    <xs:attribute name="fielder_id" type="playerUrn" use="optional" />
+                    <xs:attribute name="team_referred" type="xs:string" use="optional" />
+                    <xs:attribute name="result_in_favor" type="xs:boolean" use="optional" />
+                    <xs:attribute name="decision_reason" type="xs:string" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="striker">
+        <xs:complexContent>
+            <xs:extension base="playerExtended" >
+                <xs:attribute type="xs:int" name="runs_scored_so_far" use="required"/>
+                <xs:attribute type="xs:int" name="balls_faced_so_far" use="required"/>
+                <xs:attribute type="xs:int" name="sixes" use="required"/>
+                <xs:attribute type="xs:int" name="fours" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="umpire">
+        <xs:complexContent>
+            <xs:extension base="playerExtended">
+                <xs:attribute name="correct_decision" type="xs:boolean" use="optional" />
+                <xs:attribute name="decision_reason" type="xs:string" use="optional" />
+                <xs:attribute name="warning" type="xs:string" use="optional" />
+                <xs:attribute name="position" type="xs:string" use="optional" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="battingParams">
+        <xs:sequence>
+            <xs:element name="striker" type="striker" minOccurs="0" />
+            <xs:element name="non_striker" type="striker" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="crease_position" type="xs:string" use="optional" />
+        <xs:attribute name="shot_type" type="xs:string" use="optional" />
+        <xs:attribute name="connect" type="xs:string" use="optional" />
+        <xs:attribute name="stroke" type="xs:string" use="optional" />
+        <xs:attribute name="trace" type="xs:string" use="optional" />
+        <xs:attribute name="zone_played_in" type="xs:string" use="optional" />
+        <xs:attribute name="angle_traversed" type="xs:string" use="optional" />
+        <xs:attribute name="distance_travelled" type="xs:string" use="optional" />
+        <xs:attribute name="hit_to_boundary" type="xs:boolean" use="optional" />
+        <xs:attribute name="runs_scored" type="xs:int" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="bowlingParams">
+        <xs:sequence>
+            <xs:element name="bowler" type="playerExtended" minOccurs="0" />
+            <xs:element name="other_bowler" type="playerExtended" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="bowling_from" type="xs:string" use="optional" />
+        <xs:attribute name="bowling_end" type="xs:string" use="optional" />
+        <xs:attribute name="run_up" type="xs:string" use="optional" />
+        <xs:attribute name="delivery_type" type="xs:string" use="optional" />
+        <xs:attribute name="coord_release" type="xs:string" use="optional" />
+        <xs:attribute name="pitch_x" type="xs:int" use="optional" />
+        <xs:attribute name="pitch_y" type="xs:int" use="optional" />
+        <xs:attribute name="strike_zone_z" type="xs:string" use="optional" />
+        <xs:attribute name="ball_speed" type="xs:double" use="optional" />
+        <xs:attribute name="slower_delivery" type="xs:boolean" use="optional" />
+        <xs:attribute name="extra_runs_conceded" type="xs:int" use="optional" />
+        <xs:attribute name="extra_runs_type" type="xs:string" use="optional" />
+        <xs:attribute name="free_hit" type="xs:boolean" use="optional" />
+        <xs:attribute name="beat_bat" type="xs:boolean" use="optional" />
+        <xs:attribute name="rapped_on_pads" type="xs:boolean" use="optional" />
+        <xs:attribute name="is_wicket" type="xs:boolean" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="fieldingParams">
+        <xs:sequence>
+            <xs:element name="fielder" type="playerExtended" minOccurs="0" />
+            <xs:element type="playerExtended" name="catch_dropper" minOccurs="0" />
+            <xs:element type="playerExtended" name="run_out_misser" minOccurs="0" />
+            <xs:element type="playerExtended" name="stumping_misser" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="runs_saved" use="optional" />
+        <xs:attribute type="xs:int" name="runs_lost" use="optional" />
+        <xs:attribute type="xs:int" name="overthrows" use="optional" />
+        <xs:attribute type="xs:boolean" name="catch_dropped" use="optional" />
+        <xs:attribute type="xs:boolean" name="run_out_missed" use="optional" />
+        <xs:attribute type="xs:string" name="run_out_missed_location" use="optional" />
+        <xs:attribute type="xs:string" name="catch_dropped_location" use="optional" />
+        <xs:attribute type="xs:boolean" name="direct_hit" use="optional" />
+        <xs:attribute type="xs:boolean" name="appeal" use="required" />
+    </xs:complexType>
+    <xs:complexType name="umpiringParams">
+        <xs:sequence>
+            <xs:element name="field_umpire" type="umpire" minOccurs="0" />
+            <xs:element name="third_umpire" type="umpire" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="ball_changed" type="xs:boolean" use="optional" />
+        <xs:attribute name="ball_changed_reason" type="xs:string" use="optional" />
+        <xs:attribute name="referral_result" type="xs:string" use="optional" />
+    </xs:complexType>
+</xs:schema>

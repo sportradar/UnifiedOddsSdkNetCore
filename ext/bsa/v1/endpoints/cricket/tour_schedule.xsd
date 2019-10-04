@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/cricket/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/cricket/tour.xsd" />
+    <xs:include schemaLocation="tournament_schedule.xsd" />
+    <xs:element name="tour_schedule" type="tourSchedule" />
+    <xs:complexType name="tourSchedule">
+        <xs:sequence>
+            <xs:element type="tourType" name="tour" maxOccurs="unbounded" minOccurs="1" />
+            <xs:element type="sportEvents" name="sport_events" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

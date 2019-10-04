@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/lol" xmlns="http://schemas.sportradar.com/sportsapi/v1/lol" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/lol/summary.xsd" />
+    <xs:element name="summaries" type="liveSummariesEndpoint" />
+    <xs:complexType name="liveSummariesEndpoint">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

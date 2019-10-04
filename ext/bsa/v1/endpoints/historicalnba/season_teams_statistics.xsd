@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/historicalnba" xmlns="http://schemas.sportradar.com/sportsapi/v1/historicalnba" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/season.xsd" />
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:element name="season_teams_statistics" type="seasonTeamsStatistics" />
+    <xs:complexType name="seasonTeamsStatistics">
+        <xs:sequence>
+            <xs:element name="stages">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="stage" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="teams">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element type="teamType" name="team" maxOccurs="unbounded"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute type="xs:string" name="type"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="teamType">
+        <xs:sequence>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="total_minutes"/>
+                    <xs:attribute type="xs:string" name="games_played"/>
+                    <xs:attribute type="xs:string" name="assist_turnover_ratio"/>
+                    <xs:attribute type="xs:string" name="max_points_in_a_row"/>
+                    <xs:attribute type="xs:string" name="assists"/>
+                    <xs:attribute type="xs:string" name="assists_per_match"/>
+                    <xs:attribute type="xs:string" name="blocked_attempts"/>
+                    <xs:attribute type="xs:string" name="blocked_attempts_per_match"/>
+                    <xs:attribute type="xs:string" name="blocks"/>
+                    <xs:attribute type="xs:string" name="blocks_per_match"/>
+                    <xs:attribute type="xs:string" name="coach_technical_fouls"/>
+                    <xs:attribute type="xs:string" name="defensive_rebounds"/>
+                    <xs:attribute type="xs:string" name="defensive_rebounds_per_match"/>
+                    <xs:attribute type="xs:string" name="dnp_reason"/>
+                    <xs:attribute type="xs:string" name="ejections"/>
+                    <xs:attribute type="xs:string" name="fast_break_points"/>
+                    <xs:attribute type="xs:string" name="fast_break_points_per_match"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempted"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="field_goals_made"/>
+                    <xs:attribute type="xs:string" name="field_goals_made_per_match"/>
+                    <xs:attribute type="xs:string" name="field_goals_percentage"/>
+                    <xs:attribute type="xs:string" name="flagrant_fouls"/>
+                    <xs:attribute type="xs:string" name="flagrant_fouls_per_match"/>
+                    <xs:attribute type="xs:string" name="foulouts"/>
+                    <xs:attribute type="xs:string" name="fouls"/>
+                    <xs:attribute type="xs:string" name="free_throws_attempted"/>
+                    <xs:attribute type="xs:string" name="free_throws_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="free_throws_made"/>
+                    <xs:attribute type="xs:string" name="free_throws_made_per_match"/>
+                    <xs:attribute type="xs:string" name="free_throws_percentage"/>
+                    <xs:attribute type="xs:string" name="games_started"/>
+                    <xs:attribute type="xs:string" name="match_efficiency"/>
+                    <xs:attribute type="xs:string" name="minutes_per_match"/>
+                    <xs:attribute type="xs:string" name="offensive_rebounds"/>
+                    <xs:attribute type="xs:string" name="offensive_rebounds_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_assist_turnover_ratio"/>
+                    <xs:attribute type="xs:string" name="opponents_assists"/>
+                    <xs:attribute type="xs:string" name="opponents_assists_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_blocked_attempts"/>
+                    <xs:attribute type="xs:string" name="opponents_blocked_attempts_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_blocks"/>
+                    <xs:attribute type="xs:string" name="opponents_blocks_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_defensive_rebounds"/>
+                    <xs:attribute type="xs:string" name="opponents_defensive_rebounds_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_ejections"/>
+                    <xs:attribute type="xs:string" name="opponents_fast_break_points"/>
+                    <xs:attribute type="xs:string" name="opponents_fast_break_points_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_field_goals_attempted"/>
+                    <xs:attribute type="xs:string" name="opponents_field_goals_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_field_goals_made"/>
+                    <xs:attribute type="xs:string" name="opponents_field_goals_made_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_field_goals_percentage"/>
+                    <xs:attribute type="xs:string" name="opponents_flagrant_fouls"/>
+                    <xs:attribute type="xs:string" name="opponents_flagrant_fouls_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_foulouts"/>
+                    <xs:attribute type="xs:string" name="opponents_free_throws_attempted"/>
+                    <xs:attribute type="xs:string" name="opponents_free_throws_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_free_throws_made"/>
+                    <xs:attribute type="xs:string" name="opponents_free_throws_made_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_free_throws_percentage"/>
+                    <xs:attribute type="xs:string" name="opponents_games_played"/>
+                    <xs:attribute type="xs:string" name="opponents_minutes"/>
+                    <xs:attribute type="xs:string" name="opponents_minutes_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_offensive_rebounds"/>
+                    <xs:attribute type="xs:string" name="opponents_offensive_rebounds_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_paint_points"/>
+                    <xs:attribute type="xs:string" name="opponents_paint_points_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_personal_fouls"/>
+                    <xs:attribute type="xs:string" name="opponents_personal_fouls_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_points"/>
+                    <xs:attribute type="xs:string" name="opponents_points_off_turnovers"/>
+                    <xs:attribute type="xs:string" name="opponents_points_off_turnovers_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_points_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_rebounds"/>
+                    <xs:attribute type="xs:string" name="opponents_rebounds_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_second_chance_points"/>
+                    <xs:attribute type="xs:string" name="opponents_second_chance_points_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_steals"/>
+                    <xs:attribute type="xs:string" name="opponents_steals_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_technical_fouls"/>
+                    <xs:attribute type="xs:string" name="opponents_three_points_attempted"/>
+                    <xs:attribute type="xs:string" name="opponents_three_points_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_three_points_made"/>
+                    <xs:attribute type="xs:string" name="opponents_three_points_made_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_three_points_percentage"/>
+                    <xs:attribute type="xs:string" name="opponents_turnovers"/>
+                    <xs:attribute type="xs:string" name="opponents_turnovers_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_two_points_attempted"/>
+                    <xs:attribute type="xs:string" name="opponents_two_points_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_two_points_made"/>
+                    <xs:attribute type="xs:string" name="opponents_two_points_made_per_match"/>
+                    <xs:attribute type="xs:string" name="opponents_two_points_percentage"/>
+                    <xs:attribute type="xs:string" name="paint_points"/>
+                    <xs:attribute type="xs:string" name="paint_points_per_match"/>
+                    <xs:attribute type="xs:string" name="personal_fouls"/>
+                    <xs:attribute type="xs:string" name="personal_fouls_per_match"/>
+                    <xs:attribute type="xs:string" name="player_played"/>
+                    <xs:attribute type="xs:string" name="player_position"/>
+                    <xs:attribute type="xs:string" name="player_technical_fouls"/>
+                    <xs:attribute type="xs:string" name="plus_minus"/>
+                    <xs:attribute type="xs:string" name="points"/>
+                    <xs:attribute type="xs:string" name="points_off_turnovers"/>
+                    <xs:attribute type="xs:string" name="points_off_turnovers_per_match"/>
+                    <xs:attribute type="xs:string" name="points_per_match"/>
+                    <xs:attribute type="xs:string" name="rebounds"/>
+                    <xs:attribute type="xs:string" name="rebounds_per_match"/>
+                    <xs:attribute type="xs:string" name="remaining_short_timeouts"/>
+                    <xs:attribute type="xs:string" name="second_chance_points"/>
+                    <xs:attribute type="xs:string" name="second_chance_points_per_match"/>
+                    <xs:attribute type="xs:string" name="steals"/>
+                    <xs:attribute type="xs:string" name="steals_per_match"/>
+                    <xs:attribute type="xs:string" name="team_fouls"/>
+                    <xs:attribute type="xs:string" name="team_rebounds"/>
+                    <xs:attribute type="xs:string" name="team_technical_fouls"/>
+                    <xs:attribute type="xs:string" name="team_turnovers"/>
+                    <xs:attribute type="xs:string" name="technical_fouls"/>
+                    <xs:attribute type="xs:string" name="three_points_attempted"/>
+                    <xs:attribute type="xs:string" name="three_points_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="three_points_made"/>
+                    <xs:attribute type="xs:string" name="three_points_made_per_match"/>
+                    <xs:attribute type="xs:string" name="three_points_percentage"/>
+                    <xs:attribute type="xs:string" name="turnovers"/>
+                    <xs:attribute type="xs:string" name="turnovers_per_match"/>
+                    <xs:attribute type="xs:string" name="two_points_attempted"/>
+                    <xs:attribute type="xs:string" name="two_points_attempted_per_match"/>
+                    <xs:attribute type="xs:string" name="two_points_made"/>
+                    <xs:attribute type="xs:string" name="two_points_made_per_match"/>
+                    <xs:attribute type="xs:string" name="two_points_percentage"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="competitorUrn" name="id"/>
+    </xs:complexType>
+</xs:schema>

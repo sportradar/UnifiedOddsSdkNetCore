@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd"/>
+    <xs:include schemaLocation="../common/sport.xsd"/>
+    <xs:include schemaLocation="../common/category.xsd"/>
+    <xs:complexType name="team">
+        <xs:sequence>
+            <xs:element type="sport" name="sport" minOccurs="0" />
+            <xs:element type="category" name="category" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="teamUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nationality" use="optional" />
+        <xs:attribute type="xs:string" name="country_code" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="teams">
+        <xs:sequence>
+            <xs:element type="team" name="team" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

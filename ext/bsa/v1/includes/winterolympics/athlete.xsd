@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd"/>
+    <xs:complexType name="athlete">
+        <xs:sequence>
+            <xs:element type="athlete" name="athlete" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nationality" use="required" />
+        <xs:attribute type="xs:string" name="ioc_code" use="required" />
+        <xs:attribute type="xs:string" name="gender" use="required" />
+    </xs:complexType>
+    <xs:complexType name="athletes">
+        <xs:sequence>
+            <xs:element type="athlete" name="athlete" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

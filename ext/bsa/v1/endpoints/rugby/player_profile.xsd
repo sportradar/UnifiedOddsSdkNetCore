@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           targetNamespace="http://schemas.sportradar.com/sportsapi/v1/rugby"
+           xmlns="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd"/>
+    <xs:include schemaLocation="../../includes/common/sport.xsd"/>
+    <xs:include schemaLocation="../../includes/common/team.xsd"/>
+    <xs:include schemaLocation="../../includes/rugby/player.xsd"/>
+    <xs:include schemaLocation="../../includes/common/season.xsd"/>
+    <xs:element name="player_profile" type="playerProfileEndpoint"/>
+    <xs:complexType name="playerProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="rugbyPlayerExtended" name="player" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="playerProfileTeams" name="competitors" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="playerRoles" name="roles" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="playerProfileStatistics" name="statistics" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileTeams">
+        <xs:sequence>
+            <xs:element type="team" name="competitor" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerRoles">
+        <xs:sequence>
+            <xs:element type="playerRole" name="role" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerRole">
+        <xs:sequence>
+            <xs:element type="team" name="competitor" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:string" name="active" use="required"/>
+        <xs:attribute type="xs:date" name="start_date" use="optional"/>
+        <xs:attribute type="xs:date" name="end_date" use="optional"/>
+        <xs:attribute type="competitorUrn" name="team_id" use="optional"/>
+        <xs:attribute type="xs:string" name="team_name" use="optional"/>
+        <xs:attribute type="xs:int" name="jersey_number" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileStatistics">
+        <xs:sequence>
+            <xs:element type="playerProfileSeasons" name="seasons" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rugbyPlayerStatistics">
+        <xs:sequence>
+            <xs:element type="matchListType" name="matches" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="matches_played" use="required"/>
+        <xs:attribute type="xs:int" name="tries" use="required"/>
+        <xs:attribute type="xs:int" name="conversions_successful" use="required"/>
+        <xs:attribute type="xs:int" name="penalty_goals_successful" use="required"/>
+        <xs:attribute type="xs:int" name="substituted_in" use="required"/>
+        <xs:attribute type="xs:int" name="substituted_out" use="required"/>
+        <xs:attribute type="xs:int" name="yellow_cards" use="required"/>
+        <xs:attribute type="xs:int" name="yellow_red_cards" use="required"/>
+        <xs:attribute type="xs:int" name="red_cards" use="required"/>
+        <xs:attribute type="xs:dateTime" name="last_event_time" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileSeasons">
+        <xs:sequence>
+            <xs:element name="season" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="rugbyPlayerStatistics" name="statistics"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="seasonUrn" use="required"/>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="matchListType">
+        <xs:sequence>
+            <xs:element type="matchType" name="match" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="matchType">
+        <xs:attribute name="id" type="matchUrn" use="required"/>
+    </xs:complexType>
+</xs:schema>

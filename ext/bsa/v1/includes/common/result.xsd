@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="sport_event.xsd" />
+    <xs:include schemaLocation="sport_event_status.xsd" />
+    <xs:include schemaLocation="period_scores.xsd" />
+    <xs:complexType name="commonResult">
+        <xs:sequence>
+            <xs:element type="sportEvent" name="sport_event" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="commonSportEventStatus" name="sport_event_status" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="commonResults">
+        <xs:sequence>
+            <xs:element type="commonResult" name="result" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

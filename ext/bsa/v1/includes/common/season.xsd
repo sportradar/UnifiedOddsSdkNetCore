@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd" />
+    <xs:complexType name="season">
+        <xs:attribute type="seasonUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="seasonExtended">
+        <xs:complexContent>
+            <xs:extension base="season" >
+                <xs:attribute type="xs:date" name="start_date" use="required"/>
+                <xs:attribute type="xs:date" name="end_date" use="required"/>
+                <xs:attribute type="xs:string" name="year" use="optional"/>
+                <xs:attribute type="tournamentUrn" name="tournament_id" use="optional"/>
+                <xs:attribute type="tournamentUrn" name="competition_id" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

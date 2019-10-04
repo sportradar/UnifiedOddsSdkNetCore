@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/winterolympics/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/common/sport_event_conditions.xsd" />
+    <xs:include schemaLocation="../../includes/icehockey/sport_event_status.xsd" />
+    <xs:element name="match_summary" type="matchSummaryEndpoint" />
+    <xs:complexType name="matchSummaryEndpoint">
+        <xs:sequence>
+            <xs:element type="sportEvent" name="sport_event" minOccurs="1" maxOccurs="1" />
+            <xs:element type="sportEventConditions" name="sport_event_conditions" minOccurs="0" maxOccurs="1" />
+            <xs:element type="sportEventStatus" name="sport_event_status" minOccurs="1" maxOccurs="1" />
+            <xs:element name="statistics" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/sport_event_status.xsd" />
+    <xs:complexType name="sportEventStatus">
+        <xs:sequence>
+            <xs:element type="clock" name="clock" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="periodScores" name="period_scores" minOccurs="0" />
+            <xs:element type="gameState" name="game_state" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="home_score" use="optional"/>
+        <xs:attribute type="xs:int" name="away_score" use="optional"/>
+        <xs:attribute type="xs:string" name="status" use="required"/>
+        <xs:attribute type="xs:string" name="match_status" use="optional"/>
+        <xs:attribute type="competitorUrn" name="winner_id" use="optional"/>
+        <xs:attribute type="xs:string" name="winning_reason" use="optional"/>
+        <xs:attribute type="xs:boolean" name="decided_by_fed" use="optional"/>
+        <xs:attribute type="xs:int" name="period" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="gameState">
+        <xs:attribute type="xs:int" name="home_score" use="required"/>
+        <xs:attribute type="xs:int" name="away_score" use="required"/>
+        <xs:attribute type="xs:string" name="serving" use="required"/>
+        <xs:attribute type="xs:string" name="advantage" use="optional"/>
+        <xs:attribute type="xs:string" name="last_point_result" use="optional"/>
+        <xs:attribute type="xs:string" name="point_type" use="optional"/>
+        <xs:attribute type="xs:boolean" name="tie_break" use="optional"/>
+        <xs:attribute type="xs:string" name="ball_status" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="periodScore">
+        <xs:complexContent>
+            <xs:extension base="periodScoreBase">
+                <xs:attribute type="xs:int" name="home_score" use="required"/>
+                <xs:attribute type="xs:int" name="away_score" use="required"/>
+                <xs:attribute type="xs:int" name="home_tiebreak_score" use="optional"/>
+                <xs:attribute type="xs:int" name="away_tiebreak_score" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="periodScores">
+        <xs:sequence>
+            <xs:element type="periodScore" name="period_score" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

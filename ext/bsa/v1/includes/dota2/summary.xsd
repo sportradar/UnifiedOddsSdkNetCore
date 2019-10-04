@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../dota2/sport_event.xsd" />
+    <xs:include schemaLocation="sport_event_status.xsd" />
+    <xs:include schemaLocation="match_statistics.xsd" />
+    <xs:include schemaLocation="../common/sport_event_conditions.xsd" />
+    <xs:include schemaLocation="../common/event.xsd" />
+    <xs:include schemaLocation="../common/coverage.xsd" />
+    <xs:complexType name="summariesType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="summaryType">
+        <xs:sequence>
+            <xs:element type="dota2SportEvent" name="sport_event" minOccurs="1" />
+            <xs:element type="sportEventConditions" name="sport_event_conditions"  minOccurs="0" maxOccurs="1"/>
+            <xs:element type="coverageInfo" name="coverage_info" minOccurs="0" />
+            <xs:element type="sportEventStatus" name="sport_event_status" minOccurs="1" />
+            <xs:element type="matchStatistics" name="statistics" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

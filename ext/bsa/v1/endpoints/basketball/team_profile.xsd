@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/basketball" xmlns="http://schemas.sportradar.com/sportsapi/v1/basketball" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/venue.xsd" />
+    <xs:include schemaLocation="../../includes/common/jerseys.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/category.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/manager.xsd" />
+    <xs:element name="team_profile" type="teamProfileEndpoint" />
+    <xs:complexType name="teamProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="teamExtended" name="team" minOccurs="1" maxOccurs="1" />
+            <xs:element type="venue" name="venue" minOccurs="0" maxOccurs="1" />
+            <xs:element type="jerseys" name="jerseys" minOccurs="0" maxOccurs="1" />
+            <xs:element type="manager" name="manager" minOccurs="0" maxOccurs="1" />
+            <xs:element type="players" name="players" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="players">
+        <xs:sequence>
+            <xs:element type="playerExtended" name="player" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

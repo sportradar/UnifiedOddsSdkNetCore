@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema
+        attributeFormDefault="unqualified"
+        elementFormDefault="qualified"
+        targetNamespace="http://schemas.sportradar.com/sportsapi/v1/handball"
+        xmlns="http://schemas.sportradar.com/sportsapi/v1/handball"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/season_extended.xsd"/>
+    <xs:include schemaLocation="../../includes/common/season_stage.xsd"/>
+    <xs:element name="season_info" type="seasonInfoType"/>
+    <xs:complexType name="seasonInfoType">
+        <xs:sequence>
+            <xs:element name="season" type="seasonExtendedType"/>
+            <xs:element name="stages" type="stagesType"/>
+        </xs:sequence>
+        <xs:attribute name="generated_at" type="xs:dateTime"/>
+    </xs:complexType>
+</xs:schema>

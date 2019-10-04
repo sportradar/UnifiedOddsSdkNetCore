@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd" />
+    <xs:include schemaLocation="player.xsd" />
+    <xs:complexType name="raceDriver">
+        <xs:complexContent>
+            <xs:extension base="team">
+                <xs:attribute name="date_of_birth" use="optional" type="birthDate" />
+                <xs:attribute type="xs:string" name="nationality" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

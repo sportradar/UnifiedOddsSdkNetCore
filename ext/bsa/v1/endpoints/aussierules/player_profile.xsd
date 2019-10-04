@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/aussierules" xmlns="http://schemas.sportradar.com/sportsapi/v1/aussierules" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:include schemaLocation="../../includes/common/competitor.xsd" />
+    <xs:include schemaLocation="../../includes/common/role.xsd"/>
+    <xs:element name="player_profile" type="playerProfileEndpoint" />
+    <xs:complexType name="playerProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="playerExtended" name="player" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="competitorsType" name="competitors" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="playerRoles" name="roles" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="playerRoles">
+        <xs:sequence>
+            <xs:element type="playerRole" name="role"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

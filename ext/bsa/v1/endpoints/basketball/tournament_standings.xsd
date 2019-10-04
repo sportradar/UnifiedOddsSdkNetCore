@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/basketball" xmlns="http://schemas.sportradar.com/sportsapi/v1/basketball" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/basketball/standings.xsd" />
+    <xs:element name="tournament_standings" type="tournamentStandings" />
+    <xs:complexType name="tournamentStandings">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" name="tournament" />
+            <xs:element type="seasonExtended" name="season" />
+            <xs:element type="standings" name="standings" maxOccurs="3" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

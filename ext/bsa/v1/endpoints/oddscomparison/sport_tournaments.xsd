@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/oddscomparison/tournament.xsd" />
+    <xs:element name="sport_tournaments" type="sportTournamentsEndpoint" />
+    <xs:complexType name="sportTournamentsEndpoint">
+        <xs:sequence>
+            <xs:element type="sport" name="sport" />
+            <xs:element type="tournaments" name="tournaments" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="tournaments">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" name="tournament" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="historicalnbaMatchStatistics">
+        <xs:sequence>
+            <xs:element name="teams" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="team" type="historicalnbaTeamStatistics" minOccurs="0" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="historicalnbaTeamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics" type="statisticsType" />
+            <xs:element name="players" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="matchStatisticsPlayer" name="player" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="abbreviation" type="xs:string" use="required" />
+        <xs:attribute name="qualifier" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="matchStatisticsPlayer">
+        <xs:sequence>
+            <xs:element type="statisticsType" name="statistics" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="statisticsType">
+        <xs:attribute type="xs:string" name="fielding_putouts"/>
+        <xs:attribute type="xs:string" name="fielding_assists"/>
+        <xs:attribute type="xs:string" name="fielding_double_plays"/>
+        <xs:attribute type="xs:string" name="fielding_triple_plays"/>
+        <xs:attribute type="xs:string" name="fielding_errors"/>
+        <xs:attribute type="xs:string" name="fielding_errors_fielding"/>
+        <xs:attribute type="xs:string" name="fielding_errors_interference"/>
+        <xs:attribute type="xs:string" name="fielding_errors_throwing"/>
+        <xs:attribute type="xs:string" name="fielding_errors_total"/>
+        <xs:attribute type="xs:string" name="fielding_total_chances"/>
+        <xs:attribute type="xs:string" name="fielding_percentage"/>
+        <xs:attribute type="xs:string" name="fielding_wild_pitches_while_catching"/>
+        <xs:attribute type="xs:string" name="fielding_passed_balls"/>
+        <xs:attribute type="xs:string" name="fielding_range_factor"/>
+        <xs:attribute type="xs:string" name="fielding_complete_games"/>
+        <xs:attribute type="xs:string" name="fielding_games_finished"/>
+        <xs:attribute type="xs:string" name="fielding_games_played"/>
+        <xs:attribute type="xs:string" name="fielding_games_started"/>
+        <xs:attribute type="xs:string" name="hitting_at_bats"/>
+        <xs:attribute type="xs:string" name="hitting_at_bats_per_home_run"/>
+        <xs:attribute type="xs:string" name="hitting_at_bats_per_strikeout"/>
+        <xs:attribute type="xs:string" name="hitting_at_bats_with_runners_in_scoring_position"/>
+        <xs:attribute type="xs:string" name="hitting_runners_left_on_base"/>
+        <xs:attribute type="xs:string" name="hitting_team_runners_left_on_base"/>
+        <xs:attribute type="xs:string" name="hitting_runners_left_on_base_in_scoring_position_with_2outs"/>
+        <xs:attribute type="xs:string" name="hitting_runs_batted_in"/>
+        <xs:attribute type="xs:string" name="hitting_runs_batted_in_with_2outs"/>
+        <xs:attribute type="xs:string" name="hitting_balls_in_play"/>
+        <xs:attribute type="xs:string" name="hitting_batting_average_on_balls_in_play"/>
+        <xs:attribute type="xs:string" name="hitting_walks_per_plate_appearance"/>
+        <xs:attribute type="xs:string" name="hitting_walks_per_strikeout"/>
+        <xs:attribute type="xs:string" name="hitting_isolated_power"/>
+        <xs:attribute type="xs:string" name="hitting_on_base_percentage"/>
+        <xs:attribute type="xs:string" name="hitting_on_base_percentage_plus_slugging"/>
+        <xs:attribute type="xs:string" name="hitting_secondary_average"/>
+        <xs:attribute type="xs:string" name="hitting_slugging_percentage"/>
+        <xs:attribute type="xs:string" name="hitting_extra_base_hits"/>
+        <xs:attribute type="xs:string" name="hitting_pitches_faced"/>
+        <xs:attribute type="xs:string" name="hitting_hits_with_runners_in_scoring_position"/>
+        <xs:attribute type="xs:string" name="hitting_plate_appearances"/>
+        <xs:attribute type="xs:string" name="hitting_batting_average"/>
+        <xs:attribute type="xs:string" name="hitting_total_bases"/>
+        <xs:attribute type="xs:string" name="hitting_line_drive"/>
+        <xs:attribute type="xs:string" name="hitting_fly_ball"/>
+        <xs:attribute type="xs:string" name="hitting_pop_up"/>
+        <xs:attribute type="xs:string" name="hitting_ground_ball"/>
+        <xs:attribute type="xs:string" name="hitting_ground_ball_to_fly_ball_ratio"/>
+        <xs:attribute type="xs:string" name="hitting_singles"/>
+        <xs:attribute type="xs:string" name="hitting_doubles"/>
+        <xs:attribute type="xs:string" name="hitting_triples"/>
+        <xs:attribute type="xs:string" name="hitting_home_runs"/>
+        <xs:attribute type="xs:string" name="hitting_walks"/>
+        <xs:attribute type="xs:string" name="hitting_intentional_walks"/>
+        <xs:attribute type="xs:string" name="hitting_hits"/>
+        <xs:attribute type="xs:string" name="hitting_hit_by_pitch"/>
+        <xs:attribute type="xs:string" name="hitting_fielders_choice"/>
+        <xs:attribute type="xs:string" name="hitting_reached_on_error"/>
+        <xs:attribute type="xs:string" name="hitting_cycle"/>
+        <xs:attribute type="xs:string" name="hitting_total_runs_scored"/>
+        <xs:attribute type="xs:string" name="hitting_strikes_looking"/>
+        <xs:attribute type="xs:string" name="hitting_strikes_swinging"/>
+        <xs:attribute type="xs:string" name="hitting_total_strikes"/>
+        <xs:attribute type="xs:string" name="hitting_balls"/>
+        <xs:attribute type="xs:string" name="hitting_intentional_balls_taken"/>
+        <xs:attribute type="xs:string" name="hitting_dirt_balls_faced"/>
+        <xs:attribute type="xs:string" name="hitting_foul_balls"/>
+        <xs:attribute type="xs:string" name="hitting_pop_outs"/>
+        <xs:attribute type="xs:string" name="hitting_fly_outs"/>
+        <xs:attribute type="xs:string" name="hitting_fly_outs_into_double_plays"/>
+        <xs:attribute type="xs:string" name="hitting_line_out"/>
+        <xs:attribute type="xs:string" name="hitting_line_out_in_double_play"/>
+        <xs:attribute type="xs:string" name="hitting_ground_outs"/>
+        <xs:attribute type="xs:string" name="hitting_grounded_into_double_plays"/>
+        <xs:attribute type="xs:string" name="hitting_strikeouts_looking"/>
+        <xs:attribute type="xs:string" name="hitting_strikeouts_swinging"/>
+        <xs:attribute type="xs:string" name="hitting_total_strikeouts"/>
+        <xs:attribute type="xs:string" name="hitting_sacrifice_flies"/>
+        <xs:attribute type="xs:string" name="hitting_sacrifice_hits"/>
+        <xs:attribute type="xs:string" name="hitting_pickoff"/>
+        <xs:attribute type="xs:string" name="hitting_caught_stealing"/>
+        <xs:attribute type="xs:string" name="hitting_stolen_bases"/>
+        <xs:attribute type="xs:string" name="hitting_stolen_base_percentage"/>
+        <xs:attribute type="xs:string" name="hitting_complete_games"/>
+        <xs:attribute type="xs:string" name="hitting_games_finished"/>
+        <xs:attribute type="xs:string" name="hitting_games_played"/>
+        <xs:attribute type="xs:string" name="hitting_games_started"/>
+        <xs:attribute type="xs:string" name="pitching_overall_opponents_batting_average"/>
+        <xs:attribute type="xs:string" name="pitching_overall_opponents_runners_left_on_base"/>
+        <xs:attribute type="xs:string" name="pitching_overall_earned_run_average"/>
+        <xs:attribute type="xs:string" name="pitching_overall_walks_plus_hits_per_innings_pitched"/>
+        <xs:attribute type="xs:string" name="pitching_overall_strikeouts_per_9_innings"/>
+        <xs:attribute type="xs:string" name="pitching_overall_strikeouts_per_walk"/>
+        <xs:attribute type="xs:string" name="pitching_overall_pitch_count"/>
+        <xs:attribute type="xs:string" name="pitching_overall_wild_pitches"/>
+        <xs:attribute type="xs:string" name="pitching_overall_innings_pitched"/>
+        <xs:attribute type="xs:string" name="pitching_overall_innings_pitched_formatted"/>
+        <xs:attribute type="xs:string" name="pitching_overall_batters_faced"/>
+        <xs:attribute type="xs:string" name="pitching_overall_ground_ball_to_fly_ball_ratio"/>
+        <xs:attribute type="xs:string" name="pitching_overall_singles_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_doubles_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_triples_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_home_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_total_bases_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_walks"/>
+        <xs:attribute type="xs:string" name="pitching_overall_intentional_walks"/>
+        <xs:attribute type="xs:string" name="pitching_overall_hits_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_hit_batters"/>
+        <xs:attribute type="xs:string" name="pitching_overall_fielders_choice"/>
+        <xs:attribute type="xs:string" name="pitching_overall_reached_on_error"/>
+        <xs:attribute type="xs:string" name="pitching_overall_total_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_unearned_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_earned_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_strikes_looking"/>
+        <xs:attribute type="xs:string" name="pitching_overall_strikes_swinging"/>
+        <xs:attribute type="xs:string" name="pitching_overall_total_strikes"/>
+        <xs:attribute type="xs:string" name="pitching_overall_balls"/>
+        <xs:attribute type="xs:string" name="pitching_overall_intentional_balls"/>
+        <xs:attribute type="xs:string" name="pitching_overall_dirt_balls"/>
+        <xs:attribute type="xs:string" name="pitching_overall_foul_balls"/>
+        <xs:attribute type="xs:string" name="pitching_overall_pop_outs"/>
+        <xs:attribute type="xs:string" name="pitching_overall_fly_outs"/>
+        <xs:attribute type="xs:string" name="pitching_overall_fly_outs_into_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_overall_line_outs"/>
+        <xs:attribute type="xs:string" name="pitching_overall_line_outs_in_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_overall_ground_outs"/>
+        <xs:attribute type="xs:string" name="pitching_overall_ground_outs_into_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_overall_strikeouts_looking"/>
+        <xs:attribute type="xs:string" name="pitching_overall_strikeouts_swinging"/>
+        <xs:attribute type="xs:string" name="pitching_overall_total_strikeouts"/>
+        <xs:attribute type="xs:string" name="pitching_overall_sacrifice_flies"/>
+        <xs:attribute type="xs:string" name="pitching_overall_sacrifice_hits"/>
+        <xs:attribute type="xs:string" name="pitching_overall_pickoff"/>
+        <xs:attribute type="xs:string" name="pitching_overall_runners_caught_stealing"/>
+        <xs:attribute type="xs:string" name="pitching_overall_stolen_bases_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_overall_complete_games"/>
+        <xs:attribute type="xs:string" name="pitching_overall_shutouts"/>
+        <xs:attribute type="xs:string" name="pitching_overall_wins"/>
+        <xs:attribute type="xs:string" name="pitching_overall_losses"/>
+        <xs:attribute type="xs:string" name="pitching_overall_saves"/>
+        <xs:attribute type="xs:string" name="pitching_overall_holds"/>
+        <xs:attribute type="xs:string" name="pitching_overall_blown_saves"/>
+        <xs:attribute type="xs:string" name="pitching_overall_save_opportunities"/>
+        <xs:attribute type="xs:string" name="pitching_overall_quality_starts"/>
+        <xs:attribute type="xs:string" name="pitching_overall_balks"/>
+        <xs:attribute type="xs:string" name="pitching_overall_team_shutouts"/>
+        <xs:attribute type="xs:string" name="pitching_overall_games_team_loss"/>
+        <xs:attribute type="xs:string" name="pitching_overall_games_team_win"/>
+        <xs:attribute type="xs:string" name="pitching_overall_games_finished"/>
+        <xs:attribute type="xs:string" name="pitching_overall_games_played"/>
+        <xs:attribute type="xs:string" name="pitching_overall_games_started"/>
+        <xs:attribute type="xs:string" name="pitching_starters_balks"/>
+        <xs:attribute type="xs:string" name="pitching_starters_opponents_batting_average"/>
+        <xs:attribute type="xs:string" name="pitching_starters_opponents_runners_left_on_base"/>
+        <xs:attribute type="xs:string" name="pitching_starters_earned_run_average"/>
+        <xs:attribute type="xs:string" name="pitching_starters_strikeouts_per_9_innings"/>
+        <xs:attribute type="xs:string" name="pitching_starters_walks_plus_hits_per_innings_pitched"/>
+        <xs:attribute type="xs:string" name="pitching_starters_strikeouts_per_walk"/>
+        <xs:attribute type="xs:string" name="pitching_starters_pitch_count"/>
+        <xs:attribute type="xs:string" name="pitching_starters_innings_pitched"/>
+        <xs:attribute type="xs:string" name="pitching_starters_innings_pitched_formatted"/>
+        <xs:attribute type="xs:string" name="pitching_starters_batters_faced"/>
+        <xs:attribute type="xs:string" name="pitching_starters_ground_ball_to_fly_ball_ratio"/>
+        <xs:attribute type="xs:string" name="pitching_starters_wild_pitches"/>
+        <xs:attribute type="xs:string" name="pitching_starters_singles_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_doubles_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_triples_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_home_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_total_bases_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_walks"/>
+        <xs:attribute type="xs:string" name="pitching_starters_intentional_walks"/>
+        <xs:attribute type="xs:string" name="pitching_starters_hit_batters"/>
+        <xs:attribute type="xs:string" name="pitching_starters_fielders_choice"/>
+        <xs:attribute type="xs:string" name="pitching_starters_reached_on_error"/>
+        <xs:attribute type="xs:string" name="pitching_starters_hits_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_earned_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_unearned_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_total_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_strikes_looking"/>
+        <xs:attribute type="xs:string" name="pitching_starters_strikes_swinging"/>
+        <xs:attribute type="xs:string" name="pitching_starters_total_strikes"/>
+        <xs:attribute type="xs:string" name="pitching_starters_balls"/>
+        <xs:attribute type="xs:string" name="pitching_starters_intentional_balls"/>
+        <xs:attribute type="xs:string" name="pitching_starters_dirt_balls"/>
+        <xs:attribute type="xs:string" name="pitching_starters_foul_balls"/>
+        <xs:attribute type="xs:string" name="pitching_starters_pop_outs"/>
+        <xs:attribute type="xs:string" name="pitching_starters_fly_outs"/>
+        <xs:attribute type="xs:string" name="pitching_starters_fly_outs_into_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_starters_line_outs"/>
+        <xs:attribute type="xs:string" name="pitching_starters_line_outs_in_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_starters_ground_outs"/>
+        <xs:attribute type="xs:string" name="pitching_starters_ground_outs_into_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_starters_strikeouts_looking"/>
+        <xs:attribute type="xs:string" name="pitching_starters_strikeouts_swinging"/>
+        <xs:attribute type="xs:string" name="pitching_starters_total_strikeouts"/>
+        <xs:attribute type="xs:string" name="pitching_starters_sacrifice_flies"/>
+        <xs:attribute type="xs:string" name="pitching_starters_sacrifice_hits"/>
+        <xs:attribute type="xs:string" name="pitching_starters_runners_caught_stealing"/>
+        <xs:attribute type="xs:string" name="pitching_starters_stolen_bases_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_starters_pickoff"/>
+        <xs:attribute type="xs:string" name="pitching_starters_save_opportunities"/>
+        <xs:attribute type="xs:string" name="pitching_starters_quality_starts"/>
+        <xs:attribute type="xs:string" name="pitching_starters_shutouts"/>
+        <xs:attribute type="xs:string" name="pitching_starters_complete_games"/>
+        <xs:attribute type="xs:string" name="pitching_starters_wins"/>
+        <xs:attribute type="xs:string" name="pitching_starters_losses"/>
+        <xs:attribute type="xs:string" name="pitching_starters_saves"/>
+        <xs:attribute type="xs:string" name="pitching_starters_holds"/>
+        <xs:attribute type="xs:string" name="pitching_starters_blown_saves"/>
+        <xs:attribute type="xs:string" name="pitching_starters_team_shutouts"/>
+        <xs:attribute type="xs:string" name="pitching_starters_games_finished"/>
+        <xs:attribute type="xs:string" name="pitching_starters_games_started"/>
+        <xs:attribute type="xs:string" name="pitching_starters_games_played"/>
+        <xs:attribute type="xs:string" name="pitching_starters_games_team_loss"/>
+        <xs:attribute type="xs:string" name="pitching_starters_games_team_win"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_balks"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_opponents_batting_average"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_opponents_runners_left_on_base"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_earned_run_average"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_strikeouts_per_9_innings"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_walks_plus_hits_per_innings_pitched"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_strikeouts_per_walk"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_pitch_count"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_innings_pitched"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_innings_pitched_formatted"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_batters_faced"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_ground_ball_to_fly_ball_ratio"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_wild_pitches"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_singles_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_doubles_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_triples_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_home_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_total_bases_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_walks"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_intentional_walks"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_hit_batters"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_fielders_choice"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_reached_on_error"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_hits_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_earned_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_unearned_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_total_runs_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_strikes_looking"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_strikes_swinging"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_total_strikes"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_balls"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_intentional_balls"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_dirt_balls"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_foul_balls"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_pop_outs"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_fly_outs"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_fly_outs_into_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_line_outs"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_line_outs_in_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_ground_outs"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_ground_outs_into_double_plays"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_strikeouts_looking"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_strikeouts_swinging"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_total_strikeouts"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_sacrifice_flies"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_sacrifice_hits"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_runners_caught_stealing"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_stolen_bases_allowed"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_pickoff"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_save_opportunities"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_quality_starts"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_shutouts"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_complete_games"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_wins"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_losses"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_saves"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_holds"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_blown_saves"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_games_finished"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_games_started"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_games_played"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_games_team_loss"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_games_team_win"/>
+        <xs:attribute type="xs:string" name="pitching_bullpen_team_shutouts"/>
+        <xs:attribute type="xs:string" name="hitting_stolen_bases_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_stolen_bases_season_total"/>
+        <xs:attribute type="xs:string" name="hitting_runs_batted_in_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_runs_batted_in_season_total"/>
+        <xs:attribute type="xs:string" name="hitting_home_runs_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_home_runs_season_total"/>
+        <xs:attribute type="xs:string" name="hitting_doubles_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_doubles_season_total"/>
+        <xs:attribute type="xs:string" name="hitting_run_scored_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_run_scored_season_avg"/>
+        <xs:attribute type="xs:string" name="hitting_triples_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_triples_season_total"/>
+        <xs:attribute type="xs:string" name="hitting_batting_average_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_batting_average_season"/>
+        <xs:attribute type="xs:string" name="hitting_hits_season_rank"/>
+        <xs:attribute type="xs:string" name="hitting_hits_season_total"/>
+        <xs:attribute type="xs:string" name="pitching_games_completed_season_rank"/>
+        <xs:attribute type="xs:string" name="pitching_games_saved_season_rank"/>
+        <xs:attribute type="xs:string" name="pitching_games_won_season_rank"/>
+        <xs:attribute type="xs:string" name="pitching_strikeout_season_rank"/>
+        <xs:attribute type="xs:string" name="pitching_strikeout_season_total"/>
+        <xs:attribute type="xs:string" name="pitching_whip_season_rank"/>
+        <xs:attribute type="xs:string" name="pitching_whip_season"/>
+        <xs:attribute type="xs:string" name="pitching_earned_run_average_season_rank"/>
+        <xs:attribute type="xs:string" name="pitching_earned_run_average_season"/>
+        <xs:attribute type="xs:string" name="mlb_home_probable_pitcher"/>
+        <xs:attribute type="xs:string" name="mlb_home_starting_pitcher"/>
+        <xs:attribute type="xs:string" name="mlb_away_probable_pitcher"/>
+        <xs:attribute type="xs:string" name="mlb_away_starting_pitcher"/>
+    </xs:complexType>
+</xs:schema>

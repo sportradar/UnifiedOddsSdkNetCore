@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../urn.xsd" />
+    <xs:complexType name="stageResult">
+        <xs:sequence>
+            <xs:element name="competitor" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="id" type="unifiedCompetitorUrn" use="required"/>
+                    <xs:attribute name="position" type="xs:int" use="optional" />
+                    <xs:attribute name="points" type="xs:double" use="optional" />
+                    <xs:attribute name="wc_points" type="xs:double" use="optional" />
+                    <xs:attribute name="time" type="xs:string" use="optional" />
+                    <xs:attribute name="time_ranking" type="xs:int" use="optional" />
+                    <xs:attribute name="status" type="xs:string" use="optional" />
+                    <xs:attribute name="status_comment" type="xs:string" use="optional" />
+                    <xs:attribute name="sprint" type="xs:double" use="optional" />
+                    <xs:attribute name="sprint_ranking" type="xs:int" use="optional" />
+                    <xs:attribute name="climber" type="xs:double" use="optional" />
+                    <xs:attribute name="climber_ranking" type="xs:int" use="optional" />
+                    <xs:attribute name="grid" type="xs:int" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

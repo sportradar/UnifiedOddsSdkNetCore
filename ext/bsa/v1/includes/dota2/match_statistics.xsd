@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="matchStatistics">
+        <xs:sequence>
+            <xs:element name="games" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="game" type="gameStatistics" minOccurs="0" maxOccurs="9" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="gameStatistics">
+        <xs:sequence>
+            <xs:element type="banPicks" name="picks_and_bans" minOccurs="0" maxOccurs="1" />
+            <xs:element name="teams" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="teamStatistics" name="team" minOccurs="2" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="number" type="xs:int" use="required" />
+    </xs:complexType>
+    <xs:complexType name="banPicks">
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+            <xs:element type="banPick" name="pick" />
+            <xs:element type="banPick" name="ban" />
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="banPick">
+        <xs:attribute type="xs:int" name="number" use="required"/>
+        <xs:attribute type="xs:string" name="hero" use="required"/>
+        <xs:attribute type="xs:string" name="side" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="teamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="side"/>
+                    <xs:attribute type="xs:int" name="kills"/>
+                    <xs:attribute type="xs:int" name="gold"/>
+                    <xs:attribute type="xs:int" name="xp"/>
+                    <xs:attribute type="xs:int" name="towers"/>
+                    <xs:attribute type="xs:int" name="barracks"/>
+                    <xs:attribute type="xs:int" name="aegis"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="players" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="matchStatisticsPlayer" name="player" maxOccurs="6" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="competitorUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="abbreviation" use="required"/>
+        <xs:attribute type="xs:string" name="qualifier" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="matchStatisticsPlayer">
+        <xs:sequence>
+            <xs:element type="playerStatistics" name="statistics" minOccurs="0" />
+            <xs:element type="items" name="items" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nickname" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="playerStatistics">
+        <xs:attribute type="xs:string" name="hero" use="optional"/>
+        <xs:attribute type="xs:int" name="level" use="required"/>
+        <xs:attribute type="xs:int" name="kills" use="required"/>
+        <xs:attribute type="xs:int" name="deaths" use="required"/>
+        <xs:attribute type="xs:int" name="assists" use="required"/>
+        <xs:attribute type="xs:int" name="denies" use="required"/>
+        <xs:attribute type="xs:double" name="kda" use="optional"/>
+        <xs:attribute type="xs:int" name="last_hits" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="items">
+        <xs:sequence>
+            <xs:element type="item" name="item" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="item">
+        <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+</xs:schema>

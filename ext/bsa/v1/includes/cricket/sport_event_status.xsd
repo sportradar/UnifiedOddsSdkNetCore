@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="sportEventStatus">
+        <xs:sequence>
+            <xs:element type="periodScores" name="period_scores" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="match_status" use="optional"/>
+        <xs:attribute type="xs:string" name="status" use="required"/>
+        <xs:attribute type="xs:int" name="match_day" use="optional" />
+        <xs:attribute type="xs:int" name="match_days" use="optional" />
+        <xs:attribute type="competitorUrn" name="toss_won_by" use="optional"/>
+        <xs:attribute type="xs:string" name="toss_decision" use="optional"/>
+        <xs:attribute type="xs:string" name="display_score" use="optional"/>
+        <xs:attribute type="xs:string" name="display_overs" use="optional"/>
+        <xs:attribute type="xs:int" name="current_session" use="optional"/>
+        <xs:attribute type="xs:int" name="current_inning" use="optional"/>
+        <xs:attribute type="xs:boolean" name="is_super_over" use="optional"/>
+        <xs:attribute type="xs:string" name="match_result" use="optional"/>
+        <xs:attribute type="xs:string" name="match_result_type" use="optional"/>
+        <xs:attribute type="exactlyTwoAfterDecimal" name="run_rate" use="optional"/>
+        <xs:attribute type="exactlyTwoAfterDecimal" name="run_rate_required" use="optional"/>
+        <xs:attribute type="competitorUrn" name="winner_id" use="optional"/>
+        <xs:attribute type="xs:string" name="margin" use="optional"/>
+        <xs:attribute type="xs:string" name="margin_method" use="optional"/>
+        <xs:attribute type="xs:boolean" name="decided_by_fed" use="optional"/>
+        <xs:attribute type="xs:double" name="allotted_overs" use="optional"/>
+        <xs:attribute type="xs:string" name="allotted_overs_reason" use="optional"/>
+        <xs:attribute type="xs:int" name="target" use="optional"/>
+        <xs:attribute type="xs:string" name="equation" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="periodScores">
+        <xs:sequence>
+            <xs:element type="periodScore" name="period_score" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="periodScore">
+        <xs:attribute type="xs:string" name="home_score" use="optional"/>
+        <xs:attribute type="xs:string" name="home_wickets" use="optional"/>
+        <xs:attribute type="xs:string" name="away_score" use="optional"/>
+        <xs:attribute type="xs:string" name="away_wickets" use="optional"/>
+        <xs:attribute type="xs:string" name="display_score" use="required"/>
+        <xs:attribute type="xs:double" name="display_overs" use="required"/>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:int" name="number" use="required"/>
+        <xs:attribute type="xs:double" name="allotted_overs" use="optional"/>
+        <xs:attribute type="xs:string" name="allotted_overs_reason" use="optional"/>
+    </xs:complexType>
+    <xs:simpleType name="exactlyTwoAfterDecimal">
+        <xs:restriction base="xs:decimal">
+            <xs:pattern value="\d+\.\d\d+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

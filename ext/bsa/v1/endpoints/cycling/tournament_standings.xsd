@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/cycling/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/result.xsd" />
+    <xs:element name="tournament_standings" type="tournamentStandingsEndpoint" />
+    <xs:complexType name="tournamentStandingsEndpoint">
+        <xs:sequence>
+            <xs:element type="tournament" minOccurs="1" name="tournament" />
+            <xs:element type="standings" minOccurs="1" name="standings" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="standings">
+        <xs:sequence>
+            <xs:element type="result" name="result" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

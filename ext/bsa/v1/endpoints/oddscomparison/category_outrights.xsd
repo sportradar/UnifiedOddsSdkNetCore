@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns="http://schemas.sportradar.com/sportsapi/v1/oddscomparison" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/oddscomparison/urn.xsd" />
+    <xs:include schemaLocation="../../includes/oddscomparison/category.xsd" />
+    <xs:element name="category_outrights" type="outrightsEndpoint" />
+    <xs:complexType name="outrightsEndpoint">
+        <xs:sequence>
+            <xs:element type="sport" name="sport" />
+            <xs:element type="category" name="category" />
+            <xs:element type="outrights" name="outrights" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="outrights">
+        <xs:sequence>
+            <xs:element type="outright" name="outright" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="outright">
+        <xs:sequence>
+            <xs:element type="competitors" name="competitors" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="id" use="required" />
+        <xs:attribute type="xs:string" name="name" use="required" />
+        <xs:attribute type="tournamentUrn" name="tournament_id" use="optional"/>
+        <xs:attribute type="xs:date" name="start_date"/>
+        <xs:attribute type="xs:date" name="end_date"/>
+        <xs:attribute type="xs:string" name="tournament_uuids" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="competitors">
+        <xs:sequence>
+            <xs:element type="outrightCompetitor" name="competitor" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="outrightCompetitor">
+        <xs:sequence>
+            <xs:element type="books" name="books" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="oddsComparisonCompetitorUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="abbreviation" use="optional"/>
+        <xs:attribute type="xs:string" name="country" use="optional"/>
+        <xs:attribute type="countryCode" name="country_code" use="optional" />
+        <xs:attribute type="xs:boolean" name="virtual" use="optional" />
+        <xs:attribute type="xs:string" name="uuids" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="books">
+        <xs:sequence>
+            <xs:element type="outrightCompetitorBook" name="book" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="outrightCompetitorBook">
+        <xs:attribute type="bookmakerUrn" name="id" use="required" />
+        <xs:attribute type="xs:string" name="name" use="optional" />
+        <xs:attribute type="xs:string" name="odds"/>
+        <xs:attribute type="xs:string" name="removed"/>
+    </xs:complexType>
+</xs:schema>

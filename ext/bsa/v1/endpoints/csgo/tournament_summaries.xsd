@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/csgo" xmlns="http://schemas.sportradar.com/sportsapi/v1/csgo" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/csgo/summary.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:element name="tournament_summaries" type="tournamentSummariesEndpoint" />
+    <xs:complexType name="tournamentSummariesEndpoint">
+        <xs:sequence>
+            <xs:element type="tournament" name="tournament" maxOccurs="unbounded" minOccurs="1" />
+            <xs:element type="summariesType" name="summaries" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="matchStatistics">
+        <xs:sequence>
+            <xs:element name="games">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="game" type="gameStatistics" minOccurs="0" maxOccurs="9" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="gameStatistics">
+        <xs:sequence>
+            <xs:element name="teams">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="teamStatistics" name="team" minOccurs="2" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="number" type="xs:int" use="required" />
+        <xs:attribute name="first_blood" type="xs:string" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="teamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:attribute type="xs:int" name="kills"/>
+                    <xs:attribute type="xs:int" name="gold"/>
+                    <xs:attribute type="xs:int" name="towers_destroyed"/>
+                    <xs:attribute type="xs:int" name="dragons"/>
+                    <xs:attribute type="xs:int" name="barons"/>
+                    <xs:attribute type="xs:int" name="inhibitors"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="players">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="matchStatisticsPlayer" name="player" minOccurs="0" maxOccurs="7" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="competitorUrn" name="id"/>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="abbreviation" />
+        <xs:attribute type="xs:string" name="qualifier" />
+        <xs:attribute type="xs:string" name="side" />
+    </xs:complexType>
+    <xs:complexType name="matchStatisticsPlayer">
+        <xs:sequence>
+            <xs:element type="playerMatchStatistics" name="statistics" minOccurs="0" />
+            <xs:element type="items" name="items" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="nickname" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="playerMatchStatistics">
+        <xs:attribute type="xs:string" name="champion" use="optional"/>
+        <xs:attribute type="xs:int" name="level"/>
+        <xs:attribute type="xs:int" name="kills"/>
+        <xs:attribute type="xs:int" name="deaths"/>
+        <xs:attribute type="xs:int" name="assists"/>
+        <xs:attribute type="xs:double" name="kda" use="optional"/>
+        <xs:attribute type="xs:int" name="minions"/>
+        <xs:attribute type="xs:string" name="role" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="items">
+        <xs:sequence>
+            <xs:element type="item" name="item" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="item">
+        <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+</xs:schema>

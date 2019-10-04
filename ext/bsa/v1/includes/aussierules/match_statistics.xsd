@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="aussieRulesMatchStatistics">
+        <xs:sequence>
+            <xs:element name="competitors" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="competitor" type="aussieRulesTeamStatistics" minOccurs="0" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="aussieRulesTeamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics" type="statisticsType" />
+            <xs:element name="players" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="matchStatisticsPlayer" name="player" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="country" type="xs:string" use="required"/>
+        <xs:attribute name="country_code" type="xs:string" use="required"/>
+        <xs:attribute name="abbreviation" type="xs:string" use="required" />
+        <xs:attribute name="qualifier" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="matchStatisticsPlayer">
+        <xs:sequence>
+            <xs:element type="statisticsType" name="statistics" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="statisticsType">
+        <xs:attribute type="xs:string" name="goals"/>
+        <xs:attribute type="xs:string" name="behinds"/>
+        <xs:attribute type="xs:string" name="disposals"/>
+        <xs:attribute type="xs:string" name="marks"/>
+        <xs:attribute type="xs:string" name="tackles"/>
+        <xs:attribute type="xs:string" name="kicks"/>
+        <xs:attribute type="xs:string" name="handballs"/>
+        <xs:attribute type="xs:string" name="hitouts"/>
+        <xs:attribute type="xs:string" name="frees_for"/>
+        <xs:attribute type="xs:string" name="frees_against"/>
+        <xs:attribute type="xs:string" name="free_kicks"/>
+        <xs:attribute type="xs:string" name="marks_inside_50s"/>
+    </xs:complexType>
+</xs:schema>

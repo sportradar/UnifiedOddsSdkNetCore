@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/soccer/player.xsd" />
+    <xs:include schemaLocation="../../includes/common/season.xsd" />
+    <xs:include schemaLocation="../../includes/common/season_coverage_info.xsd"/>
+    <xs:element name="player_profile" type="playerProfileEndpoint" />
+    <xs:complexType name="playerProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="soccerPlayerExtended" name="player" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="playerProfileTeams" name="teams" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="playerRoles" name="roles" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="playerProfileStatistics" name="statistics" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileStatistics">
+        <xs:sequence>
+            <xs:element type="playerProfileSeasons" name="seasons" minOccurs="0" />
+            <xs:element type="totals" name="totals" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerStatistics">
+        <xs:attribute type="xs:int" name="matches_played" use="required"/>
+        <xs:attribute type="xs:int" name="substituted_in" use="required"/>
+        <xs:attribute type="xs:int" name="substituted_out" use="required"/>
+        <xs:attribute type="xs:int" name="goals_scored" use="required"/>
+        <xs:attribute type="xs:int" name="assists" use="required"/>
+        <xs:attribute type="xs:int" name="own_goals" use="required"/>
+        <xs:attribute type="xs:int" name="yellow_cards" use="required"/>
+        <xs:attribute type="xs:int" name="yellow_red_cards" use="required"/>
+        <xs:attribute type="xs:int" name="red_cards" use="required"/>
+        <xs:attribute type="xs:dateTime" name="last_event_time" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="playerProfileSeasons">
+        <xs:sequence>
+            <xs:element name="season" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="playerStatistics" name="statistics" />
+                        <xs:element type="team" name="team" />
+                        <xs:element type="tournament" name="tournament" />
+                        <xs:element type="seasonCoverageInfo" name="season_coverage_info" minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="seasonUrn" use="required" />
+                    <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerProfileTeams">
+        <xs:sequence>
+            <xs:element type="team" name="team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerRoles">
+        <xs:sequence>
+            <xs:element type="playerRole" name="role" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="totals">
+        <xs:sequence>
+            <xs:element type="playerStatistics" name="statistics" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerRole">
+        <xs:sequence>
+            <xs:element type="team" name="team" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:string" name="active" use="required"/>
+        <xs:attribute type="xs:date" name="start_date" use="optional"/>
+        <xs:attribute type="xs:date" name="end_date" use="optional"/>
+        <xs:attribute type="competitorUrn" name="team_id" use="optional"/>
+        <xs:attribute type="xs:string" name="team_name" use="optional"/>
+        <xs:attribute type="xs:int" name="jersey_number" use="optional"/>
+    </xs:complexType>
+</xs:schema>

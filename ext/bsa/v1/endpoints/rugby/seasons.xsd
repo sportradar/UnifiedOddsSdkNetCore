@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/season_extended.xsd" />
+    <xs:element name="seasons" type="rugbySeasons" />
+    <xs:complexType name="rugbySeasons">
+        <xs:sequence>
+            <xs:element type="seasonExtendedType" name="season" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

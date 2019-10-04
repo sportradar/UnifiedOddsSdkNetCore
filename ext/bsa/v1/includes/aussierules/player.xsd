@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="../common/team.xsd" />
+    <xs:complexType name="aussieRulesPlayer">
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nickname" use="optional" />
+    </xs:complexType>
+    <xs:simpleType name="AussieRulesbirthDate">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="aussieRulesPlayerExtended">
+        <xs:complexContent>
+            <xs:extension base="aussieRulesPlayer" >
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute name="date_of_birth" use="optional" type="AussieRulesbirthDate" />
+                <xs:attribute name="last_name" use="required" type="xs:string" />
+                <xs:attribute name="first_name" use="required" type="xs:string" />
+                <xs:attribute type="xs:string" name="nationality" use="optional"/>
+                <xs:attribute type="xs:string" name="gender" use="optional"/>
+                <xs:attribute type="countryCode" name="country_code" use="optional" />
+                <xs:attribute type="xs:int" name="height" use="optional"/>
+                <xs:attribute type="xs:int" name="weight" use="optional"/>
+                <xs:attribute type="xs:int" name="jersey_number" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

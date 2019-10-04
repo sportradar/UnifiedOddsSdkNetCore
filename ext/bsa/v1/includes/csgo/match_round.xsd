@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="csgoMatchRound">
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:int" name="number" use="optional"/>
+        <xs:attribute type="phaseType" name="phase" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="group" use="optional" />
+        <xs:attribute type="xs:int" name="cup_round_matches" use="optional"/>
+        <xs:attribute type="xs:int" name="cup_round_match_number" use="optional"/>
+        <xs:attribute type="matchUrn" name="other_match_id" use="optional" />
+    </xs:complexType>
+    <xs:simpleType name="phaseType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="regular_season" />
+            <xs:enumeration value="playoffs" />
+            <xs:enumeration value="relegation" />
+            <xs:enumeration value="promotion" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

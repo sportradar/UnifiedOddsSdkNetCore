@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/category.xsd" />
+    <xs:include schemaLocation="../../includes/cricket/player.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/cricket/tournament.xsd" />
+    <xs:element name="tournament_leaders" type="tournamentLeadersEndpoint" />
+    <xs:complexType name="tournamentLeadersEndpoint">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" name="tournament" minOccurs="1" maxOccurs="1" />
+            <xs:element type="batting" name="batting" minOccurs="0" />
+            <xs:element type="bowling" name="bowling" minOccurs="0" />
+            <xs:element type="fielding" name="fielding" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="batting">
+        <xs:sequence>
+            <xs:element name="highest_score" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="runs" type="totalDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="top_runs" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="runs" type="totalDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="top_average" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="highest_average" type="averageDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="top_strike_rate" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="strike_rate" type="rateDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bowling">
+        <xs:sequence>
+            <xs:element name="top_wickets" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="wickets" type="totalDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="top_bowling_average" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="bowling_average" type="averageDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="top_economy" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="economy" type="rateDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="fielding">
+        <xs:sequence>
+            <xs:element name="top_catches" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="catches" type="totalDataPoint" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rateDataPoint">
+        <xs:complexContent>
+            <xs:extension base="leadersDataPoint">
+                <xs:attribute name="rate" type="xs:double" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="averageDataPoint">
+        <xs:complexContent>
+            <xs:extension base="leadersDataPoint">
+                <xs:attribute name="average" type="xs:double" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="totalDataPoint">
+        <xs:complexContent>
+            <xs:extension base="leadersDataPoint">
+                <xs:attribute name="total" type="xs:double" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="leadersDataPoint">
+        <xs:sequence>
+            <xs:element name="player" type="player" />
+            <xs:element name="team" type="team" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="rank" type="xs:int" use="required" />
+    </xs:complexType>
+</xs:schema>

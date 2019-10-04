@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/standard" xmlns="http://schemas.sportradar.com/sportsapi/v1/standard" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/standard/result.xsd" />
+    <xs:element name="competitor_results" type="competitorResultsEndpoint" />
+    <xs:complexType name="competitorResultsEndpoint">
+        <xs:sequence>
+            <xs:element type="teamExtended" name="competitor" minOccurs="1" />
+            <xs:element type="results" name="results" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

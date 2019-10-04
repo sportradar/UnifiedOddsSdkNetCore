@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="sport_event.xsd" />
+    <xs:include schemaLocation="sport_event_status.xsd" />
+    <xs:complexType name="result">
+        <xs:sequence>
+            <xs:element type="lolSportEvent" name="sport_event" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="sportEventStatus" name="sport_event_status" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="results">
+        <xs:sequence>
+            <xs:element type="result" name="result" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

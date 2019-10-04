@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:simpleType name="simpleTeamUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:simpleteam:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="oddsComparisonCompetitorUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:competitor:[0-9]+"/>
+            <xs:pattern value="sr:simpleteam:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

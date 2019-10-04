@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:complexType name="matchStatistics">
+        <xs:sequence>
+            <xs:element name="teams" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="team" type="teamStatistics" minOccurs="0" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="maps" type="mapsStatistics" minOccurs="0" />
+            <xs:element name="totals" type="totals" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="totals">
+        <xs:attribute name="rounds" type="xs:int" />
+    </xs:complexType>
+    <xs:complexType name="teamStatistics">
+        <xs:sequence>
+            <xs:element type="teamMatchStatistics" name="statistics" minOccurs="0" />
+            <xs:element name="players" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="matchStatisticsPlayer" name="player" maxOccurs="6" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="competitorUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="abbreviation" use="required"/>
+        <xs:attribute type="xs:string" name="qualifier" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="teamMatchStatistics">
+        <xs:attribute type="xs:int" name="kills"/>
+        <xs:attribute type="xs:int" name="assists"/>
+        <xs:attribute type="xs:int" name="deaths"/>
+        <xs:attribute type="xs:int" name="headshots"/>
+        <xs:attribute type="xs:float" name="kd_ratio"/>
+        <xs:attribute type="xs:float" name="headshot_percent"/>
+    </xs:complexType>
+    <xs:complexType name="matchStatisticsPlayer">
+        <xs:sequence>
+            <xs:element type="playerMatchStatistics" name="statistics" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nickname" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="playerMatchStatistics">
+        <xs:attribute type="xs:int" name="kills"/>
+        <xs:attribute type="xs:int" name="assists"/>
+        <xs:attribute type="xs:int" name="deaths"/>
+        <xs:attribute type="xs:int" name="headshots"/>
+        <xs:attribute type="xs:float" name="kd_ratio"/>
+        <xs:attribute type="xs:float" name="headshot_percent"/>
+    </xs:complexType>
+    <xs:complexType name="mapsStatistics">
+        <xs:sequence>
+            <xs:element name="map" type="mapStatistics" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="mapStatistics">
+        <xs:sequence>
+            <xs:element name="teams" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="team" type="teamStatistics" minOccurs="0" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="number"/>
+        <xs:attribute type="xs:string" name="map_name"/>
+        <xs:attribute type="xs:int" name="rounds"/>
+    </xs:complexType>
+</xs:schema>

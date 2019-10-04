@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="../common/sport.xsd" />
+    <xs:include schemaLocation="../common/category.xsd" />
+    <xs:complexType name="tourType">
+        <xs:sequence>
+            <xs:element type="sport" name="sport" minOccurs="0"/>
+            <xs:element type="category" name="category" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="tourUrn" name="id" use="required" />
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+</xs:schema>

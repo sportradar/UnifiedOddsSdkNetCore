@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/player.xsd" />
+    <xs:complexType name="csgoEventPlayerExtended">
+        <xs:complexContent>
+            <xs:extension base="playerExtended" >
+                <xs:attribute type="xs:string" name="gender" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

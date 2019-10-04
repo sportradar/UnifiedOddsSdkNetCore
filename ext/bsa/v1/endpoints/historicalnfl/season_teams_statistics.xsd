@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/historicalnfl" xmlns="http://schemas.sportradar.com/sportsapi/v1/historicalnfl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/season.xsd" />
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:element name="season_teams_statistics" type="seasonTeamsStatistics" />
+    <xs:complexType name="seasonTeamsStatistics">
+        <xs:sequence>
+            <xs:element name="stages">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="stage" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="teams">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element type="teamType" name="team" maxOccurs="unbounded"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute type="xs:string" name="type"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="teamType">
+        <xs:all>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="specteam_field_goal"/>
+                    <xs:attribute type="xs:string" name="specteam_field_goal_attempt"/>
+                    <xs:attribute type="xs:string" name="field_goals_made"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempted"/>
+                    <xs:attribute type="xs:string" name="field_goals_percentage"/>
+                    <xs:attribute type="xs:string" name="games_started"/>
+                    <xs:attribute type="xs:string" name="games_played"/>
+                    <xs:attribute type="xs:string" name="specteam_conversion_attempt"/>
+                    <xs:attribute type="xs:string" name="specteam_pass_conversion"/>
+                    <xs:attribute type="xs:string" name="specteam_rush_conversion"/>
+                    <xs:attribute type="xs:string" name="specteam_receive_conversion"/>
+                    <xs:attribute type="xs:string" name="two_point_conversion_attempts"/>
+                    <xs:attribute type="xs:string" name="two_point_conversion_passing"/>
+                    <xs:attribute type="xs:string" name="two_point_conversion_rushing"/>
+                    <xs:attribute type="xs:string" name="two_point_conversion_received"/>
+                    <xs:attribute type="xs:string" name="two_point_conversion_failed"/>
+                    <xs:attribute type="xs:string" name="remaining_challenges"/>
+                    <xs:attribute type="xs:string" name="remaining_timeouts"/>
+                    <xs:attribute type="xs:string" name="possession_time"/>
+                    <xs:attribute type="xs:string" name="first_downs_total"/>
+                    <xs:attribute type="xs:string" name="first_downs_passing"/>
+                    <xs:attribute type="xs:string" name="first_downs_rushing"/>
+                    <xs:attribute type="xs:string" name="first_downs_penalty"/>
+                    <xs:attribute type="xs:string" name="third_down_efficiency_attempts"/>
+                    <xs:attribute type="xs:string" name="third_down_efficiency_converted"/>
+                    <xs:attribute type="xs:string" name="third_down_efficiency_percentage"/>
+                    <xs:attribute type="xs:string" name="third_down_efficiency_passing"/>
+                    <xs:attribute type="xs:string" name="third_down_efficiency_rushing"/>
+                    <xs:attribute type="xs:string" name="third_down_efficiency_penalty"/>
+                    <xs:attribute type="xs:string" name="fourth_down_efficiency_attempts"/>
+                    <xs:attribute type="xs:string" name="fourth_down_efficiency_converted"/>
+                    <xs:attribute type="xs:string" name="fourth_down_efficiency_percentage"/>
+                    <xs:attribute type="xs:string" name="fourth_down_efficiency_passing"/>
+                    <xs:attribute type="xs:string" name="fourth_down_efficiency_rushing"/>
+                    <xs:attribute type="xs:string" name="fourth_down_efficiency_penalty"/>
+                    <xs:attribute type="xs:string" name="total_yards_plays"/>
+                    <xs:attribute type="xs:string" name="total_yards_yards"/>
+                    <xs:attribute type="xs:string" name="total_yards_average"/>
+                    <xs:attribute type="xs:string" name="rushing_plays"/>
+                    <xs:attribute type="xs:string" name="rushing_attempts"/>
+                    <xs:attribute type="xs:string" name="rushing_yards"/>
+                    <xs:attribute type="xs:string" name="rushing_average"/>
+                    <xs:attribute type="xs:string" name="rushing_longest"/>
+                    <xs:attribute type="xs:string" name="rushing_touchdowns"/>
+                    <xs:attribute type="xs:string" name="rushing_first_downs"/>
+                    <xs:attribute type="xs:string" name="rushing_first_downs_percentage"/>
+                    <xs:attribute type="xs:string" name="rushing_safeties"/>
+                    <xs:attribute type="xs:string" name="rushing_red_zone_attempts"/>
+                    <xs:attribute type="xs:string" name="rushing_fumbles"/>
+                    <xs:attribute type="xs:string" name="rushing_plus_10_yards"/>
+                    <xs:attribute type="xs:string" name="rushing_plus_20_yards"/>
+                    <xs:attribute type="xs:string" name="rushing_plus_30_yards"/>
+                    <xs:attribute type="xs:string" name="rushing_plus_40_yards"/>
+                    <xs:attribute type="xs:string" name="rushing_plus_50_yards"/>
+                    <xs:attribute type="xs:string" name="offense_receiving_targets"/>
+                    <xs:attribute type="xs:string" name="receiving_targets"/>
+                    <xs:attribute type="xs:string" name="receiving_receptions"/>
+                    <xs:attribute type="xs:string" name="receiving_yards"/>
+                    <xs:attribute type="xs:string" name="receiving_yards_after_catch"/>
+                    <xs:attribute type="xs:string" name="receiving_first_downs"/>
+                    <xs:attribute type="xs:string" name="receiving_average_yards"/>
+                    <xs:attribute type="xs:string" name="receiving_touchdowns"/>
+                    <xs:attribute type="xs:string" name="receiving_longest"/>
+                    <xs:attribute type="xs:string" name="receiving_red_zone_targets"/>
+                    <xs:attribute type="xs:string" name="receiving_fumbles"/>
+                    <xs:attribute type="xs:string" name="receiving_plus_10_yards"/>
+                    <xs:attribute type="xs:string" name="receiving_plus_20_yards"/>
+                    <xs:attribute type="xs:string" name="receiving_plus_30_yards"/>
+                    <xs:attribute type="xs:string" name="receiving_plus_40_yards"/>
+                    <xs:attribute type="xs:string" name="receiving_plus_50_yards"/>
+                    <xs:attribute type="xs:string" name="passing_attempts"/>
+                    <xs:attribute type="xs:string" name="passing_yards"/>
+                    <xs:attribute type="xs:string" name="passing_average_yards"/>
+                    <xs:attribute type="xs:string" name="passing_yards_net_yards"/>
+                    <xs:attribute type="xs:string" name="passing_yards_gross_yards"/>
+                    <xs:attribute type="xs:string" name="passing_completions"/>
+                    <xs:attribute type="xs:string" name="passing_completion_percentage"/>
+                    <xs:attribute type="xs:string" name="passing_average_yards_per_completion"/>
+                    <xs:attribute type="xs:string" name="passing_first_downs"/>
+                    <xs:attribute type="xs:string" name="passing_interception"/>
+                    <xs:attribute type="xs:string" name="passing_interception_percentage"/>
+                    <xs:attribute type="xs:string" name="passing_interception_returned_touchdown"/>
+                    <xs:attribute type="xs:string" name="passing_longest"/>
+                    <xs:attribute type="xs:string" name="passing_rating"/>
+                    <xs:attribute type="xs:string" name="passing_safeties"/>
+                    <xs:attribute type="xs:string" name="passing_red_zone_attempts"/>
+                    <xs:attribute type="xs:string" name="passing_sack"/>
+                    <xs:attribute type="xs:string" name="passing_sack_yards"/>
+                    <xs:attribute type="xs:string" name="passing_touchdowns"/>
+                    <xs:attribute type="xs:string" name="passing_touchdowns_percentage"/>
+                    <xs:attribute type="xs:string" name="passing_plus_10_yards"/>
+                    <xs:attribute type="xs:string" name="passing_plus_20_yards"/>
+                    <xs:attribute type="xs:string" name="passing_plus_30_yards"/>
+                    <xs:attribute type="xs:string" name="passing_plus_40_yards"/>
+                    <xs:attribute type="xs:string" name="passing_plus_50_yards"/>
+                    <xs:attribute type="xs:string" name="return_yards_total"/>
+                    <xs:attribute type="xs:string" name="interception_return_total"/>
+                    <xs:attribute type="xs:string" name="interception_return_yards"/>
+                    <xs:attribute type="xs:string" name="kickoffs_total"/>
+                    <xs:attribute type="xs:string" name="kickoffs_average_kick"/>
+                    <xs:attribute type="xs:string" name="kickoffs_average_return"/>
+                    <xs:attribute type="xs:string" name="kickoffs_endzone"/>
+                    <xs:attribute type="xs:string" name="kickoffs_inside_20"/>
+                    <xs:attribute type="xs:string" name="kickoffs_inside_20_percentage"/>
+                    <xs:attribute type="xs:string" name="kickoffs_longest"/>
+                    <xs:attribute type="xs:string" name="kickoffs_net_yards_average"/>
+                    <xs:attribute type="xs:string" name="kickoffs_net_yards"/>
+                    <xs:attribute type="xs:string" name="kickoffs_returns"/>
+                    <xs:attribute type="xs:string" name="kickoffs_return_yards"/>
+                    <xs:attribute type="xs:string" name="kickoffs_touchbacks"/>
+                    <xs:attribute type="xs:string" name="kickoffs_touchback_percentage"/>
+                    <xs:attribute type="xs:string" name="kickoffs_yards"/>
+                    <xs:attribute type="xs:string" name="kick_return_total"/>
+                    <xs:attribute type="xs:string" name="kick_return_yards"/>
+                    <xs:attribute type="xs:string" name="kick_return_average_yards"/>
+                    <xs:attribute type="xs:string" name="kick_return_fair_catches"/>
+                    <xs:attribute type="xs:string" name="kick_return_longest"/>
+                    <xs:attribute type="xs:string" name="kick_return_touchdowns"/>
+                    <xs:attribute type="xs:string" name="kick_return_plus_10_yards"/>
+                    <xs:attribute type="xs:string" name="kick_return_plus_20_yards"/>
+                    <xs:attribute type="xs:string" name="kick_return_plus_30_yards"/>
+                    <xs:attribute type="xs:string" name="kick_return_plus_40_yards"/>
+                    <xs:attribute type="xs:string" name="kick_return_plus_50_yards"/>
+                    <xs:attribute type="xs:string" name="punts_total"/>
+                    <xs:attribute type="xs:string" name="punts_blocked"/>
+                    <xs:attribute type="xs:string" name="punts_gross_yards"/>
+                    <xs:attribute type="xs:string" name="punts_yards_average"/>
+                    <xs:attribute type="xs:string" name="punts_net_yards"/>
+                    <xs:attribute type="xs:string" name="punts_net_yards_average"/>
+                    <xs:attribute type="xs:string" name="punts_inside_opp_20_yard"/>
+                    <xs:attribute type="xs:string" name="punts_inside_opp_20_yard_percentage"/>
+                    <xs:attribute type="xs:string" name="punts_longest"/>
+                    <xs:attribute type="xs:string" name="punts_returned"/>
+                    <xs:attribute type="xs:string" name="punts_return_yards"/>
+                    <xs:attribute type="xs:string" name="punts_return_yards_average"/>
+                    <xs:attribute type="xs:string" name="punts_touchbacks"/>
+                    <xs:attribute type="xs:string" name="punts_touchbacks_percentage"/>
+                    <xs:attribute type="xs:string" name="punts_safeties"/>
+                    <xs:attribute type="xs:string" name="punt_return_total"/>
+                    <xs:attribute type="xs:string" name="punt_return_yards"/>
+                    <xs:attribute type="xs:string" name="punt_return_average_yards"/>
+                    <xs:attribute type="xs:string" name="punt_return_fair_catches"/>
+                    <xs:attribute type="xs:string" name="punt_return_longest"/>
+                    <xs:attribute type="xs:string" name="punt_return_touchdowns"/>
+                    <xs:attribute type="xs:string" name="punt_return_plus_10_yards"/>
+                    <xs:attribute type="xs:string" name="punt_return_plus_20_yards"/>
+                    <xs:attribute type="xs:string" name="punt_return_plus_30_yards"/>
+                    <xs:attribute type="xs:string" name="punt_return_plus_40_yards"/>
+                    <xs:attribute type="xs:string" name="punt_return_plus_50_yards"/>
+                    <xs:attribute type="xs:string" name="penalties_total"/>
+                    <xs:attribute type="xs:string" name="penalties_yards"/>
+                    <xs:attribute type="xs:string" name="penalties_first_downs"/>
+                    <xs:attribute type="xs:string" name="fumbles_total"/>
+                    <xs:attribute type="xs:string" name="fumbles_lost"/>
+                    <xs:attribute type="xs:string" name="fumbles_forced"/>
+                    <xs:attribute type="xs:string" name="fumbles_out_of_bounds"/>
+                    <xs:attribute type="xs:string" name="fumbles_opponent_recovery"/>
+                    <xs:attribute type="xs:string" name="fumbles_opponent_touchdowns"/>
+                    <xs:attribute type="xs:string" name="fumbles_opponent_yards"/>
+                    <xs:attribute type="xs:string" name="fumbles_own_recovery"/>
+                    <xs:attribute type="xs:string" name="fumbles_own_recovery_touchdowns"/>
+                    <xs:attribute type="xs:string" name="fumbles_own_recovery_yards"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempts_1_to_19_yards"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempts_20_to_29_yard"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempts_30_to_39_yard"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempts_40_to_49_yard"/>
+                    <xs:attribute type="xs:string" name="field_goals_attempts_50_plus_yard"/>
+                    <xs:attribute type="xs:string" name="field_goals_made_1_to_19_yards"/>
+                    <xs:attribute type="xs:string" name="field_goals_made_20_to_29_yard"/>
+                    <xs:attribute type="xs:string" name="field_goals_made_30_to_39_yard"/>
+                    <xs:attribute type="xs:string" name="field_goals_made_40_to_49_yard"/>
+                    <xs:attribute type="xs:string" name="field_goals_made_50_plus_yard"/>
+                    <xs:attribute type="xs:string" name="specteam_extrapoint_attempt"/>
+                    <xs:attribute type="xs:string" name="specteam_extrapoint"/>
+                    <xs:attribute type="xs:string" name="specteam_extrapoint_blocked"/>
+                    <xs:attribute type="xs:string" name="field_goals_longest"/>
+                    <xs:attribute type="xs:string" name="touchdowns_total"/>
+                    <xs:attribute type="xs:string" name="touchdowns_passing"/>
+                    <xs:attribute type="xs:string" name="touchdowns_rushing"/>
+                    <xs:attribute type="xs:string" name="touchdowns_interception"/>
+                    <xs:attribute type="xs:string" name="touchdowns_fumble_return"/>
+                    <xs:attribute type="xs:string" name="touchdowns_punt_return"/>
+                    <xs:attribute type="xs:string" name="touchdowns_kickoff_return"/>
+                    <xs:attribute type="xs:string" name="specteam_field_goal_longest"/>
+                    <xs:attribute type="xs:string" name="touchdowns_field_goal_return"/>
+                    <xs:attribute type="xs:string" name="touchdowns_others"/>
+                    <xs:attribute type="xs:string" name="extra_points_total_attempts"/>
+                    <xs:attribute type="xs:string" name="extra_points_total_made"/>
+                    <xs:attribute type="xs:string" name="extra_points_total_blocked"/>
+                    <xs:attribute type="xs:string" name="extra_points_total_percentage"/>
+                    <xs:attribute type="xs:string" name="extra_points_kicking_attempted"/>
+                    <xs:attribute type="xs:string" name="extra_points_kicking_made"/>
+                    <xs:attribute type="xs:string" name="extra_points_kicking_blocked"/>
+                    <xs:attribute type="xs:string" name="extra_points_two_points_attempted"/>
+                    <xs:attribute type="xs:string" name="extra_points_two_points_made"/>
+                    <xs:attribute type="xs:string" name="field_goals_blocked"/>
+                    <xs:attribute type="xs:string" name="redzone_efficiency_attempted"/>
+                    <xs:attribute type="xs:string" name="redzone_efficiency_touchdowns"/>
+                    <xs:attribute type="xs:string" name="redzone_efficiency_percentage"/>
+                    <xs:attribute type="xs:string" name="goal_efficiency_attempted"/>
+                    <xs:attribute type="xs:string" name="goal_efficiency_touchdowns"/>
+                    <xs:attribute type="xs:string" name="goal_efficiency_percentage"/>
+                    <xs:attribute type="xs:string" name="allowed_safeties"/>
+                    <xs:attribute type="xs:string" name="safeties"/>
+                    <xs:attribute type="xs:string" name="defense_assisted_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_specteam_blocks"/>
+                    <xs:attribute type="xs:string" name="defense_blocks"/>
+                    <xs:attribute type="xs:string" name="defense_combined_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_fumbles_forced"/>
+                    <xs:attribute type="xs:string" name="defense_fumbles_recovery"/>
+                    <xs:attribute type="xs:string" name="defense_fumbles_touchdown"/>
+                    <xs:attribute type="xs:string" name="defense_interception"/>
+                    <xs:attribute type="xs:string" name="defense_interception_longest"/>
+                    <xs:attribute type="xs:string" name="defense_interception_touchdowns"/>
+                    <xs:attribute type="xs:string" name="defense_interception_yards"/>
+                    <xs:attribute type="xs:string" name="defense_passes_defended"/>
+                    <xs:attribute type="xs:string" name="defense_qb_hits"/>
+                    <xs:attribute type="xs:string" name="defense_sacks"/>
+                    <xs:attribute type="xs:string" name="defense_sack_yards"/>
+                    <xs:attribute type="xs:string" name="defense_safeties"/>
+                    <xs:attribute type="xs:string" name="defense_safety_points"/>
+                    <xs:attribute type="xs:string" name="defense_first_point_safeties"/>
+                    <xs:attribute type="xs:string" name="defense_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_tackles_for_loss"/>
+                    <xs:attribute type="xs:string" name="defense_specteams_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_specteams_assisted_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_specteams_combined_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_specteams_forced_fumbles"/>
+                    <xs:attribute type="xs:string" name="defense_specteams_fumble_recoveries"/>
+                    <xs:attribute type="xs:string" name="defense_misc_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_misc_assisted_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_misc_combined_tackles"/>
+                    <xs:attribute type="xs:string" name="defense_misc_forced_fumbles"/>
+                    <xs:attribute type="xs:string" name="defense_misc_fumble_recoveries"/>
+                    <xs:attribute type="xs:string" name="defensive_conversions_attempts"/>
+                    <xs:attribute type="xs:string" name="defensive_conversions_completions"/>
+                    <xs:attribute type="xs:string" name="defensive_conversions_failed"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="competitorUrn" name="id"/>
+    </xs:complexType>
+</xs:schema>

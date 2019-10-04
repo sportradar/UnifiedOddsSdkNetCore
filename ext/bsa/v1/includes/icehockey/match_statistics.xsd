@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="matchStatistics">
+        <xs:sequence>
+            <xs:element name="teams">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="team" type="teamStatistics" minOccurs="0" maxOccurs="2" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="teamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute type="xs:int" name="goals" use="optional"/>
+                    <xs:attribute type="xs:int" name="shots_on_goal" use="optional"/>
+                    <xs:attribute type="xs:int" name="penalties" use="optional"/>
+                    <xs:attribute type="xs:int" name="penalty_minutes" use="optional"/>
+                    <xs:attribute type="xs:int" name="goals_conceded" use="optional"/>
+                    <xs:attribute type="xs:int" name="saves" use="optional"/>
+                    <xs:attribute type="xs:double" name="save_percentage" use="optional"/>
+                    <xs:attribute type="xs:double" name="shooting_percentage" use ="optional"/>
+                    <xs:attribute type="xs:int" name="shutouts" use="optional"/>
+                    <xs:attribute type="xs:int" name="goalie_wins" use="optional"/>
+                    <xs:attribute type="xs:int" name="goalie_losses" use="optional"/>
+                    <xs:attribute type="xs:double" name="goals_against_average" use="optional"/>
+                    <xs:attribute type="xs:int" name="puck_possession" use="optional"/>
+                    <xs:attribute type="xs:int" name="suspensions_number" use="optional"/>
+                    <xs:attribute type="xs:int" name="suspensions_minutes" use="optional"/>
+                    <xs:attribute type="xs:int" name="goals_in_power_play" use="optional"/>
+                    <xs:attribute type="xs:int" name="goals_while_short_handed" use="optional"/>
+                    <xs:attribute type="xs:int" name="power_plays" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="players" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="player" type="playerStatistic" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="abbreviation" type="xs:string" use="required" />
+        <xs:attribute name="qualifier" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="playerStatistic">
+        <xs:sequence>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:attribute type="xs:int" name="goals" />
+                    <xs:attribute type="xs:int" name="assists" />
+                    <xs:attribute type="xs:int" name="first_assist" />
+                    <xs:attribute type="xs:int" name="second_assists" />
+                    <xs:attribute type="xs:int" name="points" />
+                    <xs:attribute type="xs:int" name="shots_on_target" />
+                    <xs:attribute type="xs:int" name="penalties" />
+                    <xs:attribute type="xs:int" name="penalty_minutes" />
+                    <xs:attribute type="xs:int" name="plus_minus" />
+                    <xs:attribute type="xs:int" name="saves" />
+                    <xs:attribute type="xs:string" name="goalie_minutes_played" />
+                    <xs:attribute type="xs:int" name="goals_allowed" />
+                    <xs:attribute type="xs:int" name="shutouts" />
+                    <xs:attribute type="xs:int" name="goalie_wins" />
+                    <xs:attribute type="xs:int" name="goalie_losses" />
+                    <xs:attribute type="xs:double" name="goals_against_average" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="playerUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="nickname" type="xs:string" use="optional" />
+    </xs:complexType>
+</xs:schema>

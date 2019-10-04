@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd"/>
+    <xs:complexType name="standings">
+        <xs:sequence>
+            <xs:element type="tournamentStandingsGroup" name="group" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:string" name="tie_break_rule" use="optional" />
+    </xs:complexType>
+    <xs:simpleType name="teamStandingGroupType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="conference" />
+            <xs:enumeration value="division" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="tournamentStandingsGroup">
+        <xs:sequence>
+            <xs:element type="teamStanding" name="team_standing" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="teamStanding">
+        <xs:sequence>
+            <xs:element type="tournamentStandingsTeam" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:string" name="current_outcome" use="optional"/>
+        <xs:attribute type="xs:int" name="played" use="required"/>
+        <xs:attribute type="xs:int" name="win" use="required"/>
+        <xs:attribute type="xs:int" name="draw" use="required"/>
+        <xs:attribute type="xs:int" name="loss" use="required"/>
+        <xs:attribute type="xs:int" name="goals_for" use="required"/>
+        <xs:attribute type="xs:int" name="goals_against" use="required"/>
+        <xs:attribute type="xs:int" name="goal_diff" use="required"/>
+        <xs:attribute type="xs:int" name="points" use="required"/>
+        <xs:attribute type="xs:int" name="change" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentStandingsTeam" mixed="true">
+        <xs:attribute type="competitorUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+</xs:schema>

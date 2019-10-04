@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd" />
+    <xs:complexType name="matchRound">
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:int" name="number" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="group" use="optional" />
+        <xs:attribute type="xs:int" name="cup_round_matches" use="optional"/>
+        <xs:attribute type="xs:int" name="cup_round_match_number" use="optional"/>
+        <xs:attribute type="matchUrn" name="other_match_id" use="optional" />
+        <xs:attribute type="xs:int" name="tournament_match_number" use="optional" />
+        <xs:attribute type="xs:string" name="phase" use="optional"/>
+    </xs:complexType>
+</xs:schema>

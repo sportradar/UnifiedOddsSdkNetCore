@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/rugby/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/common/sport_event_conditions.xsd" />
+    <xs:include schemaLocation="../../includes/rugby/sport_event_status.xsd" />
+    <xs:include schemaLocation="../../includes/soccer/player.xsd" />
+    <xs:include schemaLocation="../../includes/rugby/event.xsd" />
+    <xs:include schemaLocation="../../includes/rugby/statistics.xsd" />
+    <xs:element name="match_timeline" type="matchTimelineEndpoint" />
+    <xs:complexType name="matchTimelineEndpoint">
+        <xs:sequence>
+            <xs:element type="rugbySportEvent" name="sport_event" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="sportEventConditions" name="sport_event_conditions"  minOccurs="0" maxOccurs="1"/>
+            <xs:element type="sportEventStatus" name="sport_event_status" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="timeline" name="timeline" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="rugbyMatchStatistics" name="statistics" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="timeline">
+        <xs:sequence>
+            <xs:element type="timelineEvent" name="event" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

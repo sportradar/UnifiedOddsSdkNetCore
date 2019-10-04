@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns="http://schemas.sportradar.com/sportsapi/v1/cricket" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/cricket/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd"/>
+    <xs:include schemaLocation="../../includes/cricket/result.xsd" />
+    <xs:element name="team_versus_matches" type="teamVersusMatchesEndpoint" />
+    <xs:complexType name="teamVersusMatchesEndpoint">
+        <xs:sequence>
+            <xs:element type="teamVersusTeams" name="teams" />
+            <xs:element type="lastMeetings" name="last_meetings" minOccurs="0" maxOccurs="5" />
+            <xs:element type="next_meetings" name="next_meetings" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="teamVersusTeams">
+        <xs:sequence>
+            <xs:element type="teamExtended" name="team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="lastMeetings">
+        <xs:sequence>
+            <xs:element type="result" name="result" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="next_meetings">
+        <xs:sequence>
+            <xs:element type="sportEvent" name="sport_event" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

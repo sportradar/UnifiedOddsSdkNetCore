@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/historicalnhl" xmlns="http://schemas.sportradar.com/sportsapi/v1/historicalnhl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:element name="venue_mappings" type="venueMappingsEndpoint" />
+    <xs:complexType name="venueMappingsEndpoint">
+        <xs:sequence>
+            <xs:element type="venueMapping" name="mappings" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="venueMapping">
+        <xs:sequence>
+            <xs:element name="mapping" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="us_id" type="xs:string"/>
+                    <xs:attribute name="id" type="venueUrn" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

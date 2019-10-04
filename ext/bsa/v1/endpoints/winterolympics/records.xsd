@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/winterolympics/competitor.xsd" />
+
+    <xs:element name="event_records" type="eventRecordsEndpoint" />
+
+    <xs:complexType name="eventRecordsEndpoint">
+        <xs:sequence>
+            <xs:element type="recordSport" name="sport" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+
+    <xs:complexType name="recordSport">
+        <xs:sequence>
+            <xs:element type="recordCompetition" name="competition" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" />
+        <xs:attribute type="sportUrn" name="id" />
+    </xs:complexType>
+
+    <xs:complexType name="recordCompetition">
+        <xs:sequence>
+            <xs:element type="recordRecords" name="records" />
+            <xs:element type="recordRecords" name="broken_records" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="stageUrn" name="id" />
+    </xs:complexType>
+
+    <xs:complexType name="recordRecords">
+        <xs:sequence>
+            <xs:element type="recordRecord" name="record" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="recordRecord">
+        <xs:sequence>
+            <xs:element type="competitors" name="competitors" />
+        </xs:sequence>
+        <xs:attribute type="recordType" name="type" />
+        <xs:attribute type="xs:string" name="result" />
+        <xs:attribute type="xs:string" name="where" />
+        <xs:attribute type="xs:date" name="when" />
+    </xs:complexType>
+
+    <xs:simpleType name="recordType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OR"/>
+            <xs:enumeration value="WR"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

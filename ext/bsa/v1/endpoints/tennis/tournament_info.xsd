@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           targetNamespace="http://schemas.sportradar.com/sportsapi/v1/tennis"
+           xmlns="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd"/>
+    <xs:include schemaLocation="../../includes/tennis/tournament.xsd"/>
+    <xs:include schemaLocation="../../includes/common/current_season.xsd"/>
+    <xs:include schemaLocation="../../includes/common/match_round.xsd"/>
+    <xs:include schemaLocation="../../includes/common/match_round.xsd"/>
+    <xs:include schemaLocation="../../includes/tennis/player.xsd"/>
+    <xs:include schemaLocation="../../includes/tennis/team.xsd"/>
+    <xs:element name="tournament_info" type="tournamentInfoEndpoint"/>
+    <xs:complexType name="tournamentInfoEndpoint">
+        <xs:sequence>
+            <xs:element name="tournament" type="tournamentExtended" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="children" type="tournamentChildren" minOccurs="0"/>
+            <xs:element name="tournament_round" type="matchRound" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="info" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute type="xs:int" name="prize_money" use="optional"/>
+                    <xs:attribute type="xs:string" name="prize_currency" use="optional"/>
+                    <xs:attribute type="xs:string" name="surface"/>
+                    <xs:attribute type="xs:string" name="complex"/>
+                    <xs:attribute type="xs:int" name="number_of_competitors"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="coverage_info" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="live_coverage" use="required"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="winner_last_season" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute type="competitorUrn" name="id" use="required"/>
+                    <xs:attribute type="xs:string" name="name" use="required"/>
+                    <xs:attribute type="xs:string" name="abbreviation" use="required"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="competitors" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="player" type="tennisPlayer" maxOccurs="unbounded" minOccurs="0"/>
+                        <xs:element name="double_team" type="doubleTeam" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="stages" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="bracket" name="stage" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentChildren">
+        <xs:sequence>
+            <xs:element name="tournament" type="tournamentExtended" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bracket">
+        <xs:sequence>
+            <xs:element type="stageCompetitors" name="competitors" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="stageCompetitors">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element type="bracketPlayerCompetitor" name="player" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="bracketDoubleTeamCompetitor" name="double_team" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>

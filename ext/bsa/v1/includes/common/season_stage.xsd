@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="coverage_info.xsd"/>
+    <xs:include schemaLocation="season_stage_group.xsd"/>
+    <xs:complexType name="stageType">
+        <xs:sequence>
+            <!--<xs:element name="coverage_info" type="coverageInfo"/>-->
+            <xs:element name="groups"        type="groupsType"/>
+        </xs:sequence>
+        <xs:attribute name="type"       type="xs:string"  use="required"/>
+        <xs:attribute name="number"     type="xs:int" use="required"/>
+        <xs:attribute name="start_date" type="xs:date"    use="required"/>
+        <xs:attribute name="end_date"   type="xs:date"    use="required"/>
+        <xs:attribute name="year"       type="xs:string"  use="required"/>
+    </xs:complexType>
+    <xs:complexType name="stagesType">
+        <xs:sequence>
+            <xs:element name="stage" type="stageType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

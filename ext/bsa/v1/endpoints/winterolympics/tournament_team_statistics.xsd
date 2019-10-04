@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns="http://schemas.sportradar.com/sportsapi/v1/winterolympics" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/category.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/winterolympics/tournament.xsd" />
+    <xs:element name="tournament_team_statistics" type="tournamentTeamStatisticsEndpoint" />
+    <xs:complexType name="period">
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:int" name="value" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentTeamStatisticsEndpoint">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" minOccurs="1" name="tournament" />
+            <xs:element type="teamExtended" minOccurs="1" name="competitor" />
+            <xs:element type="seasonTeamStatistics" minOccurs="0" name="team_statistics" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="seasonTeamStatistics">
+        <xs:all>
+            <xs:element type="datapoint" name="goals" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="goals_conceded" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="penalties_total_minutes" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="penalties_match" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="power_play_goals" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shorthanded_goals_for" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shorthanded_goals_against" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_on_goal" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_on_goal_against_goalkeeper" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_saved_by_goalkeeper" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="empty_net" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="powerplay_goals_against" maxOccurs="1" minOccurs="0" />
+            <xs:element type="floatDatapoint" name="powerplay_efficiency" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shutouts" maxOccurs="1" minOccurs="0" />
+            <xs:element type="seasonPlayerStatistics" name="player_statistics" minOccurs="0" />
+        </xs:all>
+        <xs:attribute type="xs:int" name="games_played" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="seasonPlayerStatistics">
+        <xs:sequence>
+            <xs:element name="player" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="statistics" type="playerStatistics" />
+                    </xs:sequence>
+                    <xs:attribute name="id" type="playerUrn" use="required" />
+                    <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerStatistics">
+        <xs:all>
+            <xs:element type="datapoint" name="goals" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="assists" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="points" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="penalties_total_minutes" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="power_play_goals" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shorthanded_goals" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shots_on_goal" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="time_played" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="shifts_played" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="face_offs_total" maxOccurs="1" minOccurs="0" />
+            <xs:element type="datapoint" name="face_offs_won" maxOccurs="1" minOccurs="0" />
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="datapoint">
+        <xs:attribute type="xs:int" name="total" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="floatDatapoint">
+        <xs:attribute type="xs:float" name="total" use="required"/>
+    </xs:complexType>
+</xs:schema>

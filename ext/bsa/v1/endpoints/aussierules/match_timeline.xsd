@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/aussierules" xmlns="http://schemas.sportradar.com/sportsapi/v1/aussierules" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/aussierules/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/aussierules/sport_event_status.xsd" />
+    <xs:include schemaLocation="../../includes/aussierules/event.xsd" />
+    <xs:include schemaLocation="../../includes/aussierules/summary.xsd" />
+    <xs:element name="match_timeline" type="aussieRulesMatchTimelineEndpoint" />
+    <xs:complexType name="aussieRulesMatchTimelineEndpoint">
+        <xs:sequence>
+            <xs:element type="aussieRulesSportEvent" name="sport_event" minOccurs="1" />
+            <xs:element type="sportEventStatus" name="sport_event_status" minOccurs="1" />
+            <xs:element type="aussieRulesMatchStatistics" name="statistics" minOccurs="0" maxOccurs="1" />
+            <xs:element type="AussieRulesTimeline" name="timeline" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="AussieRulesTimeline">
+        <xs:sequence>
+            <xs:element type="aussieRulesEvent" name="event" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

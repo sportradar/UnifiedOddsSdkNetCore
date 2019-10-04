@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/tennis/sport_event.xsd" />
+    <xs:element name="schedule" type="scheduleEndpoint" />
+    <xs:complexType name="scheduleEndpoint">
+        <xs:sequence>
+            <xs:element type="sportEvent" name="sport_event" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

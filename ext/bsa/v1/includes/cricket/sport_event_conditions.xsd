@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="sportEventConditions">
+        <xs:sequence>
+            <xs:element minOccurs="0" type="weatherInfo" name="weather_info" />
+            <xs:element minOccurs="0" type="pitchInfo" name="pitch_info" />
+            <xs:element minOccurs="0" type="outfieldInfo" name="outfield_info" />
+            <xs:element minOccurs="0" type="refereesType" name="referees" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="optional" />
+        <xs:attribute type="dayNightType" name="day_night" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="weatherInfo">
+        <xs:attribute type="weatherConditionsType" name="weather_conditions" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="pitchInfo">
+        <xs:attribute type="xs:string" name="pitch_conditions" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="outfieldInfo">
+        <xs:attribute type="xs:string" name="outfield_conditions" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="refereesType">
+        <xs:sequence>
+            <xs:element type="refereeType" name="referee" maxOccurs="1" minOccurs="0" />
+            <xs:element type="umpiresType" name="umpires" maxOccurs="1" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="refereeType">
+        <xs:attribute type="refereeUrn" name="id" use="required" />
+        <xs:attribute type="xs:string" name="name" use="required" />
+    </xs:complexType>
+    <xs:complexType name="umpiresType">
+        <xs:sequence>
+            <xs:element type="umpireType" name="umpire" maxOccurs="3" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="umpireType">
+        <xs:attribute type="xs:int" name="number" use="required" />
+        <xs:attribute type="umpireUrn" name="id" use="required" />
+        <xs:attribute type="xs:string" name="name" use="required" />
+        <xs:attribute type="xs:string" name="type" use="required" />
+    </xs:complexType>
+    <xs:simpleType name="dayNightType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="day" />
+            <xs:enumeration value="night" />
+            <xs:enumeration value="day/night" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="weatherConditionsType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="bright_and_sunny" />
+            <xs:enumeration value="cool" />
+            <xs:enumeration value="hot_and_humid" />
+            <xs:enumeration value="raining" />
+            <xs:enumeration value="overcast"/>
+            <xs:enumeration value="unknown"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,44 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/winterolympics/sport_event_status.xsd" />
+    <xs:include schemaLocation="competitor.xsd" />
+    <xs:complexType name="result">
+        <xs:sequence>
+            <xs:element type="competitor" name="competitor" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:boolean" name="gold" use="optional"/>
+        <xs:attribute type="xs:boolean" name="silver" use="optional"/>
+        <xs:attribute type="xs:boolean" name="bronze" use="optional"/>
+        <xs:attribute type="xs:float" name="distance" use="optional"/>
+        <xs:attribute type="xs:string" name="time" use="optional"/>
+        <xs:attribute type="xs:int" name="position" use="optional"/>
+        <xs:attribute type="xs:string" name="handicap" use="optional" />
+        <xs:attribute type="xs:int" name="misses" use="optional" />
+        <xs:attribute type="xs:string" name="details" use="optional" />
+        <xs:attribute type="xs:float" name="points" use="optional" />
+        <xs:attribute type="xs:string" name="ski_time" use="optional" />
+        <xs:attribute type="xs:float" name="skijump_points" use="optional" />
+        <xs:attribute type="xs:string" name="comment" use="optional" />
+        <xs:attribute type="xs:boolean" name="did_not_finish" use="optional" />
+        <xs:attribute type="xs:boolean" name="did_not_start" use="optional" />
+        <xs:attribute type="xs:boolean" name="disqualified" use="optional" />
+        <xs:attribute type="xs:boolean" name="disqualified_for_unsportsmanlike_behaviour" use="optional" />
+        <xs:attribute type="xs:float" name="points_short" use="optional" />
+        <xs:attribute type="xs:float" name="points_short_men" use="optional" />
+        <xs:attribute type="xs:float" name="points_men" use="optional" />
+        <xs:attribute type="xs:float" name="points_women" use="optional" />
+        <xs:attribute type="xs:float" name="points_short_women" use="optional" />
+        <xs:attribute type="xs:float" name="points_free" use="optional" />
+        <xs:attribute type="xs:float" name="points_free_men" use="optional" />
+        <xs:attribute type="xs:float" name="points_free_women" use="optional" />
+        <xs:attribute type="xs:float" name="points_pairs" use="optional" />
+        <xs:attribute type="xs:float" name="points_compulsory" use="optional" />
+        <xs:attribute type="xs:float" name="ice_dancing" use="optional" />
+        <xs:attribute type="xs:float" name="bib" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="results">
+        <xs:sequence>
+            <xs:element type="result" name="result" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

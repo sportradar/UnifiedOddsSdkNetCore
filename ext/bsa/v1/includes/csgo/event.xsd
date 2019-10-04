@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/player.xsd" />
+    <xs:complexType name="csgoEvent">
+        <xs:sequence>
+            <xs:element type="playerExtended" name="killer" minOccurs="0" />
+            <xs:element type="playerExtended" name="victim" minOccurs="0" />
+            <xs:element type="playerExtended" name="assist" minOccurs="0" />
+            <xs:element type="playerExtended" name="player" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:dateTime" name="time" use="required"/>
+        <xs:attribute type="xs:string" name="counter_terrorists" use="optional"/>
+        <xs:attribute type="xs:string" name="period_name" use="optional"/>
+        <xs:attribute type="xs:int" name="match_time" use="optional"/>
+        <xs:attribute type="xs:string" name="team" use="optional"/>
+        <xs:attribute type="xs:int" name="x" use="optional"/>
+        <xs:attribute type="xs:int" name="y" use="optional"/>
+        <xs:attribute type="xs:double" name="home_score" use="optional"/>
+        <xs:attribute type="xs:double" name="away_score" use="optional"/>
+        <xs:attribute type="xs:string" name="period" use="optional"/>
+        <xs:attribute type="xs:string" name="winning_reason" use="optional"/>
+        <xs:attribute type="xs:string" name="winner" use="optional"/>
+        <xs:attribute type="xs:string" name="kill_type" use="optional"/>
+        <xs:attribute type="xs:string" name="weapon" use="optional"/>
+        <xs:attribute type="xs:string" name="map_name" use="optional"/>
+        <xs:attribute type="xs:int" name="map_number" use="optional"/>
+        <xs:attribute type="xs:int" name="home_cash" use="optional" />
+        <xs:attribute type="xs:int" name="away_cash" use="optional" />
+    </xs:complexType>
+
+    <xs:complexType name="csgoEventWinner">
+        <xs:attribute type="competitorUrn" name="id" use="required" />
+        <xs:attribute type="xs:string" name="name" use="required" />
+    </xs:complexType>
+</xs:schema>

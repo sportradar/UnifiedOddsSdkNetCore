@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd" />
+    <xs:complexType name="seasonCoverageInfo">
+        <xs:attribute type="seasonUrn" name="season_id" use="required"/>
+        <xs:attribute type="xs:int" name="scheduled" use="required"/>
+        <xs:attribute type="xs:int" name="played" use="required"/>
+        <xs:attribute type="xs:string" name="max_coverage_level" use="optional"/>
+        <xs:attribute type="xs:int" name="max_covered" use="optional"/>
+        <xs:attribute type="xs:string" name="min_coverage_level" use="optional"/>
+    </xs:complexType>
+</xs:schema>

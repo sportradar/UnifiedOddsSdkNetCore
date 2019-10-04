@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/unified/sport_event.xsd" />
+    <xs:include schemaLocation="../../includes/unified/sport_event_conditions.xsd" />
+    <xs:include schemaLocation="../../includes/unified/stage/sport_event_status.xsd" />
+    <xs:element name="race_summary" type="stageSummaryEndpoint"/>
+    <xs:complexType name="stageSummaryEndpoint">
+        <xs:sequence>
+            <xs:element type="sportEvent" name="sport_event"/>
+            <xs:element type="stageSportEventStatus" name="sport_event_status"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd"/>
+    <xs:include schemaLocation="../common/player.xsd"/>
+    <xs:include schemaLocation="sport_event_status.xsd"/>
+    <xs:complexType name="matchStatistics">
+        <xs:sequence>
+            <xs:element name="man_of_the_match" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="player" type="player" minOccurs="0" maxOccurs="2"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="innings">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="inning" type="inningStatistics" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="inningStatistics">
+        <xs:sequence>
+            <xs:element name="overs" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="overType" name="over" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="teams">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="teamStatistics" name="team" minOccurs="1" maxOccurs="2"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="number" type="xs:int" use="required"/>
+        <xs:attribute name="alloted_overs" type="xs:int" use="optional"/>
+        <xs:attribute name="alloted_overs_reason" type="xs:string" use="optional"/>
+        <xs:attribute name="overs_completed" type="xs:int" use="optional"/>
+        <xs:attribute name="batting_team" type="competitorUrn" use="required"/>
+        <xs:attribute name="bowling_team" type="competitorUrn" use="required"/>
+        <xs:attribute name="is_declared" type="xs:string" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="overType">
+        <xs:attribute name="number" type="xs:int" use="required"/>
+        <xs:attribute name="runs" type="xs:int" use="optional"/>
+        <xs:attribute name="wickets" type="xs:int" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="teamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element type="battingType" name="batting" minOccurs="0" maxOccurs="1"/>
+                        <xs:element type="bowlingType" name="bowling" minOccurs="0" maxOccurs="1"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="competitorUrn" name="id"/>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="qualifier"/>
+        <xs:attribute type="xs:string" name="abbreviation"/>
+    </xs:complexType>
+    <xs:complexType name="battingType">
+        <xs:sequence>
+            <xs:element name="partnerships" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="partnershipType" name="partnership" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="players">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="battingPlayer" name="player" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="runs" use="required"/>
+        <xs:attribute type="xs:int" name="fours" use="optional"/>
+        <xs:attribute type="xs:int" name="sixes" use="optional"/>
+        <xs:attribute type="exactlyTwoAfterDecimal" name="run_rate" use="optional"/>
+        <xs:attribute type="xs:int" name="balls_faced" use="optional"/>
+        <xs:attribute type="xs:string" name="declared" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="partnershipType">
+        <xs:sequence>
+            <xs:element name="players">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="partnershipPlayerType" name="player" minOccurs="1" maxOccurs="3"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="wicket_number" use="required"/>
+        <xs:attribute type="xs:int" name="runs" use="optional"/>
+        <xs:attribute type="xs:string" name="overs" use="optional"/>
+        <xs:attribute type="xs:string" name="start" use="optional"/>
+        <xs:attribute type="xs:string" name="end" use="optional"/>
+        <xs:attribute type="playerUrn" name="dismissed_player" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="partnershipPlayerType">
+        <xs:attribute name="id" type="playerUrn" use="required"/>
+        <xs:attribute name="name" type="xs:string" use="optional"/>
+        <xs:attribute name="runs" type="xs:int" use="required"/>
+        <xs:attribute name="strike_rate" type="xs:double" use="optional"/>
+        <xs:attribute name="balls_faced" type="xs:int" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="bowlingType">
+        <xs:sequence>
+            <xs:element name="players">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="bowlingPlayer" name="player" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:double" name="overs" use="optional"/>
+        <xs:attribute type="xs:int" name="wickets" use="optional"/>
+        <xs:attribute type="xs:int" name="maidens" use="optional"/>
+        <xs:attribute type="xs:int" name="extras" use="optional"/>
+        <xs:attribute type="xs:int" name="no_balls" use="optional"/>
+        <xs:attribute type="xs:int" name="wides" use="optional"/>
+        <xs:attribute type="xs:int" name="byes" use="optional"/>
+        <xs:attribute type="xs:int" name="leg_byes" use="optional"/>
+        <xs:attribute type="xs:int" name="penalties" use="optional"/>
+        <xs:attribute type="xs:int" name="dot_balls" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="bowlingPlayer">
+        <xs:sequence>
+            <xs:element type="bowlingPlayerStatistics" name="statistics" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nickname" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="battingPlayer">
+        <xs:sequence>
+            <xs:element type="battingPlayerStatistics" name="statistics" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="nickname" use="optional"/>
+        <xs:attribute type="xs:int" name="order" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="battingPlayerStatistics">
+        <xs:sequence>
+            <xs:element type="dismissalType" name="dismissal" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="runs"/>
+        <xs:attribute type="xs:int" name="half_centuries"/>
+        <xs:attribute type="xs:int" name="centuries"/>
+        <xs:attribute type="xs:double" name="strike_rate"/>
+        <xs:attribute type="xs:int" name="balls_faced"/>
+        <xs:attribute type="xs:int" name="fours"/>
+        <xs:attribute type="xs:int" name="sixes"/>
+        <xs:attribute type="xs:int" name="attacking_shots"/>
+        <xs:attribute type="xs:int" name="semi_attacking"/>
+        <xs:attribute type="xs:int" name="defending_shots"/>
+        <xs:attribute type="xs:int" name="onside_shots"/>
+        <xs:attribute type="xs:int" name="offside_shots"/>
+        <xs:attribute type="xs:int" name="left_alone"/>
+        <xs:attribute type="xs:int" name="square_leg_shots"/>
+        <xs:attribute type="xs:int" name="fine_leg_shots"/>
+        <xs:attribute type="xs:int" name="third_man_shots"/>
+        <xs:attribute type="xs:int" name="point_shots"/>
+        <xs:attribute type="xs:int" name="cover_shots"/>
+        <xs:attribute type="xs:int" name="mid_on_shots"/>
+        <xs:attribute type="xs:int" name="mid_off_shots"/>
+        <xs:attribute type="xs:int" name="mid_wicket_shots"/>
+        <xs:attribute type="xs:int" name="mins_at_crease"/>
+        <xs:attribute type="xs:boolean" name="duck"/>
+        <xs:attribute type="xs:boolean" name="not_out"/>
+        <xs:attribute type="xs:boolean" name="retired_hurt"/>
+    </xs:complexType>
+    <xs:complexType name="dismissalType">
+        <xs:attribute type="dismissalTypeType" name="type"/>
+        <xs:attribute type="dismissalTypeShotType" name="shot_type"/>
+        <xs:attribute type="dismissalTypeStrokeType" name="stroke"/>
+        <xs:attribute type="dismissalTypeConnectType" name="connect"/>
+        <xs:attribute type="dismissalTypeCreasePositionType" name="crease_position"/>
+        <xs:attribute type="dismissalTypeDetailsType" name="details"/>
+        <xs:attribute type="playerUrn" name="bowler_id"/>
+        <xs:attribute type="playerUrn" name="fieldsman_id"/>
+        <xs:attribute type="xs:int" name="ball_number"/>
+        <xs:attribute type="xs:int" name="over_number"/>
+        <xs:attribute type="xs:boolean" name="on_strike"/>
+        <xs:attribute type="dismissalTypeDeliveryType" name="delivery_type"/>
+        <xs:attribute type="xs:string" name="swing"/>
+        <xs:attribute type="xs:double" name="ball_speed"/>
+    </xs:complexType>
+    <xs:complexType name="bowlingPlayerStatistics">
+        <xs:attribute type="xs:int" name="runs_conceded"/>
+        <xs:attribute type="xs:double" name="overs_bowled"/>
+        <xs:attribute type="xs:int" name="wickets"/>
+        <xs:attribute type="xs:int" name="maidens"/>
+        <xs:attribute type="xs:int" name="dot_balls"/>
+        <xs:attribute type="xs:int" name="fours_conceded"/>
+        <xs:attribute type="xs:int" name="sixes_conceded"/>
+        <xs:attribute type="xs:int" name="extras"/>
+        <xs:attribute type="xs:int" name="no_balls"/>
+        <xs:attribute type="xs:int" name="wides"/>
+        <xs:attribute type="xs:int" name="byes"/>
+        <xs:attribute type="xs:int" name="leg_byes"/>
+        <xs:attribute type="xs:double" name="economy_rate"/>
+        <xs:attribute type="xs:double" name="fastest_delivery"/>
+        <xs:attribute type="xs:double" name="slowest_delivery"/>
+        <xs:attribute type="xs:double" name="average_speed"/>
+        <xs:attribute type="xs:int" name="over_the_wicket"/>
+        <xs:attribute type="xs:int" name="around_the_wicket"/>
+        <xs:attribute type="xs:int" name="yorkers"/>
+        <xs:attribute type="xs:int" name="bouncers"/>
+        <xs:attribute type="xs:int" name="rapped_on_pads"/>
+        <xs:attribute type="xs:int" name="slower_deliveries"/>
+        <xs:attribute type="xs:int" name="edges"/>
+        <xs:attribute type="xs:int" name="beat_bats"/>
+    </xs:complexType>
+    <xs:simpleType name="dismissalTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="bowled"/>
+            <xs:enumeration value="caught"/>
+            <xs:enumeration value="caught_bowled"/>
+            <xs:enumeration value="leg_before_wicket"/>
+            <xs:enumeration value="run_out"/>
+            <xs:enumeration value="stumped"/>
+            <xs:enumeration value="handled_the_ball"/>
+            <xs:enumeration value="hit_wicket"/>
+            <xs:enumeration value="retired_hurt"/>
+            <xs:enumeration value="retired_out"/>
+            <xs:enumeration value="hit_the_ball_twice"/>
+            <xs:enumeration value="obstructing_the_field"/>
+            <xs:enumeration value="timed_out"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="dismissalTypeShotType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="attacking"/>
+            <xs:enumeration value="defensive"/>
+            <xs:enumeration value="left_alone"/>
+            <xs:enumeration value="semi_attacking"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="dismissalTypeStrokeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="hook"/>
+            <xs:enumeration value="pull_shot"/>
+            <xs:enumeration value="flick"/>
+            <xs:enumeration value="backfoot_punch"/>
+            <xs:enumeration value="weep"/>
+            <xs:enumeration value="leg_glance"/>
+            <xs:enumeration value="paddle_sweep"/>
+            <xs:enumeration value="reverse_sweep"/>
+            <xs:enumeration value="guided"/>
+            <xs:enumeration value="upper_cut"/>
+            <xs:enumeration value="square_cut"/>
+            <xs:enumeration value="square_drive"/>
+            <xs:enumeration value="punched"/>
+            <xs:enumeration value="pushed"/>
+            <xs:enumeration value="cover_drive"/>
+            <xs:enumeration value="off_drive"/>
+            <xs:enumeration value="straight_drive"/>
+            <xs:enumeration value="on_drive"/>
+            <xs:enumeration value="slog"/>
+            <xs:enumeration value="lofted_shot"/>
+            <xs:enumeration value="slog_sweep"/>
+            <xs:enumeration value="chinese_cut"/>
+            <xs:enumeration value="backfoot_defense"/>
+            <xs:enumeration value="forward_defense"/>
+            <xs:enumeration value="left_alone"/>
+            <xs:enumeration value="deliberate_padding"/>
+            <xs:enumeration value="ducked"/>
+            <xs:enumeration value="inside_out"/>
+            <xs:enumeration value="switch_hit"/>
+            <xs:enumeration value="scoop"/>
+            <xs:enumeration value="helicopter_shot"/>
+            <xs:enumeration value="normal"/>
+            <xs:enumeration value="inside_edge"/>
+            <xs:enumeration value="late_cut"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="dismissalTypeConnectType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="middled"/>
+            <xs:enumeration value="played_missed"/>
+            <xs:enumeration value="left_alone"/>
+            <xs:enumeration value="bottom_edge"/>
+            <xs:enumeration value="inside_edge"/>
+            <xs:enumeration value="outside_edge"/>
+            <xs:enumeration value="top_edge"/>
+            <xs:enumeration value="rapped_on_pads"/>
+            <xs:enumeration value="hit_on_glove"/>
+            <xs:enumeration value="hit_on_helmet"/>
+            <xs:enumeration value="hit_on_foot"/>
+            <xs:enumeration value="hit_on_body"/>
+            <xs:enumeration value="other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="dismissalTypeCreasePositionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="frontfoot"/>
+            <xs:enumeration value="backfoot"/>
+            <xs:enumeration value="charged_down_the_pitch"/>
+            <xs:enumeration value="others"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="dismissalTypeDetailsType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="square_leg"/>
+            <xs:enumeration value="deep_square_leg"/>
+            <xs:enumeration value="backward_square_leg"/>
+            <xs:enumeration value="deep_backward_square_leg"/>
+            <xs:enumeration value="leg_gully"/>
+            <xs:enumeration value="leg_slip"/>
+            <xs:enumeration value="short_fine_leg"/>
+            <xs:enumeration value="deep_fine_leg"/>
+            <xs:enumeration value="wicket_keeper"/>
+            <xs:enumeration value="1st_slip"/>
+            <xs:enumeration value="2nd_slip"/>
+            <xs:enumeration value="3rd_slip"/>
+            <xs:enumeration value="4th_slip"/>
+            <xs:enumeration value="gully"/>
+            <xs:enumeration value="short_third_man"/>
+            <xs:enumeration value="deep_third_man"/>
+            <xs:enumeration value="point"/>
+            <xs:enumeration value="backward_point"/>
+            <xs:enumeration value="deep_backward_point"/>
+            <xs:enumeration value="sweeper"/>
+            <xs:enumeration value="cover_point"/>
+            <xs:enumeration value="silly_point"/>
+            <xs:enumeration value="short_cover"/>
+            <xs:enumeration value="cover"/>
+            <xs:enumeration value="deep_cover"/>
+            <xs:enumeration value="extra_cover"/>
+            <xs:enumeration value="deep_extra_cover"/>
+            <xs:enumeration value="mid_off"/>
+            <xs:enumeration value="short_mid_off"/>
+            <xs:enumeration value="long_off"/>
+            <xs:enumeration value="bowler"/>
+            <xs:enumeration value="mid_on"/>
+            <xs:enumeration value="short_mid_on"/>
+            <xs:enumeration value="long_on"/>
+            <xs:enumeration value="mid_wicket"/>
+            <xs:enumeration value="short_mid_wicket"/>
+            <xs:enumeration value="deep_mid_wicket"/>
+            <xs:enumeration value="short_leg"/>
+            <xs:enumeration value="square_short_leg"/>
+            <xs:enumeration value="forward_short_leg"/>
+            <xs:enumeration value="silly_mid_on"/>
+            <xs:enumeration value="square_leg"/>
+            <xs:enumeration value="fine_leg"/>
+            <xs:enumeration value="third_man"/>
+            <xs:enumeration value="deep_point"/>
+            <xs:enumeration value="short_point"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="dismissalTypeDeliveryType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="angled_away"/>
+            <xs:enumeration value="angled_in"/>
+            <xs:enumeration value="arm_ball"/>
+            <xs:enumeration value="beamer"/>
+            <xs:enumeration value="bouncer"/>
+            <xs:enumeration value="carrom_ball"/>
+            <xs:enumeration value="chinaman"/>
+            <xs:enumeration value="doosra"/>
+            <xs:enumeration value="flipper"/>
+            <xs:enumeration value="full_toss"/>
+            <xs:enumeration value="googly"/>
+            <xs:enumeration value="in_swinger"/>
+            <xs:enumeration value="left_arm_orthodox"/>
+            <xs:enumeration value="leg_cutter"/>
+            <xs:enumeration value="leg_spin"/>
+            <xs:enumeration value="normal"/>
+            <xs:enumeration value="off_cutter"/>
+            <xs:enumeration value="off_spin"/>
+            <xs:enumeration value="out_swinger"/>
+            <xs:enumeration value="reverse_swing"/>
+            <xs:enumeration value="seamed_in"/>
+            <xs:enumeration value="seamed_out"/>
+            <xs:enumeration value="slider"/>
+            <xs:enumeration value="slow_ball"/>
+            <xs:enumeration value="slow_bouncer"/>
+            <xs:enumeration value="top_spin"/>
+            <xs:enumeration value="wide_yorker"/>
+            <xs:enumeration value="yorker"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

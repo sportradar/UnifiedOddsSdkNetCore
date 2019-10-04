@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="../common/sport_event_status.xsd" />
+    <xs:include schemaLocation="../common/team.xsd" />
+    <xs:complexType name="sportEventStatus">
+        <xs:sequence>
+            <xs:element type="periodScores" name="period_scores" minOccurs="0" />
+            <xs:element type="csgoRoundState" name="round_state" minOccurs="0"/>
+            <xs:element type="economy" name="economy" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="status" use="required"/>
+        <xs:attribute type="xs:string" name="match_status" use="optional"/>
+        <xs:attribute type="competitorUrn" name="winner_id" use="optional"/>
+        <xs:attribute type="xs:int" name="round_number" use="optional"/>
+        <xs:attribute type="xs:int" name="period" use="optional"/>
+        <xs:attribute type="xs:int" name="match_time" use="optional" />
+        <xs:attribute type="xs:int" name="home_score" use="optional"/>
+        <xs:attribute type="xs:int" name="away_score" use="optional"/>
+        <xs:attribute type="xs:string" name="winning_reason" use="optional"/>
+        <xs:attribute type="xs:boolean" name="decided_by_fed" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="periodScores">
+        <xs:sequence>
+            <xs:element type="csgoPeriodScore" name="period_score" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="csgoPeriodScore">
+        <xs:complexContent>
+            <xs:extension base="periodScoreBase">
+                <xs:attribute type="xs:int" name="home_score" use="required"/>
+                <xs:attribute type="xs:int" name="away_score" use="required"/>
+                <xs:attribute type="xs:string" name="map_name" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="csgoRoundState">
+        <xs:sequence>
+            <xs:element type="csgoTeamAliveStatus" name="counter_terrorists" minOccurs="1"/>
+            <xs:element type="csgoTeamAliveStatus" name="terrorists" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="csgoTeamAliveStatus">
+        <xs:sequence>
+            <xs:element type="team" name="team" maxOccurs="1" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="alive" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="economy">
+        <xs:attribute name="home" type="xs:int" use="optional" />
+        <xs:attribute name="away" type="xs:int" use="optional" />
+    </xs:complexType>
+</xs:schema>

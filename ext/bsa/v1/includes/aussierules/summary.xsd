@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/aussierules/sport_event.xsd"/>
+    <xs:include schemaLocation="sport_event_status.xsd"/>
+    <xs:include schemaLocation="match_statistics.xsd"/>
+    <xs:include schemaLocation="../common/sport_event_conditions.xsd"/>
+    <xs:include schemaLocation="../common/event.xsd"/>
+     <xs:complexType name="aussieRulesSummaryType">
+        <xs:sequence>
+            <xs:element type="aussieRulesSportEventSummary" name="summary" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="aussieRulesSportEventSummary">
+        <xs:sequence>
+            <xs:element type="aussieRulesSportEvent" name="sport_event" minOccurs="0"/>
+            <xs:element type="sportEventConditions" name="sport_event_conditions" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="sportEventStatus" name="sport_event_status" minOccurs="0"/>
+            <xs:element type="aussieRulesMatchStatistics" name="statistics" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

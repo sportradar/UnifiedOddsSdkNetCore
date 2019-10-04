@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns="http://schemas.sportradar.com/sportsapi/v1/cycling" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/cycling/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/competitor.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/coverage_info.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/race.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/result.xsd" />
+    <xs:include schemaLocation="../../includes/cycling/sport_event_status.xsd" />
+    <xs:element name="race_summary" type="raceSummaryEndpoint" />
+    <xs:complexType name="raceSummaryEndpoint">
+        <xs:sequence>
+            <xs:element type="race" minOccurs="1" maxOccurs="1" name="race" />
+            <xs:element type="sportEventStatus" minOccurs="0" maxOccurs="1" name="sport_event_status" />
+            <xs:element type="competitors" minOccurs="1" maxOccurs="1" name="competitors" />
+            <xs:element type="coverageInfo" minOccurs="1" maxOccurs="1" name="coverage_info" />
+            <xs:element type="results" minOccurs="0" maxOccurs="1" name="results" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

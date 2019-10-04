@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/unified/stage" xmlns="http://schemas.sportradar.com/sportsapi/v1/unified/stage" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../../includes/unified/urn.xsd" />
+    <xs:include schemaLocation="../../../includes/unified/tournament.xsd" />
+    <xs:include schemaLocation="../../../includes/unified/team.xsd" />
+    <xs:element name="tournament_standings" type="tournamentStandingsEndpoint" />
+    <xs:complexType name="tournamentStandingsEndpoint">
+        <xs:sequence>
+            <xs:element type="tournament" name="tournament" />
+            <xs:element type="standings" name="standings" maxOccurs="2" minOccurs="2" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="standings">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element type="driverStanding" name="driver" maxOccurs="unbounded"/>
+                <xs:element type="constructorStanding" name="constructor" maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="constructorStanding">
+        <xs:sequence>
+            <xs:element type="standingPoints" name="points" />
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" />
+        <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="driverStanding">
+        <xs:sequence>
+            <xs:element type="standingPoints" name="points" />
+            <xs:element type="standingPoints" name="rank" />
+            <xs:element type="constructor" name="constructor" />
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" />
+        <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="standingPoints">
+        <xs:attribute name="value" type="xs:int" />
+    </xs:complexType>
+    <xs:complexType name="constructor">
+        <xs:attribute name="id" type="competitorUrn" />
+        <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+</xs:schema>

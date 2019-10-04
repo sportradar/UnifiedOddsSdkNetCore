@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/player.xsd" />
+    <xs:complexType name="cricketPlayerExtended">
+        <xs:complexContent>
+            <xs:extension base="playerExtended" >
+                <xs:attribute type="xs:string" name="full_name" use="optional"/>
+                <xs:attribute type="xs:string" name="place_of_birth" use="optional"/>
+                <xs:attribute type="battingStyleType" name="batting_style" use="optional"/>
+                <xs:attribute type="bowlingStyleType" name="bowling_style" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="cricketPlayerLineup">
+        <xs:complexContent>
+            <xs:extension base="player" >
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute type="xs:int" name="order" use="optional"/>
+                <xs:attribute type="xs:string" name="position" use="optional"/>
+                <xs:attribute type="xs:int" name="jersey_number" use="optional"/>
+                <xs:attribute type="xs:boolean" name="is_captain" use="optional"/>
+                <xs:attribute type="xs:boolean" name="is_wicketkeeper" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="battingStyleType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="right_handed_batsman" />
+            <xs:enumeration value="left_handed_batsman" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bowlingStyleType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="right_arm_fast" />
+            <xs:enumeration value="right_arm_fast_medium" />
+            <xs:enumeration value="right_arm_medium_fast" />
+            <xs:enumeration value="right_arm_medium" />
+            <xs:enumeration value="left_arm_fast" />
+            <xs:enumeration value="left_arm_fast_medium" />
+            <xs:enumeration value="left_arm_medium_fast" />
+            <xs:enumeration value="left_arm_medium" />
+            <xs:enumeration value="off_break_right_arm" />
+            <xs:enumeration value="leg_break_right_arm" />
+            <xs:enumeration value="leg_break_googly_right_arm" />
+            <xs:enumeration value="slow_left_arm_orthodox" />
+            <xs:enumeration value="slow_left_arm_chinaman" />
+            <xs:enumeration value="left_arm" />
+            <xs:enumeration value="right_arm" />
+            <xs:enumeration value="right_arm_slow_medium" />
+            <xs:enumeration value="left_arm_slow" />
+            <xs:enumeration value="leg_break" />
+            <xs:enumeration value="leg_break_googly" />
+            <xs:enumeration value="leg_spin" />
+            <xs:enumeration value="off_break" />
+            <xs:enumeration value="off_spin" />
+            <xs:enumeration value="right_arm_slow" />
+            <xs:enumeration value="right_arm_underarm" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

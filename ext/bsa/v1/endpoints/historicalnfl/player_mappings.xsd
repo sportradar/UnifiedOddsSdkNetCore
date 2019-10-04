@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/historicalnfl" xmlns="http://schemas.sportradar.com/sportsapi/v1/historicalnfl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:element name="player_mappings" type="playerMappingsEndpoint" />
+    <xs:complexType name="playerMappingsEndpoint">
+        <xs:sequence>
+            <xs:element type="playerMapping" name="mappings" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="playerMapping">
+        <xs:sequence>
+            <xs:element name="mapping" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="us_id" type="xs:string"/>
+                    <xs:attribute name="id" type="playerUrn" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

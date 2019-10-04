@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/historicalnfl" xmlns="http://schemas.sportradar.com/sportsapi/v1/historicalnfl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:element name="season_team_profiles" type="seasonTeamProfilesEndpoint" />
+    <xs:complexType name="seasonTeamProfilesEndpoint">
+        <xs:sequence>
+            <xs:element type="teamProfile" name="team_profile" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="teamProfile">
+        <xs:sequence>
+            <xs:element name="team" type="team" />
+            <xs:element name="players" type="players" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="players">
+        <xs:sequence>
+            <xs:element name="player" type="playerWithRole" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="playerWithRole">
+        <xs:complexContent>
+            <xs:extension base="playerExtended">
+                <xs:sequence>
+                    <xs:element name="roles" type="roles" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="roles">
+        <xs:sequence>
+            <xs:element type="role" name="role" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="role">
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:boolean" name="active" use="required"/>
+        <xs:attribute type="xs:date" name="start_date" use="optional"/>
+        <xs:attribute type="xs:date" name="end_date" use="optional"/>
+        <xs:attribute type="xs:int" name="jersey_number" use="optional"/>
+    </xs:complexType>
+</xs:schema>

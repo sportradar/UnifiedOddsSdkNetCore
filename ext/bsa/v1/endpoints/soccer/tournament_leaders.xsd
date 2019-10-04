@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/category.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/common/season_coverage_info.xsd" />
+    <xs:element name="tournament_leaders" type="tournamentLeadersEndpoint" />
+    <xs:complexType name="tournamentLeadersEndpoint">
+        <xs:sequence>
+            <xs:element type="tournamentExtended" name="tournament" minOccurs="1" maxOccurs="1" />
+            <xs:element type="seasonCoverageInfo" minOccurs="0" name="season_coverage_info" />
+            <xs:element type="topPoints" name="top_points" minOccurs="0" />
+            <xs:element type="topGoals" name="top_goals" minOccurs="0" />
+            <xs:element type="topAssists" name="top_assists" minOccurs="0" />
+            <xs:element type="topCards" name="top_cards" minOccurs="0" />
+            <xs:element type="topOwnGoals" name="top_own_goals" minOccurs="0" />
+            <xs:element type="topCleanSheets" name="top_clean_sheets" minOccurs="0" />
+            <xs:element type="topPenaltyGoals" name="top_penalty_goals" minOccurs="0" />
+            <xs:element type="topShotsFaced" name="top_shots_faced_saved" minOccurs="0" />
+            <xs:element type="topShotsOnGoal" name="top_shots_on_goal" minOccurs="0" />
+            <xs:element type="topChancesCreated" name="top_chances_created" minOccurs="0" />
+            <xs:element type="topSuccessfulPasses" name="top_successful_passes" minOccurs="0" />
+            <xs:element type="topSuccessfulLongPasses" name="top_successful_long_passes" minOccurs="0" />
+            <xs:element type="topSuccessfulMediumPasses" name="top_successful_medium_passes" minOccurs="0" />
+            <xs:element type="topSuccessfulShortPasses" name="top_successful_short_passes" minOccurs="0" />
+            <xs:element type="topSuccessfulTackleDuels" name="top_successful_tackle_duels" minOccurs="0" />
+            <xs:element type="topSuccessfulHeaderDuels" name="top_successful_header_duels" minOccurs="0" />
+            <xs:element type="topSuccessfulSprintDuels" name="top_successful_sprint_duels" minOccurs="0" />
+            <xs:element type="topMinutesPlayed" name="top_minutes_played" minOccurs="0" />
+            <xs:element type="topAveragePerformance" name="top_average_performance_score" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="topPoints">
+        <xs:sequence>
+            <xs:element type="pointsPlayer" name="points" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="pointsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="goals" use="required"/>
+        <xs:attribute type="xs:int" name="assists" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topGoals">
+        <xs:sequence>
+            <xs:element type="goalsPlayer" name="goals" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="goalsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="goals" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topAssists">
+        <xs:sequence>
+            <xs:element type="assistsPlayer" name="assists" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="assistsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="assists" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topCards">
+        <xs:sequence>
+            <xs:element type="cardsPlayer" name="cards" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cardsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="red_cards" use="required"/>
+        <xs:attribute type="xs:int" name="yellow_red_cards" use="required"/>
+        <xs:attribute type="xs:int" name="yellow_cards" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topOwnGoals">
+        <xs:sequence>
+            <xs:element type="ownGoalsPlayer" name="own_goals" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ownGoalsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="own_goals" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topCleanSheets">
+        <xs:sequence>
+            <xs:element type="cleanSheetsPlayer" name="clean_sheets" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cleanSheetsPlayer">
+        <xs:attribute type="xs:int" name="clean_sheets" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topPenaltyGoals">
+        <xs:sequence>
+            <xs:element type="penaltyGoalsPlayer" name="penalty_goals" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="penaltyGoalsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="penalty_goals" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topShotsFaced">
+        <xs:sequence>
+            <xs:element type="shotsFacedPlayer" name="shots_faced_saved" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="shotsFacedPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="shots_faced_saved" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topShotsOnGoal">
+        <xs:sequence>
+            <xs:element type="shotsOnGoalPlayer" name="shots_on_goal" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="shotsOnGoalPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="shots_on_goal" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topChancesCreated">
+        <xs:sequence>
+            <xs:element type="chancesCreatedPlayer" name="chances_created" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="chancesCreatedPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="chances_created" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topSuccessfulPasses">
+        <xs:sequence>
+            <xs:element type="successfulPassesPlayer" name="successful_passes" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="successfulPassesPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful_passes" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topSuccessfulLongPasses">
+        <xs:sequence>
+            <xs:element type="successfulLongPassesPlayer" name="successful_long_passes" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="successfulLongPassesPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful_long_passes" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topSuccessfulMediumPasses">
+        <xs:sequence>
+            <xs:element type="successfulMediumPassesPlayer" name="successful_medium_passes" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="successfulMediumPassesPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful_medium_passes" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topSuccessfulShortPasses">
+        <xs:sequence>
+            <xs:element type="successfulShortPassesPlayer" name="successful_short_passes" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="successfulShortPassesPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful_short_passes" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topSuccessfulTackleDuels">
+        <xs:sequence>
+            <xs:element type="successfulTackleDuelsPlayer" name="successful_tackle_duels" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="successfulTackleDuelsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful_tackle_duels" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topSuccessfulHeaderDuels">
+        <xs:sequence>
+            <xs:element type="successfulHeaderDuelsPlayer" name="successful_header_duels" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="successfulHeaderDuelsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful_header_duels" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topSuccessfulSprintDuels">
+        <xs:sequence>
+            <xs:element type="successfulSprintDuelsPlayer" name="successful_sprint_duels" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="successfulSprintDuelsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful_sprint_duels" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+        <xs:attribute type="xs:int" name="percentage" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topMinutesPlayed">
+        <xs:sequence>
+            <xs:element type="minutesPlayedPlayer" name="minutes_played" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="minutesPlayedPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="minutes_played" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topAveragePerformance">
+        <xs:sequence>
+            <xs:element type="averagePerformancePlayer" name="average_performance_score" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="averagePerformancePlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:double" name="average_performance_score" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+</xs:schema>

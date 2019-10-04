@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns="http://schemas.sportradar.com/sportsapi/v1/soccer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:element name="tournament_missing_players" type="tournamentMissingPlayersEndpoint" />
+    <xs:complexType name="tournamentMissingPlayersEndpoint">
+        <xs:sequence>
+            <xs:element type="tournament" name="tournament" />
+            <xs:element type="tournamentTeamsMissingPlayers" name="teams" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentTeamsMissingPlayers">
+        <xs:sequence>
+            <xs:element name="team" type="teamWithPlayers" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="teamWithPlayers">
+        <xs:sequence>
+            <xs:element name="players" minOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="player" type="playerMissing" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="competitorUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="abbreviation" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="playerMissing">
+        <xs:complexContent>
+            <xs:extension base="player" >
+                <xs:attribute type="missingStatus" name="status" use="required"/>
+                <xs:attribute type="xs:string" name="reason" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="missingStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="missing" />
+            <xs:enumeration value="doubtful" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns="http://schemas.sportradar.com/sportsapi/v1/tennis" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/tennis/player.xsd" />
+    <xs:include schemaLocation="../../includes/tennis/ranking.xsd" />
+    <xs:element name="double_team_race_rankings" type="doubleTeamRaceRankingsEndpoint" />
+    <xs:complexType name="doubleTeamRaceRankingsEndpoint">
+        <xs:sequence>
+            <xs:element type="ranking" name="ranking" minOccurs="2" maxOccurs="2" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+</xs:schema>

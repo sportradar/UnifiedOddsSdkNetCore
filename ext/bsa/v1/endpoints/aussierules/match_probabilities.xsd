@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/aussierules" xmlns="http://schemas.sportradar.com/sportsapi/v1/aussierules" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/aussierules/sport_event.xsd" />
+    <xs:element name="match_probabilities" type="matchProbabilitiesEndpoint" />
+    <xs:complexType name="matchProbabilitiesEndpoint">
+        <xs:sequence>
+            <xs:element type="aussieRulesSportEvent" name="sport_event" />
+            <xs:element type="probabilities" name="probabilities" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="probabilityOutcome">
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:double" name="probability" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="probabilityMarket">
+        <xs:sequence>
+            <xs:element type="probabilityOutcome" name="outcome" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required" />
+    </xs:complexType>
+    <xs:complexType name="probabilities">
+        <xs:sequence>
+            <xs:element type="probabilityMarket" name="market" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd" />
+    <xs:complexType name="sportEventStatusBase">
+        <xs:sequence>
+            <xs:element type="clock" name="clock" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="periodScores" name="period_scores"  minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="status" use="required"/>
+        <xs:attribute type="xs:string" name="match_status" use="optional"/>
+        <xs:attribute type="competitorUrn" name="winner_id" use="optional"/>
+        <xs:attribute type="xs:string" name="winning_reason" use="optional"/>
+        <xs:attribute type="xs:boolean" name="decided_by_fed" use="optional"/>
+        <xs:attribute type="xs:int" name="period" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="periodScoreBase">
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:int" name="number" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="clock">
+        <xs:attribute type="xs:string" name="match_time" use="required"/>
+        <xs:attribute type="xs:string" name="stoppage_time" use="optional"/>
+        <xs:attribute type="xs:string" name="stoppage_time_announced" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="commonSportEventStatus">
+        <xs:complexContent>
+            <xs:extension base="sportEventStatusBase">
+                <xs:attribute type="xs:double" name="home_score" use="optional"/>
+                <xs:attribute type="xs:double" name="away_score" use="optional"/>
+                <xs:attribute type="xs:double" name="aggregate_home_score" use="optional"/>
+                <xs:attribute type="xs:double" name="aggregate_away_score" use="optional"/>
+                <xs:attribute type="competitorUrn" name="aggregate_winner_id" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

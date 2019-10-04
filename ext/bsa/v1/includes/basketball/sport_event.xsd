@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:include schemaLocation="../common/tournament.xsd" />
+    <xs:include schemaLocation="../common/team.xsd" />
+    <xs:include schemaLocation="../common/season.xsd" />
+    <xs:include schemaLocation="../common/match_round.xsd" />
+    <xs:complexType name="sportEvent">
+        <xs:sequence>
+            <xs:element type="matchRound" name="tournament_round" minOccurs="0" />
+            <xs:element type="seasonExtended" name="season" minOccurs="0"  />
+            <xs:element type="tournament" name="tournament" />
+            <xs:element type="sportEventCompetitors" name="competitors" />
+        </xs:sequence>
+        <xs:attribute type="matchUrn" name="id"/>
+        <xs:attribute type="xs:dateTime" name="scheduled"/>
+        <xs:attribute type="xs:string" name="status" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="sportEventCompetitors">
+        <xs:sequence>
+            <xs:element type="teamCompetitor" name="team" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/sport.xsd" />
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:include schemaLocation="../../includes/common/category.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/tournament.xsd" />
+    <xs:element name="season_leaders" type="tournamentLeadersEndpoint" />
+    <xs:complexType name="tournamentLeadersEndpoint">
+        <xs:sequence>
+            <xs:element type="topPoints" name="top_points" minOccurs="0" />
+            <xs:element type="topTries" name="top_tries" minOccurs="0"/>
+            <xs:element type="topConversions" name="top_conversions" minOccurs="0"/>
+            <xs:element type="topPenaltyGoals" name="top_penalty_goals" minOccurs="0"/>
+            <xs:element type="topDropGoals" name="top_drop_goals" minOccurs="0"/>
+            <xs:element type="topCards" name="top_cards" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="topPoints">
+        <xs:sequence>
+            <xs:element type="pointsPlayer" name="points" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="pointsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element name="competitors" type="competitors" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="tries" use="required"/>
+        <xs:attribute type="xs:int" name="conversions" use="required"/>
+        <xs:attribute type="xs:int" name="penalty_goals" use="required"/>
+        <xs:attribute type="xs:int" name="drop_goals" use="required"/>
+        <xs:attribute type="xs:int" name="total_points" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topTries">
+    <xs:sequence>
+        <xs:element type="pointsTries" name="tries" maxOccurs="unbounded" minOccurs="0" />
+    </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="pointsTries">
+     <xs:sequence>
+         <xs:element type="player" name="player" />
+         <xs:element name="competitors" type="competitors" />
+     </xs:sequence>
+        <xs:attribute type="xs:int" name="tries" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topConversions">
+        <xs:sequence>
+            <xs:element type="pointsConversions" name="conversions" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="pointsConversions">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element name="competitors" type="competitors" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topPenaltyGoals">
+        <xs:sequence>
+            <xs:element type="penaltyGoalsPlayer" name="penalty_goals" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="penaltyGoalsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element name="competitors" type="competitors"/>
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topDropGoals">
+        <xs:sequence>
+            <xs:element type="dropGoalsPlayer" name="drop_goals" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="dropGoalsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element name="competitors" type="competitors" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="successful" use="required"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="topCards">
+        <xs:sequence>
+            <xs:element type="cardsPlayer" name="cards" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cardsPlayer">
+        <xs:sequence>
+            <xs:element type="player" name="player" />
+            <xs:element type="team" name="team" />
+        </xs:sequence>
+        <xs:attribute type="xs:int" name="red_cards" use="optional"/>
+        <xs:attribute type="xs:int" name="yellow_red_cards" use="optional"/>
+        <xs:attribute type="xs:int" name="yellow_cards" use="optional"/>
+        <xs:attribute type="xs:int" name="rank" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="competitors">
+        <xs:sequence>
+            <xs:element name ="competitor" type="team" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

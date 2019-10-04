@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/csgo" xmlns="http://schemas.sportradar.com/sportsapi/v1/csgo" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/team.xsd" />
+    <xs:include schemaLocation="../../includes/common/player.xsd" />
+    <xs:element name="team_profile" type="teamProfileEndpoint" />
+    <xs:complexType name="teamProfileEndpoint">
+        <xs:sequence>
+            <xs:element type="teamExtended" name="team"/>
+            <xs:element type="logo" name="logo" minOccurs="0" />
+            <xs:element type="players" name="players" minOccurs="0" />
+            <xs:element type="teamProfileStatistics" name="statistics" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="players">
+        <xs:sequence>
+            <xs:element type="playerExtended" name="player" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="teamProfilePlayerStatistics">
+        <xs:sequence>
+            <xs:element name="player" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="statistics">
+                            <xs:complexType>
+                                <xs:attribute type="xs:int" name="maps_played" use="required" />
+                                <xs:attribute type="xs:int" name="maps_won" use="required" />
+                                <xs:attribute type="xs:int" name="maps_lost" use="required" />
+                                <xs:attribute type="xs:int" name="rounds_played" use="required" />
+                                <xs:attribute type="xs:int" name="rounds_won" use="required" />
+                                <xs:attribute type="xs:int" name="rounds_lost" use="required" />
+                                <xs:attribute type="xs:int" name="kills" use="optional" />
+                                <xs:attribute type="xs:int" name="deaths" use="optional" />
+                                <xs:attribute type="xs:int" name="assists" use="optional" />
+                                <xs:attribute type="xs:int" name="headshots" use="optional" />
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute type="playerUrn" name="id" use="required"/>
+                    <xs:attribute type="xs:string" name="name" use="required"/>
+                    <xs:attribute type="xs:string" name="nickname" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="logo">
+        <xs:attribute type="xs:string" name="url" use="required" />
+    </xs:complexType>
+    <xs:complexType name="teamProfileStatistics">
+        <xs:sequence>
+            <xs:element name="players" type="teamProfilePlayerStatistics" minOccurs="0" />
+            <xs:element name="team" type="teamProfileTeamStatistics" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="teamProfileTeamStatistics">
+        <xs:sequence>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="trend" use="optional" />
+                    <xs:attribute type="xs:int" name="matches_won" use="optional" />
+                    <xs:attribute type="xs:int" name="matches_lost" use="optional" />
+                    <xs:attribute type="xs:int" name="maps_played" use="required" />
+                    <xs:attribute type="xs:int" name="maps_won" use="required" />
+                    <xs:attribute type="xs:int" name="maps_lost" use="required" />
+                    <xs:attribute type="xs:int" name="rounds_played" use="required" />
+                    <xs:attribute type="xs:int" name="rounds_won" use="required" />
+                    <xs:attribute type="xs:int" name="rounds_lost" use="required" />
+                    <xs:attribute type="xs:int" name="kills" use="optional" />
+                    <xs:attribute type="xs:int" name="deaths" use="optional" />
+                    <xs:attribute type="xs:int" name="assists" use="optional" />
+                    <xs:attribute type="xs:int" name="headshots" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="competitorUrn" name="id" use="required" />
+        <xs:attribute type="xs:string" name="name" use="optional" />
+        <xs:attribute type="xs:string" name="abbreviation" use="optional" />
+    </xs:complexType>
+</xs:schema>

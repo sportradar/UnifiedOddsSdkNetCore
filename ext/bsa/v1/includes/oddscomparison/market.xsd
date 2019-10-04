@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../common/urn.xsd" />
+    <xs:complexType name="markets">
+        <xs:sequence>
+            <xs:element name="market" type="market" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="last_updated" type="xs:dateTime" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="market">
+        <xs:sequence>
+            <xs:element name="book" type="book" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="odds_type_id" type="xs:int" use="optional"/>
+        <xs:attribute name="group_name" type="xs:string" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="book">
+        <xs:sequence>
+            <xs:element name="outcome" type="outcome" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="id" type="bookmakerUrn" use="required" />
+        <xs:attribute name="name" type="xs:string" use="optional" />
+        <xs:attribute name="removed" type="xs:string" use="optional" />
+        <xs:attribute name="scope" type="xs:string" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="outcome">
+        <xs:attribute name="type" type="xs:string" use="required" />
+        <xs:attribute name="odds_field_id" type="xs:int" use="optional" />
+        <xs:attribute name="odds" type="xs:string" use="optional"/>
+        <xs:attribute name="handicap" type="xs:string" use="optional"/>
+        <xs:attribute name="spread" type="xs:double" use="optional"/>
+        <xs:attribute name="total" type="xs:double" use="optional"/>
+        <xs:attribute name="percentage" type="xs:double" use="optional" />
+        <xs:attribute name="lay_odds" type="xs:string" use="optional" />
+        <xs:attribute name="back_odds" type="xs:string" use="optional" />
+        <xs:attribute name="lay_max" type="xs:string" use="optional" />
+        <xs:attribute name="back_max" type="xs:string" use="optional" />
+        <xs:attribute name="lay_spread" type="xs:double" use="optional" />
+        <xs:attribute name="back_spread" type="xs:double" use="optional" />
+        <xs:attribute name="deep_link" type="xs:string" use="optional" />
+        <xs:attribute name="opening_odds" type="xs:string" use="optional"/>
+        <xs:attribute name="result" type="xs:string" use="optional"/>
+    </xs:complexType>
+</xs:schema>

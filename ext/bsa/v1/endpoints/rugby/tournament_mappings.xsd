@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns="http://schemas.sportradar.com/sportsapi/v1/rugby" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="../../includes/common/urn.xsd" />
+    <xs:element name="tournament_mappings" type="tournamentMappingsEndpoint" />
+    <xs:complexType name="tournamentMappingsEndpoint">
+        <xs:sequence>
+            <xs:element type="tournamentMapping" name="mappings" />
+        </xs:sequence>
+        <xs:attribute type="xs:dateTime" name="generated_at"/>
+    </xs:complexType>
+    <xs:complexType name="tournamentMapping">
+        <xs:sequence>
+            <xs:element name="mapping" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="us_id" type="xs:string"/>
+                    <xs:attribute name="id" type="tournamentUrn" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

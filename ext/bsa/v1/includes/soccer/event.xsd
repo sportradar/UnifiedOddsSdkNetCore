@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="phrase.xsd" />
+    <xs:include schemaLocation="event_player.xsd" />
+    <xs:complexType name="timelineEvent">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element type="phrase" name="commentary" minOccurs="0" />
+            <xs:element type="eventPlayer" name="goal_scorer" minOccurs="0" />
+            <xs:element type="eventPlayerAssist" name="assist" minOccurs="0" maxOccurs="2" />
+            <xs:element type="eventPlayer" name="player" minOccurs="0" />
+            <xs:element type="eventPlayer" name="player_out" minOccurs="0" />
+            <xs:element type="eventPlayer" name="player_in" minOccurs="0" />
+        </xs:choice>
+        <xs:attribute type="xs:int" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:dateTime" name="time" use="required"/>
+        <xs:attribute type="xs:string" name="period_name" use="optional"/>
+        <xs:attribute type="xs:int" name="match_time" use="optional"/>
+        <xs:attribute type="xs:string" name="match_clock" use="optional"/>
+        <xs:attribute type="xs:string" name="team" use="optional"/>
+        <xs:attribute type="xs:int" name="x" use="optional"/>
+        <xs:attribute type="xs:int" name="y" use="optional"/>
+        <xs:attribute type="xs:double" name="home_score" use="optional"/>
+        <xs:attribute type="xs:double" name="away_score" use="optional"/>
+        <xs:attribute type="xs:string" name="period" use="optional"/>
+        <xs:attribute type="soccerPeriodType" name="period_type" use="optional"/>
+        <xs:attribute type="xs:string" name="description" use="optional"/>
+        <xs:attribute type="xs:string" name="status" use="optional"/>
+        <xs:attribute type="xs:string" name="stoppage_time" use="optional"/>
+        <xs:attribute type="xs:string" name="outcome" use="optional"/>
+        <xs:attribute type="xs:int" name="shootout_home_score" use="optional"/>
+        <xs:attribute type="xs:int" name="shootout_away_score" use="optional"/>
+    </xs:complexType>
+    <xs:simpleType name="soccerPeriodType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="regular_period" />
+            <xs:enumeration value="overtime" />
+            <xs:enumeration value="penalties" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

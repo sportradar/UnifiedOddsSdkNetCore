@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="matchUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:match:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="playerUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:player:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="riderUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:rider:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="categoryUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:category:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="athleteUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:athlete:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="competitorUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:competitor:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="raceUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:race:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stageUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:stage:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="tournamentUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:tournament:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="raceTournamentUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:race_tournament:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="seasonUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:season:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="teamUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:team:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="refereeUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:referee:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="umpireUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:umpire:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="sportUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:sport:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="venueUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:venue:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="sportEventUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:match:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="countryCode">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{3}" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="iocCountryCode">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{3}" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bookmakerUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:book:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="tourUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:tour:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="groupUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:table:[0-9]+|sr:cup:[0-9]+|sr:group:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="matchOrStageUrn">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="sr:match:[0-9]+|sr:stage:[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

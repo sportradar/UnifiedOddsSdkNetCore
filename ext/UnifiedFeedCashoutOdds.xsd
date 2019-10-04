@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="UnifiedFeedAMQP.xsd"/>
+    <xs:element name="cashout">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sport_event_status" type="sportEventStatus" minOccurs="0" maxOccurs="1" />
+                <xs:element name="odds" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="market" type="oddsChangeMarket" minOccurs="0" maxOccurs="unbounded" />
+                        </xs:sequence>
+                        <xs:attribute name="betting_status" type="xs:int" use="optional" />
+                        <xs:attribute name="betstop_reason" type="xs:int" use="optional" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="messageAttributes" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
