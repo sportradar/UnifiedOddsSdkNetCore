@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.14.7216</AssemblyVersion>
-    <FileVersion>1.0.14.7216</FileVersion>
+    <AssemblyVersion>1.0.40.7229</AssemblyVersion>
+    <FileVersion>1.0.40.7229</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +23,7 @@
     <PackageReference Include="App.Metrics.Core" Version="3.1.0" />
     <PackageReference Include="App.Metrics.Health.Core" Version="3.1.0" />
     <PackageReference Include="App.Metrics.Reporting.TextFile" Version="3.1.0" />
+    <PackageReference Include="Castle.Core" Version="4.4.0" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />

@@ -7,13 +7,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Sportradar.OddsFeed.SDK.Messages.Test
 {
     [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class URNTests
     {
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
         public void MissingPrefixIsNotAllowed()
         {
-            var urn = "match:1234";
+            const string urn = "match:1234";
             URN.Parse(urn);
         }
 
@@ -135,7 +136,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Test
         }
 
         [TestMethod]
-        public void ParsedURNHasCorrectValues()
+        public void ParsedUrnHasCorrectValues()
         {
             var urnString = "sr:sport_event:1234";
             var urn = URN.Parse(urnString);

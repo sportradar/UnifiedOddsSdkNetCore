@@ -11,7 +11,9 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using System.Web;
 using App.Metrics;
+using App.Metrics.Counter;
 using App.Metrics.Scheduling;
 using Common.Logging;
 using RabbitMQ.Client;
@@ -98,6 +100,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<IDeserializer<bookmaker_details>, Deserializer<bookmaker_details>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO>, BookmakerDetailsMapperFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<IDataProvider<BookmakerDetailsDTO>, BookmakerDetailsProvider>(
+                "BookmakerDetailsProvider",
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     "{0}/v1/users/whoami.xml",
@@ -107,7 +110,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             //container.RegisterInstance(LogProxyFactory.Create<BookmakerDetailsFetcher>(m => m.Name.Contains("Async"), LoggerType.ClientInteraction, true, container.Resolve<IDataProvider<BookmakerDetailsDTO>>()), new ContainerControlledLifetimeManager());
 
-            var config = new OddsFeedConfigurationInternal(userConfig, container.Resolve<BookmakerDetailsProvider>());
+            var bookmakerDetailsProvider = (BookmakerDetailsProvider)container.Resolve<IDataProvider<BookmakerDetailsDTO>>("BookmakerDetailsProvider");
+            var config = new OddsFeedConfigurationInternal(userConfig, bookmakerDetailsProvider);
 
             container.RegisterInstance(config.ExceptionHandlingStrategy, new ContainerControlledLifetimeManager());
             container.RegisterInstance<IOddsFeedConfiguration>(config, new ContainerControlledLifetimeManager());
@@ -949,16 +953,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 .Configuration.Configure(
                     options =>
                     {
-                        options.DefaultContextLabel = "MyContext";
-                        options.GlobalTags.Add("myTagKey", "myTagValue");
+                        options.DefaultContextLabel = "UfSdkNetCore";
+                        options.GlobalTags.Add("app", "UfSdkNetCore");
                         options.Enabled = true;
                         options.ReportingEnabled = true;
                     }) // configure other options
-                .Report.ToTextFile()
+                .Report.ToTextFile(options => options.FlushInterval = TimeSpan.FromSeconds(30))
                 .OutputMetrics.AsPlainText()
                 .Build();
             //Metric.Config.WithAllCounters().WithReporting(rep => rep.WithReport(metricReporter, TimeSpan.FromSeconds(config.StatisticsTimeout)));
-
+            
             var scheduler = new AppMetricsTaskScheduler(
                 TimeSpan.FromSeconds(config.StatisticsTimeout),
                 async () =>
@@ -966,6 +970,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     await Task.WhenAll(metrics.ReportRunner.RunAllAsync());
                 });
             scheduler.Start();
+
+
 
 
             //container.RegisterInstance(metricReporter, new ContainerControlledLifetimeManager());
@@ -1015,24 +1021,25 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 RestConnectionFailureTimeoutInSec
             };
 
-            container.RegisterInstance<IDataRestful>(LogProxyFactory.Create<HttpDataRestful>(argsRest, m => m.Name.Contains("Async"), LoggerType.RestTraffic),
-                new ContainerControlledLifetimeManager());
+            var proxyDataRestful = LogInterceptorFactory.Create<HttpDataRestful>(argsRest, m => m.Name.Contains("Async"), LoggerType.RestTraffic);
+            container.RegisterInstance<IDataRestful>("HttpDataRestful4ReplayManager", proxyDataRestful, new ContainerControlledLifetimeManager());
 
             container.RegisterType<IReplayManagerV1, ReplayManager>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     config.ReplayApiBaseUrl,
-                    new ResolvedParameter<IDataRestful>(),
+                    new ResolvedParameter<IDataRestful>("HttpDataRestful4ReplayManager"),
                     config.NodeId));
 
             object[] args =
             {
                 config.ReplayApiBaseUrl,
-                container.Resolve<IDataRestful>(),
+                container.Resolve<IDataRestful>("HttpDataRestful4ReplayManager"),
                 config.NodeId
             };
-            container.RegisterInstance<IReplayManagerV1>(LogProxyFactory.Create<ReplayManager>(args, m => m.Name.Contains("e"), LoggerType.ClientInteraction),
-                new ContainerControlledLifetimeManager());
+
+            var proxyReplayManager = LogInterceptorFactory.Create<ReplayManager>(args, m => m.Name.Contains("e"), LoggerType.ClientInteraction);
+            container.RegisterInstance<IReplayManagerV1>(proxyReplayManager);
         }
 
         private static void RegisterFeedSystemSession(IUnityContainer container)

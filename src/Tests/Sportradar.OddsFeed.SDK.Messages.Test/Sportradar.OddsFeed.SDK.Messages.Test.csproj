@@ -2,8 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.2.7215</AssemblyVersion>
-    <FileVersion>1.0.2.7215</FileVersion>
+
+    <IsPackable>false</IsPackable>
+
+    <AssemblyVersion>1.0.2.7223</AssemblyVersion>
+
+    <FileVersion>1.0.2.7223</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Sportradar.OddsFeed.SDK.Messages\Sportradar.OddsFeed.SDK.Messages.csproj" />
+  </ItemGroup>
 
 </Project>

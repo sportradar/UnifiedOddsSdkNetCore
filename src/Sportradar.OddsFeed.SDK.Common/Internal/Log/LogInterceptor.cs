@@ -17,14 +17,20 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
     /// <summary>
     /// A log proxy used to log input and output parameters of a method
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class LogProxy<T> : IInterceptor
+    public class LogInterceptor : IInterceptor
     {
-        private Predicate<MethodInfo> _filter;
-        private LoggerType _defaultLoggerType;
-        private bool _canOverrideLoggerType;
+        /// <summary>
+        /// A Predicate used to filter which class methods may be logged
+        /// </summary>
+        public Predicate<MethodInfo> Filter
+        {
+            get => _filter;
+            set { _filter = value ?? (m => true); }
+        }
 
-        private T _decorated;
+        private Predicate<MethodInfo> _filter;
+        private readonly LoggerType _defaultLoggerType;
+        private readonly bool _canOverrideLoggerType;
 
         private struct LogProxyPerm
         {
@@ -40,26 +46,17 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         /// <summary>
         /// Initializes new instance of the <see cref="LogProxy{T}"/>
         /// </summary>
-        /// <param name="decorated">A base class to be decorated</param>
         /// <param name="loggerType">A <see cref="LoggerType"/> to be used within the proxy</param>
         /// <param name="canOverrideLoggerType">A value indicating if the <see cref="LoggerType"/> can be overridden with <see cref="LogAttribute"/> on a method or class</param>
-        public LogProxy(T decorated, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true)
+        /// <param name="filter">The filter used to filter log messages</param>
+        public LogInterceptor(LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true, Predicate<MethodInfo> filter = null)
         {
-            _decorated = decorated;
             _defaultLoggerType = loggerType;
             _canOverrideLoggerType = canOverrideLoggerType;
+            _filter = filter;
 
             _proxyPerms = new ConcurrentDictionary<int, LogProxyPerm>();
         }
-
-        ///// <summary>
-        ///// A Predicate used to filter which class methods may be logged
-        ///// </summary>
-        //public Predicate<MethodInfo> Filter
-        //{
-        //    get => _filter;
-        //    set { _filter = value ?? (m => true); }
-        //}
 
 
 
@@ -366,31 +363,25 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 }
 
                 var methodCall = $"{methodInfo.Name}()";
-                if (logEnabled && invocation.Arguments != null && invocation.Arguments.Any())
+                if (invocation.Arguments != null && invocation.Arguments.Any())
                 {
-                    logger.Debug($"{methodInfo.Name} arguments:");
-                    for (var i = 0; i < invocation.Arguments.Length; i++)
-                    {
-                        methodCall += $",{methodInfo.GetGenericArguments()[i].Name}={invocation.Arguments[i]}";
-                        logger.Debug($"\t{methodInfo.GetGenericArguments()[i].Name}={invocation.Arguments[i]}");
-                    }
-
-                    methodCall = $"{methodInfo.Name}({methodCall.Substring(1)})";
+                    methodCall = $"{methodInfo.Name}({string.Join(',', invocation.Arguments.Select(s=> $"{s.GetType().Name}={s}"))})";
+                }
+                if (logEnabled)
+                {
                     logger.Debug($"Invoking '{methodCall}' ...");
                 }
 
-                //invocation.Proceed();// MAIN EXECUTION
-                var result = methodInfo.Invoke(_decorated, invocation.Arguments); // MAIN EXECUTION
+                invocation.Proceed();// MAIN EXECUTION
 
-                var task = result as Task;
-                if (task != null)
+                if (invocation.ReturnValue is Task task)
                 {
                     var perm = new LogProxyPerm
                     {
                         LogEnabled = logEnabled,
                         Logger = logger,
                         MethodInfo = methodInfo,
-                        Result = result,
+                        Result = invocation.ReturnValue,
                         Watch = watch
                     };
                     _proxyPerms.Add(task.Id, perm);
@@ -399,14 +390,17 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                         logger.Debug($"TaskId:{task.Id} is executing and we wait to finish ...");
                     }
                     task.ContinueWith(TaskExecutionFinished);
-                    invocation.ReturnValue = task;
-                    invocation.Proceed();
+                    //invocation.ReturnValue = task;
+                    //invocation.Proceed();
                     //return task; // new ReturnMessage(result, null, 0, methodCall.LogicalCallContext, methodCall);
                 }
+                else
+                {
+                    FinishExecution(logEnabled, methodInfo, invocation.ReturnValue?.GetType().Name, invocation.ReturnValue, logger, watch);
+                }
 
-                FinishExecution(logEnabled, methodInfo, result?.GetType().Name, result, logger, watch);
-                invocation.ReturnValue = result;
-                invocation.Proceed();
+                //invocation.ReturnValue = invocation.ReturnValue;
+                //invocation.Proceed();
                 //return result;
             }
             catch (Exception e)

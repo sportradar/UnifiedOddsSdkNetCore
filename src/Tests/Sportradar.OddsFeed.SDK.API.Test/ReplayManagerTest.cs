@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
     [TestClass]
     public class ReplayManagerTest
     {
-        private HttpDataRestful _httpDataRestful;
+        private IDataRestful _httpDataRestful;
         private IReplayManager _replayManager;
 
         [TestInitialize]
@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                 15
             };
 
-            _httpDataRestful = LogProxyFactory.Create<HttpDataRestful>(args);
+            _httpDataRestful = LogProxyFactory.Create<IDataRestful>(args);
 
             object[] args2 =
             {

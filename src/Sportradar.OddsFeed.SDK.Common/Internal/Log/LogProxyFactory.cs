@@ -21,11 +21,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         /// <returns>T</returns>
         public static T Create<T>(object[] args, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true)
         {
-            var tmp = (T) Activator.CreateInstance(typeof(T), args);
+            var tmp = (T)Activator.CreateInstance(typeof(T), args);
             //var logProxy = new LogProxy<T>(tmp, loggerType, canOverrideLoggerType);
-            return LogProxy<T>.Create(tmp, null, loggerType, canOverrideLoggerType);
-            //var logProxy = new LogProxy<T>(tmp, loggerType, canOverrideLoggerType);
-            //return (T) logProxy.GetTransparentProxy();
+            //return LogProxy<T>.Create(tmp, null, loggerType, canOverrideLoggerType);
+            var logProxy = new LogProxy<T>(tmp, loggerType, canOverrideLoggerType);
+            //return null;
+            //return (T)logProxy;
+            return tmp;
         }
 
         /// <summary>
@@ -39,8 +41,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         /// <returns>T</returns>
         public static T Create<T>(object[] args, Predicate<MethodInfo> filter, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true)
         {
-            var tmp = (T) Activator.CreateInstance(typeof(T), args);
-            return LogProxy<T>.Create(tmp, filter, loggerType, canOverrideLoggerType);
+            var tmp = (T)Activator.CreateInstance(typeof(T), args);
+            //return LogProxy<T>.Create(tmp, filter, loggerType, canOverrideLoggerType);
+            return tmp;
         }
 
         /// <summary>
@@ -55,7 +58,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         public static T Create<T>(Predicate<MethodInfo> filter, LoggerType loggerType, bool canOverrideLoggerType, params object[] args)
         {
             var tmp = (T)Activator.CreateInstance(typeof(T), args);
-            return LogProxy<T>.Create(tmp, filter, loggerType, canOverrideLoggerType);
+            //return LogProxy<T>.Create(tmp, filter, loggerType, canOverrideLoggerType);
+            return tmp;
         }
     }
 }

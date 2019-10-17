@@ -350,15 +350,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             {
                 try
                 {
-
-                foreach (var fetchedVariant in _fetchedVariants)
-                {
-                    if (fetchedVariant.Key.StartsWith(id))
+                    foreach (var fetchedVariant in _fetchedVariants)
                     {
-                        DateTime date;
-                        _fetchedVariants.TryRemove(id, out date);
+                        if (fetchedVariant.Key.StartsWith(id))
+                        {
+                            _fetchedVariants.TryRemove(id, out _);
+                        }
                     }
-                }
                 }
                 catch (Exception e)
                 {
@@ -489,6 +487,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     break;
                 case DtoType.AvailableSelections:
                     break;
+                case DtoType.TournamentInfoList:
+                    break;
                 default:
                     ExecutionLog.Warn($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
@@ -590,8 +590,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 {
                     if ((DateTime.Now - variant.Value).TotalSeconds > SdkInfo.MarketDescriptionMinFetchInterval)
                     {
-                        DateTime date;
-                        _fetchedVariants.TryRemove(variant.Key, out date);
+                        _fetchedVariants.TryRemove(variant.Key, out _);
                     }
                 }
                 _lastTimeFetchedVariantsWereCleared = DateTime.Now;
