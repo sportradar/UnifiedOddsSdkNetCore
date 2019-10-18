@@ -37,9 +37,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         private readonly CultureInfo _defaultCulture;
 
         /// <summary>
-        /// A <see cref="ObjectCache"/> which will be used to cache the sport events fixture timestamps
+        /// A <see cref="MemoryCache"/> which will be used to cache the sport events fixture timestamps
         /// </summary>
-        private readonly ObjectCache _fixtureTimestampCache;
+        private readonly MemoryCache _fixtureTimestampCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventCacheItemFactory"/> class.
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="semaphorePool">A <see cref="ISemaphorePool"/> instance to be used by instances constructed by this factory</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo"/> specifying the default culture of the built cache items</param>
         /// <param name="fixtureTimestampCache">The in-memory cache of sport events fixture timestamps</param>
-        public SportEventCacheItemFactory(IDataRouterManager dataRouterManager, ISemaphorePool semaphorePool, CultureInfo defaultCulture, ObjectCache fixtureTimestampCache)
+        public SportEventCacheItemFactory(IDataRouterManager dataRouterManager, ISemaphorePool semaphorePool, CultureInfo defaultCulture, MemoryCache fixtureTimestampCache)
         {
             Contract.Requires(dataRouterManager != null);
             Contract.Requires(semaphorePool != null);
@@ -268,10 +268,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <summary>
-        /// Gets a <see cref="ObjectCache"/> used to cache fixture timestamps
+        /// Gets a <see cref="MemoryCache"/> used to cache fixture timestamps
         /// </summary>
-        /// <returns>A <see cref="ObjectCache"/> used to cache fixture timestamps</returns>
-        public ObjectCache GetFixtureTimestampCache()
+        /// <returns>A <see cref="MemoryCache"/> used to cache fixture timestamps</returns>
+        public MemoryCache GetFixtureTimestampCache()
         {
             return _fixtureTimestampCache;
         }

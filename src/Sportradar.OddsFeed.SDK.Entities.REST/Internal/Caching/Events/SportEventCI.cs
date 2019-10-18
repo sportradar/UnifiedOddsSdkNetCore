@@ -93,9 +93,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         internal readonly List<CultureInfo> LoadedSummaries = new List<CultureInfo>();
 
         /// <summary>
-        /// A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps
+        /// A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps
         /// </summary>
-        protected readonly ObjectCache FixtureTimestampCache;
+        protected readonly MemoryCache FixtureTimestampCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventCI" /> class
@@ -104,12 +104,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public SportEventCI(URN id,
                             IDataRouterManager dataRouterManager,
                             ISemaphorePool semaphorePool,
                             CultureInfo defaultCulture,
-                            ObjectCache fixtureTimestampCache)
+                            MemoryCache fixtureTimestampCache)
         {
             Contract.Requires(id != null);
             Contract.Requires(dataRouterManager != null);
@@ -132,13 +132,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="currentCulture">A <see cref="CultureInfo" /> of the <see cref="SportEventSummaryDTO" /> instance</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public SportEventCI(SportEventSummaryDTO eventSummary,
                             IDataRouterManager dataRouterManager,
                             ISemaphorePool semaphorePool,
                             CultureInfo currentCulture,
                             CultureInfo defaultCulture,
-                            ObjectCache fixtureTimestampCache)
+                            MemoryCache fixtureTimestampCache)
             : this(eventSummary.Id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             Contract.Requires(eventSummary != null);
@@ -154,12 +154,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public SportEventCI(ExportableSportEventCI exportable,
             IDataRouterManager dataRouterManager,
             ISemaphorePool semaphorePool,
             CultureInfo defaultCulture,
-            ObjectCache fixtureTimestampCache)
+            MemoryCache fixtureTimestampCache)
             : this(URN.Parse(exportable.Id), dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             Names = new Dictionary<CultureInfo, string>(exportable.Name);

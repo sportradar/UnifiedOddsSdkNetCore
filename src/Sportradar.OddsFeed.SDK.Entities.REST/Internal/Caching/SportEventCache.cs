@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     /// A implementation of the interface <see cref="ISportEventCache"/>
     /// </summary>
     /// <seealso cref="ISportEventCache" />
-    internal class SportEventCache : SdkCache, ISportEventCache, IHealthStatusProvider, IDisposable, IExportableSdkCache
+    internal class SportEventCache : SdkCache, ISportEventCache
     {
         /// <summary>
         /// A <see cref="ILog"/> instance used for logging
@@ -44,9 +44,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         private readonly List<DateTime> _fetchedDates;
 
         /// <summary>
-        /// A <see cref="ObjectCache"/> which will be used to cache the data
+        /// A <see cref="MemoryCache"/> which will be used to cache the data
         /// </summary>
-        internal readonly ObjectCache Cache;
+        internal readonly MemoryCache Cache;
 
         /// <summary>
         /// The <see cref="IDataRouterManager"/> used to obtain data via REST request
@@ -92,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="timer">The timer</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
-        public SportEventCache(ObjectCache cache,
+        public SportEventCache(MemoryCache cache,
                                IDataRouterManager dataRouterManager,
                                ISportEventCacheItemFactory sportEventCacheItemFactory,
                                ITimer timer,

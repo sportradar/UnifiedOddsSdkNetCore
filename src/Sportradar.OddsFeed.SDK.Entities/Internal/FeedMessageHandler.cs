@@ -14,13 +14,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         //private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedMessageHandler));
 
-        private readonly ObjectCache _fixtureCache;
+        private readonly MemoryCache _fixtureCache;
 
         private readonly CacheItemPolicy _cacheItemPolicy;
 
         private readonly object _lock;
 
-        public FeedMessageHandler(ObjectCache fixtureCache, CacheItemPolicy cacheItemPolicy)
+        public FeedMessageHandler(MemoryCache fixtureCache, CacheItemPolicy cacheItemPolicy)
         {
             Contract.Requires(fixtureCache != null);
             Contract.Requires(cacheItemPolicy != null);

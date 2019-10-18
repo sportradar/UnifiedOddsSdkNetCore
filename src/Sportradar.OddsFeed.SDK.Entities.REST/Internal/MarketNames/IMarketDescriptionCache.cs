@@ -1,12 +1,16 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.REST.Contracts;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
@@ -14,8 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes used to cache market descriptions
     /// </summary>
-    [ContractClass(typeof(MarketDescriptionCacheContract))]
-    public interface IMarketDescriptionCache
+    public interface IMarketDescriptionCache : IHealthStatusProvider, IDisposable
     {
         /// <summary>
         /// Asynchronously gets a <see cref="IMarketDescription" /> instance for the market specified by <code>id</code> and <code>specifiers</code>

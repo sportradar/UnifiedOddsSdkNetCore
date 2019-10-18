@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     /// Implementation of <see cref="ISportEventStatusCache"/>
     /// </summary>
     /// <seealso cref="ISportEventStatusCache" />
-    internal class SportEventStatusCache : SdkCache, ISportEventStatusCache, IHealthStatusProvider, IDisposable
+    internal class SportEventStatusCache : SdkCache, ISportEventStatusCache
     {
         /// <summary>
         /// A <see cref="ISingleTypeMapperFactory{restSportEventStatus, SportEventStatusDTO}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDTO}"/> instances
@@ -35,9 +35,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         private readonly ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO> _mapperFactory;
 
         /// <summary>
-        /// A <see cref="ObjectCache"/> used to cache <see cref="ISportEventStatus"/> instances
+        /// A <see cref="MemoryCache"/> used to cache <see cref="ISportEventStatus"/> instances
         /// </summary>
-        private readonly ObjectCache _sportEventStatusCache;
+        private readonly MemoryCache _sportEventStatusCache;
 
         private readonly ISportEventCache _sportEventCache;
 
@@ -64,12 +64,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// Initializes a new instance of the <see cref="ISportEventStatusCache"/> class
         /// </summary>
-        /// <param name="sportEventStatusCache"> A <see cref="ObjectCache"/> used to cache <see cref="SportEventStatusCI"/> instances</param>
+        /// <param name="sportEventStatusCache"> A <see cref="MemoryCache"/> used to cache <see cref="SportEventStatusCI"/> instances</param>
         /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{TIn,TOut}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDTO}"/> instances</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> used to cache <see cref="ISportEvent"/></param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
         /// <param name="cacheItemExpireTime">The time in which cache item expires</param>
-        public SportEventStatusCache(ObjectCache sportEventStatusCache,
+        public SportEventStatusCache(MemoryCache sportEventStatusCache,
                                     ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO> mapperFactory,
                                     ISportEventCache sportEventCache,
                                     ICacheManager cacheManager,

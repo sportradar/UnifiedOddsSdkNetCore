@@ -1,9 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -12,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     /// <summary>
     /// Defines a contract implemented by classes used to cache Sport data
     /// </summary>
-    internal interface ISportDataCache : ISdkCache
+    internal interface ISportDataCache : ISdkCache, IHealthStatusProvider, IDisposable, IExportableSdkCache
     {
         /// <summary>
         /// Asynchronously gets a <see cref="IEnumerable{SportData}"/> representing sport hierarchies for all sports supported by the feed.

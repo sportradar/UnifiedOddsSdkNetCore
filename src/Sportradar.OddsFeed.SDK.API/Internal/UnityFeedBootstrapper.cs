@@ -11,9 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
-using System.Web;
 using App.Metrics;
-using App.Metrics.Counter;
 using App.Metrics.Scheduling;
 using Common.Logging;
 using RabbitMQ.Client;
@@ -702,7 +700,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ICacheManager>(),
                     new ResolvedParameter<IFeedMessageHandler>()));
 
-            container.RegisterType<ISportEventStatusCache>(new HierarchicalLifetimeManager());
+            //container.RegisterType<ISportEventStatusCache>(new HierarchicalLifetimeManager());
 
             container.RegisterType<CacheMessageProcessor>(
                 new HierarchicalLifetimeManager(),
@@ -931,14 +929,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var statusProviders = new List<IHealthStatusProvider>
             {
                 container.Resolve<LogHttpDataFetcher>(),
-                container.Resolve<SportEventCache>(),
-                container.Resolve<SportDataCache>(),
-                container.Resolve<InvariantMarketDescriptionCache>("InvariantMarketDescriptionsCache"),
-                container.Resolve<VariantMarketDescriptionCache>("VariantMarketDescriptionCache"),
-                container.Resolve<VariantDescriptionListCache>("VariantDescriptionListCache"),
-                container.Resolve<ProfileCache>(),
-                container.Resolve<LocalizedNamedValueCache>("MatchStatusCache"),
-                container.Resolve<SportEventStatusCache>()
+                container.Resolve<ISportEventCache>(),
+                container.Resolve<ISportDataCache>(),
+                container.Resolve<IMarketDescriptionCache>("InvariantMarketDescriptionsCache"),
+                container.Resolve<IMarketDescriptionCache>("VariantMarketDescriptionCache"),
+                container.Resolve<IVariantDescriptionCache>("VariantDescriptionListCache"),
+                container.Resolve<IProfileCache>(),
+                container.Resolve<ISportEventStatusCache>()
             };
 
             //container.RegisterType<MetricsReporter, //MetricsReporter>(new ContainerControlledLifetimeManager(),
@@ -958,7 +955,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         options.Enabled = true;
                         options.ReportingEnabled = true;
                     }) // configure other options
-                .Report.ToTextFile(options => options.FlushInterval = TimeSpan.FromSeconds(30))
+                .Report.ToTextFile( "metrics.txt", TimeSpan.FromSeconds(30))
                 .OutputMetrics.AsPlainText()
                 .Build();
             //Metric.Config.WithAllCounters().WithReporting(rep => rep.WithReport(metricReporter, TimeSpan.FromSeconds(config.StatisticsTimeout)));

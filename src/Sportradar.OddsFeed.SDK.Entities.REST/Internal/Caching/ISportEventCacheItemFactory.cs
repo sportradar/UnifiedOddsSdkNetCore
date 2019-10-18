@@ -53,9 +53,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         SportEventCI Get(object cacheItem);
 
         /// <summary>
-        /// Gets a <see cref="ObjectCache"/> used to cache fixture timestamps
+        /// Gets a <see cref="MemoryCache"/> used to cache fixture timestamps
         /// </summary>
-        /// <returns>A <see cref="ObjectCache"/> used to cache fixture timestamps</returns>
-        ObjectCache GetFixtureTimestampCache();
+        /// <returns>A <see cref="MemoryCache"/> used to cache fixture timestamps</returns>
+        MemoryCache GetFixtureTimestampCache();
     }
 }

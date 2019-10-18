@@ -29,12 +29,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// </summary>
     /// <seealso cref="System.IDisposable" />
     /// <seealso cref="IMarketDescriptionCache" />
-    internal class VariantMarketDescriptionCache : SdkCache, IMarketDescriptionCache, IDisposable, IHealthStatusProvider
+    internal class VariantMarketDescriptionCache : SdkCache, IMarketDescriptionCache
     {
         /// <summary>
-        /// A <see cref="ObjectCache"/> used to store market descriptors
+        /// A <see cref="MemoryCache"/> used to store market descriptors
         /// </summary>
-        private readonly ObjectCache _cache;
+        private readonly MemoryCache _cache;
 
         /// <summary>
         /// The <see cref="IDataRouterManager"/> used to obtain data via REST request
@@ -70,11 +70,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Initializes a new instance of the <see cref="VariantMarketDescriptionCache"/> class
         /// </summary>
-        /// <param name="cache">A <see cref="ObjectCache"/> used to store market descriptors</param>
+        /// <param name="cache">A <see cref="MemoryCache"/> used to store market descriptors</param>
         /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to fetch data</param>
         /// <param name="mappingValidatorFactory">A <see cref="IMappingValidatorFactory"/> used to construct <see cref="IMappingValidator"/> instances for market mappings</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
-        public VariantMarketDescriptionCache(ObjectCache cache,
+        public VariantMarketDescriptionCache(MemoryCache cache,
                                              IDataRouterManager dataRouterManager,
                                              IMappingValidatorFactory mappingValidatorFactory,
                                              ICacheManager cacheManager)

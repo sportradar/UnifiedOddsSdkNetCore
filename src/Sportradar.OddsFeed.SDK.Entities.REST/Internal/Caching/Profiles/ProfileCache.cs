@@ -24,14 +24,14 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
 {
     /// <summary>
-    /// A <see cref="IProfileCache"/> implementation using <see cref="ObjectCache"/> to cache fetched information
+    /// A <see cref="IProfileCache"/> implementation using <see cref="MemoryCache"/> to cache fetched information
     /// </summary>
     internal class ProfileCache : SdkCache, IHealthStatusProvider, IProfileCache, IDisposable, IExportableSdkCache
     {
         /// <summary>
-        /// A <see cref="ObjectCache"/> used to store fetched information
+        /// A <see cref="MemoryCache"/> used to store fetched information
         /// </summary>
-        private readonly ObjectCache _cache;
+        private readonly MemoryCache _cache;
 
         /// <summary>
         /// The <see cref="IDataRouterManager"/> used to obtain data via REST request
@@ -66,10 +66,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
     /// <summary>
     /// Initializes a new instance of the <see cref="ProfileCache"/> class
     /// </summary>
-    /// <param name="cache">A <see cref="ObjectCache"/> used to store fetched information</param>
+    /// <param name="cache">A <see cref="MemoryCache"/> used to store fetched information</param>
     /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to fetch data</param>
     /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
-    public ProfileCache(ObjectCache cache,
+    public ProfileCache(MemoryCache cache,
                         IDataRouterManager dataRouterManager,
                         ICacheManager cacheManager)
             : base(cacheManager)

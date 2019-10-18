@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// </summary>
     /// <seealso cref="System.IDisposable" />
     /// <seealso cref="IMarketDescriptionCache" />
-    internal class InvariantMarketDescriptionCache : SdkCache, IMarketDescriptionCache, IDisposable, IHealthStatusProvider
+    internal class InvariantMarketDescriptionCache : SdkCache, IMarketDescriptionCache
     {
         /// <summary>
         /// A <see cref="MemoryCache"/> used to store market descriptors

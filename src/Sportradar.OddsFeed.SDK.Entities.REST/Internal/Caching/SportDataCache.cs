@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     /// A cache storing sport, category and tournament related information
     /// </summary>
     /// <seealso cref="ISportDataCache" />
-    internal class SportDataCache : SdkCache, ISportDataCache, IDisposable, IHealthStatusProvider, IExportableSdkCache
+    internal class SportDataCache : SdkCache, ISportDataCache
     {
         /// <summary>
         /// The <see cref="IDataRouterManager"/> used to obtain data via REST request

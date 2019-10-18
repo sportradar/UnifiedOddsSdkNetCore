@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
@@ -13,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     /// <summary>
     /// Defines a contract implemented by classes used to cache instances
     /// </summary>
-    internal interface ISportEventCache : ISdkCache
+    internal interface ISportEventCache : ISdkCache, IHealthStatusProvider, IDisposable, IExportableSdkCache
     {
         /// <summary>
         /// Gets a <see cref="SportEventCI"/> instance representing cached sport event data

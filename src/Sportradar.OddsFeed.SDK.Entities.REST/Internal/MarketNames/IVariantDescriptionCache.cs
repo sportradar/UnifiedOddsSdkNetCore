@@ -1,10 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
@@ -12,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes used to cache variant descriptions
     /// </summary>
-    public interface IVariantDescriptionCache
+    public interface IVariantDescriptionCache : IHealthStatusProvider, IDisposable
     {
         /// <summary>
         /// Asynchronously gets a <see cref="IVariantDescription" /> instance for the variant market specified by <code>id</code>

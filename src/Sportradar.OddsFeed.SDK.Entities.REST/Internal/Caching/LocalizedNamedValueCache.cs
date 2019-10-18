@@ -11,11 +11,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Counter;
-using App.Metrics.Health;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
@@ -26,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     /// A implementation of the interface <see cref="ILocalizedNamedValueCache"/>
     /// </summary>
     /// <seealso cref="ILocalizedNamedValueCache" />
-    internal class LocalizedNamedValueCache : HealthCheck, IHealthStatusProvider, ILocalizedNamedValueCache, IDisposable
+    internal class LocalizedNamedValueCache : ILocalizedNamedValueCache, IDisposable
     {
         /// <summary>
         /// A <see cref="ILog"/> instance used for logging
@@ -84,8 +82,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="dataProvider">A <see cref="IDataProvider{T}"/> to retrieve match status descriptions</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how potential exceptions should be handled</param>
-        public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) 
-            : base("MatchStatusCache")
+        public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             Contract.Requires(dataProvider != null);
             Contract.Requires(cultures != null && cultures.Any());
@@ -270,34 +267,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             var dic = itemDictionary.Where(s => cultureList.Contains(s.Key)).ToDictionary(t => t.Key, t => t.Value);
             return new LocalizedNamedValue(id, dic, cultureList.First());
         }
-
-        /// <summary>
-        /// Registers the health check which will be periodically triggered
-        /// </summary>
-        public void RegisterHealthCheck()
-        {
-            _ = new HealthCheck("MatchStatusCache", StartHealthCheck);
-            //HealthChecks.RegisterHealthCheck("MatchStatusCache", new Func<HealthCheckResult>(StartHealthCheck));
-        }
-
-        private ValueTask<HealthCheckResult> StartHealthCheck()
-        {
-            return _namedValues.Any()
-                ? new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy($"MatchStatusCache has {_namedValues.Count} items."))
-                : new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy("MatchStatusCache is empty."));
-        }
-
-        HealthCheckResult IHealthStatusProvider.StartHealthCheck()
-        {
-            return HealthCheckResult.Unhealthy();
-        }
-
-        ///// <summary>
-        ///// Starts the health check and returns <see cref="HealthCheckResult"/>
-        ///// </summary>
-        //public HealthCheckResult StartHealthCheck()
-        //{
-        //    return _namedValues.Any() ? HealthCheckResult.Healthy($"MatchStatusCache has {_namedValues.Count} items.") : HealthCheckResult.Unhealthy("MatchStatusCache is empty.");
-        //}
     }
 }

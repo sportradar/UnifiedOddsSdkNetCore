@@ -46,12 +46,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public StageCI(URN id,
                        IDataRouterManager dataRouterManager,
                        ISemaphorePool semaphorePool,
                        CultureInfo defaultCulture,
-                       ObjectCache fixtureTimestampCache)
+                       MemoryCache fixtureTimestampCache)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
         }
@@ -64,13 +64,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public StageCI(StageDTO eventSummary,
                        IDataRouterManager dataRouterManager,
                        ISemaphorePool semaphorePool,
                        CultureInfo currentCulture,
                        CultureInfo defaultCulture,
-                       ObjectCache fixtureTimestampCache)
+                       MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(eventSummary, currentCulture, true);
@@ -84,13 +84,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public StageCI(FixtureDTO fixture,
                         IDataRouterManager dataRouterManager,
                         ISemaphorePool semaphorePool,
                         CultureInfo currentCulture,
                         CultureInfo defaultCulture,
-                        ObjectCache fixtureTimestampCache)
+                        MemoryCache fixtureTimestampCache)
             : base(fixture, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(fixture, currentCulture, true);
@@ -104,13 +104,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public StageCI(TournamentInfoDTO tournamentSummary,
                         IDataRouterManager dataRouterManager,
                         ISemaphorePool semaphorePool,
                         CultureInfo currentCulture,
                         CultureInfo defaultCulture,
-                        ObjectCache fixtureTimestampCache)
+                        MemoryCache fixtureTimestampCache)
             : base(tournamentSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(tournamentSummary, currentCulture, true);
@@ -123,12 +123,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public StageCI(ExportableStageCI exportable,
             IDataRouterManager dataRouterManager,
             ISemaphorePool semaphorePool,
             CultureInfo defaultCulture,
-            ObjectCache fixtureTimestampCache)
+            MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _categoryId = URN.Parse(exportable.CategoryId);

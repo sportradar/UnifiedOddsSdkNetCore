@@ -58,12 +58,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public DrawCI(URN id,
                       IDataRouterManager dataRouterManager,
                       ISemaphorePool semaphorePool,
                       CultureInfo defaultCulture,
-                      ObjectCache fixtureTimestampCache)
+                      MemoryCache fixtureTimestampCache)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
         }
@@ -76,13 +76,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public DrawCI(DrawDTO eventSummary,
                              IDataRouterManager dataRouterManager,
                              ISemaphorePool semaphorePool,
                              CultureInfo currentCulture,
                              CultureInfo defaultCulture,
-                             ObjectCache fixtureTimestampCache)
+                             MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Contract.Requires(eventSummary != null);
@@ -98,12 +98,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="ObjectCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
         public DrawCI(ExportableDrawCI exportable,
             IDataRouterManager dataRouterManager,
             ISemaphorePool semaphorePool,
             CultureInfo defaultCulture,
-            ObjectCache fixtureTimestampCache)
+            MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _lotteryId = URN.Parse(exportable.LotteryId);
