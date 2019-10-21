@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
@@ -31,19 +31,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="allowedDecimalValue">A value specifying the allowed value of the decimal part.</param>
         public DecimalValueMappingValidator(string specifierName, decimal allowedDecimalValue)
         {
-            Contract.Requires(!string.IsNullOrEmpty(specifierName));
+            Guard.Argument(specifierName).NotNull().NotEmpty();
 
             _specifierName = specifierName;
             _allowedDecimalValue = allowedDecimalValue;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(_specifierName));
         }
 
 
@@ -55,14 +46,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="InvalidOperationException">Validation cannot be performed against the provided specifiers</exception>
         public bool Validate(IReadOnlyDictionary<string, string> specifiers)
         {
-            string specifierValue;
-            if (!specifiers.TryGetValue(_specifierName, out specifierValue))
+            if (!specifiers.TryGetValue(_specifierName, out var specifierValue))
             {
                 throw new InvalidOperationException($"Required specifier[{_specifierName}] does not exist in the provided specifiers");
             }
 
-            decimal value;
-            if (!decimal.TryParse(specifierValue, NumberStyles.Any, CultureInfo.InvariantCulture, out value))
+            if (!decimal.TryParse(specifierValue, NumberStyles.Any, CultureInfo.InvariantCulture, out var value))
             {
                 throw new InvalidOperationException($"The value of the specifier {_specifierName}={specifierValue} is not a string representation of a decimal value");
             }

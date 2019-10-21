@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="coverageInfo">The coverage message</param>
         internal SeasonCoverageDTO(seasonCoverageInfo coverageInfo)
         {
-            Contract.Requires(coverageInfo != null);
+            Guard.Argument(coverageInfo).NotNull();
 
             MaxCovered = coverageInfo.max_coveredSpecified
                 ? (int?) coverageInfo.max_covered

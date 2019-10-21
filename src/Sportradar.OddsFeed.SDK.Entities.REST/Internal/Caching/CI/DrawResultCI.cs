@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the <see cref="DrawResultDTO"/> used to create new instance</param>
         public DrawResultCI(DrawResultDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             Names = new Dictionary<CultureInfo, string>();
             Merge(dto, culture);
@@ -60,8 +60,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the <see cref="DrawResultDTO"/> used to merge</param>
         internal void Merge(DrawResultDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(culture).NotNull();
 
             if (dto.Value.HasValue)
             {
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The name of the player in the specified language if it exists. Null otherwise.</returns>
         public string GetName(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             return Names.ContainsKey(culture)
                 ? Names[culture]

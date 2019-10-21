@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -227,7 +227,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="isReplay">Value indicating whether the constructed instance will be used to connect to replay server</param>
         protected Feed(IOddsFeedConfiguration config, bool isReplay)
         {
-            Contract.Requires(config != null);
+            Guard.Argument(config).NotNull();
 
             LogInit();
 
@@ -360,9 +360,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <returns>A <see cref="IOddsFeedSession"/> instance with the specified <see cref="MessageInterest"/></returns>
         internal IOddsFeedSession CreateSession(MessageInterest msgInterest)
         {
-            Contract.Requires(msgInterest != null);
-            Contract.Ensures(Contract.Result<IOddsFeedSession>() != null);
-
+            Guard.Argument(msgInterest).NotNull();
+           
             if (_isDisposed)
             {
                 throw new ObjectDisposedException(ToString());
@@ -435,7 +434,6 @@ namespace Sportradar.OddsFeed.SDK.API
         [Obsolete("Use GetConfigurationBuilder")]
         public static IConfigurationAccessTokenSetter CreateConfigurationBuilder()
         {
-            Contract.Ensures(Contract.Result<IConfigurationAccessTokenSetter>() != null);
             return new OddsFeedConfigurationBuilder(null);
         }
 
@@ -447,7 +445,6 @@ namespace Sportradar.OddsFeed.SDK.API
         [Obsolete("Use GetConfigurationBuilder")]
         public static IOddsFeedConfigurationBuilder GetConfigurationBuilderFromConfig()
         {
-            Contract.Ensures(Contract.Result<IOddsFeedConfigurationBuilder>() != null);
             //var section = OddsFeedConfigurationSection.GetSection();
 
             return new OddsFeedConfigurationBuilder(new ConfigurationSectionProvider());
@@ -458,8 +455,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <returns>A <see cref="IOddsFeedConfiguration"/> instance created from provided information</returns>
         public static ITokenSetter GetConfigurationBuilder()
-        {
-            Contract.Ensures(Contract.Result<ITokenSetter>() != null);
+        { 
             return new TokenSetter(new ConfigurationSectionProvider());
         }
 

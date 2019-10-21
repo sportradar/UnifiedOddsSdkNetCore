@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -30,7 +29,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="timeProvider"></param>
         public static void SetTimeProvider(ITimeProvider timeProvider)
         {
-            Contract.Ensures(timeProvider != null);
             Current = timeProvider;
         }
     }

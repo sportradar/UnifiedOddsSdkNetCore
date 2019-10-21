@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <returns>True if the validation was successful, otherwise false</returns>
         private static bool ValidateMessage(FeedMessage message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message != null);
 
             var result = TestProducerManager.Create().Exists(message.ProducerId);
 

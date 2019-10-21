@@ -3,9 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
@@ -49,25 +48,14 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <param name="rawMessage">A raw message received from the feed</param>
         internal FixtureChangeEventArgs(IFeedMessageMapper messageMapper, fixture_change feedMessage, IEnumerable<CultureInfo> cultures, byte[] rawMessage)
         {
-            Contract.Requires(messageMapper != null);
-            Contract.Requires(feedMessage != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(messageMapper).NotNull();
+            Guard.Argument(feedMessage).NotNull();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
             _messageMapper = messageMapper;
             _feedMessage = feedMessage;
             _defaultCultures = cultures as IReadOnlyCollection<CultureInfo>;
             _rawMessage = rawMessage;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_messageMapper != null);
-            Contract.Invariant(_feedMessage != null);
-            Contract.Invariant(_defaultCultures != null && _defaultCultures.Any());
         }
 
         /// <summary>

@@ -3,7 +3,7 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public EventPlayerAssistCI(EventPlayerAssistDTO dto, CultureInfo culture)
             : base(dto.Id, dto.Name, culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             Type = dto.Type;
         }

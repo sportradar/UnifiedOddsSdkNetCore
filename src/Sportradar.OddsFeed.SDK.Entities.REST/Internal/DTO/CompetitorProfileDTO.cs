@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -56,8 +56,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="record">A <see cref="competitorProfileEndpoint"/> containing information about the profile</param>
         public CompetitorProfileDTO(competitorProfileEndpoint record)
         {
-            Contract.Requires(record != null);
-            Contract.Requires(record.competitor != null);
+            Guard.Argument(record).NotNull();
+            Guard.Argument(record.competitor).NotNull();
 
             Competitor = new CompetitorDTO(record.competitor);
             if (record.players != null && record.players.Any())

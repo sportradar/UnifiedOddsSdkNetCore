@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
         /// <param name="drawFixture">A <see cref="draw_fixtures"/> containing lottery draw data</param>
         internal DrawFixtureMapper(draw_fixtures drawFixture)
         {
-            Contract.Requires(drawFixture != null);
+            Guard.Argument(drawFixture).NotNull();
 
             _drawFixture = drawFixture;
         }

@@ -1,10 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using Common.Logging;
+using Dawn;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -38,29 +38,18 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private readonly MarketWriter _marketWriter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityProcessor"/> class
+        /// Initializes a new instance of the <see cref="IEntityDispatcher{ISportEvent}"/> class
         /// </summary>
         /// <param name="dispatcher">A <see cref="IEntityDispatcher{ISportEvent}" /> whose dispatched entities will be processed by the current instance</param>
         /// <param name="writer">A <see cref="SportEntityWriter" /> used to output / log the dispatched entities</param>
         /// <param name="marketWriter">A <see cref="MarketWriter"/> used to write market and outcome data</param>
         public EntityProcessor(IEntityDispatcher<T> dispatcher, SportEntityWriter writer = null, MarketWriter marketWriter = null)
         {
-            Contract.Requires(dispatcher != null);
+            Guard.Argument(dispatcher).NotNull();
 
             _dispatcher = dispatcher;
             _sportEntityWriter = writer;
             _marketWriter = marketWriter;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(Log != null);
-            Contract.Invariant(_dispatcher != null);
-            Contract.Invariant(_sportEntityWriter != null);
         }
 
         /// <summary>
@@ -82,7 +71,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <param name="e">The event arguments</param>
         protected virtual void OnOddsChangeReceived(object sender, OddsChangeEventArgs<T> e)
         {
-            Contract.Requires(e != null);
+            Guard.Argument(e).NotNull();
 
             var oddsChange = e.GetOddsChange();
             Log.Info($"OddsChange received. EventId:{oddsChange.Event.Id} Producer:{oddsChange.Producer} RequestId:{oddsChange.RequestId}");

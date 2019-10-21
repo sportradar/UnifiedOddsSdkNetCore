@@ -2,10 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.API.Contracts;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -15,7 +13,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a type used to retrieve market probabilities used for cash out
     /// </summary>
-    [ContractClass(typeof(CashOutProbabilitiesProviderContract))]
     public interface ICashOutProbabilitiesProvider
     {
         /// <summary>

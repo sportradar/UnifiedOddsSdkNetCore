@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -26,21 +26,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="matchStatusCache">A <see cref="ILocalizedNamedValueCache"/> used to retrieve event status</param>
         public SportEventStatus(SportEventStatusCI cacheItem, ILocalizedNamedValueCache matchStatusCache)
         {
-            Contract.Requires(cacheItem != null);
-            Contract.Requires(matchStatusCache != null);
+            Guard.Argument(cacheItem).NotNull();
+            Guard.Argument(matchStatusCache).NotNull();
 
             _cacheItem = cacheItem;
             _matchStatusCache = matchStatusCache;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_cacheItem != null);
-            Contract.Invariant(_matchStatusCache != null);
         }
 
         /// <summary>

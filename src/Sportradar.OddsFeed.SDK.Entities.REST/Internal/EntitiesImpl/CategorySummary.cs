@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -26,9 +26,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public CategorySummary(URN id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode)
             : base(id, names)
         {
-            Contract.Requires(id != null);
-            Contract.Requires(names != null && names.Any());
-            //Contract.Requires(!string.IsNullOrEmpty(countryCode));
+            Guard.Argument(id).NotNull();
+            Guard.Argument(names).NotNull().NotEmpty();
 
             CountryCode = countryCode;
         }

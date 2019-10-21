@@ -1,8 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.API.Contracts;
+
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -11,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to dispatch global SDK events
     /// </summary>
-    [ContractClass(typeof(GlobalEventDispatcherContract))]
+    
     internal interface IGlobalEventDispatcher
     {
         /// <summary>

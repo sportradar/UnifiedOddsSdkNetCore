@@ -4,7 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
@@ -73,9 +73,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="timestampTracker">A <see cref="ITimestampTracker"/> used to track message timings</param>
         internal ProducerRecoveryManager(IProducer producer, IRecoveryOperation recoveryOperation, ITimestampTracker timestampTracker)
         {
-            Contract.Requires(producer != null);
-            Contract.Requires(recoveryOperation != null);
-            Contract.Requires(timestampTracker != null);
+            Guard.Argument(producer).NotNull();
+            Guard.Argument(recoveryOperation).NotNull();
+            Guard.Argument(timestampTracker).NotNull();
 
             Producer = producer;
             _producer = (Producer)producer;
@@ -83,18 +83,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             _timestampTracker = timestampTracker;
 
             Status = ProducerRecoveryStatus.NotStarted;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(Producer != null);
-            Contract.Invariant(_producer != null);
-            Contract.Invariant(_recoveryOperation != null);
-            Contract.Invariant(_timestampTracker != null);
         }
 
         /// <summary>
@@ -298,7 +286,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="message">A <see cref="FeedMessage"/> received on the system session</param>
         public void ProcessSystemMessage(FeedMessage message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             var alive = message as alive;
 

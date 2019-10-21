@@ -4,13 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
-using Sportradar.OddsFeed.SDK.Entities.REST.Contracts;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames

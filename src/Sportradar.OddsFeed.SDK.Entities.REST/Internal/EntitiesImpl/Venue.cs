@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -61,21 +61,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cultures">A culture of the current instance of <see cref="VenueCI"/></param>
         public Venue(VenueCI ci, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(ci != null);
-            Contract.Requires(cultures != null && cultures.Any());
-
-            var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
+            Guard.Argument(ci).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
 
             Id = ci.Id;
             Coordinates = ci.Coordinates;
             Capacity = ci.Capacity;
 
-            Names = new ReadOnlyDictionary<CultureInfo, string>(
-                cultureList.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName));
-            Cities = new ReadOnlyDictionary<CultureInfo, string>(
-                cultureList.Where(c => ci.GetCity(c) != null).ToDictionary(c => c, ci.GetCity));
-            Countries = new ReadOnlyDictionary<CultureInfo, string>(
-                cultureList.Where(c => ci.GetCountry(c) != null).ToDictionary(c => c, ci.GetCountry));
+            Names = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName));
+            Cities = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => ci.GetCity(c) != null).ToDictionary(c => c, ci.GetCity));
+            Countries = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => ci.GetCountry(c) != null).ToDictionary(c => c, ci.GetCountry));
             CountryCode = ci.CountryCode;
         }
 

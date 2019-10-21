@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="tournamentCoverage">The tournament coverage.</param>
         internal TournamentCoverageCI(TournamentCoverageDTO tournamentCoverage)
         {
-            Contract.Requires(tournamentCoverage != null);
+            Guard.Argument(tournamentCoverage).NotNull();
 
             LiveCoverage = tournamentCoverage.LiveCoverage;
         }

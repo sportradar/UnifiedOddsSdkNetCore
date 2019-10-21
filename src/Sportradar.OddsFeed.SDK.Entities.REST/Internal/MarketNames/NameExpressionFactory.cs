@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
@@ -37,21 +37,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="profileCache">A <see cref="IProfileCache"/> used to fetch profiles</param>
         public NameExpressionFactory(IOperandFactory operandFactory, IProfileCache profileCache)
         {
-            Contract.Requires(operandFactory != null);
-            Contract.Requires(profileCache != null);
+            Guard.Argument(operandFactory).NotNull();
+            Guard.Argument(profileCache).NotNull();
 
             _operandFactory = operandFactory;
             _profileCache = profileCache;
-        }
-
-        /// <summary>
-        /// Lists the object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_operandFactory != null);
-            Contract.Invariant(_profileCache != null);
         }
 
         /// <summary>
@@ -74,8 +64,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns></returns>
         private INameExpression BuildEntityNameExpression(string operand, ISportEvent sportEvent)
         {
-            Contract.Requires(!string.IsNullOrEmpty(operand));
-            Contract.Requires(sportEvent != null);
+            Guard.Argument(operand).NotNull().NotEmpty();
+            Guard.Argument(sportEvent).NotNull();
 
             // expression {$competitor(1-2)} indicates we need to get the name of the competitor from the sport event
             if (Regex.IsMatch(operand, SequencedCompetitorOperandRegexPatter))
@@ -112,7 +102,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             if (@operator == null)
             {
                 EnsureSpecifiersNotNullOrEmpty(specifiers);
-                Contract.Assume(specifiers != null && specifiers.Any());
                 return new CardinalNameExpression(_operandFactory.BuildOperand(specifiers, operand));
             }
 
@@ -121,13 +110,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case 0: //+
                 {
                     EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    Contract.Assume(specifiers != null && specifiers.Any());
                     return new PlusNameExpression(_operandFactory.BuildOperand(specifiers, operand));
                 }
                 case 1: //-
                 {
                     EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    Contract.Assume(specifiers != null && specifiers.Any());
                     return new MinusNameExpression(_operandFactory.BuildOperand(specifiers, operand));
                 }
                 case 2: //$
@@ -137,13 +124,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case 3: //!
                 {
                     EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    Contract.Assume(specifiers != null && specifiers.Any());
                     return new OrdinalNameExpression(_operandFactory.BuildOperand(specifiers, operand));
                 }
                 case 4: //%
                 {
                     EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    Contract.Assert(specifiers != null && specifiers.Any());
                     return new PlayerProfileExpression(_profileCache, _operandFactory.BuildOperand(specifiers, operand));
                 }
                 default:

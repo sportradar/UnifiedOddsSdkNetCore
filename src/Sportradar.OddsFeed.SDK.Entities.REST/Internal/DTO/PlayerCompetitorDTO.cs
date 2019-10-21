@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal PlayerCompetitorDTO(playerCompetitor record)
             :base(new player {id = record.id, name = record.name })
         {
-            Contract.Requires(record != null);
+            Guard.Argument(record).NotNull();
 
             Abbreviation = record.abbreviation;
             Nationality = record.nationality;

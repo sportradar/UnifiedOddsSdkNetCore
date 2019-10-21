@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
@@ -38,8 +38,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                                  ExceptionHandlingStrategy exceptionHandlingStrategy,
                                  IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
         {
-            Contract.Requires(cacheItem != null);
-            //Contract.Requires(sportEntityFactory != null);
+            Guard.Argument(cacheItem).NotNull();
+            //Guard.Argument(sportEntityFactory).NotNull();
 
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
             Id = cacheItem.Id;

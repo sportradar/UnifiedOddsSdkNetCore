@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,8 +44,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch missing data</param>
         internal GroupCI(GroupDTO group, CultureInfo culture, IDataRouterManager dataRouterManager)
         {
-            Contract.Requires(group != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(group).NotNull();
+            Guard.Argument(culture).NotNull();
 
             _dataRouterManager = dataRouterManager;
             Id = group.Id;
@@ -78,8 +78,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided group information</param>
         internal void Merge(GroupDTO group, CultureInfo culture)
         {
-            Contract.Requires(group != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(group).NotNull();
+            Guard.Argument(culture).NotNull();
 
             var tempCompetitors = new List<CompetitorCI>(Competitors);
 

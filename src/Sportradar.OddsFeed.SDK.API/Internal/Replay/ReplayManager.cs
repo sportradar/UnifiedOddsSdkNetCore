@@ -3,7 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Net.Http;
 using System.Xml;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
@@ -37,16 +36,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             _apiHost = replayApiHost;
             _dataRestful = dataRestful;
             _nodeId = nodeId;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_dataRestful != null);
-            Contract.Invariant(!string.IsNullOrEmpty(_apiHost));
         }
 
         /// <summary>
@@ -114,8 +103,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
                     if (node.Attributes != null)
                     {
                         var urn = node.Attributes["id"].Value;
-                        int position;
-                        int.TryParse(node.Attributes["position"].Value, out position);
+                        int.TryParse(node.Attributes["position"].Value, out _);
                         result.Add(URN.Parse(urn));
                     }
                 }

@@ -3,9 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.API.Contracts;
 using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -13,7 +11,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a contract implemented by classes taking care of the 1st step when building configuration - setting the token
     /// </summary>
-    [ContractClass(typeof(TokenSetterContract))]
     public interface ITokenSetter
     {
         /// <summary>
@@ -33,7 +30,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a contract implemented by classes taking care of the 2nd step when building configuration - selecting the environment.
     /// </summary>
-    [ContractClass(typeof(EnvironmentSelectorContract))]
     public interface IEnvironmentSelector
     {
         /// <summary>
@@ -65,7 +61,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a contract implemented by classes taking care of the 2nd step when building configuration - selecting the environment.
     /// </summary>
-    [ContractClass(typeof(EnvironmentSelectorV1Contract))]
     public interface IEnvironmentSelectorV1 : IEnvironmentSelector
     {
         /// <summary>

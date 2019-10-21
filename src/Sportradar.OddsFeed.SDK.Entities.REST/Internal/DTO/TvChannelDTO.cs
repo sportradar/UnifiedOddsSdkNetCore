@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -24,8 +24,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="tvChannel">The <see cref="tvChannel"/> used for creating instance</param>
         internal TvChannelDTO(tvChannel tvChannel)
         {
-            Contract.Requires(tvChannel != null);
-            Contract.Requires(!string.IsNullOrEmpty(tvChannel.name));
+            Guard.Argument(tvChannel).NotNull();
+            Guard.Argument(tvChannel.name).NotNull().NotEmpty();
 
             Name = tvChannel.name;
             StartTime = tvChannel.start_timeSpecified

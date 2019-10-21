@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -35,8 +35,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="config">The <see cref="IOddsFeedConfiguration"/> used to get properties to build <see cref="IProducer"/></param>
         public ProducersProvider(IDataProvider<producers> dataProvider, IOddsFeedConfiguration config)
         {
-            Contract.Requires(dataProvider != null);
-            Contract.Requires(config != null);
+            Guard.Argument(dataProvider).NotNull();
+            Guard.Argument(config).NotNull();
 
             _dataProvider = dataProvider;
             _config = config;
@@ -62,8 +62,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>A <see cref="IEnumerable{IProducer}" /> instance constructed from information in the provided <see cref="producers" /></returns>
         private IEnumerable<IProducer> MapProducers(producers message)
         {
-            Contract.Requires(message != null);
-            Contract.Requires(message.producer.Length > 0);
+            Guard.Argument(message).NotNull();
+            Guard.Argument(message.producer.Length).Positive();
 
             return message.producer.Select(producer => new Producer(
                                                                     (int) producer.id,

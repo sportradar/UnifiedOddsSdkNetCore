@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public CurrentSeasonInfoCI(CurrentSeasonInfoDTO dto, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(dto.Id, dto.Name, culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             _dataRouterManager = dataRouterManager;
             Year = dto.Year;
@@ -117,7 +117,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture</param>
         public void Merge(CurrentSeasonInfoDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             base.Merge(dto, culture);
 

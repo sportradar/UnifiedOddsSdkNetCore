@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -21,8 +21,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal OutcomeMappingDTO(mappingsMappingMapping_outcome outcome, string marketId)
         {
-            Contract.Requires(outcome != null);
-            Contract.Requires(!string.IsNullOrEmpty(marketId));
+            Guard.Argument(outcome).NotNull();
+            Guard.Argument(marketId).NotNull().NotEmpty();
 
             OutcomeId = outcome.outcome_id;
             ProducerOutcomeId = outcome.product_outcome_id;
@@ -32,8 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal OutcomeMappingDTO(variant_mappingsMappingMapping_outcome outcome, string marketId)
         {
-            Contract.Requires(outcome != null);
-            Contract.Requires(!string.IsNullOrEmpty(marketId));
+            Guard.Argument(outcome).NotNull();
+            Guard.Argument(marketId).NotNull().NotEmpty();
 
             OutcomeId = outcome.outcome_id;
             ProducerOutcomeId = outcome.product_outcome_id;

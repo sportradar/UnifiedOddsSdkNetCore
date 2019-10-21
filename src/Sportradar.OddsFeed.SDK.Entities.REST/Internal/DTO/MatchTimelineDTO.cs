@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -23,17 +23,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public SportEventStatusDTO SportEventStatus { get; }
 
-
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying when the associated message was generated (on the server side)
         /// </summary>
         public DateTime? GeneratedAt { get; }
+
         public IEnumerable<BasicEventDTO> BasicEvents { get; }
 
         internal MatchTimelineDTO(matchTimelineEndpoint timeline)
         {
-            Contract.Requires(timeline != null);
-            Contract.Requires(timeline.sport_event != null);
+            Guard.Argument(timeline).NotNull();
+            Guard.Argument(timeline.sport_event).NotNull();
 
             SportEvent = RestMapperHelper.MapSportEvent(timeline.sport_event);
 

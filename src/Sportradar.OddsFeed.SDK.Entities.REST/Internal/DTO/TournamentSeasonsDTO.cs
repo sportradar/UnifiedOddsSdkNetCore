@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="item">The item</param>
         internal TournamentSeasonsDTO(tournamentSeasons item)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             Tournament = new TournamentInfoDTO(item.tournament);
 

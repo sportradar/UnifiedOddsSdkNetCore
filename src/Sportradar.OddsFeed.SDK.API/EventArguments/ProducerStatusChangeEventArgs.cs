@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities;
 
 namespace Sportradar.OddsFeed.SDK.API.EventArguments
@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <param name="producerStatusChange">a <see cref="IProducerStatusChange"/> implementation containing information about the producer whose status has changed</param>
         internal ProducerStatusChangeEventArgs(IProducerStatusChange producerStatusChange)
         {
-            Contract.Requires(producerStatusChange != null);
+            Guard.Argument(producerStatusChange).NotNull();
             _statusChange = producerStatusChange;
         }
 

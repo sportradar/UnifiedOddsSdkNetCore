@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -34,8 +34,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public TeamCompetitorCI(TeamCompetitorDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(competitor, culture, dataRouterManager)
         {
-            Contract.Requires(competitor != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(competitor).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Merge(competitor, culture);
         }
@@ -47,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public TeamCompetitorCI(CompetitorCI competitor)
             : base(competitor)
         {
-            Contract.Requires(competitor != null);
+            Guard.Argument(competitor).NotNull();
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public TeamCompetitorCI(CompetitorDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(competitor, culture, dataRouterManager)
         {
-            Contract.Requires(competitor != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(competitor).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Merge(competitor, culture);
         }
@@ -84,8 +84,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="TeamCompetitorDTO"/></param>
         internal void Merge(TeamCompetitorDTO competitor, CultureInfo culture)
         {
-            Contract.Requires(competitor != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(competitor).NotNull();
+            Guard.Argument(culture).NotNull();
 
             base.Merge(competitor, culture);
             Qualifier = competitor.Qualifier;
@@ -108,12 +108,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         {
             var exportable = await base.CreateExportableCIAsync<T>().ConfigureAwait(false);
             var team = exportable as ExportableTeamCompetitorCI;
-            team.Qualifier = Qualifier;
-            team.Division = Division;
+            if (team != null)
+            {
+                team.Qualifier = Qualifier;
+                team.Division = Division;
+            }
 
             return team as T;
         }
-
 
         /// <summary>
         /// Asynchronous export item's properties

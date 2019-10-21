@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="description">The description associated with the current instance.</param>
         public NamedValue(int id, string description)
         {
-            Contract.Requires(!string.IsNullOrEmpty(description));
+            Guard.Argument(!string.IsNullOrEmpty(description));
 
             Id = id;
             Description = description;

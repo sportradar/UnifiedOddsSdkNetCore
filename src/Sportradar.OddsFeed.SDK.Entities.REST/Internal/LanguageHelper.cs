@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 
@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>A <see cref="IEnumerable{CultureInfo}"/> containing missing cultures or a empty list if no cultures are missing</returns>
         internal static IEnumerable<CultureInfo> GetMissingCultures(IEnumerable<CultureInfo> wantedCultures, IEnumerable<CultureInfo> alreadyUsedCultures)
         {
-            Contract.Requires(wantedCultures != null && wantedCultures.Any());
+            Guard.Argument(wantedCultures != null && wantedCultures.Any());
 
             if (alreadyUsedCultures == null)
             {

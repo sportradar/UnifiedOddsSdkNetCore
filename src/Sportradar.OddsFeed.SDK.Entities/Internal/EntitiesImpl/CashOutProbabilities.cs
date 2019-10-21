@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public CashOutProbabilities(IMessageTimestamp timestamp, IProducer producer, T @event, int? betStopReason, int? bettingStatus, IEnumerable<IMarketWithProbabilities> markets, INamedValuesProvider namedValuesProvider, byte[] rawMessage)
             : base(timestamp, producer, @event, null, markets, rawMessage)
         {
-            Contract.Requires(namedValuesProvider != null);
+            Guard.Argument(namedValuesProvider).NotNull();
 
             _betStopReason = betStopReason;
             _bettingStatus = bettingStatus;

@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 
@@ -42,24 +42,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> specifying how to handle potential exceptions thrown to the user code</param>
         public NameProviderFactory(IMarketCacheProvider marketCacheProvider, IProfileCache profileCache, INameExpressionFactory expressionFactory, ExceptionHandlingStrategy exceptionStrategy)
         {
-            Contract.Requires(marketCacheProvider != null);
-            Contract.Requires(profileCache != null);
-            Contract.Requires(expressionFactory != null);
+            Guard.Argument(marketCacheProvider).NotNull();
+            Guard.Argument(profileCache).NotNull();
+            Guard.Argument(expressionFactory).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _profileCache = profileCache;
             _expressionFactory = expressionFactory;
             _exceptionStrategy = exceptionStrategy;
-        }
-
-        /// <summary>
-        /// Lists object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_marketCacheProvider != null);
-            Contract.Invariant(_expressionFactory != null);
         }
 
         /// <summary>

@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -98,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CompetitionDTO(matchSummaryEndpoint matchSummary)
             : this(matchSummary.sport_event)
         {
-            Contract.Requires(matchSummary != null);
+            Guard.Argument(matchSummary).NotNull();
 
             Conditions = matchSummary.sport_event_conditions == null
                 ? Conditions
@@ -128,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CompetitionDTO(stageSummaryEndpoint stageSummary)
             : this(stageSummary.sport_event)
         {
-            Contract.Requires(stageSummary != null);
+            Guard.Argument(stageSummary).NotNull();
 
             SportEventStatus = stageSummary.sport_event_status == null
                 ? null

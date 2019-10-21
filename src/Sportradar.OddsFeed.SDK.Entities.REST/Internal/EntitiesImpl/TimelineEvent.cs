@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         internal TimelineEvent(TimelineEventCI ci)
         {
-            Contract.Requires(ci != null);
+            Guard.Argument(ci).NotNull();
 
             Id = ci.Id;
             HomeScore = ci.HomeScore;

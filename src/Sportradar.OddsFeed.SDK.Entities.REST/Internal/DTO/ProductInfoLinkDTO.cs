@@ -1,7 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -17,9 +17,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal ProductInfoLinkDTO(productInfoLink productInfoLink)
         {
-            Contract.Requires(productInfoLink != null);
-            Contract.Requires(!string.IsNullOrEmpty(productInfoLink.name));
-            Contract.Requires(!string.IsNullOrEmpty(productInfoLink.@ref));
+            Guard.Argument(productInfoLink).NotNull();
+            Guard.Argument(productInfoLink.name).NotNull().NotEmpty();
+            Guard.Argument(productInfoLink.@ref).NotNull().NotEmpty();
 
             Name = productInfoLink.name;
             Reference = productInfoLink.@ref;

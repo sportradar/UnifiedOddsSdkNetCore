@@ -2,15 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.Common.Contracts;
+
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
     /// <summary>
     /// Defines a contract implemented by classes used to execute period tasks
     /// </summary>
-    [ContractClass(typeof(TimerContract))]
+    
     public interface ITimer : IDisposable {
         /// <summary>
         /// Raised when the timer elapses

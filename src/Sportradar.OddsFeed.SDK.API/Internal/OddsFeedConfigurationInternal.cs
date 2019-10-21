@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -193,8 +193,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="bookmakerDetailsProvider">A <see cref="BookmakerDetailsProvider"/> used to get bookmaker info</param>
         public OddsFeedConfigurationInternal(IOddsFeedConfiguration publicConfig, BookmakerDetailsProvider bookmakerDetailsProvider)
         {
-            Contract.Requires(publicConfig != null);
-            Contract.Requires(bookmakerDetailsProvider != null);
+            Guard.Argument(publicConfig).NotNull();
+            Guard.Argument(bookmakerDetailsProvider).NotNull();
 
             _publicConfig = publicConfig;
             _bookmakerDetailsProvider = bookmakerDetailsProvider;
@@ -214,16 +214,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         }
 
         /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_publicConfig != null);
-            Contract.Invariant(_bookmakerDetailsProvider != null);
-        }
-
-        /// <summary>
         /// Loads the whoami endpoint data
         /// </summary>
         /// <param name="hostName">The host name</param>
@@ -232,7 +222,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>True if data was successfully retrieved. False otherwise. May throw <see cref="CommunicationException"/></returns>
         private bool LoadWhoamiData(string hostName, bool useSsl, bool rethrow)
         {
-            Contract.Requires(!string.IsNullOrEmpty(hostName));
+            Guard.Argument(!string.IsNullOrEmpty(hostName));
 
             var hostUrl = useSsl
                               ? "https://" + hostName

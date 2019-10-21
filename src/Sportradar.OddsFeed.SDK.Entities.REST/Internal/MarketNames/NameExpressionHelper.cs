@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 
@@ -35,8 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">The descriptor could not be parsed due to incorrect format</exception>
         internal static IList<string> ParseDescriptor(string descriptor, out string descriptorFormat)
         {
-            Contract.Requires(!string.IsNullOrEmpty(descriptor));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.ValueAtReturn(out descriptorFormat)));
+            Guard.Argument(descriptor).NotNull().NotEmpty();
 
             var currentIndex = 0;
             var format = descriptor;
@@ -66,7 +65,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             descriptorFormat = format;
 
-            Contract.Assume(!string.IsNullOrEmpty(descriptorFormat));
             return expressions.Any()
                 ? expressions
                 : null;
@@ -81,8 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">The <code>expression</code> couldn't be parsed due to incorrect format</exception>
         internal static void ParseExpression(string expression, out string @operator, out string operand)
         {
-            Contract.Requires(!string.IsNullOrEmpty(expression));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.ValueAtReturn(out operand)));
+            Guard.Argument(expression).NotNull().NotEmpty();
 
             if (expression.Length < 3)
             {
@@ -118,12 +115,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of int</exception>
         internal static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out int specifierValue)
         {
-            Contract.Requires(!string.IsNullOrEmpty(specifierName));
-            Contract.Requires(specifiers != null && specifiers.Any());
+            Guard.Argument(specifierName).NotNull().NotEmpty();
+            Guard.Argument(specifiers).NotNull().NotEmpty();
 
-            string specifierValueString;
-
-            if (!specifiers.TryGetValue(specifierName, out specifierValueString))
+            if (!specifiers.TryGetValue(specifierName, out var specifierValueString))
             {
                 throw new InvalidOperationException($"Specifier with name {specifierName} does not exist");
             }
@@ -143,12 +138,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of decimal</exception>
         internal static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out decimal specifierValue)
         {
-            Contract.Requires(!string.IsNullOrEmpty(specifierName));
-            Contract.Requires(specifiers != null && specifiers.Any());
+            Guard.Argument(specifierName).NotNull().NotEmpty();
+            Guard.Argument(specifiers).NotNull().NotEmpty();
 
-            string specifierValueString;
-
-            if (!specifiers.TryGetValue(specifierName, out specifierValueString))
+            if (!specifiers.TryGetValue(specifierName, out var specifierValueString))
             {
                 throw new InvalidOperationException($"Specifier with name {specifierName} does not exist");
             }

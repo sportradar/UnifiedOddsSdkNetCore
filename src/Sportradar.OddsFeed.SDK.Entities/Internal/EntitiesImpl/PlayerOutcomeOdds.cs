@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -56,8 +56,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                    IOutcomeDefinition outcomeDefinition)
             : base(id, active, odds, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
-            Contract.Requires(match != null);
-            Contract.Requires(teamFlag >= 1 && teamFlag <= 2);
+            Guard.Argument(match).NotNull();
+            Guard.Argument(teamFlag).InRange(1,2);
 
             _teamFlag = teamFlag;
             _match = match;

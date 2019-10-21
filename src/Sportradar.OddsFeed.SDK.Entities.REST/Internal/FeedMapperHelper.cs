@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
@@ -23,9 +23,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The <see cref="IReadOnlyDictionary{TKey,TValue}"/> obtained by splitting the provided values</returns>
         private static IReadOnlyDictionary<string, string> CreateDictionary(string[] values, params string[] separators)
         {
-            Contract.Requires(values != null && values.Any());
-            Contract.Requires(separators != null && separators.Any());
-            Contract.Ensures(Contract.Result<IReadOnlyDictionary<string, string>>() != null);
+            Guard.Argument(values).NotNull().NotEmpty();
+            Guard.Argument(separators).NotNull().NotEmpty();
 
             var tuples = new List<Tuple<string, string>>(values.Length);
             foreach (var specifier in values)
@@ -62,8 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
         public static IReadOnlyDictionary<string, string> GetValidForAttributes(string value)
         {
-            Contract.Requires(!string.IsNullOrEmpty(value));
-            Contract.Ensures(Contract.Result<IReadOnlyDictionary<string, string>>() != null);
+            Guard.Argument(value).NotNull().NotEmpty();
 
             var parts = value.Split(new[] { SdkInfo.SpecifiersDelimiter }, StringSplitOptions.None);
             return CreateDictionary(parts, "=", "~");
@@ -76,8 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>A <see cref="IDictionary{String, String}"/> containing market specifiers</returns>
         public static IReadOnlyDictionary<string, string> GetSpecifiers(string specifiers)
         {
-            Contract.Requires(!string.IsNullOrEmpty(specifiers));
-            Contract.Ensures(Contract.Result<IReadOnlyDictionary<string, string>>() != null);
+            Guard.Argument(specifiers).NotNull().NotEmpty();
 
             var splitSpecifiers = specifiers.Split(new[] { SdkInfo.SpecifiersDelimiter }, StringSplitOptions.None);
             return CreateDictionary(splitSpecifiers, "=");

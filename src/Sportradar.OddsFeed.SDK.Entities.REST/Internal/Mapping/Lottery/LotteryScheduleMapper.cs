@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
         /// <param name="lotterySchedule">A <see cref="lottery"/> containing lottery schedule data (single lottery with schedule)</param>
         internal LotteryScheduleMapper(lottery_schedule lotterySchedule)
         {
-            Contract.Requires(lotterySchedule != null);
+            Guard.Argument(lotterySchedule).NotNull();
 
             _lotterySchedule = lotterySchedule;
         }

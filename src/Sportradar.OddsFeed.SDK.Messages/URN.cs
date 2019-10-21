@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -91,9 +91,9 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <param name="id">The numerical identifier of the resource associated with the URN</param>
         public URN(string prefix, string type, long id)
         {
-            Contract.Requires(!string.IsNullOrEmpty(prefix));
-            Contract.Requires(!string.IsNullOrEmpty(type));
-            Contract.Requires(id > 0);
+            Guard.Argument(!string.IsNullOrEmpty(prefix));
+            Guard.Argument(!string.IsNullOrEmpty(type));
+            Guard.Argument(id > 0);
 
             var tuple = Types.FirstOrDefault(t => t.Item1 == type);
 
@@ -119,8 +119,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <exception cref="System.FormatException">The format of the provided representation is not correct</exception>
         public static URN Parse(string urnString)
         {
-            Contract.Requires(!string.IsNullOrEmpty(urnString));
-            Contract.Ensures(Contract.Result<URN>() != null);
+            Guard.Argument(urnString).NotNull().NotEmpty();
 
             var match = Regex.Match(urnString, RegexPattern);
             if (!match.Success)
@@ -148,7 +147,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool TryParse(string urnString, out URN urn)
         {
-            Contract.Requires(!string.IsNullOrEmpty(urnString));
+            Guard.Argument(!string.IsNullOrEmpty(urnString));
 
             var success = false;
 

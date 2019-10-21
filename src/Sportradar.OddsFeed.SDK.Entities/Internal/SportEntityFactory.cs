@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,11 +69,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             ILocalizedNamedValueCache matchStatusCache,
             IProfileCache profileCache)
         {
-            Contract.Requires(sportDataCache != null);
-            Contract.Requires(sportEventCache != null);
-            Contract.Requires(eventStatusCache != null);
-            Contract.Requires(matchStatusCache != null);
-            Contract.Requires(profileCache != null);
+            Guard.Argument(sportDataCache).NotNull();
+            Guard.Argument(sportEventCache).NotNull();
+            Guard.Argument(eventStatusCache).NotNull();
+            Guard.Argument(matchStatusCache).NotNull();
+            Guard.Argument(profileCache).NotNull();
 
             _sportDataCache = sportDataCache;
             _sportEventCache = sportEventCache;
@@ -91,14 +91,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The constructed <see cref="ISport"/> instance</returns>
         private ISport BuildSportInternal(SportData sportData, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
-            Contract.Requires(sportData != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(sportData).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
 
             var categories = sportData.Categories?.Select(categoryData => new Category(
                 categoryData.Id,
                 categoryData.Names,
                 categoryData.CountryCode,
-                categoryData.Tournaments.Select(tournamentUrn => BuildSportEvent<ISportEvent>(tournamentUrn, sportData.Id, cultures, exceptionStrategy)).ToList())).Cast<ICategory>().ToList();
+                categoryData.Tournaments.Select(tournamentUrn => BuildSportEvent<ISportEvent>(tournamentUrn, sportData.Id, cultureInfos, exceptionStrategy)).ToList())).Cast<ICategory>().ToList();
 
             return new Sport(
                 sportData.Id,

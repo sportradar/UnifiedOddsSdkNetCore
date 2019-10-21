@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public CarDTO(car item)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             Name = item.name;
             Chassis = item.chassis;

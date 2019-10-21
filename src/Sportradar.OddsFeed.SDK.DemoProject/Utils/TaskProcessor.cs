@@ -2,10 +2,11 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 {
@@ -35,19 +36,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <param name="maxWaitTime"> A <see cref="TimeSpan"/> defining the max wait time</param>
         public TaskProcessor(TimeSpan maxWaitTime)
         {
-            Contract.Requires(maxWaitTime > TimeSpan.Zero);
+            Guard.Argument(maxWaitTime > TimeSpan.Zero).True();
 
             _maxWaitTime = maxWaitTime;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_autoReset != null);
-            Contract.Invariant(_maxWaitTime != null);
         }
 
         /// <summary>
@@ -58,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <returns>A <see cref="T"/> representing the result of the task</returns>
         public T GetTaskResult<T>(Task<T> task)
         {
-            Contract.Requires(task != null);
+            Guard.Argument(task).NotNull();
 
             Interlocked.Increment(ref _runningTaskCount);
             try

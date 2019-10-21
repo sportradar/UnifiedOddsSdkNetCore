@@ -2,9 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
@@ -46,24 +45,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="deserializer">A <see cref="IDeserializer{T}" /> used to deserialize the fetch data</param>
         public NonMappingDataProvider(string uriFormat, IDataFetcher fetcher, IDeserializer<T> deserializer)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(uriFormat));
-            Contract.Requires(fetcher != null);
-            Contract.Requires(deserializer != null);
+            Guard.Argument(uriFormat).NotNull().NotEmpty();
+            Guard.Argument(fetcher).NotNull();
+            Guard.Argument(deserializer).NotNull();
 
             _uriFormat = uriFormat;
             _fetcher = fetcher;
             _deserializer = deserializer;
-        }
-
-        /// <summary>
-        /// Defines object invariants used by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrWhiteSpace(_uriFormat));
-            Contract.Invariant(_fetcher != null);
-            Contract.Invariant(_deserializer != null);
         }
 
         /// <summary>
@@ -73,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
         protected async Task<T> GetDataAsyncInternal(Uri uri)
         {
-            Contract.Requires(uri != null);
+            Guard.Argument(uri).NotNull();
 
             var stream = await _fetcher.GetDataAsync(uri).ConfigureAwait(false);
             return _deserializer.Deserialize(stream);
@@ -86,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
         protected T GetDataInternal(Uri uri)
         {
-            Contract.Requires(uri != null);
+            Guard.Argument(uri).NotNull();
 
             var stream = _fetcher.GetData(uri);
             return _deserializer.Deserialize(stream);
@@ -99,8 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <code>identifiers</code></returns>
         protected virtual Uri GetRequestUri(params object[] identifiers)
         {
-            Contract.Requires(identifiers != null && identifiers.Any());
-            Contract.Ensures(Contract.Result<Uri>() != null);
+            Guard.Argument(identifiers).NotNull().NotEmpty();
 
             return new Uri(string.Format(_uriFormat, identifiers));
         }

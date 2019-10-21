@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         public OutcomeMappingCacheItem(OutcomeMappingDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             ProducerOutcomeNames = new Dictionary<CultureInfo, string>();
 

@@ -1,8 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.API.Contracts;
+
 using Sportradar.OddsFeed.SDK.Entities;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -10,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Represents a first step when building a <see cref="IOddsFeedSession"/> instance
     /// </summary>
-    [ContractClass(typeof(OddsFeedSessionBuilderContract))]
+    
     public interface IOddsFeedSessionBuilder
     {
         /// <summary>
@@ -24,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Represents a second step when building a <see cref="IOddsFeedSession"/> instance
     /// </summary>
-    [ContractClass(typeof(SessionBuilderContract))]
+    
     public interface ISessionBuilder
     {
         /// <summary>

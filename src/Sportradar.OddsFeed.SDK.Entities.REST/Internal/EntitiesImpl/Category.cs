@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Category(URN id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode, IEnumerable<ISportEvent> tournaments)
             : base(id, names, countryCode)
         {
-            Contract.Requires(tournaments != null);
+            Guard.Argument(tournaments).NotNull();
 
             Tournaments = tournaments as IReadOnlyCollection<ISportEvent> ?? new ReadOnlyCollection<ISportEvent>(tournaments.ToList());
         }

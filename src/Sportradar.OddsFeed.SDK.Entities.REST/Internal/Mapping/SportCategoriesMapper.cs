@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -23,20 +23,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">>A <see cref="sportCategoriesEndpoint"/> instance containing sport categories</param>
         internal SportCategoriesMapper(sportCategoriesEndpoint data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.sport != null);
+            Guard.Argument(data).NotNull();
+            Guard.Argument(data.sport).NotNull();
 
             _data = data;
-        }
-
-        /// <summary>
-        /// Defines object invariants used by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_data != null);
-            Contract.Invariant(_data.sport != null);
         }
 
         /// <summary>

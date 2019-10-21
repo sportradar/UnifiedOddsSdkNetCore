@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 
@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Manager(ManagerCI item)
             : base(item.Id, item.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             Nationalities = item.Nationality as IReadOnlyDictionary<CultureInfo, string>;
             CountryCode = item.CountryCode;

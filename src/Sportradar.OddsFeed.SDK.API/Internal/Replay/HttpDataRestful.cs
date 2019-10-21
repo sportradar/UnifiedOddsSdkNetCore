@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -40,11 +40,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         public HttpDataRestful(HttpClient client, string accessToken, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15)
             : base(client, accessToken, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
         {
-            Contract.Requires(client != null);
-            Contract.Requires(client.DefaultRequestHeaders != null);
-            Contract.Requires(!string.IsNullOrWhiteSpace(accessToken));
-            Contract.Requires(connectionFailureLimit >= 1);
-            Contract.Requires(connectionFailureTimeout >= 1);
+            Guard.Argument(client).NotNull();
+            Guard.Argument(client.DefaultRequestHeaders).NotNull();
+            Guard.Argument(accessToken).NotNull().NotEmpty();
+            Guard.Argument(connectionFailureLimit).Positive();
+            Guard.Argument(connectionFailureTimeout).Positive();
 
             _client = client;
             if (_client.DefaultRequestHeaders != null && !_client.DefaultRequestHeaders.Contains("x-access-token"))

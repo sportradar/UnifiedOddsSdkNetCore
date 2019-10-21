@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -21,8 +21,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="channel">The <see cref="streamingChannel"/> used for creating instance</param>
         internal StreamingChannelDTO(streamingChannel channel)
         {
-            Contract.Requires(channel != null);
-            Contract.Requires(!string.IsNullOrEmpty(channel.name));
+            Guard.Argument(channel).NotNull();
+            Guard.Argument(channel.name).NotNull().NotEmpty();
 
             Id = channel.id;
             Name = channel.name;

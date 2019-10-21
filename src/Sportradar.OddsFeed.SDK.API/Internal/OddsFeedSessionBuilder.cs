@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="feed">The <see cref="Feed"/> instance on which the build sessions will be constructed</param>
         internal OddsFeedSessionBuilder(Feed feed)
         {
-            Contract.Requires(feed != null);
+            Guard.Argument(feed).NotNull();
 
             _feed = feed;
         }

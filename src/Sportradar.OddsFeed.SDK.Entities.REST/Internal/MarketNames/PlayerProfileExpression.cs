@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -32,21 +32,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="operand">A <see cref="IOperand"/> representing part of the name expression</param>
         internal PlayerProfileExpression(IProfileCache profileCache, IOperand operand)
         {
-            Contract.Requires(profileCache != null);
-            Contract.Requires(operand != null);
+            Guard.Argument(profileCache).NotNull();
+            Guard.Argument(operand).NotNull();
 
             _profileCache = profileCache;
             _operand = operand;
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_profileCache != null);
-            Contract.Invariant(_operand != null);
         }
 
         /// <summary>

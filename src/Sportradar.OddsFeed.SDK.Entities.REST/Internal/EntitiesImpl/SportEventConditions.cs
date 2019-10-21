@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -48,13 +48,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the supported languages of the constructed instance</param>
         public SportEventConditions(SportEventConditionsCI ci, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(ci != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(ci).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+
             Attendance = ci.Attendance;
             EventMode = ci.EventMode;
             if (ci.Referee != null)
             {
-                Referee = new Referee(ci.Referee, cultures);
+                Referee = new Referee(ci.Referee, cultureInfos);
             }
             if (ci.WeatherInfo != null)
             {

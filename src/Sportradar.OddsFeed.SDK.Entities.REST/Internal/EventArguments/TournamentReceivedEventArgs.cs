@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EventArguments
         /// <param name="culture">Culture of the tournament data</param>
         public TournamentReceivedEventArgs(TournamentDTO tournament, CultureInfo culture)
         {
-            //Contract.Requires(tournament != null);
+            //Guard.Argument(tournament).NotNull();
 
             Tournament = tournament;
             Culture = culture;

@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,24 +46,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="xmlElementName">The name of the xml element containing id / description attributes</param>
         public NamedValueDataProvider(string uriFormat, IDataFetcher fetcher, string xmlElementName)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(uriFormat));
-            Contract.Requires(fetcher != null);
-            Contract.Requires(!string.IsNullOrEmpty(xmlElementName));
+            Guard.Argument(uriFormat).NotNull().NotEmpty();
+            Guard.Argument(fetcher).NotNull();
+            Guard.Argument(xmlElementName).NotNull().NotEmpty();
 
             _uriFormat = uriFormat;
             _fetcher = fetcher;
             _xmlElementName = xmlElementName;
-        }
-
-        /// <summary>
-        /// Defines object invariants used by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrWhiteSpace(_uriFormat));
-            Contract.Invariant(_fetcher != null);
-            Contract.Invariant(!string.IsNullOrEmpty(_xmlElementName));
         }
 
         private async Task<EntityList<NamedValueDTO>> GetDescriptionsInternalAsync(Uri uri)

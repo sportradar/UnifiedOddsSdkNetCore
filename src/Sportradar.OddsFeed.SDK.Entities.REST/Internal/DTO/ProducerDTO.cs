@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -55,7 +55,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="producer">A <see cref="producer"/> containing deserialized response from 'available producers' endpoint</param>
         internal ProducerDTO(producer producer)
         {
-            Contract.Requires(producer != null);
+            Guard.Argument(producer).NotNull();
 
             Id = (int)producer.id;
             Name = producer.name;

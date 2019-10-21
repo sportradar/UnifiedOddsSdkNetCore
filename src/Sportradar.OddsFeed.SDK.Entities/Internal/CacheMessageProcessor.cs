@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Common.Logging;
@@ -66,10 +66,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                      ICacheManager cacheManager,
                                      IFeedMessageHandler feedMessageHandler)
         {
-            Contract.Requires(mapperFactory != null);
-            Contract.Requires(sportEventCache != null);
-            Contract.Requires(cacheManager != null);
-            Contract.Requires(feedMessageHandler != null);
+            Guard.Argument(mapperFactory).NotNull();
+            Guard.Argument(sportEventCache).NotNull();
+            Guard.Argument(cacheManager).NotNull();
+            Guard.Argument(feedMessageHandler).NotNull();
 
             ProcessorId = "CMP" + Guid.NewGuid().ToString().Substring(0, 4);
 
@@ -77,18 +77,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             _sportEventCache = sportEventCache;
             _cacheManager = cacheManager;
             _feedMessageHandler = feedMessageHandler;
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_mapperFactory != null);
-            Contract.Invariant(_sportEventCache != null);
-            Contract.Invariant(_cacheManager != null);
-            Contract.Invariant(_feedMessageHandler != null);
         }
 
         /// <summary>

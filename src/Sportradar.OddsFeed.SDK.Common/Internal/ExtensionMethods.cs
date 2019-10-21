@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -22,8 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>A <see cref="string"/> representation of the <see cref="Stream"/> content.</returns>
         public static string GetData(this Stream stream)
         {
-            Contract.Requires(stream != null);
-            Contract.Ensures(Contract.Result<string>() != null);
+            Guard.Argument(stream).NotNull();
 
             using (var memoryStream = new MemoryStream())
             {
@@ -40,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>True if entering the semaphore succedded (e.g. isntance was not yet disposed); otherwise false</returns>
         public static bool WaitSafe(this SemaphoreSlim semaphore)
         {
-            Contract.Requires(semaphore != null);
+            Guard.Argument(semaphore).NotNull();
             try
             {
                 semaphore.Wait();
@@ -61,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public static async Task<bool> WaitAsyncSafe(this SemaphoreSlim semaphore)
         {
-            Contract.Requires(semaphore != null);
+            Guard.Argument(semaphore).NotNull();
             try
             {
                 await semaphore.WaitAsync().ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public static bool ReleaseSafe(this SemaphoreSlim semaphore)
         {
-            Contract.Requires(semaphore != null);
+            Guard.Argument(semaphore).NotNull();
             try
             {
                 semaphore.Release();

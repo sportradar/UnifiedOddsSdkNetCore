@@ -2,8 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -34,11 +33,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         private readonly ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO> _mapperFactory;
 
         /// <summary>
-        /// The url format specifying the url of the resources fetched by the fetcher
-        /// </summary>
-        private readonly string _uriFormat;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BookmakerDetailsProvider"/> class
         /// </summary>
         /// <param name="bookmakerDetailsUriFormat">An address format used to retrieve sport event summary</param>
@@ -53,24 +47,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             : base(bookmakerDetailsUriFormat, fetcher, deserializer, mapperFactory)
         {
 
-            Contract.Requires(!string.IsNullOrEmpty(bookmakerDetailsUriFormat));
-            Contract.Requires(fetcher != null);
-            Contract.Requires(deserializer != null);
-            Contract.Requires(mapperFactory != null);
+            Guard.Argument(bookmakerDetailsUriFormat).NotNull().NotEmpty();
+            Guard.Argument(fetcher).NotNull();
+            Guard.Argument(deserializer).NotNull();
+            Guard.Argument(mapperFactory).NotNull();
 
-            _uriFormat = bookmakerDetailsUriFormat;
             _fetcher = fetcher;
             _deserializer = deserializer;
             _mapperFactory = mapperFactory;
-        }
-
-        /// <summary>
-        /// Defines object invariants used by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrWhiteSpace(_uriFormat));
         }
 
         /// <summary>
@@ -86,11 +70,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             bookmakerDetailsDTO.ServerTimeDifference = TimeSpan.Zero;
 
-            var httpDataFetcher = _fetcher as HttpDataFetcher;
-            if (httpDataFetcher != null)
+            if (_fetcher is HttpDataFetcher httpDataFetcher)
             {
-                IEnumerable<string> x;
-                if (httpDataFetcher.ResponseHeaders != null && httpDataFetcher.ResponseHeaders.TryGetValue("Date", out x))
+                if (httpDataFetcher.ResponseHeaders != null && httpDataFetcher.ResponseHeaders.TryGetValue("Date", out var x))
                 {
                     var date = SdkInfo.ParseDate(x.FirstOrDefault());
                     if (date != null)

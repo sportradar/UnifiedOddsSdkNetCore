@@ -2,17 +2,16 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Common.Contracts;
+
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
     /// <summary>
     /// Defines a pool of <see cref="SemaphoreSlim"/> instances which can be used to synchronize access to a shared resource
     /// </summary>
-    [ContractClass(typeof(SemaphorePoolContract))]
+    
     public interface ISemaphorePool : IDisposable
     {
         /// <summary>

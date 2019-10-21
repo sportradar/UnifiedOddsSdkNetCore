@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -11,8 +11,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
     {
         public static Stream OpenFile(string dirPath, string fileName)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(dirPath));
-            Contract.Requires(!string.IsNullOrWhiteSpace(fileName));
+            Guard.Argument(!string.IsNullOrWhiteSpace(dirPath));
+            Guard.Argument(!string.IsNullOrWhiteSpace(fileName));
             Contract.Ensures(Contract.Result<Stream>() != null);
 
             var filePath = dirPath.TrimEnd('/') + "/" + fileName.TrimStart('/');
@@ -21,20 +21,20 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public static Stream OpenFile(string filePath)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(filePath));
+            Guard.Argument(!string.IsNullOrWhiteSpace(filePath));
             return File.OpenRead(filePath);
         }
 
         public static Task<Stream> OpenFileAsync(string filePath)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(filePath));
+            Guard.Argument(!string.IsNullOrWhiteSpace(filePath));
             return Task.Factory.StartNew(() => OpenFile(filePath));
         }
 
         public static string ReadFile(string dirPath, string fileName)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(dirPath));
-            Contract.Requires(!string.IsNullOrWhiteSpace(fileName));
+            Guard.Argument(!string.IsNullOrWhiteSpace(dirPath));
+            Guard.Argument(!string.IsNullOrWhiteSpace(fileName));
             Contract.Ensures(Contract.Result<string>() != null);
 
             var stream = OpenFile(dirPath, fileName);

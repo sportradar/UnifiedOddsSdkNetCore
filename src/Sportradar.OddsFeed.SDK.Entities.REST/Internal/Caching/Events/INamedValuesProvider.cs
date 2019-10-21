@@ -1,15 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.Entities.REST.Contracts;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
     /// <summary>
     /// Defines a contract implemented by classes used to provide access to named values (e.g bet stop reasons, void reasons, ...)
     /// </summary>
-    [ContractClass(typeof(NamedValueProviderContract))]
+    
     internal interface INamedValuesProvider
     {
         /// <summary>

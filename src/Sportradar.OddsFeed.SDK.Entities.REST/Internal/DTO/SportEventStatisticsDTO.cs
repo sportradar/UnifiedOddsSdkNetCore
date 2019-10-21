@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public SportEventStatisticsDTO(statisticsType result)
         {
-            Contract.Requires(result != null);
+            Guard.Argument(result).NotNull();
 
             var totalStatisticsDTOs = new List<TeamStatisticsDTO>();
             totalStatisticsDTOs.Add(new TeamStatisticsDTO(
@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public SportEventStatisticsDTO(matchStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Contract.Requires(statistics != null);
+            Guard.Argument(statistics).NotNull();
 
             var teamStats = new List<TeamStatisticsDTO>();
             if (statistics.totals != null)

@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -82,8 +82,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="defaultCultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the default languages as specified in the configuration</param>
         internal EntityDispatcher(IFeedMessageMapper messageMapper, IEnumerable<CultureInfo> defaultCultures)
         {
-            Contract.Requires(messageMapper != null);
-            Contract.Requires(defaultCultures != null && defaultCultures.Any());
+            Guard.Argument(messageMapper).NotNull();
+            Guard.Argument(defaultCultures).NotNull().NotEmpty();
 
             MessageMapper = messageMapper;
             DefaultCultures = defaultCultures as IReadOnlyCollection<CultureInfo>;

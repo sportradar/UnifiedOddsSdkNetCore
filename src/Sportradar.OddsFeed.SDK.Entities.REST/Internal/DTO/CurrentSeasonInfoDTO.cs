@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public CurrentSeasonInfoDTO(seasonExtended season)
             : base (season.id, season.name)
         {
-            Contract.Requires(season != null);
+            Guard.Argument(season).NotNull();
 
             Year = season.year;
             StartDate = season.start_date;

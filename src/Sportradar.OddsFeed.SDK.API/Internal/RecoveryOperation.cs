@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -94,26 +94,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public RecoveryOperation(Producer producer, IRecoveryRequestIssuer recoveryRequestIssuer, IEnumerable<MessageInterest> allInterests, int nodeId, bool adjustAfterAge)
         {
-            Contract.Requires(producer != null);
-            Contract.Requires(recoveryRequestIssuer != null);
-            Contract.Requires(allInterests != null && allInterests.Any());
+            Guard.Argument(producer).NotNull();
+            Guard.Argument(recoveryRequestIssuer).NotNull();
+            Guard.Argument(allInterests).NotNull().NotEmpty();
 
             _producer = producer;
             _recoveryRequestIssuer = recoveryRequestIssuer;
             _allInterests = allInterests as List<MessageInterest> ?? new List<MessageInterest>(allInterests);
             _nodeId = nodeId;
             _adjustedAfterAge = adjustAfterAge;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_producer != null);
-            Contract.Invariant(_allInterests != null);
-            Contract.Invariant(_snapshotReceivedSessions != null);
         }
 
         /// <summary>

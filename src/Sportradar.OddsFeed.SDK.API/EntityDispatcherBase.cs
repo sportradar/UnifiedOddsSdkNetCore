@@ -3,7 +3,6 @@
 */
 using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -25,15 +24,6 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         protected EntityDispatcherBase()
         {
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(Log != null);
         }
 
         /// <summary>

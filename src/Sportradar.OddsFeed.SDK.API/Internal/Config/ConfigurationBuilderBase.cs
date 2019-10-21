@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
@@ -60,25 +60,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <param name="sectionProvider">A <see cref="IConfigurationSectionProvider"/> used to access <see cref="IOddsFeedConfigurationSection"/></param>
         internal ConfigurationBuilderBase(string accessToken, IConfigurationSectionProvider sectionProvider)
         {
-            Contract.Requires(!string.IsNullOrEmpty(accessToken));
-            Contract.Requires(sectionProvider != null);
+            Guard.Argument(accessToken).NotNull().NotEmpty();
+            Guard.Argument(sectionProvider).NotNull();
 
             AccessToken = accessToken;
             SectionProvider = sectionProvider;
             ExceptionHandlingStrategy = ExceptionHandlingStrategy.CATCH;
             NodeId = 0;
             DefaultLocale = null;
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(AccessToken));
-            Contract.Invariant(SectionProvider != null);
-            Contract.Invariant(SupportedLocales != null);
         }
 
         /// <summary>
@@ -90,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>T.</returns>
         internal virtual void LoadFromConfigFile(IOddsFeedConfigurationSection section)
         {
-            Contract.Requires(section != null);
+            Guard.Argument(section).NotNull();
 
             Section = section;
 
@@ -147,7 +136,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1" /> derived instance used to set general configuration properties</returns>
         public T SetDefaultLanguage(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             DefaultLocale = culture;
             return this as T;

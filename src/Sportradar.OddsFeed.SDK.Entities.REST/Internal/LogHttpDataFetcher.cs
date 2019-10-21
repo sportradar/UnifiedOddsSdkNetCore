@@ -3,7 +3,7 @@
 */
 using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -42,9 +42,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public LogHttpDataFetcher(HttpClient client, string accessToken, ISequenceGenerator sequenceGenerator, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15)
             :base(client, accessToken, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
         {
-            Contract.Requires(sequenceGenerator != null);
-            Contract.Requires(connectionFailureLimit >= 1);
-            Contract.Requires(connectionFailureTimeout >= 1);
+            Guard.Argument(sequenceGenerator).NotNull();
+            Guard.Argument(connectionFailureLimit).Positive();
+            Guard.Argument(connectionFailureTimeout).Positive();
 
             _sequenceGenerator = sequenceGenerator;
         }

@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
@@ -65,7 +65,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         public SessionMessageManager(IFeedMessageMapper messageMapper)
         {
-            Contract.Requires(messageMapper != null);
+            Guard.Argument(messageMapper).NotNull();
 
             ProcessorId = Guid.NewGuid().ToString().Substring(0, 4);
 

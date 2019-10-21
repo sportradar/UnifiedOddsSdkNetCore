@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -25,8 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal SportCategoriesDTO(sportCategoriesEndpoint categoriesEndpoint)
         {
-            Contract.Requires(categoriesEndpoint != null);
-            Contract.Requires(categoriesEndpoint.sport != null);
+            Guard.Argument(categoriesEndpoint).NotNull();
+            Guard.Argument(categoriesEndpoint.sport).NotNull();
 
             Sport = new SportEntityDTO(categoriesEndpoint.sport.id, categoriesEndpoint.sport.name);
             Categories = categoriesEndpoint.categories?.Select(c => new CategoryDTO(c.id, c.name, c.country_code, new List<tournamentExtended>())).ToList();

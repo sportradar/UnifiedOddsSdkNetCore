@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal PitcherDTO(pitcher record)
             :base(record.id, record.name)
         {
-            Contract.Requires(record != null);
+            Guard.Argument(record).NotNull();
             Hand = record.hand.Equals("l", StringComparison.InvariantCultureIgnoreCase)
                 ? PlayerHand.Left
                 : PlayerHand.Right;

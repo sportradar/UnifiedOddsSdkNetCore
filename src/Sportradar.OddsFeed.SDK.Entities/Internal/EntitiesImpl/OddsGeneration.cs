@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="oddsGenerationProperties">The odds generation properties</param>
         public OddsGeneration(oddsGenerationProperties oddsGenerationProperties)
         {
-            Contract.Requires(oddsGenerationProperties != null);
+            Guard.Argument(oddsGenerationProperties).NotNull();
 
             ExpectedTotals = oddsGenerationProperties.expected_totalsSpecified
                                  ? oddsGenerationProperties.expected_totals

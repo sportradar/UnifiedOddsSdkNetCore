@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -27,8 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="serverTimeDifference">The server time difference</param>
         public BookmakerDetailsMapper(bookmaker_details data, TimeSpan serverTimeDifference)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(serverTimeDifference != null);
+            Guard.Argument(data).NotNull();
 
             _data = data;
             _serverTimeDifference = serverTimeDifference;
@@ -36,8 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
 
         internal static ISingleTypeMapper<BookmakerDetailsDTO> Create(bookmaker_details data, TimeSpan serverTimeDifference)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(serverTimeDifference != null);
+            Guard.Argument(data).NotNull();
 
             return new BookmakerDetailsMapper(data, serverTimeDifference);
         }

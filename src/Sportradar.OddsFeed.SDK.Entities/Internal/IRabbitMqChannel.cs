@@ -3,16 +3,14 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using RabbitMQ.Client.Events;
-using Sportradar.OddsFeed.SDK.Entities.Contracts;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     /// <summary>
     /// Represents a contract implemented by classes used to connect to rabbit mq broker
     /// </summary>
-    [ContractClass(typeof(RabbitMqChannelContract))]
+    
     public interface IRabbitMqChannel
     {
         /// <summary>

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -130,9 +130,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                           ICompetitionCI rootCompetitionCI)
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
-            //Contract.Requires(ci != null);
-            Contract.Requires(cultures != null && cultures.Any());
-            Contract.Requires(sportEntityFactory != null);
+            //Guard.Argument(ci).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(sportEntityFactory).NotNull();
 
             if (ci == null)
             {
@@ -142,7 +143,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             _competitorCI = ci;
             _profileCache = profileCache;
-            _cultures = cultures.ToList();
+            _cultures = cultureInfos;
             _sportEntityFactory = sportEntityFactory;
             _competitionCI = (CompetitionCI) rootCompetitionCI;
             _referenceId = null;
@@ -163,9 +164,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                           IDictionary<URN, ReferenceIdCI> competitorsReferences)
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
-            //Contract.Requires(ci != null);
-            Contract.Requires(cultures != null && cultures.Any());
-            Contract.Requires(sportEntityFactory != null);
+            //Guard.Argument(ci).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(sportEntityFactory).NotNull();
 
             if (ci == null)
             {
@@ -175,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             _competitorCI = ci;
             _profileCache = profileCache;
-            _cultures = cultures.ToList();
+            _cultures = cultureInfos;
             _sportEntityFactory = sportEntityFactory;
             _competitionCI = null;
             _referenceId = null;

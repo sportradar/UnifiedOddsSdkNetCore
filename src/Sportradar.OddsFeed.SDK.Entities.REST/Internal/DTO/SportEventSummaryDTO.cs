@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -69,8 +69,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="sportEvent">A <see cref="sportEvent"/> containing basic information about the event</param>
         internal SportEventSummaryDTO(sportEvent sportEvent)
         {
-            Contract.Requires(sportEvent != null);
-            Contract.Requires(!string.IsNullOrEmpty(sportEvent.id));
+            Guard.Argument(sportEvent).NotNull();
+            Guard.Argument(sportEvent.id).NotNull().NotEmpty();
 
             Id = URN.Parse(sportEvent.id);
             Scheduled = sportEvent.scheduledSpecified
@@ -112,8 +112,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="parentStage">A <see cref="parentStage"/> containing basic information about the event</param>
         protected SportEventSummaryDTO(parentStage parentStage)
         {
-            Contract.Requires(parentStage != null);
-            Contract.Requires(!string.IsNullOrEmpty(parentStage.id));
+            Guard.Argument(parentStage).NotNull();
+            Guard.Argument(parentStage.id).NotNull().NotEmpty();
 
             Id = URN.Parse(parentStage.id);
             Scheduled = parentStage.scheduledSpecified
@@ -152,8 +152,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="childStage">A <see cref="sportEventChildrenSport_event"/> containing basic information about the event</param>
         protected SportEventSummaryDTO(sportEventChildrenSport_event childStage)
         {
-            Contract.Requires(childStage != null);
-            Contract.Requires(!string.IsNullOrEmpty(childStage.id));
+            Guard.Argument(childStage).NotNull();
+            Guard.Argument(childStage.id).NotNull().NotEmpty();
 
             Id = URN.Parse(childStage.id);
             Scheduled = childStage.scheduledSpecified

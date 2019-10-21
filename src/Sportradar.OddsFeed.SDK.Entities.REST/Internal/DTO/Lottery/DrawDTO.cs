@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                         }
             })
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             DisplayId = null;
 
@@ -114,7 +114,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                     }
             })
         {
-            Contract.Requires(item?.draw_fixture != null);
+            Guard.Argument(item?.draw_fixture).NotNull();
+
             var fixture = item.draw_fixture;
 
             Debug.Assert(fixture != null, nameof(fixture) + " != null");
@@ -141,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                 scheduled = item?.scheduled ?? DateTime.MinValue
             })
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             if (item != null)
             {

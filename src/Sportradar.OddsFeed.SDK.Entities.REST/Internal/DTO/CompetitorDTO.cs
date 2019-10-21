@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CompetitorDTO(team record)
             :base(new player {id = record.id, name = record.name })
         {
-            Contract.Requires(record != null);
+            Guard.Argument(record).NotNull();
 
             Abbreviation = record.abbreviation;
             CountryName = record.country;

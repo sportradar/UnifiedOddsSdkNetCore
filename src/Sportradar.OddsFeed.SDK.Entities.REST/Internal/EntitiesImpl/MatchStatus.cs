@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,8 +81,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public MatchStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
             : base(ci, matchStatusesCache)
         {
-            Contract.Requires(ci != null);
-            Contract.Requires(matchStatusesCache != null);
+            Guard.Argument(ci).NotNull();
+            Guard.Argument(matchStatusesCache).NotNull();
 
             if (ci.EventClock != null)
             {

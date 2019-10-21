@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="record">A <see cref="sportEventStatus" /> instance containing status data about the associated sport event</param>
         internal SportEventStatusMapper(sportEventStatus record)
         {
-            Contract.Requires(record != null);
+            Guard.Argument(record).NotNull();
 
             _data = record;
         }
@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>a new instance of <see cref="ISingleTypeMapper{ISportEventStatus}"/> instance</returns>
         internal static ISingleTypeMapper<SportEventStatusDTO> Create(sportEventStatus data)
         {
-            Contract.Requires(data != null);
+            Guard.Argument(data).NotNull();
 
             return new SportEventStatusMapper(data);
         }

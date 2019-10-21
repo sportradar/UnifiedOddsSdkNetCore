@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -80,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cultures">A cultures of the current instance of <see cref="RoundCI"/></param>
         public Round(RoundCI ci, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(ci != null);
+            Guard.Argument(ci).NotNull();
 
             Type = ci.Type;
             Number = ci.Number;

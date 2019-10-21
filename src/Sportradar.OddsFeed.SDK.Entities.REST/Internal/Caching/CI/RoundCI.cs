@@ -4,10 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -84,10 +84,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
         internal RoundCI(RoundDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(culture != null);
-            Contract.Ensures(_names != null);
-            Contract.Ensures(_phaseOrGroupLongName != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(culture).NotNull();
 
             _names = new Dictionary<CultureInfo, string>();
             _phaseOrGroupLongName = new Dictionary<CultureInfo, string>();
@@ -101,7 +99,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal RoundCI(ExportableRoundCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             _names = new Dictionary<CultureInfo, string>(exportable.Names);
             _phaseOrGroupLongName = new Dictionary<CultureInfo, string>(exportable.PhaseOrGroupLongName);
@@ -123,7 +123,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
         internal void Merge(RoundDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             Type = dto.Type;
             Group = dto.Group;
@@ -145,7 +145,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>Return the Name if exists, or null</returns>
         public string GetName(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             return _names == null || !_names.ContainsKey(culture)
                 ? null
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>Return the phase or group long name if exists, or null</returns>
         public string GetPhaseOrGroupLongName(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             return _phaseOrGroupLongName == null || !_phaseOrGroupLongName.ContainsKey(culture)
                 ? null

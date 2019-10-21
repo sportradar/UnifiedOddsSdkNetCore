@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="timedOut">a value indicating whether the operation has timed-out</param>
         protected RecoveryResult(bool success, long requestId, DateTime startTime, DateTime? interruptedAt, bool timedOut)
         {
-            Contract.Requires(requestId != 0);
+            Guard.Argument(requestId).Positive();
 
             Success = success;
             RequestId = requestId;

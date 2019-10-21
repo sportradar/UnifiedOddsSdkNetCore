@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,8 +36,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal RefereeCI(RefereeDTO referee, CultureInfo culture)
             : base(referee)
         {
-            Contract.Requires(referee != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(referee).NotNull();
+            Guard.Argument(culture).NotNull();
 
             _nationality = new Dictionary<CultureInfo, string>();
             Merge(referee, culture);
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The nationality of the referee in the specified language.</returns>
         internal string GetNationality(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             return _nationality.ContainsKey(culture)
                 ? _nationality[culture]
@@ -75,8 +75,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the referee info.</param>
         internal void Merge(RefereeDTO referee, CultureInfo culture)
         {
-            Contract.Requires(referee != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(referee).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Name = referee.Name;
             _nationality[culture] = referee.Nationality;

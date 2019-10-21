@@ -2,8 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.API.Contracts;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
@@ -11,7 +9,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// A contract implemented by classes used to determine the type of the SDK entity used to represent the specific sport entity (tournament, race, match, ...)
     /// </summary>
-    [ContractClass(typeof(EntityTypeMapperContract))]
     internal interface IEntityTypeMapper
     {
         /// <summary>

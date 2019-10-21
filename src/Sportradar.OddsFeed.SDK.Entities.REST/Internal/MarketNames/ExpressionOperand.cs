@@ -3,8 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
+using Dawn;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
@@ -47,24 +46,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="staticValue">The value to be added to the value of the specifier</param>
         public ExpressionOperand(IReadOnlyDictionary<string, string> specifiers, string operandString, SimpleMathOperation operation, int staticValue)
         {
-            Contract.Requires(specifiers != null && specifiers.Any());
-            Contract.Requires(!string.IsNullOrEmpty(operandString));
-            Contract.Requires(System.Enum.IsDefined(typeof(SimpleMathOperation), operation));
+            Guard.Argument(specifiers).NotNull().NotEmpty();
+            Guard.Argument(operandString).NotNull().NotEmpty();
+            Guard.Argument(Enum.IsDefined(typeof(SimpleMathOperation), operation));
 
             _specifiers = specifiers;
             _operandString = operandString;
             _operation = operation;
             _staticValue = staticValue;
-        }
-
-        /// <summary>
-        /// Specifies invariants as needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariants()
-        {
-            Contract.Invariant(_specifiers != null && _specifiers.Any());
-            Contract.Invariant(!string.IsNullOrEmpty(_operandString));
         }
 
         /// <summary>

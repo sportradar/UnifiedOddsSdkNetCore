@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,8 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="cache">The cache to be registered</param>
         public void RegisterCache(string name, ISdkCache cache)
         {
-            Contract.Requires(!string.IsNullOrEmpty(name));
-            Contract.Requires(cache != null);
+            Guard.Argument(name).NotNull().NotEmpty();
+            Guard.Argument(cache).NotNull();
 
             if (_caches == null)
             {
@@ -79,9 +79,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
         public async Task SaveDtoAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
-            Contract.Requires(id != null);
-            Contract.Requires(item != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(id).NotNull();
+            Guard.Argument(item).NotNull();
+            Guard.Argument(culture).NotNull();
 
             if (_caches == null || !_caches.Any())
             {
@@ -126,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="sender">The name of the cache or class that is initiating request</param>
         public void RemoveCacheItem(URN id, CacheItemType cacheItemType, string sender)
         {
-            Contract.Requires(id != null);
+            Guard.Argument(id).NotNull();
 
             if (_caches == null || !_caches.Any())
             {

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -52,11 +52,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly MessageTimingInfo _systemAliveTimingInfo;
 
         /// <summary>
-        /// The <see cref="Producer"/> associated with current instance
-        /// </summary>
-        private readonly Producer _producer;
-
-        /// <summary>
         /// Gets a value indicating whether the feed messages are processed in a timely manner
         /// </summary>
         public bool IsBehind
@@ -97,12 +92,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="maxMessageAgeInSeconds">The maximum latency of the user messages</param>
         public TimestampTracker(Producer producer, IEnumerable<MessageInterest> allInterests, int maxInactivitySeconds, int maxMessageAgeInSeconds)
         {
-            Contract.Requires(producer != null);
-            Contract.Requires(maxInactivitySeconds > 0);
-            Contract.Requires(maxMessageAgeInSeconds > 0);
-            Contract.Requires(allInterests != null);
+            Guard.Argument(producer).NotNull();
+            Guard.Argument(maxInactivitySeconds).Positive();
+            Guard.Argument(maxMessageAgeInSeconds).Positive();
+            var messageInterests = allInterests.ToList();
+            Guard.Argument(messageInterests).NotNull();
 
-            _producer = producer;
             _maxInactivitySeconds = maxInactivitySeconds;
             _maxMessageAgeInSeconds = maxMessageAgeInSeconds;
             _systemAliveTimingInfo = new MessageTimingInfo(SdkInfo.ToEpochTime(TimeProviderAccessor.Current.Now));
@@ -110,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var aliveMessagesTimingInfo = new Dictionary<MessageInterest, MessageTimingInfo>();
             var nonAliveMessagesTimingInfo = new Dictionary<MessageInterest, MessageTimingInfo>();
 
-            var allInterestsList = allInterests as IList<MessageInterest> ?? allInterests.ToList();
+            var allInterestsList = allInterests as IList<MessageInterest> ?? messageInterests.ToList();
             var producerScopes = producer.Scope.Select(MessageInterest.FromScope).ToList();
             foreach (var interest in allInterestsList)
             {
@@ -125,19 +120,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         }
 
         /// <summary>
-        /// Defines object invariants used by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_producer != null);
-            Contract.Invariant(_aliveMessagesTimingInfo != null);
-            Contract.Invariant(_nonAliveMessagesTimingInfo != null);
-            Contract.Invariant(_systemAliveTimingInfo != null);
-        }
-
-
-        /// <summary>
         /// Updates the timing info in the provided dictionary
         /// </summary>
         /// <param name="dictionary">The <see cref="IReadOnlyDictionary{TKey,TValue}"/> to modify</param>
@@ -145,9 +127,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="message">The received <see cref="FeedMessage"/></param>
         private static void UpdateTimingInfo(IReadOnlyDictionary<MessageInterest, MessageTimingInfo> dictionary, MessageInterest interest, FeedMessage message)
         {
-            Contract.Requires(dictionary != null);
-            Contract.Requires(interest != null);
-            Contract.Requires(message != null);
+            Guard.Argument(dictionary).NotNull();
+            Guard.Argument(interest).NotNull();
+            Guard.Argument(message).NotNull();
 
             MessageTimingInfo timingInfo;
             if (dictionary.TryGetValue(interest, out timingInfo))
@@ -175,12 +157,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="message">The received <see cref="FeedMessage"/></param>
         private static void UpdateTimingInfoIfLatencyLower(IReadOnlyDictionary<MessageInterest, MessageTimingInfo> dictionary, MessageInterest interest, FeedMessage message)
         {
-            Contract.Requires(dictionary != null);
-            Contract.Requires(interest != null);
-            Contract.Requires(message != null);
+            Guard.Argument(dictionary).NotNull();
+            Guard.Argument(interest).NotNull();
+            Guard.Argument(message).NotNull();
 
-            MessageTimingInfo timingInfo;
-            if (dictionary.TryGetValue(interest, out timingInfo))
+            if (dictionary.TryGetValue(interest, out var timingInfo))
             {
                 var messageDateTime = SdkInfo.FromEpochTime(message.GeneratedAt);
                 var newLatency = TimeProviderAccessor.Current.Now <= messageDateTime

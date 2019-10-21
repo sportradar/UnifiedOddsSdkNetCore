@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                      ISportEntityFactory sportEntityFactory,
                      IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
         {
-            Contract.Requires(ci != null);
+            Guard.Argument(ci).NotNull();
 
             Id = ci.Id;
             Name = ci.Name;

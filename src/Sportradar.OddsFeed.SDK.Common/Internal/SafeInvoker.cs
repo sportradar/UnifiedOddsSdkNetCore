@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -23,8 +23,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns><c>true</c> True if the exception was of the following types: <see cref="CommunicationException"/>, <see cref="DeserializationException"/> or <see cref="MappingException"/>.</returns>
         private static bool HandleException(Exception ex, ILog log, string errorMessage)
         {
-            Contract.Requires(ex != null);
-            Contract.Requires(log != null);
+            Guard.Argument(ex).NotNull();
+            Guard.Argument(log).NotNull();
 
             if (ex is CommunicationException || ex is DeserializationException || ex is MappingException)
             {
@@ -43,8 +43,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static async Task SafeInvokeAsync(this Func<Task> method, ILog log, string errorMessage)
         {
-            Contract.Requires(method != null);
-            Contract.Requires(log != null);
+            Guard.Argument(method).NotNull();
+            Guard.Argument(log).NotNull();
 
             try
             {
@@ -69,8 +69,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation.</returns>
         public static async Task<TResult> SafeInvokeAsync<TResult>(this Func<Task<TResult>> method, ILog log, string errorMessage)
         {
-            Contract.Requires(method != null);
-            Contract.Requires(log != null);
+            Guard.Argument(method).NotNull();
+            Guard.Argument(log).NotNull();
 
             try
             {
@@ -96,8 +96,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation.</returns>
         public static async Task<TResult> SafeInvokeAsync<T, TResult>(this Func<T, Task<TResult>> method, T arg, ILog log, string errorMessage)
         {
-            Contract.Requires(method != null);
-            Contract.Requires(log != null);
+            Guard.Argument(method).NotNull();
+            Guard.Argument(log).NotNull();
 
             try
             {
@@ -124,8 +124,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static async Task<TResult> SafeInvokeAsync<T1, T2, TResult>(this Func<T1, T2, Task<TResult>> method, T1 arg1, T2 arg2, ILog log, string errorMessage)
         {
-            Contract.Requires(method != null);
-            Contract.Requires(log != null);
+            Guard.Argument(method).NotNull();
+            Guard.Argument(log).NotNull();
 
             try
             {
@@ -153,8 +153,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static async Task<TResult> SafeInvokeAsync<T1, T2, T3, TResult>(this Func<T1, T2, T3, Task<TResult>>  method, T1 arg1, T2 arg2, T3 arg3, ILog log, string errorMessage)
         {
-            Contract.Requires(method != null);
-            Contract.Requires(log != null);
+            Guard.Argument(method).NotNull();
+            Guard.Argument(log).NotNull();
 
             try
             {

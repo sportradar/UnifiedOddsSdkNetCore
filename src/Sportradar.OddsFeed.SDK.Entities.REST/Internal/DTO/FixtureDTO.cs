@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal FixtureDTO(fixture fixture, DateTime? generatedAt)
             : base(fixture)
         {
-            Contract.Requires(fixture != null);
+            Guard.Argument(fixture).NotNull();
 
             StartTime = fixture.start_timeSpecified
                 ? (DateTime?) fixture.start_time.ToLocalTime()

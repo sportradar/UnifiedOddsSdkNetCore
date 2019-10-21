@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -96,14 +96,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                  ILocalizedNamedValueCache matchStatusCache,
                                  IDataRouterManager dataRouterManager)
         {
-            Contract.Requires(sportEntityFactory != null);
-            Contract.Requires(sportEventCache != null);
-            Contract.Requires(profileCache != null);
-            Contract.Requires(defaultCultures != null);
-            Contract.Requires(defaultCultures.Any());
-            Contract.Requires(cacheManager != null);
-            Contract.Requires(matchStatusCache != null);
-            Contract.Requires(dataRouterManager != null);
+            Guard.Argument(sportEntityFactory).NotNull();
+            Guard.Argument(sportEventCache).NotNull();
+            Guard.Argument(profileCache).NotNull();
+            Guard.Argument(defaultCultures).NotNull().NotEmpty();
+            Guard.Argument(cacheManager).NotNull();
+            Guard.Argument(matchStatusCache).NotNull();
+            Guard.Argument(dataRouterManager).NotNull();
 
             _sportEntityFactory = sportEntityFactory;
             _sportEventCache = sportEventCache;
@@ -114,20 +113,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             _cacheManager = cacheManager;
             _matchStatusCache = matchStatusCache;
             _dataRouterManager = dataRouterManager;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_sportEntityFactory != null);
-            Contract.Invariant(_sportEventCache != null);
-            Contract.Invariant(_defaultCultures != null);
-            Contract.Invariant(_defaultCultures.Any());
-            Contract.Invariant(_matchStatusCache != null);
-            Contract.Invariant(_dataRouterManager != null);
         }
 
         /// <summary>

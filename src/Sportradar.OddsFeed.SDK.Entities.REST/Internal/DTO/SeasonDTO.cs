@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -36,8 +36,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal SeasonDTO(seasonExtended season)
             : base(season.id, season.name)
         {
-            Contract.Requires(season != null);
-            Contract.Requires(!string.IsNullOrEmpty(season.year));
+            Guard.Argument(season).NotNull();
+            Guard.Argument(season.year).NotNull().NotEmpty();
 
             StartDate = season.start_date;
             EndDate = season.end_date;
@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal SeasonDTO(currentSeason season)
             : base(season.id, season.name)
         {
-            Contract.Requires(season != null);
+            Guard.Argument(season).NotNull();
 
             StartDate = season.start_date;
             EndDate = season.end_date;

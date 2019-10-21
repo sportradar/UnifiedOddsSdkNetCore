@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -25,8 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CategorySummaryDTO(string id, string name, string countryCode)
             :base(id, name)
         {
-            Contract.Requires(!string.IsNullOrEmpty(id));
-            Contract.Requires(!string.IsNullOrEmpty(name));
+            Guard.Argument(id).NotNull().NotEmpty();
+            Guard.Argument(name).NotNull().NotEmpty();
 
             CountryCode = countryCode;
         }
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CategorySummaryDTO(category category)
             : base(category.id, category.name)
         {
-            Contract.Requires(category != null);
+            Guard.Argument(category).NotNull();
 
             CountryCode = category.country_code;
         }

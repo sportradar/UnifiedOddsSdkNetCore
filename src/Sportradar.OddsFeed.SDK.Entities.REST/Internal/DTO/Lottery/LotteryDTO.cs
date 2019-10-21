@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -64,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                     }
             })
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             if (item.sport!=null)
             {
@@ -87,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
         internal LotteryDTO(lottery_schedule item)
             : this(item.lottery)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             if (item.draw_events != null && item.draw_events.Any())
             {

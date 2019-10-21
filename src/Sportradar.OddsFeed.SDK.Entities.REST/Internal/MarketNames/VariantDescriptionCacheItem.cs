@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Common.Logging;
@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             string source)
         {
 
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             Id = id;
             Outcomes = outcomes;
@@ -60,9 +60,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The cache item could not be build from the provided DTO</exception>
         public static VariantDescriptionCacheItem Build(VariantDescriptionDTO dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(factory != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(factory).NotNull();
+            Guard.Argument(culture).NotNull();
 
             var outcomes = dto.Outcomes == null
                 ? null
@@ -87,8 +87,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal void Merge(VariantDescriptionDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(culture).NotNull();
 
             if (dto.Outcomes != null)
             {

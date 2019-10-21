@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public ManagerCI(ManagerDTO item, CultureInfo culture)
             : base(item.Id, item.Name, culture)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             if (Nationality == null)
             {
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture.</param>
         public void Merge(ManagerDTO item, CultureInfo culture)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             base.Merge(item, culture);
 

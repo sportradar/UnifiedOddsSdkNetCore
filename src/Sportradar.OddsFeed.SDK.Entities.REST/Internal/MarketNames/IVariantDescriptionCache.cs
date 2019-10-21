@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames

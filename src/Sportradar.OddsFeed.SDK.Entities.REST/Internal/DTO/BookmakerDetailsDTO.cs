@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Net;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="serverTimeDifference">The server time difference</param>
         public BookmakerDetailsDTO(bookmaker_details msg, TimeSpan serverTimeDifference)
         {
-            Contract.Requires(msg != null);
+            Guard.Argument(msg).NotNull();
 
             Id = msg.bookmaker_id;
             VirtualHost = msg.virtual_host;

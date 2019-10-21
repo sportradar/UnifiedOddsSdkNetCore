@@ -3,7 +3,6 @@
 */
 using System;
 using System.Configuration;
-using System.Diagnostics.Contracts;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
@@ -178,8 +177,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <exception cref="ConfigurationErrorsException">The section in the configuration file is not valid</exception>
         internal static OddsFeedConfigurationSection GetSection()
         {
-            Contract.Ensures(Contract.Result<OddsFeedConfigurationSection>() != null);
-
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (config == null)
             {

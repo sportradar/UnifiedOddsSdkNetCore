@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
@@ -43,8 +43,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public SeasonCI(SeasonDTO dto, CultureInfo culture)
             : base(dto)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(culture).NotNull();
 
             _name = new Dictionary<CultureInfo, string>();
             Merge(dto, culture);
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The name of the associated season in the specified language.</returns>
         public string GetName(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             return _name.ContainsKey(culture)
                 ? _name[culture]
@@ -71,8 +71,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the season info</param>
         public void Merge(SeasonDTO season, CultureInfo culture)
         {
-            Contract.Requires(season != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(season).NotNull();
+            Guard.Argument(culture).NotNull();
 
             StartDate = season.StartDate;
             EndDate = season.EndDate;
@@ -86,7 +86,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="season">A <see cref="SeasonCI"/> containing season info</param>
         public void Merge(SeasonCI season)
         {
-            Contract.Requires(season != null);
+            Guard.Argument(season).NotNull();
 
             StartDate = season.StartDate;
             EndDate = season.EndDate;

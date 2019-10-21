@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
@@ -24,8 +24,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist</exception>
         private static string GetSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers)
         {
-            Contract.Requires(!string.IsNullOrEmpty(specifierName));
-            Contract.Requires(specifiers != null && specifiers.Any());
+            Guard.Argument(!string.IsNullOrEmpty(specifierName));
+            Guard.Argument(specifiers != null && specifiers.Any());
 
             string specifierValueString;
             if (!specifiers.TryGetValue(specifierName, out specifierValueString))

@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Net.Security;
 using System.Security.Authentication;
 using RabbitMQ.Client;
@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// A <see cref="IConnectionFactory"/> implementations which properly configures it self before first <see cref="IConnection"/> is created
     /// </summary>
-    internal class  ConfiguredConnectionFactory : ConnectionFactory
+    internal class ConfiguredConnectionFactory : ConnectionFactory
     {
         /// <summary>
         /// A <see cref="IOddsFeedConfigurationInternal"/> instance containing configuration information
@@ -35,7 +35,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="config">A <see cref="IOddsFeedConfigurationInternal"/> instance containing configuration information</param>
         public ConfiguredConnectionFactory(IOddsFeedConfigurationInternal config)
         {
-            Contract.Requires(config != null);
+            Guard.Argument(config).NotNull();
+
             _config = config;
         }
 
@@ -44,7 +45,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         protected void Configure()
         {
-            Contract.Assume(_config != null);
             HostName = _config.Host;
             Port = _config.Port;
             UserName = _config.Username;
@@ -52,7 +52,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             VirtualHost = _config.VirtualHost;
             AutomaticRecoveryEnabled = true;
 
-            Contract.Assume(Ssl != null);
             Ssl.Enabled = _config.UseSsl;
             Ssl.Version = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
             if (_config.UseSsl)
@@ -60,7 +59,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 Ssl.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
             }
 
-            Contract.Assume(ClientProperties != null);
             ClientProperties.Add("SrSdkType", ".net");
             ClientProperties.Add("SrSdkVersion", SdkInfo.GetVersion());
         }

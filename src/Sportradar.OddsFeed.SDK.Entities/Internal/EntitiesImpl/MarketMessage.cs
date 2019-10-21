@@ -1,9 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -36,11 +37,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         protected MarketMessage(IMessageTimestamp timestamp, IProducer producer, T1 @event, long? requestId, IEnumerable<T> markets, byte[] rawMessage)
             : base(timestamp, producer, @event, requestId, rawMessage)
         {
-            Contract.Requires(@event != null);
-
-            if (markets != null && markets.Any())
+            if (@event == null)
             {
-                _markets = markets as IReadOnlyCollection<T> ?? new ReadOnlyCollection<T>(markets.ToList());
+                throw new ArgumentNullException(nameof(@event));
+            }
+
+            var enumerable = markets.ToList();
+            if (enumerable.Any())
+            {
+                _markets = markets as IReadOnlyCollection<T> ?? new ReadOnlyCollection<T>(enumerable.ToList());
             }
         }
 

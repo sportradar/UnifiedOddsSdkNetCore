@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using System.Text;
 using Common.Logging;
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>The <see cref="MessageType"/> member specifying the type of the provided xml message.</returns>
         private static MessageType ExtractMessageName(string message)
         {
-            Contract.Requires(!string.IsNullOrEmpty(message));
+            Guard.Argument(!string.IsNullOrEmpty(message));
 
             foreach (var messageName in MessageTypes)
             {
@@ -90,8 +90,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>The value of the specified attribute or a null reference if value could not be determined</returns>
         private static string ExtractAttributeValue(string message, string attributeName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(message));
-            Contract.Requires(!string.IsNullOrEmpty(attributeName));
+            Guard.Argument(!string.IsNullOrEmpty(message));
+            Guard.Argument(!string.IsNullOrEmpty(attributeName));
 
             var startIndex = message.IndexOf(attributeName, StringComparison.Ordinal);
             if (startIndex < 0)

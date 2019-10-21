@@ -3,7 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
@@ -77,16 +76,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             _section = sectionProvider?.GetSection();
             Init();
-        }
-
-        /// <summary>
-        /// Defines object invariants used by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_locales != null);
-            Contract.Invariant(_inactivitySeconds >= SdkInfo.MinInactivitySeconds && _inactivitySeconds <= SdkInfo.MaxInactivitySeconds);
         }
 
         /// <summary>

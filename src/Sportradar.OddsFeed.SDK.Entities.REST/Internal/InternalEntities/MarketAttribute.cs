@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 
@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// <param name="cacheItem">A <see cref="MarketAttributeCacheItem"/> containing attribute data.</param>
         public MarketAttribute(MarketAttributeCacheItem cacheItem)
         {
-            Contract.Requires(cacheItem != null);
+            Guard.Argument(cacheItem).NotNull();
 
             Name = cacheItem.Name;
             Description = cacheItem.Description;

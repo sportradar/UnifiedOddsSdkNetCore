@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
     /// <summary>
     /// A <see cref="IProfileCache"/> implementation using <see cref="MemoryCache"/> to cache fetched information
     /// </summary>
-    internal class ProfileCache : SdkCache, IHealthStatusProvider, IProfileCache, IDisposable, IExportableSdkCache
+    internal class ProfileCache : SdkCache, IProfileCache
     {
         /// <summary>
         /// A <see cref="MemoryCache"/> used to store fetched information
@@ -74,23 +74,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                         ICacheManager cacheManager)
             : base(cacheManager)
         {
-            Contract.Requires(cache != null);
-            Contract.Requires(dataRouterManager != null);
+            Guard.Argument(cache).NotNull();
+            Guard.Argument(dataRouterManager).NotNull();
 
             _cache = cache;
             _dataRouterManager = dataRouterManager;
             _isDisposed = false;
-        }
-
-        /// <summary>
-        /// Lists the invariants members as required by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_cache != null);
-            Contract.Invariant(_dataRouterManager != null);
-            Contract.Invariant(_semaphore != null);
         }
 
         /// <summary>
@@ -130,8 +119,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// <exception cref="CacheItemNotFoundException">The requested item was not found in cache and could not be obtained from the API</exception>
         public async Task<PlayerProfileCI> GetPlayerProfileAsync(URN playerId, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(playerId != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(playerId).NotNull();
+            var wantedCultures = cultures.ToList();
+            Guard.Argument(wantedCultures).NotNull().NotEmpty();
 
             // removed register interface !! todo
             //Metric.Context("CACHE").Meter("ProfileCache->GetPlayerProfileAsync", Unit.Calls);
@@ -142,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             try
             {
                 cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
-                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, cachedItem?.Names.Keys).ToList();
+                var missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
                 if (!missingLanguages.Any())
                 {
                     return cachedItem;
@@ -181,8 +171,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// <exception cref="CacheItemNotFoundException">The requested item was not found in cache and could not be obtained from the API</exception>
         public async Task<CompetitorCI> GetCompetitorProfileAsync(URN competitorId, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(competitorId != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(competitorId).NotNull();
+            var wantedCultures = cultures.ToList();
+            Guard.Argument(wantedCultures).NotNull().NotEmpty();
 
             //Metric.Context("CACHE").Meter("ProfileCache->GetCompetitorProfileAsync", Unit.Calls);
 
@@ -192,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             try
             {
                 cachedItem = (CompetitorCI) _cache.Get(competitorId.ToString());
-                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, cachedItem?.Names.Keys).ToList();
+                var missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
                 if (!missingLanguages.Any())
                 {
                     return cachedItem;

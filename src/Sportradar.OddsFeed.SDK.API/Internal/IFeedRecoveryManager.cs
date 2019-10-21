@@ -3,8 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.API.Contracts;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
@@ -17,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// Contract for interacting with <see cref="FeedRecoveryManager" /></summary>
     /// <seealso cref="IOpenable" />
     /// <seealso cref="IHealthStatusProvider" />
-    [ContractClass(typeof(FeedRecoveryManagerContract))]
+    
     internal interface IFeedRecoveryManager
     {
         /// <summary>

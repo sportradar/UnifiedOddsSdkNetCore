@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">The <see cref="producers"/> instance containing data about available producers.</param>
         protected ProducersMapper(producers data)
         {
-            Contract.Requires(data != null);
+            Guard.Argument(data).NotNull();
 
             _data = data;
         }

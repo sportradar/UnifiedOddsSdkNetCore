@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,9 +68,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                         IEnumerable<CultureInfo> cultures,
                         ExceptionHandlingStrategy exceptionStrategy)
         {
-            Contract.Requires(id != null);
-            Contract.Requires(sportEventCache != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(id).NotNull();
+            Guard.Argument(sportEventCache).NotNull();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
             Id = id;
             SportId = sportId;
@@ -87,8 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>An error message for errors which occur while retrieving cached values</returns>
         protected string GetFetchErrorMessage(string propertyName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(propertyName));
-            Contract.Ensures(Contract.Result<string>() != null);
+            Guard.Argument(propertyName).NotNull().NotEmpty();
 
             return $"Error occurred while attempting to get {propertyName} for sport event with Id={Id} from cache";
         }

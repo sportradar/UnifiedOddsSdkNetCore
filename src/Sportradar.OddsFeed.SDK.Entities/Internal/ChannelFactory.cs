@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using RabbitMQ.Client;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="connectionFactory">The connection factory.</param>
         public ChannelFactory(IConnectionFactory connectionFactory)
         {
-            Contract.Requires(connectionFactory != null);
+            Guard.Argument(connectionFactory).NotNull();
 
             _connectionFactory = connectionFactory;
         }

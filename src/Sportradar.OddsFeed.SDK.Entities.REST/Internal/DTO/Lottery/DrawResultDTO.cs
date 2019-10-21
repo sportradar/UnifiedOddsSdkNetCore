@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
         internal DrawResultDTO(draw_resultDrawsDraw item)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             Value = item.valueSpecified
                 ? item.value

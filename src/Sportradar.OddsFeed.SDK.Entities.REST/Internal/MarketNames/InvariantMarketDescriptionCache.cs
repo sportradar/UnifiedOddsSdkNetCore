@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using App.Metrics.Health;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -100,33 +99,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                                ICacheManager cacheManager)
             : base(cacheManager)
         {
-            Contract.Requires(cache != null);
-            Contract.Requires(dataRouterManager != null);
-            Contract.Requires(mappingValidatorFactory != null);
-            Contract.Requires(timer != null);
-            Contract.Requires(prefetchLanguages != null && prefetchLanguages.Any());
-
+            Guard.Argument(cache).NotNull();
+            Guard.Argument(dataRouterManager).NotNull();
+            Guard.Argument(mappingValidatorFactory).NotNull();
+            Guard.Argument(timer).NotNull();
+            var cultureInfos = prefetchLanguages.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
 
             _cache = cache;
             _dataRouterManager = dataRouterManager;
             _mappingValidatorFactory = mappingValidatorFactory;
             _timer = timer;
-            _prefetchLanguages = new ReadOnlyCollection<CultureInfo>(prefetchLanguages.ToList());
+            _prefetchLanguages = new ReadOnlyCollection<CultureInfo>(cultureInfos.ToList());
             _timer.Elapsed += OnTimerElapsed;
             _timer.Start();
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_cache != null);
-            Contract.Invariant(_dataRouterManager != null);
-            Contract.Invariant(_mappingValidatorFactory != null);
-            Contract.Invariant(_timer != null);
-            Contract.Invariant(_prefetchLanguages != null && _prefetchLanguages.Any());
         }
 
         /// <summary>
@@ -212,9 +198,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">An error occurred while mapping deserialized entities</exception>
         private async Task<MarketDescriptionCacheItem> GetMarketInternalAsync(int id, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(cultures != null && cultures.Any());
-
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
+            Guard.Argument(cultureList).NotNull().NotEmpty();
 
             MarketDescriptionCacheItem description;
             if ((description = GetItemFromCache(id)) != null && !LanguageHelper.GetMissingCultures(cultureList, description.FetchedLanguages).Any())
@@ -556,10 +541,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="descriptions">A <see cref="IEnumerable{MarketDescriptionDTO}"/> containing market descriptions in specified language</param>
         private void Merge(CultureInfo culture, IEnumerable<MarketDescriptionDTO> descriptions)
         {
-            Contract.Requires(culture != null);
-            Contract.Requires(descriptions != null && descriptions.Any());
+            Guard.Argument(culture).NotNull();
+            var marketDescriptionDtos = descriptions.ToList();
+            Guard.Argument(marketDescriptionDtos).NotNull().NotEmpty();
 
-            var descriptionList = descriptions as List<MarketDescriptionDTO> ?? descriptions.ToList();
+            var descriptionList = descriptions as List<MarketDescriptionDTO> ?? marketDescriptionDtos.ToList();
 
             try
             {

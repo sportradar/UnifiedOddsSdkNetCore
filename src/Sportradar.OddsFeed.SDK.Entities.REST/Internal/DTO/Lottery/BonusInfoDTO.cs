@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
         internal BonusInfoDTO(lotteryBonus_info info)
         {
-            Contract.Requires(info != null);
+            Guard.Argument(info).NotNull();
 
             BonusBalls = info.bonus_ballsSpecified
                 ? info.bonus_balls

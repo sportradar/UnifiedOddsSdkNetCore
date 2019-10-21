@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         internal OutcomeDefinition(IMarketDescription marketDescription, IOutcomeDescription outcomeDescription, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(cultures != null);
+            Guard.Argument(cultures).NotNull();
 
             _marketDescription = marketDescription;
 
@@ -60,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                    IEnumerable<CultureInfo> cultures,
                                    ExceptionHandlingStrategy exceptionHandlingStrategy)
         {
-            Contract.Requires(cultures != null);
+            Guard.Argument(cultures).NotNull();
 
             _marketDescription = marketDescription;
             _marketCacheProvider = marketCacheProvider;

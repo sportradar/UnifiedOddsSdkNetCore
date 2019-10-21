@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">A <see cref="variant_descriptions"/> instance containing data used to construct <see cref="EntityList{VariantDescriptionDTO}"/> instance</param>
         internal VariantDescriptionsMapper(variant_descriptions data)
         {
-            Contract.Requires(data != null);
+            Guard.Argument(data).NotNull();
 
             _data = data;
         }

@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Runtime.Serialization;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -24,8 +24,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Player(URN id, IDictionary<CultureInfo, string> names)
             : base(id, names as IReadOnlyDictionary<CultureInfo, string>)
         {
-            Contract.Requires(id != null);
-            Contract.Requires(names != null);
+            Guard.Argument(id).NotNull();
+            Guard.Argument(names).NotNull();
         }
     }
 }

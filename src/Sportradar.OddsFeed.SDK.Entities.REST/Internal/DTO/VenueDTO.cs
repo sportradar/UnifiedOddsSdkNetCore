@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal VenueDTO(venue venue)
             :base(venue.id, venue.name)
         {
-            Contract.Requires(venue != null);
+            Guard.Argument(venue).NotNull();
 
             Capacity = venue.capacitySpecified
                 ? (int?) venue.capacity

@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
 using Common.Logging;
+using Dawn;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance </param>
         private void AttachToFeedEvents(IOddsFeed oddsFeed)
         {
-            Contract.Requires(oddsFeed != null);
+            Guard.Argument(oddsFeed).NotNull();
 
             _log.Info("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
@@ -82,7 +82,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance</param>
         private void DetachFromFeedEvents(IOddsFeed oddsFeed)
         {
-            Contract.Requires(oddsFeed != null);
+            Guard.Argument(oddsFeed).NotNull();
 
             _log.Info("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance </param>
         private void AttachToSessionHighEvents(IOddsFeedSession session)
         {
-            Contract.Requires(session != null);
+            Guard.Argument(session).NotNull();
 
             _log.Info("Attaching to session (high) events");
             session.OnUnparsableMessageReceived += SessionHighOnUnparsableMessageReceived;
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance</param>
         private void DetachFromSessionHighEvents(IOddsFeedSession session)
         {
-            Contract.Requires(session != null);
+            Guard.Argument(session).NotNull();
 
             _log.Info("Detaching from session (high) events");
             session.OnUnparsableMessageReceived -= SessionHighOnUnparsableMessageReceived;
@@ -135,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance </param>
         private void AttachToSessionLowEvents(IOddsFeedSession session)
         {
-            Contract.Requires(session != null);
+            Guard.Argument(session).NotNull();
 
             _log.Info("Attaching to session (low) events");
             session.OnUnparsableMessageReceived += SessionLowOnUnparsableMessageReceived;
@@ -154,7 +154,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance</param>
         private void DetachFromSessionLowEvents(IOddsFeedSession session)
         {
-            Contract.Requires(session != null);
+            Guard.Argument(session).NotNull();
 
             _log.Info("Detaching from session (low) events");
             session.OnUnparsableMessageReceived -= SessionLowOnUnparsableMessageReceived;

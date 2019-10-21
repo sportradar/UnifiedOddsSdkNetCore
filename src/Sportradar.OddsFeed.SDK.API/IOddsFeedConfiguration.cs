@@ -2,9 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.API.Contracts;
+
 using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -12,7 +11,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a contract implemented by classes representing odds feed configuration / settings
     /// </summary>
-    [ContractClass(typeof(OddsFeedConfigurationContract))]
     public interface IOddsFeedConfiguration {
 
         /// <summary>

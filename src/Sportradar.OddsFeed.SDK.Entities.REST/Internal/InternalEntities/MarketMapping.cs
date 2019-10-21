@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
@@ -72,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// <param name="cacheItem">A <see cref="MarketMappingCacheItem"/> containing mapping info</param>
         internal MarketMapping(MarketMappingCacheItem cacheItem)
         {
-            Contract.Requires(cacheItem != null);
+            Guard.Argument(cacheItem).NotNull();
 
             ProducerId = cacheItem.ProducerId;
             ProducerIds = cacheItem.ProducerIds;

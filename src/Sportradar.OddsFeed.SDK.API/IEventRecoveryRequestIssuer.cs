@@ -1,9 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.API.Contracts;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -11,7 +10,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a contract implemented by classes used to issue event message recovery requests to the feed
     /// </summary>
-    [ContractClass(typeof(EventRecoveryRequestIssuerContract))]
     public interface IEventRecoveryRequestIssuer
     {
         /// <summary>

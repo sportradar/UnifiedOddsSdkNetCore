@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
@@ -39,24 +39,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="config">The <see cref="IOddsFeedConfiguration"/> instance used to create <see cref="IProducerRecoveryManager"/> instances</param>
         public ProducerRecoveryManagerFactory(IRecoveryRequestIssuer recoveryRequestIssuer, IFeedMessageMapper messageMapper, IOddsFeedConfiguration config)
         {
-            Contract.Requires(recoveryRequestIssuer != null);
-            Contract.Requires(messageMapper != null);
-            Contract.Requires(config != null);
+            Guard.Argument(recoveryRequestIssuer).NotNull();
+            Guard.Argument(messageMapper).NotNull();
+            Guard.Argument(config).NotNull();
 
             _recoveryRequestIssuer = recoveryRequestIssuer;
             _messageMapper = messageMapper;
             _config = config;
-        }
-
-        /// <summary>
-        /// Lists the object invariants as required by code-contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_recoveryRequestIssuer != null);
-            Contract.Invariant(_messageMapper != null);
-            Contract.Invariant(_config != null);
         }
 
         /// <summary>

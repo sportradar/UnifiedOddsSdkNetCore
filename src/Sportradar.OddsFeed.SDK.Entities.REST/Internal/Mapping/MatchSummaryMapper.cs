@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">A <see cref="matchSummaryEndpoint"/> containing sport event data</param>
         internal MatchSummaryMapper(matchSummaryEndpoint data)
         {
-            Contract.Requires(data != null);
+            Guard.Argument(data).NotNull();
 
             _data = data;
         }

@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal MarketSpecifierCacheItem(SpecifierDTO dto)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             Type = dto.Type;
             Name = dto.Name;
@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal MarketAttributeCacheItem(MarketAttributeDTO dto)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             Name = dto.Name;
             Description = dto.Description;

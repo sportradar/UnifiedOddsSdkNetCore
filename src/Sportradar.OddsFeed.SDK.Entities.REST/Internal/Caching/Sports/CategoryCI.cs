@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         public CategoryCI(CategoryDTO data, CultureInfo culture, URN sportId)
             : base(data.Id, data.Name, culture)
         {
-            Contract.Requires(sportId != null);
+            Guard.Argument(sportId).NotNull();
 
             TournamentIds = data.Tournaments == null ? null : new ReadOnlyCollection<URN>(data.Tournaments.Select(i => i.Id).ToList());
             SportId = sportId;
@@ -63,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         public CategoryCI(CategorySummaryDTO data, CultureInfo culture, URN sportId, IEnumerable<URN> tournamentIds)
             : base(data.Id, data.Name, culture)
         {
-            Contract.Requires(sportId != null);
+            Guard.Argument(sportId).NotNull();
 
             TournamentIds = tournamentIds == null ? null : new ReadOnlyCollection<URN>(tournamentIds.ToList());
             SportId = sportId;

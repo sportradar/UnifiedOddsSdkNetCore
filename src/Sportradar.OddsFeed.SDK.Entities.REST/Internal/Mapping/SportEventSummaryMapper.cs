@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="matchSummaryData">A <see cref="matchSummaryEndpoint"/> containing match data</param>
         internal SportEventSummaryMapper(matchSummaryEndpoint matchSummaryData)
         {
-            Contract.Requires(matchSummaryData != null);
+            Guard.Argument(matchSummaryData).NotNull();
 
             _matchSummaryData = matchSummaryData;
         }
@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="stageSummaryData">A <see cref="stageSummaryEndpoint"/> containing stage data</param>
         internal SportEventSummaryMapper(stageSummaryEndpoint stageSummaryData)
         {
-            Contract.Requires(stageSummaryData != null);
+            Guard.Argument(stageSummaryData).NotNull();
 
             _stageSummaryData = stageSummaryData;
         }
@@ -56,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="tournamentInfoData">A <see cref="tournamentInfoEndpoint"/> containing tournament data</param>
         internal SportEventSummaryMapper(tournamentInfoEndpoint tournamentInfoData)
         {
-            Contract.Requires(tournamentInfoData != null);
+            Guard.Argument(tournamentInfoData).NotNull();
 
             _tournamentInfoData = tournamentInfoData;
         }

@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -96,10 +96,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                        ExceptionHandlingStrategy exceptionStrategy,
                                        IProducerManager producerManager)
         {
-            Contract.Requires(marketCacheProvider != null);
-            Contract.Requires(sportEvent != null);
-            Contract.Requires(eventStatusCache != null);
-            Contract.Requires(producerManager != null);
+            Guard.Argument(marketCacheProvider).NotNull();
+            Guard.Argument(sportEvent).NotNull();
+            Guard.Argument(eventStatusCache).NotNull();
+            Guard.Argument(producerManager).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _eventStatusCache = eventStatusCache;
@@ -110,17 +110,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             _producerManager = producerManager;
             _producer = producer;
             _sportId = sportId;
-        }
-
-        /// <summary>
-        /// Defines object invariants as needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_marketCacheProvider != null);
-            Contract.Invariant(_sportEvent != null);
-            Contract.Invariant(_producerManager != null);
         }
 
         /// <summary>
@@ -230,7 +219,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private void HandleMappingErrorCondition(string message, string propertyName, string propertyValue, string targetTypeName, Exception innerException)
         {
-            Contract.Requires(!string.IsNullOrEmpty(message));
+            Guard.Argument(!string.IsNullOrEmpty(message));
 
             var sb = new StringBuilder("An error occurred while generating the mappedId for item=[");
             sb.Append(" MarketId=").Append(_marketId)

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -59,11 +59,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public PlayerProfile(PlayerProfileCI ci, IEnumerable<CultureInfo> cultures)
             :base(ci.Id, cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName))
         {
-            Contract.Requires(ci != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(ci).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
 
             _playerProfileCI = ci;
-            _cultures = cultures.ToList();
+            _cultures = cultureInfos;
         }
 
         /// <summary>

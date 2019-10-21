@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using App.Metrics;
@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         protected SdkCache(ICacheManager cacheManager)
         {
-            Contract.Requires(cacheManager != null);
+            Guard.Argument(cacheManager).NotNull();
 
             _cacheManager = cacheManager;
 
@@ -55,16 +55,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             RegisterCache();
 
             ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(GetType());
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(ExecutionLog != null);
-            Contract.Invariant(_cacheManager != null);
         }
 
         /// <summary>

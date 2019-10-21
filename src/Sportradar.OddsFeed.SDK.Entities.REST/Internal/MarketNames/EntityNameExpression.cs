@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,8 +42,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="sportEvent">A <see cref="ISportEvent"/> related to the entity associated with the current instance.</param>
         internal EntityNameExpression(string propertyName, ISportEvent sportEvent)
         {
-            Contract.Requires(!string.IsNullOrEmpty(propertyName));
-            Contract.Requires(sportEvent != null);
+            Guard.Argument(propertyName).NotNull().NotEmpty();
+            Guard.Argument(sportEvent).NotNull();
 
             _propertyName = propertyName;
             _sportEvent = sportEvent;

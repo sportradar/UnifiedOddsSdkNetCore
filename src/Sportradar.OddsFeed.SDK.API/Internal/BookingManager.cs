@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -36,24 +36,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to save booking status</param>
         public BookingManager(IOddsFeedConfigurationInternal config, IDataPoster dataPoster, ICacheManager cacheManager)
         {
-            Contract.Requires(config != null);
-            Contract.Requires(dataPoster != null);
-            Contract.Requires(cacheManager != null);
+            Guard.Argument(config).NotNull();
+            Guard.Argument(dataPoster).NotNull();
+            Guard.Argument(cacheManager).NotNull();
 
             _config = config;
             _dataPoster = dataPoster;
             _cacheManager = cacheManager;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_config != null);
-            Contract.Invariant(_dataPoster != null);
-            Contract.Invariant(_cacheManager != null);
         }
 
         /// <summary>
@@ -63,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns><c>true</c> if event was successfully booked, <c>false</c> otherwise</returns>
         public bool BookLiveOddsEvent(URN eventId)
         {
-            Contract.Requires(eventId != null);
+            Guard.Argument(eventId).NotNull();
 
             try
             {

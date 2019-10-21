@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
@@ -40,27 +40,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="matchStatuses">The <see cref="ILocalizedNamedValueCache" /> providing localized(translatable) match status descriptions.</param>
         public NamedValuesProvider(INamedValueCache voidReasons, INamedValueCache betStopReasons, INamedValueCache bettingStatuses, ILocalizedNamedValueCache matchStatuses)
         {
-            Contract.Requires(voidReasons != null);
-            Contract.Requires(betStopReasons != null);
-            Contract.Requires(bettingStatuses != null);
-            Contract.Requires(matchStatuses != null);
+            Guard.Argument(voidReasons).NotNull();
+            Guard.Argument(betStopReasons).NotNull();
+            Guard.Argument(bettingStatuses).NotNull();
+            Guard.Argument(matchStatuses).NotNull();
 
             VoidReasons = voidReasons;
             BetStopReasons = betStopReasons;
             BettingStatuses = bettingStatuses;
             MatchStatuses = matchStatuses;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(VoidReasons != null);
-            Contract.Invariant(BetStopReasons != null);
-            Contract.Invariant(BettingStatuses != null);
-            Contract.Invariant(MatchStatuses != null);
         }
     }
 }

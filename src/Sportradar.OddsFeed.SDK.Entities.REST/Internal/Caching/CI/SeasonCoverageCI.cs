@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="coverageDTO">A <see cref="SeasonCoverageDTO"/> instance containing information about the coverage</param>
         public SeasonCoverageCI(SeasonCoverageDTO coverageDTO)
         {
-            Contract.Requires(coverageDTO != null);
+            Guard.Argument(coverageDTO).NotNull();
 
             MaxCoverageLevel = coverageDTO.MaxCoverageLevel;
             MinCoverageLevel = coverageDTO.MinCoverageLevel;

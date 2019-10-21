@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="dto">The <see cref="WeatherInfoDTO"/> used to create new instance</param>
         internal WeatherInfoCI(WeatherInfoDTO dto)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             TemperatureCelsius = dto.TemperatureCelsius;
             Wind = dto.Wind;

@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal TournamentDTO(tournament tournament)
             :base(tournament.id, tournament.name)
         {
-            Contract.Requires(tournament != null);
+            Guard.Argument(tournament).NotNull();
 
             Scheduled = tournament.scheduledSpecified
                 ? (DateTime?) tournament.scheduled
@@ -78,7 +78,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal TournamentDTO(tournamentExtended tournament)
             : base(tournament.id, tournament.name)
         {
-            Contract.Requires(tournament != null);
+            Guard.Argument(tournament).NotNull();
 
             Scheduled = tournament.scheduledSpecified
                 ? (DateTime?)tournament.scheduled

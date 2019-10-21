@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="typeMapper">The <see cref="IEntityTypeMapper"/> used to determine the SDK type used to represent a specific sport entity.</param>
         public DispatcherStore(IEntityTypeMapper typeMapper)
         {
-            Contract.Requires(typeMapper != null);
+            Guard.Argument(typeMapper).NotNull();
 
             _typeMapper = typeMapper;
         }
@@ -70,33 +70,19 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>A <see cref="List{Type}"/> representing the implemented interfaces</returns>
         private List<Type> GetHierarchy(Type type)
         {
-            Contract.Requires(type != null);
-            Contract.Ensures(Contract.Result<List<Type>>() != null);
+            Guard.Argument(type).NotNull();
 
             var key = type.Name;
-            List<Type> hierarchies;
-            if (_cachedHierarchies.TryGetValue(key, out hierarchies))
+            if (_cachedHierarchies.TryGetValue(key, out var hierarchies))
             {
                 return hierarchies;
             }
 
             var baseTypes = type.GetInterfaces();
-            var hierarchy = new List<Type>(baseTypes.Where(baseType => (typeof(ICompetition)).IsAssignableFrom(baseType)));
+            var hierarchy = new List<Type>(baseTypes.Where(baseType => typeof(ICompetition).IsAssignableFrom(baseType)));
             _cachedHierarchies.Add(key, hierarchy);
 
             return hierarchy;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_typeMapper != null);
-            Contract.Invariant(_dispatchers != null);
-            Contract.Invariant(_syncLock != null);
-            Contract.Invariant(_cachedHierarchies != null);
         }
 
         /// <summary>
@@ -110,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (_dispatchers.ContainsKey(key))
                 {
-                    throw new InvalidOperationException($"Dispatcher for entities of type:{0} is already registered");
+                    throw new InvalidOperationException($"Dispatcher for entities of type:{key} is already registered");
                 }
                 dispatcher.OnClosed += OnDispatcherClosed;
                 _dispatchers.Add(key, dispatcher);

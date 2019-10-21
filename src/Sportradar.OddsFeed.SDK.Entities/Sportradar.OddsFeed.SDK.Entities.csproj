@@ -2,14 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.40.7230</AssemblyVersion>
-    <FileVersion>1.0.40.7230</FileVersion>
+    <AssemblyVersion>1.0.44.7233</AssemblyVersion>
+    <FileVersion>1.0.44.7233</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.1.1" />
+    <PackageReference Include="Dawn.Guard" Version="1.10.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Runtime.Caching;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -50,26 +50,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="fixtureTimestampCache">The in-memory cache of sport events fixture timestamps</param>
         public SportEventCacheItemFactory(IDataRouterManager dataRouterManager, ISemaphorePool semaphorePool, CultureInfo defaultCulture, MemoryCache fixtureTimestampCache)
         {
-            Contract.Requires(dataRouterManager != null);
-            Contract.Requires(semaphorePool != null);
-            Contract.Requires(defaultCulture != null);
-            Contract.Requires(fixtureTimestampCache != null);
+            Guard.Argument(dataRouterManager).NotNull();
+            Guard.Argument(semaphorePool).NotNull();
+            Guard.Argument(defaultCulture).NotNull();
+            Guard.Argument(fixtureTimestampCache).NotNull();
 
             _dataRouterManager = dataRouterManager;
             _semaphorePool = semaphorePool;
             _defaultCulture = defaultCulture;
             _fixtureTimestampCache = fixtureTimestampCache;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_dataRouterManager != null);
-            Contract.Invariant(_defaultCulture != null);
-            Contract.Invariant(_fixtureTimestampCache != null);
         }
 
         /// <summary>

@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using Common.Logging;
+using Dawn;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -76,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance </param>
         private void AttachToFeedEvents(IOddsFeed oddsFeed)
         {
-            Contract.Requires(oddsFeed != null);
+            Guard.Argument(oddsFeed).NotNull();
 
             _log.Info("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
@@ -91,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance</param>
         private void DetachFromFeedEvents(IOddsFeed oddsFeed)
         {
-            Contract.Requires(oddsFeed != null);
+            Guard.Argument(oddsFeed).NotNull();
 
             _log.Info("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
@@ -106,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance </param>
         private void AttachToSessionEvents(IOddsFeedSession session)
         {
-            Contract.Requires(session != null);
+            Guard.Argument(session).NotNull();
 
             _log.Info("Attaching to session events");
             session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
@@ -125,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance</param>
         private void DetachFromSessionEvents(IOddsFeedSession session)
         {
-            Contract.Requires(session != null);
+            Guard.Argument(session).NotNull();
 
             _log.Info("Detaching from session events");
             session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;
@@ -141,43 +141,43 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         private void SessionOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
         {
             var baseEntity = rollbackBetSettlementEventArgs.GetBetSettlementRollback();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamp);
+            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
         }
 
         private void SessionOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
         {
             var baseEntity = rollbackBetCancelEventArgs.GetBetCancelRollback();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamp);
+            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
         }
 
         private void SessionOnOddsChange(object sender, OddsChangeEventArgs<ISportEvent> oddsChangeEventArgs)
         {
             var baseEntity = oddsChangeEventArgs.GetOddsChange();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamp);
+            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
         }
 
         private void SessionOnFixtureChange(object sender, FixtureChangeEventArgs<ISportEvent> fixtureChangeEventArgs)
         {
             var baseEntity = fixtureChangeEventArgs.GetFixtureChange();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamp);
+            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
         }
 
         private void SessionOnBetStop(object sender, BetStopEventArgs<ISportEvent> betStopEventArgs)
         {
             var baseEntity = betStopEventArgs.GetBetStop();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamp);
+            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
         }
 
         private void SessionOnBetSettlement(object sender, BetSettlementEventArgs<ISportEvent> betSettlementEventArgs)
         {
             var baseEntity = betSettlementEventArgs.GetBetSettlement();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamp);
+            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
         }
 
         private void SessionOnBetCancel(object sender, BetCancelEventArgs<ISportEvent> betCancelEventArgs)
         {
             var baseEntity = betCancelEventArgs.GetBetCancel();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamp);
+            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
         }
 
         private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
@@ -269,7 +269,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             // option 2:
             // add example events
             foreach (var urn in SelectExampleEvents())
+            {
                 WriteReplayResponse(replayFeed.ReplayManager.AddMessagesToReplayQueue(urn));
+            }
 
             var queueEvents = replayFeed.ReplayManager.GetEventsInQueue();
             _log.Info($"Currently {queueEvents.Count()} items in queue.");
@@ -282,8 +284,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             // we can only add matches older then 48 hours
             var events = replayFeed.SportDataProvider.GetSportEventsByDateAsync(DateTime.Now.AddDays(-5)).Result.ToList();
             if (events.Count > 10)
+            {
                 for (var i = 0; i < 10; i++)
+                {
                     yield return events[i].Id;
+                }
+            }
         }
 
         private IEnumerable<URN> SelectExampleEvents()
@@ -291,7 +297,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             Console.WriteLine();
             Console.WriteLine("Sample events:");
             for (int i = 0; i < ExampleReplayEvents.SampleEvents.Count; i++)
+            {
                 Console.WriteLine($"{i, 2} {ExampleReplayEvents.SampleEvents[i]}");
+            }
 
             Console.WriteLine();
 
@@ -301,7 +309,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
                 string additionalConsoleInput = Console.ReadLine();
 
                 if (additionalConsoleInput.Equals("x", StringComparison.CurrentCultureIgnoreCase))
+                {
                     break;
+                }
 
                 int additionalItemPosition;
                 if (!int.TryParse(additionalConsoleInput, out additionalItemPosition)

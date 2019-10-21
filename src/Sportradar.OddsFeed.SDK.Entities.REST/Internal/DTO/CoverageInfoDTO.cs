@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -22,8 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal CoverageInfoDTO(coverageInfo coverageInfo)
         {
-            Contract.Requires(coverageInfo != null);
-            Contract.Requires(!string.IsNullOrEmpty(coverageInfo.level));
+            Guard.Argument(coverageInfo).NotNull();
+            Guard.Argument(coverageInfo.level).NotNull().NotEmpty();
 
             Level = coverageInfo.level;
             IsLive = coverageInfo.live_coverage;

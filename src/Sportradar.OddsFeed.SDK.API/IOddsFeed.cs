@@ -2,8 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.API.Contracts;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -12,7 +10,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Represent a root object of the unified odds feed
     /// </summary>
-    [ContractClass(typeof(OddsFeedContract))]
     public interface IOddsFeed : IDisposable
     {
         /// <summary>

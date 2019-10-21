@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -56,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         internal TestDataRouterManager(ICacheManager cacheManager)
         {
-            Contract.Requires(cacheManager != null);
+            Guard.Argument(cacheManager != null);
 
             _cacheManager = cacheManager;
             RestCalls = new Dictionary<string, int>();

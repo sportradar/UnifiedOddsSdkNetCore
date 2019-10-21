@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal.Config
 {
@@ -23,18 +23,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <param name="configurationSectionProvider">A <see cref="IConfigurationSectionProvider"/> instance used to access <see cref="IOddsFeedConfigurationSection"/></param>
         internal TokenSetter(IConfigurationSectionProvider configurationSectionProvider)
         {
-            Contract.Requires(configurationSectionProvider != null);
+            Guard.Argument(configurationSectionProvider).NotNull();
 
             _configurationSectionProvider = configurationSectionProvider;
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_configurationSectionProvider != null);
         }
 
         /// <summary>

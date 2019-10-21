@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,8 +52,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the sport event conditions</param>
         internal SportEventConditionsCI(SportEventConditionsDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Merge(dto, culture);
         }
@@ -81,8 +81,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the sport event conditions</param>
         internal void Merge(SportEventConditionsDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Attendance = dto.Attendance;
             EventMode = dto.EventMode;

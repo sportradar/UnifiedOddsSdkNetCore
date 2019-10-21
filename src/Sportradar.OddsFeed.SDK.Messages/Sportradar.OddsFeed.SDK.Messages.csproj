@@ -2,8 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.20.7230</AssemblyVersion>
-    <FileVersion>1.0.20.7230</FileVersion>
+    <AssemblyVersion>1.0.24.7233</AssemblyVersion>
+    <FileVersion>1.0.24.7233</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dawn.Guard" Version="1.10.0" />
+  </ItemGroup>
 
 </Project>

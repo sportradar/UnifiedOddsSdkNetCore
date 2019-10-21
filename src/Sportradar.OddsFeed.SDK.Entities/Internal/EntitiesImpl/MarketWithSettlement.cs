@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -47,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                     IEnumerable<CultureInfo> cultures)
             : base(id, specifiers, additionalInfo, nameProvider, mappingProvider, marketDefinition, voidReason, voidReasonsCache, cultures)
         {
-            Contract.Requires(outcomes != null && outcomes.Any());
+            Guard.Argument(outcomes != null && outcomes.Any());
 
             var readonlyOutcomes = outcomes as IReadOnlyCollection<IOutcomeSettlement>;
             OutcomeSettlements = readonlyOutcomes ?? new ReadOnlyCollection<IOutcomeSettlement>(outcomes.ToList());

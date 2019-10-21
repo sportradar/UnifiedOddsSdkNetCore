@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -84,28 +84,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how potential exceptions should be handled</param>
         public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
-            Contract.Requires(dataProvider != null);
-            Contract.Requires(cultures != null && cultures.Any());
+            Guard.Argument(dataProvider).NotNull();
+            var defaultCultures = cultures.ToList();
+            Guard.Argument(defaultCultures).NotNull().NotEmpty();
 
             _dataProvider = dataProvider;
-            _defaultCultures = cultures;
+            _defaultCultures = defaultCultures;
             _exceptionStrategy = exceptionStrategy;
 
             _namedValues = new ConcurrentDictionary<int, IDictionary<CultureInfo, string>>();
             _loadedCultures = new List<CultureInfo>();
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_dataProvider != null);
-            Contract.Invariant(_defaultCultures != null && _defaultCultures.Any());
-            Contract.Invariant(_namedValues != null);
-            Contract.Invariant(_semaphore != null);
-            Contract.Invariant(_loadedCultures != null);
         }
 
         /// <summary>
@@ -115,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task" /> representing the retrieval operation</returns>
         private async Task FetchAndMerge(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             AppMetrics.CreateDefaultBuilder().Build().Measure.Counter.Increment(new CounterOptions{Context="CACHE", Name= "LocalizedNamedValueCache->FetchAndMerge", MeasurementUnit = Unit.Calls});
             var record = await _dataProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);

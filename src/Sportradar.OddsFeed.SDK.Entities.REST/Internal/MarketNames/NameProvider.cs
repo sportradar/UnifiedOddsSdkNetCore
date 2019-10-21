@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -89,10 +89,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             IReadOnlyDictionary<string, string> specifiers,
             ExceptionHandlingStrategy exceptionStrategy)
         {
-            Contract.Requires(marketCacheProvider != null);
-            Contract.Requires(profileCache != null);
-            Contract.Requires(expressionFactory != null);
-            Contract.Requires(sportEvent != null);
+            Guard.Argument(marketCacheProvider).NotNull();
+            Guard.Argument(profileCache).NotNull();
+            Guard.Argument(expressionFactory).NotNull();
+            Guard.Argument(sportEvent).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _profileCache = profileCache;
@@ -102,17 +102,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             _specifiers = specifiers;
             _exceptionStrategy = exceptionStrategy;
             _competitorsAlreadyFetched = false;
-        }
-
-        /// <summary>
-        /// Defines object invariants as needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_marketCacheProvider != null);
-            Contract.Invariant(_expressionFactory != null);
-            Contract.Invariant(_sportEvent != null);
         }
 
         /// <summary>
@@ -200,8 +189,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
         private async Task<IMarketDescription> GetMarketDescriptorAsync(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
-            Contract.Ensures(Contract.Result<Task<IMarketDescription>>() != null);
+            Guard.Argument(culture).NotNull();
 
             return await _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, new[] { culture }, true).ConfigureAwait(false);
         }
@@ -217,8 +205,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="NameGenerationException">If so specified by the <see cref="_exceptionStrategy"/> field</exception>
         private void HandleErrorCondition(string message, string outcomeId, string nameDescriptor, CultureInfo culture, Exception innerException)
         {
-            Contract.Requires(!string.IsNullOrEmpty(message));
-            Contract.Requires(culture != null);
+            Guard.Argument(message).NotNull().NotEmpty();
+            Guard.Argument(culture).NotNull();
 
             var sb = new StringBuilder("An error occurred while generating the name for item=[");
             var specifiersString = _specifiers == null ? "null" : string.Join(SdkInfo.SpecifiersDelimiter, _specifiers.Select(k => $"{k.Key}={k.Value}"));
@@ -255,8 +243,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="ArgumentException">One of the operators specified in the <code>nameDescriptor</code> is not supported</exception>
         protected IList<INameExpression> GetNameExpressions(string nameDescriptor, out string nameDescriptorFormat)
         {
-            Contract.Requires(!string.IsNullOrEmpty(nameDescriptor));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.ValueAtReturn(out nameDescriptorFormat)));
+            Guard.Argument(nameDescriptor).NotNull().NotEmpty();
 
             var expressionStrings = NameExpressionHelper.ParseDescriptor(nameDescriptor, out nameDescriptorFormat);
             if (expressionStrings == null)

@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         internal TimelineEventCI(BasicEventDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             Id = dto.Id;
             Merge(dto, culture);
@@ -49,7 +49,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal TimelineEventCI(ExportableTimelineEventCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             Id = exportable.Id;
             HomeScore = exportable.HomeScore;

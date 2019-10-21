@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Text;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -37,22 +37,12 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <param name="rawMessage">A raw message received from the feed</param>
         internal AliveEventArgs(IFeedMessageMapper messageMapper, alive feedMessage, byte[] rawMessage)
         {
-            Contract.Requires(messageMapper != null);
-            Contract.Requires(feedMessage != null);
+            Guard.Argument(messageMapper).NotNull();
+            Guard.Argument(feedMessage).NotNull();
 
             _messageMapper = messageMapper;
             _feedMessage = feedMessage;
             _rawMessage = rawMessage;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_messageMapper != null);
-            Contract.Invariant(_feedMessage != null);
         }
 
         /// <summary>

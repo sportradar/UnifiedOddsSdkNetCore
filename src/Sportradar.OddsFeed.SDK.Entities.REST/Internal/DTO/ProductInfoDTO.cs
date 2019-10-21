@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal ProductInfoDTO(productInfo productInfo)
         {
-            Contract.Requires(productInfo != null);
+            Guard.Argument(productInfo).NotNull();
 
             IsInLiveScore = productInfo.is_in_live_score != null;
             IsInHostedStatistics = productInfo.is_in_hosted_statistics != null;

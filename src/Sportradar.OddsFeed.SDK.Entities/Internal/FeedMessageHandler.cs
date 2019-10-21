@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Runtime.Caching;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
@@ -22,22 +22,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         public FeedMessageHandler(MemoryCache fixtureCache, CacheItemPolicy cacheItemPolicy)
         {
-            Contract.Requires(fixtureCache != null);
-            Contract.Requires(cacheItemPolicy != null);
+            Guard.Argument(fixtureCache).NotNull();
+            Guard.Argument(cacheItemPolicy).NotNull();
 
             _fixtureCache = fixtureCache;
             _cacheItemPolicy = cacheItemPolicy;
             _lock = new object();
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_fixtureCache != null);
-            Contract.Invariant(_cacheItemPolicy != null);
         }
 
         /// <summary>

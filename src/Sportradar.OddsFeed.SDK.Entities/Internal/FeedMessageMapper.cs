@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Common.Logging;
@@ -84,12 +84,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                  IMarketCacheProvider marketCacheProvider,
                                  INamedValueCache voidReasonCache)
         {
-            Contract.Requires(sportEntityFactory != null);
-            Contract.Requires(nameProviderFactory != null);
-            Contract.Requires(namedValuesProvider != null);
-            Contract.Requires(producerManager != null);
-            Contract.Requires(marketCacheProvider != null);
-            Contract.Requires(voidReasonCache != null);
+            Guard.Argument(sportEntityFactory).NotNull();
+            Guard.Argument(nameProviderFactory).NotNull();
+            Guard.Argument(namedValuesProvider).NotNull();
+            Guard.Argument(producerManager).NotNull();
+            Guard.Argument(marketCacheProvider).NotNull();
+            Guard.Argument(voidReasonCache).NotNull();
 
             _nameProviderFactory = nameProviderFactory;
             _sportEntityFactory = sportEntityFactory;
@@ -102,20 +102,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Specifies invariants as needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariants()
-        {
-            Contract.Invariant(_sportEntityFactory != null);
-            Contract.Invariant(_nameProviderFactory != null);
-            Contract.Invariant(_namedValuesProvider != null);
-            Contract.Invariant(_producerManager != null);
-            Contract.Invariant(_marketCacheProvider != null);
-            Contract.Invariant(_voidReasonCache != null);
-        }
-
-        /// <summary>
         /// Builds and returns a <see cref="ISportEvent"/> derived instance
         /// </summary>
         /// <param name="eventId">A <see cref="string"/> representation of the event id</param>
@@ -125,12 +111,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="ISportEvent"/> derived constructed instance</returns>
         protected T BuildEvent<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
         {
-            Contract.Requires(!string.IsNullOrEmpty(eventId.ToString()));
-            Contract.Requires(sportId != null);
-            Contract.Requires(cultures != null && cultures.Any());
-            Contract.Ensures(Contract.Result<T>() != null);
-
-            var cultureInfos = cultures as CultureInfo[] ?? cultures.ToArray();
+            Guard.Argument(eventId.ToString()).NotNull().NotEmpty();
+            Guard.Argument(sportId).NotNull();
+            var enumerable = cultures.ToList();
+            Guard.Argument(enumerable).NotNull().NotEmpty();
 
             T entity;
             switch (eventId.TypeGroup)
@@ -144,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 case ResourceTypeGroup.LOTTERY:
                 case ResourceTypeGroup.UNKNOWN:
                 {
-                    entity = (T) _sportEntityFactory.BuildSportEvent<ISportEvent>(eventId, sportId, cultureInfos, exceptionStrategy);
+                    entity = (T) _sportEntityFactory.BuildSportEvent<ISportEvent>(eventId, sportId, enumerable, exceptionStrategy);
                     break;
                 }
                 case ResourceTypeGroup.OTHER:
@@ -165,12 +149,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>Returns the new <see cref="ICompetition"/> instance</returns>
         protected T GetEventForMessage<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures) where T : ISportEvent
         {
-            Contract.Requires(!string.IsNullOrEmpty(eventId.ToString()));
-            Contract.Requires(sportId != null);
-            Contract.Requires(cultures != null && cultures.Any());
-            Contract.Ensures(Contract.Result<T>() != null);
+            Guard.Argument(!string.IsNullOrEmpty(eventId.ToString())).True();
+            Guard.Argument(sportId).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
 
-            return BuildEvent<T>(eventId, sportId, cultures, _externalExceptionStrategy);
+            return BuildEvent<T>(eventId, sportId, cultureInfos, _externalExceptionStrategy);
         }
 
         /// <summary>
@@ -182,12 +166,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>Returns the new <see cref="ICompetition"/> instance</returns>
         protected T GetEventForNameProvider<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures) where T : ISportEvent
         {
-            Contract.Requires(!string.IsNullOrEmpty(eventId.ToString()));
-            Contract.Requires(sportId != null);
-            Contract.Requires(cultures != null && cultures.Any());
-            Contract.Ensures(Contract.Result<T>() != null);
+            Guard.Argument(eventId).NotNull();
+            Guard.Argument(sportId).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
 
-            return BuildEvent<T>(eventId, sportId, cultures, ExceptionHandlingStrategy.THROW);
+            return BuildEvent<T>(eventId, sportId, cultureInfos, ExceptionHandlingStrategy.THROW);
         }
 
         /// <summary>
@@ -201,9 +185,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>Returns the new <see cref="IMarketWithSettlement"/> instance</returns>
         protected virtual IMarketWithSettlement GetMarketWithResults(ISportEvent sportEvent, betSettlementMarket marketSettlement, int producerId, URN sportId, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(sportEvent != null, "SportEvent missing");
-            Contract.Requires(marketSettlement != null, "marketSettlement != null");
-            Contract.Ensures(Contract.Result<IMarketWithSettlement>() != null, "Contract.Result<IMarketWithSettlement>() != null");
+            Guard.Argument(sportEvent).NotNull("SportEvent missing");
+            Guard.Argument(marketSettlement).NotNull("marketSettlement != null");
 
             var cultureInfos = cultures.ToList();
 
@@ -344,10 +327,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>Returns the new <see cref="IMarket"/> instance</returns>
         protected virtual IMarketCancel GetMarketCancel(ISportEvent sportEvent, market market, int producerId, URN sportId, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(sportEvent != null);
-            Contract.Requires(market != null);
-            Contract.Ensures(Contract.Result<IMarket>() != null);
-
+            Guard.Argument(sportEvent).NotNull();
+            Guard.Argument(market).NotNull();
 
             var specifiers = string.IsNullOrEmpty(market.specifiers)
                 ? null

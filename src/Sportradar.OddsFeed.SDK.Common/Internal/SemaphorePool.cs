@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -227,7 +227,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             /// <param name="semaphore">The semaphore</param>
             public SemaphoreHolder(SemaphoreSlim semaphore)
             {
-                Contract.Requires(semaphore != null);
+                Guard.Argument(semaphore).NotNull();
 
                 Semaphore = semaphore;
             }

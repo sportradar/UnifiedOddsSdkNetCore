@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -51,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="matchStatusesCache">The match statuses cache</param>
         public PeriodScore(PeriodScoreDTO dto, ILocalizedNamedValueCache matchStatusesCache)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             _homeScore = dto.HomeScore;
             _awayScore = dto.AwayScore;

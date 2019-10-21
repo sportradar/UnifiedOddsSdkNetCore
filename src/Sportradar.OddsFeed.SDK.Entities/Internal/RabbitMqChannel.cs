@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading;
 using Common.Logging;
 using RabbitMQ.Client;
@@ -59,19 +59,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="channelFactory">A <see cref="IChannelFactory"/> used to construct the <see cref="IModel"/> representing Rabbit MQ channel.</param>
         public RabbitMqChannel(IChannelFactory channelFactory)
         {
-            Contract.Requires(channelFactory != null);
+            Guard.Argument(channelFactory).NotNull();
 
             _channelFactory = channelFactory;
-        }
-
-        /// <summary>
-        /// Defines invariant members of the class
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(ExecutionLog != null);
-            Contract.Invariant(_channelFactory != null);
         }
 
         /// <summary>
@@ -120,7 +110,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <exception cref="System.InvalidOperationException">The instance is already closed</exception>
         public void Close()
         {
-            //Contract.Assume(_channel != null);
             if (Interlocked.CompareExchange(ref _isOpened, 0, 1) != 1)
             {
                 ExecutionLog.Error($"Cannot close the channel on channelNumber: {_channel?.ChannelNumber}, because this channel is already closed");

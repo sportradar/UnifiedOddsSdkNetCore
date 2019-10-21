@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
@@ -40,22 +40,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             :base(dateScheduleUriFormat, fetcher, deserializer, mapperFactory)
         {
 
-            Contract.Requires(!string.IsNullOrEmpty(liveScheduleUriFormat));
-            Contract.Requires(!string.IsNullOrWhiteSpace(dateScheduleUriFormat));
-            Contract.Requires(fetcher != null);
-            Contract.Requires(deserializer != null);
-            Contract.Requires(mapperFactory != null);
+            Guard.Argument(liveScheduleUriFormat).NotNull().NotEmpty();
+            Guard.Argument(dateScheduleUriFormat).NotNull().NotEmpty();
+            Guard.Argument(fetcher).NotNull();
+            Guard.Argument(deserializer).NotNull();
+            Guard.Argument(mapperFactory).NotNull();
 
             _liveScheduleUriFormat = liveScheduleUriFormat;
-        }
-
-        /// <summary>
-        /// Defines object invariants used by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrWhiteSpace(_liveScheduleUriFormat));
         }
 
 

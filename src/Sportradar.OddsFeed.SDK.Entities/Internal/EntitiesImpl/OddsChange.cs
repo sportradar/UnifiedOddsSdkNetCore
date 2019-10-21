@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public OddsChange(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, OddsChangeReason? changeReason, int? betStopReason, int? bettingStatus, IEnumerable<IMarketWithOdds> markets, oddsGenerationProperties oddsGenerationProperties, INamedValuesProvider namedValuesProvider, byte[] rawMessage)
             : base(timestamp, producer, @event, requestId, markets, rawMessage)
         {
-            Contract.Requires(namedValuesProvider != null);
+            Guard.Argument(namedValuesProvider).NotNull();
 
             _namedValueProvider = namedValuesProvider;
             ChangeReason = changeReason;

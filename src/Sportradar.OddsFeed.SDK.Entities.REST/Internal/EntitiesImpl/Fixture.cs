@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         internal Fixture(FixtureDTO fixtureDto)
         {
-            Contract.Requires(fixtureDto != null);
+            Guard.Argument(fixtureDto).NotNull();
 
             StartTime = fixtureDto.StartTime;
             NextLiveTime = fixtureDto.NextLiveTime;

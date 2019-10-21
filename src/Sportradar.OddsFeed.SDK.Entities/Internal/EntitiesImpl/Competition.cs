@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,10 +61,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                              ILocalizedNamedValueCache matchStatusesCache)
             :base(id, sportId, executionLog, sportEventCache, cultures, exceptionStrategy)
         {
-            Contract.Requires(id != null);
-            Contract.Requires(sportEntityFactory != null);
-            Contract.Requires(sportEventStatusCache != null);
-            Contract.Requires(matchStatusesCache != null);
+            Guard.Argument(id).NotNull();
+            Guard.Argument(sportEntityFactory).NotNull();
+            Guard.Argument(sportEventStatusCache).NotNull();
+            Guard.Argument(matchStatusesCache).NotNull();
 
             _sportEntityFactory = sportEntityFactory;
             SportEventStatusCache = sportEventStatusCache;

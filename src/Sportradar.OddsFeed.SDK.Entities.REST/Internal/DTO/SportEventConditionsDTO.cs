@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="conditions">The <see cref="sportEventConditions"/> used for creating instance</param>
         internal SportEventConditionsDTO(sportEventConditions conditions)
         {
-            Contract.Requires(conditions != null);
+            Guard.Argument(conditions).NotNull();
 
             Attendance = conditions.attendance;
             EventMode = conditions.match_mode;

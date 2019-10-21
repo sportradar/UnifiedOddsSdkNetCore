@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal BasicEventDTO(basicEvent item)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             Id = item.id;
             HomeScore = item.home_scoreSpecified ? (decimal?) item.home_score : null;

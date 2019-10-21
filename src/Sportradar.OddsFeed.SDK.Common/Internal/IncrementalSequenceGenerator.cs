@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="maxValue">The maximum allowed value for generated sequence numbers</param>
         public IncrementalSequenceGenerator(long minValue, long maxValue)
         {
-            Contract.Requires(maxValue > minValue);
+            Guard.Argument(maxValue > minValue);
             _minValue = minValue;
             _maxValue = maxValue;
             _value = minValue;

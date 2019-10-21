@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,8 +35,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
         internal DelayedInfoCI(DelayedInfoDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(dto).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Descriptions = new Dictionary<CultureInfo, string>();
             Merge(dto, culture);
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="DelayedInfoCI"/></param>
         internal void Merge(DelayedInfoDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
             Id = dto.Id;
             Descriptions[culture] = dto.Description;
         }
@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>Return the Name if exists, or null</returns>
         public string GetDescription(CultureInfo culture)
         {
-            Contract.Requires(culture != null);
+            Guard.Argument(culture).NotNull();
 
             return Descriptions == null || !Descriptions.ContainsKey(culture)
                 ? null

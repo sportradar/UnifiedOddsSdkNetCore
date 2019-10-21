@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -36,9 +36,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided data</param>
         public CacheItem(URN id, string name, CultureInfo culture)
         {
-            Contract.Requires(id != null);
-            //Contract.Requires(!string.IsNullOrEmpty(name)); // there were tournaments with empty name!
-            Contract.Requires(culture != null);
+            Guard.Argument(id).NotNull();
+            //Guard.Argument(!string.IsNullOrEmpty(name)); // there were tournaments with empty name!
+            Guard.Argument(culture).NotNull();
 
             Id = id;
             Name = new Dictionary<CultureInfo, string> {{culture, name}};
@@ -65,22 +65,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         protected CacheItem(URN id, IDictionary<CultureInfo, string> name)
         {
             if (id == null)
+            {
                 throw new ArgumentNullException(nameof(id));
+            }
+
             if (name == null)
+            {
                 throw new ArgumentNullException(nameof(name));
+            }
             Id = id;
             Name = name;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(Id != null);
-            Contract.Invariant(Name != null);
-            Contract.Invariant(Name.Any());
         }
 
         /// <summary>
@@ -90,10 +84,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the culture of data in the passed <see cref="CacheItem"/></param>
         public virtual void Merge(CacheItem item, CultureInfo culture)
         {
-            Contract.Requires(culture != null);
-            Contract.Requires(item != null);
-            Contract.Requires(item.Name != null);
-            Contract.Requires(item.Name.Any());
+            Guard.Argument(culture).NotNull();
+            Guard.Argument(item).NotNull();
+            Guard.Argument(item.Name).NotNull().NotEmpty();
 
             if (item.Name.Count == 1) // must be only 1 name (received from mapper)
             {
@@ -114,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="SportEntityDTO"/></param>
         internal void Merge(SportEntityDTO dto, CultureInfo culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
             Name[culture] = dto.Name;
         }
 

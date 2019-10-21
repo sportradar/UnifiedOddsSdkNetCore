@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
@@ -103,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetMessagingHost(string host)
         {
-            Contract.Requires(!string.IsNullOrEmpty(host));
+            Guard.Argument(!string.IsNullOrEmpty(host));
             _messagingHost = host;
             return this;
         }
@@ -126,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetMessagingUsername(string username)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Guard.Argument(!string.IsNullOrEmpty(username));
             _messagingUsername = username;
             return this;
         }
@@ -138,7 +138,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetMessagingPassword(string password)
         {
-            Contract.Requires(!string.IsNullOrEmpty(password));
+            Guard.Argument(!string.IsNullOrEmpty(password));
             _messagingPassword = password;
             return this;
         }
@@ -150,7 +150,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetVirtualHost(string virtualHost)
         {
-            Contract.Requires(!string.IsNullOrEmpty(virtualHost));
+            Guard.Argument(!string.IsNullOrEmpty(virtualHost));
             _virtualHost = virtualHost;
             return this;
         }
@@ -173,7 +173,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetApiHost(string apiHost)
         {
-            Contract.Requires(!string.IsNullOrEmpty(apiHost));
+            Guard.Argument(!string.IsNullOrEmpty(apiHost));
             _apiHost = apiHost;
             return this;
         }

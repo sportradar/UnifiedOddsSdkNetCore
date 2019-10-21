@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// if the value of the specified property was not specified</returns>
         public object GetPropertyValue(string propertyName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(propertyName));
+            Guard.Argument(!string.IsNullOrEmpty(propertyName));
             if (Properties != null && Properties.ContainsKey(propertyName))
             {
                 return Properties[propertyName];
@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="matchStatusesCache">The <see cref="ILocalizedNamedValueCache"/> used to get match status id and description</param>
         public CompetitionStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
         {
-            Contract.Requires(ci != null);
+            Guard.Argument(ci).NotNull();
 
             SportEventStatusCI = ci;
 

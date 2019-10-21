@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -37,8 +37,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal MarketDescriptionDTO(desc_market description)
         {
-            Contract.Requires(description != null);
-            Contract.Requires(!string.IsNullOrEmpty(description.name));
+            Guard.Argument(description).NotNull();
+            Guard.Argument(!string.IsNullOrEmpty(description.name));
 
             Id = description.id;
             Name = description.name;
@@ -55,16 +55,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         private string mapOutcomeType(string outcomeType, string includesOutcomesOfType)
         {
             if (outcomeType != null)
+            {
                 return outcomeType;
+            }
 
             if (includesOutcomesOfType == null)
+            {
                 return null;
+            }
 
             if (includesOutcomesOfType == SdkInfo.OutcometextVariantValue)
+            {
                 return SdkInfo.FreeTextVariantValue;
+            }
 
             if (includesOutcomesOfType.StartsWith("sr:"))
+            {
                 return includesOutcomesOfType.Substring(3);
+            }
 
             return null;
         }

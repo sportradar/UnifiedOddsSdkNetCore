@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Common.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -60,21 +60,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how potential exceptions should be handled</param>
         public NamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, ExceptionHandlingStrategy exceptionStrategy)
         {
-            Contract.Requires(dataProvider != null);
+            Guard.Argument(dataProvider).NotNull();
 
             _dataProvider = dataProvider;
             _namedValues = new Dictionary<int, string>();
             _exceptionStrategy = exceptionStrategy;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_dataProvider != null);
-            Contract.Invariant(_namedValues != null);
         }
 
         /// <summary>

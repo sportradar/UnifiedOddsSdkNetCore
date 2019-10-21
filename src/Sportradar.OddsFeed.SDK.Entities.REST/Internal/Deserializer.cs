@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -167,7 +167,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             public SerializerWithInfo(XmlSerializer serializer, bool ignoreNamespace)
             {
-                Contract.Requires(serializer != null);
+                Guard.Argument(serializer).NotNull();
 
                 Serializer = serializer;
                 IgnoreNamespace = ignoreNamespace;

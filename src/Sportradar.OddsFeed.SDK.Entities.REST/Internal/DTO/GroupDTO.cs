@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal GroupDTO(tournamentGroup group)
         {
-            Contract.Requires(group != null);
+            Guard.Argument(group).NotNull();
 
             Id = group.id ?? string.Empty;
             Name = group.name ?? string.Empty;

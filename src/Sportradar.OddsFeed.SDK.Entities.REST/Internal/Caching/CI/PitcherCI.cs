@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -42,8 +42,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal PitcherCI(PitcherDTO pitcher, CultureInfo culture)
             : base(pitcher)
         {
-            Contract.Requires(pitcher != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(pitcher).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Merge(pitcher, culture);
         }
@@ -67,8 +67,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the pitcher info</param>
         internal void Merge(PitcherDTO pitcher, CultureInfo culture)
         {
-            Contract.Requires(pitcher != null);
-            Contract.Requires(culture != null);
+            Guard.Argument(pitcher).NotNull();
+            Guard.Argument(culture).NotNull();
 
             Name = pitcher.Name;
             Hand = pitcher.Hand;

@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -40,7 +40,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="round">The <see cref="matchRound"/> used for creating new instance</param>
         internal RoundDTO(matchRound round)
         {
-            Contract.Requires(round != null);
+            Guard.Argument(round).NotNull();
+
             Type = round.type;
             Number = round.numberSpecified
                 ? (int?)round.number

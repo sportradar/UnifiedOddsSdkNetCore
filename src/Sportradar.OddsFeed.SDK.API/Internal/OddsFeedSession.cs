@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Common.Logging;
@@ -98,12 +98,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Func<OddsFeedSession, IEnumerable<string>> getRoutingKeys)
             :base(messageMapper, defaultCultures)
         {
-            Contract.Requires(messageReceiver != null);
-            Contract.Requires(messageInterest != null);
-            Contract.Requires(messageProcessor != null);
-            Contract.Requires(messageValidator != null);
-            Contract.Requires(messageDataExtractor != null);
-            Contract.Requires(dispatcherStore != null);
+            Guard.Argument(messageReceiver).NotNull();
+            Guard.Argument(messageInterest).NotNull();
+            Guard.Argument(messageProcessor).NotNull();
+            Guard.Argument(messageValidator).NotNull();
+            Guard.Argument(messageDataExtractor).NotNull();
+            Guard.Argument(dispatcherStore).NotNull();
 
             MessageReceiver = messageReceiver;
             _messageProcessor = messageProcessor;
@@ -183,8 +183,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>a <see cref="IEntityDispatcherInternal"/> which should be used to dispatch the provided <see cref="FeedMessage"/></returns>
         private IEntityDispatcherInternal SelectDispatcher(FeedMessage message)
         {
-            Contract.Requires(message != null);
-            Contract.Ensures(Contract.Result<IEntityDispatcherInternal>() != null);
+            Guard.Argument(message).NotNull();
 
             if (!message.IsEventRelated)
             {

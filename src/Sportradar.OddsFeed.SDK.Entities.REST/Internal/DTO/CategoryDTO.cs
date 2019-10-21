@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -34,11 +34,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CategoryDTO(string id, string name, string countryCode, IEnumerable<tournamentExtended> tournaments)
             :base(id, name, countryCode)
         {
-            Contract.Requires(!string.IsNullOrEmpty(id));
-            Contract.Requires(!string.IsNullOrEmpty(name));
-            Contract.Requires(tournaments != null);
+            Guard.Argument(id).NotNull().NotEmpty();
+            Guard.Argument(name).NotNull().NotEmpty();
+            var tournamentExtendeds = tournaments.ToList();
+            Guard.Argument(tournamentExtendeds).NotNull();
 
-            var recordList = tournaments as List<tournamentExtended> ?? tournaments.ToList();
+            var recordList = tournaments as List<tournamentExtended> ?? tournamentExtendeds.ToList();
             Tournaments = new ReadOnlyCollection<TournamentDTO>(recordList
                 .Distinct(EqualityComparer)
                 .Select(t => new TournamentDTO(t)).ToList());

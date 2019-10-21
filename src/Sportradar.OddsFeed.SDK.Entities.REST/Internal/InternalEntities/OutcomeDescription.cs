@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
@@ -37,14 +37,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 
         internal OutcomeDescription(MarketOutcomeCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
         {
-            Contract.Requires(cacheItem != null);
-            Contract.Requires(cultures != null && cultures.Any());
-
-            var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
+            Guard.Argument(cacheItem).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
 
             Id = cacheItem.Id;
-            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureList.ToDictionary(culture => culture, cacheItem.GetName));
-            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => !string.IsNullOrEmpty(cacheItem.GetDescription(c))).ToDictionary(c => c, cacheItem.GetDescription));
+            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.ToDictionary(culture => culture, cacheItem.GetName));
+            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => !string.IsNullOrEmpty(cacheItem.GetDescription(c))).ToDictionary(c => c, cacheItem.GetDescription));
         }
     }
 }

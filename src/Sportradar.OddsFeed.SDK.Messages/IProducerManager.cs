@@ -3,15 +3,13 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.Messages.Contracts;
 
 namespace Sportradar.OddsFeed.SDK.Messages
 {
     /// <summary>
     /// Defines a contract implemented by classes used to manage feed producers
     /// </summary>
-    [ContractClass(typeof(ProducerManagerContract))]
+    
     public interface IProducerManager
     {
         /// <summary>

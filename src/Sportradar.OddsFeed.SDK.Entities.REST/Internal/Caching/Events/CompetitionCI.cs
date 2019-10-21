@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
@@ -86,8 +86,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                              MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
-            Contract.Requires(eventSummary != null);
-            Contract.Requires(currentCulture != null);
+            Guard.Argument(eventSummary).NotNull();
+            Guard.Argument(currentCulture).NotNull();
 
             Merge(eventSummary, currentCulture, true);
         }
@@ -109,8 +109,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                             MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
-            Contract.Requires(eventSummary != null);
-            Contract.Requires(currentCulture != null);
+            Guard.Argument(eventSummary).NotNull();
+            Guard.Argument(currentCulture).NotNull();
 
             Merge(eventSummary, currentCulture, true);
         }

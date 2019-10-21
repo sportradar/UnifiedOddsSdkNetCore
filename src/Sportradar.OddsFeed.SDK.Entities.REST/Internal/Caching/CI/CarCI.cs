@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         public CarCI(CarDTO item)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             Name = item.Name;
             Chassis = item.Chassis;

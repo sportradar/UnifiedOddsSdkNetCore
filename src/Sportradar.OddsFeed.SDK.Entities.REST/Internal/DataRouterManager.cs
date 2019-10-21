@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -228,32 +228,32 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                                  IDataProvider<EntityList<SportEventSummaryDTO>> listSportEventProvider,
                                  IDataProvider<EntityList<TournamentInfoDTO>> availableSportTournamentsProvider)
         {
-            Contract.Requires(cacheManager != null);
-            Contract.Requires(sportEventSummaryProvider != null);
-            Contract.Requires(sportEventFixtureProvider != null);
-            Contract.Requires(sportEventFixtureChangeFixtureProvider != null);
-            Contract.Requires(allTournamentsForAllSportsProvider != null);
-            Contract.Requires(allSportsProvider != null);
-            Contract.Requires(sportEventsForDateProvider != null);
-            Contract.Requires(sportEventsForTournamentProvider != null);
-            Contract.Requires(playerProfileProvider != null);
-            Contract.Requires(competitorProvider != null);
-            Contract.Requires(simpleTeamProvider != null);
-            Contract.Requires(tournamentSeasonsProvider != null);
-            Contract.Requires(ongoingSportEventProvider != null);
-            Contract.Requires(sportCategoriesProvider != null);
-            Contract.Requires(invariantMarketDescriptionsProvider != null);
-            Contract.Requires(variantMarketDescriptionProvider != null);
-            Contract.Requires(variantDescriptionsProvider != null);
-            Contract.Requires(drawSummaryProvider != null);
-            Contract.Requires(drawFixtureProvider != null);
-            Contract.Requires(lotteryScheduleProvider != null);
-            Contract.Requires(lotteryListProvider != null);
-            Contract.Requires(availableSelectionsProvider != null);
-            Contract.Requires(calculateProbabilityProvider != null);
-            Contract.Requires(fixtureChangesProvider != null);
-            Contract.Requires(listSportEventProvider != null);
-            Contract.Requires(availableSelectionsProvider != null);
+            Guard.Argument(cacheManager).NotNull();
+            Guard.Argument(sportEventSummaryProvider).NotNull();
+            Guard.Argument(sportEventFixtureProvider).NotNull();
+            Guard.Argument(sportEventFixtureChangeFixtureProvider).NotNull();
+            Guard.Argument(allTournamentsForAllSportsProvider).NotNull();
+            Guard.Argument(allSportsProvider).NotNull();
+            Guard.Argument(sportEventsForDateProvider).NotNull();
+            Guard.Argument(sportEventsForTournamentProvider).NotNull();
+            Guard.Argument(playerProfileProvider).NotNull();
+            Guard.Argument(competitorProvider).NotNull();
+            Guard.Argument(simpleTeamProvider).NotNull();
+            Guard.Argument(tournamentSeasonsProvider).NotNull();
+            Guard.Argument(ongoingSportEventProvider).NotNull();
+            Guard.Argument(sportCategoriesProvider).NotNull();
+            Guard.Argument(invariantMarketDescriptionsProvider).NotNull();
+            Guard.Argument(variantMarketDescriptionProvider).NotNull();
+            Guard.Argument(variantDescriptionsProvider).NotNull();
+            Guard.Argument(drawSummaryProvider).NotNull();
+            Guard.Argument(drawFixtureProvider).NotNull();
+            Guard.Argument(lotteryScheduleProvider).NotNull();
+            Guard.Argument(lotteryListProvider).NotNull();
+            Guard.Argument(availableSelectionsProvider).NotNull();
+            Guard.Argument(calculateProbabilityProvider).NotNull();
+            Guard.Argument(fixtureChangesProvider).NotNull();
+            Guard.Argument(listSportEventProvider).NotNull();
+            Guard.Argument(availableSelectionsProvider).NotNull();
 
             _cacheManager = cacheManager;
             var wnsProducer = producerManager.Get(7);
@@ -316,40 +316,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         private void OnRawApiDataReceived(object sender, RawApiDataEventArgs e)
         {
            RawApiDataReceived?.Invoke(sender, e);
-        }
-
-        /// <summary>
-        /// Lists the invariants members as required by the code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_cacheManager != null);
-            Contract.Invariant(_sportEventSummaryProvider != null);
-            Contract.Invariant(_sportEventFixtureProvider != null);
-            Contract.Invariant(_sportEventFixtureChangeFixtureProvider != null);
-            Contract.Invariant(_allTournamentsForAllSportsProvider != null);
-            Contract.Invariant(_allSportsProvider != null);
-            Contract.Invariant(_sportEventsForDateProvider != null);
-            Contract.Invariant(_sportEventsForTournamentProvider != null);
-            Contract.Invariant(_playerProfileProvider != null);
-            Contract.Invariant(_competitorProvider != null);
-            Contract.Invariant(_simpleTeamProvider != null);
-            Contract.Invariant(_tournamentSeasonsProvider != null);
-            Contract.Invariant(_ongoingSportEventProvider != null);
-            Contract.Invariant(_sportCategoriesProvider != null);
-            Contract.Invariant(_invariantMarketDescriptionsProvider != null);
-            Contract.Invariant(_variantMarketDescriptionProvider != null);
-            Contract.Invariant(_variantDescriptionsProvider != null);
-            Contract.Invariant(_lotteryDrawSummaryProvider != null);
-            Contract.Invariant(_lotteryDrawFixtureProvider != null);
-            Contract.Invariant(_lotteryScheduleProvider != null);
-            Contract.Invariant(_lotteryListProvider != null);
-            Contract.Invariant(_availableSelectionsProvider != null);
-            Contract.Invariant(_calculateProbabilityProvider != null);
-            Contract.Invariant(_fixtureChangesProvider != null);
-            Contract.Invariant(_listSportEventProvider != null);
-            Contract.Invariant(_availableSportTournamentsProvider != null);
         }
 
         /// <summary>

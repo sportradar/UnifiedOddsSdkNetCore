@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="producer">The <see cref="IProducer" /> specifying the producer / service which dispatched the current <see cref="Message" /> message</param>
         protected Message(IMessageTimestamp timestamp, IProducer producer)
         {
-            Contract.Requires(timestamp != null);
+            Guard.Argument(timestamp).NotNull();
 
             Timestamp = timestamp.Created;
             Timestamps = timestamp;

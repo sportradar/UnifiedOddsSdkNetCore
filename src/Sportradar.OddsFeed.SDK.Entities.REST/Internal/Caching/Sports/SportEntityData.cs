@@ -2,9 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
-using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
@@ -31,23 +30,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated entity name</param>
         protected SportEntityData(URN id, IReadOnlyDictionary<CultureInfo, string> names)
         {
-            Contract.Requires(id != null);
-            Contract.Requires(names != null);
-            Contract.Requires(names.Any());
+            Guard.Argument(id).NotNull();
+            Guard.Argument(names).NotNull();
+            Guard.Argument(names).NotNull().NotEmpty();
 
             Id = id;
             Names = names;
-        }
-
-        /// <summary>
-        /// Defined field invariants needed by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(Id != null);
-            Contract.Invariant(Names != null);
-            Contract.Invariant(Names.Any());
         }
     }
 }

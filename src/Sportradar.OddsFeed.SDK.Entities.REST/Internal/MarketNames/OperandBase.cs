@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 
@@ -23,8 +23,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of int</exception>
         protected static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out int specifierValue)
         {
-            Contract.Requires(!string.IsNullOrEmpty(specifierName));
-            Contract.Requires(specifiers != null && specifiers.Any());
+            Guard.Argument(!string.IsNullOrEmpty(specifierName));
+            Guard.Argument(specifiers != null && specifiers.Any());
 
             string specifierValueString;
 
@@ -48,8 +48,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of decimal</exception>
         protected static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out decimal specifierValue)
         {
-            Contract.Requires(!string.IsNullOrEmpty(specifierName));
-            Contract.Requires(specifiers != null && specifiers.Any());
+            Guard.Argument(!string.IsNullOrEmpty(specifierName));
+            Guard.Argument(specifiers != null && specifiers.Any());
 
             string specifierValueString;
 

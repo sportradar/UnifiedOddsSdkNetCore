@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
@@ -13,7 +13,6 @@ using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -76,9 +75,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                                     TimeSpan cacheItemExpireTime)
             : base(cacheManager)
         {
-            Contract.Requires(sportEventStatusCache != null);
-            Contract.Requires(mapperFactory != null);
-            Contract.Requires(sportEventCache != null);
+            Guard.Argument(sportEventStatusCache).NotNull();
+            Guard.Argument(mapperFactory).NotNull();
+            Guard.Argument(sportEventCache).NotNull();
 
             _sportEventStatusCache = sportEventStatusCache;
             _mapperFactory = mapperFactory;

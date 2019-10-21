@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities;
 
 namespace Sportradar.OddsFeed.SDK.API.EventArguments
@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <param name="reason">A reason why feed must be closed</param>
         internal FeedCloseEventArgs(string reason)
         {
-            Contract.Requires(!string.IsNullOrEmpty(reason));
+            Guard.Argument(!string.IsNullOrEmpty(reason));
             _reason = reason;
         }
 

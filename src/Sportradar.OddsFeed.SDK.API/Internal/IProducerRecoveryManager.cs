@@ -2,8 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.API.Contracts;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -14,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Represents contract for tracking <see cref="FeedMessage"/> per specific <see cref="IProducer"/>
     /// </summary>
-    [ContractClass(typeof(ProducerRecoveryManagerContract))]
+    
     internal interface IProducerRecoveryManager
     {
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -30,8 +30,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="name">the name of the represented sport entity</param>
         internal SportEntityDTO(string id, string name)
         {
-            Contract.Requires(id != null);
-            //Contract.Requires(!string.IsNullOrEmpty(name)); // it may happen to receive empty name
+            Guard.Argument(id).NotNull();
+            //Guard.Argument(!string.IsNullOrEmpty(name)); // it may happen to receive empty name
 
             Id = URN.Parse(id);
             Name = name;

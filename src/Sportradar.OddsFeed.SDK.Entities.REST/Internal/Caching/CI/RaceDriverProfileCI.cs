@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         public RaceDriverProfileCI(RaceDriverProfileDTO item)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             RaceDriverId = item.RaceDriverId;
             RaceTeamId = item.RaceTeamId;

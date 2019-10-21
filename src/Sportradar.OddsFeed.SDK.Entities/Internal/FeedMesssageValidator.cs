@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,10 +58,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="producerManager">A <see cref="IProducerManager"/> used to check available producers</param>
         public FeedMessageValidator(IMarketCacheProvider marketCacheProvider, CultureInfo defaultCulture, INamedValuesProvider namedValuesProvider, IProducerManager producerManager)
         {
-            Contract.Requires(marketCacheProvider != null);
-            Contract.Requires(defaultCulture != null);
-            Contract.Requires(namedValuesProvider != null);
-            Contract.Requires(producerManager != null);
+            Guard.Argument(marketCacheProvider).NotNull();
+            Guard.Argument(defaultCulture).NotNull();
+            Guard.Argument(namedValuesProvider).NotNull();
+            Guard.Argument(producerManager).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _defaultCulture = new List<CultureInfo> { defaultCulture };
@@ -70,19 +70,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_marketCacheProvider != null);
-            Contract.Invariant(_defaultCulture != null);
-            Contract.Invariant(_namedValuesProvider != null);
-            Contract.Invariant(_producerManager != null);
-        }
-
-        /// <summary>
-        /// Logs the correctly formated warning to execution log
+        /// Logs the correctly formatted warning to execution log
         /// </summary>
         /// <typeparam name="T">The type of the incorrect value</typeparam>
         /// <param name="message">The <see cref="FeedMessage"/> containing the incorrect value</param>
@@ -90,8 +78,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="propertyValue">The incorrect value</param>
         private static void LogWarning<T>(FeedMessage message, string propertyName, T propertyValue)
         {
-            Contract.Requires(message != null);
-            Contract.Requires(!string.IsNullOrEmpty(propertyName));
+            Guard.Argument(message).NotNull();
+            Guard.Argument(propertyName).NotNull().NotEmpty();
 
             ExecutionLog.WarnFormat("Validation warning: message={{{0}}}, property value {1}={2} is not expected", message, propertyName, propertyValue);
         }
@@ -105,8 +93,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="propertyValue">The incorrect value</param>
         private static void LogFailure<T>(FeedMessage message, string propertyName, T propertyValue)
         {
-            Contract.Requires(message != null);
-            Contract.Requires(!string.IsNullOrEmpty(propertyName));
+            Guard.Argument(message).NotNull();
+            Guard.Argument(propertyName).NotNull().NotEmpty();
 
             ExecutionLog.ErrorFormat("Validation failure: message={{{0}}}, property value {1}={2} is not supported", message, propertyName, propertyValue);
         }
@@ -119,9 +107,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="marketIndex">The index of the <code>market</code> in the <code>message</code></param>
         private static bool ValidateSpecifiers(FeedMessage message, FeedMarket market, int marketIndex)
         {
-            Contract.Requires(message != null);
-            Contract.Requires(market != null);
-            Contract.Requires(marketIndex >= 0);
+            Guard.Argument(message).NotNull();
+            Guard.Argument(market).NotNull();
+            Guard.Argument(marketIndex).NotNegative();
 
             if (string.IsNullOrEmpty(market.SpecifierString))
             {
@@ -215,7 +203,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>True if the validation was successful, otherwise false</returns>
         private static bool ValidateMessage(FeedMessage message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             var result = true;
 
@@ -266,7 +254,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="ValidationResult"/> representing the result of the validation</returns>
         private ValidationResult ValidateMessageWithMarkets(FeedMessage message, market[] markets)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             ValidateMessageProducer(message);
 
@@ -303,7 +291,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The <see cref="ValidationResult" /> specifying the result of validation</returns>
         protected ValidationResult ValidateSnapshotCompleted(snapshot_complete message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             ValidateMessageProducer(message);
 
@@ -319,7 +307,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The <see cref="ValidationResult" /> specifying the result of validation</returns>
         protected ValidationResult ValidateAlive(alive message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             ValidateMessageProducer(message);
 
@@ -343,7 +331,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The <see cref="ValidationResult" /> specifying the result of validation</returns>
         protected ValidationResult ValidateFixtureChange(fixture_change message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             ValidateMessageProducer(message);
 
@@ -367,7 +355,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The <see cref="ValidationResult" /> specifying the result of validation</returns>
         protected ValidationResult ValidateBetStop(bet_stop message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             ValidateMessageProducer(message);
 
@@ -391,7 +379,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The <see cref="ValidationResult" /> specifying the result of validation</returns>
         protected ValidationResult ValidateBetSettlement(bet_settlement message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             ValidateMessageProducer(message);
 
@@ -433,8 +421,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             var result = ValidateMessageWithMarkets(message, message.market);
 
-            URN supersededBy;
-            if (!string.IsNullOrEmpty(message.superceded_by) && !URN.TryParse(message.superceded_by, out supersededBy))
+            if (!string.IsNullOrEmpty(message.superceded_by) && !URN.TryParse(message.superceded_by, out _))
             {
                 //set the value to null so it will not be processed by the message mapper
                 message.superceded_by = null;
@@ -454,7 +441,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The <see cref="ValidationResult" /> specifying the result of validation</returns>
         protected ValidationResult ValidateOddsChange(odds_change message)
         {
-            Contract.Requires(message != null);
+            Guard.Argument(message).NotNull();
 
             ValidateMessageProducer(message);
 

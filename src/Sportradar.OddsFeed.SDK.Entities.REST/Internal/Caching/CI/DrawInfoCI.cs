@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="dto">A <see cref="DrawInfoDTO"/> instance containing information about the draw info</param>
         public DrawInfoCI(DrawInfoDTO dto)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             DrawType = dto.DrawType;
             TimeType = dto.TimeType;
@@ -54,7 +54,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public DrawInfoCI(ExportableDrawInfoCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             DrawType = exportable.DrawType;
             TimeType = exportable.TimeType;

@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,24 +51,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                    IMarketDescriptionCache variantMarketsCache,
                                    IVariantDescriptionCache variantDescriptionListCache)
         {
-            Contract.Requires(invariantMarketsCache != null);
-            Contract.Requires(variantMarketsCache != null);
-            Contract.Requires(variantDescriptionListCache != null);
+            Guard.Argument(invariantMarketsCache).NotNull();
+            Guard.Argument(variantMarketsCache).NotNull();
+            Guard.Argument(variantDescriptionListCache).NotNull();
 
             _invariantMarketsCache = invariantMarketsCache;
             _variantMarketsCache = variantMarketsCache;
             _variantDescriptionListCache = variantDescriptionListCache;
-        }
-
-        /// <summary>
-        /// Defines object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_invariantMarketsCache != null);
-            Contract.Invariant(_variantMarketsCache != null);
-            Contract.Invariant(_variantDescriptionListCache != null);
         }
 
         /// <summary>

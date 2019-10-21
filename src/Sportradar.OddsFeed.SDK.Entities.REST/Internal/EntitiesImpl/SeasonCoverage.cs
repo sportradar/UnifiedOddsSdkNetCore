@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cacheItem">The <see cref="SeasonCoverageCI"/> instance containing information about tournament coverage</param>
         public SeasonCoverage(SeasonCoverageCI cacheItem)
         {
-            Contract.Requires(cacheItem != null);
+            Guard.Argument(cacheItem).NotNull();
 
             MaxCoverageLevel = cacheItem.MinCoverageLevel;
             MinCoverageLevel = cacheItem.MinCoverageLevel;

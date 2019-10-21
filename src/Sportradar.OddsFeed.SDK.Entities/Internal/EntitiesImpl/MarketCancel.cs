@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                             IEnumerable<CultureInfo> cultures)
             : base(id, specifiers, additionalInfo, nameProvider, mappingProvider, marketDefinition, cultures)
         {
-            Contract.Requires(voidReasonsCache != null);
+            Guard.Argument(voidReasonsCache).NotNull();
 
             _voidReason = voidReason;
             _voidReasonsCache = voidReasonsCache;

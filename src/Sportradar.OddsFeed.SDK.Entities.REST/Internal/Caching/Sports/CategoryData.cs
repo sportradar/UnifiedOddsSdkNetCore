@@ -34,8 +34,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         public CategoryData(URN id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode, IEnumerable<URN> tournaments)
             :base(id, names)
         {
-            //Contract.Requires(tournaments != null); // on WNSs there is no tournament
-            //Contract.Requires(Contract.Exists(tournaments, t => true));
+            //Guard.Argument(tournaments).NotNull(); // on WNSs there is no tournament
+            //Guard.Argument(Contract.Exists(tournaments, t => true));
 
             CountryCode = countryCode;
 

@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
@@ -40,9 +40,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns>A <see cref="Score"/> instance representing the result of the addition.</returns>
         public static Score operator +(Score score1, Score score2)
         {
-            Contract.Requires(score1 != null);
-            Contract.Requires(score2 != null);
-            Contract.Ensures(Contract.Result<Score>() != null);
+            Guard.Argument(score1).NotNull();
+            Guard.Argument(score2).NotNull();
 
             return new Score(score1.HomeScore + score2.HomeScore, score1.AwayScore + score2.AwayScore);
         }
@@ -55,8 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">The format of <code>value</code> is not correct</exception>
         public static Score Parse(string value)
         {
-            Contract.Requires(!string.IsNullOrEmpty(value));
-            Contract.Ensures(Contract.Result<Score>() != null);
+            Guard.Argument(value).NotNull().NotEmpty();
 
             var parts = value.Split(new[] {":"}, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
@@ -102,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns>True if the provided value could be parsed, otherwise false.</returns>
         public static bool TryParse(string value, out Score score)
         {
-            Contract.Requires(!string.IsNullOrEmpty(value));
+            Guard.Argument(value).NotNull().NotEmpty();
             try
             {
                 score = Parse(value);

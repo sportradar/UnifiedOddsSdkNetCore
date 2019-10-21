@@ -2,16 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.API.Contracts;
+
 
 namespace Sportradar.OddsFeed.SDK.API
 {
     /// <summary>
     /// Defines method used to set access token property on the configuration builder
     /// </summary>
-    [ContractClass(typeof(ConfigurationAccessTokenSetterContract))]
     [Obsolete("Use ITokenSetter")]
     public interface IConfigurationAccessTokenSetter
     {
@@ -27,7 +25,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines method used to set inactivity seconds property on the configuration builder
     /// </summary>
-    [ContractClass(typeof(ConfigurationInactivitySecondsSetterContract))]
     [Obsolete]
     public interface IConfigurationInactivitySecondsSetter
     {
@@ -43,7 +40,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines methods used to set optional properties on the configuration builder
     /// </summary>
-    [ContractClass(typeof(OddsFeedConfigurationBuilderContract))]
     [Obsolete("Use IConfigurationBuilder")]
     public interface IOddsFeedConfigurationBuilder
     {

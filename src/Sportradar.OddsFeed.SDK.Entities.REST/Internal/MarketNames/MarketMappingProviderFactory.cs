@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -40,24 +40,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="producerManager">An <see cref="IProducerManager"/> used to get <see cref="IProducer"/></param>
         public MarketMappingProviderFactory(IMarketCacheProvider marketCacheProvider, ISportEventStatusCache eventStatusCache, ExceptionHandlingStrategy exceptionStrategy, IProducerManager producerManager)
         {
-            Contract.Requires(marketCacheProvider != null);
-            Contract.Requires(eventStatusCache != null);
-            Contract.Requires(producerManager != null);
+            Guard.Argument(marketCacheProvider).NotNull();
+            Guard.Argument(eventStatusCache).NotNull();
+            Guard.Argument(producerManager).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _eventStatusCache = eventStatusCache;
             _exceptionStrategy = exceptionStrategy;
             _producerManager = producerManager;
-        }
-
-        /// <summary>
-        /// Lists object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_marketCacheProvider != null);
-            Contract.Invariant(_producerManager != null);
         }
 
         /// <summary>

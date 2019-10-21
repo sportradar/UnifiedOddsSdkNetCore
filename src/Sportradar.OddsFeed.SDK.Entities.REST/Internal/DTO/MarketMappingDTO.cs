@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -37,10 +37,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal MarketMappingDTO(mappingsMapping mapping)
         {
-            Contract.Requires(mapping != null);
-            Contract.Requires(mapping.product_id > 0);
-            Contract.Requires(!string.IsNullOrEmpty(mapping.sport_id));
-            Contract.Requires(!string.IsNullOrEmpty(mapping.market_id));
+            Guard.Argument(mapping).NotNull();
+            Guard.Argument(mapping.product_id > 0);
+            Guard.Argument(!string.IsNullOrEmpty(mapping.sport_id));
+            Guard.Argument(!string.IsNullOrEmpty(mapping.market_id));
 
             ProducerId = mapping.product_id;
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)
@@ -68,10 +68,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal MarketMappingDTO(variant_mappingsMapping mapping)
         {
-            Contract.Requires(mapping != null);
-            Contract.Requires(mapping.product_id > 0);
-            Contract.Requires(!string.IsNullOrEmpty(mapping.sport_id));
-            Contract.Requires(!string.IsNullOrEmpty(mapping.market_id));
+            Guard.Argument(mapping).NotNull();
+            Guard.Argument(mapping.product_id > 0);
+            Guard.Argument(!string.IsNullOrEmpty(mapping.sport_id));
+            Guard.Argument(!string.IsNullOrEmpty(mapping.market_id));
 
             ProducerId = mapping.product_id;
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)

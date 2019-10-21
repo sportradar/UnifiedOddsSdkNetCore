@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public ManagerDTO(manager item)
             : base(item.id, item.name)
         {
-            Contract.Requires(item != null);
+            Guard.Argument(item).NotNull();
 
             Nationality = item.nationality;
             CountryCode = item.country_code;

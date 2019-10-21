@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -24,11 +24,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns></returns>
         public static IEnumerable<IEnumerable<string>> GenerateKeys(IEnumerable<MessageInterest> interests, int nodeId = 0)
         {
-            Contract.Requires(interests != null);
-            Contract.Requires(interests.Any());
+            var messageInterests = interests.ToList();
+            Guard.Argument(messageInterests).NotNull().NotEmpty();
 
-            var messageInterests = interests as IList<MessageInterest> ?? interests.ToList();
-            var sessionKeys = new List<List<string>>(messageInterests.Count);
+            var sessionKeys = new List<List<string>>(messageInterests.Count());
 
             ValidateInterestCombination(messageInterests);
 
@@ -36,7 +35,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             foreach (var interest in messageInterests)
             {
-                Contract.Assume(interest != null);
                 if (both && interest == MessageInterest.LowPriorityMessages)
                 {
                    sessionKeys.Add(GetBaseKeys(interest, nodeId).Union(GetLiveKeys()).ToList());
@@ -269,11 +267,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="MessageInterest"/> indicating an interest in messages associated with specific events</returns>
         private static IEnumerable<string> SpecificEventsOnly(IEnumerable<URN> eventIds)
         {
-            Contract.Requires(eventIds != null);
-            Contract.Requires(eventIds.Any());
+            var enumerable = eventIds.ToList();
+            Guard.Argument(enumerable).NotNull().NotEmpty();
 
             //channels using this routing key will also receive 'system' messages so they have to be manually removed in the receiver
-            return eventIds.Select(u => $"#.{u.Prefix}:{u.Type}.{u.Id}");
+            return enumerable.Select(u => $"#.{u.Prefix}:{u.Type}.{u.Id}");
         }
     }
 }

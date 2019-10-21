@@ -1,9 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Diagnostics.Contracts;
 using System.IO;
-using Sportradar.OddsFeed.SDK.Common.Contracts;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -12,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// Defines a contract implemented by classes used to deserialize feed messages to
     /// <typeparam name="T">Defines the base that can be deserialized using the <see cref="IDeserializer{T}"/></typeparam>
     /// </summary>
-    [ContractClass(typeof(DeserializerContract<>))]
+    
 
     public interface IDeserializer<T> where T : class
     {

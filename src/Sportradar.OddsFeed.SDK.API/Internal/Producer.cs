@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -123,12 +123,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="scope">The scope of the producer</param>
         public Producer(int id, string name, string description, string apiUrl, bool active, int maxInactivitySeconds, int maxRecoveryTime, string scope)
         {
-            Contract.Requires(id > 0);
-            Contract.Requires(!string.IsNullOrEmpty(name));
-            Contract.Requires(!string.IsNullOrEmpty(description));
-            Contract.Requires(!string.IsNullOrEmpty(apiUrl));
-            Contract.Requires(maxInactivitySeconds > 0);
-            Contract.Requires(maxRecoveryTime > 0);
+            Guard.Argument(id > 0);
+            Guard.Argument(!string.IsNullOrEmpty(name));
+            Guard.Argument(!string.IsNullOrEmpty(description));
+            Guard.Argument(!string.IsNullOrEmpty(apiUrl));
+            Guard.Argument(maxInactivitySeconds > 0);
+            Guard.Argument(maxRecoveryTime > 0);
 
             Id = id;
             Name = name;

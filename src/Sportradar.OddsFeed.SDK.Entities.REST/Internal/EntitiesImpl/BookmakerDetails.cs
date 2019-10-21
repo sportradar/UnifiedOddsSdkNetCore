@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Net;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="dto">A <see cref="BookmakerDetailsDTO"/> to be used for constructing new instance</param>
         public BookmakerDetails(BookmakerDetailsDTO dto)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             BookmakerId = dto.Id;
             VirtualHost = dto.VirtualHost;
@@ -60,12 +60,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             ResponseCode = dto.ResponseCode;
             Message = dto.Message;
             ServerTimeDifference = dto.ServerTimeDifference;
-        }
-
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(this.BookmakerId >= 0);
         }
 
         /// <summary>

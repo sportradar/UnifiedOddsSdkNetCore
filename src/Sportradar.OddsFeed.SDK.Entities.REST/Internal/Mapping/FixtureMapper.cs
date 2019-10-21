@@ -3,7 +3,7 @@
 */
 
 using System;
-using System.Diagnostics.Contracts;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">A <see cref="fixturesEndpoint"/> instance containing fixture data</param>
         internal FixtureMapper(fixturesEndpoint data)
         {
-            Contract.Requires(data != null);
+            Guard.Argument(data).NotNull();
 
             _data = data;
         }

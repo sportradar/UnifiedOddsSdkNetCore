@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -48,8 +48,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public ProducerManager(IProducersProvider producersProvider, IOddsFeedConfiguration config)
         {
-            Contract.Requires(producersProvider != null);
-            Contract.Requires(config != null);
+            Guard.Argument(producersProvider).NotNull();
+            Guard.Argument(config).NotNull();
 
             _producersProvider = producersProvider;
 

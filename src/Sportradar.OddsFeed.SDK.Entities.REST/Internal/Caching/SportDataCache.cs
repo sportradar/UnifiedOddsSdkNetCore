@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using App.Metrics.Health;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
@@ -98,13 +97,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                               ICacheManager cacheManager)
             : base(cacheManager)
         {
-            Contract.Requires(dataRouterManager != null);
-            Contract.Requires(timer != null);
-            Contract.Requires(cultures != null && cultures.Any());
-            Contract.Requires(sportEventCache != null);
+            Guard.Argument(dataRouterManager).NotNull();
+            Guard.Argument(timer).NotNull();
+            var cultureInfos = cultures.ToList();
+            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(sportEventCache).NotNull();
 
             _dataRouterManager = dataRouterManager;
-            _requiredCultures = cultures as ReadOnlyCollection<CultureInfo> ?? new ReadOnlyCollection<CultureInfo>(cultures.ToList());
+            _requiredCultures = cultures as ReadOnlyCollection<CultureInfo> ?? new ReadOnlyCollection<CultureInfo>(cultureInfos.ToList());
 
             FetchedCultures = new HashSet<CultureInfo>();
             Sports = new ConcurrentDictionary<URN, SportCI>();
@@ -177,9 +177,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         private async Task FetchAndMergeAll(IEnumerable<CultureInfo> cultures, bool clearExistingData)
         {
-            Contract.Requires(cultures != null && cultures.Any());
+            var enumerable = cultures.ToList();
+            Guard.Argument(enumerable).NotNull().NotEmpty();
 
-            var cultureInfos = cultures as IReadOnlyList<CultureInfo> ?? cultures.ToList();
+            var cultureInfos = cultures as IReadOnlyList<CultureInfo> ?? enumerable.ToList();
             //Metric.Context("CACHE").Meter("SportDataCache->FetchAndMergeAll", Unit.Calls).Mark($"Getting for cultures='{string.Join(",", cultureInfos.Select(c => c.TwoLetterISOLanguageName))}'.");
 
             var fetchTasks = cultureInfos.Select(c => _dataRouterManager.GetAllSportsAsync(c)).ToList();

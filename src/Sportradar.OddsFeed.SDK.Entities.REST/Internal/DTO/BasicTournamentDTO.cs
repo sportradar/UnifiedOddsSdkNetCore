@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal BasicTournamentDTO(sportEvent sportEvent)
             : base(sportEvent)
         {
-            Contract.Requires(sportEvent != null);
+            Guard.Argument(sportEvent).NotNull();
 
             TournamentCoverage = null;
             Category = sportEvent.tournament.category == null
@@ -63,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             })
         {
-            Contract.Requires(tournamentInfo != null);
+            Guard.Argument(tournamentInfo).NotNull();
 
             TournamentCoverage = new TournamentCoverageDTO(tournamentInfo.coverage_info);
             Category = tournamentInfo.tournament.category == null
@@ -89,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 type = null
             })
         {
-            Contract.Requires(tournament != null);
+            Guard.Argument(tournament).NotNull();
 
             //TournamentCoverage = new TournamentCoverageDTO(tournament.season_coverage_info);
             Category = tournament.category == null

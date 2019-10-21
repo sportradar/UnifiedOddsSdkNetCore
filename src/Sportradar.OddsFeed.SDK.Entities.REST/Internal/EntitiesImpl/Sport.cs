@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Sport(URN id, IReadOnlyDictionary<CultureInfo, string> names, IEnumerable<ICategory> categories)
            : base(id, names)
         {
-            Contract.Requires(names != null && names.Any());
+            Guard.Argument(names != null && names.Any());
 
             if(categories != null)
             {

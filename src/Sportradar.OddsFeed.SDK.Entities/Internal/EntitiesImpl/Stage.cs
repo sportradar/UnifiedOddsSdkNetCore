@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,8 +46,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                     ExceptionHandlingStrategy exceptionStrategy)
             : base(ExecutionLogPrivate, id, sportId, sportEntityFactory, sportEventStatusCache, sportEventCache, cultures, exceptionStrategy, matchStatusesCache)
         {
-            Contract.Requires(sportDataCache != null);
-            Contract.Requires(matchStatusesCache != null);
+            Guard.Argument(sportDataCache).NotNull();
+            Guard.Argument(matchStatusesCache).NotNull();
 
             _sportEntityFactory = sportEntityFactory;
             _sportDataCache = sportDataCache;

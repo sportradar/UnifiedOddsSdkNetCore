@@ -3,7 +3,7 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public TournamentInfoBasicCI(TournamentInfoDTO dto, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(dto.Id, dto.Name, culture)
         {
-            Contract.Requires(dto != null);
+            Guard.Argument(dto).NotNull();
 
             _dataRouterManager = dataRouterManager;
             if (dto.Category != null)
