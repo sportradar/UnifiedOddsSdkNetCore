@@ -6,8 +6,10 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Dawn;
+using log4net;
+using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -23,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <summary>
         /// A <see cref="ILog"/> used to log sport entities data
         /// </summary>
-        private static ILog _log = LogManager.GetLogger(typeof(SportEntityWriter));
+        private static ILogger _log;
 
         /// <summary>
         /// A <see cref="TaskProcessor"/> used for processing of asynchronous requests
@@ -43,11 +45,11 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEntityWriter"/> class
         /// </summary>
-
         /// <param name="taskProcessor">A <see cref="TaskProcessor"/> used for processing of asynchronous requests</param>
         /// <param name="culture"> A <see cref="CultureInfo"/> specifying which language of the translatable properties to take</param>
         /// <param name="writeNotCacheableData">A <see cref="bool"/> indicating whether data not cached by the SDK should also be retrieved & written</param>
-        internal SportEntityWriter(TaskProcessor taskProcessor, CultureInfo culture, bool writeNotCacheableData = false)
+        /// <param name="log">A <see cref="ILogger" /> instance used for logging</param>
+        internal SportEntityWriter(TaskProcessor taskProcessor, CultureInfo culture, bool writeNotCacheableData = false, ILogger log = null)
         {
             Guard.Argument(taskProcessor).NotNull();
             Guard.Argument(culture).NotNull();
@@ -55,6 +57,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             _taskProcessor = taskProcessor;
             _culture = culture;
             _writeNotCacheableData = writeNotCacheableData;
+            _log = log ?? new NullLogger<SportEntityWriter>();
         }
 
         /// <summary>
@@ -248,7 +251,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 }
                 catch (Exception e)
                 {
-                    _log.Warn($"Error obtaining tournament data {tour.Id}. Message={e.Message}");
+                    _log.LogWarning($"Error obtaining tournament data {tour.Id}. Message={e.Message}");
                 }
             }
 
@@ -523,78 +526,78 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 var match = entity as IMatch;
                 if (match != null)
                 {
-                    _log.Debug(WriteMatchData(match));
+                    _log.LogDebug(WriteMatchData(match).ToString());
                     return;
                 }
 
                 var stage = entity as IStage;
                 if (stage != null)
                 {
-                    _log.Debug(WriteStageData(stage));
+                    _log.LogDebug(WriteStageData(stage).ToString());
                     return;
                 }
 
                 var basicTournament = entity as IBasicTournament;
                 if (basicTournament != null)
                 {
-                    _log.Debug(WriteBasicTournamentData(basicTournament));
+                    _log.LogDebug(WriteBasicTournamentData(basicTournament).ToString());
                     return;
                 }
 
                 var tournament = entity as ITournament;
                 if (tournament != null)
                 {
-                    _log.Debug(WriteTournamentData(tournament));
+                    _log.LogDebug(WriteTournamentData(tournament).ToString());
                     return;
                 }
 
                 var season = entity as ISeason;
                 if (season != null)
                 {
-                    _log.Debug(WriteSeasonData(season));
+                    _log.LogDebug(WriteSeasonData(season).ToString());
                     return;
                 }
 
                 var draw = entity as IDraw;
                 if (draw != null)
                 {
-                    _log.Debug(WriteDrawData(draw));
+                    _log.LogDebug(WriteDrawData(draw).ToString());
                     return;
                 }
 
                 var lottery = entity as ILottery;
                 if (lottery != null)
                 {
-                    _log.Debug(WriteLotteryData(lottery));
+                    _log.LogDebug(WriteLotteryData(lottery).ToString());
                     return;
                 }
 
                 // If non of the above, just write the ISportEvent properties
                 var builder = new StringBuilder();
                 AddEntityData(entity, builder);
-                _log.Debug(builder);
+                _log.LogDebug(builder.ToString());
             }
             catch (FeedSdkException)
             {
-                _log.Error($"Error fetching info for eventId: {entity.Id}.");
+                _log.LogError($"Error fetching info for eventId: {entity.Id}.");
             }
             catch (ObjectDisposedException)
             {
-                _log.Warn($"Error fetching info for eventId: {entity.Id} due to SDK being disposed.");
+                _log.LogWarning($"Error fetching info for eventId: {entity.Id} due to SDK being disposed.");
             }
             catch (AggregateException ex)
             {
                 var communicationException = ex.InnerExceptions.FirstOrDefault(inner => inner is CommunicationException);
                 if (communicationException != null)
                 {
-                    _log.Warn($"Communication exception occurred while fetching info for eventid= {entity.Id}. Message:{communicationException.Message}");
+                    _log.LogWarning($"Communication exception occurred while fetching info for eventid= {entity.Id}. Message:{communicationException.Message}");
                     return;
                 }
-                _log.Error($"Un unexpected exception occurred while fetching info for eventId: {entity.Id}. Exception={ex}");
+                _log.LogError($"Un unexpected exception occurred while fetching info for eventId: {entity.Id}. Exception={ex}");
             }
             catch (Exception ex)
             {
-                _log.Error($"Un unhandled exception occurred while fetching info for eventId: {entity.Id}. Exception={ex}", ex);
+                _log.LogError($"Un unhandled exception occurred while fetching info for eventId: {entity.Id}. Exception={ex}", ex);
             }
         }
     }

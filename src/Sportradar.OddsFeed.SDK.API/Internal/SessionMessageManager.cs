@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -25,9 +25,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     internal class SessionMessageManager : MessageProcessorBase, IFeedMessageProcessor, ISessionMessageManager
     {
         /// <summary>
-        /// The <see cref="ILog"/> used for execution logging
+        /// The <see cref="ILogger"/> used for execution logging
         /// </summary>
-        private readonly ILog _log = SdkLoggerFactory.GetLogger(typeof(SessionMessageManager));
+        private readonly ILogger _log = SdkLoggerFactory.GetLogger(typeof(SessionMessageManager));
 
         /// <summary>
         /// The <see cref="List{T}"/> containing currently stashed(stored) items
@@ -81,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 stashedItem = GetStashedItem(producer.Id);
                 if (stashedItem == null || stashedItem.RequestId != requestId)
                 {
-                    _log.Debug("StashedItem missing. Nothing to release.");
+                    _log.LogDebug("StashedItem missing. Nothing to release.");
                     return;
                 }
                 _stashedItems.Remove(stashedItem);

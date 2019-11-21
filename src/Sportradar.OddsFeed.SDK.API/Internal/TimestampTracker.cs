@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dawn;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -22,9 +22,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     public class TimestampTracker : ITimestampTracker
     {
         /// <summary>
-        /// A <see cref="ILog"/>
+        /// A <see cref="ILogger"/>
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(TimestampTracker));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(TimestampTracker));
 
         /// <summary>
         /// The max interval in seconds between live messages on a system session
@@ -140,11 +140,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (!(message is alive))
                 {
-                    ExecutionLog.Error($"Message timing info for message type:{message.GetType().Name} and interest:{interest.Name} does not exist in this scope:{string.Join(",", dictionary.Keys)}.");
+                    ExecutionLog.LogError($"Message timing info for message type:{message.GetType().Name} and interest:{interest.Name} does not exist in this scope:{string.Join(",", dictionary.Keys)}.");
                 }
                 //else
                 //{
-                //    ExecutionLog.Debug($"Message timing info for message type:{message.GetType().Name} and interest:{interest.Name} does not exist in this scope:{string.Join(",", dictionary.Keys)}.");
+                //    ExecutionLog.LogDebug($"Message timing info for message type:{message.GetType().Name} and interest:{interest.Name} does not exist in this scope:{string.Join(",", dictionary.Keys)}.");
                 //}
             }
         }
@@ -176,7 +176,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (!(message is alive))
                 {
-                    ExecutionLog.Error($"Message timing info for message type:{message.GetType().Name}, interest:{interest.Name} does not exist.");
+                    ExecutionLog.LogError($"Message timing info for message type:{message.GetType().Name}, interest:{interest.Name} does not exist.");
                 }
             }
         }

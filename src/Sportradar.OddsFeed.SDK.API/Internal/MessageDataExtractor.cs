@@ -5,7 +5,7 @@ using System;
 using Dawn;
 using System.Linq;
 using System.Text;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <seealso cref="IMessageDataExtractor" />
     internal class MessageDataExtractor : IMessageDataExtractor
     {
-        private static readonly ILog Log = SdkLoggerFactory.GetLogger(typeof(MessageDataExtractor));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLogger(typeof(MessageDataExtractor));
 
         /// <summary>
         /// A formats describing search targets
@@ -146,7 +146,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var tuple = MessageTypes.FirstOrDefault(t => t.Item1 == messageTypeName);
             if (tuple == null)
             {
-                Log.Warn($"Message of type={messageTypeName} is not supported.");
+                Log.LogWarning($"Message of type={messageTypeName} is not supported.");
                 return MessageType.UNKNOWN;
             }
             return tuple.Item2;

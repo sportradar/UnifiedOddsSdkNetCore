@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Threading;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
@@ -19,9 +19,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     public class RabbitMqChannel : IRabbitMqChannel
     {
         /// <summary>
-        /// The <see cref="ILog"/> used execution logging
+        /// The <see cref="ILogger"/> used execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(RabbitMqChannel));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(RabbitMqChannel));
 
         /// <summary>
         /// A <see cref="IChannelFactory"/> used to construct the <see cref="IModel"/> representing Rabbit MQ channel
@@ -82,17 +82,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             if (Interlocked.CompareExchange(ref _isOpened, 1, 0) != 0)
             {
-                ExecutionLog.Error("Opening an already opened channel is not allowed");
+                ExecutionLog.LogError("Opening an already opened channel is not allowed");
                 throw new InvalidOperationException("The instance is already opened");
             }
 
             _channel = _channelFactory.CreateChannel();
-            ExecutionLog.Info($"Opening the channel with channelNumber: {_channel.ChannelNumber}.");
+            ExecutionLog.LogInformation($"Opening the channel with channelNumber: {_channel.ChannelNumber}.");
             var declareResult = _channel.QueueDeclare();
 
             foreach (var routingKey in routingKeys)
             {
-                ExecutionLog.Info($"Binding queue={declareResult.QueueName} with routingKey={routingKey}");
+                ExecutionLog.LogInformation($"Binding queue={declareResult.QueueName} with routingKey={routingKey}");
                 _channel.QueueBind(declareResult.QueueName, "unifiedfeed", routingKey);
             }
 
@@ -112,11 +112,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             if (Interlocked.CompareExchange(ref _isOpened, 0, 1) != 1)
             {
-                ExecutionLog.Error($"Cannot close the channel on channelNumber: {_channel?.ChannelNumber}, because this channel is already closed");
+                ExecutionLog.LogError($"Cannot close the channel on channelNumber: {_channel?.ChannelNumber}, because this channel is already closed");
                 throw new InvalidOperationException("The instance is already closed");
             }
 
-            ExecutionLog.Info($"Closing the channel with channelNumber: {_channel?.ChannelNumber}.");
+            ExecutionLog.LogInformation($"Closing the channel with channelNumber: {_channel?.ChannelNumber}.");
             if (_consumer != null)
             {
                 _consumer.Received -= OnDataReceived;
@@ -132,12 +132,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private void ConsumerOnShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
-            ExecutionLog.Info($"The consumer: {_consumer.ConsumerTag} is shutdown.");
+            ExecutionLog.LogInformation($"The consumer: {_consumer.ConsumerTag} is shutdown.");
         }
 
         private void ChannelOnModelShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
-            ExecutionLog.Info($"The channel with channelNumber: {_channel.ChannelNumber} is shutdown.");
+            ExecutionLog.LogInformation($"The channel with channelNumber: {_channel.ChannelNumber} is shutdown.");
         }
     }
 }

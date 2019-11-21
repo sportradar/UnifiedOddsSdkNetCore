@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Counter;
 using App.Metrics.Timer;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// The execution log
         /// </summary>
-        protected readonly ILog ExecutionLog;
+        protected readonly ILogger ExecutionLog;
 
         /// <summary>
         /// The cache manager
@@ -188,16 +188,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="expectedType">The expected type.</param>
         /// <param name="receivedType">Type of the received.</param>
         /// <param name="logger">The logger.</param>
-        protected virtual void LogSavingDtoConflict(URN id, Type expectedType, Type receivedType, ILog logger = null)
+        protected virtual void LogSavingDtoConflict(URN id, Type expectedType, Type receivedType, ILogger logger = null)
         {
             var txt = $"Invalid data for item id={id}. Expecting: {expectedType?.Name}, received: {receivedType?.Name}.";
             if (logger == null)
             {
-                ExecutionLog.Warn(txt);
+                ExecutionLog.LogWarning(txt);
             }
             else
             {
-                logger.Warn(txt);
+                logger.LogWarning(txt);
             }
         }
 
@@ -210,11 +210,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             if (useDebug)
             {
-                ExecutionLog.Debug(text);
+                ExecutionLog.LogDebug(text);
             }
             else
             {
-                ExecutionLog.Info(text);
+                ExecutionLog.LogInformation(text);
             }
         }
     }

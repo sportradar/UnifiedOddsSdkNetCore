@@ -11,6 +11,7 @@ using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -134,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             try
             {
                 _fetchedLanguages.Clear();
-                ExecutionLog.Debug($"Loading variant market descriptions for [{string.Join(",", languagesToFetch.Select(l => l.TwoLetterISOLanguageName))}] (timer).");
+                ExecutionLog.LogDebug($"Loading variant market descriptions for [{string.Join(",", languagesToFetch.Select(l => l.TwoLetterISOLanguageName))}] (timer).");
                 await GetVariantDescriptionInternalAsync("0", languagesToFetch).ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -142,21 +143,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 if (ex is CommunicationException || ex is DeserializationException || ex is FormatException)
                 {
                     var languagesString = string.Join(",", languagesToFetch.Select(l => l.TwoLetterISOLanguageName));
-                    ExecutionLog.Warn($"An error occurred while periodically fetching variant market description of languages {languagesString}", ex);
+                    ExecutionLog.LogWarning($"An error occurred while periodically fetching variant market description of languages {languagesString}", ex);
                     return;
                 }
                 var disposedException = ex as ObjectDisposedException;
                 if (disposedException != null)
                 {
-                    ExecutionLog.Warn($"An error occurred while periodically fetching variant market descriptions because the object graph is being disposed. Object causing the exception:{disposedException.ObjectName}");
+                    ExecutionLog.LogWarning($"An error occurred while periodically fetching variant market descriptions because the object graph is being disposed. Object causing the exception:{disposedException.ObjectName}");
                     return;
                 }
                 if (ex is TaskCanceledException)
                 {
-                    ExecutionLog.Warn("An error occurred while periodically fetching variant market descriptions because the object graph is being disposed.");
+                    ExecutionLog.LogWarning("An error occurred while periodically fetching variant market descriptions because the object graph is being disposed.");
                     return;
                 }
-                ExecutionLog.Warn("An error occurred while periodically fetching variant market description.", ex);
+                ExecutionLog.LogWarning("An error occurred while periodically fetching variant market description.", ex);
             }
 
             _hasTimerElapsedOnce = true;
@@ -171,7 +172,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             _semaphoreCacheMerge.Wait();
             var cacheItem = _cache.GetCacheItem(id);
-            //ExecutionLog.Debug($"GetItemFromCache({id}). Exists={cacheItem!=null}.");
+            //ExecutionLog.LogDebug($"GetItemFromCache({id}). Exists={cacheItem!=null}.");
             if (!_isDisposed)
             {
                 _semaphoreCacheMerge.Release();
@@ -227,7 +228,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 var disposedException = ex as ObjectDisposedException;
                 if (disposedException != null)
                 {
-                    ExecutionLog.Warn($"An error occurred while fetching market descriptions because the object graph is being disposed. Object causing the exception: {disposedException.ObjectName}.");
+                    ExecutionLog.LogWarning($"An error occurred while fetching market descriptions because the object graph is being disposed. Object causing the exception: {disposedException.ObjectName}.");
                     return null;
                 }
                 throw;
@@ -313,13 +314,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             try
             {
-                ExecutionLog.Debug($"Loading variant market descriptions for [{string.Join(", ", _prefetchLanguages.Select(l => l.TwoLetterISOLanguageName))}] (user request).");
+                ExecutionLog.LogDebug($"Loading variant market descriptions for [{string.Join(", ", _prefetchLanguages.Select(l => l.TwoLetterISOLanguageName))}] (user request).");
                 _fetchedLanguages.Clear();
                 await GetVariantDescriptionInternalAsync("0", _prefetchLanguages).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                ExecutionLog.Warn($"An error occurred while fetching market descriptions variant list. The exception:{ex.Message}");
+                ExecutionLog.LogWarning($"An error occurred while fetching market descriptions variant list. The exception:{ex.Message}");
                 return false;
             }
             return true;
@@ -502,7 +503,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case DtoType.AvailableSelections:
                     break;
                 default:
-                    ExecutionLog.Warn($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
+                    ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
             }
             return saved;
@@ -544,7 +545,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 {
                     throw;
                 }
-                ExecutionLog.Warn("Mapping validation for VariantDescriptionCacheItem failed.", e);
+                ExecutionLog.LogWarning("Mapping validation for VariantDescriptionCacheItem failed.", e);
             }
             finally
             {

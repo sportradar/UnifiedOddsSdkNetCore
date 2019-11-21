@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -28,9 +28,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected URN SportId;
 
         /// <summary>
-        /// The <see cref="ILog"/> instance used for execution logging
+        /// The <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        protected readonly ILog ExecutionLog;
+        protected readonly ILogger ExecutionLog;
 
         /// <summary>
         /// A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the instance will handle potential exceptions
@@ -57,13 +57,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <param name="id">A <see cref="URN"/> uniquely identifying the sport event</param>
         /// <param name="sportId">A <see cref="URN"/> identifying the sport current instance belong to</param>
-        /// <param name="executionLog">The <see cref="ILog"/> instance used for execution logging</param>
+        /// <param name="executionLog">The <see cref="ILogger"/> instance used for execution logging</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> instance containing <see cref="SportEventCI"/></param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the instance will handle potential exceptions</param>
         public SportEvent(URN id,
                         URN sportId,
-                        ILog executionLog,
+                        ILogger executionLog,
                         ISportEventCache sportEventCache,
                         IEnumerable<CultureInfo> cultures,
                         ExceptionHandlingStrategy exceptionStrategy)
@@ -98,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var sportEventCI = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
 
@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 var sportEventCI = SportEventCache.GetEventCacheItem(Id);
                 if (sportEventCI == null)
                 {
-                    ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                    ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                     return null;
                 }
                 SportId = await sportEventCI.GetSportIdAsync().ConfigureAwait(false);
@@ -143,7 +143,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var sportEventCI = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -161,7 +161,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var sportEventCI = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -217,7 +217,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var sportEventCI = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -234,7 +234,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var sportEventCI = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.THROW

@@ -3,8 +3,9 @@
 */
 
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Dawn;
+using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -17,10 +18,10 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
     internal class EntityProcessor<T> : IEntityProcessor where T : ISportEvent
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for logging
+        /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
         // ReSharper disable once StaticMemberInGenericType
-        private static readonly ILog Log = LogManager.GetLogger("EntityProcessor");
+        private readonly ILogger _log;
 
         /// <summary>
         /// A <see cref="IEntityDispatcher{ISportEvent}"/> used to obtain SDK messages
@@ -43,13 +44,15 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <param name="dispatcher">A <see cref="IEntityDispatcher{ISportEvent}" /> whose dispatched entities will be processed by the current instance</param>
         /// <param name="writer">A <see cref="SportEntityWriter" /> used to output / log the dispatched entities</param>
         /// <param name="marketWriter">A <see cref="MarketWriter"/> used to write market and outcome data</param>
-        public EntityProcessor(IEntityDispatcher<T> dispatcher, SportEntityWriter writer = null, MarketWriter marketWriter = null)
+        /// <param name="log">A <see cref="ILogger" /> instance used for logging</param>
+        public EntityProcessor(IEntityDispatcher<T> dispatcher, SportEntityWriter writer = null, MarketWriter marketWriter = null, ILogger log = null)
         {
             Guard.Argument(dispatcher).NotNull();
 
             _dispatcher = dispatcher;
             _sportEntityWriter = writer;
             _marketWriter = marketWriter;
+            _log = log ?? new NullLogger<EntityProcessor<T>>();
         }
 
         /// <summary>
@@ -60,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         protected virtual void OnBetStopReceived(object sender, BetStopEventArgs<T> e)
         {
             var betstop = e.GetBetStop();
-            Log.Info($"BetStop received. EventId:{betstop.Event.Id} Producer:{betstop.Producer}, Tag:{betstop.Groups}, RequestId:{betstop.RequestId}");
+            _log.LogInformation($"BetStop received. EventId:{betstop.Event.Id} Producer:{betstop.Producer}, Tag:{betstop.Groups}, RequestId:{betstop.RequestId}");
             _sportEntityWriter?.WriteData(betstop.Event);
         }
 
@@ -74,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             Guard.Argument(e).NotNull();
 
             var oddsChange = e.GetOddsChange();
-            Log.Info($"OddsChange received. EventId:{oddsChange.Event.Id} Producer:{oddsChange.Producer} RequestId:{oddsChange.RequestId}");
+            _log.LogInformation($"OddsChange received. EventId:{oddsChange.Event.Id} Producer:{oddsChange.Producer} RequestId:{oddsChange.RequestId}");
             _sportEntityWriter?.WriteData(oddsChange.Event);
             _marketWriter?.WriteMarketNamesForEvent(oddsChange.Markets);
         }
@@ -87,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private void OnBetSettlementReceived(object sender, BetSettlementEventArgs<T> e)
         {
             var betSettlement = e.GetBetSettlement();
-            Log.Info($"BetSettlement received. EventId:{betSettlement.Event.Id} Producer:{betSettlement.Producer}, RequestId:{betSettlement.RequestId}, Market count:{betSettlement.Markets.Count()}");
+            _log.LogInformation($"BetSettlement received. EventId:{betSettlement.Event.Id} Producer:{betSettlement.Producer}, RequestId:{betSettlement.RequestId}, Market count:{betSettlement.Markets.Count()}");
             _sportEntityWriter?.WriteData(betSettlement.Event);
             _marketWriter?.WriteMarketNamesForEvent(betSettlement.Markets);
         }
@@ -100,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private void OnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<T> e)
         {
             var settlementRollback = e.GetBetSettlementRollback();
-            Log.Info($"RollbackBetSettlement received. Producer:{settlementRollback.Producer}, RequestId:{settlementRollback.RequestId}, MarketCount:{settlementRollback.Markets.Count()}");
+            _log.LogInformation($"RollbackBetSettlement received. Producer:{settlementRollback.Producer}, RequestId:{settlementRollback.RequestId}, MarketCount:{settlementRollback.Markets.Count()}");
             _sportEntityWriter?.WriteData(settlementRollback.Event);
             _marketWriter?.WriteMarketNamesForEvent(settlementRollback.Markets);
         }
@@ -113,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private void OnBetCancel(object sender, BetCancelEventArgs<T> e)
         {
             var betCancel = e.GetBetCancel();
-            Log.Info($"BetCancel received. Producer:{betCancel.Producer}, RequestId:{betCancel.RequestId}, MarketCount:{betCancel.Markets.Count()}");
+            _log.LogInformation($"BetCancel received. Producer:{betCancel.Producer}, RequestId:{betCancel.RequestId}, MarketCount:{betCancel.Markets.Count()}");
             _sportEntityWriter?.WriteData(betCancel.Event);
             _marketWriter?.WriteMarketNamesForEvent(betCancel.Markets);
         }
@@ -126,7 +129,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private void OnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<T> e)
         {
             var cancelRollback = e.GetBetCancelRollback();
-            Log.Info($"RollbackBetCancel received. Producer:{cancelRollback.Producer}, RequestId:{cancelRollback.RequestId}, MarketCount:{cancelRollback.Markets.Count()}");
+            _log.LogInformation($"RollbackBetCancel received. Producer:{cancelRollback.Producer}, RequestId:{cancelRollback.RequestId}, MarketCount:{cancelRollback.Markets.Count()}");
             _sportEntityWriter?.WriteData(cancelRollback.Event);
             _marketWriter?.WriteMarketNamesForEvent(cancelRollback.Markets);
         }
@@ -139,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private void OnFixtureChange(object sender, FixtureChangeEventArgs<T> e)
         {
             var fixtureChange = e.GetFixtureChange();
-            Log.Info($"FixtureChange received. Producer:{fixtureChange.Producer}, RequestId:{fixtureChange.RequestId}, EventId:{fixtureChange.Event.Id}");
+            _log.LogInformation($"FixtureChange received. Producer:{fixtureChange.Producer}, RequestId:{fixtureChange.RequestId}, EventId:{fixtureChange.Event.Id}");
             _sportEntityWriter?.WriteData(fixtureChange.Event);
         }
 
@@ -148,7 +151,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// </summary>
         public void Open()
         {
-            Log.Info("Attaching to session events");
+            _log.LogInformation("Attaching to session events");
             _dispatcher.OnOddsChange += OnOddsChangeReceived;
             _dispatcher.OnBetCancel += OnBetCancel;
             _dispatcher.OnRollbackBetCancel += OnRollbackBetCancel;
@@ -163,7 +166,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// </summary>
         public void Close()
         {
-            Log.Info("Detaching from session events");
+            _log.LogInformation("Detaching from session events");
             _dispatcher.OnOddsChange -= OnOddsChangeReceived;
             _dispatcher.OnBetCancel -= OnBetCancel;
             _dispatcher.OnRollbackBetCancel -= OnRollbackBetCancel;

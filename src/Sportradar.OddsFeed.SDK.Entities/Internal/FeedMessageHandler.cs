@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// The execution log
         /// </summary>
-        //private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedMessageHandler));
+        //private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedMessageHandler));
 
         private readonly MemoryCache _fixtureCache;
 
@@ -47,12 +47,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 var fixtureCacheId = GenerateFixtureChangeId(fixtureChange);
                 if (_fixtureCache.Contains(fixtureCacheId))
                 {
-                    //ExecutionLog.Debug($"Processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt} stopped. Already processed.");
+                    //ExecutionLog.LogDebug($"Processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt} stopped. Already processed.");
                     return true;
                 }
 
                 _fixtureCache.Add(fixtureCacheId, fixtureCacheId, _cacheItemPolicy);
-                //ExecutionLog.Debug($"Processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt}.");
+                //ExecutionLog.LogDebug($"Processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt}.");
                 return false;
             }
         }

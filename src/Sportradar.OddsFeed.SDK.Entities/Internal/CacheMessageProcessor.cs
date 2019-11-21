@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// The execution log
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CacheMessageProcessor));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CacheMessageProcessor));
 
         /// <summary>
         /// A <see cref="ISingleTypeMapperFactory{removeSportEventStatus, SportEventStatusDTO}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDTO}"/> instances
@@ -126,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     // fixtureChange was already dispatched (via another session)
                     return;
                 }
-                //ExecutionLog.Debug($"{ProcessorId}: processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt}.");
+                //ExecutionLog.LogDebug($"{ProcessorId}: processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt}.");
             }
 
             RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(message, interest, rawMessage));
@@ -148,7 +148,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             catch (Exception e)
             {
-                ExecutionLog.Debug("Error fetching tournament schedule", e);
+                ExecutionLog.LogDebug("Error fetching tournament schedule", e);
             }
         }
 

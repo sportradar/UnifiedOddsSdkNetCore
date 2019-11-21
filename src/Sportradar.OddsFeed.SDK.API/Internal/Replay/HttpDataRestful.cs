@@ -6,7 +6,7 @@ using Dawn;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
     [Log(LoggerType.RestTraffic)]
     public class HttpDataRestful : HttpDataFetcher, IDataRestful
     {
-        private static readonly ILog Log = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(HttpDataRestful));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(HttpDataRestful));
 
         /// <summary>
         /// A <see cref="HttpClient"/> used to invoke HTTP requests
@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             var responseMessage = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             try
             {
-                Log.Info($"PutDataAsync url: {uri.AbsoluteUri}");
+                Log.LogInformation($"PutDataAsync url: {uri.AbsoluteUri}");
                 responseMessage = await _client.PutAsync(uri, content ?? new StringContent(string.Empty)).ConfigureAwait(false);
                 RecordSuccess();
                 return responseMessage;
@@ -94,7 +94,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             var responseMessage = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             try
             {
-                Log.Info($"DeleteDataAsync url: {uri.AbsoluteUri}");
+                Log.LogInformation($"DeleteDataAsync url: {uri.AbsoluteUri}");
                 responseMessage = await _client.DeleteAsync(uri).ConfigureAwait(false);
                 RecordSuccess();
                 return responseMessage;

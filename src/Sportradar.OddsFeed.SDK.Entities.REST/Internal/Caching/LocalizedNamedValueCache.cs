@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Counter;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
@@ -27,14 +27,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     internal class LocalizedNamedValueCache : ILocalizedNamedValueCache, IDisposable
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for logging
+        /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
-        private static readonly ILog CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(LocalizedNamedValueCache));
+        private static readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(LocalizedNamedValueCache));
 
         /// <summary>
-        /// The <see cref="ILog"/> instance used for execution logging.
+        /// The <see cref="ILogger"/> instance used for execution logging.
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(LocalizedNamedValueCache));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(LocalizedNamedValueCache));
 
         /// <summary>
         /// A <see cref="IDataProvider{T}"/> used to get match status descriptions
@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 _loadedCultures.Add(culture);
             }
-            CacheLog.Debug($"LocalizedNamedValueCache: {record.Items.Count()} items retrieved for locale '{culture.TwoLetterISOLanguageName}'.");
+            CacheLog.LogDebug($"LocalizedNamedValueCache: {record.Items.Count()} items retrieved for locale '{culture.TwoLetterISOLanguageName}'.");
         }
 
 
@@ -142,11 +142,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             catch (FeedSdkException ex)
             {
-                ExecutionLog.Warn($"An exception occurred while attempting to retrieve match statuses. Exception was: {ex}");
+                ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve match statuses. Exception was: {ex}");
             }
             catch (ObjectDisposedException ex)
             {
-                ExecutionLog.Warn($"GetMarketDescriptionsAsync failed because the instance {ex.ObjectName} is being disposed.");
+                ExecutionLog.LogWarning($"GetMarketDescriptionsAsync failed because the instance {ex.ObjectName} is being disposed.");
             }
         }
 
@@ -231,7 +231,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             catch (ObjectDisposedException)
             {
-                ExecutionLog.Warn($"Retrieval of item with id={id} failed because the cache is being disposed");
+                ExecutionLog.LogWarning($"Retrieval of item with id={id} failed because the cache is being disposed");
             }
             finally
             {

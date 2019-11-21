@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -27,9 +27,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     internal class Lottery : SportEvent, ILottery
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLogPrivate = SdkLoggerFactory.GetLogger(typeof(Lottery));
+        private static readonly ILogger ExecutionLogPrivate = SdkLoggerFactory.GetLogger(typeof(Lottery));
 
         /// <summary>
         /// A <see cref="ISportDataCache"/> instance used to retrieve basic information about the tournament(sport, category, names)
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCI = (LotteryCI) SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No lottery cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
                 return null;
             }
             var sportId = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -76,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             if (sportId == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportId for lottery cache item with id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportId for lottery cache item with id={Id}.");
                 return null;
             }
             var sportData = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No lottery cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
                 return null;
             }
 
@@ -106,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 : await new Func<Task<URN>>(lotteryCI.GetCategoryIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("CategoryId")).ConfigureAwait(false);
             if (categoryId == null)
             {
-                ExecutionLog.Debug($"Missing data. No categoryId for lottery cache item with id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No categoryId for lottery cache item with id={Id}.");
                 return null;
             }
             var categoryData = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -136,7 +136,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No lottery cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -157,7 +157,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No lottery cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -178,7 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No lottery cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW

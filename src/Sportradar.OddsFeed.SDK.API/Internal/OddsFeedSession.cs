@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
@@ -25,9 +25,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     internal class OddsFeedSession : EntityDispatcher<ISportEvent>, IOddsFeedSession
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog Log = SdkLoggerFactory.GetLoggerForExecution(typeof(OddsFeedSession));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForExecution(typeof(OddsFeedSession));
 
         /// <summary>
         /// A <see cref="IMessageReceiver"/> used to provide feed messages
@@ -130,23 +130,23 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             switch (validationResult)
             {
                 case ValidationResult.FAILURE:
-                    Log.Warn($"{WriteMessageInterest()}Validation of message=[{message}] failed. Raising OnUnparsableMessageReceived event");
+                    Log.LogWarning($"{WriteMessageInterest()}Validation of message=[{message}] failed. Raising OnUnparsableMessageReceived event");
                     var messageType = _messageDataExtractor.GetMessageTypeFromMessage(message);
 
                     var eventArgs = new UnparsableMessageEventArgs(messageType, message.ProducerId.ToString(), message.EventId, e.RawMessage);
                     Dispatch(OnUnparsableMessageReceived, eventArgs, "OnUnparsableMessageReceived");
                     return;
                 case ValidationResult.PROBLEMS_DETECTED:
-                    Log.Warn($"{WriteMessageInterest()}Problems were detected while validating message=[{message}], but the message is still eligible for further processing.");
+                    Log.LogWarning($"{WriteMessageInterest()}Problems were detected while validating message=[{message}], but the message is still eligible for further processing.");
                     _messageProcessor.ProcessMessage(message, MessageInterest, e.RawMessage);
                     return;
                 case ValidationResult.SUCCESS:
                     //Metric.Context("FEED").Meter($"FeedSession->MessageReceived ({MessageInterest.ProducerId})", Unit.Items).Mark();
-                    Log.Debug($"{WriteMessageInterest()}Message=[{message}] successfully validated. Continuing with message processing.");
+                    Log.LogDebug($"{WriteMessageInterest()}Message=[{message}] successfully validated. Continuing with message processing.");
                     _messageProcessor.ProcessMessage(message, MessageInterest, e.RawMessage);
                     return;
                 default:
-                    Log.Error($"{WriteMessageInterest()}ValidationResult {Enum.GetName(typeof(ValidationResult), validationResult)} is not supported. Aborting processing of message=[{message}].");
+                    Log.LogError($"{WriteMessageInterest()}ValidationResult {Enum.GetName(typeof(ValidationResult), validationResult)} is not supported. Aborting processing of message=[{message}].");
                     return;
             }
         }
@@ -160,7 +160,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             var rawData = eventArgs.RawData as byte[] ?? eventArgs.RawData.ToArray();
             var basicMessageData = _messageDataExtractor.GetBasicMessageData(rawData);
-            Log.Info($"{WriteMessageInterest()}Extracted the following data from unparsed message data: [{basicMessageData}], raising OnUnparsableMessageReceived event");
+            Log.LogInformation($"{WriteMessageInterest()}Extracted the following data from unparsed message data: [{basicMessageData}], raising OnUnparsableMessageReceived event");
             var dispatchmentEventArgs = new UnparsableMessageEventArgs(basicMessageData.MessageType, basicMessageData.ProducerId, basicMessageData.EventId, rawData);
             Dispatch(OnUnparsableMessageReceived, dispatchmentEventArgs, "OnUnparsableMessageReceived");
         }

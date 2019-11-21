@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Competition"/> class
         /// </summary>
-        /// <param name="executionLog">A <see cref="ILog"/> instance used for execution logging</param>
+        /// <param name="executionLog">A <see cref="ILogger"/> instance used for execution logging</param>
         /// <param name="id">A <see cref="URN"/> uniquely identifying the sport event associated with the current instance</param>
         /// <param name="sportId">A <see cref="URN"/> uniquely identifying the sport associated with the current instance</param>
         /// <param name="sportEntityFactory">An instance of a <see cref="ISportEntityFactory"/> used to create <see cref="ISportEvent"/> instances</param>
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the initialized instance will handle potential exceptions</param>
         /// <param name="matchStatusesCache">A <see cref="ILocalizedNamedValueCache"/> cache for fetching match statuses</param>
-        internal Competition(ILog executionLog,
+        internal Competition(ILogger executionLog,
                              URN id,
                              URN sportId,
                              ISportEntityFactory sportEntityFactory,
@@ -142,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
             if (competitionCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -160,7 +160,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
             if (competitionCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -182,7 +182,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
             if (competitionCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -203,7 +203,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
             if (competitionCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportEvent cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW

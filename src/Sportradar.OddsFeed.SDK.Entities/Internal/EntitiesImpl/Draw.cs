@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -27,9 +27,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     internal class Draw : SportEvent, IDrawV1
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLogPrivate = SdkLoggerFactory.GetLogger(typeof(Draw));
+        private static readonly ILogger ExecutionLogPrivate = SdkLoggerFactory.GetLogger(typeof(Draw));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Draw"/> class
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var drawCI = (DrawCI)SportEventCache.GetEventCacheItem(Id);
             if (drawCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No draw cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No draw cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var drawCI = (DrawCI)SportEventCache.GetEventCacheItem(Id);
             if (drawCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No draw cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No draw cache item for id={Id}.");
                 return DrawStatus.Unknown;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var drawCI = (DrawCI) SportEventCache.GetEventCacheItem(Id);
             if (drawCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No draw cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No draw cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var drawCI = (DrawCI)SportEventCache.GetEventCacheItem(Id);
             if (drawCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No draw cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No draw cache item for id={Id}.");
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW

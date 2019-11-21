@@ -10,7 +10,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using App.Metrics.Health;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -33,9 +33,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     internal class SportEventCache : SdkCache, ISportEventCache
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for logging
+        /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
-        private static readonly ILog CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(SportEventCache));
+        private static readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(SportEventCache));
 
         /// <summary>
         /// The list of dates already automatically loaded by the timer
@@ -163,27 +163,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    ExecutionLog.Warn($"Periodic events schedule retrieval failed because the instance {ex.ObjectName} is being disposed.");
+                    ExecutionLog.LogWarning($"Periodic events schedule retrieval failed because the instance {ex.ObjectName} is being disposed.");
                 }
                 catch (TaskCanceledException)
                 {
-                    ExecutionLog.Warn("Periodic events schedule retrieval failed because the instance is being disposed.");
+                    ExecutionLog.LogWarning("Periodic events schedule retrieval failed because the instance is being disposed.");
                 }
                 catch (FeedSdkException ex)
                 {
-                    ExecutionLog.Warn($"An exception occurred while attempting to retrieve schedule. Exception was: {ex}");
+                    ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception was: {ex}");
                 }
                 catch (AggregateException ex)
                 {
                     var baseException = ex.GetBaseException();
                     if (baseException.GetType() == typeof(ObjectDisposedException))
                     {
-                        ExecutionLog.Warn($"Error happened during fetching schedule, because the instance {((ObjectDisposedException) baseException).ObjectName} is being disposed.");
+                        ExecutionLog.LogWarning($"Error happened during fetching schedule, because the instance {((ObjectDisposedException) baseException).ObjectName} is being disposed.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.Warn($"An exception occurred while attempting to retrieve schedule. Exception: {ex}");
+                    ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception: {ex}");
                 }
             }
         }
@@ -202,7 +202,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             var fetchedItem = await _dataRouterManager.GetSportEventsForDateAsync(date, culture).ConfigureAwait(false);
 
-            CacheLog.Info($"{fetchedItem.Count()} sport events retrieved for {date.ToShortDateString()} and locale '{culture.TwoLetterISOLanguageName}'.");
+            CacheLog.LogInformation($"{fetchedItem.Count()} sport events retrieved for {date.ToShortDateString()} and locale '{culture.TwoLetterISOLanguageName}'.");
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.Error($"Error getting cache item for id={id}", ex);
+                    ExecutionLog.LogError($"Error getting cache item for id={id}", ex);
                 }
             }
             return null;
@@ -330,7 +330,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 error = error.Substring(1);
             }
-            ExecutionLog.Debug($"Found {tours.Count} tournaments. Errors: {error}");
+            ExecutionLog.LogDebug($"Found {tours.Count} tournaments. Errors: {error}");
 
             return Task.FromResult<IEnumerable<TournamentInfoCI>>(tours);
         }
@@ -372,7 +372,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                 }
                 var endCount = Cache.Count();
-                ExecutionLog.Info($"Deleted {startCount - endCount} items from cache.");
+                ExecutionLog.LogInformation($"Deleted {startCount - endCount} items from cache.");
                 return startCount - endCount;
             }
         }
@@ -386,7 +386,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             if (arguments.RemovedReason != CacheEntryRemovedReason.CacheSpecificEviction && arguments.RemovedReason != CacheEntryRemovedReason.Removed)
             {
-                CacheLog.Debug($"SportEventCI {arguments.CacheItem.Key} removed from cache. Reason={arguments.RemovedReason}.");
+                CacheLog.LogDebug($"SportEventCI {arguments.CacheItem.Key} removed from cache. Reason={arguments.RemovedReason}.");
             }
 
             //Metric.Context("CACHE").Meter("SportEventCache->CacheItemRemovedCallback", Unit.Calls).Mark(arguments.RemovedReason.ToString());
@@ -678,7 +678,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                     break;
                 default:
-                    ExecutionLog.Warn($"Trying to add unchecked dto type:{dtoType} for id: {id}.");
+                    ExecutionLog.LogWarning($"Trying to add unchecked dto type:{dtoType} for id: {id}.");
                     break;
             }
             return saved;
@@ -764,7 +764,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             var keys = Cache.Select(w => w.Key).ToList();
             var details = $" [Match: {keys.Count(c => c.Contains("match"))}, Stage: {keys.Count(c => c.Contains("race") || c.Contains("stage"))}, Season: {keys.Count(c => c.Contains("season"))}, Tournament: {keys.Count(c => c.Contains("tournament"))}, Draw: {keys.Count(c => c.Contains("draw"))}, Lottery: {keys.Count(c => c.Contains("lottery"))}]";
             //var otherKeys = Cache.Where(w => w.Key.Contains("tournament")).Select(s=>s.Key);
-            //CacheLog.Debug($"Tournament Ids: {string.Join(",", otherKeys)}");
+            //CacheLog.LogDebug($"Tournament Ids: {string.Join(",", otherKeys)}");
             return Cache.Any() ? HealthCheckResult.Healthy($"Cache has {Cache.Count()} items{details}.") : HealthCheckResult.Unhealthy("Cache is empty.");
         }
 
@@ -927,13 +927,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                         }
                         catch (Exception)
                         {
-                            ExecutionLog.Debug($"Merging failed for {id} and item type: {item.GetType().Name} and dto type: {dtoType} for requester: {requester.Id}.");
+                            ExecutionLog.LogDebug($"Merging failed for {id} and item type: {item.GetType().Name} and dto type: {dtoType} for requester: {requester.Id}.");
                         }
                     }
 
                     if (cacheItem != null)
                     {
-                        //ExecutionLog.Debug($"Saving OLD data for {id} and item type: {item.GetType().Name} and dto type: {dtoType}.");
+                        //ExecutionLog.LogDebug($"Saving OLD data for {id} and item type: {item.GetType().Name} and dto type: {dtoType}.");
                         var merged = false;
                         //var cacheItem = _sportEventCacheItemFactory.Get(Cache.Get(id.ToString()));
                         var fixture = item as FixtureDTO;
@@ -1030,7 +1030,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                     else
                     {
-                        //ExecutionLog.Debug($"Saving NEW data for {id} and item type: {item.GetType().Name} and dto type: {dtoType}.");
+                        //ExecutionLog.LogDebug($"Saving NEW data for {id} and item type: {item.GetType().Name} and dto type: {dtoType}.");
                         var ci = _sportEventCacheItemFactory.Build(item, culture);
                         if (dtoType == DtoType.SportEventSummary || dtoType == DtoType.LotteryDraw || dtoType == DtoType.MatchSummary)
                         {
@@ -1061,7 +1061,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.Error($"Error adding sport event for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError($"Error adding sport event for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
                 }
             }
 
@@ -1071,11 +1071,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 if (SpecialTournaments.Contains(tournamentInfoDTO.Id))
                 {
-                    //ExecutionLog.Debug($"Updating tournament id={tournamentInfoDTO.Id}, introduced by event id={id} and lang=[{culture.TwoLetterISOLanguageName}].");
+                    //ExecutionLog.LogDebug($"Updating tournament id={tournamentInfoDTO.Id}, introduced by event id={id} and lang=[{culture.TwoLetterISOLanguageName}].");
                 }
                 else
                 {
-                    //ExecutionLog.Debug($"Saving tournament id={tournamentInfoDTO.Id}, introduced by event id={id} and lang=[{culture.TwoLetterISOLanguageName}].");
+                    //ExecutionLog.LogDebug($"Saving tournament id={tournamentInfoDTO.Id}, introduced by event id={id} and lang=[{culture.TwoLetterISOLanguageName}].");
                     SpecialTournaments.Add(tournamentInfoDTO.Id);
                 }
                 AddSportEvent(tournamentInfoDTO.Id, tournamentInfoDTO, culture, null, dtoType);
@@ -1094,7 +1094,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.Error($"Error adding timeline for id={item.SportEvent.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError($"Error adding timeline for id={item.SportEvent.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
                 }
             }
         }

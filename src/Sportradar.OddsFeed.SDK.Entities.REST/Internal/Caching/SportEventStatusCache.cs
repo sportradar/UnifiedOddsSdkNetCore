@@ -13,6 +13,7 @@ using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -183,14 +184,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     {
                         source = $" from {source}";
                     }
-                    ExecutionLog.Debug($"Received SES for {eventId}{source} with EventStatus:{sportEventStatus.Status}");
+                    ExecutionLog.LogDebug($"Received SES for {eventId}{source} with EventStatus:{sportEventStatus.Status}");
                     var cacheItem = _sportEventStatusCache.AddOrGetExisting(eventId.ToString(),
                                                                             sportEventStatus,
                                                                             new CacheItemPolicy
                                                                             {
                                                                                 AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(_cacheItemExpireTime.TotalSeconds)
-                                                                            })
-                                        as SportEventStatusCI;
+                                                                            }) as SportEventStatusCI;
                     if (cacheItem != null)
                     {
                         cacheItem.SetFeedStatus(sportEventStatus.FeedStatusDTO);
@@ -199,7 +199,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 else
                 {
-                    ExecutionLog.Debug($"Received SES for {eventId} from {source} with EventStatus:{sportEventStatus.Status} (ignored)");
+                    ExecutionLog.LogDebug($"Received SES for {eventId} from {source} with EventStatus:{sportEventStatus.Status} (ignored)");
                 }
             }
         }
@@ -446,10 +446,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 case DtoType.AvailableSelections:
                     break;
                 default:
-                    ExecutionLog.Warn($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
+                    ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
             }
-            //CacheLog.Debug($"Saving {id} COMPLETED. Saved={saved}.");
+            //CacheLog.LogDebug($"Saving {id} COMPLETED. Saved={saved}.");
             return saved;
         }
 

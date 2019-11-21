@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Dawn;
 using System.Linq;
 using System.Threading;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
@@ -24,9 +24,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     internal class FeedRecoveryManager : IFeedRecoveryManager
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for logging
+        /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
-        private readonly ILog _executionLog = SdkLoggerFactory.GetLogger(typeof(FeedRecoveryManager));
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLogger(typeof(FeedRecoveryManager));
 
         /// <summary>
         /// Delay in seconds specifying how much after the start-up the trackers are checked
@@ -155,7 +155,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (ObjectDisposedException ex)
             {
-                _executionLog.Info($"Error happened during invoking timer, because the instance {ex.ObjectName} is being disposed.");
+                _executionLog.LogInformation($"Error happened during invoking timer, because the instance {ex.ObjectName} is being disposed.");
             }
         }
 

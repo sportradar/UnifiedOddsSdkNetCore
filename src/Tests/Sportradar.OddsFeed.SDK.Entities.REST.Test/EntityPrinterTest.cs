@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.Common;
 using MF = Sportradar.OddsFeed.SDK.Test.Shared.MessageFactorySdk;
@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
     [TestClass]
     public class EntityPrinterTest
     {
-        private ILog _log;
+        private ILogger _log;
 
         [TestInitialize]
         public void Init()
@@ -178,13 +178,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         private void PrintEntity(IEntityPrinter item)
         {
             var type = item.GetType();
-            _log.Info($"Start printing info for {type.Name} ...");
-            _log.Info("0 => " + item.ToString());
-            _log.Info("I => " + item.ToString("i"));
-            _log.Info("C => " + item.ToString("c"));
-            _log.Info("F => " + item.ToString("f"));
-            //_log.Info("J => " + item.ToString("j"));
-            _log.Info($"Printing for {type.Name} finished.");
+            _log.LogInformation($"Start printing info for {type.Name} ...");
+            _log.LogInformation("0 => " + item.ToString());
+            _log.LogInformation("I => " + item.ToString("i"));
+            _log.LogInformation("C => " + item.ToString("c"));
+            _log.LogInformation("F => " + item.ToString("f"));
+            //_log.LogInformation("J => " + item.ToString("j"));
+            _log.LogInformation($"Printing for {type.Name} finished.");
         }
     }
 }

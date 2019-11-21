@@ -2,7 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Common.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.DemoProject.Example;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -15,16 +16,20 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
     internal class OddsFeedExample
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static ILog _log;
+        private static ILogger _log;
 
         /// <summary>
         /// Main entry point
         /// </summary>
         private static void Main()
         {
-            _log = LogManager.GetLogger(typeof(OddsFeedExample));
+            var services = new ServiceCollection();
+            services.AddLogging(configure => configure.AddLog4Net("log4net.config"));
+            var serviceProvider = services.BuildServiceProvider();
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            _log = loggerFactory.CreateLogger(typeof(OddsFeedExample));
 
             var key = 'y';
             while (key.Equals('y'))

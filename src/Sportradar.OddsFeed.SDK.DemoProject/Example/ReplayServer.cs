@@ -5,8 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Dawn;
+using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -21,53 +22,53 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     /// </summary>
     public class ReplayServer
     {
-        private readonly ILog _log;
+        private readonly ILogger _log;
 
-        public ReplayServer(ILog log)
+        public ReplayServer(ILogger log)
         {
-            _log = log;
+            _log = log ?? new NullLogger<ReplayServer>();
         }
 
         public void Run(MessageInterest messageInterest)
         {
-            _log.Info("Running the OddsFeed SDK Replay Server example");
+            _log.LogInformation("Running the OddsFeed SDK Replay Server example");
 
-            _log.Info("Retrieving configuration from application configuration file");
+            _log.LogInformation("Retrieving configuration from application configuration file");
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectReplay().LoadFromConfigFile().Build();
             //you can also create the IOddsFeedConfiguration instance by providing required values
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 
-            _log.Info("Creating Feed instance");
+            _log.LogInformation("Creating Feed instance");
             var replayFeed = new ReplayFeed(configuration);
 
-            _log.Info("Creating IOddsFeedSession");
+            _log.LogInformation("Creating IOddsFeedSession");
             var session = replayFeed.CreateBuilder()
                 .SetMessageInterest(messageInterest)
                 .Build();
 
-            _log.Info("Attaching to feed events");
+            _log.LogInformation("Attaching to feed events");
             AttachToFeedEvents(replayFeed);
             AttachToSessionEvents(session);
 
-            _log.Info("Opening the feed instance");
+            _log.LogInformation("Opening the feed instance");
             replayFeed.Open();
 
             ReplayServerInteraction(replayFeed);
 
-            _log.Info("Example successfully started. Hit <enter> to quit");
+            _log.LogInformation("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
             Console.ReadLine();
 
-            _log.Info("Stopping replay");
+            _log.LogInformation("Stopping replay");
             replayFeed.ReplayManager.StopReplay();
 
-            _log.Info("Closing / disposing the feed");
+            _log.LogInformation("Closing / disposing the feed");
             replayFeed.Close();
 
             DetachFromFeedEvents(replayFeed);
             DetachFromSessionEvents(session);
 
-            _log.Info("Stopped");
+            _log.LogInformation("Stopped");
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(oddsFeed).NotNull();
 
-            _log.Info("Attaching to feed events");
+            _log.LogInformation("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
             oddsFeed.ProducerDown += OnProducerDown;
             oddsFeed.Disconnected += OnDisconnected;
@@ -93,7 +94,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(oddsFeed).NotNull();
 
-            _log.Info("Detaching from feed events");
+            _log.LogInformation("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
             oddsFeed.ProducerDown -= OnProducerDown;
             oddsFeed.Disconnected -= OnDisconnected;
@@ -108,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(session).NotNull();
 
-            _log.Info("Attaching to session events");
+            _log.LogInformation("Attaching to session events");
             session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
             session.OnBetCancel += SessionOnBetCancel;
             session.OnBetSettlement += SessionOnBetSettlement;
@@ -127,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(session).NotNull();
 
-            _log.Info("Detaching from session events");
+            _log.LogInformation("Detaching from session events");
             session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;
             session.OnBetCancel -= SessionOnBetCancel;
             session.OnBetSettlement -= SessionOnBetSettlement;
@@ -182,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.Info($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+            _log.LogInformation($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
         }
 
         /// <summary>
@@ -192,7 +193,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnDisconnected(object sender, EventArgs e)
         {
-            _log.Warn("Connection to the feed lost");
+            _log.LogWarning("Connection to the feed lost");
         }
 
         /// <summary>
@@ -202,7 +203,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnClosed(object sender, FeedCloseEventArgs e)
         {
-            _log.Warn($"The feed is closed with the reason: {e.GetReason()}");
+            _log.LogWarning($"The feed is closed with the reason: {e.GetReason()}");
         }
 
         /// <summary>
@@ -212,7 +213,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnProducerDown(object sender, ProducerStatusChangeEventArgs e)
         {
-            _log.Warn($"Producer {e.GetProducerStatusChange().Producer} is down");
+            _log.LogWarning($"Producer {e.GetProducerStatusChange().Producer} is down");
         }
 
         /// <summary>
@@ -222,12 +223,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
         {
-            _log.Info($"Producer {e.GetProducerStatusChange().Producer} is up");
+            _log.LogInformation($"Producer {e.GetProducerStatusChange().Producer} is up");
         }
 
         private void WriteSportEntity(string msgType, ISportEvent message, long timestamp)
         {
-            _log.Debug($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}. Timestamp={timestamp}.");
+            _log.LogDebug($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}. Timestamp={timestamp}.");
         }
 
         private void ReplayServerInteraction(ReplayFeed replayFeed)
@@ -236,7 +237,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             var replayStatus = replayFeed.ReplayManager.GetStatusOfReplay();
             WriteReplayStatus(replayStatus);
             var queueEvents = replayFeed.ReplayManager.GetEventsInQueue();
-            _log.Info($"Currently {queueEvents.Count()} items in queue.");
+            _log.LogInformation($"Currently {queueEvents.Count()} items in queue.");
 
             // there are two options:
             // play specific scenario or add specific matches to be replayed
@@ -256,7 +257,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             replayFeed.ReplayManager.StartReplayScenario(1, 10, 1000);
             Thread.Sleep(1000);
             var queueEvents = replayFeed.ReplayManager.GetEventsInQueue();
-            _log.Info($"Currently {queueEvents.Count()} items in queue.");
+            _log.LogInformation($"Currently {queueEvents.Count()} items in queue.");
         }
 
         private void PlayMatches(ReplayFeed replayFeed)
@@ -274,7 +275,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             }
 
             var queueEvents = replayFeed.ReplayManager.GetEventsInQueue();
-            _log.Info($"Currently {queueEvents.Count()} items in queue.");
+            _log.LogInformation($"Currently {queueEvents.Count()} items in queue.");
 
             WriteReplayResponse(replayFeed.ReplayManager.StartReplay(10, 1000));
         }
@@ -328,15 +329,15 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void WriteReplayStatus(IReplayStatus status)
         {
-            _log.Info($"Status of replay: {status.PlayerStatus}. Last message for event: {status.LastMessageFromEvent}.");
+            _log.LogInformation($"Status of replay: {status.PlayerStatus}. Last message for event: {status.LastMessageFromEvent}.");
         }
 
         private void WriteReplayResponse(IReplayResponse response)
         {
-            _log.Info($"Response of replay: {response.Success}. Message: {response.Message}");
+            _log.LogInformation($"Response of replay: {response.Success}. Message: {response.Message}");
             if (!string.IsNullOrEmpty(response.ErrorMessage))
             {
-                _log.Info($"\t{response.ErrorMessage}");
+                _log.LogInformation($"\t{response.ErrorMessage}");
             }
         }
     }

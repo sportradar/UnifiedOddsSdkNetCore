@@ -8,7 +8,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -23,9 +23,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     internal class CashOutProbabilitiesProvider : ICashOutProbabilitiesProvider
     {
         /// <summary>
-        /// The <see cref="ILog"/> used for execution logging
+        /// The <see cref="ILogger"/> used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(CashOutProbabilitiesProvider));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(CashOutProbabilitiesProvider));
 
         /// <summary>
         /// The <see cref="IDataProvider{cashout}"/> used to fetch probabilities

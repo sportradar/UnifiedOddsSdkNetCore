@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
@@ -19,14 +19,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     internal class NamedValueCache : INamedValueCache
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for logging
+        /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
-        private static readonly ILog CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(NamedValueCache));
+        private static readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(NamedValueCache));
 
         /// <summary>
-        /// The <see cref="ILog"/> instance used for execution logging.
+        /// The <see cref="ILogger"/> instance used for execution logging.
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(NamedValueCache));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(NamedValueCache));
 
         /// <summary>
         /// A <see cref="IDataProvider{T}"/> used to get the named values
@@ -81,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             catch (AggregateException ex)
             {
-                ExecutionLog.Error("An exception occurred while fetching named values", ex.InnerException);
+                ExecutionLog.LogError("An exception occurred while fetching named values", ex.InnerException);
                 return false;
             }
 
@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 _namedValues[item.Id] = item.Description;
             }
-            CacheLog.Debug($"{record.Items.Count()} items retrieved.");
+            CacheLog.LogDebug($"{record.Items.Count()} items retrieved.");
             return true;
         }
 

@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     /// <seealso cref="ICacheManager" />
     internal class CacheManager : ICacheManager
     {
-        private static readonly ILog ExecLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CacheManager));
+        private static readonly ILogger ExecLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CacheManager));
 
         private Dictionary<string, ISdkCache> _caches;
 
@@ -46,11 +46,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             if (_caches.ContainsKey(name))
             {
                 //throw new ArgumentException("Cache with this name already added.", nameof(name));
-                ExecLog.Warn($"Cache with the name={name} already added. Removing it.");
+                ExecLog.LogWarning($"Cache with the name={name} already added. Removing it.");
                 _caches.Remove(name);
                 //return;
             }
-            ExecLog.Debug($"Registering cache with the name={name} to the CacheManager.");
+            ExecLog.LogDebug($"Registering cache with the name={name} to the CacheManager.");
             _caches.Add(name, cache);
         }
 
@@ -88,14 +88,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 return;
             }
 
-            //ExecLog.Debug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}].");
+            //ExecLog.LogDebug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}].");
 
             var appropriateCaches = _caches.Where(s => s.Value.RegisteredDtoTypes.Contains(dtoType)).ToList();
-            //ExecLog.Debug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] to {appropriateCaches.Count}/{_caches.Count} caches.");
+            //ExecLog.LogDebug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] to {appropriateCaches.Count}/{_caches.Count} caches.");
 
             if (!appropriateCaches.Any())
             {
-                ExecLog.Warn($"No cache with registered type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] to save data.");
+                ExecLog.LogWarning($"No cache with registered type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] to save data.");
                 return;
             }
 
@@ -108,14 +108,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecLog.Error($"Error saving dto data for id={id}, lang=[{culture.TwoLetterISOLanguageName}], type={dtoType}.", e);
+                    ExecLog.LogError($"Error saving dto data for id={id}, lang=[{culture.TwoLetterISOLanguageName}], type={dtoType}.", e);
                 }
             }
             else
             {
-                ExecLog.Warn("Cannot save data. There is no registered cache.");
+                ExecLog.LogWarning("Cannot save data. There is no registered cache.");
             }
-            //ExecLog.Debug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] COMPLETED.");
+            //ExecLog.LogDebug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] COMPLETED.");
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             if (_caches == null || !_caches.Any())
             {
-                ExecLog.Warn("Cannot remove item from cache. There is no registered cache.");
+                ExecLog.LogWarning("Cannot remove item from cache. There is no registered cache.");
                 return;
             }
 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -29,9 +29,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     internal class FeedMessageMapper : IFeedMessageMapper
     {
         /// <summary>
-        /// The <see cref="ILog"/> instance used for execution logging
+        /// The <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(FeedMessageMapper));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(FeedMessageMapper));
 
         /// <summary>
         /// A <see cref="ISportEntityFactory"/> implementation used to construct <see cref="ISportEvent"/> instances
@@ -629,7 +629,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             catch (CacheItemNotFoundException)
             {
-                ExecutionLog.Warn($"Market description for market={marketId}, sport={sportId} and producer={producer.Name} not found.");
+                ExecutionLog.LogWarning($"Market description for market={marketId}, sport={sportId} and producer={producer.Name} not found.");
                 if (_externalExceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -672,7 +672,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             catch (CacheItemNotFoundException)
             {
-                ExecutionLog.Debug($"Market description for market={marketId}, sport={sportId} and producer={producer.Name} not found. Outcome definition not found (yet)");
+                ExecutionLog.LogDebug($"Market description for market={marketId}, sport={sportId} and producer={producer.Name} not found. Outcome definition not found (yet)");
             }
             return null;
         }

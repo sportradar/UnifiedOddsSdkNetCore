@@ -4,11 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -25,8 +23,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         [TestInitialize]
         public void Init()
         {
-            SdkLoggerFactory.Configure(new FileInfo("log4net.sdk.config"));
-
             _sef = new TestSportEntityFactoryBuilder();
             _sef.InitializeSportEntities();
             _sef.LoadTournamentMissingValues();
@@ -133,7 +129,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void CheckIfTournamentDataIsTransferedToSportDataCache()
+        public void CheckIfTournamentDataIsTransferredToSportDataCache()
         {
             var tournamentId = URN.Parse("sr:tournament:1030");
 

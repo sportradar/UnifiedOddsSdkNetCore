@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
     internal class MarketDescriptionCacheItem
     {
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(MarketDescriptionCacheItem));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(MarketDescriptionCacheItem));
 
         private readonly IDictionary<CultureInfo, string> _names;
 
@@ -188,7 +188,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                         }
                         else
                         {
-                            ExecutionLog.Warn($"Could not merge outcome[Id={outcomeDto.Id}] for lang={culture.TwoLetterISOLanguageName} on marketDescription[Id={Id}] because the specified outcome does not exist on stored market description.");
+                            ExecutionLog.LogWarning($"Could not merge outcome[Id={outcomeDto.Id}] for lang={culture.TwoLetterISOLanguageName} on marketDescription[Id={Id}] because the specified outcome does not exist on stored market description.");
                             ComparePrint(dto, culture);
                         }
                     }
@@ -205,7 +205,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                         }
                         else
                         {
-                            ExecutionLog.Warn($"Could not merge mapping[MarketId={mappingDto.MarketTypeId}:{mappingDto.MarketSubTypeId}] for lang={culture.TwoLetterISOLanguageName} on marketDescription[Id={dto.Id}]because the specified mapping does not exist on stored market description.");
+                            ExecutionLog.LogWarning($"Could not merge mapping[MarketId={mappingDto.MarketTypeId}:{mappingDto.MarketSubTypeId}] for lang={culture.TwoLetterISOLanguageName} on marketDescription[Id={dto.Id}]because the specified mapping does not exist on stored market description.");
                             ComparePrint(dto, culture);
                         }
                     }
@@ -250,12 +250,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var specs = Specifiers == null ? null : string.Join(", ", Specifiers.Select(s => s.Name));
             var outcomes = Outcomes == null ? null : string.Join(",", Outcomes.Select(s => s.Id));
             var maps = Mappings == null ? null : string.Join(",", Mappings.Select(s => s.MarketTypeId));
-            ExecutionLog.Debug($"Original Id={Id}, Names=[{names}], Descriptions=[{desc}], Variant=[{Variant}], Specifiers=[{specs}], Outocomes=[{outcomes}], Mappings=[{maps}].");
+            ExecutionLog.LogDebug($"Original Id={Id}, Names=[{names}], Descriptions=[{desc}], Variant=[{Variant}], Specifiers=[{specs}], Outocomes=[{outcomes}], Mappings=[{maps}].");
 
             var specsNew = dto.Specifiers == null ? null : string.Join(", ", dto.Specifiers.Select(s => s.Name));
             var outcomesNew = dto.Outcomes == null ? null : string.Join(",", dto.Outcomes.Select(s => s.Id));
             var mapsNew = dto.Mappings == null ? null : string.Join(",", dto.Mappings.Select(s => s.MarketTypeId));
-            ExecutionLog.Debug($"New Id={dto.Id}, Name=[{culture.TwoLetterISOLanguageName}-{dto.Name}], Descriptions=[{dto.Description}], Variant=[{dto.Variant}], Specifiers=[{specsNew}], Outocomes=[{outcomesNew}], Mappings=[{mapsNew}].");
+            ExecutionLog.LogDebug($"New Id={dto.Id}, Name=[{culture.TwoLetterISOLanguageName}-{dto.Name}], Descriptions=[{dto.Description}], Variant=[{dto.Variant}], Specifiers=[{specsNew}], Outocomes=[{outcomesNew}], Mappings=[{mapsNew}].");
         }
     }
 }

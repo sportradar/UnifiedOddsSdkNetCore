@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
@@ -18,8 +18,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// </summary>
     internal class CustomBetManager : ICustomBetManager
     {
-        private readonly ILog _clientLog = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(CustomBetManager));
-        private readonly ILog _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CustomBetManager));
+        private readonly ILogger _clientLog = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(CustomBetManager));
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CustomBetManager));
 
         private readonly IDataRouterManager _dataRouterManager;
         private readonly ICustomBetSelectionBuilder _customBetSelectionBuilder;
@@ -47,17 +47,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             try
             {
-                _clientLog.Info($"Invoking CustomBetManager.GetAvailableSelectionsAsync({eventId})");
+                _clientLog.LogInformation($"Invoking CustomBetManager.GetAvailableSelectionsAsync({eventId})");
                 return await _dataRouterManager.GetAvailableSelectionsAsync(eventId).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {
-                _executionLog.Warn($"Event[{eventId}] getting available selections failed, CommunicationException: {ce.Message}");
+                _executionLog.LogWarning($"Event[{eventId}] getting available selections failed, CommunicationException: {ce.Message}");
                 throw;
             }
             catch (Exception e)
             {
-                _executionLog.Warn($"Event[{eventId}] getting available selections failed.", e);
+                _executionLog.LogWarning($"Event[{eventId}] getting available selections failed.", e);
                 throw;
             }
         }
@@ -69,17 +69,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             try
             {
-                _clientLog.Info($"Invoking CustomBetManager.CalculateProbability({selections})");
+                _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbability({selections})");
                 return await _dataRouterManager.CalculateProbability(selections).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {
-                _executionLog.Warn($"Calculating probabilities failed, CommunicationException: {ce.Message}");
+                _executionLog.LogWarning($"Calculating probabilities failed, CommunicationException: {ce.Message}");
                 throw;
             }
             catch (Exception e)
             {
-                _executionLog.Warn($"Calculating probabilities failed.", e);
+                _executionLog.LogWarning($"Calculating probabilities failed.", e);
                 throw;
             }
         }

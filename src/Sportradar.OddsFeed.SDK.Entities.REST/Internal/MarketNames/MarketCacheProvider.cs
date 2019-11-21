@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <seealso cref="IMarketDescriptionCache" />
     public class MarketCacheProvider : IMarketCacheProvider
     {
-        private readonly ILog _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(MarketCacheProvider));
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(MarketCacheProvider));
 
         /// <summary>
         /// A <see cref="IMarketDescriptionCache"/> used to cache market descriptors for invariant markets
@@ -75,9 +75,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
             try
             {
-                //_executionLog.Debug($"Fetching invariant market description for id={marketId} and langs: [{string.Join(",", cultureInfos.Select(s => s.TwoLetterISOLanguageName))}].");
+                //_executionLog.LogDebug($"Fetching invariant market description for id={marketId} and langs: [{string.Join(",", cultureInfos.Select(s => s.TwoLetterISOLanguageName))}].");
                 marketDescriptor = await _invariantMarketsCache.GetMarketDescriptionAsync(marketId, null, cultureInfos).ConfigureAwait(false);
-                //_executionLog.Debug($"Fetching invariant market description for id={marketId} and langs: [{string.Join(",", cultureInfos.Select(s => s.TwoLetterISOLanguageName))}] COMPLETED.");
+                //_executionLog.LogDebug($"Fetching invariant market description for id={marketId} and langs: [{string.Join(",", cultureInfos.Select(s => s.TwoLetterISOLanguageName))}] COMPLETED.");
             }
             catch (Exception e)
             {
@@ -144,7 +144,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             catch (Exception e)
             {
                 var langs = string.Join(",", locales.Select(s=>s.TwoLetterISOLanguageName));
-                _executionLog.Warn($"There was an error providing the variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
+                _executionLog.LogWarning($"There was an error providing the variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
             }
             return null;
         }
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             catch (Exception e)
             {
                 var langs = string.Join(",", locales.Select(s => s.TwoLetterISOLanguageName));
-                _executionLog.Warn($"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
+                _executionLog.LogWarning($"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
             }
 
             return variantDescriptor ?? marketDescriptor;
@@ -186,7 +186,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             if (string.IsNullOrEmpty(sourceCache))
             {
-                _executionLog.Warn($"Calling ReloadMarketDescriptionAsync without sourceCache. (marketId={marketId})");
+                _executionLog.LogWarning($"Calling ReloadMarketDescriptionAsync without sourceCache. (marketId={marketId})");
                 return false;
             }
             try
@@ -194,19 +194,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
                 if (sourceCache.Equals("InvariantMarketDescriptionsCache", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    _executionLog.Debug("Reloading invariant market description list");
+                    _executionLog.LogDebug("Reloading invariant market description list");
                     return await _invariantMarketsCache.LoadMarketDescriptionsAsync().ConfigureAwait(false);
                 }
                 if (sourceCache.Equals("VariantDescriptionListCache", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    _executionLog.Debug("Reloading variant market description list");
+                    _executionLog.LogDebug("Reloading variant market description list");
                     return await _variantDescriptionListCache.LoadMarketDescriptionsAsync().ConfigureAwait(false);
                 }
                 if (sourceCache.Equals("VariantMarketDescriptionCache", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string variantValue = null;
                     specifiers?.TryGetValue(SdkInfo.VariantDescriptionName, out variantValue);
-                    _executionLog.Debug($"Reloading variant market description for market={marketId} and variant={variantValue}");
+                    _executionLog.LogDebug($"Reloading variant market description for market={marketId} and variant={variantValue}");
                     var variantMarketDescriptionCache = (VariantMarketDescriptionCache) _variantMarketsCache;
                     variantMarketDescriptionCache.CacheDeleteItem(VariantMarketDescriptionCache.GetCacheKey(marketId, variantValue),
                                                                   CacheItemType.MarketDescription);
@@ -215,9 +215,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             }
             catch (Exception e)
             {
-                _executionLog.Warn("Error reloading market description(s).", e);
+                _executionLog.LogWarning("Error reloading market description(s).", e);
             }
-            _executionLog.Warn($"Calling ReloadMarketDescriptionAsync with unknown sourceCache={sourceCache}. (marketId={marketId})");
+            _executionLog.LogWarning($"Calling ReloadMarketDescriptionAsync with unknown sourceCache={sourceCache}. (marketId={marketId})");
             return false;
         }
     }

@@ -4,7 +4,7 @@
 using System;
 using System.Globalization;
 using System.Reflection;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -29,7 +29,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The integration API host
         /// </summary>
         public const string IntegrationApiHost = "stgapi.betradar.com";
-
         /// <summary>
         /// The replay host
         /// </summary>
@@ -38,12 +37,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The replay API host
         /// </summary>
         public const string ReplayApiHost = ProductionApiHost;
-
         /// <summary>
         /// The default host port
         /// </summary>
         public const int DefaultHostPort = 5671;
-
         /// <summary>
         /// The unknown producer identifier
         /// </summary>
@@ -139,13 +136,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// Logs the SDK version at the beginning of opening feed
         /// </summary>
         /// <param name="log">The log used for logging</param>
-        public static void LogSdkVersion(ILog log)
+        public static void LogSdkVersion(ILogger log)
         {
             if (log != null)
             {
-                log.Info("=============================");
-                log.Info($"    UF SDK .NET ({GetVersion()}) ");
-                log.Info("=============================");
+                log.LogInformation("=============================");
+                log.LogInformation($"    UF SDK .NET ({GetVersion()}) ");
+                log.LogInformation("=============================");
             }
         }
 
@@ -213,9 +210,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return null;
             }
 
-            DateTime date;
-
-            if (DateTime.TryParse(input, out date))
+            if (DateTime.TryParse(input, out var date))
             {
                 return date;
             }

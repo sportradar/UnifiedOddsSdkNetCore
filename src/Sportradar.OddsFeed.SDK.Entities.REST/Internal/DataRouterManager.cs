@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// The execution log
         /// </summary>
-        private readonly ILog _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(DataRouterManager));
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(DataRouterManager));
         /// <summary>
         /// The sport event summary provider
         /// </summary>
@@ -344,7 +344,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting sport event summary for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting sport event summary for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -389,7 +389,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int) t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting sport event fixture for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting sport event fixture for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -428,7 +428,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting all tournaments for all sports for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting all tournaments for all sports for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -467,7 +467,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int) t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting sport categories for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting sport categories for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -506,7 +506,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int) t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting all sports for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting all sports for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -545,7 +545,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting live sport events and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting live sport events and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -593,7 +593,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting sport events for date {dateId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting sport events for date {dateId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -643,7 +643,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     var message = e.InnerException?.Message ?? e.Message;
                     if (!e.Message.Contains("No schedule for this tournament") && !e.Message.Contains("This is a place-holder tournament."))
                     {
-                        _executionLog.Error($"Error getting sport events for tournament for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogError($"Error getting sport events for tournament for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                         {
                             throw;
@@ -651,7 +651,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     }
                     else
                     {
-                        _executionLog.Debug($"Error getting sport events for tournament for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogDebug($"Error getting sport events for tournament for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     }
                 }
 
@@ -696,7 +696,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting player profile for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting player profile for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -746,7 +746,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int) t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting competitor profile for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}",
+                    _executionLog.LogError($"Error getting competitor profile for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}",
                                         e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
@@ -802,11 +802,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                         message = message.Contains(".")
                             ? message.Substring(0, message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
                             : message;
-                        _executionLog.Debug($"Error getting seasons for tournament id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
+                        _executionLog.LogDebug($"Error getting seasons for tournament id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
                     }
                     else
                     {
-                        _executionLog.Error($"Error getting seasons for tournament id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogError($"Error getting seasons for tournament id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                         {
                             throw;
@@ -864,11 +864,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                         message = message.Contains(".")
                                       ? message.Substring(0, message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
                                       : message;
-                        _executionLog.Debug($"Error getting match timeline for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
+                        _executionLog.LogDebug($"Error getting match timeline for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
                     }
                     else
                     {
-                        _executionLog.Error($"Error getting match timeline for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogError($"Error getting match timeline for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                         {
                             throw;
@@ -908,7 +908,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting market descriptions for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting market descriptions for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -950,7 +950,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting variant market description for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting variant market description for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -990,7 +990,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting variant descriptions for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting variant descriptions for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1038,7 +1038,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting draw summary for id={drawId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting draw summary for id={drawId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1086,7 +1086,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting draw fixture for id={drawId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting draw fixture for id={drawId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1134,7 +1134,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting lottery schedule for id={lotteryId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting lottery schedule for id={lotteryId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1180,7 +1180,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting all lotteries for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting all lotteries for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1227,7 +1227,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting available selections for id={id}. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting available selections for id={id}. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1263,7 +1263,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error calculating probabilities. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error calculating probabilities. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1294,7 +1294,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.Error($"Error getting fixture changes. Message={message}", e.InnerException ?? e);
+                    _executionLog.LogError($"Error getting fixture changes. Message={message}", e.InnerException ?? e);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -1334,12 +1334,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     if (e.Message.Contains("NotFound"))
                     {
                         var message = e.InnerException?.Message ?? e.Message;
-                        _executionLog.Debug($"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogDebug($"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     }
                     else
                     {
                         var message = e.InnerException?.Message ?? e.Message;
-                        _executionLog.Error($"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogError($"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                         {
                             throw;
@@ -1389,12 +1389,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     if (e.Message.Contains("NotFound"))
                     {
                         var message = e.InnerException?.Message ?? e.Message;
-                        _executionLog.Debug($"Error getting sport available tournaments for sportId={sportId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogDebug($"Error getting sport available tournaments for sportId={sportId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                     }
                     else
                     {
                         var message = e.InnerException?.Message ?? e.Message;
-                        _executionLog.Error($"Error getting sport available tournaments for sportId={sportId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                        _executionLog.LogError($"Error getting sport available tournaments for sportId={sportId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                         {
                             throw;
@@ -1421,11 +1421,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         {
             if (useDebug)
             {
-                _executionLog.Debug(text);
+                _executionLog.LogDebug(text);
             }
             else
             {
-                _executionLog.Info(text);
+                _executionLog.LogInformation(text);
             }
         }
 

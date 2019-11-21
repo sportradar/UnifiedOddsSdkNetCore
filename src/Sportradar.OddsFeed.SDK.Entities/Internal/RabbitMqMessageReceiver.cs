@@ -7,8 +7,7 @@ using Dawn;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Common.Logging;
-
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -26,14 +25,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     public sealed class RabbitMqMessageReceiver : IMessageReceiver
     {
         /// <summary>
-        /// A <see cref="ILog"/> used for execution logging
+        /// A <see cref="ILogger"/> used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(RabbitMqMessageReceiver));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(RabbitMqMessageReceiver));
 
         /// <summary>
-        /// A <see cref="ILog"/> used for feed traffic logging
+        /// A <see cref="ILogger"/> used for feed traffic logging
         /// </summary>
-        private static readonly ILog FeedLog = SdkLoggerFactory.GetLoggerForFeedTraffic(typeof(RabbitMqMessageReceiver));
+        private static readonly ILogger FeedLog = SdkLoggerFactory.GetLoggerForFeedTraffic(typeof(RabbitMqMessageReceiver));
 
         /// <summary>
         /// The message interest associated by the session using this instance
@@ -55,6 +54,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         private readonly IRoutingKeyParser _keyParser;
 
+        /// <summary>
+        /// A <see cref="IProducerManager"/> used to get <see cref="IProducer"/>
+        /// </summary>
         private readonly IProducerManager _producerManager;
 
         /// <summary>
@@ -106,7 +108,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             if (eventArgs.Body == null || !eventArgs.Body.Any())
             {
-                ExecutionLog.WarnFormat("A message with {0} body received. Aborting message processing", eventArgs.Body == null ? "null" : "empty");
+                var body = eventArgs.Body == null ? "null" : "empty";
+                ExecutionLog.LogWarning($"A message with {body} body received. Aborting message processing");
                 return;
             }
 
@@ -118,14 +121,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             FeedMessage feedMessage;
             try
             {
-                if (FeedLog.IsDebugEnabled)
+                if (FeedLog.IsEnabled(LogLevel.Debug))
                 {
                     messageBody = Encoding.UTF8.GetString(eventArgs.Body);
-                    FeedLog.Debug($"<~> {sessionName} <~> {eventArgs.RoutingKey} <~> {messageBody}");
+                    FeedLog.LogDebug($"<~> {sessionName} <~> {eventArgs.RoutingKey} <~> {messageBody}");
                 }
                 else
                 {
-                    FeedLog.Info(eventArgs.RoutingKey);
+                    FeedLog.LogInformation(eventArgs.RoutingKey);
                 }
                 feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
                 if (eventArgs.BasicProperties?.Headers != null)
@@ -138,7 +141,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             catch (DeserializationException ex)
             {
-                ExecutionLog.Error($"Failed to parse message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}", ex);
+                ExecutionLog.LogError($"Failed to parse message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}", ex);
                 //Metric.Context("RABBIT").Meter("RabbitMqMessageReceiver->DeserializationException", Unit.Calls).Mark();
                 RaiseDeserializationFailed(eventArgs.Body);
                 return;
@@ -147,19 +150,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             // send RawFeedMessage if needed
             try
             {
-                //ExecutionLog.Debug($"Raw msg [{_interest}]: {feedMessage.GetType().Name} for event {feedMessage.EventId}.");
+                //ExecutionLog.LogDebug($"Raw msg [{_interest}]: {feedMessage.GetType().Name} for event {feedMessage.EventId}.");
                 var args = new RawFeedMessageEventArgs(eventArgs.RoutingKey, feedMessage, sessionName);
                 RawFeedMessageReceived?.Invoke(this, args);
             }
             catch (Exception e)
             {
-                ExecutionLog.Error($"Error dispatching raw message for {feedMessage.EventId}", e);
+                ExecutionLog.LogError($"Error dispatching raw message for {feedMessage.EventId}", e);
             }
             // continue normal processing
 
             if (!_producerManager.Exists(feedMessage.ProducerId))
             {
-                ExecutionLog.Warn($"A message for producer which is not defined was received. Producer={feedMessage.ProducerId}");
+                ExecutionLog.LogWarning($"A message for producer which is not defined was received. Producer={feedMessage.ProducerId}");
                 return;
             }
 
@@ -168,11 +171,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (!producer.IsAvailable || producer.IsDisabled)
             {
-                ExecutionLog.Debug($"A message for producer which is disabled was received. Producer={producer}, MessageType={messageName}");
+                ExecutionLog.LogDebug($"A message for producer which is disabled was received. Producer={producer}, MessageType={messageName}");
                 return;
             }
 
-            ExecutionLog.Info($"Message received. Message=[{feedMessage}].");
+            ExecutionLog.LogInformation($"Message received. Message=[{feedMessage}].");
             if (feedMessage.IsEventRelated)
             {
                 URN sportId;
@@ -182,7 +185,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 }
                 else
                 {
-                    ExecutionLog.Warn($"Failed to parse the SportId from the routing key. RoutingKey={eventArgs.RoutingKey}, message=[{feedMessage}]. SportId will not be set.");
+                    ExecutionLog.LogWarning($"Failed to parse the SportId from the routing key. RoutingKey={eventArgs.RoutingKey}, message=[{feedMessage}]. SportId will not be set.");
                 }
             }
 

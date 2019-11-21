@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 
@@ -111,7 +112,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             catch
             {
                 var log = SdkLoggerFactory.GetLogger(typeof(MessageMapperHelper));
-                log.Error($"Enum value [{value}] not available for enum {typeof(T)}.");
+                log.LogError($"Enum value [{value}] not available for enum {typeof(T)}.");
                 // ignored
             }
             return defaultValue;

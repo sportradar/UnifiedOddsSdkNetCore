@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
     internal class VariantDescriptionCacheItem
     {
-        private static readonly ILog Log = SdkLoggerFactory.GetLogger(typeof(VariantDescriptionCacheItem));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLogger(typeof(VariantDescriptionCacheItem));
 
         internal readonly IList<CultureInfo> FetchedLanguages;
 
@@ -101,7 +101,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     }
                     else
                     {
-                        Log.Warn($"Could not merge outcome[Id={outcomeDto.Id}] on variantDescription[Id={dto.Id}] because the specified outcome does not exist on stored variant description");
+                        Log.LogWarning($"Could not merge outcome[Id={outcomeDto.Id}] on variantDescription[Id={dto.Id}] because the specified outcome does not exist on stored variant description");
                     }
                 }
             }
@@ -117,7 +117,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     }
                     else
                     {
-                        Log.Warn($"Could not merge mapping[MarketId={mappingDto.MarketTypeId}:{mappingDto.MarketSubTypeId}] on variantDescription[Id={dto.Id}] because the specified mapping does not exist on stored variant description");
+                        Log.LogWarning($"Could not merge mapping[MarketId={mappingDto.MarketTypeId}:{mappingDto.MarketSubTypeId}] on variantDescription[Id={dto.Id}] because the specified mapping does not exist on stored variant description");
                     }
                 }
             }

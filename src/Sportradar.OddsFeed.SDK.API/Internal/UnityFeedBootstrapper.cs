@@ -13,7 +13,7 @@ using System.Runtime.Caching;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Scheduling;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.API.Internal.Replay;
 using Sportradar.OddsFeed.SDK.Common;
@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     internal static class UnityFeedBootstrapper
     {
-        private static readonly ILog Log = SdkLoggerFactory.GetLogger(typeof(UnityFeedBootstrapper));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLogger(typeof(UnityFeedBootstrapper));
 
         private const int RestConnectionFailureLimit = 5;
         private const int RestConnectionFailureTimeoutInSec = 15;
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var seed = (int)DateTime.Now.Ticks;
             var rand = new Random(seed);
             var value = rand.Next();
-            Log.Info($"Initializing sequence generator with MinValue={value}, MaxValue={long.MaxValue}");
+            Log.LogInformation($"Initializing sequence generator with MinValue={value}, MaxValue={long.MaxValue}");
             container.RegisterType<ISequenceGenerator, IncrementalSequenceGenerator>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(

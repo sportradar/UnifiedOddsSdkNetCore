@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -23,9 +23,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     internal class Stage : Competition, IStage
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLogPrivate = SdkLoggerFactory.GetLogger(typeof(Stage));
+        private static readonly ILogger ExecutionLogPrivate = SdkLoggerFactory.GetLogger(typeof(Stage));
 
         private readonly ISportDataCache _sportDataCache;
 
@@ -59,13 +59,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
             if (stageCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No stage cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
             var sportId = await stageCI.GetSportIdAsync().ConfigureAwait(false);
             if (sportId == null)
             {
-                ExecutionLog.Debug($"Missing data. No sportId for stage cache item with id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No sportId for stage cache item with id={Id}.");
                 return null;
             }
             var sportCI = await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false);
@@ -77,13 +77,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
             if (stageCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No stage cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
             var categoryId = await stageCI.GetCategoryIdAsync().ConfigureAwait(false);
             if (categoryId == null)
             {
-                ExecutionLog.Debug($"Missing data. No categoryId for stage cache item with id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No categoryId for stage cache item with id={Id}.");
                 return null;
             }
             var categoryCI = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
             if (stageCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No stage cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
             var cacheItem = ExceptionStrategy == ExceptionHandlingStrategy.CATCH
@@ -115,7 +115,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
             if (stageCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No stage cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
             var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.CATCH
@@ -131,7 +131,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
             if (stageCI == null)
             {
-                ExecutionLog.Debug($"Missing data. No stage cache item for id={Id}.");
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return StageType.Child;
             }
             return await stageCI.GetTypeAsync().ConfigureAwait(false);

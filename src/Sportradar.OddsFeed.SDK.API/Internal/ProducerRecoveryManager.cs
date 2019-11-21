@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Dawn;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -20,9 +20,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     internal class ProducerRecoveryManager : IProducerRecoveryManager
     {
         /// <summary>
-        /// A <see cref="ILog"/> used for execution logging
+        /// A <see cref="ILogger"/> used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(ProducerRecoveryManager));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(ProducerRecoveryManager));
 
         /// <summary>
         /// The producer
@@ -97,10 +97,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             if (Status == newStatus)
             {
-                ExecutionLog.Debug($"{Producer.Name}: Attempting to set status to an existing value {Status}. Aborting ...");
+                ExecutionLog.LogDebug($"{Producer.Name}: Attempting to set status to an existing value {Status}. Aborting ...");
                 return;
             }
-            ExecutionLog.Info($"{Producer.Name} Status changed from {Status} to {newStatus}.");
+            ExecutionLog.LogInformation($"{Producer.Name} Status changed from {Status} to {newStatus}.");
 
             Status = newStatus;
             _producer.SetProducerDown(newStatus != ProducerRecoveryStatus.Completed);
@@ -122,7 +122,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             URN eventId;
             if (_producer.EventRecoveries.TryRemove(snapshotCompleted.request_id, out eventId))
             {
-                ExecutionLog.Info($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id}, eventId={eventId} completed.");
+                ExecutionLog.LogInformation($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id}, eventId={eventId} completed.");
                 EventRecoveryCompleted?.Invoke(this, new EventRecoveryCompletedEventArgs(snapshotCompleted.request_id, eventId));
                 return null;
             }
@@ -136,11 +136,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             //Debug.Assert(Status == ProducerRecoveryStatus.Started);
 
             RecoveryResult recoveryResult;
-            ExecutionLog.Debug($"SnapshotComplete[{"requestId" + snapshotCompleted.request_id}] for producer=[{"id=" + Producer.Id}] on session {interest.Name} received");
+            ExecutionLog.LogDebug($"SnapshotComplete[{"requestId" + snapshotCompleted.request_id}] for producer=[{"id=" + Producer.Id}] on session {interest.Name} received");
             if (!_recoveryOperation.TryComplete(interest, out recoveryResult))
             {
                 //The recovery is not complete, nothing to do.
-                ExecutionLog.Debug($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} is not yet completed. Waiting for snapshots from other sessions");
+                ExecutionLog.LogDebug($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} is not yet completed. Waiting for snapshots from other sessions");
                 return null;
             }
 
@@ -150,13 +150,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 // the recovery was interrupted
                 if (recoveryResult.InterruptedAt.HasValue)
                 {
-                    ExecutionLog.Warn($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed with interruption at:{recoveryResult.InterruptedAt.Value}");
+                    ExecutionLog.LogWarning($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed with interruption at:{recoveryResult.InterruptedAt.Value}");
                     _producer.SetLastTimestampBeforeDisconnect(recoveryResult.InterruptedAt.Value);
                     return ProducerRecoveryStatus.Error;
                 }
                 // the recovery was not interrupted
                 var recoveryDuration = TimeProviderAccessor.Current.Now - recoveryResult.StartTime;
-                ExecutionLog.Info($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed in {recoveryDuration.TotalSeconds} sec.");
+                ExecutionLog.LogInformation($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed in {recoveryDuration.TotalSeconds} sec.");
                 _producer.SetLastTimestampBeforeDisconnect(SdkInfo.FromEpochTime(snapshotCompleted.timestamp));
                 return _timestampTracker.IsBehind
                            ? ProducerRecoveryStatus.Delayed
@@ -165,7 +165,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             // The recovery operation timed-out
             var timeOutDuration = TimeProviderAccessor.Current.Now - recoveryResult.StartTime;
-            ExecutionLog.Warn($"Recovery with requestId={snapshotCompleted.RequestId} timed out after:{timeOutDuration}");
+            ExecutionLog.LogWarning($"Recovery with requestId={snapshotCompleted.RequestId} timed out after:{timeOutDuration}");
             return ProducerRecoveryStatus.Error;
         }
 
@@ -184,18 +184,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (Status == ProducerRecoveryStatus.Completed || Status == ProducerRecoveryStatus.Delayed)
                 {
-                    ExecutionLog.Warn($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: Changing the status to Error.");
+                    ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: Changing the status to Error.");
                     newStatus = ProducerRecoveryStatus.Error;
                 }
                 else if (Status == ProducerRecoveryStatus.Started)
                 {
-                    ExecutionLog.Warn($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: Reseting current recovery operation.");
+                    ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: Reseting current recovery operation.");
                     _recoveryOperation.Reset();
                     newStatus = ProducerRecoveryStatus.Error;
                 }
                 else
                 {
-                    ExecutionLog.Warn($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: No action required.");
+                    ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: No action required.");
                 }
                 if (newStatus != Status)
                 {
@@ -229,7 +229,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             if (!Producer.IsAvailable || Producer.IsDisabled)
             {
-                ExecutionLog.Debug($"{Producer.Name} Producer is not available or user disabled, however we still receive {message.GetType()} message. Can be ignored.");
+                ExecutionLog.LogDebug($"{Producer.Name} Producer is not available or user disabled, however we still receive {message.GetType()} message. Can be ignored.");
                 return;
             }
 
@@ -262,7 +262,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.Error($"An unexpected exception occurred while processing user message. Producer={_producer.Id}, Session={interest.Name}, Message={message}, Exception:", ex);
+                    ExecutionLog.LogError($"An unexpected exception occurred while processing user message. Producer={_producer.Id}, Session={interest.Name}, Message={message}, Exception:", ex);
                 }
                 if (newStatus.HasValue && Status != newStatus)
                 {
@@ -320,17 +320,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         {
                             if (_recoveryOperation.Start())
                             {
-                                ExecutionLog.Info($"Producer={_producer.Id}: Recovery operation started. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
+                                ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation started. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
                                 newStatus = ProducerRecoveryStatus.Started;
                             }
                             else
                             {
-                                ExecutionLog.Warn($"Producer={_producer.Id}: An error occurred while starting recovery operation with after={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}. Retry will be made at next system alive.");
+                                ExecutionLog.LogWarning($"Producer={_producer.Id}: An error occurred while starting recovery operation with after={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}. Retry will be made at next system alive.");
                             }
                         }
                         catch (RecoveryInitiationException ex)
                         {
-                            ExecutionLog.Fatal($"Producer id={Producer.Id} failed to execute recovery because 'after' is to much in the past. After={ex.After}. Stopping the feed.");
+                            ExecutionLog.LogCritical($"Producer id={Producer.Id} failed to execute recovery because 'after' is to much in the past. After={ex.After}. Stopping the feed.");
                             newStatus = ProducerRecoveryStatus.FatalError;
                         }
                     }
@@ -347,7 +347,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                             {
                                 Debug.Assert(Status == ProducerRecoveryStatus.Started);
                                 var timestamp = SdkInfo.FromEpochTime(previousAliveTimestamp);
-                                ExecutionLog.Info($"Producer={_producer.Id}: Recovery operation interrupted. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Timestamp={timestamp}.");
+                                ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation interrupted. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Timestamp={timestamp}.");
                                 _recoveryOperation.Interrupt(timestamp);
                             }
                             else
@@ -357,18 +357,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                 {
                                     if (_recoveryOperation.Start())
                                     {
-                                        ExecutionLog.Info($"Producer={_producer.Id}: Recovery operation started due to un-subscribed alive. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
+                                        ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation started due to un-subscribed alive. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
                                         newStatus = ProducerRecoveryStatus.Started;
                                     }
                                     else
                                     {
-                                        ExecutionLog.Warn($"Producer={_producer.Id}: An error occurred while starting recovery operation with after={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}. Retry will be made at next system alive.");
+                                        ExecutionLog.LogWarning($"Producer={_producer.Id}: An error occurred while starting recovery operation with after={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}. Retry will be made at next system alive.");
                                         newStatus = ProducerRecoveryStatus.Error;
                                     }
                                 }
                                 catch (RecoveryInitiationException ex)
                                 {
-                                    ExecutionLog.Fatal($"Producer id={Producer.Id} failed to execute recovery because 'after' is to much in the past. After={ex.After}. Stopping the feed.");
+                                    ExecutionLog.LogCritical($"Producer id={Producer.Id} failed to execute recovery because 'after' is to much in the past. After={ex.After}. Stopping the feed.");
                                     newStatus = ProducerRecoveryStatus.FatalError;
                                 }
                             }
@@ -377,7 +377,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.Error($"An unexpected exception occurred while processing system message. Producer={_producer.Id}, message={message}. Exception:", ex);
+                    ExecutionLog.LogError($"An unexpected exception occurred while processing system message. Producer={_producer.Id}, message={message}. Exception:", ex);
                 }
                 if (newStatus != Status)
                 {
@@ -435,7 +435,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     // Check whether there is an alive violation during normal processing
                     if ((Status == ProducerRecoveryStatus.Completed || Status == ProducerRecoveryStatus.Delayed) && _timestampTracker.IsAliveViolated)
                     {
-                        ExecutionLog.Warn($"Producer id={Producer.Id}: alive violation detected. Recovery will be done on next system alive.");
+                        ExecutionLog.LogWarning($"Producer id={Producer.Id}: alive violation detected. Recovery will be done on next system alive.");
                         newStatus = ProducerRecoveryStatus.Error;
                     }
 
@@ -443,7 +443,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     if (Status == ProducerRecoveryStatus.Started && _timestampTracker.IsAliveViolated)
                     {
                         Debug.Assert(_recoveryOperation.IsRunning);
-                        ExecutionLog.Warn($"Producer id={Producer.Id}: alive violation detected during recovery. Additional recovery from {_timestampTracker.SystemAliveTimestamp} will be done once the current is completed.");
+                        ExecutionLog.LogWarning($"Producer id={Producer.Id}: alive violation detected during recovery. Additional recovery from {_timestampTracker.SystemAliveTimestamp} will be done once the current is completed.");
                         _recoveryOperation.Interrupt(SdkInfo.FromEpochTime(_timestampTracker.SystemAliveTimestamp));
                     }
 
@@ -452,14 +452,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     {
                         Debug.Assert(_recoveryOperation.IsRunning);
                         _recoveryOperation.CompleteTimedOut();
-                        ExecutionLog.Warn($"Producer id={Producer.Id}: recovery timeout. New recovery from {_timestampTracker.SystemAliveTimestamp} will be done.");
+                        ExecutionLog.LogWarning($"Producer id={Producer.Id}: recovery timeout. New recovery from {_timestampTracker.SystemAliveTimestamp} will be done.");
                         newStatus = ProducerRecoveryStatus.Error;
                     }
-                    ExecutionLog.Info($"Status check: Producer={_producer}({Enum.GetName(typeof(ProducerRecoveryStatus), Status)}), Timing Info={_timestampTracker}");
+                    ExecutionLog.LogInformation($"Status check: Producer={_producer}({Enum.GetName(typeof(ProducerRecoveryStatus), Status)}), Timing Info={_timestampTracker}");
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.Error($"An unexpected exception occurred while checking status. Producer={_producer.Id}. Status={Status}, IsRunning={_recoveryOperation.IsRunning}", ex);
+                    ExecutionLog.LogError($"An unexpected exception occurred while checking status. Producer={_producer.Id}. Status={Status}, IsRunning={_recoveryOperation.IsRunning}", ex);
                 }
                 if (newStatus != Status)
                 {

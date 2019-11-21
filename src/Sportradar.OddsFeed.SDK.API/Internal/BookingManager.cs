@@ -4,7 +4,7 @@
 using System;
 using Dawn;
 using System.Globalization;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
@@ -19,8 +19,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// </summary>
     internal class BookingManager : IBookingManager
     {
-        private readonly ILog _clientLog = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(BookingManager));
-        private readonly ILog _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(BookingManager));
+        private readonly ILogger _clientLog = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(BookingManager));
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(BookingManager));
 
         private const string BookLiveOddsEventUrl = "{0}/v1/liveodds/booking-calendar/events/{1}/book";
 
@@ -56,12 +56,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             try
             {
-                _clientLog.Info($"Invoking BookingManager.BookLiveOddsEvent({eventId})");
+                _clientLog.LogInformation($"Invoking BookingManager.BookLiveOddsEvent({eventId})");
                 var postUrl = string.Format(BookLiveOddsEventUrl, _config.ApiBaseUri, eventId);
 
                 var response = _dataPoster.PostDataAsync(new Uri(postUrl)).Result;
 
-                _clientLog.Info($"BookingManager.bookLiveOddsEvent({eventId}) completed, status: {response.StatusCode}.");
+                _clientLog.LogInformation($"BookingManager.bookLiveOddsEvent({eventId}) completed, status: {response.StatusCode}.");
                 if (response.IsSuccessStatusCode)
                 {
                     _cacheManager.SaveDto(eventId, eventId, CultureInfo.CurrentCulture, DtoType.BookingStatus, null);
@@ -70,15 +70,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
                 _cacheManager.RemoveCacheItem(eventId, CacheItemType.SportEvent, "BookingManager");
 
-                _executionLog.Warn($"Event[{eventId}] booking failed. API response code: {response.StatusCode}.");
+                _executionLog.LogWarning($"Event[{eventId}] booking failed. API response code: {response.StatusCode}.");
             }
             catch (CommunicationException ce)
             {
-                _executionLog.Warn($"Event[{eventId}] booking failed, CommunicationException: {ce.Message}");
+                _executionLog.LogWarning($"Event[{eventId}] booking failed, CommunicationException: {ce.Message}");
             }
             catch (Exception e)
             {
-                _executionLog.Warn($"Event[{eventId}] booking failed.", e);
+                _executionLog.LogWarning($"Event[{eventId}] booking failed.", e);
             }
 
             return false;

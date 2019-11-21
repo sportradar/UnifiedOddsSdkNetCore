@@ -5,7 +5,7 @@ using System;
 using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
@@ -24,9 +24,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     public class DataProvider<TIn, TOut> : IDataProvider<TOut> where TIn : RestMessage where TOut : class
     {
         /// <summary>
-        /// A <see cref="ILog"/> used for execution logging
+        /// A <see cref="ILogger"/> used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(DataProvider<TIn, TOut>));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(DataProvider<TIn, TOut>));
 
         /// <summary>
         /// Event raised when the data provider receives the message
@@ -175,7 +175,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             }
             catch (Exception e)
             {
-                ExecutionLog.Error($"Error dispatching raw message for {uri}", e);
+                ExecutionLog.LogError($"Error dispatching raw message for {uri}", e);
             }
             // continue normal processing
         }

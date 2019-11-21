@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dawn;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -23,9 +23,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     public class RecoveryOperation : IRecoveryOperation
     {
         /// <summary>
-        /// A <see cref="ILog"/> used for execution logging
+        /// A <see cref="ILogger"/> used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(RecoveryOperation));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(RecoveryOperation));
 
         /// <summary>
         /// The producer whose recovery is being tracked by current instance
@@ -183,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     {
                         if (!_adjustedAfterAge)
                         {
-                            ExecutionLog.Info($"{_producer.Name}: After time {after} is adjusted.");
+                            ExecutionLog.LogInformation($"{_producer.Name}: After time {after} is adjusted.");
                             after = TimeProviderAccessor.Current.Now - _producer.MaxAfterAge() + TimeSpan.FromMinutes(1);
                         }
                         else
@@ -198,7 +198,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             catch (Exception ex)
             {
                 var actualException = ex.InnerException ?? ex;
-                ExecutionLog.Error($"{_producer.Name} There was an error requesting recovery. Exception: {actualException.Message}");
+                ExecutionLog.LogError($"{_producer.Name} There was an error requesting recovery. Exception: {actualException.Message}");
                 if (ex is RecoveryInitiationException)
                 {
                     throw;

@@ -3,7 +3,7 @@
 */
 using System;
 using System.Diagnostics;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
@@ -15,9 +15,9 @@ namespace Sportradar.OddsFeed.SDK.API
     public class EntityDispatcherBase
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for logging
+        /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
-        private static readonly ILog Log = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(EntityDispatcherBase));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(EntityDispatcherBase));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityDispatcherBase"/>
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.API
         {
             if (handler == null)
             {
-                Log.Warn($"Cannot dispatch message {message.GetType().Name} because no event listeners are attached to associated event handler. Dropping message[{message}]");
+                Log.LogWarning($"Cannot dispatch message {message.GetType().Name} because no event listeners are attached to associated event handler. Dropping message[{message}]");
                 return;
             }
 
@@ -46,12 +46,12 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 handler(this, eventArgs);
                 stopwatch.Stop();
-                Log.Info($"Successfully dispatched message[{message}]. Duration:{stopwatch.ElapsedMilliseconds} ms.");
+                Log.LogInformation($"Successfully dispatched message[{message}]. Duration:{stopwatch.ElapsedMilliseconds} ms.");
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                Log.Warn($"Event handler throw an exception while processing message[{message}]. Exception", ex);
+                Log.LogWarning($"Event handler throw an exception while processing message[{message}]. Exception", ex);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 var args = eventArgs == null
                                ? string.Empty
                                : eventArgs.GetType().Name;
-                Log.Warn($"Cannot dispatch message {messageName} because no listeners are attached to associated event handler. EventArgs: {args}.");
+                Log.LogWarning($"Cannot dispatch message {messageName} because no listeners are attached to associated event handler. EventArgs: {args}.");
                 return;
             }
 
@@ -78,11 +78,11 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 handler(this, eventArgs);
                 stopwatch.Stop();
-                Log.Info($"Successfully dispatched message {messageName}. Duration:{stopwatch.ElapsedMilliseconds} ms.");
+                Log.LogInformation($"Successfully dispatched message {messageName}. Duration:{stopwatch.ElapsedMilliseconds} ms.");
             }
             catch (Exception ex)
             {
-                Log.Warn($"Event handler throw an exception while processing message {messageName}. Exception", ex);
+                Log.LogWarning($"Event handler throw an exception while processing message {messageName}. Exception", ex);
             }
         }
     }

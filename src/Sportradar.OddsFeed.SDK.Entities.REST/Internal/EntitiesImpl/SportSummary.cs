@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
-using System.Linq;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl

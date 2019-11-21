@@ -11,6 +11,7 @@ using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -349,7 +350,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.Warn($"Error deleting fetchedVariants for {id}", e);
+                    ExecutionLog.LogWarning($"Error deleting fetchedVariants for {id}", e);
                 }
 
                 _cache.Remove(id);
@@ -479,7 +480,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case DtoType.TournamentInfoList:
                     break;
                 default:
-                    ExecutionLog.Warn($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
+                    ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
             }
             return saved;
@@ -522,7 +523,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 {
                     throw;
                 }
-                ExecutionLog.Warn("Mapping validation for MarketDescriptionCacheItem failed.", e);
+                ExecutionLog.LogWarning("Mapping validation for MarketDescriptionCacheItem failed.", e);
             }
             finally
             {

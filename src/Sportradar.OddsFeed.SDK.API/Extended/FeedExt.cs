@@ -3,7 +3,7 @@
 */
 
 using System;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.Internal;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -20,9 +20,9 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
     public class FeedExt : Feed, IOddsFeedExt
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog Log = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedExt));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedExt));
 
         /// <summary>
         /// Occurs when any feed message arrives
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
             }
             catch (Exception ex)
             {
-                Log.Error($"Error dispatching raw api data for {e.Uri}", ex);
+                Log.LogError($"Error dispatching raw api data for {e.Uri}", ex);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
             }
             catch (Exception ex)
             {
-                Log.Error($"Error dispatching raw feed message for {e.RoutingKey} and {e.FeedMessage.EventId}", ex);
+                Log.LogError($"Error dispatching raw feed message for {e.RoutingKey} and {e.FeedMessage.EventId}", ex);
             }
         }
 

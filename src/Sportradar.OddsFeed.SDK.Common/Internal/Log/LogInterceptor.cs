@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
 {
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
             public bool LogEnabled;
             public MethodInfo MethodInfo;
             public object Result;
-            public ILog Logger;
+            public ILogger Logger;
             public Stopwatch Watch;
         }
 
@@ -168,21 +168,21 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         //        }
         //        if (logEnabled)
         //        {
-        //            logger.Info($"Starting executing '{methodInfo.Name}' ...");
+        //            logger.LogInformation($"Starting executing '{methodInfo.Name}' ...");
         //        }
 
         //        var methodCall = $"{methodInfo.Name}()";
         //        if (logEnabled && args != null && args.Any())
         //        {
-        //            logger.Debug($"{methodInfo.Name} arguments:");
+        //            logger.LogDebug($"{methodInfo.Name} arguments:");
         //            for (var i = 0; i < args.Length; i++)
         //            {
         //                methodCall += $",{methodInfo.GetGenericArguments()[i].Name}={args[i]}";
-        //                logger.Debug($"\t{methodInfo.GetGenericArguments()[i].Name}={args[i]}");
+        //                logger.LogDebug($"\t{methodInfo.GetGenericArguments()[i].Name}={args[i]}");
         //            }
 
         //            methodCall = $"{methodInfo.Name}({methodCall.Substring(1)})";
-        //            logger.Debug($"Invoking '{methodCall}' ...");
+        //            logger.LogDebug($"Invoking '{methodCall}' ...");
         //        }
 
         //        var result = methodInfo.Invoke(_decorated, args); // MAIN EXECUTION
@@ -201,7 +201,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         //            _proxyPerms.Add(task.Id, perm);
         //            if (logEnabled)
         //            {
-        //                logger.Debug($"TaskId:{task.Id} is executing and we wait to finish ...");
+        //                logger.LogDebug($"TaskId:{task.Id} is executing and we wait to finish ...");
         //            }
         //            task.ContinueWith(TaskExecutionFinished);
         //            return task; // new ReturnMessage(result, null, 0, methodCall.LogicalCallContext, methodCall);
@@ -215,7 +215,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         //        watch.Stop();
         //        if (logEnabled)
         //        {
-        //            logger.Error($"Exception during executing '{methodInfo.Name}': {Environment.NewLine}", e);
+        //            logger.LogError($"Exception during executing '{methodInfo.Name}': {Environment.NewLine}", e);
         //        }
 
         //        throw;
@@ -271,7 +271,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                                             MethodInfo methodInfo,
                                             string resultTypeName,
                                             object result,
-                                            ILog logger,
+                                            ILogger logger,
                                             Stopwatch watch,
                                             string taskId = null)
         {
@@ -279,7 +279,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
 
             if (logEnabled)
             {
-                logger.Info($"{taskId}Finished executing '{methodInfo.Name}'. Time: {watch.ElapsedMilliseconds} ms.");
+                logger.LogInformation($"{taskId}Finished executing '{methodInfo.Name}'. Time: {watch.ElapsedMilliseconds} ms.");
             }
 
             if (logEnabled && !string.Equals(methodInfo.ReturnType.FullName, "System.Void"))
@@ -287,11 +287,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 var responseMessage = result as HttpResponseMessage;
                 if (responseMessage != null)
                 {
-                    logger.Debug($"{taskId}{methodInfo.Name} result: {resultTypeName}={WriteHttpResponseMessage(responseMessage)}");
+                    logger.LogDebug($"{taskId}{methodInfo.Name} result: {resultTypeName}={WriteHttpResponseMessage(responseMessage)}");
                 }
                 else
                 {
-                    logger.Debug($"{taskId}{methodInfo.Name} result: {resultTypeName}={result};");
+                    logger.LogDebug($"{taskId}{methodInfo.Name} result: {resultTypeName}={result};");
                 }
             }
         }
@@ -359,7 +359,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 }
                 if (logEnabled)
                 {
-                    logger.Info($"Starting executing '{methodInfo.Name}' ...");
+                    logger.LogInformation($"Starting executing '{methodInfo.Name}' ...");
                 }
 
                 var methodCall = $"{methodInfo.Name}()";
@@ -369,7 +369,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 }
                 if (logEnabled)
                 {
-                    logger.Debug($"Invoking '{methodCall}' ...");
+                    logger.LogDebug($"Invoking '{methodCall}' ...");
                 }
 
                 invocation.Proceed();// MAIN EXECUTION
@@ -387,7 +387,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                     _proxyPerms.Add(task.Id, perm);
                     if (logEnabled)
                     {
-                        logger.Debug($"TaskId:{task.Id} is executing and we wait to finish ...");
+                        logger.LogDebug($"TaskId:{task.Id} is executing and we wait to finish ...");
                     }
                     task.ContinueWith(TaskExecutionFinished);
                     //invocation.ReturnValue = task;
@@ -408,7 +408,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 watch.Stop();
                 if (logEnabled)
                 {
-                    logger.Error($"Exception during executing '{methodInfo.Name}': {Environment.NewLine}", e);
+                    logger.LogError($"Exception during executing '{methodInfo.Name}': {Environment.NewLine}", e);
                 }
 
                 throw;

@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
@@ -25,9 +25,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     internal class FeedMessageValidator : IFeedMessageValidator
     {
         /// <summary>
-        /// The <see cref="ILog"/> instance used for execution logging
+        /// The <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedMessageValidator));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedMessageValidator));
 
         /// <summary>
         /// A <see cref="IReadOnlyCollection{T}"/> containing default culture
@@ -81,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             Guard.Argument(message).NotNull();
             Guard.Argument(propertyName).NotNull().NotEmpty();
 
-            ExecutionLog.WarnFormat("Validation warning: message={{{0}}}, property value {1}={2} is not expected", message, propertyName, propertyValue);
+            ExecutionLog.LogWarning($"Validation warning: message='{message}', property value {propertyName}={propertyValue} is not expected");
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             Guard.Argument(message).NotNull();
             Guard.Argument(propertyName).NotNull().NotEmpty();
 
-            ExecutionLog.ErrorFormat("Validation failure: message={{{0}}}, property value {1}={2} is not supported", message, propertyName, propertyValue);
+            ExecutionLog.LogError($"Validation failure: message='{message}', property value {propertyName}={propertyValue} is not supported");
         }
 
         /// <summary>
@@ -148,25 +148,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             catch (CacheItemNotFoundException ex)
             {
-                ExecutionLog.Info($"Check failed. Failed to retrieve market name descriptor market[id={marketId}].", ex);
+                ExecutionLog.LogInformation($"Check failed. Failed to retrieve market name descriptor market[id={marketId}].", ex);
                 return false;
             }
             if (marketDescriptor == null)
             {
-                ExecutionLog.Info($"Check failed. Failed to retrieve market name descriptor for market[id={marketId}].");
+                ExecutionLog.LogInformation($"Check failed. Failed to retrieve market name descriptor for market[id={marketId}].");
                 return false;
             }
 
             var nameDescription = marketDescriptor.GetName(_defaultCulture.First());
             if (nameDescription == null)
             {
-                ExecutionLog.Info($"Check failed. Retrieved market[id={marketId}] descriptor does not contain name descriptor in the specified language");
+                ExecutionLog.LogInformation($"Check failed. Retrieved market[id={marketId}] descriptor does not contain name descriptor in the specified language");
                 return false;
             }
 
             if (marketDescriptor.Id != marketId)
             {
-                ExecutionLog.Info($"Check failed. Retrieved market descriptor has different marketId. ({marketDescriptor.Id}!={marketId})");
+                ExecutionLog.LogInformation($"Check failed. Retrieved market descriptor has different marketId. ({marketDescriptor.Id}!={marketId})");
                 return false;
             }
 
@@ -176,7 +176,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 {
                     var requiredSpecifiers = string.Join(",", marketDescriptor.Specifiers.Select(d => d.Name));
                     var actualSpecifiers = string.Join(",", specifiers.Select(k => k.Key));
-                    ExecutionLog.Info($"Specifiers check failed. Producer={producerId}, market[id={marketId}], Required:{requiredSpecifiers}, Actual:{actualSpecifiers}");
+                    ExecutionLog.LogInformation($"Specifiers check failed. Producer={producerId}, market[id={marketId}], Required:{requiredSpecifiers}, Actual:{actualSpecifiers}");
                     return false;
                 }
 
@@ -187,7 +187,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     {
                         var requiredSpecifiers = string.Join(",", marketDescriptor.Specifiers.Select(d => d.Name));
                         var actualSpecifiers = string.Join(",", specifiers.Select(k => k.Key));
-                        ExecutionLog.Info($"Specifiers check for market[id={marketId}] failed. Required:{requiredSpecifiers}, Actual:{actualSpecifiers}");
+                        ExecutionLog.LogInformation($"Specifiers check for market[id={marketId}] failed. Required:{requiredSpecifiers}, Actual:{actualSpecifiers}");
                         return false;
                     }
                 }

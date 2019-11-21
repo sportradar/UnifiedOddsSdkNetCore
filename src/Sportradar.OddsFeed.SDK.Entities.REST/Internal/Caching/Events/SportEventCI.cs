@@ -10,7 +10,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -28,9 +28,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     public class SportEventCI : ISportEventCI, IExportableCI
     {
         /// <summary>
-        /// The <see cref="ILog" /> instance used for execution logging
+        /// The <see cref="ILogger" /> instance used for execution logging
         /// </summary>
-        internal readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(SportEventCI));
+        internal readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(SportEventCI));
 
         /// <summary>
         /// The <see cref="IDataRouterManager"/> used to obtain sport event summary and fixture
@@ -363,11 +363,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 if (ce.Message.Contains("NotFound")) // especially for tournaments that dont have summary
                 {
                     LoadedSummaries.AddRange(missingCultures);
-                    ExecutionLog.Warn($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH NOT_FOUND.");
+                    ExecutionLog.LogWarning($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH NOT_FOUND.");
                 }
                 else
                 {
-                    ExecutionLog.Warn($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH ERROR.");
+                    ExecutionLog.LogWarning($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH ERROR.");
                     if (((DataRouterManager)DataRouterManager).ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -376,7 +376,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             }
             catch (Exception ex)
             {
-                ExecutionLog.Error($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.", ex);
+                ExecutionLog.LogError($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.", ex);
                 var drm = DataRouterManager as DataRouterManager;
                 if (drm != null)
                 {
@@ -429,7 +429,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 }
 
                 // fetch data for missing cultures
-                //ExecutionLog.Debug($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}].");
+                //ExecutionLog.LogDebug($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}].");
                 Dictionary<CultureInfo, Task> fetchTasks;
                 if (Id.TypeGroup == ResourceTypeGroup.DRAW)
                 {
@@ -445,18 +445,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 }
                 await Task.WhenAll(fetchTasks.Values).ConfigureAwait(false);
                 LoadedFixtures.AddRange(missingCultures);
-                //ExecutionLog.Debug($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED.");
+                //ExecutionLog.LogDebug($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED.");
             }
             catch (CommunicationException ce)
             {
                 if (ce.Message.Contains("NotFound"))
                 {
                     LoadedFixtures.AddRange(missingCultures);
-                    ExecutionLog.Warn($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH NOT_FOUND.");
+                    ExecutionLog.LogWarning($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH NOT_FOUND.");
                 }
                 else
                 {
-                    ExecutionLog.Warn($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH ERROR.");
+                    ExecutionLog.LogWarning($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH ERROR.");
                     if (((DataRouterManager)DataRouterManager).ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
@@ -465,7 +465,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             }
             catch (Exception ex)
             {
-                ExecutionLog.Error($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.", ex);
+                ExecutionLog.LogError($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.", ex);
                 if (((DataRouterManager)DataRouterManager).ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;

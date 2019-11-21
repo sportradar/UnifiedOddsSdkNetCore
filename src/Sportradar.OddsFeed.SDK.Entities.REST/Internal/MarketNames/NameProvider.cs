@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -26,9 +26,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     public class NameProvider : INameProvider
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(NameProvider));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(NameProvider));
 
         /// <summary>
         /// A <see cref="IMarketCacheProvider"/> instance used to retrieve market descriptors
@@ -152,7 +152,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                 }
                                 catch (Exception ex)
                                 {
-                                    ExecutionLog.Debug("Error fetching all competitor profiles", ex);
+                                    ExecutionLog.LogDebug("Error fetching all competitor profiles", ex);
                                 }
                             }
 
@@ -225,7 +225,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             sb.Append("]. AdditionalMessage=").Append(message);
 
-            ExecutionLog.Error(sb.ToString(), innerException);
+            ExecutionLog.LogError(sb.ToString(), innerException);
 
             if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
             {

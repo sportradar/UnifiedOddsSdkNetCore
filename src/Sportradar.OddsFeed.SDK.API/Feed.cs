@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
@@ -31,9 +31,9 @@ namespace Sportradar.OddsFeed.SDK.API
     public class Feed : EntityDispatcherBase, IOddsFeedV2, IGlobalEventDispatcher
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog Log = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
+        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
 
         /// <summary>
         /// A <see cref="IUnityContainer"/> used to resolve
@@ -136,7 +136,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Error getting available producers.", e);
+                    Log.LogError("Error getting available producers.", e);
                     throw;
                 }
             }
@@ -313,7 +313,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
         private void OnCloseFeed(object sender, FeedCloseEventArgs e)
         {
-            Log.Error("Feed must be closed. Reason: " + e.GetReason());
+            Log.LogError("Feed must be closed. Reason: " + e.GetReason());
 
             try
             {
@@ -322,7 +322,7 @@ namespace Sportradar.OddsFeed.SDK.API
             }
             catch (ObjectDisposedException ex)
             {
-                Log.Warn($"Error happened during closing feed, because the instance {ex.ObjectName} is being disposed.");
+                Log.LogWarning($"Error happened during closing feed, because the instance {ex.ObjectName} is being disposed.");
 
                 if (InternalConfig.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
@@ -331,14 +331,14 @@ namespace Sportradar.OddsFeed.SDK.API
             }
             catch (Exception ex)
             {
-                Log.Warn($"Error happened during closing feed. Exception: {ex}");
+                Log.LogWarning($"Error happened during closing feed. Exception: {ex}");
 
                 if (InternalConfig.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
                 }
             }
-            Log.Info("Feed was successfully disposed.");
+            Log.LogInformation("Feed was successfully disposed.");
         }
 
         /// <summary>
@@ -525,7 +525,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn("An exception has occurred while disposing the feed instance. Exception: ", ex);
+                    Log.LogWarning("An exception has occurred while disposing the feed instance. Exception: ", ex);
                 }
             }
 
@@ -562,7 +562,7 @@ namespace Sportradar.OddsFeed.SDK.API
             }
 
             //SdkInfo.LogSdkVersion(Log);
-            Log.Info($"Feed configuration: [{InternalConfig}]");
+            Log.LogInformation($"Feed configuration: [{InternalConfig}]");
 
             try
             {
@@ -633,17 +633,17 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 return;
             }
-            logger.Info(msg);
+            logger.LogInformation(msg);
             logger = SdkLoggerFactory.GetLoggerForCache(typeof(Feed));
-            logger.Info(msg);
+            logger.LogInformation(msg);
             logger = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(Feed));
-            logger.Info(msg);
+            logger.LogInformation(msg);
             logger = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(Feed));
-            logger.Info(msg);
+            logger.LogInformation(msg);
             logger = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
-            logger.Info(msg);
+            logger.LogInformation(msg);
             logger = SdkLoggerFactory.GetLoggerForStats(typeof(Feed));
-            logger.Info(msg);
+            logger.LogInformation(msg);
         }
     }
 }

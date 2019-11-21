@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.Internal;

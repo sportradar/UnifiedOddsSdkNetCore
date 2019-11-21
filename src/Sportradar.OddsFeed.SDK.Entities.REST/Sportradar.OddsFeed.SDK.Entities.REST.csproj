@@ -2,15 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.45.7233</AssemblyVersion>
-    <FileVersion>1.0.45.7233</FileVersion>
+    <AssemblyVersion>1.0.52.7264</AssemblyVersion>
+    <FileVersion>1.0.52.7264</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Common.Logging" Version="3.4.1" />
-    <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
     <PackageReference Include="Dawn.Guard" Version="1.10.0" />
     <PackageReference Include="Humanizer" Version="2.7.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.1" />
     <PackageReference Include="System.Runtime.Caching" Version="4.6.0" />
   </ItemGroup>
 

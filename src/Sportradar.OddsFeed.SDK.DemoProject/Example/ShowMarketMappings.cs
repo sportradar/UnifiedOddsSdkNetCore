@@ -3,8 +3,9 @@
 */
 using System;
 using System.Globalization;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Dawn;
+using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
@@ -19,53 +20,53 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     /// <seealso cref="MarketWriter"/>
     public class ShowMarketMappings
     {
-        private readonly ILog _log;
+        private readonly ILogger _log;
         private MarketMappingsWriter _marketMappingsWriter;
 
         private readonly TaskProcessor _taskProcessor = new TaskProcessor(TimeSpan.FromSeconds(20));
 
-        public ShowMarketMappings(ILog log)
+        public ShowMarketMappings(ILogger log)
         {
-            _log = log;
+            _log = log ?? new NullLogger<ShowMarketMappings>();
         }
 
         public void Run(MessageInterest messageInterest, CultureInfo culture)
         {
-            _log.Info("Running the OddsFeed SDK Display Markets Names example");
+            _log.LogInformation("Running the OddsFeed SDK Display Markets Names example");
 
-            _log.Info("Retrieving configuration from application configuration file");
+            _log.LogInformation("Retrieving configuration from application configuration file");
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
 
-            _log.Info("Creating Feed instance");
+            _log.LogInformation("Creating Feed instance");
             var oddsFeed = new Feed(configuration);
 
-            _log.Info("Creating IOddsFeedSession");
+            _log.LogInformation("Creating IOddsFeedSession");
             var session = oddsFeed.CreateBuilder()
                 .SetMessageInterest(messageInterest)
                 .Build();
 
-            _marketMappingsWriter = new MarketMappingsWriter(_log, _taskProcessor, culture);
+            _marketMappingsWriter = new MarketMappingsWriter(_taskProcessor, culture, _log);
 
-            _log.Info("Attaching to feed events");
+            _log.LogInformation("Attaching to feed events");
             AttachToFeedEvents(oddsFeed);
             AttachToSessionEvents(session);
 
-            _log.Info("Opening the feed instance");
+            _log.LogInformation("Opening the feed instance");
             oddsFeed.Open();
-            _log.Info("Example successfully started. Hit <enter> to quit");
+            _log.LogInformation("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
             Console.ReadLine();
 
-            _log.Info("Closing / disposing the feed");
+            _log.LogInformation("Closing / disposing the feed");
             oddsFeed.Close();
 
             DetachFromFeedEvents(oddsFeed);
             DetachFromSessionEvents(session);
 
-            _log.Info("Waiting for asynchronous operations to complete");
+            _log.LogInformation("Waiting for asynchronous operations to complete");
             var waitResult = _taskProcessor.WaitForTasks();
-            _log.Info($"Waiting for tasks completed. Result:{waitResult}");
-            _log.Info("Stopped");
+            _log.LogInformation($"Waiting for tasks completed. Result:{waitResult}");
+            _log.LogInformation("Stopped");
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(oddsFeed).NotNull();
 
-            _log.Info("Attaching to feed events");
+            _log.LogInformation("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
             oddsFeed.ProducerDown += OnProducerDown;
             oddsFeed.Disconnected += OnDisconnected;
@@ -91,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(oddsFeed).NotNull();
 
-            _log.Info("Detaching from feed events");
+            _log.LogInformation("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
             oddsFeed.ProducerDown -= OnProducerDown;
             oddsFeed.Disconnected -= OnDisconnected;
@@ -106,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(session).NotNull();
 
-            _log.Info("Attaching to session events");
+            _log.LogInformation("Attaching to session events");
             session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
             session.OnBetCancel += SessionOnBetCancel;
             session.OnBetSettlement += SessionOnBetSettlement;
@@ -125,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Guard.Argument(session).NotNull();
 
-            _log.Info("Detaching from session events");
+            _log.LogInformation("Detaching from session events");
             session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;
             session.OnBetCancel -= SessionOnBetCancel;
             session.OnBetSettlement -= SessionOnBetSettlement;
@@ -185,7 +186,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.Info($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+            _log.LogInformation($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
         }
 
         /// <summary>
@@ -195,7 +196,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnDisconnected(object sender, EventArgs e)
         {
-            _log.Warn("Connection to the feed lost");
+            _log.LogWarning("Connection to the feed lost");
         }
 
         /// <summary>
@@ -205,7 +206,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnClosed(object sender, FeedCloseEventArgs e)
         {
-            _log.Warn($"The feed is closed with the reason: {e.GetReason()}");
+            _log.LogWarning($"The feed is closed with the reason: {e.GetReason()}");
         }
 
         /// <summary>
@@ -215,7 +216,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnProducerDown(object sender, ProducerStatusChangeEventArgs e)
         {
-            _log.Warn($"Producer {e.GetProducerStatusChange().Producer} is down");
+            _log.LogWarning($"Producer {e.GetProducerStatusChange().Producer} is down");
         }
 
         /// <summary>
@@ -225,12 +226,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
         {
-            _log.Info($"Producer {e.GetProducerStatusChange().Producer} is up");
+            _log.LogInformation($"Producer {e.GetProducerStatusChange().Producer} is up");
         }
 
         private void WriteSportEntity(string msgType, ISportEvent message)
         {
-            _log.Info($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}");
+            _log.LogInformation($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}");
         }
     }
 }

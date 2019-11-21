@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// </summary>
     internal class OddsFeedConfiguration : IOddsFeedConfiguration
     {
-        private readonly ILog _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(OddsFeedConfiguration));
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(OddsFeedConfiguration));
 
         /// <summary>
         /// Gets the access token used when accessing feed's REST interface
@@ -163,7 +163,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             NodeId = nodeId;
             if (nodeId < 0)
             {
-                _executionLog.Warn($"Setting nodeId to {nodeId}. Use only positive numbers; negative are reserved for internal use.");
+                _executionLog.LogWarning($"Setting nodeId to {nodeId}. Use only positive numbers; negative are reserved for internal use.");
             }
             ExceptionHandlingStrategy = exceptionHandlingStrategy;
 
@@ -243,7 +243,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             NodeId = nodeId;
             if (nodeId < 0)
             {
-                _executionLog.Warn($"Setting nodeId to {nodeId}. Use only positive numbers; negative are reserved for internal use.");
+                _executionLog.LogWarning($"Setting nodeId to {nodeId}. Use only positive numbers; negative are reserved for internal use.");
             }
             DisabledProducers = disabledProducers != null && disabledProducers.Any()
                 ? new List<int>(disabledProducers)

@@ -3,7 +3,6 @@
 */
 
 using System;
-using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 

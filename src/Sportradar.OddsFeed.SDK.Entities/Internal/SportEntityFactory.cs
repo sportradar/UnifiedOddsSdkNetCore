@@ -7,7 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <seealso cref="ISportEntityFactory" />
     internal class SportEntityFactory : ISportEntityFactory
     {
-        protected readonly ILog ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(SportEntityFactory));
+        protected readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(SportEntityFactory));
         /// <summary>
         /// A <see cref="ISportDataCache"/> instance used to retrieve sport related info
         /// </summary>
@@ -338,7 +338,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             if (competitorCI != null)
             {
-                ExecutionLog.Warn($"Transforming CompetitorCI to TeamCompetitorCI for {teamCompetitorId}");
+                ExecutionLog.LogWarning($"Transforming CompetitorCI to TeamCompetitorCI for {teamCompetitorId}");
                 var teamCI = new TeamCompetitorCI(competitorCI);
                 return BuildTeamCompetitor(teamCI, cultureInfos, rootCompetitionCI);
             }

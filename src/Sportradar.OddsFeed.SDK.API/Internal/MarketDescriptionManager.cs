@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// </summary>
     internal class MarketDescriptionManager : IMarketDescriptionManagerV1
     {
-        private readonly ILog _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(MarketDescriptionManager));
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(MarketDescriptionManager));
 
         private readonly IOddsFeedConfigurationInternal _config;
         private readonly IMarketCacheProvider _marketCacheProvider;
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     throw new ObjectNotFoundException($"Market descriptions({culture}) could not be provided", ex);
                 }
 
-                _executionLog.Warn($"Market descriptions with the {culture} locale could not be provided", ex);
+                _executionLog.LogWarning($"Market descriptions with the {culture} locale could not be provided", ex);
                 return null;
             }
         }
@@ -137,7 +137,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     throw new ObjectNotFoundException($"Market mappings for {marketId} could not be provided{specifiersMessage}", ex);
                 }
 
-                _executionLog.Warn($"Market mappings for the marketId: {marketId} could not be provided{specifiersMessage}", ex);
+                _executionLog.LogWarning($"Market mappings for the marketId: {marketId} could not be provided{specifiersMessage}", ex);
                 return null;
             }
 
@@ -169,7 +169,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="variantValue">The variant value</param>
         public void DeleteVariantMarketDescriptionFromCache(int marketId, string variantValue)
         {
-            _executionLog.Info($"Invokes DeleteVariantMarketDescriptionFromCache for market {marketId} and variant {variantValue}");
+            _executionLog.LogInformation($"Invokes DeleteVariantMarketDescriptionFromCache for market {marketId} and variant {variantValue}");
             var cacheId = VariantMarketDescriptionCache.GetCacheKey(marketId, variantValue);
             ((SdkCache)_variantDescriptionCache).CacheDeleteItem(cacheId, CacheItemType.MarketDescription);
         }

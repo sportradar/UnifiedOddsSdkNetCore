@@ -48,10 +48,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 : null;
             Name = round.name;
             Group = round.group;
-            GroupId = string.IsNullOrEmpty(round.group_id) 
-                ? null 
-                : URN.TryParse(round.group_id, out var groupId) 
-                    ? groupId 
+            GroupId = string.IsNullOrEmpty(round.group_id)
+                ? null
+                : URN.TryParse(round.group_id, out var groupId)
+                    ? groupId
                     : null;
             OtherMatchId = round.other_match_id;
             CupRoundMatches = round.cup_round_matchesSpecified

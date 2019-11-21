@@ -13,9 +13,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             Guard.Argument(!string.IsNullOrWhiteSpace(dirPath));
             Guard.Argument(!string.IsNullOrWhiteSpace(fileName));
-            Contract.Ensures(Contract.Result<Stream>() != null);
 
-            var filePath = dirPath.TrimEnd('/') + "/" + fileName.TrimStart('/');
+            var filePath = dirPath?.TrimEnd('/') + "/" + fileName?.TrimStart('/');
             return OpenFile(filePath);
         }
 
@@ -35,7 +34,6 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             Guard.Argument(!string.IsNullOrWhiteSpace(dirPath));
             Guard.Argument(!string.IsNullOrWhiteSpace(fileName));
-            Contract.Ensures(Contract.Result<string>() != null);
 
             var stream = OpenFile(dirPath, fileName);
             var reader = new StreamReader(stream);

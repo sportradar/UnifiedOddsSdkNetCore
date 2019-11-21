@@ -4,9 +4,11 @@
 using System;
 using System.IO;
 using log4net;
+using log4net.Core;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.Common;
-using LoggingCommon = Common.Logging;
 using SdkCommon = Sportradar.OddsFeed.SDK.Test.Shared;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
@@ -17,7 +19,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         [TestInitialize]
         public void Init()
         {
-            SdkLoggerFactory.Configure(new FileInfo("log4net.sdk.config"), SdkCommon.TestData.SdkTestLogRepositoryName);
+            var services = new ServiceCollection();
+            services.AddLogging(configure => configure.AddLog4Net("log4net.sdk.config"));
+            var servicesProvider = services.BuildServiceProvider();
+            var loggerFactory = servicesProvider.GetService<ILoggerFactory>();
+            var _ = new SdkLoggerFactory(loggerFactory);
         }
 
         private static void PrintLogManagerStatus()
@@ -59,14 +65,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             //}
         }
 
-        private static void LogPrint(LoggingCommon.ILog log)
+        private static void LogPrint(Microsoft.Extensions.Logging.ILogger log)
         {
-            log.Info("info message");
-            log.Error(new InvalidDataException("just testing"));
-            log.Debug("debug message");
-            log.Warn("warn message");
-            log.Error("error message");
-            log.Fatal("fatal message");
+            log.LogInformation("info message");
+            log.LogError(new InvalidDataException("just testing").Message);
+            log.LogDebug("debug message");
+            log.LogWarning("warn message");
+            log.LogError("error message");
+            log.LogCritical("fatal message");
+        }
+
+        [TestMethod]
+        public void SdkLoggerFactoryTest()
+        {
+            PrintLogManagerStatus();
+
+            Assert.IsTrue(LogManager.GetAllRepositories().Length > 0);
+
+            foreach (var loggerRepository in LogManager.GetAllRepositories())
+            {
+                Assert.IsNotNull(loggerRepository);
+                Assert.IsTrue(loggerRepository.GetCurrentLoggers().Length > 0);
+                foreach (var currentLogger in loggerRepository.GetCurrentLoggers())
+                {
+                    Assert.IsNotNull(currentLogger);
+                    currentLogger.Log(typeof(SdkLogTest), Level.Info, "some message", null);
+                }
+            }
         }
     }
 }

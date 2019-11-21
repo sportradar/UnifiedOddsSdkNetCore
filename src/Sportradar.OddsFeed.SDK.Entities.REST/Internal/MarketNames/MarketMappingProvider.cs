@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -26,9 +26,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     public class MarketMappingProvider : IMarketMappingProvider
     {
         /// <summary>
-        /// A <see cref="ILog"/> instance used for execution logging
+        /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILog ExecutionLog = SdkLoggerFactory.GetLogger(typeof(MarketMappingProvider));
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(MarketMappingProvider));
 
         /// <summary>
         /// A <see cref="IMarketCacheProvider"/> instance used to retrieve market descriptors
@@ -125,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 var marketDescriptor = await _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, cultures, true).ConfigureAwait(false);
                 if (marketDescriptor == null)
                 {
-                    ExecutionLog.Warn($"An error occurred getting marketDescription for marketId={_marketId}.");
+                    ExecutionLog.LogWarning($"An error occurred getting marketDescription for marketId={_marketId}.");
                 }
                 return marketDescriptor;
             }
@@ -145,7 +145,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             if (marketDescription.Mappings == null || !marketDescription.Mappings.Any())
             {
-                ExecutionLog.Debug($"An error occurred getting mapped marketId for marketId={_marketId} (no mappings exist).");
+                ExecutionLog.LogDebug($"An error occurred getting mapped marketId for marketId={_marketId} (no mappings exist).");
                 return null;
             }
 
@@ -156,7 +156,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             if (!mappings.Any())
             {
-                ExecutionLog.Debug($"Market with id:{_marketId}, producer:{_producer}, sportId:{_sportId} has no mappings.");
+                ExecutionLog.LogDebug($"Market with id:{_marketId}, producer:{_producer}, sportId:{_sportId} has no mappings.");
                 return null;
             }
 
@@ -238,7 +238,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             sb.Append("]. AdditionalMessage=").Append(message);
 
-            ExecutionLog.Error(sb.ToString(), innerException);
+            ExecutionLog.LogError(sb.ToString(), innerException);
             if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
             {
                 throw new MappingException(message, propertyName, propertyValue, targetTypeName, innerException);
@@ -343,7 +343,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                         }
                         catch (NameExpressionException ex)
                         {
-                            ExecutionLog.Error($"The generation of name for flex score mapped outcome {outcomeId} failed", ex);
+                            ExecutionLog.LogError($"The generation of name for flex score mapped outcome {outcomeId} failed", ex);
                         }
                     }
 
