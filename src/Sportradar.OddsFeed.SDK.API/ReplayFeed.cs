@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.Internal;
 using Unity;
 
@@ -20,8 +22,9 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Initializes a new instance of the <see cref="ReplayFeed"/> class
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfiguration" /> instance representing feed configuration.</param>
-        public ReplayFeed(IOddsFeedConfiguration config)
-            : base(config, true)
+        /// <param name="loggerFactory">A <see cref="ILoggerFactory"/> used to create <see cref="ILogger"/> used within sdk</param>
+        public ReplayFeed(IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null)
+            : base(config, true, loggerFactory)
         {
         }
 

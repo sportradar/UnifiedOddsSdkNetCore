@@ -48,8 +48,9 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
         /// Constructs a new instance of the <see cref="Feed"/> class
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfiguration"/> instance representing feed configuration</param>
-        public FeedExt(IOddsFeedConfiguration config)
-            : base(config)
+        /// <param name="loggerFactory">A <see cref="ILoggerFactory"/> used to create <see cref="ILogger"/> used within sdk</param>
+        public FeedExt(IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null)
+            : base(config, loggerFactory)
         {
         }
 

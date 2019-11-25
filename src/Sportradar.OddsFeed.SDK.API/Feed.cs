@@ -225,7 +225,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfiguration"/> instance representing feed configuration</param>
         /// <param name="isReplay">Value indicating whether the constructed instance will be used to connect to replay server</param>
-        protected Feed(IOddsFeedConfiguration config, bool isReplay)
+        /// <param name="loggerFactory">A <see cref="ILoggerFactory"/> used to create <see cref="ILogger"/> used within sdk</param>
+        protected Feed(IOddsFeedConfiguration config, bool isReplay, ILoggerFactory loggerFactory)
         {
             Guard.Argument(config).NotNull();
 
@@ -239,6 +240,11 @@ namespace Sportradar.OddsFeed.SDK.API
             if (isReplay || InternalConfig.Environment == SdkEnvironment.Replay)
             {
                 InternalConfig.EnableReplayServer();
+            }
+
+            if (loggerFactory != null)
+            {
+                var _ = new SdkLoggerFactory(loggerFactory);
             }
         }
 
@@ -274,8 +280,9 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Constructs a new instance of the <see cref="Feed"/> class
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfiguration"/> instance representing feed configuration</param>
-        public Feed(IOddsFeedConfiguration config)
-            : this(config, false)
+        /// <param name="loggerFactory">A <see cref="ILoggerFactory"/> used to create <see cref="ILogger"/> used within sdk</param>
+        public Feed(IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null)
+            : this(config, false, loggerFactory)
         {
         }
 
