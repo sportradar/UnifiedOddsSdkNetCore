@@ -10,9 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Caching;
-using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Scheduling;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.API.Internal.Replay;
@@ -39,22 +37,50 @@ using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
 using cashout = Sportradar.OddsFeed.SDK.Messages.REST.cashout;
+// ReSharper disable RedundantTypeArgumentsOfMethod
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     internal static class UnityFeedBootstrapper
     {
-        private static readonly ILogger Log = SdkLoggerFactory.GetLogger(typeof(UnityFeedBootstrapper));
+        private static ILogger _log;
+        private static IMetricsRoot _metricsRoot;
 
         private const int RestConnectionFailureLimit = 5;
         private const int RestConnectionFailureTimeoutInSec = 15;
 
-        public static void RegisterBaseTypes(this IUnityContainer container, IOddsFeedConfiguration userConfig)
+        public static void RegisterBaseTypes(this IUnityContainer container, IOddsFeedConfiguration userConfig, ILoggerFactory loggerFactory, IMetricsRoot metricsRoot)
         {
             Guard.Argument(container).NotNull();
             Guard.Argument(userConfig).NotNull();
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+            if(loggerFactory != null)
+            {
+                var _ = new SdkLoggerFactory(loggerFactory);
+            }
+            _log = SdkLoggerFactory.GetLogger(typeof(UnityFeedBootstrapper));
+
+            if(metricsRoot == null)
+            {
+                _metricsRoot = new MetricsBuilder()
+                    .Configuration.Configure(
+                        options =>
+                        {
+                            options.DefaultContextLabel = "UF SDK .NET Core";
+                            options.Enabled = true;
+                            options.ReportingEnabled = true;
+                        })
+                    .OutputMetrics.AsPlainText()
+                    .Build();
+            }
+            else
+            {
+                _metricsRoot = metricsRoot;
+            }
+
+            container.RegisterInstance<IMetricsRoot>(_metricsRoot, new ContainerControlledLifetimeManager());
 
             //register common types
             container.RegisterType<HttpClient, HttpClient>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
@@ -62,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var seed = (int)DateTime.Now.Ticks;
             var rand = new Random(seed);
             var value = rand.Next();
-            Log.LogInformation($"Initializing sequence generator with MinValue={value}, MaxValue={long.MaxValue}");
+            _log.LogInformation($"Initializing sequence generator with MinValue={value}, MaxValue={long.MaxValue}");
             container.RegisterType<ISequenceGenerator, IncrementalSequenceGenerator>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
@@ -240,7 +266,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public static void RegisterAdditionalTypes(this IUnityContainer container)
         {
             var config = container.Resolve<IOddsFeedConfigurationInternal>();
-            RegisterSdkStatisticsWriter(container, config);
+            RegisterSdkStatisticsWriter(container);
         }
 
         private static void RegisterNamedValuesProvider(IUnityContainer container, List<CultureInfo> locales, IOddsFeedConfigurationInternal config)
@@ -599,6 +625,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                   new InjectionConstructor(
                                            new ResolvedParameter<ICacheManager>(),
                                            new ResolvedParameter<IProducerManager>(),
+                                           new ResolvedParameter<IMetricsRoot>(),
                                            new ResolvedParameter<ExceptionHandlingStrategy>(),
                                            config.DefaultLocale,
                                            new ResolvedParameter<IDataProvider<SportEventSummaryDTO>>("sportEventSummaryProvider"),
@@ -924,7 +951,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     config));
         }
 
-        private static void RegisterSdkStatisticsWriter(IUnityContainer container, IOddsFeedConfigurationInternal config)
+        private static void RegisterSdkStatisticsWriter(IUnityContainer container)
         {
             var statusProviders = new List<IHealthStatusProvider>
             {
@@ -937,41 +964,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 container.Resolve<IProfileCache>(),
                 container.Resolve<ISportEventStatusCache>()
             };
-
-            //container.RegisterType<MetricsReporter, //MetricsReporter>(new ContainerControlledLifetimeManager(),
-            //    new InjectionConstructor(
-            //        //MetricsReportPrintMode.Full,
-            //        2,
-            //        true));
-            //var //MetricReporter = container.Resolve<MetricsReporter>();
-
-            //var //Metrics = new //MetricsReporter(MetricsReportPrintMode.Compact);
-            var metrics = new MetricsBuilder()
-                .Configuration.Configure(
-                    options =>
-                    {
-                        options.DefaultContextLabel = "UfSdkNetCore";
-                        options.GlobalTags.Add("app", "UfSdkNetCore");
-                        options.Enabled = true;
-                        options.ReportingEnabled = true;
-                    }) // configure other options
-                .Report.ToTextFile( "metrics.txt", TimeSpan.FromSeconds(30))
-                .OutputMetrics.AsPlainText()
-                .Build();
-            //Metric.Config.WithAllCounters().WithReporting(rep => rep.WithReport(metricReporter, TimeSpan.FromSeconds(config.StatisticsTimeout)));
-            
-            var scheduler = new AppMetricsTaskScheduler(
-                TimeSpan.FromSeconds(config.StatisticsTimeout),
-                async () =>
-                {
-                    await Task.WhenAll(metrics.ReportRunner.RunAllAsync());
-                });
-            scheduler.Start();
-
-
-
-
-            //container.RegisterInstance(metricReporter, new ContainerControlledLifetimeManager());
 
             foreach (var sp in statusProviders)
             {

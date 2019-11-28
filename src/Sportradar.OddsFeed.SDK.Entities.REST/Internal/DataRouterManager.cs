@@ -38,11 +38,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Occurs when data from Sports API arrives
         /// </summary>
         public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
-
         /// <summary>
         /// The execution log
         /// </summary>
         private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(DataRouterManager));
+        /// <summary>
+        /// A <see cref="IMetricsRoot"/> used to record metrics
+        /// </summary>
+        private readonly IMetricsRoot _metricsRoot;
+        /// <summary>
+        /// Default context for metrics
+        /// </summary>
+        private const string MetricsContext = "DataRouterManager";
         /// <summary>
         /// The sport event summary provider
         /// </summary>
@@ -171,6 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
         /// <param name="producerManager">A <see cref="IProducerManager"/> used to get WNS producer</param>
+        /// <param name="metricsRoot">A <see cref="IMetricsRoot"/> used to record metrics</param>
         /// <param name="exceptionHandlingStrategy">An <see cref="Common.ExceptionHandlingStrategy"/> used to handle exception when fetching data</param>
         /// <param name="defaultLocale">An <see cref="CultureInfo"/> representing the default locale</param>
         /// <param name="sportEventSummaryProvider">The sport event summary provider</param>
@@ -200,6 +208,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="availableSportTournamentsProvider">The sports available tournaments provider</param>
         public DataRouterManager(ICacheManager cacheManager,
                                  IProducerManager producerManager,
+                                 IMetricsRoot metricsRoot,
                                  ExceptionHandlingStrategy exceptionHandlingStrategy,
                                  CultureInfo defaultLocale,
                                  IDataProvider<SportEventSummaryDTO> sportEventSummaryProvider,
@@ -229,6 +238,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                                  IDataProvider<EntityList<TournamentInfoDTO>> availableSportTournamentsProvider)
         {
             Guard.Argument(cacheManager).NotNull();
+            Guard.Argument(producerManager).NotNull();
+            Guard.Argument(metricsRoot).NotNull();
             Guard.Argument(sportEventSummaryProvider).NotNull();
             Guard.Argument(sportEventFixtureProvider).NotNull();
             Guard.Argument(sportEventFixtureChangeFixtureProvider).NotNull();
@@ -258,6 +269,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _cacheManager = cacheManager;
             var wnsProducer = producerManager.Get(7);
             _isWnsAvailable = wnsProducer.IsAvailable && !wnsProducer.IsDisabled;
+            _metricsRoot = metricsRoot;
             ExceptionHandlingStrategy = exceptionHandlingStrategy;
             _defaultLocale = defaultLocale;
             _sportEventSummaryProvider = sportEventSummaryProvider;
@@ -327,9 +339,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetSportEventSummaryAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions{Context = "DataRouterManager", Name= "GetSportEventSummaryAsync", MeasurementUnit = Unit.Calls});
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions{Context = "DataRouterManager", Name = "GetSportEventSummaryAsync", MeasurementUnit = Unit.Requests};
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions{Context = MetricsContext, Name= "GetSportEventSummaryAsync", MeasurementUnit = Unit.Calls});
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions{Context = MetricsContext, Name = "GetSportEventSummaryAsync", MeasurementUnit = Unit.Requests};
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetSportEventSummaryAsync for id={id} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -369,9 +381,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetSportEventFixtureAsync(URN id, CultureInfo culture, bool useCachedProvider, ISportEventCI requester)
         {  
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportEventFixtureAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportEventFixtureAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetSportEventFixtureAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetSportEventFixtureAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing {(useCachedProvider ? "cached" : "non-cached")} GetSportEventFixtureAsync for id={id} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -411,9 +423,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetAllTournamentsForAllSportAsync(CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetAllTournamentsForAllSportAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetAllTournamentsForAllSportAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetAllTournamentsForAllSportAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetAllTournamentsForAllSportAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
             {
                 WriteLog($"Executing GetAllTournamentsForAllSportAsync for culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -450,9 +462,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="culture">The language to be fetched</param>
         public async Task GetSportCategoriesAsync(URN id, CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportCategoriesAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportCategoriesAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetSportCategoriesAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetSportCategoriesAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetSportCategoriesAsync for id={id} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -489,9 +501,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetAllSportsAsync(CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetAllSportsAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetAllSportsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetAllSportsAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetAllSportsAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
             {
                 WriteLog($"Executing GetAllSportsAsync for culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -528,9 +540,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The list of the sport event ids with the sportId each belongs to</returns>
         public async Task<IEnumerable<Tuple<URN, URN>>> GetLiveSportEventsAsync(CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetLiveSportEventsAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetLiveSportEventsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetLiveSportEventsAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetLiveSportEventsAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
             {
                 WriteLog($"Executing GetLiveSportEventsAsync for culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -575,9 +587,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The list of the sport event ids with the sportId it belongs to</returns>
         public async Task<IEnumerable<Tuple<URN, URN>>> GetSportEventsForDateAsync(DateTime date, CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportEventsForDateAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportEventsForDateAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{date.Date} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetSportEventsForDateAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetSportEventsForDateAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{date.Date} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -624,9 +636,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The list of ids of the sport events with the sportId belonging to specified tournament</returns>
         public async Task<IEnumerable<Tuple<URN, URN>>> GetSportEventsForTournamentAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportEventsForTournamentAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportEventsForTournamentAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetSportEventsForTournamentAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetSportEventsForTournamentAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetSportEventsForTournamentAsync for tournament id={id} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -679,9 +691,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetPlayerProfileAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetPlayerProfileAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetPlayerProfileAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetPlayerProfileAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetPlayerProfileAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetPlayerProfileAsync for id={id} and culture={culture.TwoLetterISOLanguageName}.");
 
@@ -720,9 +732,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetCompetitorAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetCompetitorAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetCompetitorAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetCompetitorAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetCompetitorAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetCompetitorAsync for id={id} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -779,9 +791,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The list of ids of the seasons for specified tournament</returns>
         public async Task<IEnumerable<URN>> GetSeasonsForTournamentAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSeasonsForTournamentAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSeasonsForTournamentAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetSeasonsForTournamentAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetSeasonsForTournamentAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                WriteLog($"Executing GetSeasonsForTournamentAsync for tournament id={id} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -841,9 +853,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetInformationAboutOngoingEventAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetInformationAboutOngoingEventAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetInformationAboutOngoingEventAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetInformationAboutOngoingEventAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
                WriteLog($"Executing GetInformationAboutOngoingEventAsync for id={id} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -891,9 +903,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>Task</returns>
         public async Task GetMarketDescriptionsAsync(CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetMarketDescriptionsAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetMarketDescriptionsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetMarketDescriptionsAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetMarketDescriptionsAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
             {
                WriteLog($"Executing GetMarketDescriptionsAsync for culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -933,9 +945,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="System.NotImplementedException"></exception>
         public async Task GetVariantMarketDescriptionAsync(int id, string variant, CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetVariantMarketDescriptionAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetVariantMarketDescriptionAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id}-{variant} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetVariantMarketDescriptionAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetVariantMarketDescriptionAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id}-{variant} [{culture.TwoLetterISOLanguageName}]"))
             {
                WriteLog($"Executing GetVariantMarketDescriptionAsync for id={id}, variant={variant} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -973,9 +985,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="System.NotImplementedException"></exception>
         public async Task GetVariantDescriptionsAsync(CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetVariantDescriptionsAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetAllTournamentGetVariantDescriptionsAsyncsForAllSportAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetVariantDescriptionsAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetAllTournamentGetVariantDescriptionsAsyncsForAllSportAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
             {
                WriteLog($"Executing GetVariantDescriptionsAsync for culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -1021,9 +1033,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 //WriteLog("Calling GetDrawSummaryAsync is ignored since producer WNS is not available.", true);
                 return;
             }
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetDrawSummaryAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetDrawSummaryAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{drawId} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetDrawSummaryAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetDrawSummaryAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{drawId} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetDrawSummaryAsync for id={drawId} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -1069,9 +1081,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 //WriteLog("Calling GetDrawFixtureAsync is ignored since producer WNS is not available.", true);
                 return;
             }
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetDrawFixtureAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetDrawFixtureAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{drawId} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetDrawFixtureAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetDrawFixtureAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{drawId} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetDrawFixtureAsync for id={drawId} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -1117,9 +1129,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 //WriteLog("Calling GetLotteryScheduleAsync is ignored since producer WNS is not available.", true);
                 return;
             }
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetLotteryScheduleAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetLotteryScheduleAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{lotteryId} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetLotteryScheduleAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetLotteryScheduleAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{lotteryId} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetLotteryScheduleAsync for id={lotteryId} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -1163,9 +1175,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 //WriteLog("Calling GetAllLotteriesAsync is ignored since producer WNS is not available.", true);
                 return null;
             }
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetAllLotteriesAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetAllLotteriesAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetAllLotteriesAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetAllLotteriesAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
             {
                 WriteLog($"Executing GetAllLotteriesAsync for culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -1210,9 +1222,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The available selections for event</returns>
         public async Task<IAvailableSelections> GetAvailableSelectionsAsync(URN id)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetAvailableSelectionsAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetAvailableSelectionsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetAvailableSelectionsAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetAvailableSelectionsAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id}"))
             {
                 WriteLog($"Executing GetAvailableSelectionsAsync for id={id}.", true);
 
@@ -1246,9 +1258,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public async Task<ICalculation> CalculateProbability(IEnumerable<ISelection> selections)
         {
             var enumerable = selections.ToList();
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "CalculateProbability", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "CalculateProbability", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"selections:{enumerable.Count}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "CalculateProbability", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "CalculateProbability", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"selections:{enumerable.Count}"))
             {
                 WriteLog("Executing CalculateProbability.", true);
 
@@ -1277,9 +1289,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
         public async Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetFixtureChangesAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetFixtureChangesAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetFixtureChangesAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetFixtureChangesAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
             {
                 WriteLog("Executing GetFixtureChangesAsync.", true);
 
@@ -1315,9 +1327,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The list of the sport event ids with the sportId it belongs to</returns>
         public async Task<IEnumerable<Tuple<URN, URN>>> GetListOfSportEventsAsync(int startIndex, int limit, CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetListOfSportEventsAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetListOfSportEventsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{startIndex}+{limit} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetListOfSportEventsAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetListOfSportEventsAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{startIndex}+{limit} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetListOfSportEventsAsync with startIndex={startIndex}, limit={limit} and culture={culture.TwoLetterISOLanguageName}.", true);
 
@@ -1370,9 +1382,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The list of the available tournament ids with the sportId it belongs to</returns>
         public async Task<IEnumerable<Tuple<URN, URN>>> GetSportAvailableTournamentsAsync(URN sportId, CultureInfo culture)
         {
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportAvailableTournamentsAsync", MeasurementUnit = Unit.Calls });
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportAvailableTournamentsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{sportId} [{culture.TwoLetterISOLanguageName}]"))
+            _metricsRoot.Measure.Meter.Mark(new MeterOptions { Context = MetricsContext, Name = "GetSportAvailableTournamentsAsync", MeasurementUnit = Unit.Calls });
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetSportAvailableTournamentsAsync", MeasurementUnit = Unit.Requests };
+            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{sportId} [{culture.TwoLetterISOLanguageName}]"))
             {
                 WriteLog($"Executing GetSportAvailableTournamentsAsync with sportId={sportId} and culture={culture.TwoLetterISOLanguageName}.", true);
 

@@ -2,17 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.81.7268</AssemblyVersion>
-    <FileVersion>1.0.81.7268</FileVersion>
+    <AssemblyVersion>1.0.93.7271</AssemblyVersion>
+    <FileVersion>1.0.93.7271</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics" Version="3.1.0" />
-    <PackageReference Include="App.Metrics.AspNetCore" Version="3.1.0" />
-    <PackageReference Include="App.Metrics.Core" Version="3.1.0" />
-    <PackageReference Include="App.Metrics.Health.Core" Version="3.1.0" />
-    <PackageReference Include="App.Metrics.Reporting.TextFile" Version="3.1.0" />
-    <PackageReference Include="CommonServiceLocator" Version="2.0.5" />
+    <PackageReference Include="App.Metrics" Version="3.2.0" />
+    <PackageReference Include="App.Metrics.Core" Version="3.2.0" />
+    <PackageReference Include="App.Metrics.Health.Core" Version="3.2.0" />
     <PackageReference Include="Dawn.Guard" Version="1.10.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.1" />
     <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />

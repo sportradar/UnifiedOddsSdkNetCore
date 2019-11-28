@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         bool StatisticsEnabled { get; }
 
         /// <summary>
-        /// Gets the timeout for automatically collecting statistics
+        /// Gets the timeout for automatically collecting statistics (in seconds)
         /// </summary>
         int StatisticsTimeout { get; }
 

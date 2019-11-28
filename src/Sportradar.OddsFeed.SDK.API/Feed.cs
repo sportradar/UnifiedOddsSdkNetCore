@@ -5,8 +5,14 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using App.Metrics;
+using App.Metrics.Formatters.Json.Extensions;
+using App.Metrics.Scheduling;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
@@ -33,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
+        private static ILogger _log = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
 
         /// <summary>
         /// A <see cref="IUnityContainer"/> used to resolve
@@ -136,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 }
                 catch (Exception e)
                 {
-                    Log.LogError("Error getting available producers.", e);
+                    _log.LogError("Error getting available producers.", e);
                     throw;
                 }
             }
@@ -221,31 +227,48 @@ namespace Sportradar.OddsFeed.SDK.API
         private readonly object _lockInitialized = new object();
 
         /// <summary>
+        /// A <see cref="IMetricsRoot"/> used to provide metrics within sdk
+        /// </summary>
+        private readonly IMetricsRoot _metricsRoot;
+        /// <summary>
+        /// A <see cref="AppMetricsTaskScheduler"/> used to schedule task to log sdk metrics
+        /// </summary>
+        private readonly AppMetricsTaskScheduler _metricsTaskScheduler;
+        /// <summary>
+        /// An <see cref="ILogger"/> used to log metrics
+        /// </summary>
+        private readonly ILogger _metricsLogger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Feed"/> class
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfiguration"/> instance representing feed configuration</param>
         /// <param name="isReplay">Value indicating whether the constructed instance will be used to connect to replay server</param>
         /// <param name="loggerFactory">A <see cref="ILoggerFactory"/> used to create <see cref="ILogger"/> used within sdk</param>
-        protected Feed(IOddsFeedConfiguration config, bool isReplay, ILoggerFactory loggerFactory)
+        /// <param name="metricsRoot">A <see cref="IMetricsRoot"/> used to provide metrics within sdk</param>
+        protected Feed(IOddsFeedConfiguration config, bool isReplay, ILoggerFactory loggerFactory, IMetricsRoot metricsRoot)
         {
             Guard.Argument(config).NotNull();
-
-            LogInit();
 
             FeedInitialized = false;
 
             UnityContainer = new UnityContainer();
-            UnityContainer.RegisterBaseTypes(config);
+            UnityContainer.RegisterBaseTypes(config, loggerFactory, metricsRoot);
             InternalConfig = UnityContainer.Resolve<IOddsFeedConfigurationInternal>();
             if (isReplay || InternalConfig.Environment == SdkEnvironment.Replay)
             {
                 InternalConfig.EnableReplayServer();
             }
 
-            if (loggerFactory != null)
-            {
-                var _ = new SdkLoggerFactory(loggerFactory);
-            }
+            _log = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
+
+            LogInit();
+
+            _metricsRoot = UnityContainer.Resolve<IMetricsRoot>();
+            _metricsLogger = SdkLoggerFactory.GetLoggerForStats(typeof(Feed));
+            _metricsTaskScheduler = new AppMetricsTaskScheduler(
+                TimeSpan.FromSeconds(InternalConfig.StatisticsTimeout),
+                async () => { await LogMetricsAsync(); });
         }
 
         /// <summary>
@@ -281,8 +304,9 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfiguration"/> instance representing feed configuration</param>
         /// <param name="loggerFactory">A <see cref="ILoggerFactory"/> used to create <see cref="ILogger"/> used within sdk</param>
-        public Feed(IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null)
-            : this(config, false, loggerFactory)
+        /// <param name="metricsRoot">A <see cref="IMetricsRoot"/> used to provide metrics within sdk</param>
+        public Feed(IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null, IMetricsRoot metricsRoot = null)
+            : this(config, false, loggerFactory, metricsRoot)
         {
         }
 
@@ -320,7 +344,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
         private void OnCloseFeed(object sender, FeedCloseEventArgs e)
         {
-            Log.LogError("Feed must be closed. Reason: " + e.GetReason());
+            _log.LogError("Feed must be closed. Reason: " + e.GetReason());
 
             try
             {
@@ -329,7 +353,7 @@ namespace Sportradar.OddsFeed.SDK.API
             }
             catch (ObjectDisposedException ex)
             {
-                Log.LogWarning($"Error happened during closing feed, because the instance {ex.ObjectName} is being disposed.");
+                _log.LogWarning($"Error happened during closing feed, because the instance {ex.ObjectName} is being disposed.");
 
                 if (InternalConfig.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
@@ -338,14 +362,14 @@ namespace Sportradar.OddsFeed.SDK.API
             }
             catch (Exception ex)
             {
-                Log.LogWarning($"Error happened during closing feed. Exception: {ex}");
+                _log.LogWarning($"Error happened during closing feed. Exception: {ex}");
 
                 if (InternalConfig.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
                 }
             }
-            Log.LogInformation("Feed was successfully disposed.");
+            _log.LogInformation("Feed was successfully disposed.");
         }
 
         /// <summary>
@@ -519,6 +543,8 @@ namespace Sportradar.OddsFeed.SDK.API
             _feedRecoveryManager.CloseFeed -= OnCloseFeed;
             _feedRecoveryManager.Close();
 
+            _metricsTaskScheduler.Dispose();
+
             foreach (var session in Sessions)
             {
                 session.Close();
@@ -532,7 +558,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 }
                 catch (Exception ex)
                 {
-                    Log.LogWarning("An exception has occurred while disposing the feed instance. Exception: ", ex);
+                    _log.LogWarning("An exception has occurred while disposing the feed instance. Exception: ", ex);
                 }
             }
 
@@ -569,7 +595,7 @@ namespace Sportradar.OddsFeed.SDK.API
             }
 
             //SdkInfo.LogSdkVersion(Log);
-            Log.LogInformation($"Feed configuration: [{InternalConfig}]");
+            _log.LogInformation($"Feed configuration: [{InternalConfig}]");
 
             try
             {
@@ -588,6 +614,11 @@ namespace Sportradar.OddsFeed.SDK.API
 
                 var interests = Sessions.Select(s => ((OddsFeedSession) s).MessageInterest).ToList();
                 _feedRecoveryManager.Open(interests);
+
+                if (InternalConfig.StatisticsEnabled)
+                {
+                    _metricsTaskScheduler.Start();
+                }
             }
             catch (CommunicationException ex)
             {
@@ -651,6 +682,27 @@ namespace Sportradar.OddsFeed.SDK.API
             logger.LogInformation(msg);
             logger = SdkLoggerFactory.GetLoggerForStats(typeof(Feed));
             logger.LogInformation(msg);
+        }
+
+        private Task LogMetricsAsync()
+        {
+            if (!InternalConfig.StatisticsEnabled)
+            {
+                _log.LogDebug("Metrics logging is not enabled.");
+                return Task.FromResult(false);
+            }
+
+            var snapshot = _metricsRoot.Snapshot.Get();
+            snapshot.ToMetric();
+
+            foreach (var formatter in _metricsRoot.OutputMetricsFormatters)
+            {
+                using var stream = new MemoryStream();
+                formatter.WriteAsync(stream, snapshot);
+                var result = Encoding.UTF8.GetString(stream.ToArray());
+                _metricsLogger.LogInformation(result);
+            }
+            return Task.FromResult(true);
         }
     }
 }
