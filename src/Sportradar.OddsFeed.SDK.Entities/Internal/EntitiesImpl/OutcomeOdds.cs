@@ -12,10 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// </summary>
     internal class OutcomeOdds : OutcomeProbabilities, IOutcomeOdds
     {
-        /// <summary>
-        /// Gets the odds for the current <see cref="IOutcomeOdds" /> instance
-        /// </summary>
-        public double Odds { get; }
+        private double _odds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OutcomeOdds" /> class
@@ -38,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                              IOutcomeDefinition outcomeDefinition)
             : base(id, active, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
-            Odds = odds;
+            _odds = odds;
         }
 
         /// <summary>
@@ -50,10 +47,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         {
             if (oddsDisplayType == OddsDisplayType.Decimal)
             {
-                return Odds;
+                return _odds;
             }
 
-            return (double?) ConvertEuOddsToUs((decimal)Odds);
+            return (double?) ConvertEuOddsToUs((decimal)_odds);
         }
 
         private static decimal? ConvertEuOddsToUs(decimal oddsEu)
@@ -69,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
             else
             {
-                oddUs = (-100) / (oddsEu - 1);
+                oddUs = -100 / (oddsEu - 1);
             }
 
             return oddUs;

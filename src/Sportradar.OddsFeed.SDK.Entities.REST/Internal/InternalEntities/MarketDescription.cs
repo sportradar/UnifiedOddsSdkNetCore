@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
@@ -21,14 +20,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         private readonly IDictionary<CultureInfo, string> _descriptions;
 
         public long Id { get; }
-
-        [Obsolete("Use OutcomeType")]
-        public string IncludesOutcomesOfType =>
-            OutcomeType == null
-                ? null
-                : OutcomeType == SdkInfo.FreeTextVariantValue
-                    ? SdkInfo.OutcometextVariantValue
-                    : "sr:" + OutcomeType;
 
         public string OutcomeType { get; }
 

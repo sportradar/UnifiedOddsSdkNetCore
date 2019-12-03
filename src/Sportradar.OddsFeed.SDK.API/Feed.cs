@@ -462,29 +462,6 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Constructs a <see cref="IOddsFeedConfiguration"/> instance from provided information
         /// </summary>
         /// <returns>A <see cref="IOddsFeedConfiguration"/> instance created from provided information</returns>
-        [Obsolete("Use GetConfigurationBuilder")]
-        public static IConfigurationAccessTokenSetter CreateConfigurationBuilder()
-        {
-            return new OddsFeedConfigurationBuilder(null);
-        }
-
-        /// <summary>
-        /// Constructs a <see cref="IConfigurationBuilder" /> instance, which already contains information read from the configuration (app.config) file
-        /// </summary>
-        /// <returns>A <see cref="IConfigurationBuilder" /> instance, which already contains information read from the configuration (app.config) file</returns>
-        /// <exception cref="InvalidOperationException">The configuration could not be loaded, or the requested section does not exist in the config file</exception>
-        [Obsolete("Use GetConfigurationBuilder")]
-        public static IOddsFeedConfigurationBuilder GetConfigurationBuilderFromConfig()
-        {
-            //var section = OddsFeedConfigurationSection.GetSection();
-
-            return new OddsFeedConfigurationBuilder(new ConfigurationSectionProvider());
-        }
-
-        /// <summary>
-        /// Constructs a <see cref="IOddsFeedConfiguration"/> instance from provided information
-        /// </summary>
-        /// <returns>A <see cref="IOddsFeedConfiguration"/> instance created from provided information</returns>
         public static ITokenSetter GetConfigurationBuilder()
         { 
             return new TokenSetter(new ConfigurationSectionProvider());

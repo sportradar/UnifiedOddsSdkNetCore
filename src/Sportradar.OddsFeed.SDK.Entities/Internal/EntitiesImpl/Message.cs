@@ -22,16 +22,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         {
             Guard.Argument(timestamp).NotNull();
 
-            Timestamp = timestamp.Created;
             Timestamps = timestamp;
             Producer = producer;
         }
-
-        /// <summary>
-        /// Gets the value specifying when the message was generated in the milliseconds since EPOCH UTC
-        /// </summary>
-        [Obsolete]
-        public long Timestamp { get; }
 
         /// <summary>
         /// Gets the timestamps when the message was generated, sent, received and dispatched by the sdk

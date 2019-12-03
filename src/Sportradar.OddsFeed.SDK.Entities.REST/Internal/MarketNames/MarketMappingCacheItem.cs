@@ -13,9 +13,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
     internal class MarketMappingCacheItem
     {
-        [Obsolete("Changed with ProducerIds property")]
-        public int ProducerId { get; }
-
         internal IEnumerable<int> ProducerIds { get; }
 
         public URN SportId { get; }
@@ -38,7 +35,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             Guard.Argument(dto).NotNull();
 
-            ProducerId = dto.ProducerId;
             ProducerIds = dto.ProducerIds;
             SportId = dto.SportId;
             OrgMarketId = dto.OrgMarketId;

@@ -4,7 +4,6 @@
 
 // ReSharper disable InconsistentNaming
 
-using System;
 using System.ComponentModel;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
@@ -231,41 +230,6 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     }
 
     public partial class sportTournamentsEndpoint : RestMessage
-    {
-    }
-
-    [Obsolete("Not used")]
-    public partial class teamExtended
-    {
-    }
-
-    [Obsolete("Not used")]
-    public partial class playerSubstitute
-    {
-    }
-
-    [Obsolete("Not used")]
-    public partial class playerLineup
-    {
-    }
-
-    [Obsolete("Not used")]
-    public partial class resultEndpoint
-    {
-    }
-
-    [Obsolete("Not used")]
-    public partial class resultsEndpoint
-    {
-    }
-
-    [Obsolete("Not used")]
-    public partial class venueSummaryEndpoint
-    {
-    }
-
-    [Obsolete("Not used")]
-    public partial class ResponseType
     {
     }
 }

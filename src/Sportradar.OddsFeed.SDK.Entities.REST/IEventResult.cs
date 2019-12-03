@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -23,13 +23,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The position of the result</value>
         int? Position { get; }
-
-        /// <summary>
-        /// Gets the points of the result
-        /// </summary>
-        /// <value>The points of the result</value>
-        [Obsolete]
-        int? Points { get; }
 
         /// <summary>
         /// Gets the points
@@ -68,13 +61,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string StatusComment { get; }
 
         /// <summary>
-        /// Gets the sprint of the result
-        /// </summary>
-        /// <value>The sprint of the result</value>
-        [Obsolete]
-        int? Sprint { get; }
-
-        /// <summary>
         /// Gets the sprint
         /// </summary>
         /// <value>The sprint</value>
@@ -85,13 +71,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The sprint ranking</value>
         int? SprintRanking { get; }
-
-        /// <summary>
-        /// Gets the climber
-        /// </summary>
-        /// <value>The climber</value>
-        [Obsolete]
-        int? Climber { get; }
 
         /// <summary>
         /// Gets the climber
@@ -114,13 +93,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the score of the away competitor competing on the associated sport event
         /// </summary>
         decimal? AwayScore { get; }
-
-        /// <summary>
-        /// Gets the match status
-        /// </summary>
-        /// <value>The match status</value>
-        [Obsolete("Use GetMatchStatusAsync method instead")]
-        int MatchStatus { get; }
 
         /// <summary>
         /// Asynchronously gets the match status

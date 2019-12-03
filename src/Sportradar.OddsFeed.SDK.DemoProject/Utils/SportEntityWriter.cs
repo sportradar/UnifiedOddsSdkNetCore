@@ -139,7 +139,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 eventStatus = competitionStatus.Status.ToString();
                 if (competitionStatus.EventResults != null && competitionStatus.EventResults.Any())
                 {
-                    eventResults = string.Join(",", competitionStatus.EventResults.Select(s => $"E{s.Id}={s.HomeScore}:{s.AwayScore};{s.MatchStatus}/{s.Status}"));
+                    eventResults = string.Join(",", competitionStatus.EventResults.Select(s => $"E{s.Id}={s.HomeScore}:{s.AwayScore};{s.GetMatchStatusAsync(_culture)}/{s.Status}"));
                     var eventResultMatchStatus = _taskProcessor.GetTaskResult(competitionStatus.EventResults.First().GetMatchStatusAsync(_culture));
                     var x = eventResultMatchStatus?.Id;
                 }
@@ -188,13 +188,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 }
                 if (matchStatus.PeriodScores != null && matchStatus.PeriodScores.Any())
                 {
-                    periodScores = string.Join(",", matchStatus.PeriodScores.Select(s => $"P{s.Number}={s.HomeScore}:{s.AwayScore};{s.MatchStatusCode}/{s.Type}"));
+                    periodScores = string.Join(",", matchStatus.PeriodScores.Select(s => $"P{s.Number}={s.HomeScore}:{s.AwayScore};{s.GetMatchStatusAsync(_culture)}/{s.Type}"));
                     var periodScoreMatchStatus = _taskProcessor.GetTaskResult(matchStatus.PeriodScores.First().GetMatchStatusAsync(_culture));
                     var x = periodScoreMatchStatus?.Id;
                 }
                 if (matchStatus.EventResults != null && matchStatus.EventResults.Any())
                 {
-                    eventResults = string.Join(",", matchStatus.EventResults.Select(s => $"E{s.Id}={s.HomeScore}:{s.AwayScore};{s.MatchStatus}/{s.Status}"));
+                    eventResults = string.Join(",", matchStatus.EventResults.Select(s => $"E{s.Id}={s.HomeScore}:{s.AwayScore};{s.GetMatchStatusAsync(_culture)}/{s.Status}"));
                     var eventResultMatchStatus = _taskProcessor.GetTaskResult(matchStatus.EventResults.First().GetMatchStatusAsync(_culture));
                     var x = eventResultMatchStatus?.Id;
                 }

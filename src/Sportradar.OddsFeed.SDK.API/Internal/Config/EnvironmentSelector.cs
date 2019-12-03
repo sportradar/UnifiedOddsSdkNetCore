@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 
@@ -35,16 +35,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
 
             _accessToken = accessToken;
             _sectionProvider = sectionProvider;
-        }
-
-        /// <summary>
-        /// Returns a <see cref="IConfigurationBuilder" /> with properties set to values needed to access integration environment
-        /// </summary>
-        /// <returns>A <see cref="IConfigurationBuilder" /> with properties set to values needed to access integration environment</returns>
-        [Obsolete("Use SelectIntegration()")]
-        public IConfigurationBuilder SelectStaging()
-        {
-            return SelectIntegration();
         }
 
         /// <summary>

@@ -32,12 +32,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public int? Position { get; }
 
         /// <summary>
-        /// Gets the points of the result
-        /// </summary>
-        /// <value>The points of the result</value>
-        public int? Points { get; }
-
-        /// <summary>
         /// Gets the points
         /// </summary>
         /// <value>The points</value>
@@ -74,12 +68,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public string StatusComment { get; }
 
         /// <summary>
-        /// Gets the sprint of the result
-        /// </summary>
-        /// <value>The sprint of the result</value>
-        public int? Sprint { get; }
-
-        /// <summary>
         /// Gets the sprint
         /// </summary>
         /// <value>The sprint</value>
@@ -95,12 +83,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets the climber
         /// </summary>
         /// <value>The climber</value>
-        public int? Climber { get; }
-
-        /// <summary>
-        /// Gets the climber
-        /// </summary>
-        /// <value>The climber</value>
         public decimal? ClimberDecimal { get; }
 
         /// <summary>
@@ -108,13 +90,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <value>The climber ranking</value>
         public int? ClimberRanking { get; }
-
-        /// <summary>
-        /// Gets the match status
-        /// </summary>
-        /// <value>The match status</value>
-        [Obsolete("Use GetMatchStatusAsync method instead")]
-        public int MatchStatus => _matchStatusCode;
 
         /// <summary>
         /// Gets the score of the home competitor competing on the associated sport event
@@ -127,6 +102,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <value>The away score.</value>
         public decimal? AwayScore { get; }
+
+        /// <summary>
+        /// Gets the grid
+        /// </summary>
+        /// <value>The grid</value>
+        public int? Grid { get; }
 
         /// <summary>
         /// Asynchronously gets the match status
@@ -147,17 +128,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             Id = dto.Id;
             Position = dto.Position;
-            Points = dto.Points;
             PointsDecimal = dto.PointsDecimal;
             WcPoints = dto.WcPoints;
             Time = dto.Time;
             TimeRanking = dto.TimeRanking;
             Status = dto.Status;
             StatusComment = dto.StatusComment;
-            Sprint = dto.Sprint;
             SprintDecimal = dto.SprintDecimal;
             SprintRanking = dto.SprintRanking;
-            Climber = dto.Climber;
             ClimberDecimal = dto.ClimberDecimal;
             ClimberRanking = dto.ClimberRanking;
             _matchStatusCode = dto.MatchStatus;
@@ -165,11 +143,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             AwayScore = dto.AwayScore;
             Grid = dto.Grid;
         }
-
-        /// <summary>
-        /// Gets the grid
-        /// </summary>
-        /// <value>The grid</value>
-        public int? Grid { get; }
     }
 }

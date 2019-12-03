@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using Sportradar.OddsFeed.SDK.Common;
 // ReSharper disable InconsistentNaming
 
@@ -90,12 +90,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets the file path to the configuration file for the log4net repository used by the SDK
         /// </summary>
         string SdkLogConfigPath { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the unified feed integration environment should be used
-        /// </summary>
-        [Obsolete("Use UseIntegrationEnvironment")]
-        bool UseStagingEnvironment { get; }
 
         /// <summary>
         /// Gets a value indicating whether the unified feed integration environment should be used

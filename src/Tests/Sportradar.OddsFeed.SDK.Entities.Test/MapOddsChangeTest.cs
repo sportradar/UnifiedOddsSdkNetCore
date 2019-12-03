@@ -111,7 +111,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
             Assert.IsNotNull(entity);
             Assert.AreEqual(entity.Id, record.id, "Outcome Id does not match");
             Assert.AreEqual(entity.Active, record.activeSpecified ? (bool?)(record.active == 1) : null);
-            Assert.AreEqual(entity.Odds, record.odds);
             Assert.AreEqual(entity.Probabilities, record.probabilitiesSpecified ? (double?) record.probabilities : null);
             Assert.AreEqual(entity.GetOdds(OddsDisplayType.Decimal), record.odds);
             Assert.IsNotNull(entity.GetOdds(OddsDisplayType.American));

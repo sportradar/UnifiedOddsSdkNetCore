@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Dawn;
@@ -96,16 +96,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
 
             return name;
-        }
-
-        /// <summary>
-        /// Asynchronously gets the mapped Id of the specified outcome
-        /// </summary>
-        [Obsolete("Return only the first mapping. Use GetMappedOutcomeIdsAsync for all possible.")]
-        public virtual async Task<IOutcomeMapping> GetMappedOutcomeIdAsync()
-        {
-            var mappedId = await _mappingProvider.GetMappedOutcomeIdAsync(Id, _cultures).ConfigureAwait(false);
-            return mappedId?.First();
         }
 
         /// <summary>

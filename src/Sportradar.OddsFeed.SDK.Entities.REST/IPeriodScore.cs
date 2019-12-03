@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -32,13 +32,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Number of the period
         /// </summary>
         int? Number { get; }
-
-        /// <summary>
-        /// Gets the match status code
-        /// </summary>
-        /// <value>The match status code</value>
-        [Obsolete("Use GetMatchStatusAsync method instead")]
-        int? MatchStatusCode { get; }
 
         /// <summary>
         /// Asynchronously gets the match status

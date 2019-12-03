@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -71,16 +71,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync((int) _marketDescription.Id, _specifiers, new[] {culture}, true).Result;
 
             return marketDescription?.GetName(culture);
-        }
-
-        /// <summary>
-        /// Returns an indication of which kind of outcomes the associated market includes
-        /// </summary>
-        /// <returns>An indication of which kind of outcomes the associated market includes</returns>
-        [Obsolete("Use OutcomeType")]
-        public string GetIncludesOutcomesOfType()
-        {
-            return _marketDescription.IncludesOutcomesOfType;
         }
 
         /// <summary>

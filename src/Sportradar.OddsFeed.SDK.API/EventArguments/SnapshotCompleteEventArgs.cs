@@ -3,7 +3,6 @@
 */
 using System;
 using Dawn;
-using System.Text;
 using Sportradar.OddsFeed.SDK.API.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
@@ -71,16 +70,6 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         internal MessageInterest GetMessageInterest()
         {
             return _interest;
-        }
-
-        /// <summary>
-        /// Gets the raw xml message received from the feed
-        /// </summary>
-        /// <returns>Returns the raw xml message received from the feed</returns>
-        [Obsolete("The message was moved to event")]
-        public string GetRawMessage()
-        {
-            return _rawMessage == null ? null : Encoding.UTF8.GetString(_rawMessage);
         }
     }
 }

@@ -331,7 +331,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         {
             var dtoMarketId = dto.MarketSubTypeId == null ? dto.MarketTypeId.ToString() : $"{dto.MarketTypeId}:{dto.MarketSubTypeId}";
             Assert.AreEqual(msg.market_id, dtoMarketId);
-            Assert.AreEqual(msg.product_id, dto.ProducerId);
             Assert.AreEqual(msg.sport_id, dto.SportId.ToString());
             Assert.AreEqual(msg.sov_template, dto.SovTemplate);
             Assert.AreEqual(msg.valid_for, dto.ValidFor);

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
-using System.Text;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -72,16 +71,6 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
                     ? _defaultCultures
                     : new []{culture},
                 _rawMessage);
-        }
-
-        /// <summary>
-        /// Gets the raw xml message received from the feed
-        /// </summary>
-        /// <returns>Returns the raw xml message received from the feed</returns>
-        [Obsolete("The message was moved to event")]
-        public string GetRawMessage()
-        {
-            return _rawMessage == null ? null : Encoding.UTF8.GetString(_rawMessage);
         }
     }
 }

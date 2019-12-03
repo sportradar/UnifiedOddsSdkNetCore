@@ -11,14 +11,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
     /// <summary>
     /// Represents mapping information used to map markets and outright to the sport / producer to which they belong
     /// </summary>
-    public interface IMarketMappingData {
-
-        /// <summary>
-        /// Gets the id of the producer to which the associated market / outright belongs to
-        /// </summary>
-        [Obsolete("Changed with ProducerIds property")]
-        int ProducerId { get; }
-
+    public interface IMarketMappingData 
+    {
         /// <summary>
         /// Gets the ids of the producers to which the associated market / outright belongs to
         /// </summary>

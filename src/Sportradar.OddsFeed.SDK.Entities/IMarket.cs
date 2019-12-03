@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -41,13 +41,6 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language in which to get the name</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the async operation</returns>
         Task<string> GetNameAsync(CultureInfo culture);
-
-        /// <summary>
-        /// Asynchronously gets the mapping Id of the specified market
-        /// </summary>
-        /// <returns>Returns the mapping Id of the specified market</returns>
-        [Obsolete("Return only the first mapping. Use GetMappedMarketIdsAsync for all possible.")]
-        Task<IMarketMapping> GetMappedMarketIdAsync();
 
         /// <summary>
         /// Asynchronously gets the mapping Ids of the specified market

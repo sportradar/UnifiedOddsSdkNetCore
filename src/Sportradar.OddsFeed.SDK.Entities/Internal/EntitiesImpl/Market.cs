@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Dawn;
@@ -134,16 +134,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
 
             return name;
-        }
-
-        /// <summary>
-        /// Asynchronously gets the mapping Id of the specified market
-        /// </summary>
-        [Obsolete("Return only the first mapping. Use GetMappedMarketIdsAsync for all possible.")]
-        public async Task<IMarketMapping> GetMappedMarketIdAsync()
-        {
-            var mappedIds = await MappingProvider.GetMappedMarketIdAsync(_cultures).ConfigureAwait(false);
-            return mappedIds?.First();
         }
 
         /// <summary>

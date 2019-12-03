@@ -16,9 +16,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// </summary>
     public class MarketMappingDTO
     {
-        [Obsolete("Changed with ProducerIds property")]
-        internal int ProducerId { get; }
-
         internal IEnumerable<int> ProducerIds { get; }
 
         internal URN SportId { get; }
@@ -42,7 +39,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(!string.IsNullOrEmpty(mapping.sport_id));
             Guard.Argument(!string.IsNullOrEmpty(mapping.market_id));
 
-            ProducerId = mapping.product_id;
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)
                 ? new[] { mapping.product_id }
                 : mapping.product_ids.Split(new[] {SdkInfo.MarketMappingProductsDelimiter}, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
@@ -73,7 +69,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(!string.IsNullOrEmpty(mapping.sport_id));
             Guard.Argument(!string.IsNullOrEmpty(mapping.market_id));
 
-            ProducerId = mapping.product_id;
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)
                 ? new[] { mapping.product_id }
                 : mapping.product_ids.Split(new[] { SdkInfo.MarketMappingProductsDelimiter }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);

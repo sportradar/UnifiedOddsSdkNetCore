@@ -47,13 +47,6 @@ namespace Sportradar.OddsFeed.SDK.Messages
         bool IsProducerDown { get; }
 
         /// <summary>
-        /// Gets the time of last alive message received from feed
-        /// </summary>
-        /// <value>The time of last alive message</value>
-        [Obsolete]
-        DateTime TimeOfLastAlive { get; }
-
-        /// <summary>
         /// Gets the last timestamp before disconnect for this producer
         /// </summary>
         /// <value>The last timestamp before disconnect</value>

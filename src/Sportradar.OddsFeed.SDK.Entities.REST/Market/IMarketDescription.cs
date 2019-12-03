@@ -2,7 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
@@ -12,8 +11,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
     /// <summary>
     /// Defines a contract implemented by classes representing market description
     /// </summary>
-    public interface IMarketDescription {
-
+    public interface IMarketDescription
+    {
         /// <summary>
         /// Gets the id of the market described by the current instance
         /// </summary>
@@ -42,12 +41,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
         /// additional information about the market.
         /// </summary>
         IEnumerable<IMarketAttribute> Attributes { get; }
-
-        /// <summary>
-        /// Gets the includes_outcomes_of_type market attribute - an indication of which type of outcomes the market includes
-        /// </summary>
-        [Obsolete("Use OutcomeType")]
-        string IncludesOutcomesOfType { get; }
 
         /// <summary>
         /// Gets the outcome_type market attribute - an indication of which type of outcomes the market includes

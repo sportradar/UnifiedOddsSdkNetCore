@@ -20,12 +20,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         private readonly IMappingValidator _validator;
 
         /// <summary>
-        /// Gets the id of the producer to which the associated market / outright belongs to
-        /// </summary>
-        [Obsolete("Changed with ProducerIds property")]
-        public int ProducerId { get; }
-
-        /// <summary>
         /// Gets the ids of the producers to which the associated market / outright belongs to
         /// </summary>
         /// <value>The producer ids</value>
@@ -74,7 +68,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         {
             Guard.Argument(cacheItem).NotNull();
 
-            ProducerId = cacheItem.ProducerId;
             ProducerIds = cacheItem.ProducerIds;
             SportId = cacheItem.SportId;
             MarketTypeId = cacheItem.MarketTypeId;

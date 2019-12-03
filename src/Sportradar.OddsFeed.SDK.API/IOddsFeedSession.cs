@@ -10,7 +10,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Represents a session to the odds feed
     /// </summary>
-    
     public interface IOddsFeedSession : IEntityDispatcher<ISportEvent>
     {
         /// <summary>

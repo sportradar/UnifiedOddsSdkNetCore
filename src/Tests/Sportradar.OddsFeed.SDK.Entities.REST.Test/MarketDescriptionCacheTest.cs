@@ -116,7 +116,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         {
             var ciMarketId = ci.MarketSubTypeId == null ? ci.MarketTypeId.ToString() : $"{ci.MarketTypeId}:{ci.MarketSubTypeId}";
             Assert.AreEqual(msg.market_id, ciMarketId);
-            Assert.AreEqual(msg.product_id, ci.ProducerId);
             if (!string.IsNullOrEmpty(msg.product_ids))
             {
                 var ids = msg.product_ids.Split(new[] {SdkInfo.MarketMappingProductsDelimiter}, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();

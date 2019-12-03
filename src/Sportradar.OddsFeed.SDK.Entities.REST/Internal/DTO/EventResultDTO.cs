@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -24,13 +24,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <value>The position</value>
         public int? Position { get; }
-
-        /// <summary>
-        /// Gets the points
-        /// </summary>
-        /// <value>The points</value>
-        [Obsolete]
-        public int? Points { get; }
 
         /// <summary>
         /// Gets the points
@@ -72,13 +65,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the sprint
         /// </summary>
         /// <value>The sprint</value>
-        [Obsolete]
-        public int? Sprint { get; }
-
-        /// <summary>
-        /// Gets the sprint
-        /// </summary>
-        /// <value>The sprint</value>
         public decimal? SprintDecimal { get; }
 
         /// <summary>
@@ -86,13 +72,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <value>The sprint ranking</value>
         public int? SprintRanking { get; }
-
-        /// <summary>
-        /// Gets the climber
-        /// </summary>
-        /// <value>The climber</value>
-        [Obsolete]
-        public int? Climber { get; }
 
         /// <summary>
         /// Gets the climber
@@ -152,17 +131,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Id = stageResultCompetitor.id;
             Position = stageResultCompetitor.positionSpecified ? stageResultCompetitor.position : (int?) null;
             PointsDecimal = stageResultCompetitor.pointsSpecified ? (decimal) stageResultCompetitor.points : (decimal?) null;
-            Points = PointsDecimal.HasValue && PointsDecimal.Value % 1 == 0 ? (int?) PointsDecimal.Value : null;
             WcPoints = stageResultCompetitor.wc_pointsSpecified ? (decimal?) stageResultCompetitor.wc_points : null;
             Time = stageResultCompetitor.time;
             TimeRanking = stageResultCompetitor.time_rankingSpecified ? stageResultCompetitor.time_ranking : (int?) null;
             Status = stageResultCompetitor.status;
             StatusComment = stageResultCompetitor.status_comment;
             SprintDecimal = stageResultCompetitor.sprintSpecified ? (decimal)stageResultCompetitor.sprint : (decimal?) null;
-            Sprint = SprintDecimal.HasValue && SprintDecimal.Value % 1 == 0 ? (int?) SprintDecimal.Value : null;
             SprintRanking = stageResultCompetitor.sprint_rankingSpecified ? stageResultCompetitor.sprint_ranking : (int?) null;
             ClimberDecimal = stageResultCompetitor.climberSpecified ? (decimal)stageResultCompetitor.climber : (decimal?) null;
-            Climber = ClimberDecimal.HasValue && ClimberDecimal.Value % 1 == 0 ? (int?) ClimberDecimal.Value : null;
             ClimberRanking = stageResultCompetitor.climber_rankingSpecified ? stageResultCompetitor.climber_ranking : (int?) null;
             Grid = stageResultCompetitor.gridSpecified ? stageResultCompetitor.grid : (int?) null;
         }

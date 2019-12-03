@@ -311,7 +311,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     // is not subscribed and ongoing recovery operation must be interrupted
                     var previousAliveTimestamp = _timestampTracker.SystemAliveTimestamp;
                     _timestampTracker.ProcessSystemAlive(alive);
-                    _producer.SetTimeOfLastAlive(TimeProviderAccessor.Current.Now);
 
                     // if current status is NotStarted or Error just start the recovery
                     if (Status == ProducerRecoveryStatus.NotStarted || Status == ProducerRecoveryStatus.Error)

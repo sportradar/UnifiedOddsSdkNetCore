@@ -96,13 +96,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         internal IEnumerable<string> Scope { get; }
 
         /// <summary>
-        /// Gets the time of last alive message received from feed
-        /// </summary>
-        /// <value>The time of last alive message</value>
-        [Obsolete]
-        public DateTime TimeOfLastAlive { get; private set; }
-
-        /// <summary>
         /// Gets the recovery info about last recovery attempt
         /// </summary>
         /// <value>The recovery info about last recovery attempt</value>
@@ -137,11 +130,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             IsAvailable = active;
             IsDisabled = false;
             IsProducerDown = true;
-            TimeOfLastAlive = DateTime.MinValue;
             LastTimestampBeforeDisconnect = DateTime.MinValue;
 
-            var tmp = ApiUrl.EndsWith("/") ? ApiUrl.Remove(apiUrl.Length - 1) : ApiUrl;
-            Code = tmp.Split('/').Last();
+            if (!string.IsNullOrEmpty(apiUrl))
+            {
+                var tmp = ApiUrl.EndsWith("/") ? ApiUrl.Remove(apiUrl.Length - 1) : ApiUrl;
+                Code = tmp.Split('/').Last();
+            }
 
             MaxInactivitySeconds = maxInactivitySeconds;
             MaxRecoveryTime = maxRecoveryTime;
@@ -158,15 +153,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         internal void SetDisabled(bool disabled)
         {
             IsDisabled = disabled;
-        }
-
-        /// <summary>
-        /// Sets the value indicating when the last alive message for this producer was received
-        /// </summary>
-        /// <param name="time">A <see cref="DateTime"/> specifying the time of last alive message</param>
-        internal void SetTimeOfLastAlive(DateTime time)
-        {
-            TimeOfLastAlive = time;
         }
 
         /// <summary>

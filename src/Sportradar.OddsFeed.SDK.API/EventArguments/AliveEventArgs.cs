@@ -3,7 +3,6 @@
 */
 using System;
 using Dawn;
-using System.Text;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
@@ -52,16 +51,6 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         public IAlive GetAlive()
         {
             return _messageMapper.MapAlive(_feedMessage);
-        }
-
-        /// <summary>
-        /// Gets the raw xml message received from the feed
-        /// </summary>
-        /// <returns>Returns the raw xml message received from the feed</returns>
-        [Obsolete("The message was moved to event")]
-        public string GetRawMessage()
-        {
-            return _rawMessage == null ? null : Encoding.UTF8.GetString(_rawMessage);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Common;
@@ -32,13 +32,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// </summary>
     public interface IEnvironmentSelector
     {
-        /// <summary>
-        /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment
-        /// </summary>
-        /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment</returns>
-        [Obsolete("Use IEnvironmentSelectorV1.SelectIntegration()")]
-        IConfigurationBuilder SelectStaging();
-        
         /// <summary>
         /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment
         /// </summary>

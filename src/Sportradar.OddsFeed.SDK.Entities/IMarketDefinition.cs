@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
@@ -19,13 +19,6 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <param name="culture">The culture in which the name template should be provided</param>
         /// <returns>The unmodified market name template</returns>
         string GetNameTemplate(CultureInfo culture);
-
-        /// <summary>
-        /// Returns an indication of which kind of outcomes the associated market includes
-        /// </summary>
-        /// <returns>An indication of which kind of outcomes the associated market includes</returns>
-        [Obsolete("Use GetOutcomeType")]
-        string GetIncludesOutcomesOfType();
 
         /// <summary>
         /// Returns an indication of which kind of outcomes the associated market includes

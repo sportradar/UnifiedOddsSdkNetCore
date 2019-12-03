@@ -122,13 +122,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets a value indicating whether the unified feed integration environment should be used
         /// </summary>
-        [ConfigurationProperty("useStagingEnvironment", IsRequired = false, DefaultValue = false)]
-        [Obsolete("Use configuration property useIntegrationEnvironment")]
-        public bool UseStagingEnvironment => (bool) base["useStagingEnvironment"];
-
-        /// <summary>
-        /// Gets a value indicating whether the unified feed integration environment should be used
-        /// </summary>
         [ConfigurationProperty("useIntegrationEnvironment", IsRequired = false, DefaultValue = false)]
         public bool UseIntegrationEnvironment => (bool) base["useIntegrationEnvironment"];
 
