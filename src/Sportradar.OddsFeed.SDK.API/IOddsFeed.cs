@@ -3,6 +3,7 @@
 */
 using System;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
+using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -72,5 +73,25 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Closes the current feed by closing all created sessions and disposing of all resources associated with the current instance
         /// </summary>
         void Close();
+
+        /// <summary>
+        /// Gets a <see cref="IBookmakerDetails"/> instance used to get info about bookmaker and token used
+        /// </summary>
+        IBookmakerDetails BookmakerDetails { get; }
+
+        /// <summary>
+        /// Gets a <see cref="IMarketDescriptionManager"/> instance used to get info about available markets, and to get translations for markets and outcomes including outrights
+        /// </summary>
+        IMarketDescriptionManager MarketDescriptionManager { get; }
+
+        /// <summary>
+        /// Gets a <see cref="ICustomBetManager"/> instance used to perform various custom bet operations
+        /// </summary>
+        ICustomBetManager CustomBetManager { get; }
+
+        /// <summary>
+        /// Occurs when a requested event recovery completes
+        /// </summary>
+        event EventHandler<EventRecoveryCompletedEventArgs> EventRecoveryCompleted;
     }
 }

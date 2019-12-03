@@ -18,13 +18,13 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <param name="accessToken">The access token used to access feed resources</param>
         /// <returns>The <see cref="IEnvironmentSelector"/> instance allowing the selection of target environment</returns>
-        IEnvironmentSelectorV1 SetAccessToken(string accessToken);
+        IEnvironmentSelector SetAccessToken(string accessToken);
 
         /// <summary>
         /// Sets the access token used to access feed resources (AMQP broker, Sports API, ...) to value read from configuration file
         /// </summary>
         /// <returns>The <see cref="IEnvironmentSelector"/> instance allowing the selection of target environment</returns>
-        IEnvironmentSelectorV1 SetAccessTokenFromConfigFile();
+        IEnvironmentSelector SetAccessTokenFromConfigFile();
     }
 
     /// <summary>
@@ -38,6 +38,12 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment</returns>
         [Obsolete("Use IEnvironmentSelectorV1.SelectIntegration()")]
         IConfigurationBuilder SelectStaging();
+        
+        /// <summary>
+        /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment
+        /// </summary>
+        /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment</returns>
+        IConfigurationBuilder SelectIntegration();
 
         /// <summary>
         /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access production environment
@@ -56,18 +62,6 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <returns>A <see cref="ICustomConfigurationBuilder"/> with properties set to values needed to access replay server</returns>
         ICustomConfigurationBuilder SelectCustom();
-    }
-
-    /// <summary>
-    /// Defines a contract implemented by classes taking care of the 2nd step when building configuration - selecting the environment.
-    /// </summary>
-    public interface IEnvironmentSelectorV1 : IEnvironmentSelector
-    {
-        /// <summary>
-        /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment
-        /// </summary>
-        /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access integration environment</returns>
-        IConfigurationBuilder SelectIntegration();
     }
 
     /// <summary>

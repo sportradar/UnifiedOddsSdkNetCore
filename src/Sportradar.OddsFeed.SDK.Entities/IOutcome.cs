@@ -38,5 +38,10 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// </summary>
         /// <returns>Returns the mapping Ids of the specified outcome</returns>
         Task<IEnumerable<IOutcomeMapping>> GetMappedOutcomeIdsAsync();
+
+        /// <summary>
+        /// Gets the associated outcome definition instance
+        /// </summary>
+        IOutcomeDefinition OutcomeDefinition { get; }
     }
 }

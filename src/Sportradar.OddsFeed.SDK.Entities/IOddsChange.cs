@@ -26,5 +26,11 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// Gets a <see cref="INamedValue"/> indicating the odds change was triggered by a possible event
         /// </summary>
         INamedValue BettingStatus { get; }
+
+        /// <summary>
+        /// Gets the odds generation properties (contains a few key-parameters that can be used in a client’s own special odds model, or even offer spread betting bets based on it)
+        /// </summary>
+        /// <value>The odds generation properties</value>
+        IOddsGeneration OddsGenerationProperties { get; }
     }
 }

@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Represents a TV channel
     /// </summary>
     /// <seealso cref="ITvChannel" />
-    internal class TvChannel : EntityPrinter, ITvChannelV1
+    internal class TvChannel : EntityPrinter, ITvChannel
     {
         /// <summary>
         /// The <see cref="Name"/> property backing field
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public DateTime? StartTime => _startTime;
 
         /// <summary>
-        /// Gets the stream url of the channel represented by the current <see cref="ITvChannelV1"/> instance
+        /// Gets the stream url of the channel represented by the current <see cref="ITvChannel"/> instance
         /// </summary>
         public string StreamUrl => _streamUrl;
 

@@ -3,6 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
@@ -30,7 +31,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the id of the other match
         /// </summary>
         string OtherMatchId { get; }
-
 
         /// <summary>
         /// Gets the name of the current <see cref="IRound"/> per locale
@@ -72,5 +72,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <param name="culture">The culture</param>
         /// <returns>Return the phase or group long name if exists, or null</returns>
         string GetPhaseOrGroupLongName(CultureInfo culture);
+
+        /// <summary>
+        /// Gets the id of the group associated with the current round
+        /// </summary>
+        URN GroupId { get; }
+
+        /// <summary>
+        /// Gets the phase of the associated round
+        /// </summary>
+        string Phase { get; }
     }
 }

@@ -21,5 +21,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the <see cref="IEnumerable{ICompetitor}"/> representing group competitors
         /// </summary>
         IEnumerable<ICompetitor> Competitors { get; }
+
+        /// <summary>
+        /// Gets the id of the group represented by the current <see cref="IGroup"/> instance
+        /// </summary>
+
+        string Id { get; }
     }
 }

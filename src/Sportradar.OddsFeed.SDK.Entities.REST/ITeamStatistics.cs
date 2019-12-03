@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
@@ -45,5 +46,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The total count of corner kicks</value>
         int? CornerKicks { get; }
+
+        /// <summary>
+        /// Gets the team id
+        /// </summary>
+        /// <value>The team id</value>
+        URN TeamId { get; }
+
+        /// <summary>
+        /// Gets the name
+        /// </summary>
+        /// <value>The name</value>
+        string Name { get; }
     }
 }

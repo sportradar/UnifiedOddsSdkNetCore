@@ -15,5 +15,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         [DataMember]
         string Qualifier { get; }
+
+        /// <summary>
+        /// Gets the division
+        /// </summary>
+        int? Division { get; }
     }
 }

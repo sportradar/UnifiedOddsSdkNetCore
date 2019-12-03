@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// A <see cref="IOddsFeed"/> implementation acting as an entry point to the odds feed SDK
     /// </summary>
-    public class Feed : EntityDispatcherBase, IOddsFeedV2, IGlobalEventDispatcher
+    public class Feed : EntityDispatcherBase, IOddsFeed, IGlobalEventDispatcher
     {
         /// <summary>
         /// A <see cref="ILogger"/> instance used for execution logging

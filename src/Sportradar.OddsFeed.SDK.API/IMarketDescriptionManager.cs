@@ -45,5 +45,12 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <remarks>To be used when manually changed market data via betradar control</remarks>
         /// <returns>Returns true if the action succeeded</returns>
         Task<bool> LoadMarketDescriptionsAsync();
+
+        /// <summary>
+        /// Deletes the variant market description from cache
+        /// </summary>
+        /// <param name="marketId">The market identifier</param>
+        /// <param name="variantValue">The variant value</param>
+        void DeleteVariantMarketDescriptionFromCache(int marketId, string variantValue);
     }
 }

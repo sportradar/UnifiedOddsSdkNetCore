@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Provides coverage information
     /// </summary>
     /// <seealso cref="ICoverageInfo" />
-    internal class CoverageInfo : EntityPrinter, ICoverageInfoV1
+    internal class CoverageInfo : EntityPrinter, ICoverageInfo
     {
         /// <summary>
         /// The <see cref="Level"/> property backing field

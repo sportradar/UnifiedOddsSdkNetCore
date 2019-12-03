@@ -80,5 +80,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The venue</value>
         IVenue Venue { get; }
+
+        /// <summary>
+        /// Gets the gender
+        /// </summary>
+        /// <value>The gender</value>
+        string Gender { get; }
+
+        /// <summary>
+        /// Gets the race driver profile
+        /// </summary>
+        /// <value>The race driver profile</value>
+        IRaceDriverProfile RaceDriverProfile { get; }
     }
 }

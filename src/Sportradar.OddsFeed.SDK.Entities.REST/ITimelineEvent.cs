@@ -71,12 +71,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the x
         /// </summary>
         /// <value>The x</value>
-        int X { get; }
+        int? X { get; }
         /// <summary>
         /// Gets the y
         /// </summary>
         /// <value>The y</value>
-        int Y { get; }
+        int? Y { get; }
         /// <summary>
         /// Gets the time
         /// </summary>
@@ -97,5 +97,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The player</value>
         IPlayer Player { get; }
+        /// <summary>
+        /// Gets the match status code
+        /// </summary>
+        /// <value>The match status code</value>
+        int? MatchStatusCode { get; }
+        /// <summary>
+        /// Gets the match clock
+        /// </summary>
+        /// <value>The match clock</value>
+        string MatchClock { get; }
     }
 }

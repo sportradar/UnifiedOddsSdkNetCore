@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// The run-time implementation of the <see cref="IMarketDescriptionManager"/> interface
     /// </summary>
-    internal class MarketDescriptionManager : IMarketDescriptionManagerV1
+    internal class MarketDescriptionManager : IMarketDescriptionManager
     {
         private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(MarketDescriptionManager));
 

@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="Competitor" />
     /// <seealso cref="ITeamCompetitor" />
-    internal class TeamCompetitor : Competitor, ITeamCompetitorV1
+    internal class TeamCompetitor : Competitor, ITeamCompetitor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamCompetitor"/> class

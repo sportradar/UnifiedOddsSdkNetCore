@@ -10,7 +10,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
-    internal class TimelineEvent : ITimelineEventV1
+    internal class TimelineEvent : ITimelineEvent
     {
         private readonly int _x;
         private readonly int _y;
@@ -25,8 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public HomeAway? Team { get; }
         public string Type { get; }
         public string Value { get; }
-        int ITimelineEvent.X => _x;
-        int ITimelineEvent.Y => _y;
+        int? ITimelineEvent.X => _x;
+        int? ITimelineEvent.Y => _y;
         public int? X { get; }
         public int? Y { get; }
         public DateTime Time { get; }

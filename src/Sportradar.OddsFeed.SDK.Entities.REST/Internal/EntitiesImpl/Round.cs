@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Provides basic tournament round information
     /// </summary>
     /// <seealso cref="IRound" />
-    internal class Round : EntityPrinter, IRoundV2
+    internal class Round : EntityPrinter, IRound
     {
         /// <summary>
         /// Gets the type of the round

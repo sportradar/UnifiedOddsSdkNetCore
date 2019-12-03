@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// <summary>
     /// A implementation of <see cref="IReference" /> used to return results to user
     /// </summary>
-    internal class Reference : EntityPrinter, IReferenceV1
+    internal class Reference : EntityPrinter, IReference
     {
         /// <summary>
         /// Gets the Betradar id for this instance if provided amount reference ids

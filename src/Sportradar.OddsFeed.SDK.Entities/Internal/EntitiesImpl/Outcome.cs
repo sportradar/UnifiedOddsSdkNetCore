@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// <summary>
     /// Represents a betting market outcome (selection)
     /// </summary>
-    internal abstract class Outcome : IOutcomeV1
+    internal abstract class Outcome : IOutcome
     {
         private readonly IEnumerable<CultureInfo> _cultures;
 
@@ -34,8 +34,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// A <see cref="IDictionary{TKey,TValue}"/> containing names in different languages
         /// </summary>
         private readonly IDictionary<CultureInfo, string> _names = new ConcurrentDictionary<CultureInfo, string>();
-
-        private IOutcomeDefinition _outcomeDefinition;
 
         /// <summary>
         /// Gets the value uniquely identifying the current <see cref="Outcome" /> instance
@@ -118,18 +116,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var mappedIds = await _mappingProvider.GetMappedOutcomeIdAsync(Id, _cultures).ConfigureAwait(false);
             return mappedIds;
         }
-
-        //TODO: remove this
-        //public async Task<IOutcomeDefinition> GetOutcomeDefinitionAsync()
-        //{
-        //    if (_outcomeDefinition != null)
-        //    {
-        //        return _outcomeDefinition;
-        //    }
-
-        //    _outcomeDefinition = await _nameProvider.GetOutcomeNameAsync(Id, _cultures).ConfigureAwait(false);
-
-        //    return _outcomeDefinition;
-        //}
     }
 }

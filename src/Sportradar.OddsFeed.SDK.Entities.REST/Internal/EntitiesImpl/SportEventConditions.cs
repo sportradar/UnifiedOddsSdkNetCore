@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Provides information about sport event conditions
     /// </summary>
     /// <seealso cref="ISportEventConditions" />
-    internal class SportEventConditions : EntityPrinter, ISportEventConditionsV1
+    internal class SportEventConditions : EntityPrinter, ISportEventConditions
     {
         /// <summary>
         /// Gets a <see cref="string" /> specifying the attendance of the associated sport event

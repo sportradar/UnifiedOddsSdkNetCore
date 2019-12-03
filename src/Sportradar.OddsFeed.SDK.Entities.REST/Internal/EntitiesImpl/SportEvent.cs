@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Represents all sport events(races, matches, tournaments, ....)
     /// </summary>
     /// <seealso cref="EntityPrinter" />
-    internal class SportEvent : EntityPrinter, ISportEventV1
+    internal class SportEvent : EntityPrinter, ISportEvent
     {
         /// <summary>
         /// The sport identifier

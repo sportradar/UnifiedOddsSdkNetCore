@@ -43,5 +43,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <param name="culture">The culture used to get match status id and description</param>
         /// <returns>Returns the match status id and description in selected culture</returns>
         Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture);
+
+        /// <summary>
+        /// Gets the penalty score of the home competitor competing on the associated sport event (for Ice Hockey)
+        /// </summary>
+        int? HomePenaltyScore { get; }
+
+        /// <summary>
+        /// Gets the penalty score of the away competitor competing on the associated sport event (for Ice Hockey)
+        /// </summary>
+        int? AwayPenaltyScore { get; }
+
+        /// <summary>
+        /// Gets the indicator wither the event is decided by fed
+        /// </summary>
+        bool? DecidedByFed { get; }
     }
 }

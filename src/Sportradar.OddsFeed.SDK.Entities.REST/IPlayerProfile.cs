@@ -49,5 +49,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the returned nationality</param>
         /// <returns>The nationality of the player represented by the current instance in  the language specified by <code>culture</code></returns>
         string GetNationality(CultureInfo culture);
+
+        /// <summary>
+        /// Gets the gender
+        /// </summary>
+        [DataMember]
+        string Gender { get; }
     }
 }

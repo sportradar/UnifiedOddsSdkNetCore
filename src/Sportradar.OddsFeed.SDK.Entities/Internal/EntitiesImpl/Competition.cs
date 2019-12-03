@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// <summary>
     /// Represents a sport event regardless to which sport it belongs
     /// </summary>
-    internal abstract class Competition : SportEvent, ICompetitionV1
+    internal abstract class Competition : SportEvent, ICompetition
     {
         internal readonly ISportEventStatusCache SportEventStatusCache;
 

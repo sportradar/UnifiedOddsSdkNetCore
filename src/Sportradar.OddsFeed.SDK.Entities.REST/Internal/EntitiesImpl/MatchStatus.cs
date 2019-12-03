@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="CompetitionStatus" />
     /// <seealso cref="IMatchStatus" />
-    public class MatchStatus : CompetitionStatus, IMatchStatusV2
+    public class MatchStatus : CompetitionStatus, IMatchStatus
     {
         /// <summary>
         /// The match statuses cache

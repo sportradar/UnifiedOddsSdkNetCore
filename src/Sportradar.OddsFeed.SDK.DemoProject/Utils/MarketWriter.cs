@@ -181,33 +181,27 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             if (playerOutcome != null)
             {
                 var competitor = _taskProcessor.GetTaskResult(playerOutcome.GetCompetitorAsync());
-                return $"\tOutcomeForPlayer:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{playerOutcome.Active?.ToString().ToLower()}, Odds:{playerOutcome.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{playerOutcome.GetOdds(OddsDisplayType.American)}, Probabilities:{playerOutcome.Probabilities}, HomeOrAwayTeam:{playerOutcome.HomeOrAwayTeam}, Competitor:{competitor?.Id}, OutcomeDefinition:[{WriteOutcomeDefinition(((IOutcomeV1)playerOutcome).OutcomeDefinition, culture)}]";
+                return $"\tOutcomeForPlayer:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{playerOutcome.Active?.ToString().ToLower()}, Odds:{playerOutcome.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{playerOutcome.GetOdds(OddsDisplayType.American)}, Probabilities:{playerOutcome.Probabilities}, HomeOrAwayTeam:{playerOutcome.HomeOrAwayTeam}, Competitor:{competitor?.Id}, OutcomeDefinition:[{WriteOutcomeDefinition(playerOutcome.OutcomeDefinition, culture)}]";
             }
-            var outcomeOdds = outcome as IOutcomeOddsV1;
+            var outcomeOdds = outcome as IOutcomeOdds;
             if (outcomeOdds != null)
             {
-                return $"\tOutcomeWithOdds:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeOdds.Active?.ToString().ToLower()}, Odds:{outcomeOdds.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{outcomeOdds.GetOdds(OddsDisplayType.American)}, Probabilities:{outcomeOdds.Probabilities}, OutcomeDefinition:[{WriteOutcomeDefinition(((IOutcomeV1)outcomeOdds).OutcomeDefinition, culture)}]";
+                return $"\tOutcomeWithOdds:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeOdds.Active?.ToString().ToLower()}, Odds:{outcomeOdds.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{outcomeOdds.GetOdds(OddsDisplayType.American)}, Probabilities:{outcomeOdds.Probabilities}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeOdds.OutcomeDefinition, culture)}]";
             }
 
             var outcomeProbabilities = outcome as IOutcomeProbabilities;
             if (outcomeProbabilities != null)
             {
-                return $"\tOutcomeWithProbabilities:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeProbabilities.Active?.ToString().ToLower()}, Probabilities:{outcomeProbabilities.Probabilities}, OutcomeDefinition:[{WriteOutcomeDefinition(((IOutcomeV1)outcomeProbabilities).OutcomeDefinition, culture)}]";
+                return $"\tOutcomeWithProbabilities:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeProbabilities.Active?.ToString().ToLower()}, Probabilities:{outcomeProbabilities.Probabilities}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeProbabilities.OutcomeDefinition, culture)}]";
             }
 
             var outcomeSettlement = outcome as IOutcomeSettlement;
             if (outcomeSettlement != null)
             {
-                return $"\tOutcomeForSettlement:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Result:{outcomeSettlement.Result.ToString().ToLower()}, VoidFactor: {outcomeSettlement.VoidFactor}, DeadHeatFactor:{outcomeSettlement.DeadHeatFactor}, OutcomeDefinition:[{WriteOutcomeDefinition(((IOutcomeV1)outcomeSettlement).OutcomeDefinition, culture)}]";
+                return $"\tOutcomeForSettlement:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Result:{outcomeSettlement.Result.ToString().ToLower()}, VoidFactor: {outcomeSettlement.VoidFactor}, DeadHeatFactor:{outcomeSettlement.DeadHeatFactor}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeSettlement.OutcomeDefinition, culture)}]";
             }
 
-            var outcomeV1 = outcome as IOutcomeV1;
-            if (outcomeV1 != null)
-            {
-                return $"\tOutcomeId:{outcomeV1.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', OutcomeDefinition:[{WriteOutcomeDefinition(((IOutcomeV1)outcomeV1).OutcomeDefinition, culture)}]";
-            }
-
-            return $"\tOutcomeId:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}'";
+            return $"\tOutcomeId:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', OutcomeDefinition:[{WriteOutcomeDefinition(outcome.OutcomeDefinition, culture)}]";
         }
     }
 }

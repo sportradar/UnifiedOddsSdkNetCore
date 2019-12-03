@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// Provides access to sport related data (sports, tournaments, sport events, ...)
     /// </summary>
     [Log(LoggerType.ClientInteraction)]
-    internal class SportDataProvider : ISportDataProviderV4
+    internal class SportDataProvider : ISportDataProvider
     {
         private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(SportDataProvider));
 

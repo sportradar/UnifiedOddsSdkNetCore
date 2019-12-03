@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Class EventResult
     /// </summary>
     /// <seealso cref="IEventResult" />
-    public class EventResult : IEventResultV1
+    public class EventResult : IEventResult
     {
         private readonly ILocalizedNamedValueCache _matchStatusesCache;
         private readonly int _matchStatusCode;

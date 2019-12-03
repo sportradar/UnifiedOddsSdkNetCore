@@ -20,5 +20,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// current <see cref="ITvChannel"/> starts, or a null reference if the time is not known.
         /// </summary>
         DateTime? StartTime { get; }
+
+        /// <summary>
+        /// Gets the stream url of the channel represented by the current <see cref="ITvChannel"/> instance
+        /// </summary>
+        string StreamUrl { get; }
     }
 }

@@ -33,5 +33,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets all the reference ids
         /// </summary>
         IReadOnlyDictionary<string, string> References { get; }
+
+        /// <summary>
+        /// Returns the AAMS id for this instance if provided among reference ids, null otherwise
+        /// </summary>
+        /// <returns>The AAMS id for this instance if provided among reference ids, null otherwise</returns>
+        int? AamsId { get; }
     }
 }

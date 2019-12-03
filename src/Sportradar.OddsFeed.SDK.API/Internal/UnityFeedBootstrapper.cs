@@ -265,7 +265,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         public static void RegisterAdditionalTypes(this IUnityContainer container)
         {
-            var config = container.Resolve<IOddsFeedConfigurationInternal>();
+            //var config = container.Resolve<IOddsFeedConfigurationInternal>();
             RegisterSdkStatisticsWriter(container);
         }
 
@@ -1013,7 +1013,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var proxyDataRestful = LogInterceptorFactory.Create<HttpDataRestful>(argsRest, m => m.Name.Contains("Async"), LoggerType.RestTraffic);
             container.RegisterInstance<IDataRestful>("HttpDataRestful4ReplayManager", proxyDataRestful, new ContainerControlledLifetimeManager());
 
-            container.RegisterType<IReplayManagerV1, ReplayManager>(
+            container.RegisterType<IReplayManager, ReplayManager>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     config.ReplayApiBaseUrl,
@@ -1028,7 +1028,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             };
 
             var proxyReplayManager = LogInterceptorFactory.Create<ReplayManager>(args, m => m.Name.Contains("e"), LoggerType.ClientInteraction);
-            container.RegisterInstance<IReplayManagerV1>(proxyReplayManager);
+            container.RegisterInstance<IReplayManager>(proxyReplayManager);
         }
 
         private static void RegisterFeedSystemSession(IUnityContainer container)

@@ -36,5 +36,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         Task<IEnumerable<IDrawResult>> GetResultsAsync();
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="int"/> representing display id
+        /// </summary>
+        /// <returns>The display id</returns>
+        Task<int?> GetDisplayIdAsync();
     }
 }

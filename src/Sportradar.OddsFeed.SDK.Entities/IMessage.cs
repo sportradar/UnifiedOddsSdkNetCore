@@ -21,5 +21,11 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// Gets a <see cref="Producer"/> specifying the producer / service which dispatched the current <see cref="IMessage"/> message
         /// </summary>
         IProducer Producer { get; }
+
+        /// <summary>
+        /// Gets the timestamps when the message was generated, sent, received and dispatched by the sdk
+        /// </summary>
+        /// <value>The timestamps</value>
+        IMessageTimestamp Timestamps { get; }
     }
 }

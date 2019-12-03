@@ -8,7 +8,7 @@ using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
-    class TeamStatistics : ITeamStatisticsV1
+    class TeamStatistics : ITeamStatistics
     {
         public URN TeamId { get; }
         public string Name { get; }

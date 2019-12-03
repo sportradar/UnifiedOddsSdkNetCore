@@ -70,5 +70,11 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// </summary>
         /// <value>The maximum inactivity seconds</value>
         int MaxInactivitySeconds { get; }
+
+        /// <summary>
+        /// Gets the recovery info about last recovery attempt
+        /// </summary>
+        /// <value>The recovery info about last recovery attempt</value>
+        IRecoveryInfo RecoveryInfo { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// <summary>
     ///     Represents the odds for an outcome
     /// </summary>
-    internal class OutcomeOdds : OutcomeProbabilities, IOutcomeOddsV1
+    internal class OutcomeOdds : OutcomeProbabilities, IOutcomeOdds
     {
         /// <summary>
         /// Gets the odds for the current <see cref="IOutcomeOdds" /> instance

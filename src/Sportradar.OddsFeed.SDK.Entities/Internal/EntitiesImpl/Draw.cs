@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="SportEvent" />
     /// <seealso cref="IDraw" />
-    internal class Draw : SportEvent, IDrawV1
+    internal class Draw : SportEvent, IDraw
     {
         /// <summary>
         /// A <see cref="ILogger"/> instance used for execution logging

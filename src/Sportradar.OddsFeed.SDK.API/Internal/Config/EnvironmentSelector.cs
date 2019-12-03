@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
     /// Class EnvironmentSelector
     /// </summary>
     /// <seealso cref="IEnvironmentSelector" />
-    internal class EnvironmentSelector : IEnvironmentSelectorV1
+    internal class EnvironmentSelector : IEnvironmentSelector
     {
         /// <summary>
         /// An access token used to authenticate with the feed

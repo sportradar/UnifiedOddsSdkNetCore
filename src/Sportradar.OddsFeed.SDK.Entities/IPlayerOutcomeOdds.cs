@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
     /// Represents an odds for a player outcome(selection)
     /// </summary>
     /// <seealso cref="IOutcomeOdds" />
-    public interface IPlayerOutcomeOdds : IOutcomeOddsV1
+    public interface IPlayerOutcomeOdds : IOutcomeOdds
     {
         /// <summary>
         /// Asynchronously gets the team to which the associated player belongs to

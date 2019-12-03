@@ -110,5 +110,55 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <param name="id">A <see cref="URN"/> specifying the id of <see cref="IPlayerProfile"/> to be deleted</param>
         void DeletePlayerProfileFromCache(URN id);
+
+        /// <summary>
+        /// Gets a <see cref="ICompetition"/> representing the specified sport event in language specified by <code>culture</code> or a null reference if the sport event with
+        /// specified <code>id</code> does not exist
+        /// </summary>
+        /// <param name="id">A <see cref="URN"/> specifying the sport event to retrieve</param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A <see cref="ICompetition"/> representing the specified sport event or a null reference if the requested sport event does not exist</returns>
+        ICompetition GetCompetition(URN id, CultureInfo culture = null);
+
+        /// <summary>
+        /// Gets the list of all fixtures that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A list of all fixtures that have changed in the last 24 hours</returns>
+        Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(CultureInfo culture = null);
+
+        /// <summary>
+        /// Asynchronously gets a list of <see cref="IEnumerable{ICompetition}"/>
+        /// </summary>
+        /// <remarks>Lists almost all events we are offering prematch odds for. This endpoint can be used during early startup to obtain almost all fixtures. This endpoint is one of the few that uses pagination.</remarks>
+        /// <param name="startIndex">Starting record (this is an index, not time)</param>
+        /// <param name="limit">How many records to return (max: 1000)</param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
+        Task<IEnumerable<ICompetition>> GetListOfSportEventsAsync(int startIndex, int limit, CultureInfo culture = null);
+
+        /// <summary>
+        /// Asynchronously gets a list of active <see cref="IEnumerable{ISportEvent}"/>
+        /// </summary>
+        /// <remarks>Lists all <see cref="ISportEvent"/> that are cached (once schedule is loaded)</remarks>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
+        Task<IEnumerable<ISportEvent>> GetActiveTournamentsAsync(CultureInfo culture = null);
+
+        /// <summary>
+        /// Asynchronously gets a list of available <see cref="IEnumerable{ISportEvent}"/> for a specific sport
+        /// </summary>
+        /// <remarks>Lists all available tournaments for a sport event we provide coverage for</remarks>
+        /// <param name="sportId">A <see cref="URN"/> specifying the sport to retrieve</param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
+        Task<IEnumerable<ISportEvent>> GetAvailableTournamentsAsync(URN sportId, CultureInfo culture = null);
+
+        /// <summary>
+        /// Deletes the sport events from cache which are scheduled before specified date
+        /// </summary>
+        /// <param name="before">The scheduled DateTime used to delete sport events from cache</param>
+        /// <returns>Number of deleted items</returns>
+        int DeleteSportEventsFromCache(DateTime before);
     }
 }

@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// Represents a message dispatched by the feed indicating that odds of the betting market selections have changed
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal class OddsChange<T> : MarketMessage<IMarketWithOdds, T>, IOddsChangeV1<T> where T : ISportEvent
+    internal class OddsChange<T> : MarketMessage<IMarketWithOdds, T>, IOddsChange<T> where T : ISportEvent
     {
         /// <summary>
         /// The id of the betting status or a null reference if betting status is not specified

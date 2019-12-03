@@ -155,6 +155,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return Task.FromResult<DateTime?>(null);
         }
 
+        /// <summary>
+        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        public Task<bool?> GetStartTimeTbdAsync()
+        {
+            return Task.FromResult<bool?>(null);
+        }
+
         public Task<URN> GetReplacedByAsync()
         {
             return Task.FromResult<URN>(null);
@@ -173,6 +182,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public Task<IEnumerable<ITeamCompetitor>> GetCompetitorsAsync()
         {
             return Task.FromResult<IEnumerable<ITeamCompetitor>>(null);
+        }
+
+        /// <summary>
+        /// Gets the event status asynchronous
+        /// </summary>
+        /// <returns>Get the event status</returns>
+        public Task<EventStatus?> GetEventStatusAsync()
+        {
+            return Task.FromResult<EventStatus?>(null);
         }
 
         public Task<IGroup> GetGroupAsync()
@@ -240,6 +258,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return Task.FromResult<DateTime?>(null);
         }
 
+        /// <summary>
+        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        public Task<bool?> GetStartTimeTbdAsync()
+        {
+            return Task.FromResult<bool?>(null);
+        }
+
         public Task<URN> GetReplacedByAsync()
         {
             return Task.FromResult<URN>(null);
@@ -283,6 +310,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public Task<IEnumerable<ISeason>> GetSeasonsAsync()
         {
             return Task.FromResult<IEnumerable<ISeason>>(null);
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="bool"/> specifying if the tournament is exhibition game
+        /// </summary>
+        /// <returns>A <see cref="bool"/> specifying if the tournament is exhibition game</returns>
+        public Task<bool?> GetExhibitionGamesAsync()
+        {
+            return Task.FromResult<bool?>(null);
         }
 
         public Task<ISeasonCoverage> GetCoverageAsync()
@@ -333,6 +369,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public Task<DateTime?> GetScheduledEndTimeAsync()
         {
             return Task.FromResult<DateTime?>(null);
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        public Task<bool?> GetStartTimeTbdAsync()
+        {
+            return Task.FromResult<bool?>(null);
         }
 
         Task<ICompetitionStatus> ICompetition.GetStatusAsync()
@@ -388,6 +433,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 new TestCompetitor(URN.Parse("sr:competitor:2"), "Second competitor", new CultureInfo("en"))
             };
             return Task.FromResult<IEnumerable<ICompetitor>>(competitors);
+        }
+
+        /// <summary>
+        /// Gets the event status asynchronous
+        /// </summary>
+        /// <returns>Get the event status</returns>
+        public Task<EventStatus?> GetEventStatusAsync()
+        {
+            return Task.FromResult<EventStatus?>(null);
         }
 
         public Task<string> GetNameAsync(CultureInfo culture)
@@ -455,6 +509,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return Task.FromResult<DateTime?>(null);
         }
 
+        /// <summary>
+        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        public Task<bool?> GetStartTimeTbdAsync()
+        {
+            return Task.FromResult<bool?>(null);
+        }
+
         public Task<ICompetitionStatus> GetStatusAsync()
         {
             return Task.FromResult<ICompetitionStatus>(null);
@@ -493,6 +556,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
         {
             return Task.FromResult<IEnumerable<ICompetitor>>(null);
+        }
+
+        /// <summary>
+        /// Gets the event status asynchronous
+        /// </summary>
+        /// <returns>Get the event status</returns>
+        public Task<EventStatus?> GetEventStatusAsync()
+        {
+            return Task.FromResult<EventStatus?>(null);
         }
 
         public Task<ISportSummary> GetSportAsync()
@@ -653,5 +725,17 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// </summary>
         /// <value>The venue</value>
         public IVenue Venue { get; }
+
+        /// <summary>
+        /// Gets the gender
+        /// </summary>
+        /// <value>The gender</value>
+        public string Gender { get; }
+
+        /// <summary>
+        /// Gets the race driver profile
+        /// </summary>
+        /// <value>The race driver profile</value>
+        public IRaceDriverProfile RaceDriverProfile { get; }
     }
 }

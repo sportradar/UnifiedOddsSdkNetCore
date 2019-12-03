@@ -11,10 +11,10 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     /// <summary>
-    /// Implementation of the <see cref="IProducerV1"/>
+    /// Implementation of the <see cref="IProducer"/>
     /// </summary>
-    /// <seealso cref="IProducerV1" />
-    public class Producer : IProducerV1
+    /// <seealso cref="IProducer" />
+    public class Producer : IProducer
     {
         /// <summary>
         /// Gets the id of the producer

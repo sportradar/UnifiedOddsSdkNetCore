@@ -108,18 +108,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
 
         private void TestOutcomeValues(IOutcomeOdds entity, oddsChangeMarketOutcome record)
         {
+            Assert.IsNotNull(entity);
             Assert.AreEqual(entity.Id, record.id, "Outcome Id does not match");
             Assert.AreEqual(entity.Active, record.activeSpecified ? (bool?)(record.active == 1) : null);
             Assert.AreEqual(entity.Odds, record.odds);
             Assert.AreEqual(entity.Probabilities, record.probabilitiesSpecified ? (double?) record.probabilities : null);
-
-            var entityV1 = entity as IOutcomeOddsV1;
-            Assert.IsNotNull(entityV1);
-            Assert.AreEqual(entityV1.GetOdds(OddsDisplayType.Decimal), record.odds);
-            Assert.IsNotNull(entityV1.GetOdds(OddsDisplayType.American));
-            if (entityV1.GetOdds(OddsDisplayType.American).HasValue)
+            Assert.AreEqual(entity.GetOdds(OddsDisplayType.Decimal), record.odds);
+            Assert.IsNotNull(entity.GetOdds(OddsDisplayType.American));
+            if (entity.GetOdds(OddsDisplayType.American).HasValue)
             {
-                Assert.IsTrue(Math.Abs(entityV1.GetOdds(OddsDisplayType.American).Value) > 0);
+                Assert.IsTrue(Math.Abs(entity.GetOdds(OddsDisplayType.American).Value) > 0);
             }
         }
     }

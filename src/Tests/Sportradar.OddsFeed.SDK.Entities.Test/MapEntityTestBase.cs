@@ -87,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
                 : outcomes.FirstOrDefault(o => o.Id == id);
         }
 
-        protected void TestMessageProperties(AssertHelper assertHelper, IMessageV1 message, long timestamp, int productId)
+        protected void TestMessageProperties(AssertHelper assertHelper, IMessage message, long timestamp, int productId)
         {
             assertHelper.AreEqual(() => message.Timestamps.Created, timestamp);
             assertHelper.AreEqual(() => message.Producer, TestProducerManager.Create().Get(productId));

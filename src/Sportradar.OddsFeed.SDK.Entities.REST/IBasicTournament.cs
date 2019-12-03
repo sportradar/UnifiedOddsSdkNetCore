@@ -23,5 +23,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>The competitors</returns>
         Task<IEnumerable<ICompetitor>> GetCompetitorsAsync();
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="bool"/> specifying if the tournament is exhibition game
+        /// </summary>
+        /// <returns>A <see cref="bool"/> specifying if the tournament is exhibition game</returns>
+        Task<bool?> GetExhibitionGamesAsync();
     }
 }

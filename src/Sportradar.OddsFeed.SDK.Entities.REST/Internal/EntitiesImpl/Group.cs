@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Represents a competition group
     /// </summary>
     /// <seealso cref="IGroup" />
-    internal class Group : EntityPrinter, IGroupV1
+    internal class Group : EntityPrinter, IGroup
     {
         /// <summary>
         /// The <see cref="Competitors"/> property backing field

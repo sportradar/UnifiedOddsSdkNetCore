@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="SportEvent" />
     /// <seealso cref="IBasicTournament" />
-    internal class BasicTournament : SportEvent, IBasicTournamentV1
+    internal class BasicTournament : SportEvent, IBasicTournament
     {
         /// <summary>
         /// This <see cref="ILogger"/> should not be used since it is also exposed by the base class

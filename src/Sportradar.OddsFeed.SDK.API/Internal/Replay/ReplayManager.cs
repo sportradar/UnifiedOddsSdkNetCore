@@ -13,11 +13,11 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
 {
     /// <summary>
-    /// Implementation of the <see cref="IReplayManagerV1"/> for interaction with xReplay Server for doing integration tests against played matches that are older than 48 hours
+    /// Implementation of the <see cref="IReplayManager"/> for interaction with xReplay Server for doing integration tests against played matches that are older than 48 hours
     /// </summary>
-    /// <seealso cref="IReplayManagerV1" />
+    /// <seealso cref="IReplayManager" />
     [Log(LoggerType.ClientInteraction)]
-    public class ReplayManager : MarshalByRefObject, IReplayManagerV1
+    public class ReplayManager : MarshalByRefObject, IReplayManager
     {
         private readonly IDataRestful _dataRestful;
 

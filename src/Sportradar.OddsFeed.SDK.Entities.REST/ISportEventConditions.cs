@@ -2,6 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
+using System.Collections.Generic;
+
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
@@ -28,5 +30,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets a <see cref="IWeatherInfo"/> instance representing the expected weather on the associated sport event
         /// </summary>
         IWeatherInfo WeatherInfo { get; }
+
+        /// <summary>
+        /// Gets the pitchers
+        /// </summary>
+        IEnumerable<IPitcher> Pitchers { get; }
     }
 }

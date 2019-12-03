@@ -43,5 +43,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
         Task<IEnumerable<ICompetitor>> GetCompetitorsAsync();
+
+        /// <summary>
+        /// Gets the event status asynchronous
+        /// </summary>
+        /// <returns>Get the event status</returns>
+        Task<EventStatus?> GetEventStatusAsync();
     }
 }
