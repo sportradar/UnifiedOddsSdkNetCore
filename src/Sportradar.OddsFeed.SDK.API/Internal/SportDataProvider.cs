@@ -11,9 +11,11 @@ using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -50,6 +52,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly IProfileCache _profileCache;
 
         /// <summary>
+        /// The sport data cache used to retrieve sport data
+        /// </summary>
+        private readonly ISportDataCache _sportDataCache;
+
+        /// <summary>
         /// A <see cref="IList{CultureInfo}"/> specified as default cultures (from configuration)
         /// </summary>
         private readonly IReadOnlyCollection<CultureInfo> _defaultCultures;
@@ -81,6 +88,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> used to retrieve schedules for sport events</param>
         /// <param name="sportEventStatusCache">A <see cref="ISportEventStatusCache"/> used to retrieve status for sport event</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> ued to retrieve competitor or player profile</param>
+        /// <param name="sportDataCache">A <see cref="ISportDataCache"/> ued to retrieve sport data</param>
         /// <param name="defaultCultures"> A <see cref="IList{CultureInfo}"/> specified as default cultures (from configuration)</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying enum member specifying how instances provided by the current provider will handle exceptions</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
@@ -90,6 +98,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                  ISportEventCache sportEventCache,
                                  ISportEventStatusCache sportEventStatusCache,
                                  IProfileCache profileCache,
+                                 ISportDataCache sportDataCache,
                                  IEnumerable<CultureInfo> defaultCultures,
                                  ExceptionHandlingStrategy exceptionStrategy,
                                  ICacheManager cacheManager,
@@ -108,6 +117,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             _sportEventCache = sportEventCache;
             _sportEventStatusCache = sportEventStatusCache;
             _profileCache = profileCache;
+            _sportDataCache = sportDataCache;
             _defaultCultures = defaultCultures as IReadOnlyCollection<CultureInfo>;
             _exceptionStrategy = exceptionStrategy;
             _cacheManager = cacheManager;
@@ -447,5 +457,40 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             return _sportEventCache.DeleteSportEventsFromCache(before);
         }
-    }
+
+        /// <summary>
+        /// Exports current items in the cache
+        /// </summary>
+        /// <param name="cacheType">Specifies what type of cache items will be exported</param>
+        /// <returns>Collection of <see cref="ExportableCI"/> containing all the items currently in the cache</returns>
+        public async Task<IEnumerable<ExportableCI>> CacheExportAsync(CacheType cacheType)
+        {
+            var tasks = new List<Task<IEnumerable<ExportableCI>>>();
+            if (cacheType.HasFlag(CacheType.SportData))
+                tasks.Add((_sportDataCache as IExportableSdkCache).ExportAsync());
+            if (cacheType.HasFlag(CacheType.SportEvent))
+                tasks.Add((_sportEventCache as IExportableSdkCache).ExportAsync());
+            if (cacheType.HasFlag(CacheType.Profile))
+                tasks.Add((_profileCache as IExportableSdkCache).ExportAsync());
+            tasks.ForEach(t => t.ConfigureAwait(false));
+            return (await Task.WhenAll(tasks)).SelectMany(e => e);
+        }
+
+        /// <summary>
+        /// Exports current items in the cache
+        /// </summary>
+        /// <param name="items">Collection of <see cref="ExportableCI"/> containing the items to be imported</param>
+        public Task CacheImportAsync(IEnumerable<ExportableCI> items)
+        {
+            var cacheItems = items.ToList();
+            var tasks = new List<Task>
+            {
+                (_sportDataCache as IExportableSdkCache).ImportAsync(cacheItems),
+                (_sportEventCache as IExportableSdkCache).ImportAsync(cacheItems),
+                (_profileCache as IExportableSdkCache).ImportAsync(cacheItems)
+            };
+            tasks.ForEach(t => t.ConfigureAwait(false));
+            return Task.WhenAll(tasks);
+        }
+  }
 }

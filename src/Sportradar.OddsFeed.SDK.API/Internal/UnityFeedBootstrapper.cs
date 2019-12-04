@@ -181,6 +181,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ISportEventCache>(),
                     new ResolvedParameter<ISportEventStatusCache>(),
                     new ResolvedParameter<IProfileCache>(),
+                    new ResolvedParameter<ISportDataCache>(),
                     config.Locales,
                     new ResolvedParameter<ExceptionHandlingStrategy>(),
                     new ResolvedParameter<ICacheManager>(),
