@@ -44,6 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="teamFlag">A value indicating whether the player is associated with home or away team - 1 : HomeTeam, 2 : AwayTeam</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>
+        /// <param name="additionalProbabilities">Additional probability attributes for markets which potentially will be (partly) refunded</param>
         internal PlayerOutcomeOdds(string id,
                                    bool? active,
                                    double odds,
@@ -53,8 +54,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                    IMatch match,
                                    int teamFlag,
                                    IEnumerable<CultureInfo> cultures,
-                                   IOutcomeDefinition outcomeDefinition)
-            : base(id, active, odds, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition)
+                                   IOutcomeDefinition outcomeDefinition,
+                                   IAdditionalProbabilities additionalProbabilities)
+            : base(id, active, odds, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition, additionalProbabilities)
         {
             Guard.Argument(match).NotNull();
             Guard.Argument(teamFlag).InRange(1,2);

@@ -15,6 +15,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private double _odds;
 
         /// <summary>
+        /// Additional probability attributes for markets which potentially will be (partly) refunded
+        /// </summary>
+        public IAdditionalProbabilities AdditionalProbabilities { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OutcomeOdds" /> class
         /// </summary>
         /// <param name="id">the value uniquely identifying the current <see cref="OutcomeOdds" /> instance</param>
@@ -25,17 +30,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>
+        /// <param name="additionalProbabilities">Additional probability attributes for markets which potentially will be (partly) refunded</param>
         internal OutcomeOdds(string id,
-                             bool? active,
-                             double odds,
-                             double? probabilities,
-                             INameProvider nameProvider,
-                             IMarketMappingProvider mappingProvider,
-                             IEnumerable<CultureInfo> cultures,
-                             IOutcomeDefinition outcomeDefinition)
+            bool? active,
+            double odds,
+            double? probabilities,
+            INameProvider nameProvider,
+            IMarketMappingProvider mappingProvider,
+            IEnumerable<CultureInfo> cultures,
+            IOutcomeDefinition outcomeDefinition,
+            IAdditionalProbabilities additionalProbabilities)
             : base(id, active, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
             _odds = odds;
+            AdditionalProbabilities = additionalProbabilities;
         }
 
         /// <summary>
