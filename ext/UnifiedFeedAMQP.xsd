@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:element name="odds_change">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="sport_event_status" type="sportEventStatus"
-          minOccurs="0" maxOccurs="1"/>
-        <xs:element name="odds_generation_properties" type="oddsGenerationProperties" minOccurs="0"
-          maxOccurs="1"/>
+        <xs:element name="sport_event_status" type="sportEventStatus" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="odds_generation_properties" type="oddsGenerationProperties" minOccurs="0" maxOccurs="1"/>
         <xs:element name="odds" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="market" type="oddsChangeMarket"
-                minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="market" type="oddsChangeMarket" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
             <xs:attribute name="betting_status" type="xs:int" use="optional"/>
             <xs:attribute name="betstop_reason" type="xs:int" use="optional"/>
@@ -31,8 +27,7 @@
         <xs:element name="outcomes">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="market" type="betSettlementMarket"
-                minOccurs="1" maxOccurs="unbounded"/>
+              <xs:element name="market" type="betSettlementMarket" minOccurs="1" maxOccurs="unbounded"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -46,8 +41,7 @@
   <xs:element name="rollback_bet_settlement">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="market" type="market" minOccurs="1"
-          maxOccurs="unbounded"/>
+        <xs:element name="market" type="market" minOccurs="1" maxOccurs="unbounded"/>
       </xs:sequence>
 
       <xs:attributeGroup ref="messageAttributes"/>
@@ -57,8 +51,7 @@
   <xs:element name="bet_cancel">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="market" type="market" minOccurs="1"
-          maxOccurs="unbounded"/>
+        <xs:element name="market" type="market" minOccurs="1" maxOccurs="unbounded"/>
       </xs:sequence>
 
       <xs:attributeGroup ref="messageAttributes"/>
@@ -71,8 +64,7 @@
   <xs:element name="rollback_bet_cancel">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="market" type="market" minOccurs="1"
-          maxOccurs="unbounded"/>
+        <xs:element name="market" type="market" minOccurs="1" maxOccurs="unbounded"/>
       </xs:sequence>
 
       <xs:attributeGroup ref="messageAttributes"/>
@@ -146,14 +138,10 @@
 
   <xs:complexType name="sportEventStatus">
     <xs:sequence>
-      <xs:element name="clock" type="clockType" maxOccurs="1"
-        minOccurs="0"/>
-      <xs:element name="period_scores" type="periodscoresType"
-        maxOccurs="1" minOccurs="0"/>
-      <xs:element name="results" type="resultsType"
-        maxOccurs="1" minOccurs="0"/>
-      <xs:element name="statistics" type="statisticsType"
-        maxOccurs="1" minOccurs="0"/>
+      <xs:element name="clock" type="clockType" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="period_scores" type="periodscoresType" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="results" type="resultsType" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="statistics" type="statisticsType" maxOccurs="1" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="status" type="eventStatusStatus" use="required"/>
     <xs:attribute name="reporting" type="reportingStatus"/>
@@ -190,10 +178,8 @@
     <xs:attribute name="visit" type="xs:int" use="optional"/>
     <xs:attribute name="remaining_reds" type="xs:int" use="optional"/>
     <xs:attribute name="delivery" type="xs:int" use="optional"/>
-    <xs:attribute name="home_remaining_bowls" type="xs:int"
-      use="optional"/>
-    <xs:attribute name="away_remaining_bowls" type="xs:int"
-      use="optional"/>
+    <xs:attribute name="home_remaining_bowls" type="xs:int" use="optional"/>
+    <xs:attribute name="away_remaining_bowls" type="xs:int" use="optional"/>
     <xs:attribute name="current_end" type="xs:int" use="optional"/>
     <xs:attribute name="innings" type="xs:int" use="optional"/>
     <xs:attribute name="over" type="xs:int" use="optional"/>
@@ -214,8 +200,7 @@
     <xs:attribute name="stoppage_time" type="timeType" use="optional"/>
     <xs:attribute name="stoppage_time_announced" type="timeType" use="optional"/>
     <xs:attribute name="remaining_time" type="timeType" use="optional"/>
-    <xs:attribute name="remaining_time_in_period" type="timeType"
-      use="optional"/>
+    <xs:attribute name="remaining_time_in_period" type="timeType" use="optional"/>
     <xs:attribute name="stopped" type="xs:boolean" use="optional"/>
   </xs:complexType>
 
@@ -227,8 +212,7 @@
 
   <xs:complexType name="periodscoresType">
     <xs:sequence>
-      <xs:element name="period_score" type="periodScoreType"
-        maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element name="period_score" type="periodScoreType" maxOccurs="unbounded" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -241,8 +225,7 @@
 
   <xs:complexType name="resultsType">
     <xs:sequence>
-      <xs:element name="result" type="resultType"
-        maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element name="result" type="resultType" maxOccurs="unbounded" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -254,14 +237,11 @@
 
   <xs:complexType name="statisticsType">
     <xs:sequence>
-      <xs:element name="yellow_cards" type="statisticsScoreType"
-        maxOccurs="1" minOccurs="0"/>
-      <xs:element name="red_cards" type="statisticsScoreType"
-        maxOccurs="1" minOccurs="0"/>
-      <xs:element name="yellow_red_cards" type="statisticsScoreType"
-        maxOccurs="1" minOccurs="0"/>
-      <xs:element name="corners" type="statisticsScoreType"
-        maxOccurs="1" minOccurs="0"/>
+      <xs:element name="yellow_cards" type="statisticsScoreType" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="red_cards" type="statisticsScoreType" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="yellow_red_cards" type="statisticsScoreType" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="corners" type="statisticsScoreType" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="green_cards" type="statisticsScoreType" maxOccurs="1" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -342,6 +322,31 @@
           <xs:documentation>CLOSED</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
+      <xs:enumeration value="5">
+        <xs:annotation>
+          <xs:documentation>CANCELLED</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="6">
+        <xs:annotation>
+          <xs:documentation>DELAYED</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="7">
+        <xs:annotation>
+          <xs:documentation>INTERRUPTED</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="8">
+        <xs:annotation>
+          <xs:documentation>POSTPONED</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="9">
+        <xs:annotation>
+          <xs:documentation>ABANDONED</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
 
@@ -368,6 +373,11 @@
           <xs:attribute name="id" type="outcomeId" use="required"/>
           <xs:attribute name="odds" type="xs:double"/>
           <xs:attribute name="probabilities" type="xs:double"/>
+          <xs:attribute name="win_probabilities" type="xs:double"/>
+          <xs:attribute name="lose_probabilities" type="xs:double"/>
+          <xs:attribute name="refund_probabilities" type="xs:double"/>
+          <xs:attribute name="half_win_probabilities" type="xs:double"/>
+          <xs:attribute name="half_lose_probabilities" type="xs:double"/>
           <xs:attribute name="active" type="outcomeActive"/>
           <xs:attribute name="team" type="teamType"/>
         </xs:complexType>

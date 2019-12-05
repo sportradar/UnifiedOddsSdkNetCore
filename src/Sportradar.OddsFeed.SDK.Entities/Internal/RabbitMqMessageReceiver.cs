@@ -80,13 +80,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         public event EventHandler<RawFeedMessageEventArgs> RawFeedMessageReceived;
 
         /// <summary>
+        /// Is connected to the replay server
+        /// </summary>
+        private readonly bool _useReplay;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RabbitMqMessageReceiver"/> class
         /// </summary>
         /// <param name="channel">A <see cref="IRabbitMqChannel"/> representing a channel to the RabbitMQ broker</param>
         /// <param name="deserializer">A <see cref="IDeserializer{T}"/> instance used for de-serialization of messages received from the feed</param>
         /// <param name="keyParser">A <see cref="IRoutingKeyParser"/> used to parse the rabbit's routing key</param>
         /// <param name="producerManager">An <see cref="IProducerManager"/> used to get <see cref="IProducer"/></param>
-        public RabbitMqMessageReceiver(IRabbitMqChannel channel, IDeserializer<FeedMessage> deserializer, IRoutingKeyParser keyParser, IProducerManager producerManager)
+        /// <param name="usedReplay">Is connected to the replay server</param>
+        public RabbitMqMessageReceiver(IRabbitMqChannel channel, IDeserializer<FeedMessage> deserializer, IRoutingKeyParser keyParser, IProducerManager producerManager, bool usedReplay)
         {
             Guard.Argument(channel).NotNull();
             Guard.Argument(deserializer).NotNull();
@@ -97,6 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             _deserializer = deserializer;
             _keyParser = keyParser;
             _producerManager = producerManager;
+            _useReplay = usedReplay;
         }
 
         /// <summary>
@@ -169,7 +176,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var producer = _producerManager.Get(feedMessage.ProducerId);
             var messageName = feedMessage.GetType().Name;
 
-            if (!producer.IsAvailable || producer.IsDisabled)
+            if (!_useReplay && (!producer.IsAvailable || producer.IsDisabled))
             {
                 ExecutionLog.LogDebug($"A message for producer which is disabled was received. Producer={producer}, MessageType={messageName}");
                 return;

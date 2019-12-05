@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -63,6 +64,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public string Gender { get; set; }
 
         /// <summary>
+        /// A <see cref="string"/> representing the age group
+        /// </summary>
+        public string AgeGroup { get; set; }
+
+        /// <summary>
         /// A <see cref="ExportableRaceDriverProfileCI"/> representing the race driver profile
         /// </summary>
         public ExportableRaceDriverProfileCI RaceDriverProfile { get; set; }
@@ -76,5 +82,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// A <see cref="CultureInfo"/> representing the primary culture
         /// </summary>
         public CultureInfo PrimaryCulture { get; set; }
+
+        /// <summary>
+        /// A <see cref="DateTime"/>
+        /// </summary>
+        public DateTime? LastTimeCompetitorProfileIsFetched { get; set; }
+
+        /// <summary>
+        /// The list of CultureInfo used to fetch competitor profiles
+        /// </summary>
+        public IEnumerable<CultureInfo> CultureCompetitorProfileFetched { get; set; }
     }
 }

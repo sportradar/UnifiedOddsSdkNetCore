@@ -92,5 +92,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The race driver profile</value>
         IRaceDriverProfile RaceDriverProfile { get; }
+
+        /// <summary>
+        /// Gets the age group
+        /// </summary>
+        /// <value>The age group</value>
+        string AgeGroup { get; }
     }
 }

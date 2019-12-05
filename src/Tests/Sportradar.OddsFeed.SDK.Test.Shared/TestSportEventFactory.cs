@@ -737,5 +737,11 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// </summary>
         /// <value>The race driver profile</value>
         public IRaceDriverProfile RaceDriverProfile { get; }
+
+        /// <summary>
+        /// Gets the age group
+        /// </summary>
+        /// <value>The age group</value>
+        public string AgeGroup { get; }
     }
 }

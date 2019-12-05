@@ -7,5 +7,5 @@ set DevEnvDir="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools
 call %DevEnvDir%\..\Tools\vsvars32.bat
 REM REM REM KILL KILL KILL
 
-@xsd.exe /c /l:C# UnifiedFeedAMQP.xsd /n:Sportradar.OddsFeed.SDK.Messages.Internal.Feed
+@xsd.exe /c /l:C# UnifiedFeedAMQP.xsd /n:Sportradar.OddsFeed.SDK.Messages.Feed
 REM @move /y UnifiedFeed.cs.new UnifiedFeed.cs

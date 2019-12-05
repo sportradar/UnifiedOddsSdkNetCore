@@ -55,6 +55,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string Gender { get; }
 
         /// <summary>
+        /// Gets the age group
+        /// </summary>
+        /// <value>The gender</value>
+        public string AgeGroup { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CompetitorDTO"/> class from the <see cref="team"/> instance
         /// </summary>
         /// <param name="record">A <see cref="team"/> containing information about a team</param>
@@ -77,6 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 Players = record.players.Select(s => new PlayerCompetitorDTO(s));
             }
             Gender = record.gender;
+            AgeGroup = record.age_group;
         }
     }
 }

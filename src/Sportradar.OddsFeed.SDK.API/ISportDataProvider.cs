@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -160,5 +161,18 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="before">The scheduled DateTime used to delete sport events from cache</param>
         /// <returns>Number of deleted items</returns>
         int DeleteSportEventsFromCache(DateTime before);
+
+        /// <summary>
+        /// Exports current items in the cache
+        /// </summary>
+        /// <param name="cacheType">Specifies what type of cache items will be exported</param>
+        /// <returns>Collection of <see cref="ExportableCI"/> containing all the items currently in the cache</returns>
+        Task<IEnumerable<ExportableCI>> CacheExportAsync(CacheType cacheType);
+
+        /// <summary>
+        /// Imports provided items into caches
+        /// </summary>
+        /// <param name="items">Collection of <see cref="ExportableCI"/> containing the items to be imported</param>
+        Task CacheImportAsync(IEnumerable<ExportableCI> items);
     }
 }

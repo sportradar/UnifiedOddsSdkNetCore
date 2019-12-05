@@ -370,5 +370,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 return raceDriverProfileCI == null ? null : new RaceDriverProfile(raceDriverProfileCI);
             }
         }
+
+        /// <summary>
+        /// Gets the age group
+        /// </summary>
+        /// <value>The age group</value>
+        public string AgeGroup => GetCompetitor()?.AgeGroup;
     }
 }

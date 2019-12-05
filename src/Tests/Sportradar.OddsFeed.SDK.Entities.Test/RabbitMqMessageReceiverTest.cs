@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
             var keyParser = new RegexRoutingKeyParser();
             _mock = new Mock<IRabbitMqChannel>();
 
-            _messageReceiver = new RabbitMqMessageReceiver(_mock.Object, deserializer, keyParser, TestProducerManager.Create());
+            _messageReceiver = new RabbitMqMessageReceiver(_mock.Object, deserializer, keyParser, TestProducerManager.Create(), false);
         }
 
         private static byte[] GetFileContent(string fileName)

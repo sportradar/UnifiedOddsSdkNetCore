@@ -45,7 +45,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private ManagerCI _manager;
         private VenueCI _venue;
         private string _gender;
+        private string _ageGroup;
         private RaceDriverProfileCI _raceDriverProfile;
+        private DateTime _lastTimeCompetitorProfileFetched;
+        private List<CultureInfo> _cultureCompetitorProfileFetched;
+
+        /// <summary>
+        /// Last time (if any) competitor profile was fetched
+        /// </summary>
+        public DateTime LastTimeCompetitorProfileFetched => _lastTimeCompetitorProfileFetched;
+
+        /// <summary>
+        /// The list of CultureInfo used to fetch competitor profiles
+        /// </summary>
+        public List<CultureInfo> CultureCompetitorProfileFetched => _cultureCompetitorProfileFetched;
 
         /// <summary>
         /// Gets the name of the competitor in the specified language
@@ -215,6 +228,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
+        /// Gets the age group
+        /// </summary>
+        /// <value>The age group</value>
+        public string AgeGroup
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_ageGroup))
+                {
+                    FetchProfileIfNeeded(_primaryCulture);
+                }
+                return _ageGroup;
+            }
+        }
+
+        /// <summary>
         /// Gets the race driver profile
         /// </summary>
         /// <value>The race driver profile</value>
@@ -276,6 +305,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
+_lastTimeCompetitorProfileFetched = DateTime.MinValue;
+            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             Merge(competitor, culture);
         }
 
@@ -301,6 +332,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
+_lastTimeCompetitorProfileFetched = DateTime.MinValue;
+            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             Merge(competitor, culture);
         }
 
@@ -327,6 +360,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
+            _lastTimeCompetitorProfileFetched = DateTime.MinValue;
+            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             Merge(playerCompetitor, culture);
         }
 
@@ -348,10 +383,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _manager = originalCompetitorCI._manager;
             _venue = originalCompetitorCI._venue;
             _gender = originalCompetitorCI._gender;
+            _ageGroup = originalCompetitorCI._ageGroup;
             _fetchedCultures = originalCompetitorCI._fetchedCultures;
             _dataRouterManager = originalCompetitorCI._dataRouterManager;
             _primaryCulture = originalCompetitorCI._primaryCulture;
             _raceDriverProfile = originalCompetitorCI._raceDriverProfile;
+            _lastTimeCompetitorProfileFetched = originalCompetitorCI._lastTimeCompetitorProfileFetched;
+            _cultureCompetitorProfileFetched = originalCompetitorCI._cultureCompetitorProfileFetched;
         }
 
         /// <summary>
@@ -373,11 +411,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _manager = exportable.Manager != null ? new ManagerCI(exportable.Manager) : null;
             _venue = exportable.Venue != null ? new VenueCI(exportable.Venue) : null;
             _gender = exportable.Gender;
+            _ageGroup = exportable.AgeGroup;
             _fetchedCultures = new List<CultureInfo>(exportable.FetchedCultures);
             _dataRouterManager = dataRouterManager;
             _primaryCulture = exportable.PrimaryCulture;
             _raceDriverProfile = exportable.RaceDriverProfile != null ? new RaceDriverProfileCI(exportable.RaceDriverProfile) : null;
             _referenceId = new ReferenceIdCI(exportable.ReferenceIds);
+            _lastTimeCompetitorProfileFetched = DateTime.MinValue;
+            if (exportable.LastTimeCompetitorProfileIsFetched.HasValue)
+            {
+                _lastTimeCompetitorProfileFetched = exportable.LastTimeCompetitorProfileIsFetched.Value;
+            }
+            if (exportable.CultureCompetitorProfileFetched != null)
+            {
+                _cultureCompetitorProfileFetched = exportable.CultureCompetitorProfileFetched.ToList();
+            }
         }
 
         /// <summary>
@@ -405,6 +453,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             if (!string.IsNullOrEmpty(competitor.Gender))
             {
                 _gender = competitor.Gender;
+            }
+            if (!string.IsNullOrEmpty(competitor.AgeGroup))
+            {
+                _ageGroup = competitor.AgeGroup;
             }
 
             //((List<CultureInfo>)_fetchedCultures).Add(culture);
@@ -469,12 +521,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 _gender = competitorProfile.Competitor.Gender;
             }
+            if (!string.IsNullOrEmpty(competitorProfile.Competitor.AgeGroup))
+            {
+                _ageGroup = competitorProfile.Competitor.AgeGroup;
+            }
 
             if (competitorProfile.RaceDriverProfile != null)
             {
                 _raceDriverProfile = new RaceDriverProfileCI(competitorProfile.RaceDriverProfile);
             }
 
+            if (competitorProfile.Players != null && competitorProfile.Players.Any())
+            {
+                _lastTimeCompetitorProfileFetched = DateTime.Now;
+                _cultureCompetitorProfileFetched.Add(culture);
+            }
             ((List<CultureInfo>) _fetchedCultures).Add(culture);
         }
 
@@ -500,6 +561,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.Gender))
             {
                 _gender = simpleTeamProfile.Competitor.Gender;
+            }
+            if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.AgeGroup))
+            {
+                _ageGroup = simpleTeamProfile.Competitor.AgeGroup;
+            }
+
+            if (simpleTeamProfile.Competitor.Players != null && simpleTeamProfile.Competitor.Players.Any())
+            {
+                _lastTimeCompetitorProfileFetched = DateTime.Now;
+                _cultureCompetitorProfileFetched.Add(culture);
             }
             ((List<CultureInfo>) _fetchedCultures).Add(culture);
         }
@@ -553,8 +624,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _manager = item._manager ?? _manager;
             _venue = item._venue ?? _venue;
             _gender = item._gender ?? _gender;
+            _ageGroup = item._ageGroup ?? _ageGroup;
             _raceDriverProfile = item._raceDriverProfile ?? _raceDriverProfile;
             _referenceId = item._referenceId ?? _referenceId;
+            _lastTimeCompetitorProfileFetched = item._lastTimeCompetitorProfileFetched;
+            _cultureCompetitorProfileFetched = item._cultureCompetitorProfileFetched?.ToList();
         }
 
         private ReferenceIdCI UpdateReferenceIds(URN id, IDictionary<string, string> referenceIds)
@@ -627,10 +701,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 CountryCode = _countryCode,
                 Manager = _manager!= null ? await _manager.ExportAsync().ConfigureAwait(false) : null,
                 Venue = _venue != null ? await _venue.ExportAsync().ConfigureAwait(false) : null,
-                Gender = Gender,
+                Gender = _gender,
+                AgeGroup = _ageGroup,
                 RaceDriverProfile = _raceDriverProfile != null ? await _raceDriverProfile.ExportAsync().ConfigureAwait(false) : null,
                 FetchedCultures = new ReadOnlyCollection<CultureInfo>(_fetchedCultures.ToList()),
-                PrimaryCulture = _primaryCulture
+                PrimaryCulture = _primaryCulture,
+                LastTimeCompetitorProfileIsFetched = _lastTimeCompetitorProfileFetched > DateTime.MinValue
+                                                     ? _lastTimeCompetitorProfileFetched
+                                                     : (DateTime?) null,
+                CultureCompetitorProfileFetched = _cultureCompetitorProfileFetched
             };
 
             return exportable;
