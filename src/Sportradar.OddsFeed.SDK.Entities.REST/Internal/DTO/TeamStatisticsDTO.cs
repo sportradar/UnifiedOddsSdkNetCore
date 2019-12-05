@@ -27,6 +27,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public int YellowRedCards { get; }
 
         public int CornerKicks { get; }
+        
+        public int GreenCards { get; }
 
         internal TeamStatisticsDTO(teamStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
@@ -73,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
         }
 
-        internal TeamStatisticsDTO(HomeAway? homeAway, int yellowCards, int redCards, int yellowRedCards, int cornerKicks)
+        internal TeamStatisticsDTO(HomeAway? homeAway, int yellowCards, int redCards, int yellowRedCards, int cornerKicks, int greenCards)
         {
             Name = "";
             TeamId = null; // not available on the AMQP message
@@ -81,8 +83,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             YellowCards = yellowCards;
             RedCards = redCards;
             YellowRedCards = yellowRedCards;
-            Cards = yellowCards + redCards + yellowRedCards;
+            Cards = yellowCards + redCards + yellowRedCards + greenCards;
             CornerKicks = cornerKicks;
+            GreenCards = greenCards;
         }
     }
 }

@@ -29,14 +29,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 result.yellow_cards.home,
                 result.red_cards.home,
                 result.yellow_red_cards.home,
-                result.corners.home
+                result.corners.home,
+                result.green_cards == null ? 0 : result.green_cards.home
             ));
             totalStatisticsDTOs.Add(new TeamStatisticsDTO(
                 HomeAway.Away,
                 result.yellow_cards.away,
                 result.red_cards.away,
                 result.yellow_red_cards.away,
-                result.corners.away
+                result.corners.away,
+                result.green_cards == null ? 0 : result.green_cards.away
             ));
             TotalStatisticsDTOs = totalStatisticsDTOs;
 
