@@ -230,10 +230,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, _competitors?.FirstOrDefault()?.Names.Keys).ToList();
             if (_competitors != null && !wantedCultures.Any())
             {
-                return _competitors;
+                return await PrepareCompetitorList(_competitors, wantedCultures);
             }
             await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
-            return _competitors;
+            return await PrepareCompetitorList(_competitors, wantedCultures);
+        }
+
+        private async Task<IEnumerable<CompetitorCI>> PrepareCompetitorList(IEnumerable<CompetitorCI> competitors, IEnumerable<CultureInfo> cultures)
+        {
+            if (competitors != null)
+            {
+                return competitors;
+            }
+
+            var groups = await GetGroupsAsync(cultures);
+            return groups?.SelectMany(g => g.Competitors).Distinct();
         }
 
         /// <summary>
