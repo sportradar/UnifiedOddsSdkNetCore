@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dawn.Guard" Version="1.10.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
   </ItemGroup>
 
 </Project>
