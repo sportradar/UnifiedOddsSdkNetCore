@@ -30,8 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         /// <param name="marketId">The market identifier</param>
         /// <param name="specifiers">A dictionary specifying market specifiers or a null reference if market is invariant</param>
-        /// <param name="sourceCache">The source cache <see cref="MarketDescriptionCacheItem"/> belongs to</param>
         /// <returns>True if succeeded, false otherwise</returns>
-        Task<bool> ReloadMarketDescriptionAsync(int marketId, IReadOnlyDictionary<string, string> specifiers, string sourceCache);
+        Task<bool> ReloadMarketDescriptionAsync(int marketId, IReadOnlyDictionary<string, string> specifiers);
     }
 }
