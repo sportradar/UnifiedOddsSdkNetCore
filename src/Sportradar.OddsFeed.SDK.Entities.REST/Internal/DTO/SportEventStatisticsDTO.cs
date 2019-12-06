@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     {
         public IEnumerable<TeamStatisticsDTO> TotalStatisticsDTOs { get; }
 
-        public IEnumerable<PeriodStatisticsDTO> PeriodStatisticsDTOs { get; }
+        public IEnumerable<PeriodStatisticsDTO> PeriodStatisticsDTOs { get; internal set; }
 
         public SportEventStatisticsDTO(statisticsType result)
         {

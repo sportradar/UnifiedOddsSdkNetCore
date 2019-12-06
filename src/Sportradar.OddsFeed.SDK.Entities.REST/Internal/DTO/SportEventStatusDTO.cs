@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the sport event statistics
         /// </summary>
         /// <value>The sport event statistics</value>
-        public SportEventStatisticsDTO SportEventStatistics { get; }
+        public SportEventStatisticsDTO SportEventStatistics { get; internal set; }
 
         /// <summary>
         /// Gets the indicator for competitors if there are home or away

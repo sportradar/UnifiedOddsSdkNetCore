@@ -141,6 +141,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
             FeedStatusDTO = feedStatusDTO;
             SapiStatusDTO = sapiStatusDTO;
+
+            UpdatePeriodStatistics();
         }
 
         /// <summary>
@@ -152,6 +154,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             if (feedDTO != null)
             {
                 FeedStatusDTO = feedDTO;
+
+                UpdatePeriodStatistics();
             }
         }
 
@@ -164,6 +168,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             if (sapiDTO != null)
             {
                 SapiStatusDTO = sapiDTO;
+
+                UpdatePeriodStatistics();
+            }
+        }
+
+        private void UpdatePeriodStatistics()
+        {
+            if (SapiStatusDTO?.SportEventStatistics?.PeriodStatisticsDTOs != null)
+            {
+                if (FeedStatusDTO != null)
+                {
+                    if (FeedStatusDTO.SportEventStatistics == null)
+                    {
+                        FeedStatusDTO.SportEventStatistics = SapiStatusDTO.SportEventStatistics;
+                    }
+                    else if (FeedStatusDTO.SportEventStatistics.PeriodStatisticsDTOs == null)
+                    {
+                        FeedStatusDTO.SportEventStatistics.PeriodStatisticsDTOs = SapiStatusDTO.SportEventStatistics.PeriodStatisticsDTOs;
+                    }
+                }
             }
         }
     }
