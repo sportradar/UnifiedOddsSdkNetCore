@@ -55,54 +55,66 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             Console.WriteLine(" 6 - All together \t\t(includes all options above)");
             Console.WriteLine(" 7 - Extra: Market Mappings \t(displays market mappings related to sport events)");
             Console.WriteLine(" 8 - Extra: Replay Server \t(how to interact with xReplay Server)");
+            Console.WriteLine("  9 - Extra: Export/import \t(how to export/import current cache state)");
+            Console.WriteLine(" 10 - Extra: Advanced setup \t(single session with multi-threaded message parsing)");
             Console.Write(" Enter number: ");
-            var k = Console.ReadKey();
+            var k = Console.ReadLine();
 
             var defaultLocale = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build().DefaultLocale;
 
             Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
 
-            switch (k.KeyChar)
+            switch (k)
             {
-                case '1':
+                case "1":
                 {
                     new Basic(_log).Run(MessageInterest.AllMessages);
                     break;
                 }
-                case '2':
+                case "2":
                 {
                     new MultiSession(_log).Run();
                     break;
                 }
-                case '3':
+                case "3":
                 {
                     new SpecificDispatchers(_log).Run(MessageInterest.AllMessages);
                     break;
                 }
-                case '4':
+                case "4":
                 {
                     new ShowMarketNames(_log).Run(MessageInterest.AllMessages, defaultLocale);
                     break;
                 }
-                case '5':
+                case "5":
                 {
                     new ShowEventInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
                     break;
                 }
-                case '6':
+                case "6":
                 {
                     new CompleteInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
                     break;
                 }
-                case '7':
+                case "7":
                 {
                     new ShowMarketMappings(_log).Run(MessageInterest.AllMessages, defaultLocale);
                     break;
                 }
-                case '8':
+                case "8":
                 {
                     new ReplayServer(_log).Run(MessageInterest.AllMessages);
+                    break;
+                }
+                case "9":
+                {
+                    new CacheExportImport(_log).Run(MessageInterest.AllMessages);
+                    break;
+                }
+                case "10":
+                {
+                    new MultiThreaded(_log).Run(MessageInterest.AllMessages);
                     break;
                 }
                 default:

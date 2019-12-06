@@ -1,12 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
@@ -15,7 +16,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly ISportDataCache _sportDataCache;
 
         /// <summary>
-        /// A <see cref="IList{CultureInfo}"/> specified as default cultures (from configuration)
+        /// A <see cref="IList{T}"/> specified as default cultures (from configuration)
         /// </summary>
         private readonly IReadOnlyCollection<CultureInfo> _defaultCultures;
 
@@ -467,11 +467,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             var tasks = new List<Task<IEnumerable<ExportableCI>>>();
             if (cacheType.HasFlag(CacheType.SportData))
-                tasks.Add((_sportDataCache as IExportableSdkCache).ExportAsync());
+                tasks.Add(_sportDataCache.ExportAsync());
             if (cacheType.HasFlag(CacheType.SportEvent))
-                tasks.Add((_sportEventCache as IExportableSdkCache).ExportAsync());
+                tasks.Add(_sportEventCache.ExportAsync());
             if (cacheType.HasFlag(CacheType.Profile))
-                tasks.Add((_profileCache as IExportableSdkCache).ExportAsync());
+                tasks.Add(_profileCache.ExportAsync());
             tasks.ForEach(t => t.ConfigureAwait(false));
             return (await Task.WhenAll(tasks)).SelectMany(e => e);
         }
@@ -485,9 +485,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var cacheItems = items.ToList();
             var tasks = new List<Task>
             {
-                (_sportDataCache as IExportableSdkCache).ImportAsync(cacheItems),
-                (_sportEventCache as IExportableSdkCache).ImportAsync(cacheItems),
-                (_profileCache as IExportableSdkCache).ImportAsync(cacheItems)
+                _sportDataCache.ImportAsync(cacheItems),
+                _sportEventCache.ImportAsync(cacheItems),
+                _profileCache.ImportAsync(cacheItems)
             };
             tasks.ForEach(t => t.ConfigureAwait(false));
             return Task.WhenAll(tasks);
