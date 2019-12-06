@@ -74,12 +74,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets the list of associated player ids
         /// </summary>
         /// <value>The associated player ids</value>
-        public IEnumerable<IPlayer> AssociatedPlayers {
+        public IEnumerable<IPlayer> AssociatedPlayers
+        {
             get
             {
-                if (GetCompetitor().AssociatedPlayerIds != null && GetCompetitor().AssociatedPlayerIds.Any())
+                var associatedPlayerIds = GetCompetitor()?.AssociatedPlayerIds?.ToList();
+                if (associatedPlayerIds != null && associatedPlayerIds.Any())
                 {
-                    return _sportEntityFactory.BuildPlayersAsync(GetCompetitor().AssociatedPlayerIds, _cultures).Result;
+                    return _sportEntityFactory.BuildPlayersAsync(associatedPlayerIds, _cultures).Result;
                 }
 
                 return null;

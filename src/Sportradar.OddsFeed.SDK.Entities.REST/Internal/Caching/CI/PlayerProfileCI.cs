@@ -12,6 +12,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Messages;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
@@ -30,6 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private int? _weight;
         private string _abbreviation;
         private string _gender;
+        private URN _competitorId;
 
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing player name in different languages
@@ -110,12 +112,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private readonly CultureInfo _primaryCulture;
 
         /// <summary>
+        /// The competitor id this player belongs to
+        /// </summary>
+        public URN CompetitorId => _competitorId;
+        
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlayerProfileCI"/> class
         /// </summary>
         /// <param name="profile">The <see cref="PlayerProfileDTO"/> used to create instance</param>
+        /// <param name="competitorId">The competitor id this player belongs to</param>
         /// <param name="culture">The culture of the <see cref="PlayerProfileDTO"/> used to create new instance</param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch <see cref="PlayerProfileDTO"/></param>
-        internal PlayerProfileCI(PlayerProfileDTO profile, CultureInfo culture, IDataRouterManager dataRouterManager)
+        internal PlayerProfileCI(PlayerProfileDTO profile, URN competitorId, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(profile)
         {
             Guard.Argument(profile).NotNull();
@@ -129,16 +138,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
             Names = new Dictionary<CultureInfo, string>();
             _nationalities = new Dictionary<CultureInfo, string>();
-            Merge(profile, culture);
+            Merge(profile, competitorId, culture);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerProfileCI"/> class
         /// </summary>
         /// <param name="playerCompetitor">The <see cref="PlayerCompetitorDTO"/> used to create instance</param>
+        /// <param name="competitorId">The competitor id this player belongs to</param>
         /// <param name="culture">The culture of the <see cref="PlayerCompetitorDTO"/> used to create new instance</param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch <see cref="PlayerCompetitorDTO"/></param>
-        internal PlayerProfileCI(PlayerCompetitorDTO playerCompetitor, CultureInfo culture, IDataRouterManager dataRouterManager)
+        internal PlayerProfileCI(PlayerCompetitorDTO playerCompetitor, URN competitorId, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(playerCompetitor)
         {
             Guard.Argument(playerCompetitor).NotNull();
@@ -152,7 +162,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
             Names = new Dictionary<CultureInfo, string>();
             _nationalities = new Dictionary<CultureInfo, string>();
-            Merge(playerCompetitor, culture);
+            Merge(playerCompetitor, competitorId, culture);
         }
 
         /// <summary>
@@ -164,9 +174,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             : base(exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
+
             if (dataRouterManager == null)
+            {
                 throw new ArgumentNullException(nameof(dataRouterManager));
+            }
 
             _fetchedCultures = new List<CultureInfo>(exportable.Name.Keys);
             _primaryCulture = exportable.Name.Keys.First();
@@ -181,14 +196,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _weight = exportable.Weight;
             _abbreviation = exportable.Abbreviation;
             _gender = exportable.Gender;
+            _competitorId = exportable.CompetitorId;
         }
 
         /// <summary>
         /// Merges the specified <see cref="PlayerProfileDTO"/> into instance
         /// </summary>
         /// <param name="profile">The <see cref="PlayerProfileDTO"/> used to merge into instance</param>
+        /// <param name="competitorId">The competitor id this player belongs to</param>
         /// <param name="culture">The culture of the <see cref="PlayerProfileDTO"/> used to merge</param>
-        internal void Merge(PlayerProfileDTO profile, CultureInfo culture)
+        internal void Merge(PlayerProfileDTO profile, URN competitorId, CultureInfo culture)
         {
             Guard.Argument(profile).NotNull();
             Guard.Argument(culture).NotNull();
@@ -206,6 +223,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 _abbreviation = SdkInfo.GetAbbreviationFromName(profile.Name);
             }
 
+            if (competitorId != null)
+            {
+                _competitorId = competitorId;
+            }
+
             ((List<CultureInfo>)_fetchedCultures).Add(culture);
         }
 
@@ -213,8 +235,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Merges the specified <see cref="PlayerCompetitorDTO"/> into instance
         /// </summary>
         /// <param name="playerCompetitor">The <see cref="PlayerCompetitorDTO"/> used to merge into instance</param>
+        /// <param name="competitorId">The competitor id this player belongs to</param>
         /// <param name="culture">The culture of the <see cref="PlayerCompetitorDTO"/> used to merge</param>
-        internal void Merge(PlayerCompetitorDTO playerCompetitor, CultureInfo culture)
+        internal void Merge(PlayerCompetitorDTO playerCompetitor, URN competitorId, CultureInfo culture)
         {
             Guard.Argument(playerCompetitor).NotNull();
             Guard.Argument(culture).NotNull();
@@ -224,6 +247,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviation = string.IsNullOrEmpty(playerCompetitor.Abbreviation)
                 ? SdkInfo.GetAbbreviationFromName(playerCompetitor.Name)
                 : playerCompetitor.Abbreviation;
+
+            if (competitorId != null)
+            {
+                _competitorId = competitorId;
+            }
         }
 
         /// <summary>
@@ -249,6 +277,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _weight = item._weight ?? _weight;
             _abbreviation = item._abbreviation ?? _abbreviation;
             _gender = item._gender ?? _gender;
+            _competitorId = item._competitorId ?? _competitorId;
         }
 
         /// <summary>
@@ -326,7 +355,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 Height = _height,
                 Weight = _weight,
                 Abbreviation = _abbreviation,
-                Gender = _gender
+                Gender = _gender,
+                CompetitorId = _competitorId
             });
         }
     }

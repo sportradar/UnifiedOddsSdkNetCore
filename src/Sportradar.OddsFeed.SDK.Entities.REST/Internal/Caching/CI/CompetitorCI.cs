@@ -280,6 +280,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
+            _lastTimeCompetitorProfileFetched = DateTime.MinValue;
+            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             Merge(competitor, culture);
         }
 

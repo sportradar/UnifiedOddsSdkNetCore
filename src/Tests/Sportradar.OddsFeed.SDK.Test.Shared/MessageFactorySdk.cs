@@ -113,7 +113,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         internal static IPlayerProfile GetPlayerProfile(int id = 0)
         {
-            return new PlayerProfile(new PlayerProfileCI(new PlayerProfileDTO(MFR.GetPlayerExtended(id), null), TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3);
+            return new PlayerProfile(new PlayerProfileCI(new PlayerProfileDTO(MFR.GetPlayerExtended(id), null), null, TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3);
         }
 
         internal static IProductInfo GetProductInfo(int subItemCount = 0)
