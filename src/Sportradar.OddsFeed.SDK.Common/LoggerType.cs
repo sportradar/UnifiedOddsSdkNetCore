@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
+namespace Sportradar.OddsFeed.SDK.Common
 {
     /// <summary>
     /// Enumeration of all possible types of logger used in SDK. Each can have unique settings in log4net.config file.

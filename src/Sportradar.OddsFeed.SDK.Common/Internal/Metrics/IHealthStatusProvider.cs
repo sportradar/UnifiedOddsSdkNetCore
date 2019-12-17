@@ -1,9 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using App.Metrics.Health;
-
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal.Metrics
 {

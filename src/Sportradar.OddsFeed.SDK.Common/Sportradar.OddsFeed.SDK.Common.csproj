@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.56.7271</AssemblyVersion>
-    <FileVersion>1.0.56.7271</FileVersion>
+    <AssemblyVersion>1.0.80.7290</AssemblyVersion>
+    <FileVersion>1.0.80.7290</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="App.Metrics" Version="3.2.0" />
-    <PackageReference Include="App.Metrics.Core" Version="3.2.0" />
+    <PackageReference Include="App.Metrics.Abstractions" Version="3.2.0" />
     <PackageReference Include="App.Metrics.Health.Core" Version="3.2.0" />
     <PackageReference Include="Castle.Core" Version="4.4.0" />
     <PackageReference Include="Dawn.Guard" Version="1.10.0" />

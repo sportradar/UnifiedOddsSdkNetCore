@@ -5,6 +5,7 @@ using System;
 using Dawn;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
@@ -18,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// Used to issue recovery requests to the feed
     /// </summary>
     [Log(LoggerType.ClientInteraction)]
-    internal class RecoveryRequestIssuer : MarshalByRefObject, IEventRecoveryRequestIssuer, IRecoveryRequestIssuer
+    public class RecoveryRequestIssuer : MarshalByRefObject, IEventRecoveryRequestIssuer, IRecoveryRequestIssuer
     {
         /// <summary>
         /// A format of the URL used to request a recovery of state after the specified timestamp

@@ -14,6 +14,7 @@ using App.Metrics.Health;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -103,9 +104,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 return null;
             }
 
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportEventStatusAsync", MeasurementUnit = Unit.Calls });
+            SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportEventStatusAsync", MeasurementUnit = Unit.Calls });
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportEventStatusAsync", MeasurementUnit = Unit.Requests };
-            using (var t = AppMetrics.CreateDefaultBuilder().Build().Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{eventId}"))
+            using (var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{eventId}"))
             {
                 try
                 {

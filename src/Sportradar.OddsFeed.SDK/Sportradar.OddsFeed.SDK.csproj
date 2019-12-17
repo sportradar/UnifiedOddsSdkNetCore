@@ -2,8 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.27.7271</AssemblyVersion>
-    <FileVersion>1.0.27.7271</FileVersion>
+    <AssemblyVersion>1.0.44.7290</AssemblyVersion>
+    <FileVersion>1.0.44.7290</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.API\Sportradar.OddsFeed.SDK.API.csproj" />
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Common\Sportradar.OddsFeed.SDK.Common.csproj" />
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Entities.REST\Sportradar.OddsFeed.SDK.Entities.REST.csproj" />
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Entities\Sportradar.OddsFeed.SDK.Entities.csproj" />
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Messages\Sportradar.OddsFeed.SDK.Messages.csproj" />
+  </ItemGroup>
 
 </Project>

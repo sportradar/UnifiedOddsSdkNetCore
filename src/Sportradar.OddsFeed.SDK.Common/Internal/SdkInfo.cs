@@ -185,11 +185,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             string result;
             if (input > 0)
             {
-                result = $"+{input}";
+                result = $"+{input.ToString(CultureInfo.InvariantCulture)}";
             }
             else if (input < 0)
             {
-                result = $"{input}";
+                result = $"{input.ToString(CultureInfo.InvariantCulture)}";
             }
             else
             {

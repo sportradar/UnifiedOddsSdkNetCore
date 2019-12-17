@@ -78,7 +78,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
     public ProfileCache(MemoryCache cache,
                         IDataRouterManager dataRouterManager,
                         ICacheManager cacheManager)
-            : base(cacheManager)
+            : base(cacheManager, null)
         {
             Guard.Argument(cache).NotNull();
             Guard.Argument(dataRouterManager).NotNull();

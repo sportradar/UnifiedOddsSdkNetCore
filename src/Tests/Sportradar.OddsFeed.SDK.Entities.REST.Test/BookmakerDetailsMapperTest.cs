@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.API.Internal;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -42,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             {
                 dataProvider
             };
-            _bookmakerDetailsFetcher = LogProxyFactory.Create<BookmakerDetailsFetcher>(args, LoggerType.ClientInteraction);
+            _bookmakerDetailsFetcher = LogInterceptorFactory.Create<BookmakerDetailsFetcher>(args, null, LoggerType.ClientInteraction);
         }
 
         [TestMethod]

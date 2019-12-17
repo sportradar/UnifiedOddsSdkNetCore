@@ -14,6 +14,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -191,13 +192,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="publicConfig">A <see cref="IOddsFeedConfiguration"/> representing public / provided by user / configuration</param>
         /// <param name="bookmakerDetailsProvider">A <see cref="BookmakerDetailsProvider"/> used to get bookmaker info</param>
-        public OddsFeedConfigurationInternal(IOddsFeedConfiguration publicConfig, BookmakerDetailsProvider bookmakerDetailsProvider)
+        public OddsFeedConfigurationInternal(IOddsFeedConfiguration publicConfig, IDataProvider<BookmakerDetailsDTO> bookmakerDetailsProvider)
         {
             Guard.Argument(publicConfig).NotNull();
             Guard.Argument(bookmakerDetailsProvider).NotNull();
 
             _publicConfig = publicConfig;
-            _bookmakerDetailsProvider = bookmakerDetailsProvider;
+            _bookmakerDetailsProvider = (BookmakerDetailsProvider) bookmakerDetailsProvider;
 
             StatisticsEnabled = true;
             StatisticsTimeout = 1800;

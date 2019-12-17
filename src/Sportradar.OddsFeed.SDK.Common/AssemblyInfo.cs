@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 // [assembly: AssemblyCulture("")]
 
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Common.Test")]
+[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.API.Test")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

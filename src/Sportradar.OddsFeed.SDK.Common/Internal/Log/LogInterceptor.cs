@@ -58,170 +58,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
             _proxyPerms = new ConcurrentDictionary<int, LogProxyPerm>();
         }
 
-
-
-        //protected override object Invoke(MethodInfo targetMethod, object[] args)
-        //{
-        //    try
-        //    {
-        //        LogBefore(targetMethod, args);
-
-        //        var result = targetMethod.Invoke(_decorated, args);
-
-        //        LogAfter(targetMethod, args, result);
-        //        return result;
-        //    }
-        //    catch (Exception ex) when (ex is TargetInvocationException)
-        //    {
-        //        LogException(ex.InnerException ?? ex, targetMethod);
-        //        throw ex.InnerException ?? ex;
-        //    }
-        //}
-
-        //public static T Create(T decorated, Predicate<MethodInfo> filter, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true)
-        //{
-        //    if (decorated == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(decorated));
-        //    }
-        //    //object proxy = Create<T, LogProxy<T>>();
-        //    object proxy = new ProxyGenerator().CreateClassProxy<T>(new LogProxy<T>(decorated, loggerType, canOverrideLoggerType))
-        //    ((LogProxy<T>)proxy)._decorated = decorated;
-        //    ((LogProxy<T>)proxy)._filter = filter;
-        //    ((LogProxy<T>)proxy)._defaultLoggerType = loggerType;
-        //    ((LogProxy<T>)proxy)._canOverrideLoggerType = canOverrideLoggerType;
-
-        //    return (T)proxy;
-        //}
-
-        //private void LogException(Exception exception, MethodInfo methodInfo = null)
-        //{
-        //    Console.WriteLine($"Class {_decorated.GetType().FullName}, Method {methodInfo.Name} threw exception:\n{exception}");
-        //}
-
-        //private void LogAfter(MethodInfo methodInfo, object[] args, object result)
-        //{
-        //    Console.WriteLine($"Class {_decorated.GetType().FullName}, Method {methodInfo.Name} executed, Output: {result}");
-        //}
-
-        //private void LogBefore(MethodInfo methodInfo, object[] args)
-        //{
-        //    Console.WriteLine($"Class {_decorated.GetType().FullName}, Method {methodInfo.Name} is executing");
-        //}
-
-
-
-
-        ///// <summary>Whenever any method on the generated proxy type is called, this method is invoked to dispatch control.</summary>
-        ///// <param name="methodInfo">The method the caller invoked.</param>
-        ///// <param name="args">The arguments the caller passed to the method.</param>
-        ///// <returns>The object to return to the caller, or <see langword="null" /> for void methods.</returns>
-        //protected override object Invoke(MethodInfo methodInfo, object[] args)
-        //{
-        //    var logEnabled = false;
-        //    if (methodInfo == null)
-        //    {
-        //        throw new ArgumentException("Input parameter 'msg' does not have MethodBase as MethodInfo.");
-        //    }
-
-        //    var logger = SdkLoggerFactory.GetLogger(methodInfo.ReflectedType, SdkLoggerFactory.SdkLogRepositoryName, _defaultLoggerType);
-
-        //    if (_filter != null && _filter(methodInfo))
-        //    {
-        //        logEnabled = true;
-        //    }
-
-        //    if (!logEnabled || _canOverrideLoggerType)
-        //    {
-        //        var attributes = methodInfo.GetCustomAttributes(true).ToList();
-        //        if (methodInfo.DeclaringType != null)
-        //        {
-        //            attributes.AddRange(methodInfo.DeclaringType.GetCustomAttributes(true));
-        //        }
-
-        //        if (attributes.Count > 0)
-        //        {
-        //            foreach (var t in attributes)
-        //            {
-        //                if (!(t is LogAttribute))
-        //                {
-        //                    continue;
-        //                }
-        //                logEnabled = true;
-        //                if (_canOverrideLoggerType)
-        //                {
-        //                    logger = SdkLoggerFactory.GetLogger(methodInfo.ReflectedType, SdkLoggerFactory.SdkLogRepositoryName, ((LogAttribute) t).LoggerType);
-        //                }
-        //                break;
-        //            }
-        //        }
-        //    }
-
-        //    var watch = new Stopwatch();
-        //    watch.Start();
-
-        //    try
-        //    {
-        //        if (methodInfo.Name == "GetType")
-        //        {
-        //            logEnabled = false;
-        //        }
-        //        if (logEnabled)
-        //        {
-        //            logger.LogInformation($"Starting executing '{methodInfo.Name}' ...");
-        //        }
-
-        //        var methodCall = $"{methodInfo.Name}()";
-        //        if (logEnabled && args != null && args.Any())
-        //        {
-        //            logger.LogDebug($"{methodInfo.Name} arguments:");
-        //            for (var i = 0; i < args.Length; i++)
-        //            {
-        //                methodCall += $",{methodInfo.GetGenericArguments()[i].Name}={args[i]}";
-        //                logger.LogDebug($"\t{methodInfo.GetGenericArguments()[i].Name}={args[i]}");
-        //            }
-
-        //            methodCall = $"{methodInfo.Name}({methodCall.Substring(1)})";
-        //            logger.LogDebug($"Invoking '{methodCall}' ...");
-        //        }
-
-        //        var result = methodInfo.Invoke(_decorated, args); // MAIN EXECUTION
-
-        //        var task = result as Task;
-        //        if (task != null)
-        //        {
-        //            var perm = new LogProxyPerm
-        //                       {
-        //                           LogEnabled = logEnabled,
-        //                           Logger = logger,
-        //                           MethodInfo = methodInfo,
-        //                           Result = result,
-        //                           Watch = watch
-        //                       };
-        //            _proxyPerms.Add(task.Id, perm);
-        //            if (logEnabled)
-        //            {
-        //                logger.LogDebug($"TaskId:{task.Id} is executing and we wait to finish ...");
-        //            }
-        //            task.ContinueWith(TaskExecutionFinished);
-        //            return task; // new ReturnMessage(result, null, 0, methodCall.LogicalCallContext, methodCall);
-        //        }
-
-        //        FinishExecution(logEnabled, methodInfo, result?.GetType().Name, result, logger, watch);
-        //        return result;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        watch.Stop();
-        //        if (logEnabled)
-        //        {
-        //            logger.LogError($"Exception during executing '{methodInfo.Name}': {Environment.NewLine}", e);
-        //        }
-
-        //        throw;
-        //    }
-        //}
-
         private void TaskExecutionFinished(Task task)
         {
             LogProxyPerm perm;
@@ -365,7 +201,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 var methodCall = $"{methodInfo.Name}()";
                 if (invocation.Arguments != null && invocation.Arguments.Any())
                 {
-                    methodCall = $"{methodInfo.Name}({string.Join(',', invocation.Arguments.Select(s=> $"{s.GetType().Name}={s}"))})";
+                    methodCall = $"{methodInfo.Name}({string.Join(',', invocation.Arguments.Select(s=> $"{s?.GetType().Name}={s}"))})";
                 }
                 if (logEnabled)
                 {
@@ -390,18 +226,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                         logger.LogDebug($"TaskId:{task.Id} is executing and we wait to finish ...");
                     }
                     task.ContinueWith(TaskExecutionFinished);
-                    //invocation.ReturnValue = task;
-                    //invocation.Proceed();
-                    //return task; // new ReturnMessage(result, null, 0, methodCall.LogicalCallContext, methodCall);
                 }
                 else
                 {
                     FinishExecution(logEnabled, methodInfo, invocation.ReturnValue?.GetType().Name, invocation.ReturnValue, logger, watch);
                 }
-
-                //invocation.ReturnValue = invocation.ReturnValue;
-                //invocation.Proceed();
-                //return result;
             }
             catch (Exception e)
             {

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics;
 using App.Metrics.Health;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;

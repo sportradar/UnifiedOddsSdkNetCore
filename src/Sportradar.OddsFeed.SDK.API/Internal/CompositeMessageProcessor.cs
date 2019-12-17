@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public string ProcessorId { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeMessageProcessor"/> class.
+        /// Initializes a new instance of the <see cref="CompositeMessageProcessor"/> class
         /// </summary>
         /// <param name="processors">The list of processors.</param>
         public CompositeMessageProcessor(IEnumerable<IFeedMessageProcessor> processors)

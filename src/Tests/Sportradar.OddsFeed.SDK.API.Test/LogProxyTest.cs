@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Test.Shared;
 
@@ -21,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         [TestInitialize]
         public void Init()
         {
-            _demoClass = LogProxyFactory.Create<DemoMethods>(null, m=> m.Name.Contains("D"), LoggerType.ClientInteraction);
+            _demoClass = LogInterceptorFactory.Create<DemoMethods>(null, m=> m.Name.Contains("D"), LoggerType.ClientInteraction);
         }
 
         [TestMethod]

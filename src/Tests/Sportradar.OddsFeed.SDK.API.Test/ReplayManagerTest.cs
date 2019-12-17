@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.API.Internal.Replay;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -35,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                 15
             };
 
-            _httpDataRestful = LogProxyFactory.Create<IDataRestful>(args);
+            _httpDataRestful = LogInterceptorFactory.Create<HttpDataRestful>(args, null, LoggerType.RestTraffic);
 
             object[] args2 =
             {
@@ -43,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                 _httpDataRestful,
                 0
             };
-            _replayManager = LogProxyFactory.Create<ReplayManager>(args2);
+            _replayManager = LogInterceptorFactory.Create<ReplayManager>(args2, m => m.Name.Contains("Async"), LoggerType.RestTraffic);
         }
 
         [TestMethod]

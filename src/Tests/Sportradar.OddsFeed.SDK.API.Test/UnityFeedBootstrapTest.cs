@@ -1,10 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
+using Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Sportradar.OddsFeed.SDK.API.Internal;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
@@ -15,9 +16,8 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
-using Unity;
-using Unity.Injection;
 using Unity.Lifetime;
+using Unity.Injection;
 using Unity.Resolution;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
@@ -40,9 +40,10 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         [ClassInitialize]
         public static void Init(TestContext context)
         {
-            IUnityContainer container = new UnityContainer();
+            IUnityContainer container = new UnityContainer().EnableDiagnostic();
             var config = TestConfigurationInternal.GetConfig();
             _dispatcher = new Mock<IGlobalEventDispatcher>().Object;
+            
             container.RegisterBaseTypes(config, null, null);
 
             // we need to override initial loading of bookmaker details and producers
@@ -54,18 +55,22 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             var defaultBookmakerDetailsProvider = bookmakerDetailsProviderMock.Object;
             container.RegisterInstance<IDataProvider<BookmakerDetailsDTO>>(defaultBookmakerDetailsProvider, new ContainerControlledLifetimeManager());
             container.RegisterInstance<BookmakerDetailsProvider>(defaultBookmakerDetailsProvider, new ContainerControlledLifetimeManager());
-            var newConfig = new OddsFeedConfigurationInternal(config, defaultBookmakerDetailsProvider);
-            newConfig.Load();
-            container.RegisterInstance<IOddsFeedConfiguration>(newConfig, new ContainerControlledLifetimeManager());
-            container.RegisterInstance<IOddsFeedConfigurationInternal>(newConfig, new ContainerControlledLifetimeManager());
 
-            container.RegisterTypes(_dispatcher);
-
+            //override
             container.RegisterType<IProducerManager, ProducerManager>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     new TestProducersProvider(),
                     config));
+
+            container.RegisterTypes(_dispatcher);
+
+            //var x = container.Registrations.Where(w => w.MappedToType == typeof(ProducerManager));
+
+            var newConfig = new OddsFeedConfigurationInternal(config, defaultBookmakerDetailsProvider);
+            newConfig.Load();
+            container.RegisterInstance<IOddsFeedConfiguration>(newConfig, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IOddsFeedConfigurationInternal>(newConfig, new ContainerControlledLifetimeManager());
 
             container.RegisterAdditionalTypes();
 
@@ -121,14 +126,14 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         [TestMethod]
         public void CompositeMessageProcessorIsResolvedCorrectly()
         {
-            var processor1 = _childContainer1.Resolve<IFeedMessageProcessor>();
+            var processor1 = _childContainer1.Resolve<CompositeMessageProcessor>();
             Assert.IsNotNull(processor1, "Resolved IFeedMessageProcessor cannot be a null reference");
             Assert.IsInstanceOfType(processor1, typeof(CompositeMessageProcessor), "Resolved IFeedMessageProcessor must be instance of CompositeMessageProcessor");
 
-            var processor12 = _childContainer1.Resolve<IFeedMessageProcessor>();
+            var processor12 = _childContainer1.Resolve<CompositeMessageProcessor>();
             Assert.AreEqual(processor1, processor12, "IFeedMessageProcessor instances resolved on the same container must be equal");
 
-            var processor2 = _childContainer2.Resolve<IFeedMessageProcessor>();
+            var processor2 = _childContainer2.Resolve<CompositeMessageProcessor>();
             Assert.AreNotEqual(processor1, processor2, "IOddsFeedMessageProcessor instances resolved on different containers must not be equal");
         }
 
@@ -231,11 +236,11 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         [TestMethod]
         public void FeedRecoveryManagerIsResolvedProperly()
         {
-            var stats1 = _childContainer1.Resolve<FeedRecoveryManager>();
+            var stats1 = _childContainer1.Resolve<IFeedRecoveryManager>();
             Assert.IsNotNull(stats1, "Resolved FeedRecoveryManager cannot be a null reference");
             Assert.IsInstanceOfType(stats1, typeof(FeedRecoveryManager), "Resolved FeedRecoveryManager must be instance of FeedRecoveryManager");
 
-            var stats2 = _childContainer2.Resolve<FeedRecoveryManager>();
+            var stats2 = _childContainer2.Resolve<IFeedRecoveryManager>();
             Assert.AreEqual(stats1, stats2, "FeedRecoveryManager instances resolved on different containers must be equal");
         }
 

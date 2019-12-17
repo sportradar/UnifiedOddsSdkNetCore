@@ -246,13 +246,14 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="isReplay">Value indicating whether the constructed instance will be used to connect to replay server</param>
         /// <param name="loggerFactory">A <see cref="ILoggerFactory"/> used to create <see cref="ILogger"/> used within sdk</param>
         /// <param name="metricsRoot">A <see cref="IMetricsRoot"/> used to provide metrics within sdk</param>
-        protected Feed(IOddsFeedConfiguration config, bool isReplay, ILoggerFactory loggerFactory, IMetricsRoot metricsRoot)
+        protected Feed(IOddsFeedConfiguration config, bool isReplay, ILoggerFactory loggerFactory = null, IMetricsRoot metricsRoot = null)
         {
             Guard.Argument(config).NotNull();
 
             FeedInitialized = false;
 
             UnityContainer = new UnityContainer();
+            //UnityContainer = new UnityContainer().EnableDiagnostic();
             UnityContainer.RegisterBaseTypes(config, loggerFactory, metricsRoot);
             InternalConfig = UnityContainer.Resolve<IOddsFeedConfigurationInternal>();
             if (isReplay || InternalConfig.Environment == SdkEnvironment.Replay)

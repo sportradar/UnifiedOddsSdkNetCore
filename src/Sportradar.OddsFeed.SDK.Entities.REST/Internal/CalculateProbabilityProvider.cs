@@ -42,13 +42,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public CalculateProbabilityProvider(string uriFormat, IDataPoster poster, IDeserializer<CalculationResponseType> deserializer, ISingleTypeMapperFactory<CalculationResponseType, CalculationDTO> mapperFactory)
         {
             if (string.IsNullOrWhiteSpace(uriFormat))
+            {
                 throw new ArgumentOutOfRangeException(nameof(uriFormat));
+            }
             if (poster == null)
+            {
                 throw new ArgumentNullException(nameof(poster));
+            }
             if (deserializer == null)
+            {
                 throw new ArgumentNullException(nameof(deserializer));
+            }
             if (mapperFactory == null)
+            {
                 throw new ArgumentNullException(nameof(mapperFactory));
+            }
 
             _uriFormat = uriFormat;
             _poster = poster;
@@ -74,7 +82,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     specifiers = s.Specifiers
                 }).ToArray()
             });
-
 
             var responseMessage = await _poster.PostDataAsync(new Uri(_uriFormat), content).ConfigureAwait(false);
 

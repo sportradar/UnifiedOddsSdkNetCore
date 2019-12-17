@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.62.7271</AssemblyVersion>
-    <FileVersion>1.0.62.7271</FileVersion>
+    <AssemblyVersion>1.0.96.7290</AssemblyVersion>
+    <FileVersion>1.0.96.7290</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics.Abstractions" Version="3.2.0" />
     <PackageReference Include="Dawn.Guard" Version="1.10.0" />
     <PackageReference Include="Humanizer" Version="2.7.9" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />

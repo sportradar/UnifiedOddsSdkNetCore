@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             Guard.Argument(culture).NotNull();
 
-            AppMetrics.CreateDefaultBuilder().Build().Measure.Counter.Increment(new CounterOptions{Context="CACHE", Name= "LocalizedNamedValueCache->FetchAndMerge", MeasurementUnit = Unit.Calls});
+            SdkMetricsFactory.MetricsRoot.Measure.Counter.Increment(new CounterOptions{Context="CACHE", Name= "LocalizedNamedValueCache->FetchAndMerge", MeasurementUnit = Unit.Calls});
             var record = await _dataProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
 
             lock (_lock)

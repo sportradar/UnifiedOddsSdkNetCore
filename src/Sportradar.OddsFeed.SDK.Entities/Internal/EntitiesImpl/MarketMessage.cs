@@ -42,11 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 throw new ArgumentNullException(nameof(@event));
             }
 
-            var enumerable = markets.ToList();
-            if (enumerable.Any())
-            {
-                _markets = markets as IReadOnlyCollection<T> ?? new ReadOnlyCollection<T>(enumerable.ToList());
-            }
+            _markets = markets == null ? null : new ReadOnlyCollection<T>(markets.ToList());
         }
 
         /// <summary>Gets a <see cref="IEnumerable{IMarket}" /> describing markets associated with the current <see cref="IMarketMessage{T, R}" /></summary>

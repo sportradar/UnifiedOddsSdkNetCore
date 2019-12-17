@@ -39,16 +39,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         private readonly ICacheManager _cacheManager;
 
-        private readonly IMetricsRoot _metrics = AppMetrics.CreateDefaultBuilder().Build();
+        private readonly IMetricsRoot _metrics;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SdkCache"/> class
         /// </summary>
-        protected SdkCache(ICacheManager cacheManager)
+        protected SdkCache(ICacheManager cacheManager, IMetricsRoot metrics = null)
         {
             Guard.Argument(cacheManager).NotNull();
 
             _cacheManager = cacheManager;
+            _metrics = metrics ?? SdkMetricsFactory.MetricsRoot;
 
             CacheName = GetType().Name;
             // ReSharper disable once VirtualMemberCallInConstructor

@@ -17,6 +17,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Test.Shared")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Entities.Test")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Entities.REST.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

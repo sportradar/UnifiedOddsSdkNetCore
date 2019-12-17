@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Xml;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;

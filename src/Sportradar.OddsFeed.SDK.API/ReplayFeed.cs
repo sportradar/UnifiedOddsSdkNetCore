@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using App.Metrics;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.Internal;

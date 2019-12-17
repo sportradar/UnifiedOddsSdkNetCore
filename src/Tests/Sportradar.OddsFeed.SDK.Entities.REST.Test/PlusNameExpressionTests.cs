@@ -89,37 +89,37 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual("0", SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: 0, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
 
             nbrString = "+0.25";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual("+0.25", SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: +0.25, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
 
             nbrString = "+0.5";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual("+0.5", SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: +0.5, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
 
             nbrString = "+0.75";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual("+0.75", SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: +0.75, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
 
             nbrString = "+1";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual("+1", SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: +1, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
 
             nbrString = "0.75";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual("+0.75", SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: +0.75, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
 
             nbrString = "1";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual("+1", SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: +1, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
 
             nbrString = "-0.75";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual(nbrString, SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: {nbrString}, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
             nbrString = "-1";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual(nbrString, SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: {nbrString}, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
             nbrString = "-1.75";
-            nbr = decimal.Parse(nbrString);
+            nbr = decimal.Parse(nbrString, CultureInfo.InvariantCulture);
             Assert.AreEqual(nbrString, SdkInfo.DecimalToStringWithSign(nbr), $"Expecting: {nbrString}, Received: {SdkInfo.DecimalToStringWithSign(nbr)}.");
         }
     }
