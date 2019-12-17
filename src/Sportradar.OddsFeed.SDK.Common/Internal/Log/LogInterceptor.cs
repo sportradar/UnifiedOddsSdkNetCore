@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         private readonly IDictionary<int, LogProxyPerm> _proxyPerms;
 
         /// <summary>
-        /// Initializes new instance of the <see cref="LogProxy{T}"/>
+        /// Initializes new instance of the <see cref="LogInterceptor"/>
         /// </summary>
         /// <param name="loggerType">A <see cref="LoggerType"/> to be used within the proxy</param>
         /// <param name="canOverrideLoggerType">A value indicating if the <see cref="LoggerType"/> can be overridden with <see cref="LogAttribute"/> on a method or class</param>

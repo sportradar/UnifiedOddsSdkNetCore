@@ -156,12 +156,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         [ConfigurationProperty("adjustAfterAge", IsRequired = false, DefaultValue = false)]
         public bool AdjustAfterAge => (bool) base["adjustAfterAge"];
 
-        ///// <summary>
-        ///// Gets a <see cref="SdkEnvironment"/> enum member specifying the environment sdk connects to
-        ///// </summary>
-        //[ConfigurationProperty("environment", IsRequired = false, DefaultValue = SdkEnvironment.Integration)]
-        //public SdkEnvironment Environment => (SdkEnvironment)base["environment"];
-
         /// <summary>
         /// Retrieves the <see cref="OddsFeedConfigurationSection"/> from the app.config file
         /// </summary>
@@ -176,7 +170,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 throw new InvalidOperationException("Could not load exe configuration");
             }
 
-            var section = (OddsFeedConfigurationSection)config.GetSection(SectionName);
+            var section = (OddsFeedConfigurationSection) config.GetSection(SectionName);
             if (section == null)
             {
                 throw new InvalidOperationException($"Could not retrieve section {SectionName} from exe configuration");

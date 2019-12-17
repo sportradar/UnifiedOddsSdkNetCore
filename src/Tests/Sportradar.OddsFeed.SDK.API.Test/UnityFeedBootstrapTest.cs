@@ -63,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                     new TestProducersProvider(),
                     config));
 
-            container.RegisterTypes(_dispatcher);
+            container.RegisterTypes(_dispatcher, config);
 
             //var x = container.Registrations.Where(w => w.MappedToType == typeof(ProducerManager));
 

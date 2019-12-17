@@ -25,7 +25,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <returns>The <see cref="IOddsFeedConfigurationSection"/></returns>
         /// <exception cref="InvalidOperationException">The configuration could not be loaded or the configuration does not contain the requested section</exception>
-        /// <exception cref="ConfigurationErrorsException">The section in the configuration file is not valid</exception>
         public IOddsFeedConfigurationSection GetSection()
         {
             lock (_syncLock)

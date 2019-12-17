@@ -189,9 +189,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         }
 
         /// <summary>
-        /// Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration" /> instance
+        /// Builds and returns a <see cref="IOddsFeedConfiguration" /> instance
         /// </summary>
-        /// <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration" /> instance</returns>
+        /// <returns>The constructed <see cref="IOddsFeedConfiguration" /> instance</returns>
         public abstract IOddsFeedConfiguration Build();
 
         /// <summary>

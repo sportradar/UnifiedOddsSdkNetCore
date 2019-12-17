@@ -27,6 +27,7 @@ using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 using Unity;
+using Unity.Lifetime;
 using Unity.Resolution;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -290,7 +291,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 }
 
                 InternalConfig.Load(); // loads bookmaker_details
-                UnityContainer.RegisterTypes(this);
+                UnityContainer.RegisterTypes(this, InternalConfig);
                 UnityContainer.RegisterAdditionalTypes();
 
                 _feedRecoveryManager = UnityContainer.Resolve<IFeedRecoveryManager>();
