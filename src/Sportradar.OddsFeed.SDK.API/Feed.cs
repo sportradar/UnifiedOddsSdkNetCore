@@ -27,7 +27,6 @@ using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 using Unity;
-using Unity.Lifetime;
 using Unity.Resolution;
 
 namespace Sportradar.OddsFeed.SDK.API

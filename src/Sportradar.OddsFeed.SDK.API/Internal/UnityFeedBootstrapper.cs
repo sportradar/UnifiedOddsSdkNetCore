@@ -17,7 +17,6 @@ using Sportradar.OddsFeed.SDK.API.Internal.Replay;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
