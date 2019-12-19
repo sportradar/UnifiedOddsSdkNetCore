@@ -550,6 +550,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <exception cref="System.ArgumentException"></exception>
         public ValidationResult Validate(FeedMessage message)
         {
+            Guard.Argument(message).NotNull();
             var oddsChange = message as odds_change;
             if (oddsChange != null)
             {

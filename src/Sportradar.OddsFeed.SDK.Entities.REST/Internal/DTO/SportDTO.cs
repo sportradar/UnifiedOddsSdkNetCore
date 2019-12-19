@@ -33,8 +33,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal SportDTO(string id, string name, IEnumerable<tournamentExtended> tournaments)
             :base(id, name)
         {
-            Guard.Argument(!string.IsNullOrEmpty(id));
-            Guard.Argument(!string.IsNullOrEmpty(name));
+            Guard.Argument(id).NotNull().NotEmpty();
+            Guard.Argument(name).NotNull().NotEmpty();
 
             if (tournaments == null)
             {
@@ -64,8 +64,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal SportDTO(string id, string name, IEnumerable<CategoryDTO> categories)
             : base(id, name)
         {
-            Guard.Argument(!string.IsNullOrEmpty(id));
-            Guard.Argument(!string.IsNullOrEmpty(name));
+            Guard.Argument(id).NotNull().NotEmpty();
+            Guard.Argument(name).NotNull().NotEmpty();
 
             Categories = new ReadOnlyCollection<CategoryDTO>(categories.ToList());
         }

@@ -57,14 +57,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="ci">A <see cref="PlayerProfileCI"/> representing cached player profile info</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying supported languages of the constructed instance</param>
         public PlayerProfile(PlayerProfileCI ci, IEnumerable<CultureInfo> cultures)
-            : base(ci.Id, cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName))
+            :base(ci.Id, cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName))
         {
             Guard.Argument(ci).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
             _playerProfileCI = ci;
-            _cultures = cultureInfos;
+            _cultures = cultures.ToList();
         }
 
         /// <summary>

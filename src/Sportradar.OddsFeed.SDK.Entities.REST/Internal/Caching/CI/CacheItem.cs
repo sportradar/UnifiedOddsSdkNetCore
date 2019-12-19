@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public CacheItem(URN id, string name, CultureInfo culture)
         {
             Guard.Argument(id).NotNull();
-            //Guard.Argument(!string.IsNullOrEmpty(name)); // there were tournaments with empty name!
+            //Guard.Argument(name).NotNull().NotEmpty(); // there were tournaments with empty name!
             Guard.Argument(culture).NotNull();
 
             Id = id;
@@ -51,7 +51,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public CacheItem(ExportableCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             Id = URN.Parse(exportable.Id);
             Name = new Dictionary<CultureInfo, string>(exportable.Name);

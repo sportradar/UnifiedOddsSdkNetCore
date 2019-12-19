@@ -91,9 +91,9 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <param name="id">The numerical identifier of the resource associated with the URN</param>
         public URN(string prefix, string type, long id)
         {
-            Guard.Argument(!string.IsNullOrEmpty(prefix));
-            Guard.Argument(!string.IsNullOrEmpty(type));
-            Guard.Argument(id > 0);
+            Guard.Argument(prefix).NotNull().NotEmpty();
+            Guard.Argument(type).NotNull().NotEmpty();
+            Guard.Argument(id).Positive();
 
             var tuple = Types.FirstOrDefault(t => t.Item1 == type);
 
@@ -147,7 +147,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool TryParse(string urnString, out URN urn)
         {
-            Guard.Argument(!string.IsNullOrEmpty(urnString));
+            Guard.Argument(urnString).NotNull().NotEmpty();
 
             var success = false;
 

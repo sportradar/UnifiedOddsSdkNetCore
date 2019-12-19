@@ -28,6 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         public BookmakerDetailsMapper(bookmaker_details data, TimeSpan serverTimeDifference)
         {
             Guard.Argument(data).NotNull();
+            Guard.Argument(serverTimeDifference).Require(serverTimeDifference != null);
 
             _data = data;
             _serverTimeDifference = serverTimeDifference;
@@ -36,6 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         internal static ISingleTypeMapper<BookmakerDetailsDTO> Create(bookmaker_details data, TimeSpan serverTimeDifference)
         {
             Guard.Argument(data).NotNull();
+            Guard.Argument(serverTimeDifference).Require(serverTimeDifference != null);
 
             return new BookmakerDetailsMapper(data, serverTimeDifference);
         }

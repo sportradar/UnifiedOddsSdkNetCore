@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             Guard.Argument(specifiers).NotNull().NotEmpty();
             Guard.Argument(operandString).NotNull().NotEmpty();
-            Guard.Argument(Enum.IsDefined(typeof(SimpleMathOperation), operation));
+            Guard.Argument(operation).Require(System.Enum.IsDefined(typeof(SimpleMathOperation), operation));
 
             _specifiers = specifiers;
             _operandString = operandString;

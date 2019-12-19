@@ -104,6 +104,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 return null;
             }
 
+            Guard.Argument(eventId).NotNull();
+
             SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportEventStatusAsync", MeasurementUnit = Unit.Calls });
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportEventStatusAsync", MeasurementUnit = Unit.Requests };
             using (var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{eventId}"))
@@ -173,6 +175,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 return;
             }
+
+            Guard.Argument(eventId).NotNull();
 
             lock (_lock)
             {
@@ -248,6 +252,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="cacheItemType">A cache item type</param>
         public override void CacheDeleteItem(URN id, CacheItemType cacheItemType)
         {
+            Guard.Argument(id).NotNull();
+
             if (_isDisposed)
             {
                 return;
@@ -270,6 +276,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         public override bool CacheHasItem(URN id, CacheItemType cacheItemType)
         {
+            Guard.Argument(id).NotNull();
+
             if (_isDisposed)
             {
                 return false;
@@ -296,6 +304,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns><c>true</c> if added, <c>false</c> otherwise</returns>
         protected override bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
+            Guard.Argument(id).NotNull();
+            Guard.Argument(item).NotNull();
+
             if (_isDisposed)
             {
                 return false;
@@ -445,6 +456,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 case DtoType.SportCategories:
                     break;
                 case DtoType.AvailableSelections:
+                    break;
+                case DtoType.TournamentInfoList:
                     break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");

@@ -16,7 +16,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         public ReplayConfigurationBuilder(string accessToken, IConfigurationSectionProvider sectionProvider)
             : base(accessToken, sectionProvider)
         {
-
         }
 
         public override IOddsFeedConfiguration Build()

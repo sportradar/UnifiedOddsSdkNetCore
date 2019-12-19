@@ -83,6 +83,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <exception cref="System.ArgumentOutOfRangeException">id</exception>
         public IProducer Get(int id)
         {
+            Guard.Argument(id).Positive();
+
             var p = _producers?.FirstOrDefault(f => f.Id == id);
             if (p == null || p.Id != id)
             {
@@ -98,6 +100,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>An <see cref="IProducer" /></returns>
         public IProducer Get(string name)
         {
+            Guard.Argument(name).NotNull().NotEmpty();
+
             var p = _producers.FirstOrDefault(f => string.Equals(name, f.Name, StringComparison.InvariantCultureIgnoreCase));
             if (p == null || p.Id == 0)
             {
@@ -154,6 +158,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 throw new InvalidOperationException("Change to producer is not allowed anymore.");
             }
 
+            Guard.Argument(id).Positive();
+            Guard.Argument(timestamp).Require(timestamp > DateTime.MinValue);
+
             var p = (Producer) Get(id);
             if (timestamp > DateTime.Now)
             {
@@ -176,6 +183,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 throw new InvalidOperationException("Change to producer is not allowed anymore.");
             }
+
+            Guard.Argument(id).Positive();
 
             var p = (Producer) Get(id);
             p.SetLastTimestampBeforeDisconnect(DateTime.MinValue);

@@ -25,13 +25,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         internal VariantDescription(VariantDescriptionCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(cacheItem).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
+            var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
 
             Id = cacheItem.Id;
             Outcomes = cacheItem.Outcomes == null
                 ? null
-                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureInfos)).ToList());
+                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureList)).ToList());
             Mappings = cacheItem.Mappings == null
                 ? null
                 : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData) new MarketMapping(m)).ToList());

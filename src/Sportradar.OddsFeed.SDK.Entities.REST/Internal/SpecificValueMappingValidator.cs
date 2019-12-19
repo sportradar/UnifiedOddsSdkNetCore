@@ -32,8 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             Guard.Argument(specifierName).NotNull().NotEmpty();
             Guard.Argument(specifierValue).NotNull().NotEmpty();
 
-            this._specifierName = specifierName;
-            this._specifierValue = specifierValue;
+            _specifierName = specifierName;
+            _specifierValue = specifierValue;
         }
 
         /// <summary>

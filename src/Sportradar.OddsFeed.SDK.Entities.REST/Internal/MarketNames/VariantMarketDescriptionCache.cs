@@ -130,15 +130,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns>A <see cref="IEnumerable{CultureInfo}"/> containing missing translations or a null reference if none of the translations are missing</returns>
         private static IEnumerable<CultureInfo> GetMissingTranslations(MarketDescriptionCacheItem item, IEnumerable<CultureInfo> requiredTranslations)
         {
-            var missingTranslations = requiredTranslations.ToList();
-            Guard.Argument(missingTranslations).NotNull().NotEmpty();
+            Guard.Argument(requiredTranslations).NotNull().NotEmpty();
 
             if (item == null)
             {
-                return missingTranslations;
+                return requiredTranslations;
             }
 
-            var missingCultures = missingTranslations.Where(c => !item.HasTranslationsFor(c)).ToList();
+            var missingCultures = requiredTranslations.Where(c => !item.HasTranslationsFor(c)).ToList();
 
             return missingCultures.Any()
                        ? missingCultures
@@ -158,10 +157,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         private async Task<MarketDescriptionCacheItem> GetMarketInternal(int id, string variant, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(variant).NotNull().NotEmpty();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
-            var cultureList = cultures as List<CultureInfo> ?? cultureInfos.ToList();
+            var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             var description = GetItemFromCache(id, variant);
             if (GetMissingTranslations(description, cultureList) == null)

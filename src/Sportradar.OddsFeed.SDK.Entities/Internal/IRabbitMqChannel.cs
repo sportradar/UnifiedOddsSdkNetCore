@@ -10,7 +10,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// Represents a contract implemented by classes used to connect to rabbit mq broker
     /// </summary>
-    
     public interface IRabbitMqChannel
     {
         /// <summary>

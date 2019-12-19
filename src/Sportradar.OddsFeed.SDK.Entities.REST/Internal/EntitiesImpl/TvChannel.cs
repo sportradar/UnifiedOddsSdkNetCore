@@ -48,7 +48,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public TvChannel(ExportableTvChannelCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             _name = exportable.Name;
             _startTime = exportable.StartTime;

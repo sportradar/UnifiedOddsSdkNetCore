@@ -196,7 +196,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task" /> representing the retrieval operation</returns>
         private async Task GetScheduleAsync(DateTime date, CultureInfo culture)
         {
-            Guard.Argument(date).Min(DateTime.MinValue.AddSeconds(1));
+            Guard.Argument(date).Require(date > DateTime.MinValue);
 
             //Metric.Context("CACHE").Meter("SportEventCache->GetScheduleAsync", Unit.Calls);
 

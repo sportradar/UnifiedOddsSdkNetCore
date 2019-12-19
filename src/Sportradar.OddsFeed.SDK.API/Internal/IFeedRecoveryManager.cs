@@ -15,7 +15,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// Contract for interacting with <see cref="FeedRecoveryManager" /></summary>
     /// <seealso cref="IOpenable" />
     /// <seealso cref="IHealthStatusProvider" />
-    
     internal interface IFeedRecoveryManager
     {
         /// <summary>

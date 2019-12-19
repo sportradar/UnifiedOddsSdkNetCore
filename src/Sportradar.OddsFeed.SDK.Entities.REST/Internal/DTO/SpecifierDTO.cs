@@ -15,6 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string Type { get; }
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecifierDTO"/> class.
         /// </summary>
@@ -24,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(specifier).NotNull();
             Guard.Argument(specifier.name).NotNull().NotEmpty();
             Guard.Argument(specifier.type).NotNull().NotEmpty();
-            
+
             Name = specifier.name;
             Type = specifier.type;
         }

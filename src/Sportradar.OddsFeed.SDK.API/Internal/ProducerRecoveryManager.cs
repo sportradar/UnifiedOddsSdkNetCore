@@ -222,6 +222,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <exception cref="System.ArgumentException">The Producer.Id of the message and the Producer associated with this manager do not match</exception>
         public void ProcessUserMessage(FeedMessage message, MessageInterest interest)
         {
+            Guard.Argument(message).NotNull();
+            Guard.Argument(interest).NotNull();
+
             if (message.ProducerId != Producer.Id)
             {
                 throw new ArgumentException("The producer.Id of the message and the Producer associated with this manager do not match", nameof(message));

@@ -436,6 +436,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         void IGlobalEventDispatcher.DispatchEventRecoveryCompleted(long requestId, URN eventId)
         {
+            Guard.Argument(eventId).NotNull();
+
             Dispatch(EventRecoveryCompleted, new EventRecoveryCompletedEventArgs(requestId, eventId), "EventRecoveryCompleted");
         }
 
@@ -445,6 +447,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="producerStatusChange">The <see cref="IProducerStatusChange"/> instance to be dispatched</param>
         void IGlobalEventDispatcher.DispatchProducerDown(IProducerStatusChange producerStatusChange)
         {
+            Guard.Argument(producerStatusChange).NotNull();
+
             var eventArgs = new ProducerStatusChangeEventArgs(producerStatusChange);
             Dispatch(ProducerDown, eventArgs, "ProducerDown");
         }
@@ -455,10 +459,16 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="producerStatusChange">The <see cref="IProducerStatusChange"/> instance to be dispatched</param>
         void IGlobalEventDispatcher.DispatchProducerUp(IProducerStatusChange producerStatusChange)
         {
+            Guard.Argument(producerStatusChange).NotNull();
+
             var eventArgs = new ProducerStatusChangeEventArgs(producerStatusChange);
             Dispatch(ProducerUp, eventArgs, "ProducerUp");
         }
 
+        /// <summary>
+        /// Constructs a <see cref="IOddsFeedConfiguration"/> instance from provided information
+        /// </summary>
+        /// <returns>A <see cref="IOddsFeedConfiguration"/> instance created from provided information</returns>
         /// <summary>
         /// Constructs a <see cref="IOddsFeedConfiguration"/> instance from provided information
         /// </summary>

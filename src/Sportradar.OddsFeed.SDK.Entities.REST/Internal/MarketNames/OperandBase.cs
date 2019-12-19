@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
-using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
@@ -23,11 +22,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of int</exception>
         protected static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out int specifierValue)
         {
-            Guard.Argument(!string.IsNullOrEmpty(specifierName));
-            Guard.Argument(specifiers != null && specifiers.Any());
+            Guard.Argument(specifierName).NotNull().NotEmpty();
+            Guard.Argument(specifiers).NotNull().NotEmpty();
 
             string specifierValueString;
-
             if (!specifiers.TryGetValue(specifierName, out specifierValueString))
             {
                 throw new InvalidOperationException($"Specifier with name {specifierName} does not exist");
@@ -48,11 +46,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of decimal</exception>
         protected static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out decimal specifierValue)
         {
-            Guard.Argument(!string.IsNullOrEmpty(specifierName));
-            Guard.Argument(specifiers != null && specifiers.Any());
+            Guard.Argument(specifierName).NotNull().NotEmpty();
+            Guard.Argument(specifiers).NotNull().NotEmpty();
 
             string specifierValueString;
-
             if (!specifiers.TryGetValue(specifierName, out specifierValueString))
             {
                 throw new InvalidOperationException($"Specifier with name {specifierName} does not exist");

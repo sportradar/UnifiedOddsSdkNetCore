@@ -100,14 +100,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(dataRouterManager).NotNull();
             Guard.Argument(mappingValidatorFactory).NotNull();
             Guard.Argument(timer).NotNull();
-            var cultureInfos = prefetchLanguages.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(prefetchLanguages).NotNull().NotEmpty();
 
             _cache = cache;
             _dataRouterManager = dataRouterManager;
             _mappingValidatorFactory = mappingValidatorFactory;
             _timer = timer;
-            _prefetchLanguages = new ReadOnlyCollection<CultureInfo>(cultureInfos.ToList());
+            _prefetchLanguages = new ReadOnlyCollection<CultureInfo>(prefetchLanguages.ToList());
             _timer.Elapsed += OnTimerElapsed;
             _timer.Start();
         }
@@ -192,10 +191,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">An error occurred while mapping deserialized entities</exception>
         private async Task<VariantDescriptionCacheItem> GetVariantDescriptionInternalAsync(string id, IEnumerable<CultureInfo> cultures)
         {
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
-            var cultureList = cultures as List<CultureInfo> ?? cultureInfos.ToList();
+            var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             VariantDescriptionCacheItem description;
             if ((description = GetItemFromCache(id)) != null && !LanguageHelper.GetMissingCultures(cultureList, description.FetchedLanguages).Any())
@@ -517,13 +515,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         private void Merge(CultureInfo culture, IEnumerable<VariantDescriptionDTO> descriptions)
         {
             Guard.Argument(culture).NotNull();
-            var variantDescriptionDtos = descriptions.ToList();
-            Guard.Argument(variantDescriptionDtos).NotNull().NotEmpty();
+            Guard.Argument(descriptions).NotNull().NotEmpty();
 
+            var descriptionList = descriptions as List<VariantDescriptionDTO> ?? descriptions.ToList();
             try
             {
                 _semaphoreCacheMerge.Wait();
-                foreach (var marketDescription in variantDescriptionDtos)
+                foreach (var marketDescription in descriptionList)
                 {
                     var cachedItem = _cache.GetCacheItem(marketDescription.Id);
                     if (cachedItem == null)

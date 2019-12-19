@@ -9,6 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
     /// <summary>
     /// Class used to export/import scheduled start time change cache item properties
     /// </summary>
+    [Serializable]
     public class ExportableScheduledStartTimeChangeCI
     {
         /// <summary>

@@ -95,8 +95,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(producer).NotNull();
             Guard.Argument(maxInactivitySeconds).Positive();
             Guard.Argument(maxMessageAgeInSeconds).Positive();
-            var messageInterests = allInterests.ToList();
-            Guard.Argument(messageInterests).NotNull();
+            Guard.Argument(allInterests).NotNull().NotEmpty();
 
             _maxInactivitySeconds = maxInactivitySeconds;
             _maxMessageAgeInSeconds = maxMessageAgeInSeconds;
@@ -105,7 +104,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var aliveMessagesTimingInfo = new Dictionary<MessageInterest, MessageTimingInfo>();
             var nonAliveMessagesTimingInfo = new Dictionary<MessageInterest, MessageTimingInfo>();
 
-            var allInterestsList = allInterests as IList<MessageInterest> ?? messageInterests.ToList();
+            var allInterestsList = allInterests as IList<MessageInterest> ?? allInterests.ToList();
             var producerScopes = producer.Scope.Select(MessageInterest.FromScope).ToList();
             foreach (var interest in allInterestsList)
             {

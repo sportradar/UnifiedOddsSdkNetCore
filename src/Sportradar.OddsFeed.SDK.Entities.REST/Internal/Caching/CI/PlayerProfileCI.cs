@@ -261,7 +261,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal void Merge(PlayerProfileCI item)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException(nameof(item));
+            }
 
             foreach (var k in item.Names.Keys)
             {

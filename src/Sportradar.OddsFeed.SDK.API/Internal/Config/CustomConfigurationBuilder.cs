@@ -103,7 +103,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetMessagingHost(string host)
         {
-            Guard.Argument(!string.IsNullOrEmpty(host));
+            Guard.Argument(host).NotNull().NotEmpty();
+
             _messagingHost = host;
             return this;
         }
@@ -126,7 +127,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetMessagingUsername(string username)
         {
-            Guard.Argument(!string.IsNullOrEmpty(username));
+            Guard.Argument(username).NotNull().NotEmpty();
+
             _messagingUsername = username;
             return this;
         }
@@ -138,7 +140,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetMessagingPassword(string password)
         {
-            Guard.Argument(!string.IsNullOrEmpty(password));
+            Guard.Argument(password).NotNull().NotEmpty();
+
             _messagingPassword = password;
             return this;
         }
@@ -150,7 +153,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetVirtualHost(string virtualHost)
         {
-            Guard.Argument(!string.IsNullOrEmpty(virtualHost));
+            Guard.Argument(virtualHost).NotNull().NotEmpty();
+
             _virtualHost = virtualHost;
             return this;
         }
@@ -173,7 +177,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetApiHost(string apiHost)
         {
-            Guard.Argument(!string.IsNullOrEmpty(apiHost));
+            Guard.Argument(apiHost).NotNull().NotEmpty();
+
             _apiHost = apiHost;
             return this;
         }

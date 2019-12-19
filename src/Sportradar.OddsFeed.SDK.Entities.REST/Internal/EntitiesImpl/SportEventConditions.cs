@@ -49,14 +49,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public SportEventConditions(SportEventConditionsCI ci, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(ci).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
             Attendance = ci.Attendance;
             EventMode = ci.EventMode;
             if (ci.Referee != null)
             {
-                Referee = new Referee(ci.Referee, cultureInfos);
+                Referee = new Referee(ci.Referee, cultures);
             }
             if (ci.WeatherInfo != null)
             {

@@ -41,7 +41,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         internal StreamingChannel(ExportableStreamingChannelCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             _id = exportable.Id;
             _name = exportable.Name;

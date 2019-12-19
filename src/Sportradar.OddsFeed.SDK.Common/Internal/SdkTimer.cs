@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using Dawn;
 using Timer = System.Threading.Timer;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
@@ -43,6 +44,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="period">A <see cref="TimeSpan"/> specifying a period between subsequent raises of the <see cref="Elapsed"/> event.</param>
         public SdkTimer(TimeSpan dueTime, TimeSpan period)
         {
+            Guard.Argument(dueTime).Require(dueTime >= TimeSpan.Zero);
+            Guard.Argument(period).Require(period > TimeSpan.Zero);
             // Create the timer which is stopped - pass -1 for dueTime and period
 
             _dueTime = dueTime;
@@ -106,6 +109,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="period">A <see cref="TimeSpan"/> specifying a period between subsequent raises of the <see cref="Elapsed"/> event.</param>
         public void Start(TimeSpan dueTime, TimeSpan period)
         {
+            Guard.Argument(dueTime).Require(dueTime >= TimeSpan.Zero);
+            Guard.Argument(period).Require(period > TimeSpan.Zero);
+
             _dueTime = dueTime;
             _period = period;
 
@@ -119,6 +125,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="dueTime">The due time.</param>
         public void FireOnce(TimeSpan dueTime)
         {
+            Guard.Argument(dueTime).Require(dueTime >= TimeSpan.Zero);
+
             _timer?.Change(dueTime, TimeSpan.FromMilliseconds(-1));
         }
 

@@ -91,6 +91,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="dispatcher">The <see cref="ISpecificEntityDispatcherInternal"/> instance to be added.</param>
         public void Add(ISpecificEntityDispatcherInternal dispatcher)
         {
+            Guard.Argument(dispatcher).NotNull();
+
             var key = dispatcher.GetType().GetGenericArguments().First().Name;
             lock (_syncLock)
             {

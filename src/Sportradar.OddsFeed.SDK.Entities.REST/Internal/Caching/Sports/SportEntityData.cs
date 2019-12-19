@@ -31,7 +31,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         protected SportEntityData(URN id, IReadOnlyDictionary<CultureInfo, string> names)
         {
             Guard.Argument(id).NotNull();
-            Guard.Argument(names).NotNull();
             Guard.Argument(names).NotNull().NotEmpty();
 
             Id = id;

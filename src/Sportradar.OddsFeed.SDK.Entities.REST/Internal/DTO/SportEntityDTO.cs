@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal SportEntityDTO(string id, string name)
         {
             Guard.Argument(id).NotNull();
-            //Guard.Argument(!string.IsNullOrEmpty(name)); // it may happen to receive empty name
+            //Guard.Argument(name)); // it may happen to receive empty name
 
             Id = URN.Parse(id);
             Name = name;

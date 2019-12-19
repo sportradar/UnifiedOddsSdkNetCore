@@ -81,6 +81,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns> <see cref="Task{HttpStatusCode}"/> representing the async operation</returns>
         public async Task<long> RecoverEventMessagesAsync(IProducer producer, URN eventId)
         {
+            Guard.Argument(producer).NotNull();
+            Guard.Argument(eventId).NotNull();
+
             if (!producer.IsAvailable || producer.IsDisabled)
             {
                 throw new ArgumentException($"Producer {producer} is disabled in the SDK", nameof(producer));
@@ -115,6 +118,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns> <see cref="Task{HttpStatusCode}"/> representing the async operation</returns>
         public async Task<long> RecoverEventStatefulMessagesAsync(IProducer producer, URN eventId)
         {
+            Guard.Argument(producer).NotNull();
+            Guard.Argument(eventId).NotNull();
+
             if (!producer.IsAvailable || producer.IsDisabled)
             {
                 throw new ArgumentException($"Producer {producer} is disabled in the SDK", nameof(producer));
@@ -153,6 +159,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <exception cref="NotImplementedException"></exception>
         public async Task<long> RequestRecoveryAfterTimestampAsync(IProducer producer, DateTime dateAfter, int nodeId)
         {
+            Guard.Argument(producer).NotNull();
+
             if (!producer.IsAvailable || producer.IsDisabled)
             {
                 throw new ArgumentException($"Producer {producer} is disabled in the SDK", nameof(producer));
@@ -213,6 +221,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <exception cref="System.NotImplementedException"></exception>
         public async Task<long> RequestFullOddsRecoveryAsync(IProducer producer, int nodeId)
         {
+            Guard.Argument(producer).NotNull();
+
             if (!producer.IsAvailable || producer.IsDisabled)
             {
                 throw new ArgumentException($"Producer {producer} is disabled in the SDK", nameof(producer));

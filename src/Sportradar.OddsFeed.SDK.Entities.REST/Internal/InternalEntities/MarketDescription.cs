@@ -39,17 +39,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         internal MarketDescription(MarketDescriptionCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(cacheItem).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
+            var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
 
             MarketDescriptionCI = cacheItem;
 
             Id = cacheItem.Id;
-            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.ToDictionary(c => c, cacheItem.GetName));
-            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(cacheItem.HasTranslationsFor).ToDictionary(c => c, cacheItem.GetDescription));
+            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureList.ToDictionary(c => c, cacheItem.GetName));
+            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(cacheItem.HasTranslationsFor).ToDictionary(c => c, cacheItem.GetDescription));
             Outcomes = cacheItem.Outcomes == null
                 ? null
-                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureInfos)).ToList());
+                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureList)).ToList());
             Specifiers = cacheItem.Specifiers == null
                 ? null
                 : new ReadOnlyCollection<ISpecifier>(cacheItem.Specifiers.Select(s => (ISpecifier) new Specifier(s)).ToList());

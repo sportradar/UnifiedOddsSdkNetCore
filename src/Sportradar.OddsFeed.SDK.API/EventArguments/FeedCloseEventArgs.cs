@@ -23,7 +23,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <param name="reason">A reason why feed must be closed</param>
         internal FeedCloseEventArgs(string reason)
         {
-            Guard.Argument(!string.IsNullOrEmpty(reason));
+            Guard.Argument(reason).NotNull().NotEmpty();
+
             _reason = reason;
         }
 

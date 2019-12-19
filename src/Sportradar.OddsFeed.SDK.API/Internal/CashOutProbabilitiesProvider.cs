@@ -96,6 +96,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>A <see cref="Task{T}" /> representing the asynchronous operation</returns>
         public Task<ICashOutProbabilities<T>> GetCashOutProbabilitiesAsync<T>(URN eventId, CultureInfo culture = null) where T : ISportEvent
         {
+            Guard.Argument(eventId).NotNull();
+
             return GetProbabilitiesInternalAsync<T>(eventId.ToString(), culture);
         }
 
@@ -110,6 +112,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>A <see cref="Task{T}" /> representing the asynchronous operation</returns>
         public Task<ICashOutProbabilities<T>> GetCashOutProbabilitiesAsync<T>(URN eventId, int marketId, IReadOnlyDictionary<string, string> specifiers, CultureInfo culture = null) where T : ISportEvent
         {
+            Guard.Argument(eventId).NotNull();
+
             var param = $"{eventId}/{marketId}";
             if (specifiers != null && specifiers.Any())
             {

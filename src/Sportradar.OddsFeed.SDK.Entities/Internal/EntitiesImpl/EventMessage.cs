@@ -1,8 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
-using System;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -25,10 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         protected EventMessage(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, byte[] rawMessage)
             : base(timestamp, producer)
         {
-            if(@event == null)
-            {
-                throw new ArgumentNullException(nameof(@event));
-            }
+            Guard.Argument(@event).Require(@event != null);
 
             Event = @event;
             RequestId = requestId;

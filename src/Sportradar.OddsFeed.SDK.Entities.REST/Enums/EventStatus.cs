@@ -11,6 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         /// <summary>
         /// Indicates that the associated sport event has not yet been started
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         Not_Started = 0,
 
         /// <summary>

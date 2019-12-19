@@ -12,7 +12,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Represents contract for tracking <see cref="FeedMessage"/> per specific <see cref="IProducer"/>
     /// </summary>
-    
     internal interface IProducerRecoveryManager
     {
         /// <summary>

@@ -133,8 +133,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
             //Guard.Argument(ci).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
             Guard.Argument(sportEntityFactory).NotNull();
 
             if (ci == null)
@@ -145,7 +144,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             _competitorCI = ci;
             _profileCache = profileCache;
-            _cultures = cultureInfos;
+            _cultures = cultures.ToList();
             _sportEntityFactory = sportEntityFactory;
             _competitionCI = (CompetitionCI) rootCompetitionCI;
             _referenceId = null;
@@ -167,8 +166,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
             //Guard.Argument(ci).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
             Guard.Argument(sportEntityFactory).NotNull();
 
             if (ci == null)
@@ -179,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             _competitorCI = ci;
             _profileCache = profileCache;
-            _cultures = cultureInfos;
+            _cultures = cultures.ToList();
             _sportEntityFactory = sportEntityFactory;
             _competitionCI = null;
             _referenceId = null;

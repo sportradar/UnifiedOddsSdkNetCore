@@ -9,7 +9,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
     /// <summary>
     /// An exception thrown when the requested object is not found
     /// </summary>
-    /// <seealso cref="Sportradar.OddsFeed.SDK.Common.Exceptions.FeedSdkException" />
     /// <seealso cref="FeedSdkException" />
     [Serializable]
     public class ObjectNotFoundException : FeedSdkException

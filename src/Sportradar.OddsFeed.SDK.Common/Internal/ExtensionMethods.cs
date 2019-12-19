@@ -40,6 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public static bool WaitSafe(this SemaphoreSlim semaphore)
         {
             Guard.Argument(semaphore).NotNull();
+
             try
             {
                 semaphore.Wait();
@@ -61,6 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public static async Task<bool> WaitAsyncSafe(this SemaphoreSlim semaphore)
         {
             Guard.Argument(semaphore).NotNull();
+
             try
             {
                 await semaphore.WaitAsync().ConfigureAwait(false);
@@ -82,6 +84,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public static bool ReleaseSafe(this SemaphoreSlim semaphore)
         {
             Guard.Argument(semaphore).NotNull();
+
             try
             {
                 semaphore.Release();
@@ -92,6 +95,5 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return false;
             }
         }
-
     }
 }

@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 // ReSharper disable RedundantCaseLabel
@@ -22,6 +23,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <exception cref="System.NotImplementedException"></exception>
         public virtual Type Map(URN id, int sportId)
         {
+            Guard.Argument(id).NotNull();
+            Guard.Argument(sportId).Positive();
+
             switch (id.TypeGroup)
             {
                 case ResourceTypeGroup.MATCH:

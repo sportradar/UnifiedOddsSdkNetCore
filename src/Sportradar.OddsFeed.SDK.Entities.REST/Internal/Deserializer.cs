@@ -89,6 +89,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="DeserializationException">The deserialization failed</exception>
         public T Deserialize(Stream stream)
         {
+            Guard.Argument(stream).NotNull();
+
             return Deserialize<T>(stream);
         }
 
@@ -101,6 +103,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="DeserializationException">The deserialization failed</exception>
         public T1 Deserialize<T1>(Stream stream) where T1 : T
         {
+            Guard.Argument(stream).NotNull();
+
             using (var reader = new NamespaceIgnorantXmlTextReader(stream))
             {
                 bool startElementFound;

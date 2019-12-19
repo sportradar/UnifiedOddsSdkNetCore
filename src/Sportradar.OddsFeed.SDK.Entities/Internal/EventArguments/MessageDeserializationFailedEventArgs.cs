@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dawn;
+using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments
 {
@@ -24,10 +24,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments
         /// <param name="rawData">the name of the message which could not be deserialized, or a null reference if message name could not be retrieved</param>
         internal MessageDeserializationFailedEventArgs(IEnumerable<byte> rawData)
         {
-            var data = rawData.ToList();
-            Guard.Argument(data).NotNull().NotEmpty();
+            Guard.Argument(rawData).NotNull().NotEmpty();
 
-            RawData = data;
+            RawData = rawData;
         }
     }
 }

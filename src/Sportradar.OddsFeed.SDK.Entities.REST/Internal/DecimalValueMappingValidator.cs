@@ -37,7 +37,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _allowedDecimalValue = allowedDecimalValue;
         }
 
-
         /// <summary>
         /// Validate the provided specifiers against current instance.
         /// </summary>

@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>The <see cref="MessageType"/> member specifying the type of the provided xml message.</returns>
         private static MessageType ExtractMessageName(string message)
         {
-            Guard.Argument(!string.IsNullOrEmpty(message));
+            Guard.Argument(message).NotNull().NotEmpty();
 
             foreach (var messageName in MessageTypes)
             {
@@ -90,8 +90,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>The value of the specified attribute or a null reference if value could not be determined</returns>
         private static string ExtractAttributeValue(string message, string attributeName)
         {
-            Guard.Argument(!string.IsNullOrEmpty(message));
-            Guard.Argument(!string.IsNullOrEmpty(attributeName));
+            Guard.Argument(message).NotNull().NotEmpty();
+            Guard.Argument(attributeName).NotNull().NotEmpty();
 
             var startIndex = message.IndexOf(attributeName, StringComparison.Ordinal);
             if (startIndex < 0)

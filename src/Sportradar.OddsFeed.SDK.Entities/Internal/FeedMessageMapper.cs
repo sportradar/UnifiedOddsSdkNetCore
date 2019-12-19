@@ -111,10 +111,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="ISportEvent"/> derived constructed instance</returns>
         protected T BuildEvent<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
         {
-            Guard.Argument(eventId.ToString()).NotNull().NotEmpty();
+            Guard.Argument(eventId).NotNull();
             Guard.Argument(sportId).NotNull();
-            var enumerable = cultures.ToList();
-            Guard.Argument(enumerable).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
+            var cultureInfos = cultures as CultureInfo[] ?? cultures.ToArray();
 
             T entity;
             switch (eventId.TypeGroup)
@@ -128,7 +129,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 case ResourceTypeGroup.LOTTERY:
                 case ResourceTypeGroup.UNKNOWN:
                 {
-                    entity = (T) _sportEntityFactory.BuildSportEvent<ISportEvent>(eventId, sportId, enumerable, exceptionStrategy);
+                    entity = (T) _sportEntityFactory.BuildSportEvent<ISportEvent>(eventId, sportId, cultureInfos, exceptionStrategy);
                     break;
                 }
                 case ResourceTypeGroup.OTHER:
@@ -149,12 +150,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>Returns the new <see cref="ICompetition"/> instance</returns>
         protected T GetEventForMessage<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures) where T : ISportEvent
         {
-            Guard.Argument(!string.IsNullOrEmpty(eventId.ToString())).True();
+            Guard.Argument(eventId).NotNull();
             Guard.Argument(sportId).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
-            return BuildEvent<T>(eventId, sportId, cultureInfos, _externalExceptionStrategy);
+            return BuildEvent<T>(eventId, sportId, cultures, _externalExceptionStrategy);
         }
 
         /// <summary>
@@ -168,10 +168,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             Guard.Argument(eventId).NotNull();
             Guard.Argument(sportId).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
-            return BuildEvent<T>(eventId, sportId, cultureInfos, ExceptionHandlingStrategy.THROW);
+            return BuildEvent<T>(eventId, sportId, cultures, ExceptionHandlingStrategy.THROW);
         }
 
         /// <summary>
@@ -418,6 +417,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IAlive"/> instance constructed from information in the provided <see cref="alive"/></returns>
         public IAlive MapAlive(alive message)
         {
+            Guard.Argument(message).NotNull();
+
             return new Alive(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)), _producerManager.Get(message.product), message.subscribed != 0);
         }
 
@@ -428,6 +429,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="ISnapshotCompleted"/> instance constructed from information in the provided <see cref="snapshot_complete"/></returns>
         public ISnapshotCompleted MapSnapShotCompleted(snapshot_complete message)
         {
+            Guard.Argument(message).NotNull();
+
             return new SnapshotCompleted(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)), _producerManager.Get(message.product), message.request_id);
         }
 
@@ -440,6 +443,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IFixtureChange{T}" /> instance constructed from information in the provided <see cref="fixture_change" /></returns>
         public IFixtureChange<T> MapFixtureChange<T>(fixture_change message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             return new FixtureChange<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
                                         _producerManager.Get(message.product),
                                         GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, cultures),
@@ -460,6 +465,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IBetStop{T}" /> instance constructed from information in the provided <see cref="bet_stop" /></returns>
         public IBetStop<T> MapBetStop<T>(bet_stop message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             return new BetStop<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
                                   _producerManager.Get(message.product),
                                   GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, cultures),
@@ -478,6 +485,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IBetCancel{T}"/> instance constructed from information in the provided <see cref="bet_cancel"/></returns>
         public IBetCancel<T> MapBetCancel<T>(bet_cancel message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             return new BetCancel<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
@@ -503,6 +512,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IRollbackBetCancel{T}"/> instance constructed from information in the provided <see cref="rollback_bet_cancel"/></returns>
         public IRollbackBetCancel<T> MapRollbackBetCancel<T>(rollback_bet_cancel message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             return new RollbackBetCancel<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt,
@@ -526,6 +537,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IBetSettlement{T}"/> instance constructed from information in the provided <see cref="bet_settlement"/></returns>
         public IBetSettlement<T> MapBetSettlement<T>(bet_settlement message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             return new BetSettlement<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
@@ -547,6 +560,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IRollbackBetSettlement{T}"/> instance constructed from information in the provided <see cref="rollback_bet_settlement"/></returns>
         public IRollbackBetSettlement<T> MapRollbackBetSettlement<T>(rollback_bet_settlement message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             return new RollbackBetSettlement<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
@@ -566,6 +581,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="IOddsChange{T}"/> instance constructed from information in the provided <see cref="odds_change"/></returns>
         public IOddsChange<T> MapOddsChange<T>(odds_change message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             var markets = message.odds?.market?.Select(m => GetMarketWithOdds(GetEventForNameProvider<T>(message.EventURN, message.SportId, culturesList), m, message.ProducerId, message.SportId, culturesList)).ToList();
@@ -599,6 +616,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="ICashOutProbabilities{T}" /> instance constructed from information in the provided <see cref="cashout" /></returns>
         public ICashOutProbabilities<T> MapCashOutProbabilities<T>(cashout message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
+            Guard.Argument(message).NotNull();
+
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
             var eventId = URN.Parse(message.event_id);
             var sportId = URN.Parse("sr:sport:1");

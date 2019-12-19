@@ -79,16 +79,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                         IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(nameProvider).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
-
+            Guard.Argument(cultures).NotNull().NotEmpty();
             Id = id;
             Specifiers = specifiers;
             AdditionalInfo = additionalInfo;
             _nameProvider = nameProvider;
             MappingProvider = mappingProvider;
             MarketDefinition = marketDefinition;
-            _cultures = cultureInfos;
+            _cultures = cultures;
         }
 
         /// <summary>

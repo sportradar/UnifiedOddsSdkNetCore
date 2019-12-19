@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -11,7 +10,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     ///  Defines a contract implemented by classes capable of processing feed messages and stashing them. Only 1 per session should be used.
     /// </summary>
-    
     public interface ISessionMessageManager
     {
         /// <summary>

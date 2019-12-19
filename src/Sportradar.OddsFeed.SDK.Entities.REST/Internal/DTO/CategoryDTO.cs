@@ -36,10 +36,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Guard.Argument(id).NotNull().NotEmpty();
             Guard.Argument(name).NotNull().NotEmpty();
-            var tournamentExtendeds = tournaments.ToList();
-            Guard.Argument(tournamentExtendeds).NotNull();
+            Guard.Argument(tournaments).NotNull();
 
-            var recordList = tournaments as List<tournamentExtended> ?? tournamentExtendeds.ToList();
+            var recordList = tournaments as List<tournamentExtended> ?? tournaments.ToList();
             Tournaments = new ReadOnlyCollection<TournamentDTO>(recordList
                 .Distinct(EqualityComparer)
                 .Select(t => new TournamentDTO(t)).ToList());

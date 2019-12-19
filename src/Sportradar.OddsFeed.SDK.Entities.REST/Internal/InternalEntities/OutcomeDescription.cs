@@ -38,12 +38,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         internal OutcomeDescription(MarketOutcomeCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(cacheItem).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
+            var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             Id = cacheItem.Id;
-            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.ToDictionary(culture => culture, cacheItem.GetName));
-            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => !string.IsNullOrEmpty(cacheItem.GetDescription(c))).ToDictionary(c => c, cacheItem.GetDescription));
+            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureList.ToDictionary(culture => culture, cacheItem.GetName));
+            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => !string.IsNullOrEmpty(cacheItem.GetDescription(c))).ToDictionary(c => c, cacheItem.GetDescription));
         }
     }
 }

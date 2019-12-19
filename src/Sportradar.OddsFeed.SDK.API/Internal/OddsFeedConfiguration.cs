@@ -145,6 +145,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(accessToken).NotNull().NotEmpty();
             Guard.Argument(requiredLanguages).NotNull().NotEmpty();
             Guard.Argument(inactivitySeconds).InRange(SdkInfo.MinInactivitySeconds, SdkInfo.MaxInactivitySeconds);
+            Guard.Argument(maxRecoveryTimeInSeconds).Min(SdkInfo.MinRecoveryExecutionInSeconds);
             Guard.Argument(apiHost).NotNull().NotEmpty();
             Guard.Argument(host).NotNull().NotEmpty();
 
@@ -215,6 +216,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(accessToken).NotNull().NotEmpty();
             Guard.Argument(defaultCulture).NotNull();
             Guard.Argument(inactivitySeconds).InRange(SdkInfo.MinInactivitySeconds, SdkInfo.MaxInactivitySeconds);
+            Guard.Argument(maxRecoveryExecutionInSeconds).Min(SdkInfo.MinRecoveryExecutionInSeconds);
 
             AccessToken = accessToken;
             Environment = environment;

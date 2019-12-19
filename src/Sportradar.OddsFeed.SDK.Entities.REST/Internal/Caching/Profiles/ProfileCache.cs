@@ -128,8 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         public async Task<PlayerProfileCI> GetPlayerProfileAsync(URN playerId, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(playerId).NotNull();
-            var wantedCultures = cultures.ToList();
-            Guard.Argument(wantedCultures).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
             // removed register interface !! todo
             //Metric.Context("CACHE").Meter("ProfileCache->GetPlayerProfileAsync", Unit.Calls);
@@ -140,6 +139,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             try
             {
                 cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
+                var wantedCultures = cultures.ToList();
                 var missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
                 if (!missingLanguages.Any())
                 {
@@ -217,8 +217,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         public async Task<CompetitorCI> GetCompetitorProfileAsync(URN competitorId, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(competitorId).NotNull();
-            var wantedCultures = cultures.ToList();
-            Guard.Argument(wantedCultures).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
             //Metric.Context("CACHE").Meter("ProfileCache->GetCompetitorProfileAsync", Unit.Calls);
 
@@ -228,7 +227,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             try
             {
                 cachedItem = (CompetitorCI) _cache.Get(competitorId.ToString());
-                var missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
+                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, cachedItem?.Names.Keys).ToList();
                 if (!missingLanguages.Any())
                 {
                     return cachedItem;

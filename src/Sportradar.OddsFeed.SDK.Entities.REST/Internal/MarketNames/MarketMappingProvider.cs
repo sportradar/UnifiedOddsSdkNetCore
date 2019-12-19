@@ -219,7 +219,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private void HandleMappingErrorCondition(string message, string propertyName, string propertyValue, string targetTypeName, Exception innerException)
         {
-            Guard.Argument(!string.IsNullOrEmpty(message));
+            Guard.Argument(message).NotNull().NotEmpty();
 
             var sb = new StringBuilder("An error occurred while generating the mappedId for item=[");
             sb.Append(" MarketId=").Append(_marketId)

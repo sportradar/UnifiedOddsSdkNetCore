@@ -49,7 +49,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _liveScheduleUriFormat = liveScheduleUriFormat;
         }
 
-
         /// <summary>
         /// Constructs and returns an <see cref="Uri"/> instance used to retrieve resource with specified <code>id</code>
         /// </summary>

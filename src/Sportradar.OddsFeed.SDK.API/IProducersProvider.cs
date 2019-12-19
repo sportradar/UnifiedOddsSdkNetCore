@@ -9,7 +9,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a type used to retrieve available producers on api
     /// </summary>
-    
     public interface IProducersProvider
     {
         /// <summary>

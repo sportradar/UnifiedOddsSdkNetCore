@@ -93,8 +93,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
         public Task<bool> CacheAddDtoAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
-             var counterOptions = new CounterOptions{ Context = $"AddDtoTo_{CacheName}", Name = $"{dtoType}", MeasurementUnit = Unit.Calls };
-             var timerOptions = new TimerOptions
+            Guard.Argument(id).NotNull();
+            Guard.Argument(item).NotNull();
+
+            var counterOptions = new CounterOptions{ Context = $"AddDtoTo_{CacheName}", Name = $"{dtoType}", MeasurementUnit = Unit.Calls };
+            var timerOptions = new TimerOptions
              {
                  Context = $"{id} [{culture.TwoLetterISOLanguageName}]", Name = $"{dtoType}",
                  MeasurementUnit = Unit.Calls, DurationUnit = TimeUnit.Milliseconds, RateUnit = TimeUnit.Milliseconds
@@ -139,6 +142,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <exception cref="System.NotImplementedException"></exception>
         public virtual void CacheDeleteItem(string id, CacheItemType cacheItemType)
         {
+            Guard.Argument(id).NotNull().NotEmpty();
+
             try
             {
                 var urn = URN.Parse(id);
@@ -159,6 +164,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <exception cref="System.NotImplementedException"></exception>
         public virtual bool CacheHasItem(string id, CacheItemType cacheItemType)
         {
+            Guard.Argument(id).NotNull().NotEmpty();
+
             try
             {
                 var urn = URN.Parse(id);

@@ -9,7 +9,6 @@ namespace Sportradar.OddsFeed.SDK.Messages
     /// <summary>
     /// Defines a contract implemented by classes used to manage feed producers
     /// </summary>
-    
     public interface IProducerManager
     {
         /// <summary>

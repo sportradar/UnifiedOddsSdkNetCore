@@ -86,6 +86,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 throw new InvalidOperationException("The instance is already opened");
             }
 
+            Guard.Argument(routingKeys).NotNull().NotEmpty();
+
             _channel = _channelFactory.CreateChannel();
             ExecutionLog.LogInformation($"Opening the channel with channelNumber: {_channel.ChannelNumber}.");
             var declareResult = _channel.QueueDeclare();

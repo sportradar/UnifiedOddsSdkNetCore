@@ -16,7 +16,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
     /// </summary>
     /// <seealso cref="FeedSdkException" />
     [Serializable]
-
     public class NameGenerationException : FeedSdkException
     {
         /// <summary>

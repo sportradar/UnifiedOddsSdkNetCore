@@ -228,18 +228,19 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="interests">The interests for which to open trackers</param>
         public void Open(IEnumerable<MessageInterest> interests)
         {
-            var messageInterests = interests.ToList();
-            Guard.Argument(messageInterests).NotNull();
+            Guard.Argument(interests).NotNull().NotEmpty();
+
+            var interestList = interests as List<MessageInterest> ?? interests.ToList();
 
             // the LINQ query below might produce a list with same entries (one producer found more than once)
             var producersToOpen = from producer in _producerManager.Producers
                 where !producer.IsDisabled && producer.IsAvailable
                 let producerScopes = ((Producer) producer).Scope.Select(MessageInterest.FromScope).ToList()
-                from interest in messageInterests
+                from interest in interestList
                 where !interest.IsScopeInterest || producerScopes.Contains(interest)
                 select producer;
 
-            var producerRecoveryManagers = producersToOpen.Distinct(new ProducerEqualityComparer()).Select(p => _producerRecoveryManagerFactory.GetRecoveryTracker(p, messageInterests)).ToList();
+            var producerRecoveryManagers = producersToOpen.Distinct(new ProducerEqualityComparer()).Select(p => _producerRecoveryManagerFactory.GetRecoveryTracker(p, interestList)).ToList();
             Open(producerRecoveryManagers);
 
             _systemSession.AliveReceived += OnSystemSessionMessageReceived;

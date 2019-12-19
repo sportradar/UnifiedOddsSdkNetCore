@@ -5,13 +5,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
     /// <summary>
     /// Defines a pool of <see cref="SemaphoreSlim"/> instances which can be used to synchronize access to a shared resource
     /// </summary>
-    
     public interface ISemaphorePool : IDisposable
     {
         /// <summary>

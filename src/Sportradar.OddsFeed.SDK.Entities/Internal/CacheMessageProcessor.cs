@@ -87,6 +87,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="rawMessage">A raw message received from the feed</param>
         public void ProcessMessage(FeedMessage message, MessageInterest interest, byte[] rawMessage)
         {
+            Guard.Argument(message).NotNull();
+            Guard.Argument(interest).NotNull();
+
             // process odds_change
             var oddsChange = message as odds_change;
             if (oddsChange?.sport_event_status != null)

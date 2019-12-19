@@ -85,11 +85,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             Guard.Argument(dataProvider).NotNull();
-            var defaultCultures = cultures.ToList();
-            Guard.Argument(defaultCultures).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
 
             _dataProvider = dataProvider;
-            _defaultCultures = defaultCultures;
+            _defaultCultures = cultures;
             _exceptionStrategy = exceptionStrategy;
 
             _namedValues = new ConcurrentDictionary<int, IDictionary<CultureInfo, string>>();

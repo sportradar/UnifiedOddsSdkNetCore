@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="description">The description associated with the current instance.</param>
         public NamedValue(int id, string description)
         {
-            Guard.Argument(!string.IsNullOrEmpty(description));
+            Guard.Argument(description).NotNull().NotEmpty();
 
             Id = id;
             Description = description;

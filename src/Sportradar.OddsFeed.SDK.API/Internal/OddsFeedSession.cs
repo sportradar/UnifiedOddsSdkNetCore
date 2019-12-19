@@ -203,6 +203,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="rawMessage"></param>
         public override void Dispatch(FeedMessage feedMessage, byte[] rawMessage)
         {
+            Guard.Argument(feedMessage).NotNull();
+
             var alive = feedMessage as alive;
             if (alive != null)
             {

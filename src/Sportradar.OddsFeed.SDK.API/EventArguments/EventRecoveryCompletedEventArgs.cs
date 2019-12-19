@@ -29,7 +29,9 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         internal EventRecoveryCompletedEventArgs(long requestId, URN eventId)
         {
             if (eventId == null)
+            {
                 throw new ArgumentNullException(nameof(eventId));
+            }
 
             _requestId = requestId;
             _eventId = eventId;

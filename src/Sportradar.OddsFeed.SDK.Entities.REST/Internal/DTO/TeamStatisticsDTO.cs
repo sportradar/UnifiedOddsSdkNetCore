@@ -27,8 +27,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public int YellowRedCards { get; }
 
         public int CornerKicks { get; }
-        
+
         public int GreenCards { get; }
+
 
         internal TeamStatisticsDTO(teamStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {

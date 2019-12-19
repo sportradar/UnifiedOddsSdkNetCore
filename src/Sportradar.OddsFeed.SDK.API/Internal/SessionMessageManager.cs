@@ -120,6 +120,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="rawMessage">A raw message received from the feed</param>
         public void ProcessMessage(FeedMessage message, MessageInterest interest, byte[] rawMessage)
         {
+            Guard.Argument(message).NotNull();
+            Guard.Argument(interest).NotNull();
+
             var alive = message as alive;
             if (alive != null)
             {
@@ -144,6 +147,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="requestId">The request identifier</param>
         public void StashMessages(IProducer producer, long requestId)
         {
+            Guard.Argument(producer).NotNull();
+
             var stashedItem = GetStashedItem(producer.Id);
             if (stashedItem != null)
             {
@@ -160,6 +165,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="requestId">The request identifier</param>
         public void ReleaseMessages(IProducer producer, long requestId)
         {
+            Guard.Argument(producer).NotNull();
+
             ReleaseMessagesTask(producer, requestId).ConfigureAwait(false);
         }
 

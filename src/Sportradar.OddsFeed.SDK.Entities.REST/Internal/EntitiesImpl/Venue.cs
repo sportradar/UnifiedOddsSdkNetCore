@@ -62,16 +62,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Venue(VenueCI ci, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(ci).NotNull();
-            var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
+            var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
 
             Id = ci.Id;
             Coordinates = ci.Coordinates;
             Capacity = ci.Capacity;
 
-            Names = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName));
-            Cities = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => ci.GetCity(c) != null).ToDictionary(c => c, ci.GetCity));
-            Countries = new ReadOnlyDictionary<CultureInfo, string>(cultureInfos.Where(c => ci.GetCountry(c) != null).ToDictionary(c => c, ci.GetCountry));
+            Names = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName));
+            Cities = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => ci.GetCity(c) != null).ToDictionary(c => c, ci.GetCity));
+            Countries = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => ci.GetCountry(c) != null).ToDictionary(c => c, ci.GetCountry));
             CountryCode = ci.CountryCode;
         }
 

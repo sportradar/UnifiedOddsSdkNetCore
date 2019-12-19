@@ -59,7 +59,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// if the value of the specified property was not specified</returns>
         public object GetPropertyValue(string propertyName)
         {
-            Guard.Argument(!string.IsNullOrEmpty(propertyName));
+            Guard.Argument(propertyName).NotNull().NotEmpty();
+
             if (Properties != null && Properties.ContainsKey(propertyName))
             {
                 return Properties[propertyName];

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Xml;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -35,6 +36,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <param name="nodeId">The node id used to connect to replay server</param>
         public ReplayManager(string replayApiHost, IDataRestful dataRestful, int nodeId)
         {
+            Guard.Argument(replayApiHost).NotNull().NotEmpty();
+            Guard.Argument(dataRestful).NotNull();
+
             _apiHost = replayApiHost;
             _dataRestful = dataRestful;
             _nodeId = nodeId;
@@ -109,7 +113,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             var result = new List<IReplayEvent>();
             var xmlNodeList = xml.DocumentElement?.SelectNodes("event");
             if (xmlNodeList == null)
+            {
                 return result;
+            }
 
             foreach (XmlNode node in xmlNodeList)
             {

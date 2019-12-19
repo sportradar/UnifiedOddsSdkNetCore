@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal MarketDescriptionDTO(desc_market description)
         {
             Guard.Argument(description).NotNull();
-            Guard.Argument(!string.IsNullOrEmpty(description.name));
+            Guard.Argument(description.name).NotNull().NotEmpty();
 
             Id = description.id;
             Name = description.name;

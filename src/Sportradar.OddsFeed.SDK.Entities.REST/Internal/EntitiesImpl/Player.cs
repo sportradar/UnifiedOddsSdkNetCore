@@ -13,7 +13,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Represents a player or a racer in a sport event
     /// </summary>
     /// <seealso cref="IPlayer" />
-    [DataContract]
     internal class Player : BaseEntity, IPlayer
     {
         /// <summary>

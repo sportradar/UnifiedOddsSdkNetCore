@@ -11,6 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
     /// <summary>
     /// Class used to export/import competitor cache item properties
     /// </summary>
+    [Serializable]
     public class ExportableCompetitorCI : ExportableCI
     {
         /// <summary>

@@ -223,7 +223,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>True if data was successfully retrieved. False otherwise. May throw <see cref="CommunicationException"/></returns>
         private bool LoadWhoamiData(string hostName, bool useSsl, bool rethrow)
         {
-            Guard.Argument(!string.IsNullOrEmpty(hostName));
+            Guard.Argument(hostName).NotNull().NotEmpty();
 
             var hostUrl = useSsl
                               ? "https://" + hostName

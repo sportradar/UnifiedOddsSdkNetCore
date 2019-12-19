@@ -10,6 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
     /// <summary>
     /// Class used to export/import fixture cache item properties
     /// </summary>
+    [Serializable]
     public class ExportableFixtureCI
     {
         /// <summary>

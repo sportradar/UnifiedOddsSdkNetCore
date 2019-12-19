@@ -105,14 +105,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(dataRouterManager).NotNull();
             Guard.Argument(mappingValidatorFactory).NotNull();
             Guard.Argument(timer).NotNull();
-            var cultureInfos = prefetchLanguages.ToList();
-            Guard.Argument(cultureInfos).NotNull().NotEmpty();
+            Guard.Argument(prefetchLanguages).NotNull().NotEmpty();
+
 
             _cache = cache;
             _dataRouterManager = dataRouterManager;
             _mappingValidatorFactory = mappingValidatorFactory;
             _timer = timer;
-            _prefetchLanguages = new ReadOnlyCollection<CultureInfo>(cultureInfos.ToList());
+            _prefetchLanguages = new ReadOnlyCollection<CultureInfo>(prefetchLanguages.ToList());
             _timer.Elapsed += OnTimerElapsed;
             _timer.Start();
         }
@@ -200,8 +200,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">An error occurred while mapping deserialized entities</exception>
         private async Task<MarketDescriptionCacheItem> GetMarketInternalAsync(int id, IEnumerable<CultureInfo> cultures)
         {
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
-            Guard.Argument(cultureList).NotNull().NotEmpty();
 
             MarketDescriptionCacheItem description;
             if ((description = GetItemFromCache(id)) != null && !LanguageHelper.GetMissingCultures(cultureList, description.FetchedLanguages).Any())
@@ -304,6 +305,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
         public async Task<IMarketDescription> GetMarketDescriptionAsync(int marketId, string variant, IEnumerable<CultureInfo> cultures)
         {
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             MarketDescriptionCacheItem cacheItem;
@@ -347,6 +350,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         public async Task<IEnumerable<IMarketDescription>> GetAllInvariantMarketDescriptionsAsync(IEnumerable<CultureInfo> cultures)
         {
+            Guard.Argument(cultures).NotNull().NotEmpty();
+
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
             await GetMarketInternalAsync(1, cultureList).ConfigureAwait(false);
             return _cache
@@ -544,10 +549,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         private void Merge(CultureInfo culture, IEnumerable<MarketDescriptionDTO> descriptions)
         {
             Guard.Argument(culture).NotNull();
-            var marketDescriptionDtos = descriptions.ToList();
-            Guard.Argument(marketDescriptionDtos).NotNull().NotEmpty();
+            Guard.Argument(descriptions).NotNull().NotEmpty();
 
-            var descriptionList = descriptions as List<MarketDescriptionDTO> ?? marketDescriptionDtos.ToList();
+            var descriptionList = descriptions as List<MarketDescriptionDTO> ?? descriptions.ToList();
 
             try
             {
