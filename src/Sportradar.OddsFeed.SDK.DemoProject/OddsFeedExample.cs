@@ -5,6 +5,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API;
+using Sportradar.OddsFeed.SDK.API.Internal;
 using Sportradar.OddsFeed.SDK.DemoProject.Example;
 using Sportradar.OddsFeed.SDK.Entities;
 
@@ -68,60 +69,60 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             switch (k)
             {
                 case "1":
-                {
-                    new Basic(_log).Run(MessageInterest.AllMessages);
-                    break;
-                }
-                case "2":
-                {
-                    new MultiSession(_log).Run();
-                    break;
-                }
-                case "3":
-                {
-                    new SpecificDispatchers(_log).Run(MessageInterest.AllMessages);
-                    break;
-                }
-                case "4":
-                {
-                    new ShowMarketNames(_log).Run(MessageInterest.AllMessages, defaultLocale);
-                    break;
-                }
-                case "5":
-                {
-                    new ShowEventInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
-                    break;
-                }
-                case "6":
-                {
-                    new CompleteInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
-                    break;
-                }
-                case "7":
-                {
-                    new ShowMarketMappings(_log).Run(MessageInterest.AllMessages, defaultLocale);
-                    break;
-                }
-                case "8":
-                {
-                    new ReplayServer(_log).Run(MessageInterest.AllMessages);
-                    break;
-                }
-                case "9":
-                {
-                    new CacheExportImport(_log).Run(MessageInterest.AllMessages);
-                    break;
-                }
-                case "10":
-                {
-                    new MultiThreaded(_log).Run(MessageInterest.AllMessages);
-                    break;
-                }
+                    {
+                        new Basic(_log).Run(MessageInterest.AllMessages);
+                        break;
+                    }
+                //    case "2":
+                //    {
+                //        new MultiSession(_log).Run();
+                //        break;
+                //    }
+                //    case "3":
+                //    {
+                //        new SpecificDispatchers(_log).Run(MessageInterest.AllMessages);
+                //        break;
+                //    }
+                //    case "4":
+                //    {
+                //        new ShowMarketNames(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                //        break;
+                //    }
+                //    case "5":
+                //    {
+                //        new ShowEventInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                //        break;
+                //    }
+                //    case "6":
+                //    {
+                //        new CompleteInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                //        break;
+                //    }
+                //    case "7":
+                //    {
+                //        new ShowMarketMappings(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                //        break;
+                //    }
+                //    case "8":
+                //    {
+                //        new ReplayServer(_log).Run(MessageInterest.AllMessages);
+                //        break;
+                //    }
+                //    case "9":
+                //    {
+                //        new CacheExportImport(_log).Run(MessageInterest.AllMessages);
+                //        break;
+                //    }
+                //    case "10":
+                //    {
+                //        new MultiThreaded(_log).Run(MessageInterest.AllMessages);
+                //        break;
+                //    }
                 default:
-                {
-                    DoExampleSelection();
-                    break;
-                }
+                    {
+                        DoExampleSelection();
+                        break;
+                    }
             }
         }
     }

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Sportradar.OddsFeed.SDKCore</id>
+    <version>1.0.4</version>
+    <authors>Sportradar AG</authors>
+    <owners>Sportradar AG</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <projectUrl>http://sdk.sportradar.com/</projectUrl>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Core 3.0)</description>
+    <copyright>Copyright © Sportradar AG 2019</copyright>
+    <tags>SportRadar OddsFeed UnifiedFeed SDK .NETCore</tags>
+    <repository url="https://github.com/sportradar/UnifiedOddsSdkNetCore" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.0">
+        <dependency id="App.Metrics" version="3.2.0" exclude="Build,Analyzers" />
+        <dependency id="App.Metrics.Abstractions" version="3.2.0" exclude="Build,Analyzers" />
+        <dependency id="App.Metrics.Core" version="3.2.0" exclude="Build,Analyzers" />
+        <dependency id="App.Metrics.Health.Core" version="3.2.0" exclude="Build,Analyzers" />
+        <dependency id="Castle.Core" version="4.4.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="3.1.0" exclude="Build,Analyzers" />
+        <dependency id="RabbitMQ.Client" version="5.1.2" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="Unity" version="5.11.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="Readme.txt" target="" />
+    <file src="Sportradar.OddsFeed.*.dll" target="lib\netcoreapp3.0" />
+    <!--<file src="Sportradar.OddsFeed.SDK.API.dll" target="lib\netcoreapp3.0" />
+    <file src="Sportradar.OddsFeed.SDK.Entities.dll" target="lib\netcoreapp3.0" />
+    <file src="Sportradar.OddsFeed.SDK.Entities.REST.dll" target="lib\netcoreapp3.0" />
+    <file src="Sportradar.OddsFeed.SDK.Common.dll" target="lib\netcoreapp3.0" />
+    <file src="Sportradar.OddsFeed.SDK.Messages.dll" target="lib\netcoreapp3.0" />-->
+    <!--<file src="lib\**" target="lib" />-->
+  </files>
+</package>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Sportradar.OddsFeed.SDK Core</id>
+    <version>0.9.0.0</version>
+    <title>Odds Feed SDK Core</title>
+    <authors>Sportradar AG</authors>
+    <owners>Sportradar AG</owners>
+    <projectUrl>http://sdk.sportradar.com/</projectUrl>
+    <license>http://sdk.sportradar.com</license>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The SDK simplifying the consumption of Sportradar's Unified Odds feed</description>
+    <releaseNotes>Release 0.9.0.0</releaseNotes>
+    <copyright>Copyright © Sportradar AG 2019</copyright>
+    <tags>SportRadar OddsFeed UnifiedFeed SDK .NET Core</tags>
+    <repository type="git" url="https://github.com/sportradar/UnifiedOddsSdkNetCore.git" branch="master" />
+  </metadata>
+  <dependencies>
+    <dependency id="App.Metrics" version="3.2" />
+    <dependency id="App.Metrics.Core" version="3.2" />
+    <dependency id="App.Metrics.Abstractions" version="3.2" />
+    <dependency id="App.Metrics.Health.Core" version="3.2" />
+    <dependency id="Castle.Core" version="4.4" />
+    <dependency id="Dawn.Guard" version="1.10" />
+    <dependency id="Humanizer" version="2.7.9" />
+    <dependency id="RabbitMQ.Client" version="5.1.2" />
+    <dependency id="Unity" version="5.11.2" />
+  </dependencies>
+  <files>
+    <file src="Readme.txt" target="" />
+    <file src="lib\**" target="lib" />
+  </files>
+</package>

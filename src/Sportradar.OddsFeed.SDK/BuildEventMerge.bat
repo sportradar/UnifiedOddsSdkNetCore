@@ -1,24 +1,48 @@
+cd
 set bat_dir=%~dp0
+pushd "%bat_dir%"
+cd
+mkdir "lib\netcoreapp3.0"
 
-echo Merging dlls ...
-
-mkdir "..\..\lib\net45"
-del "..\..\lib\net45\Sportradar.OddsFeed.SDK.dll"
-del  "..\..\..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.dll"
+echo Deleting old dlls
+del "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.dll"
+del "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.dll"
+del "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.API.dll"
+del "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.API.dll"
+del "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.dll"
+del "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Entities.dll"
+del "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.REST.dll"
+del "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Entities.REST.dll"
+del "..\..\lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Common.dll"
+del "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Common.dll"
+del "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Messages.dll"
+del "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Messages.dll"
 
 pushd "%bat_dir%"
-"C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe" /internalize:"DoNotInternalize.txt" /ndebug /copyattrs /targetplatform:4.0,"C:\Windows\Microsoft.NET\Framework64\v4.0.30319"  /out:"..\..\lib\net45\Sportradar.OddsFeed.SDK.dll" "Sportradar.OddsFeed.SDK.dll" "Sportradar.OddsFeed.SDK.Common.dll" "Sportradar.OddsFeed.SDK.Entities.dll" "Sportradar.OddsFeed.SDK.Entities.REST.dll" "Sportradar.OddsFeed.SDK.Messages.dll" "RabbitMQ.Client.dll" "Microsoft.Practices.Unity.dll" "Microsoft.Practices.ServiceLocation.dll" "af\Humanizer.resources.dll" "ar\Humanizer.resources.dll" "bg\Humanizer.resources.dll" "bn-BD\Humanizer.resources.dll" "cs\Humanizer.resources.dll" "da\Humanizer.resources.dll" "de\Humanizer.resources.dll" "el\Humanizer.resources.dll" "es\Humanizer.resources.dll" "fa\Humanizer.resources.dll" "fi-FI\Humanizer.resources.dll" "fr-BE\Humanizer.resources.dll" "fr\Humanizer.resources.dll" "he\Humanizer.resources.dll" "hr\Humanizer.resources.dll" "hu\Humanizer.resources.dll" "id\Humanizer.resources.dll" "it\Humanizer.resources.dll" "ja\Humanizer.resources.dll" "nb-NO\Humanizer.resources.dll" "nb\Humanizer.resources.dll" "nl\Humanizer.resources.dll" "pl\Humanizer.resources.dll" "pt\Humanizer.resources.dll" "ro\Humanizer.resources.dll" "ru\Humanizer.resources.dll" "sk\Humanizer.resources.dll" "sl\Humanizer.resources.dll" "sr-Latn\Humanizer.resources.dll" "sr\Humanizer.resources.dll" "sv\Humanizer.resources.dll" "tr\Humanizer.resources.dll" "uk\Humanizer.resources.dll" "uz-Cyrl-UZ\Humanizer.resources.dll" "uz-Latn-UZ\Humanizer.resources.dll" "vi\Humanizer.resources.dll" "zh-CN\Humanizer.resources.dll" "zh-Hans\Humanizer.resources.dll" "zh-Hant\Humanizer.resources.dll" "Humanizer.dll" "Metrics.dll" "Sportradar.OddsFeed.SDK.API.dll"
+cd
+echo Copying new dlls to lib folder
 
-@echo off
-echo ILmerge successfully executed.
+copy "bin\Debug\netcoreapp3.0\Sportradar.OddsFeed.SDK.dll" "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.dll"
+copy "bin\Debug\netcoreapp3.0\Sportradar.OddsFeed.SDK.API.dll" "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.API.dll"
+copy "bin\Debug\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.dll" "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.dll"
+copy "bin\Debug\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.REST.dll" "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.REST.dll"
+copy "bin\Debug\netcoreapp3.0\Sportradar.OddsFeed.SDK.Common.dll" "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Common.dll"
+copy "bin\Debug\netcoreapp3.0\Sportradar.OddsFeed.SDK.Messages.dll" "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Messages.dll"
 
-copy "..\..\lib\net45\Sportradar.OddsFeed.SDK.dll" "..\..\..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.dll"
+echo Copying new dlls from lib to DemoProject resources folder
+
+copy "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.dll" "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.dll"
+copy "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.API.dll" "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.API.dll"
+copy "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.dll" "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Entities.dll"
+copy "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Entities.REST.dll" "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Entities.REST.dll"
+copy "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Common.dll" "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Common.dll"
+copy "lib\netcoreapp3.0\Sportradar.OddsFeed.SDK.Messages.dll" "..\Sportradar.OddsFeed.SDK.DemoProject\resources\Sportradar.OddsFeed.SDK.Messages.dll"
 
 echo Creating nuget package ...
 
-..\..\..\..\tools\nuget.exe pack ..\..\NugetPackage.nuspec
+..\..\tools\nuget.exe pack bin\Debug\netcoreapp3.0\Sportradar.OddsFeed.SDKCore.nuspec
 
 echo.
-echo NuGet package successfully created.
+echo Creating finished.
 echo.
 popd

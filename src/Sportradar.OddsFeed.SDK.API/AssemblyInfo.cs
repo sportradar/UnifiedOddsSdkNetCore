@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.API.Test")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Test.Shared")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Entities.REST.Test")]
