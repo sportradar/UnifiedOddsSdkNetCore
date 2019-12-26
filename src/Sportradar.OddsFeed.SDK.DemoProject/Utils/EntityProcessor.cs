@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Dawn;
@@ -47,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <param name="log">A <see cref="ILogger" /> instance used for logging</param>
         public EntityProcessor(IEntityDispatcher<T> dispatcher, SportEntityWriter writer = null, MarketWriter marketWriter = null, ILogger log = null)
         {
-            Guard.Argument(dispatcher).NotNull();
+            Guard.Argument(dispatcher, nameof(dispatcher)).NotNull();
 
             _dispatcher = dispatcher;
             _sportEntityWriter = writer;
@@ -74,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <param name="e">The event arguments</param>
         protected virtual void OnOddsChangeReceived(object sender, OddsChangeEventArgs<T> e)
         {
-            Guard.Argument(e).NotNull();
+            Guard.Argument(e, nameof(e)).NotNull();
 
             var oddsChange = e.GetOddsChange();
             _log.LogInformation($"OddsChange received. EventId:{oddsChange.Event.Id} Producer:{oddsChange.Producer} RequestId:{oddsChange.RequestId}");

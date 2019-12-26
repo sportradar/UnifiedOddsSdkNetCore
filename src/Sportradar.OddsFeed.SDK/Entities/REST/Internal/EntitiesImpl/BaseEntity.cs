@@ -47,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="names">The names</param>
         public BaseEntity(URN id, IReadOnlyDictionary<CultureInfo, string> names)
         {
-            Guard.Argument(id, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
 
             Id = id;
             Names = names;

@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -126,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="stageResultCompetitor">The stage result competitor</param>
         public EventResultDTO(stageResultCompetitor stageResultCompetitor)
         {
-            Guard.Argument(stageResultCompetitor, nameof()).NotNull();
+            Guard.Argument(stageResultCompetitor, nameof(stageResultCompetitor)).NotNull();
 
             Id = stageResultCompetitor.id;
             Position = stageResultCompetitor.positionSpecified ? stageResultCompetitor.position : (int?) null;

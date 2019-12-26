@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Defines a contract implemented by classes capable of dispatching entities
     /// </summary>
-    /// <seealso cref="Sportradar.OddsFeed.SDK.API.Internal.IEntityDispatcherInternal" />
+    /// <seealso cref="IEntityDispatcherInternal" />
     internal interface ISpecificEntityDispatcherInternal : IEntityDispatcherInternal
     {
         /// <summary>

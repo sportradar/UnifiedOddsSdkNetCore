@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
         /// <param name="drawSummary">A <see cref="draw_summary"/> containing lottery draw data</param>
         internal DrawSummaryMapper(draw_summary drawSummary)
         {
-            Guard.Argument(drawSummary, nameof()).NotNull();
+            Guard.Argument(drawSummary, nameof(drawSummary)).NotNull();
 
             _drawSummary = drawSummary;
         }

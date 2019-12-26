@@ -80,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cultures">A cultures of the current instance of <see cref="RoundCI"/></param>
         public Round(RoundCI ci, IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(ci, nameof()).NotNull();
+            Guard.Argument(ci, nameof(ci)).NotNull();
 
             Type = ci.Type;
             Number = ci.Number;

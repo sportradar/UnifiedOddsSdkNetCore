@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="record">A <see cref="attributesAttribute"/> representing attribute object obtained by parsing the xml.</param>
         public MarketAttributeDTO(attributesAttribute record)
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
 
             Name = record.name;
             Description = record.description;

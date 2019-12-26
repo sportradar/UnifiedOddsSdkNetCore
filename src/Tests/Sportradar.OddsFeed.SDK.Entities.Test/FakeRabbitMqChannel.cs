@@ -27,9 +27,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
 
         public FakeRabbitMqChannel(IDataFetcher dataFetcher, IDeserializer<FeedMessage> deserializer, string dirPath)
         {
-            Guard.Argument(deserializer != null);
-            Guard.Argument(_dataFetcher != null);
-            Guard.Argument(!string.IsNullOrEmpty(dirPath));
+            Guard.Argument(deserializer, nameof(deserializer)).NotNull();
+            Guard.Argument(_dataFetcher, nameof(_dataFetcher)).NotNull();
+            Guard.Argument(dirPath, nameof(dirPath)).NotNull().NotEmpty();
 
             if (!Directory.Exists(dirPath))
             {

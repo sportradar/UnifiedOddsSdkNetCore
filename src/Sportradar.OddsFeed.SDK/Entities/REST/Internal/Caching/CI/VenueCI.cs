@@ -57,8 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal VenueCI(VenueDTO venue, CultureInfo culture)
             :base(venue)
         {
-            Guard.Argument(venue, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(venue, nameof(venue)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             _names = new Dictionary<CultureInfo, string>();
             _countryNames = new Dictionary<CultureInfo, string>();
@@ -88,8 +88,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the input <see cref="VenueDTO"/></param>
         internal void Merge(VenueDTO venue, CultureInfo culture)
         {
-            Guard.Argument(venue, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(venue, nameof(venue)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Capacity = venue.Capacity;
             Coordinates = venue.Coordinates;
@@ -106,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The name of the venue in the specified language if it exists. Null otherwise.</returns>
         public string GetName(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _names.ContainsKey(culture)
                 ? _names[culture]
@@ -121,7 +121,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The city name of the venue in the specified language if it exists. Null otherwise.</returns>
         public string GetCity(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _cityNames.ContainsKey(culture)
                 ? _cityNames[culture]
@@ -135,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The country name of the venue in the specified language if it exists. Null otherwise.</returns>
         public string GetCountry(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _countryNames.ContainsKey(culture)
                 ? _countryNames[culture]

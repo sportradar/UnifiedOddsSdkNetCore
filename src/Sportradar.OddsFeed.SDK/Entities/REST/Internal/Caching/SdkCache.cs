@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         protected SdkCache(ICacheManager cacheManager, IMetricsRoot metrics = null)
         {
-            Guard.Argument(cacheManager, nameof()).NotNull();
+            Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
 
             _cacheManager = cacheManager;
             _metrics = metrics ?? SdkMetricsFactory.MetricsRoot;
@@ -65,7 +65,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         public string CacheName { get; }
 
         /// <summary>
-        /// Registers the cache in <see cref="Caching.CacheManager" />
+        /// Registers the cache in <see cref="CacheManager" />
         /// </summary>
         public virtual void RegisterCache()
         {
@@ -93,8 +93,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
         public Task<bool> CacheAddDtoAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
-            Guard.Argument(id, nameof()).NotNull();
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             var counterOptions = new CounterOptions{ Context = $"AddDtoTo_{CacheName}", Name = $"{dtoType}", MeasurementUnit = Unit.Calls };
             var timerOptions = new TimerOptions
@@ -139,10 +139,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         /// <param name="id">A string representing the id of the item in the cache to be deleted</param>
         /// <param name="cacheItemType">A cache item type</param>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public virtual void CacheDeleteItem(string id, CacheItemType cacheItemType)
         {
-            Guard.Argument(id, nameof()).NotNull().NotEmpty();
+            Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
 
             try
             {
@@ -161,10 +161,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="id">A string representing the id of the item to be checked</param>
         /// <param name="cacheItemType">A cache item type</param>
         /// <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public virtual bool CacheHasItem(string id, CacheItemType cacheItemType)
         {
-            Guard.Argument(id, nameof()).NotNull().NotEmpty();
+            Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
 
             try
             {

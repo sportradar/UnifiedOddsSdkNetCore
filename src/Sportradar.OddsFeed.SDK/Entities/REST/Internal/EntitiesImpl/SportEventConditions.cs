@@ -48,8 +48,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the supported languages of the constructed instance</param>
         public SportEventConditions(SportEventConditionsCI ci, IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(ci, nameof()).NotNull();
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(ci, nameof(ci)).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             Attendance = ci.Attendance;
             EventMode = ci.EventMode;

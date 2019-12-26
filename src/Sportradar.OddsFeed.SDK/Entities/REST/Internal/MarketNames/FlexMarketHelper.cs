@@ -23,8 +23,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist</exception>
         private static string GetSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers)
         {
-            Guard.Argument(specifierName, nameof()).NotNull().NotEmpty();
-            Guard.Argument(specifiers, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
+            Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
 
             string specifierValueString;
             if (!specifiers.TryGetValue(specifierName, out specifierValueString))

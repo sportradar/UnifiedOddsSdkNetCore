@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                         }
             })
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             DisplayId = null;
 
@@ -114,7 +114,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                     }
             })
         {
-            Guard.Argument(item?.draw_fixture, nameof()).NotNull();
+            Guard.Argument(item?.draw_fixture, nameof(item)).NotNull();
 
             var fixture = item.draw_fixture;
 
@@ -142,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                 scheduled = item?.scheduled ?? DateTime.MinValue
             })
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             if (item != null)
             {

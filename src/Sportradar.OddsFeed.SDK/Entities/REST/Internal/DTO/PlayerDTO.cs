@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal PlayerDTO(player record)
             :base(record.id, record.name)
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="item">The item</param>
         public DrawResult(DrawResultCI item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             Value = item.Value;
             Names = item.Names as IReadOnlyDictionary<CultureInfo, string>;

@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">A <see cref="matchSummaryEndpoint"/> containing sport event data</param>
         internal MatchSummaryMapper(matchSummaryEndpoint data)
         {
-            Guard.Argument(data, nameof()).NotNull();
+            Guard.Argument(data, nameof(data)).NotNull();
 
             _data = data;
         }

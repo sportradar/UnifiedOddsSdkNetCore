@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="timedOut">a value indicating whether the operation has timed-out</param>
         protected RecoveryResult(bool success, long requestId, DateTime startTime, DateTime? interruptedAt, bool timedOut)
         {
-            Guard.Argument(requestId).Positive();
+            Guard.Argument(requestId, nameof(requestId)).Positive();
 
             Success = success;
             RequestId = requestId;

@@ -89,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="DeserializationException">The deserialization failed</exception>
         public T Deserialize(Stream stream)
         {
-            Guard.Argument(stream, nameof()).NotNull();
+            Guard.Argument(stream, nameof(stream)).NotNull();
 
             return Deserialize<T>(stream);
         }
@@ -103,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="DeserializationException">The deserialization failed</exception>
         public T1 Deserialize<T1>(Stream stream) where T1 : T
         {
-            Guard.Argument(stream, nameof()).NotNull();
+            Guard.Argument(stream, nameof(stream)).NotNull();
 
             using (var reader = new NamespaceIgnorantXmlTextReader(stream))
             {
@@ -171,7 +171,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             public SerializerWithInfo(XmlSerializer serializer, bool ignoreNamespace)
             {
-                Guard.Argument(serializer, nameof()).NotNull();
+                Guard.Argument(serializer, nameof(serializer)).NotNull();
 
                 Serializer = serializer;
                 IgnoreNamespace = ignoreNamespace;

@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <param name="maxWaitTime"> A <see cref="TimeSpan"/> defining the max wait time</param>
         public TaskProcessor(TimeSpan maxWaitTime)
         {
-            Guard.Argument(maxWaitTime > TimeSpan.Zero).True();
+            Guard.Argument(maxWaitTime, nameof(maxWaitTime)).Require(maxWaitTime > TimeSpan.Zero);
 
             _maxWaitTime = maxWaitTime;
         }
@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <returns>A <see cref="T"/> representing the result of the task</returns>
         public T GetTaskResult<T>(Task<T> task)
         {
-            Guard.Argument(task).NotNull();
+            Guard.Argument(task, nameof(task)).NotNull();
 
             Interlocked.Increment(ref _runningTaskCount);
             try

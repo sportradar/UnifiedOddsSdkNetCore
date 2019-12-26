@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         internal TimelineEvent(TimelineEventCI ci)
         {
-            Guard.Argument(ci, nameof()).NotNull();
+            Guard.Argument(ci, nameof(ci)).NotNull();
 
             Id = ci.Id;
             HomeScore = ci.HomeScore;

@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal FixtureDTO(fixture fixture, DateTime? generatedAt)
             : base(fixture)
         {
-            Guard.Argument(fixture, nameof()).NotNull();
+            Guard.Argument(fixture, nameof(fixture)).NotNull();
 
             StartTime = fixture.start_timeSpecified
                 ? (DateTime?) fixture.start_time.ToLocalTime()

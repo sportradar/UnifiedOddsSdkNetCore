@@ -22,9 +22,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="specifier">The <see cref="desc_specifiersSpecifier"/> used for creating instance</param>
         internal SpecifierDTO(desc_specifiersSpecifier specifier)
         {
-            Guard.Argument(specifier, nameof()).NotNull();
-            Guard.Argument(specifier.name, nameof()).NotNull().NotEmpty();
-            Guard.Argument(specifier.type, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifier, nameof(specifier)).NotNull();
+            Guard.Argument(specifier.name, nameof(specifier.name)).NotNull().NotEmpty();
+            Guard.Argument(specifier.type, nameof(specifier.type)).NotNull().NotEmpty();
 
             Name = specifier.name;
             Type = specifier.type;

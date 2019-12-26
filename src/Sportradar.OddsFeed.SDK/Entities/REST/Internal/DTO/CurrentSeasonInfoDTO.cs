@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public CurrentSeasonInfoDTO(seasonExtended season)
             : base (season.id, season.name)
         {
-            Guard.Argument(season, nameof()).NotNull();
+            Guard.Argument(season, nameof(season)).NotNull();
 
             Year = season.year;
             StartDate = season.start_date;

@@ -36,8 +36,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal SeasonDTO(seasonExtended season)
             : base(season.id, season.name)
         {
-            Guard.Argument(season, nameof()).NotNull();
-            Guard.Argument(season.year, nameof()).NotNull().NotEmpty();
+            Guard.Argument(season, nameof(season)).NotNull();
+            Guard.Argument(season.year, nameof(season.year)).NotNull().NotEmpty();
 
             StartDate = season.start_date;
             EndDate = season.end_date;
@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal SeasonDTO(currentSeason season)
             : base(season.id, season.name)
         {
-            Guard.Argument(season, nameof()).NotNull();
+            Guard.Argument(season, nameof(season)).NotNull();
 
             StartDate = season.start_date;
             EndDate = season.end_date;

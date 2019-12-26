@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
         internal BonusInfoDTO(lotteryBonus_info info)
         {
-            Guard.Argument(info, nameof()).NotNull();
+            Guard.Argument(info, nameof(info)).NotNull();
 
             BonusBalls = info.bonus_ballsSpecified
                 ? info.bonus_balls

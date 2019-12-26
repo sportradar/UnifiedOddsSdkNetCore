@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public OddsChange(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, OddsChangeReason? changeReason, int? betStopReason, int? bettingStatus, IEnumerable<IMarketWithOdds> markets, oddsGenerationProperties oddsGenerationProperties, INamedValuesProvider namedValuesProvider, byte[] rawMessage)
             : base(timestamp, producer, @event, requestId, markets, rawMessage)
         {
-            Guard.Argument(namedValuesProvider, nameof()).NotNull();
+            Guard.Argument(namedValuesProvider, nameof(namedValuesProvider)).NotNull();
 
             _namedValueProvider = namedValuesProvider;
             ChangeReason = changeReason;

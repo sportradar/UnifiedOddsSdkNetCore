@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         internal Fixture(FixtureDTO fixtureDto)
         {
-            Guard.Argument(fixtureDto, nameof()).NotNull();
+            Guard.Argument(fixtureDto, nameof(fixtureDto)).NotNull();
 
             StartTime = fixtureDto.StartTime;
             NextLiveTime = fixtureDto.NextLiveTime;

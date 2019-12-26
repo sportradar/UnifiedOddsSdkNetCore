@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="delayedInfoCI">The delayed info cache item</param>
         public DelayedInfo(DelayedInfoCI delayedInfoCI)
         {
-            Guard.Argument(delayedInfoCI, nameof()).NotNull();
+            Guard.Argument(delayedInfoCI, nameof(delayedInfoCI)).NotNull();
 
             Id = delayedInfoCI.Id;
             Descriptions = delayedInfoCI.Descriptions as IReadOnlyDictionary<CultureInfo, string>;

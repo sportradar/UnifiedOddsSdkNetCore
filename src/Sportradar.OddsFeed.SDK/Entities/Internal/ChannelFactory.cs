@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// Represents a factory used to construct <see cref="IModel"/> instances representing channels to the broker
     /// </summary>
     /// <seealso cref="IChannelFactory" />
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public class ChannelFactory : IChannelFactory, IDisposable
     {
         /// <summary>

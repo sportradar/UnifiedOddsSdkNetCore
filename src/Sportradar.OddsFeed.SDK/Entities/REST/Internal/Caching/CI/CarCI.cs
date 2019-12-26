@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         public CarCI(CarDTO item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             Name = item.Name;
             Chassis = item.Chassis;

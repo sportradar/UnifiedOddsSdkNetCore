@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         internal NamedValueDTO(int id, string description)
         {
-            Guard.Argument(id >= 0);
+            Guard.Argument(id, nameof(id)).NotNegative();
 
             Id = id;
             Description = description;

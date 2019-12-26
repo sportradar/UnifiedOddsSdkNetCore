@@ -29,8 +29,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="specifierValue">The required value of the specifier.</param>
         public SpecificValueMappingValidator(string specifierName, string specifierValue)
         {
-            Guard.Argument(specifierName, nameof()).NotNull().NotEmpty();
-            Guard.Argument(specifierValue, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
+            Guard.Argument(specifierValue, nameof(specifierValue)).NotNull().NotEmpty();
 
             _specifierName = specifierName;
             _specifierValue = specifierValue;
@@ -52,9 +52,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return $"{_specifierName}={_specifierValue}";

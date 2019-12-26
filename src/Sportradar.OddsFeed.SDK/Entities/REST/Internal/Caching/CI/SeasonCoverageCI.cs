@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="coverageDTO">A <see cref="SeasonCoverageDTO"/> instance containing information about the coverage</param>
         public SeasonCoverageCI(SeasonCoverageDTO coverageDTO)
         {
-            Guard.Argument(coverageDTO, nameof()).NotNull();
+            Guard.Argument(coverageDTO, nameof(coverageDTO)).NotNull();
 
             MaxCoverageLevel = coverageDTO.MaxCoverageLevel;
             MinCoverageLevel = coverageDTO.MinCoverageLevel;
@@ -70,7 +70,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public SeasonCoverageCI(ExportableSeasonCoverageCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             MaxCoverageLevel = exportable.MaxCoverageLevel;
             MinCoverageLevel = exportable.MinCoverageLevel;

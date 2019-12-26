@@ -3,29 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.63.7299</AssemblyVersion>
-    <FileVersion>1.0.63.7299</FileVersion>
+    <AssemblyVersion>1.0.66.7299</AssemblyVersion>
+    <FileVersion>1.0.66.7299</FileVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Example\CacheExportImport.cs" />
-    <Compile Remove="Example\CompleteInfo.cs" />
-    <Compile Remove="Example\MultiSession.cs" />
-    <Compile Remove="Example\MultiThreaded.cs" />
-    <Compile Remove="Example\ReplayServer.cs" />
-    <Compile Remove="Example\ShowEventInfo.cs" />
-    <Compile Remove="Example\ShowMarketMappings.cs" />
-    <Compile Remove="Example\ShowMarketNames.cs" />
-    <Compile Remove="Example\SpecificDispatchers.cs" />
-    <Compile Remove="Utils\EntityProcessor.cs" />
-    <Compile Remove="Utils\ExampleReplayEvents.cs" />
-    <Compile Remove="Utils\IEntityProcessor.cs" />
-    <Compile Remove="Utils\MarketMappingsWriter.cs" />
-    <Compile Remove="Utils\MarketWriter.cs" />
-    <Compile Remove="Utils\SpecificEntityProcessor.cs" />
-    <Compile Remove="Utils\SportEntityWriter.cs" />
-    <Compile Remove="Utils\TaskProcessor.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dawn.Guard" Version="1.10.0" />
@@ -37,16 +17,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="App.config">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

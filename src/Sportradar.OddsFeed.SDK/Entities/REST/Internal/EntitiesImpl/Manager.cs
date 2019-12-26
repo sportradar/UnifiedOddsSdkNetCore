@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Manager(ManagerCI item)
             : base(item.Id, item.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             Nationalities = item.Nationality as IReadOnlyDictionary<CultureInfo, string>;
             CountryCode = item.CountryCode;

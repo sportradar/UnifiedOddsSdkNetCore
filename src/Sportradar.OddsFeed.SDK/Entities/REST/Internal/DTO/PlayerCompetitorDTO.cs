@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal PlayerCompetitorDTO(playerCompetitor record)
             :base(new player {id = record.id, name = record.name })
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
 
             Abbreviation = record.abbreviation;
             Nationality = record.nationality;

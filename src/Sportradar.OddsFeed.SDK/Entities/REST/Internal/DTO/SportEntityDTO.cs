@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="name">the name of the represented sport entity</param>
         internal SportEntityDTO(string id, string name)
         {
-            Guard.Argument(id, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
             //Guard.Argument(name)); // it may happen to receive empty name
 
             Id = URN.Parse(id);
@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current object</param>
         /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c></returns>

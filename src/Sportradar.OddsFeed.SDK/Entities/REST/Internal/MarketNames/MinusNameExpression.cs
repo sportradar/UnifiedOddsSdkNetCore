@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="operand">A <see cref="IOperand"/> representing part of the name expression</param>
         internal MinusNameExpression(IOperand operand)
         {
-            Guard.Argument(operand, nameof()).NotNull();
+            Guard.Argument(operand, nameof(operand)).NotNull();
 
             _operand = operand;
         }

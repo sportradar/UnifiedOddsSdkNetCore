@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="e">Send the <see cref="FeedMessage"/> originally received</param>
         protected void RaiseOnMessageProcessedEvent(FeedMessageReceivedEventArgs e)
         {
-            Guard.Argument(e, nameof()).NotNull();
+            Guard.Argument(e, nameof(e)).NotNull();
 
             MessageProcessed?.Invoke(this, e);
         }

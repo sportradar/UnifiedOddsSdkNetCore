@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         public TeamStatistics(TeamStatisticsDTO dto)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             TeamId = dto.TeamId;
             Name = dto.Name;

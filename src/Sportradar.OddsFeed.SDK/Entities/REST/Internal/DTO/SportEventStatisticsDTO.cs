@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public SportEventStatisticsDTO(statisticsType result)
         {
-            Guard.Argument(result, nameof()).NotNull();
+            Guard.Argument(result, nameof(result)).NotNull();
 
             var totalStatisticsDTOs = new List<TeamStatisticsDTO>();
             totalStatisticsDTOs.Add(new TeamStatisticsDTO(
@@ -47,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public SportEventStatisticsDTO(matchStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Guard.Argument(statistics, nameof()).NotNull();
+            Guard.Argument(statistics, nameof(statistics)).NotNull();
 
             var teamStats = new List<TeamStatisticsDTO>();
             if (statistics.totals != null)

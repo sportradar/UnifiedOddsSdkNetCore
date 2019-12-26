@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="dto">A <see cref="BookmakerDetailsDTO"/> to be used for constructing new instance</param>
         public BookmakerDetails(BookmakerDetailsDTO dto)
         {
-            Guard.Argument(dto, nameof()).NotNull().Require(dto.Id > 0);
+            Guard.Argument(dto, nameof(dto)).NotNull().Require(dto.Id > 0);
 
             BookmakerId = dto.Id;
             VirtualHost = dto.VirtualHost;

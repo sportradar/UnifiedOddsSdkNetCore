@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">The <see cref="producers"/> instance containing data about available producers.</param>
         protected ProducersMapper(producers data)
         {
-            Guard.Argument(data, nameof()).NotNull();
+            Guard.Argument(data, nameof(data)).NotNull();
 
             _data = data;
         }

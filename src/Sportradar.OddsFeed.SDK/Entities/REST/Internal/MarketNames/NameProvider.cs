@@ -89,10 +89,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             IReadOnlyDictionary<string, string> specifiers,
             ExceptionHandlingStrategy exceptionStrategy)
         {
-            Guard.Argument(marketCacheProvider, nameof()).NotNull();
-            Guard.Argument(profileCache, nameof()).NotNull();
-            Guard.Argument(expressionFactory, nameof()).NotNull();
-            Guard.Argument(sportEvent, nameof()).NotNull();
+            Guard.Argument(marketCacheProvider, nameof(marketCacheProvider)).NotNull();
+            Guard.Argument(profileCache, nameof(profileCache)).NotNull();
+            Guard.Argument(expressionFactory, nameof(expressionFactory)).NotNull();
+            Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _profileCache = profileCache;
@@ -189,7 +189,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
         private async Task<IMarketDescription> GetMarketDescriptorAsync(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return await _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, new[] { culture }, true).ConfigureAwait(false);
         }
@@ -205,8 +205,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="NameGenerationException">If so specified by the <see cref="_exceptionStrategy"/> field</exception>
         private void HandleErrorCondition(string message, string outcomeId, string nameDescriptor, CultureInfo culture, Exception innerException)
         {
-            Guard.Argument(message, nameof()).NotNull().NotEmpty();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(message, nameof(message)).NotNull().NotEmpty();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             var sb = new StringBuilder("An error occurred while generating the name for item=[");
             var specifiersString = _specifiers == null ? "null" : string.Join(SdkInfo.SpecifiersDelimiter, _specifiers.Select(k => $"{k.Key}={k.Value}"));
@@ -243,7 +243,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="ArgumentException">One of the operators specified in the <code>nameDescriptor</code> is not supported</exception>
         protected IList<INameExpression> GetNameExpressions(string nameDescriptor, out string nameDescriptorFormat)
         {
-            Guard.Argument(nameDescriptor, nameof()).NotNull().NotEmpty();
+            Guard.Argument(nameDescriptor, nameof(nameDescriptor)).NotNull().NotEmpty();
 
             var expressionStrings = NameExpressionHelper.ParseDescriptor(nameDescriptor, out nameDescriptorFormat);
             if (expressionStrings == null)

@@ -73,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture</param>
         public void Merge(MatchTimelineDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             if (dto.BasicEvents != null && dto.BasicEvents.Any())
             {

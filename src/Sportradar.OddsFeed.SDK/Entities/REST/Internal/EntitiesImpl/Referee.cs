@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// <summary>
     /// Represents a sport event referee
     /// </summary>
-    /// <seealso cref="Sportradar.OddsFeed.SDK.Entities.REST.IReferee" />
+    /// <seealso cref="IReferee" />
     internal class Referee : EntityPrinter, IReferee
     {
         /// <summary>

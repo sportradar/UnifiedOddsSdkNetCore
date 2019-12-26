@@ -135,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="homeAwayCompetitors">The list of competitors with the indicator if it is a home or away team</param>
         public SportEventStatusDTO(sportEventStatus record, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
 
             _homeAwayCompetitors = homeAwayCompetitors;
 
@@ -303,7 +303,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="homeAwayCompetitors"></param>
         public SportEventStatusDTO(restSportEventStatus record, matchStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
 
             _homeAwayCompetitors = homeAwayCompetitors;
 
@@ -438,7 +438,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="record">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
         public SportEventStatusDTO(stageSportEventStatus record)
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
 
             var tempProperties = new Dictionary<string, object>(0);
 

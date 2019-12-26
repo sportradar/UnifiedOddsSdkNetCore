@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         public CategoryCI(CategoryDTO data, CultureInfo culture, URN sportId)
             : base(data.Id, data.Name, culture)
         {
-            Guard.Argument(sportId, nameof()).NotNull();
+            Guard.Argument(sportId, nameof(sportId)).NotNull();
 
             TournamentIds = data.Tournaments == null ? null : new ReadOnlyCollection<URN>(data.Tournaments.Select(i => i.Id).ToList());
             SportId = sportId;
@@ -63,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         public CategoryCI(CategorySummaryDTO data, CultureInfo culture, URN sportId, IEnumerable<URN> tournamentIds)
             : base(data.Id, data.Name, culture)
         {
-            Guard.Argument(sportId, nameof()).NotNull();
+            Guard.Argument(sportId, nameof(sportId)).NotNull();
 
             TournamentIds = tournamentIds == null ? null : new ReadOnlyCollection<URN>(tournamentIds.ToList());
             SportId = sportId;

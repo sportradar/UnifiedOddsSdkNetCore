@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// <param name="cacheItem">The cache item.</param>
         internal Specifier(MarketSpecifierCacheItem cacheItem)
         {
-            Guard.Argument(cacheItem, nameof()).NotNull();
+            Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
 
             Name = cacheItem.Name;
             Type = cacheItem.Type;

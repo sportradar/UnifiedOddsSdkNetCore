@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal VenueDTO(venue venue)
             :base(venue.id, venue.name)
         {
-            Guard.Argument(venue, nameof()).NotNull();
+            Guard.Argument(venue, nameof(venue)).NotNull();
 
             Capacity = venue.capacitySpecified
                 ? (int?) venue.capacity

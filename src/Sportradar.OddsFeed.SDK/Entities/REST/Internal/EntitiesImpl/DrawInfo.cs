@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="item">The item</param>
         public DrawInfo(DrawInfoCI item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             DrawType = item.DrawType;
             TimeType = item.TimeType;

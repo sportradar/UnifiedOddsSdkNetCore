@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// if the value of the specified property was not specified</returns>
         public object GetPropertyValue(string propertyName)
         {
-            Guard.Argument(propertyName, nameof()).NotNull().NotEmpty();
+            Guard.Argument(propertyName, nameof(propertyName)).NotNull().NotEmpty();
 
             if (Properties != null && Properties.ContainsKey(propertyName))
             {
@@ -75,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="matchStatusesCache">The <see cref="ILocalizedNamedValueCache"/> used to get match status id and description</param>
         public CompetitionStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
         {
-            Guard.Argument(ci, nameof()).NotNull();
+            Guard.Argument(ci, nameof(ci)).NotNull();
 
             SportEventStatusCI = ci;
 

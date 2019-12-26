@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
         internal DrawInfoDTO(lotteryDraw_info info)
         {
-            Guard.Argument(info, nameof()).NotNull();
+            Guard.Argument(info, nameof(info)).NotNull();
 
             DrawType = RestMapperHelper.MapDrawType(info.draw_type, info.draw_typeSpecified);
             TimeType = RestMapperHelper.MapTimeType(info.time_type, info.time_typeSpecified);

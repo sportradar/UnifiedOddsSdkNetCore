@@ -22,8 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         public FeedMessageHandler(MemoryCache fixtureCache, CacheItemPolicy cacheItemPolicy)
         {
-            Guard.Argument(fixtureCache, nameof()).NotNull();
-            Guard.Argument(cacheItemPolicy, nameof()).NotNull();
+            Guard.Argument(fixtureCache, nameof(fixtureCache)).NotNull();
+            Guard.Argument(cacheItemPolicy, nameof(cacheItemPolicy)).NotNull();
 
             _fixtureCache = fixtureCache;
             _cacheItemPolicy = cacheItemPolicy;

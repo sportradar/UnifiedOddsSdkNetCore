@@ -47,9 +47,9 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <param name="rawMessage">A raw message received from the feed</param>
         internal BetCancelEventArgs(IFeedMessageMapper messageMapper, bet_cancel feedMessage, IEnumerable<CultureInfo> cultures, byte[] rawMessage)
         {
-            Guard.Argument(messageMapper, nameof(messageMapper), nameof()).NotNull();
-            Guard.Argument(feedMessage, nameof(feedMessage), nameof()).NotNull();
-            Guard.Argument(cultures, nameof(cultures), nameof()).NotNull().NotEmpty();
+            Guard.Argument(messageMapper, nameof(messageMapper)).NotNull();
+            Guard.Argument(feedMessage, nameof(feedMessage)).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             _messageMapper = messageMapper;
             _feedMessage = feedMessage;

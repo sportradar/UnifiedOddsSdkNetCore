@@ -226,7 +226,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// It executes steps needed when opening the instance
         /// </summary>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         protected override void OnOpening()
         {
             MessageReceiver.FeedMessageReceived += OnMessageReceived;
@@ -240,7 +240,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// It executes steps needed when closing the instance
         /// </summary>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         protected override void OnClosing()
         {
             MessageReceiver.FeedMessageReceived -= OnMessageReceived;

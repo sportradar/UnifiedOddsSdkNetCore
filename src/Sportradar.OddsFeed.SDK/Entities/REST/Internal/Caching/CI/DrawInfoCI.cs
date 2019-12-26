@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="dto">A <see cref="DrawInfoDTO"/> instance containing information about the draw info</param>
         public DrawInfoCI(DrawInfoDTO dto)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             DrawType = dto.DrawType;
             TimeType = dto.TimeType;

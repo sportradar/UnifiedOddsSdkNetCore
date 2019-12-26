@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">>A <see cref="scheduleEndpoint"/> instance containing schedule info</param>
         internal ListSportEventsMapper(scheduleEndpoint data)
         {
-            Guard.Argument(data, nameof()).NotNull();
+            Guard.Argument(data, nameof(data)).NotNull();
 
             _data = data;
         }

@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                      ISportEntityFactory sportEntityFactory,
                      IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
         {
-            Guard.Argument(ci, nameof()).NotNull();
+            Guard.Argument(ci, nameof(ci)).NotNull();
 
             Id = ci.Id;
             Name = ci.Name;

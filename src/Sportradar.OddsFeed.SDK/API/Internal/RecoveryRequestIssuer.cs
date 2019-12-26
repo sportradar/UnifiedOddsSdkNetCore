@@ -218,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="nodeId">The node id where recovery message will be processed</param>
         /// <returns><see cref="Task{Long}" /> representing a asynchronous method.
         /// Once the execution is complete it provides the request id associated with the recovery</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<long> RequestFullOddsRecoveryAsync(IProducer producer, int nodeId)
         {
             Guard.Argument(producer, nameof(producer)).NotNull();

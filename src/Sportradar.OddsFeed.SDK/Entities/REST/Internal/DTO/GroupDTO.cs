@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal GroupDTO(tournamentGroup group)
         {
-            Guard.Argument(group, nameof()).NotNull();
+            Guard.Argument(group, nameof(group)).NotNull();
 
             Id = group.id ?? string.Empty;
             Name = group.name ?? string.Empty;

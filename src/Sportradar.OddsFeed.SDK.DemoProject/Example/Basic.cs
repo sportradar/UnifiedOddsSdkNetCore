@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance </param>
         private void AttachToFeedEvents(IOddsFeed oddsFeed)
         {
-            Guard.Argument(oddsFeed).NotNull();
+            Guard.Argument(oddsFeed, nameof(oddsFeed)).NotNull();
 
             _log.LogInformation("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
@@ -82,7 +82,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance</param>
         private void DetachFromFeedEvents(IOddsFeed oddsFeed)
         {
-            Guard.Argument(oddsFeed).NotNull();
+            Guard.Argument(oddsFeed, nameof(oddsFeed)).NotNull();
 
             _log.LogInformation("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance </param>
         private void AttachToSessionEvents(IOddsFeedSession session)
         {
-            Guard.Argument(session).NotNull();
+            Guard.Argument(session, nameof(session)).NotNull();
 
             _log.LogInformation("Attaching to session events");
             session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="session">A <see cref="IOddsFeedSession"/> instance</param>
         private void DetachFromSessionEvents(IOddsFeedSession session)
         {
-            Guard.Argument(session).NotNull();
+            Guard.Argument(session, nameof(session)).NotNull();
 
             _log.LogInformation("Detaching from session events");
             session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;

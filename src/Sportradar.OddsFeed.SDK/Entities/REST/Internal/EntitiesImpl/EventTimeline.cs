@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         public EventTimeline(EventTimelineCI ci)
         {
-            Guard.Argument(ci, nameof()).NotNull();
+            Guard.Argument(ci, nameof(ci)).NotNull();
 
             TimelineEvents = ci.Timeline?.Select(s => new TimelineEvent(s));
         }

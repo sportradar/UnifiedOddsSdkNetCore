@@ -229,7 +229,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Opens the current instance
         /// </summary>
-        /// <exception cref="System.InvalidOperationException">Current FeedSystemSession is already opened</exception>
+        /// <exception cref="InvalidOperationException">Current FeedSystemSession is already opened</exception>
         public void Open()
         {
             if (Interlocked.CompareExchange(ref _isOpened, 1, 0) == 1)
@@ -245,7 +245,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Closes the current instance
         /// </summary>
-        /// <exception cref="System.InvalidOperationException">Current FeedSystemSession is already closed</exception>
+        /// <exception cref="InvalidOperationException">Current FeedSystemSession is already closed</exception>
         public void Close()
         {
             if (Interlocked.CompareExchange(ref _isOpened, 0, 1) == 0)

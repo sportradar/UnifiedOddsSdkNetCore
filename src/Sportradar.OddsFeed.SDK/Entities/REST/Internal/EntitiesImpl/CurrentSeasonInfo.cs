@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                                  ExceptionHandlingStrategy exceptionHandlingStrategy,
                                  IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
         {
-            Guard.Argument(cacheItem, nameof()).NotNull();
+            Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
             //Guard.Argument(sportEntityFactory, nameof()).NotNull();
 
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();

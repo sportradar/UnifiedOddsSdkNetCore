@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// <summary>
     /// Class TournamentCoverage
     /// </summary>
-    /// <seealso cref="Sportradar.OddsFeed.SDK.Entities.REST.ITournamentCoverage" />
+    /// <seealso cref="ITournamentCoverage" />
     public class TournamentCoverage : ITournamentCoverage
     {
         /// <summary>

@@ -80,10 +80,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="id">The id of the producer to retrieve</param>
         /// <returns>An <see cref="IProducer" /></returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">id</exception>
+        /// <exception cref="ArgumentOutOfRangeException">id</exception>
         public IProducer Get(int id)
         {
-            Guard.Argument(id).Positive();
+            Guard.Argument(id, nameof(id)).Positive();
 
             var p = _producers?.FirstOrDefault(f => f.Id == id);
             if (p == null || p.Id != id)
@@ -125,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="name">The name to check</param>
         /// <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public bool Exists(string name)
         {
             return Get(name).Name.Equals(name, StringComparison.InvariantCultureIgnoreCase);
@@ -158,8 +158,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 throw new InvalidOperationException("Change to producer is not allowed anymore.");
             }
 
-            Guard.Argument(id).Positive();
-            Guard.Argument(timestamp).Require(timestamp > DateTime.MinValue);
+            Guard.Argument(id, nameof(id)).Positive();
+            Guard.Argument(timestamp, nameof(timestamp)).Require(timestamp > DateTime.MinValue);
 
             var p = (Producer) Get(id);
             if (timestamp > DateTime.Now)
@@ -184,7 +184,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 throw new InvalidOperationException("Change to producer is not allowed anymore.");
             }
 
-            Guard.Argument(id).Positive();
+            Guard.Argument(id, nameof(id)).Positive();
 
             var p = (Producer) Get(id);
             p.SetLastTimestampBeforeDisconnect(DateTime.MinValue);

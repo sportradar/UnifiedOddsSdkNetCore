@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public CurrentSeasonInfoCI(CurrentSeasonInfoDTO dto, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(dto.Id, dto.Name, culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             _dataRouterManager = dataRouterManager;
             Year = dto.Year;
@@ -117,7 +117,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture</param>
         public void Merge(CurrentSeasonInfoDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             base.Merge(dto, culture);
 

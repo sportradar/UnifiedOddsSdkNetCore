@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// <param name="cacheItem">A <see cref="MarketAttributeCacheItem"/> containing attribute data.</param>
         public MarketAttribute(MarketAttributeCacheItem cacheItem)
         {
-            Guard.Argument(cacheItem, nameof()).NotNull();
+            Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
 
             Name = cacheItem.Name;
             Description = cacheItem.Description;

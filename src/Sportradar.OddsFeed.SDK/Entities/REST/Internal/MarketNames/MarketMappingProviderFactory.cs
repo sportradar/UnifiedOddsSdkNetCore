@@ -40,9 +40,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="producerManager">An <see cref="IProducerManager"/> used to get <see cref="IProducer"/></param>
         public MarketMappingProviderFactory(IMarketCacheProvider marketCacheProvider, ISportEventStatusCache eventStatusCache, ExceptionHandlingStrategy exceptionStrategy, IProducerManager producerManager)
         {
-            Guard.Argument(marketCacheProvider, nameof()).NotNull();
-            Guard.Argument(eventStatusCache, nameof()).NotNull();
-            Guard.Argument(producerManager, nameof()).NotNull();
+            Guard.Argument(marketCacheProvider, nameof(marketCacheProvider)).NotNull();
+            Guard.Argument(eventStatusCache, nameof(eventStatusCache)).NotNull();
+            Guard.Argument(producerManager, nameof(producerManager)).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _eventStatusCache = eventStatusCache;

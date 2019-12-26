@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the <see cref="DrawResultDTO"/> used to create new instance</param>
         public DrawResultCI(DrawResultDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             Names = new Dictionary<CultureInfo, string>();
             Merge(dto, culture);
@@ -60,8 +60,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the <see cref="DrawResultDTO"/> used to merge</param>
         internal void Merge(DrawResultDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (dto.Value.HasValue)
             {
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The name of the player in the specified language if it exists. Null otherwise.</returns>
         public string GetName(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return Names.ContainsKey(culture)
                 ? Names[culture]

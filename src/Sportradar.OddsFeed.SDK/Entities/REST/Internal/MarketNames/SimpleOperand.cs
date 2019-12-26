@@ -32,8 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="operandString">The <see cref="string"/> representation of the operand - i.e. name of the specifier.</param>
         public SimpleOperand(IReadOnlyDictionary<string, string> specifiers, string operandString)
         {
-            Guard.Argument(specifiers, nameof()).NotNull().NotEmpty();
-            Guard.Argument(operandString, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
+            Guard.Argument(operandString, nameof(operandString)).NotNull().NotEmpty();
 
             _specifiers = specifiers;
             _operandString = operandString;
@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// Gets the value of the operand as a <see cref="string" />
         /// </summary>
         /// <returns>A <see cref="Task{String}" /> containing the value of the operand as a <see cref="string" />.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public Task<string> GetStringValue()
         {
             if (!_specifiers.TryGetValue(_operandString, out var name))

@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cacheItem">The <see cref="SeasonCoverageCI"/> instance containing information about tournament coverage</param>
         public SeasonCoverage(SeasonCoverageCI cacheItem)
         {
-            Guard.Argument(cacheItem, nameof()).NotNull();
+            Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
 
             MaxCoverageLevel = cacheItem.MinCoverageLevel;
             MinCoverageLevel = cacheItem.MinCoverageLevel;

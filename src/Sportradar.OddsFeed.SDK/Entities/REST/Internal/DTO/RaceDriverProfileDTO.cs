@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public RaceDriverProfileDTO(raceDriverProfile item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             RaceDriverId = item.race_driver != null ? URN.Parse(item.race_driver.id) : null;
             RaceTeamId = item.race_team != null ? URN.Parse(item.race_team.id) : null;

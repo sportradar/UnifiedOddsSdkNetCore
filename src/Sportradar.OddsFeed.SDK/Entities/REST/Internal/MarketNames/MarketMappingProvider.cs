@@ -96,10 +96,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                        ExceptionHandlingStrategy exceptionStrategy,
                                        IProducerManager producerManager)
         {
-            Guard.Argument(marketCacheProvider, nameof()).NotNull();
-            Guard.Argument(sportEvent, nameof()).NotNull();
-            Guard.Argument(eventStatusCache, nameof()).NotNull();
-            Guard.Argument(producerManager, nameof()).NotNull();
+            Guard.Argument(marketCacheProvider, nameof(marketCacheProvider)).NotNull();
+            Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
+            Guard.Argument(eventStatusCache, nameof(eventStatusCache)).NotNull();
+            Guard.Argument(producerManager, nameof(producerManager)).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _eventStatusCache = eventStatusCache;
@@ -219,7 +219,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private void HandleMappingErrorCondition(string message, string propertyName, string propertyValue, string targetTypeName, Exception innerException)
         {
-            Guard.Argument(message, nameof()).NotNull().NotEmpty();
+            Guard.Argument(message, nameof(message)).NotNull().NotEmpty();
 
             var sb = new StringBuilder("An error occurred while generating the mappedId for item=[");
             sb.Append(" MarketId=").Append(_marketId)

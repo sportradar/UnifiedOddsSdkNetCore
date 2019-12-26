@@ -50,10 +50,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="fixtureTimestampCache">The in-memory cache of sport events fixture timestamps</param>
         public SportEventCacheItemFactory(IDataRouterManager dataRouterManager, ISemaphorePool semaphorePool, CultureInfo defaultCulture, MemoryCache fixtureTimestampCache)
         {
-            Guard.Argument(dataRouterManager, nameof()).NotNull();
-            Guard.Argument(semaphorePool, nameof()).NotNull();
-            Guard.Argument(defaultCulture, nameof()).NotNull();
-            Guard.Argument(fixtureTimestampCache, nameof()).NotNull();
+            Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
+            Guard.Argument(semaphorePool, nameof(semaphorePool)).NotNull();
+            Guard.Argument(defaultCulture, nameof(defaultCulture)).NotNull();
+            Guard.Argument(fixtureTimestampCache, nameof(fixtureTimestampCache)).NotNull();
 
             _dataRouterManager = dataRouterManager;
             _semaphorePool = semaphorePool;
@@ -173,11 +173,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 return new TournamentInfoCI(fixture, _dataRouterManager, _semaphorePool, currentCulture, _defaultCulture, _fixtureTimestampCache);
             }
-            if (fixture.Id.TypeGroup == ResourceTypeGroup.DRAW
-                || fixture.Id.TypeGroup == ResourceTypeGroup.LOTTERY)
+            if (fixture.Id.TypeGroup == ResourceTypeGroup.DRAW || fixture.Id.TypeGroup == ResourceTypeGroup.LOTTERY)
             {
                 // should not be any fixture
-                var a = 1;
             }
             return new SportEventCI(fixture, _dataRouterManager, _semaphorePool, currentCulture, _defaultCulture, _fixtureTimestampCache);
         }
@@ -190,10 +188,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         public SportEventCI Build(ExportableCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
             var exportableSportEvent = exportable as ExportableSportEventCI;
             if (exportableSportEvent == null)
+            {
                 throw new ArgumentOutOfRangeException(nameof(exportableSportEvent), "The exportable must be a subclass of ExportableSportEventCI");
+            }
 
             var eventId = URN.Parse(exportable.Id);
             if (eventId.TypeGroup == ResourceTypeGroup.STAGE)

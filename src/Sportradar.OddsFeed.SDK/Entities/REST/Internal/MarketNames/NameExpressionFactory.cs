@@ -37,8 +37,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="profileCache">A <see cref="IProfileCache"/> used to fetch profiles</param>
         public NameExpressionFactory(IOperandFactory operandFactory, IProfileCache profileCache)
         {
-            Guard.Argument(operandFactory, nameof()).NotNull();
-            Guard.Argument(profileCache, nameof()).NotNull();
+            Guard.Argument(operandFactory, nameof(operandFactory)).NotNull();
+            Guard.Argument(profileCache, nameof(profileCache)).NotNull();
 
             _operandFactory = operandFactory;
             _profileCache = profileCache;
@@ -64,8 +64,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns></returns>
         private INameExpression BuildEntityNameExpression(string operand, ISportEvent sportEvent)
         {
-            Guard.Argument(operand, nameof()).NotNull().NotEmpty();
-            Guard.Argument(sportEvent, nameof()).NotNull();
+            Guard.Argument(operand, nameof(operand)).NotNull().NotEmpty();
+            Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
 
             // expression {$competitor(1-2)} indicates we need to get the name of the competitor from the sport event
             if (Regex.IsMatch(operand, SequencedCompetitorOperandRegexPatter))

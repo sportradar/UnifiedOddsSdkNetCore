@@ -98,10 +98,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                               ICacheManager cacheManager)
             : base(cacheManager)
         {
-            Guard.Argument(dataRouterManager, nameof()).NotNull();
-            Guard.Argument(timer, nameof()).NotNull();
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
-            Guard.Argument(sportEventCache, nameof()).NotNull();
+            Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
+            Guard.Argument(timer, nameof(timer)).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
+            Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
 
             _dataRouterManager = dataRouterManager;
             _requiredCultures = cultures as ReadOnlyCollection<CultureInfo> ?? new ReadOnlyCollection<CultureInfo>(cultures.ToList());
@@ -177,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         private async Task FetchAndMergeAll(IEnumerable<CultureInfo> cultures, bool clearExistingData)
         {
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             var cultureInfos = cultures as IReadOnlyList<CultureInfo> ?? cultures.ToList();
             //Metric.Context("CACHE").Meter("SportDataCache->FetchAndMergeAll", Unit.Calls).Mark($"Getting for cultures='{string.Join(",", cultureInfos.Select(c => c.TwoLetterISOLanguageName))}'.");

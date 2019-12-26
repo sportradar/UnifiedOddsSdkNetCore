@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// A store used to manage <see cref="IEntityDispatcherInternal"/> instances
     /// </summary>
-    /// <seealso cref="Sportradar.OddsFeed.SDK.API.Internal.IDispatcherStore" />
+    /// <seealso cref="IDispatcherStore" />
     internal class DispatcherStore : IDispatcherStore
     {
         /// <summary>

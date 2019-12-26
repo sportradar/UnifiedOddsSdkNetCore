@@ -233,7 +233,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Asynchronously gets the associated delayed info
         /// </summary>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the retrieval operation</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<IDelayedInfo> GetDelayedInfoAsync()
         {
             var matchCI = (MatchCI)SportEventCache.GetEventCacheItem(Id);

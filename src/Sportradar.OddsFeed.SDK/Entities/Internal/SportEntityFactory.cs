@@ -69,11 +69,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             ILocalizedNamedValueCache matchStatusCache,
             IProfileCache profileCache)
         {
-            Guard.Argument(sportDataCache, nameof()).NotNull();
-            Guard.Argument(sportEventCache, nameof()).NotNull();
-            Guard.Argument(eventStatusCache, nameof()).NotNull();
-            Guard.Argument(matchStatusCache, nameof()).NotNull();
-            Guard.Argument(profileCache, nameof()).NotNull();
+            Guard.Argument(sportDataCache, nameof(sportDataCache)).NotNull();
+            Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
+            Guard.Argument(eventStatusCache, nameof(eventStatusCache)).NotNull();
+            Guard.Argument(matchStatusCache, nameof(matchStatusCache)).NotNull();
+            Guard.Argument(profileCache, nameof(profileCache)).NotNull();
 
             _sportDataCache = sportDataCache;
             _sportEventCache = sportEventCache;
@@ -91,9 +91,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The constructed <see cref="ISport"/> instance</returns>
         private ISport BuildSportInternal(SportData sportData, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
-            Guard.Argument(sportData, nameof()).NotNull();
+            Guard.Argument(sportData, nameof(sportData)).NotNull();
             var cultureInfos = cultures.ToList();
-            Guard.Argument(cultureInfos, nameof()).NotNull().NotEmpty();
+            Guard.Argument(cultureInfos, nameof(cultureInfos)).NotNull().NotEmpty();
 
             var categories = sportData.Categories?.Select(categoryData => new Category(
                 categoryData.Id,

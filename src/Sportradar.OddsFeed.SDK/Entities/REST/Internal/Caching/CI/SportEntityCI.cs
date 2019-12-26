@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="dto">A <see cref="SportEntityDTO"/> containing information about the sport entity</param>
         internal SportEntityCI(SportEntityDTO dto)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             Id = dto.Id;
         }

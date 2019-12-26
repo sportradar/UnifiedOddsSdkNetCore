@@ -40,8 +40,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns>A <see cref="Score"/> instance representing the result of the addition.</returns>
         public static Score operator +(Score score1, Score score2)
         {
-            Guard.Argument(score1, nameof()).NotNull();
-            Guard.Argument(score2, nameof()).NotNull();
+            Guard.Argument(score1, nameof(score1)).NotNull();
+            Guard.Argument(score2, nameof(score2)).NotNull();
 
             return new Score(score1.HomeScore + score2.HomeScore, score1.AwayScore + score2.AwayScore);
         }
@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">The format of <code>value</code> is not correct</exception>
         public static Score Parse(string value)
         {
-            Guard.Argument(value, nameof()).NotNull().NotEmpty();
+            Guard.Argument(value, nameof(value)).NotNull().NotEmpty();
 
             var parts = value.Split(new[] {":"}, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
@@ -100,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns>True if the provided value could be parsed, otherwise false.</returns>
         public static bool TryParse(string value, out Score score)
         {
-            Guard.Argument(value, nameof()).NotNull().NotEmpty();
+            Guard.Argument(value, nameof(value)).NotNull().NotEmpty();
             try
             {
                 score = Parse(value);
@@ -114,10 +114,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -149,9 +149,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return $"{HomeScore}:{AwayScore}";

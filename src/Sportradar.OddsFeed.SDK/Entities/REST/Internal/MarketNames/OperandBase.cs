@@ -22,8 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of int</exception>
         protected static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out int specifierValue)
         {
-            Guard.Argument(specifierName, nameof()).NotNull().NotEmpty();
-            Guard.Argument(specifiers, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
+            Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
 
             string specifierValueString;
             if (!specifiers.TryGetValue(specifierName, out specifierValueString))
@@ -46,8 +46,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of decimal</exception>
         protected static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out decimal specifierValue)
         {
-            Guard.Argument(specifierName, nameof()).NotNull().NotEmpty();
-            Guard.Argument(specifiers, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
+            Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
 
             string specifierValueString;
             if (!specifiers.TryGetValue(specifierName, out specifierValueString))

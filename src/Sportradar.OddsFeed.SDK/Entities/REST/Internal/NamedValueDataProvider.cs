@@ -46,9 +46,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="xmlElementName">The name of the xml element containing id / description attributes</param>
         public NamedValueDataProvider(string uriFormat, IDataFetcher fetcher, string xmlElementName)
         {
-            Guard.Argument(uriFormat, nameof()).NotNull().NotEmpty();
-            Guard.Argument(fetcher, nameof()).NotNull();
-            Guard.Argument(xmlElementName, nameof()).NotNull().NotEmpty();
+            Guard.Argument(uriFormat, nameof(uriFormat)).NotNull().NotEmpty();
+            Guard.Argument(fetcher, nameof(fetcher)).NotNull();
+            Guard.Argument(xmlElementName, nameof(xmlElementName)).NotNull().NotEmpty();
 
             _uriFormat = uriFormat;
             _fetcher = fetcher;
@@ -93,7 +93,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<EntityList<NamedValueDTO>> GetDataAsync(string languageCode)
         {
             var uri = new Uri(string.Format(_uriFormat, languageCode));
@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<EntityList<NamedValueDTO>> GetDataAsync(params string[] identifiers)
         {
             var uri = new Uri(string.Format(_uriFormat, identifiers));
@@ -117,7 +117,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public EntityList<NamedValueDTO> GetData(string languageCode)
         {
             var uri = new Uri(string.Format(_uriFormat, languageCode));
@@ -129,7 +129,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public EntityList<NamedValueDTO> GetData(params string[] identifiers)
         {
             var uri = new Uri(string.Format(_uriFormat, identifiers));

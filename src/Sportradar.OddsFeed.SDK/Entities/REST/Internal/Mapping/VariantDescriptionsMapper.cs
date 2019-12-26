@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">A <see cref="variant_descriptions"/> instance containing data used to construct <see cref="EntityList{VariantDescriptionDTO}"/> instance</param>
         internal VariantDescriptionsMapper(variant_descriptions data)
         {
-            Guard.Argument(data, nameof()).NotNull();
+            Guard.Argument(data, nameof(data)).NotNull();
 
             _data = data;
         }

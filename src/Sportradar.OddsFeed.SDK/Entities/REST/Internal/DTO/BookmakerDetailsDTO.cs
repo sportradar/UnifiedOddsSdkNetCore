@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="serverTimeDifference">The server time difference</param>
         public BookmakerDetailsDTO(bookmaker_details msg, TimeSpan serverTimeDifference)
         {
-            Guard.Argument(msg, nameof()).NotNull();
+            Guard.Argument(msg, nameof(msg)).NotNull();
 
             Id = msg.bookmaker_id;
             VirtualHost = msg.virtual_host;

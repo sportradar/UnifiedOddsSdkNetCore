@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="producer">The <see cref="IProducer" /> specifying the producer / service which dispatched the current <see cref="Message" /> message</param>
         protected Message(IMessageTimestamp timestamp, IProducer producer)
         {
-            Guard.Argument(timestamp, nameof()).NotNull();
+            Guard.Argument(timestamp, nameof(timestamp)).NotNull();
 
             Timestamps = timestamp;
             Producer = producer;

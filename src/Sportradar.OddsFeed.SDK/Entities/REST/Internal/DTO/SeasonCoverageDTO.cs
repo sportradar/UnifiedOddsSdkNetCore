@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="coverageInfo">The coverage message</param>
         internal SeasonCoverageDTO(seasonCoverageInfo coverageInfo)
         {
-            Guard.Argument(coverageInfo, nameof()).NotNull();
+            Guard.Argument(coverageInfo, nameof(coverageInfo)).NotNull();
 
             MaxCovered = coverageInfo.max_coveredSpecified
                 ? (int?) coverageInfo.max_covered

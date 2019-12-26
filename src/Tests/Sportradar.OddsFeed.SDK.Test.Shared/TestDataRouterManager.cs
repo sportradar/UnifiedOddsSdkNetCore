@@ -56,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         internal TestDataRouterManager(ICacheManager cacheManager)
         {
-            Guard.Argument(cacheManager != null);
+            Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
 
             _cacheManager = cacheManager;
             RestCalls = new Dictionary<string, int>();

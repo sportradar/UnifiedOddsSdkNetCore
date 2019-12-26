@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         public JerseyCI(JerseyDTO item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             BaseColor = item.BaseColor;
             Number = item.Number;
@@ -60,7 +60,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public JerseyCI(ExportableJerseyCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             BaseColor = exportable.BaseColor;
             Number = exportable.Number;

@@ -51,9 +51,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                    IMarketDescriptionCache variantMarketsCache,
                                    IVariantDescriptionCache variantDescriptionListCache)
         {
-            Guard.Argument(invariantMarketsCache, nameof()).NotNull();
-            Guard.Argument(variantMarketsCache, nameof()).NotNull();
-            Guard.Argument(variantDescriptionListCache, nameof()).NotNull();
+            Guard.Argument(invariantMarketsCache, nameof(invariantMarketsCache)).NotNull();
+            Guard.Argument(variantMarketsCache, nameof(variantMarketsCache)).NotNull();
+            Guard.Argument(variantDescriptionListCache, nameof(variantDescriptionListCache)).NotNull();
 
             _invariantMarketsCache = invariantMarketsCache;
             _variantMarketsCache = variantMarketsCache;

@@ -30,8 +30,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated entity name</param>
         protected SportEntityData(URN id, IReadOnlyDictionary<CultureInfo, string> names)
         {
-            Guard.Argument(id, nameof()).NotNull();
-            Guard.Argument(names, nameof()).NotNull().NotEmpty();
+            Guard.Argument(id, nameof(id)).NotNull();
+            Guard.Argument(names, nameof(names)).NotNull().NotEmpty();
 
             Id = id;
             Names = names;

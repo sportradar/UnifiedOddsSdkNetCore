@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// </summary>
         /// <param name="accessToken">The access token used to access feed resources</param>
         /// <returns>The <see cref="IEnvironmentSelector" /> instance allowing the selection of target environment</returns>
-        /// <exception cref="System.ArgumentException">Value cannot be a null reference or empty string - accessToken</exception>
+        /// <exception cref="ArgumentException">Value cannot be a null reference or empty string - accessToken</exception>
         public IEnvironmentSelector SetAccessToken(string accessToken)
         {
             if (string.IsNullOrEmpty(accessToken))

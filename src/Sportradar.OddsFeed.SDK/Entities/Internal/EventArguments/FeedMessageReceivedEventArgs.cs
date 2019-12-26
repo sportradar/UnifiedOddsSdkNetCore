@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments
         /// <param name="rawMessage">The raw message</param>
         public FeedMessageReceivedEventArgs(FeedMessage message, MessageInterest interest, byte[] rawMessage)
         {
-            Guard.Argument(message, nameof()).NotNull();
+            Guard.Argument(message, nameof(message)).NotNull();
 
             Message = message;
             Interest = interest;

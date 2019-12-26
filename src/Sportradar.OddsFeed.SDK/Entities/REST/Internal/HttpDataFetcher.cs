@@ -60,12 +60,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="saveResponseHeader">Indicates if the response header should be obtained</param>
         public HttpDataFetcher(HttpClient client, string accessToken, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15, bool saveResponseHeader = true)
         {
-            Guard.Argument(client, nameof()).NotNull();
-            Guard.Argument(client.DefaultRequestHeaders, nameof()).NotNull();
-            Guard.Argument(accessToken, nameof()).NotNull().NotEmpty();
-            Guard.Argument(connectionFailureLimit).Positive();
-            Guard.Argument(connectionFailureTimeout).Positive();
-            Guard.Argument(responseDeserializer, nameof()).NotNull();
+            Guard.Argument(client, nameof(client)).NotNull();
+            Guard.Argument(client.DefaultRequestHeaders, nameof(client.DefaultRequestHeaders)).NotNull();
+            Guard.Argument(accessToken, nameof(accessToken)).NotNull().NotEmpty();
+            Guard.Argument(connectionFailureLimit, nameof(connectionFailureLimit)).Positive();
+            Guard.Argument(connectionFailureTimeout, nameof(connectionFailureTimeout)).Positive();
+            Guard.Argument(responseDeserializer, nameof(responseDeserializer)).NotNull();
 
             _client = client;
             if (!_client.DefaultRequestHeaders.Contains("x-access-token"))

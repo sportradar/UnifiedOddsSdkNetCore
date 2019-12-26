@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">>A <see cref="tournamentSeasons"/> instance containing tournament seasons</param>
         internal TournamentSeasonsMapper(tournamentSeasons data)
         {
-            Guard.Argument(data, nameof()).NotNull();
+            Guard.Argument(data, nameof(data)).NotNull();
 
             _data = data;
         }

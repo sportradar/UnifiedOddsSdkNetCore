@@ -86,8 +86,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                              MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
-            Guard.Argument(eventSummary, nameof()).NotNull();
-            Guard.Argument(currentCulture, nameof()).NotNull();
+            Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
+            Guard.Argument(currentCulture, nameof(currentCulture)).NotNull();
 
             Merge(eventSummary, currentCulture, true);
         }
@@ -109,8 +109,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                             MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
-            Guard.Argument(eventSummary, nameof()).NotNull();
-            Guard.Argument(currentCulture, nameof()).NotNull();
+            Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
+            Guard.Argument(currentCulture, nameof(currentCulture)).NotNull();
 
             Merge(eventSummary, currentCulture, true);
         }
@@ -130,14 +130,32 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
+            Guard.Argument(exportable, nameof(exportable)).NotNull();
+
             var exportableCompetition = exportable as ExportableCompetitionCI;
-            _bookingStatus = exportableCompetition.BookingStatus;
-            _venue = exportableCompetition.Venue != null ? new VenueCI(exportableCompetition.Venue) : null;
-            _conditions = exportableCompetition.Conditions != null ? new SportEventConditionsCI(exportableCompetition.Conditions) : null;
-            Competitors = exportableCompetition.Competitors != null ? new List<URN>(exportableCompetition.Competitors.Select(URN.Parse)) : null;
-            _referenceId = exportableCompetition.ReferenceId != null ? new ReferenceIdCI(exportableCompetition.ReferenceId) : null;
-            _competitorsQualifiers = exportableCompetition.CompetitorsQualifiers != null ? new Dictionary<URN, string>(exportableCompetition.CompetitorsQualifiers.ToDictionary(c => URN.Parse(c.Key), c => c.Value)) : null;
-            _competitorsReferences = exportableCompetition.CompetitorsReferences != null ? new Dictionary<URN, ReferenceIdCI>(exportableCompetition.CompetitorsReferences.ToDictionary(c => URN.Parse(c.Key), c => new ReferenceIdCI(c.Value))) : null;
+            if (exportableCompetition != null)
+            {
+                _bookingStatus = exportableCompetition.BookingStatus;
+                _venue = exportableCompetition.Venue != null ? new VenueCI(exportableCompetition.Venue) : null;
+                _conditions = exportableCompetition.Conditions != null
+                    ? new SportEventConditionsCI(exportableCompetition.Conditions)
+                    : null;
+                Competitors = exportableCompetition.Competitors != null
+                    ? new List<URN>(exportableCompetition.Competitors.Select(URN.Parse))
+                    : null;
+                _referenceId = exportableCompetition.ReferenceId != null
+                    ? new ReferenceIdCI(exportableCompetition.ReferenceId)
+                    : null;
+                _competitorsQualifiers = exportableCompetition.CompetitorsQualifiers != null
+                    ? new Dictionary<URN, string>(
+                        exportableCompetition.CompetitorsQualifiers.ToDictionary(c => URN.Parse(c.Key), c => c.Value))
+                    : null;
+                _competitorsReferences = exportableCompetition.CompetitorsReferences != null
+                    ? new Dictionary<URN, ReferenceIdCI>(
+                        exportableCompetition.CompetitorsReferences.ToDictionary(c => URN.Parse(c.Key),
+                            c => new ReferenceIdCI(c.Value)))
+                    : null;
+            }
         }
 
         /// <summary>
@@ -437,13 +455,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             var exportable = await base.CreateExportableCIAsync<T>();
             var competition = exportable as ExportableCompetitionCI;
 
-            competition.BookingStatus = _bookingStatus;
-            competition.Venue = _venue != null ? await _venue.ExportAsync() : null;
-            competition.Conditions = _conditions != null ? await _conditions.ExportAsync() : null;
-            competition.Competitors = Competitors?.Select(c => c.ToString()).ToList();
-            competition.ReferenceId = _referenceId?.ReferenceIds?.ToDictionary(r => r.Key, r => r.Value);
-            competition.CompetitorsQualifiers = _competitorsQualifiers?.ToDictionary(q => q.Key.ToString(), q => q.Value);
-            competition.CompetitorsReferences = _competitorsReferences?.ToDictionary(r => r.Key.ToString(), r => (IDictionary<string, string>) r.Value.ReferenceIds.ToDictionary(v => v.Key, v => v.Value));
+            if (competition != null)
+            {
+                competition.BookingStatus = _bookingStatus;
+                competition.Venue = _venue != null ? await _venue.ExportAsync() : null;
+                competition.Conditions = _conditions != null ? await _conditions.ExportAsync() : null;
+                competition.Competitors = Competitors?.Select(c => c.ToString()).ToList();
+                competition.ReferenceId = _referenceId?.ReferenceIds?.ToDictionary(r => r.Key, r => r.Value);
+                competition.CompetitorsQualifiers = _competitorsQualifiers?.ToDictionary(q => q.Key.ToString(), q => q.Value);
+                competition.CompetitorsReferences = _competitorsReferences?.ToDictionary(r => r.Key.ToString(), r => (IDictionary<string, string>) r.Value.ReferenceIds.ToDictionary(v => v.Key, v => v.Value));
+            }
 
             return exportable;
         }

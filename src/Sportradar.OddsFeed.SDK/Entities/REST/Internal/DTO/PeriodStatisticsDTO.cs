@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal PeriodStatisticsDTO(matchPeriod period, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Guard.Argument(period, nameof()).NotNull();
+            Guard.Argument(period, nameof(period)).NotNull();
 
             PeriodName = period.name;
             if (period.teams == null || !period.teams.Any())

@@ -61,10 +61,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                              ILocalizedNamedValueCache matchStatusesCache)
             :base(id, sportId, executionLog, sportEventCache, cultures, exceptionStrategy)
         {
-            Guard.Argument(id, nameof()).NotNull();
-            Guard.Argument(sportEntityFactory, nameof()).NotNull();
-            Guard.Argument(sportEventStatusCache, nameof()).NotNull();
-            Guard.Argument(matchStatusesCache, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
+            Guard.Argument(sportEntityFactory, nameof(sportEntityFactory)).NotNull();
+            Guard.Argument(sportEventStatusCache, nameof(sportEventStatusCache)).NotNull();
+            Guard.Argument(matchStatusesCache, nameof(matchStatusesCache)).NotNull();
 
             _sportEntityFactory = sportEntityFactory;
             SportEventStatusCache = sportEventStatusCache;

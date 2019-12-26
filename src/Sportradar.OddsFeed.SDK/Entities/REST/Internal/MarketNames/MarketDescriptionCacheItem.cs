@@ -64,9 +64,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             string source)
         {
 
-            Guard.Argument(culture, nameof()).NotNull();
-            Guard.Argument(names, nameof()).NotNull();
-            Guard.Argument(descriptions, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
+            Guard.Argument(names, nameof(names)).NotNull();
+            Guard.Argument(descriptions, nameof(descriptions)).NotNull();
 
             Id = id;
             _names = names;
@@ -94,9 +94,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The cache item could not be build from the provided DTO</exception>
         public static MarketDescriptionCacheItem Build(MarketDescriptionDTO dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(factory, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(factory, nameof(factory)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             var names = new Dictionary<CultureInfo, string> { { culture, dto.Name } };
             var descriptions = string.IsNullOrEmpty(dto.Description)
@@ -126,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal string GetName(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             string name;
             return _names.TryGetValue(culture, out name) ? name : null;
@@ -134,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal string GetDescription(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             string description;
             if (_descriptions.TryGetValue(culture, out description))
@@ -165,8 +165,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal void Merge(MarketDescriptionDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             lock (_lock)
             {

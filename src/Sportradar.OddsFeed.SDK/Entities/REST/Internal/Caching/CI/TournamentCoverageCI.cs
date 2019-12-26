@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using Dawn;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="tournamentCoverage">The tournament coverage.</param>
         internal TournamentCoverageCI(TournamentCoverageDTO tournamentCoverage)
         {
-            Guard.Argument(tournamentCoverage, nameof()).NotNull();
+            Guard.Argument(tournamentCoverage, nameof(tournamentCoverage)).NotNull();
 
             LiveCoverage = tournamentCoverage.LiveCoverage;
         }
@@ -39,7 +38,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal TournamentCoverageCI(ExportableTournamentCoverageCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             LiveCoverage = exportable.LiveCoverage;
         }

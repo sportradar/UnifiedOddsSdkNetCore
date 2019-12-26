@@ -43,8 +43,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public SeasonCI(SeasonDTO dto, CultureInfo culture)
             : base(dto)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             _name = new Dictionary<CultureInfo, string>();
             Merge(dto, culture);
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The name of the associated season in the specified language.</returns>
         public string GetName(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _name.ContainsKey(culture)
                 ? _name[culture]
@@ -71,8 +71,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the season info</param>
         public void Merge(SeasonDTO season, CultureInfo culture)
         {
-            Guard.Argument(season, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(season, nameof(season)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             StartDate = season.StartDate;
             EndDate = season.EndDate;
@@ -86,7 +86,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="season">A <see cref="SeasonCI"/> containing season info</param>
         public void Merge(SeasonCI season)
         {
-            Guard.Argument(season, nameof()).NotNull();
+            Guard.Argument(season, nameof(season)).NotNull();
 
             StartDate = season.StartDate;
             EndDate = season.EndDate;

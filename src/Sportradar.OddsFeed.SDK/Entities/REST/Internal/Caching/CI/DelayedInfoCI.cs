@@ -35,8 +35,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
         internal DelayedInfoCI(DelayedInfoDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Descriptions = new Dictionary<CultureInfo, string>();
             Merge(dto, culture);
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="DelayedInfoCI"/></param>
         internal void Merge(DelayedInfoDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
             Id = dto.Id;
             Descriptions[culture] = dto.Description;
         }
@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>Return the Name if exists, or null</returns>
         public string GetDescription(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return Descriptions == null || !Descriptions.ContainsKey(culture)
                 ? null

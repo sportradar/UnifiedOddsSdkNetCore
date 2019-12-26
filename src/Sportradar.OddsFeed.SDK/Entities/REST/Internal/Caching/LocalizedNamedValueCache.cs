@@ -84,8 +84,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how potential exceptions should be handled</param>
         public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
-            Guard.Argument(dataProvider, nameof()).NotNull();
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(dataProvider, nameof(dataProvider)).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             _dataProvider = dataProvider;
             _defaultCultures = cultures;
@@ -102,7 +102,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task" /> representing the retrieval operation</returns>
         private async Task FetchAndMerge(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             SdkMetricsFactory.MetricsRoot.Measure.Counter.Increment(new CounterOptions{Context="CACHE", Name= "LocalizedNamedValueCache->FetchAndMerge", MeasurementUnit = Unit.Calls});
             var record = await _dataProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
@@ -175,7 +175,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         /// <param name="id">The id to be tested.</param>
         /// <returns>True if the value is defined in the cache; False otherwise.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public bool IsValueDefined(int id)
         {
             _semaphore.Wait(-1);

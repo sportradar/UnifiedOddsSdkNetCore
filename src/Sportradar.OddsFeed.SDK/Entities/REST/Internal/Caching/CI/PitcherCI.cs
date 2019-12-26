@@ -42,8 +42,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal PitcherCI(PitcherDTO pitcher, CultureInfo culture)
             : base(pitcher)
         {
-            Guard.Argument(pitcher, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(pitcher, nameof(pitcher)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Merge(pitcher, culture);
         }
@@ -67,8 +67,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the pitcher info</param>
         internal void Merge(PitcherDTO pitcher, CultureInfo culture)
         {
-            Guard.Argument(pitcher, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(pitcher, nameof(pitcher)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Name = pitcher.Name;
             Hand = pitcher.Hand;

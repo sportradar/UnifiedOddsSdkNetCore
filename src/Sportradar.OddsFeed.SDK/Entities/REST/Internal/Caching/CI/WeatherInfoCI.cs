@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using Dawn;
 using System.Threading.Tasks;
@@ -34,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="dto">The <see cref="WeatherInfoDTO"/> used to create new instance</param>
         internal WeatherInfoCI(WeatherInfoDTO dto)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             TemperatureCelsius = dto.TemperatureCelsius;
             Wind = dto.Wind;

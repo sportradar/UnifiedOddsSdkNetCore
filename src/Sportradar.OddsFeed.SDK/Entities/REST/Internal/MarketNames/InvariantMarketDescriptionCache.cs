@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// A <see cref="IMarketDescriptionCache" /> implementation used to store market descriptors for invariant markets (static)
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     /// <seealso cref="IMarketDescriptionCache" />
     internal class InvariantMarketDescriptionCache : SdkCache, IMarketDescriptionCache
     {
@@ -100,11 +100,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                                ICacheManager cacheManager)
             : base(cacheManager)
         {
-            Guard.Argument(cache, nameof()).NotNull();
-            Guard.Argument(dataRouterManager, nameof()).NotNull();
-            Guard.Argument(mappingValidatorFactory, nameof()).NotNull();
-            Guard.Argument(timer, nameof()).NotNull();
-            Guard.Argument(prefetchLanguages, nameof()).NotNull().NotEmpty();
+            Guard.Argument(cache, nameof(cache)).NotNull();
+            Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
+            Guard.Argument(mappingValidatorFactory, nameof(mappingValidatorFactory)).NotNull();
+            Guard.Argument(timer, nameof(timer)).NotNull();
+            Guard.Argument(prefetchLanguages, nameof(prefetchLanguages)).NotNull().NotEmpty();
 
 
             _cache = cache;
@@ -199,7 +199,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">An error occurred while mapping deserialized entities</exception>
         private async Task<MarketDescriptionCacheItem> GetMarketInternalAsync(int id, IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
 
@@ -304,7 +304,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
         public async Task<IMarketDescription> GetMarketDescriptionAsync(int marketId, string variant, IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
 
@@ -349,7 +349,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         public async Task<IEnumerable<IMarketDescription>> GetAllInvariantMarketDescriptionsAsync(IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
             await GetMarketInternalAsync(1, cultureList).ConfigureAwait(false);
@@ -458,7 +458,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="dtoType">Type of the dto</param>
         /// <param name="requester">The cache item which invoked request</param>
         /// <returns><c>true</c> if added, <c>false</c> otherwise</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">dtoType - null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">dtoType - null</exception>
         protected override bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
             if (_isDisposed)
@@ -533,6 +533,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     break;
                 case DtoType.SportCategories:
                     break;
+                case DtoType.AvailableSelections:
+                    break;
+                case DtoType.TournamentInfoList:
+                    break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
@@ -547,8 +551,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="descriptions">A <see cref="IEnumerable{MarketDescriptionDTO}"/> containing market descriptions in specified language</param>
         private void Merge(CultureInfo culture, IEnumerable<MarketDescriptionDTO> descriptions)
         {
-            Guard.Argument(culture, nameof()).NotNull();
-            Guard.Argument(descriptions, nameof()).NotNull().NotEmpty();
+            Guard.Argument(culture, nameof(culture)).NotNull();
+            Guard.Argument(descriptions, nameof(descriptions)).NotNull().NotEmpty();
 
             var descriptionList = descriptions as List<MarketDescriptionDTO> ?? descriptions.ToList();
 

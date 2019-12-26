@@ -11,9 +11,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IEntityPrinter
     {
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         string ToString();
 
         /// <summary>

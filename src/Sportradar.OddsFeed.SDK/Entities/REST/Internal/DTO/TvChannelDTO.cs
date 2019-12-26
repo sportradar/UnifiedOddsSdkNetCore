@@ -24,8 +24,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="tvChannel">The <see cref="tvChannel"/> used for creating instance</param>
         internal TvChannelDTO(tvChannel tvChannel)
         {
-            Guard.Argument(tvChannel, nameof()).NotNull();
-            Guard.Argument(tvChannel.name, nameof()).NotNull().NotEmpty();
+            Guard.Argument(tvChannel, nameof(tvChannel)).NotNull();
+            Guard.Argument(tvChannel.name, nameof(tvChannel.name)).NotNull().NotEmpty();
 
             Name = tvChannel.name;
             StartTime = tvChannel.start_timeSpecified

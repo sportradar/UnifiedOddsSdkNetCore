@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="item">The item.</param>
         public BonusInfo(BonusInfoCI item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             BonusBalls = item.BonusBalls;
             BonusDrumType = item.BonusDrumType;

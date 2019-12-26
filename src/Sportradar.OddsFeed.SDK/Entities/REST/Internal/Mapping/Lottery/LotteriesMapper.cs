@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
         /// <param name="lotteries">A <see cref="lottery"/> containing list of lotteries</param>
         internal LotteriesMapper(lotteries lotteries)
         {
-            Guard.Argument(lotteries, nameof()).NotNull();
+            Guard.Argument(lotteries, nameof(lotteries)).NotNull();
 
             _data = lotteries;
         }

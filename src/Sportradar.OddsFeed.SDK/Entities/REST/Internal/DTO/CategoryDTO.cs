@@ -34,9 +34,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CategoryDTO(string id, string name, string countryCode, IEnumerable<tournamentExtended> tournaments)
             :base(id, name, countryCode)
         {
-            Guard.Argument(id, nameof()).NotNull().NotEmpty();
-            Guard.Argument(name, nameof()).NotNull().NotEmpty();
-            Guard.Argument(tournaments, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
+            Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
+            Guard.Argument(tournaments, nameof(tournaments)).NotNull();
 
             var recordList = tournaments as List<tournamentExtended> ?? tournaments.ToList();
             Tournaments = new ReadOnlyCollection<TournamentDTO>(recordList

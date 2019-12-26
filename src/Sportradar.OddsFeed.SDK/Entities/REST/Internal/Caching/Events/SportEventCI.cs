@@ -111,11 +111,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                             CultureInfo defaultCulture,
                             MemoryCache fixtureTimestampCache)
         {
-            Guard.Argument(id, nameof()).NotNull();
-            Guard.Argument(dataRouterManager, nameof()).NotNull();
-            Guard.Argument(defaultCulture, nameof()).NotNull();
-            Guard.Argument(semaphorePool, nameof()).NotNull();
-            Guard.Argument(fixtureTimestampCache, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
+            Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
+            Guard.Argument(defaultCulture, nameof(defaultCulture)).NotNull();
+            Guard.Argument(semaphorePool, nameof(semaphorePool)).NotNull();
+            Guard.Argument(fixtureTimestampCache, nameof(fixtureTimestampCache)).NotNull();
 
             Id = id;
             DataRouterManager = dataRouterManager;
@@ -141,8 +141,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                             MemoryCache fixtureTimestampCache)
             : this(eventSummary.Id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
-            Guard.Argument(eventSummary, nameof()).NotNull();
-            Guard.Argument(currentCulture, nameof()).NotNull();
+            Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
+            Guard.Argument(currentCulture, nameof(currentCulture)).NotNull();
 
             Merge(eventSummary, currentCulture);
         }
@@ -308,8 +308,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         protected async Task FetchMissingSummary(IEnumerable<CultureInfo> cultures, bool forceFetch)
         {
-            Guard.Argument(cultures, nameof()).NotNull();
-            Guard.Argument(cultures.Any());
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             // to improve performance check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
@@ -402,8 +401,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         protected async Task FetchMissingFixtures(IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(cultures, nameof()).NotNull();
-            Guard.Argument(cultures.Any());
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             // to improve performance check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
@@ -503,8 +501,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
         private void Merge(SportEventSummaryDTO eventSummary, CultureInfo culture)
         {
-            Guard.Argument(eventSummary, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             lock (MergeLock)
             {

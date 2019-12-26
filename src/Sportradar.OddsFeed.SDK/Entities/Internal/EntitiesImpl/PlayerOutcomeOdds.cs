@@ -58,8 +58,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                    IAdditionalProbabilities additionalProbabilities)
             : base(id, active, odds, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition, additionalProbabilities)
         {
-            Guard.Argument(match, nameof()).NotNull();
-            Guard.Argument(teamFlag).InRange(1,2);
+            Guard.Argument(match, nameof(match)).NotNull();
+            Guard.Argument(teamFlag, nameof(teamFlag)).InRange(1,2);
 
             _teamFlag = teamFlag;
             _match = match;

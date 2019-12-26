@@ -63,10 +63,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                       ExceptionHandlingStrategy exceptionStrategy)
             : base(id, sportId, ExecutionLogPrivate, sportEventCache, cultures, exceptionStrategy)
         {
-            Guard.Argument(id, nameof()).NotNull();
-            Guard.Argument(sportEntityFactory, nameof()).NotNull();
-            Guard.Argument(sportDataCache, nameof()).NotNull();
-            Guard.Argument(sportEventCache, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
+            Guard.Argument(sportEntityFactory, nameof(sportEntityFactory)).NotNull();
+            Guard.Argument(sportDataCache, nameof(sportDataCache)).NotNull();
+            Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
 
             _sportEntityFactory = sportEntityFactory;
             _sportDataCache = sportDataCache;
@@ -296,7 +296,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation</returns>
         public async Task<IEnumerable<ICompetition>> GetScheduleAsync()
         {
-            IEnumerable<Tuple<URN, URN>> sportEventIds = null;
+            IEnumerable<Tuple<URN, URN>> sportEventIds;
             if (ExceptionStrategy == ExceptionHandlingStrategy.THROW)
             {
                 var tasks = Cultures.Select(s => _sportEventCache.GetEventIdsAsync(Id, s)).ToList();

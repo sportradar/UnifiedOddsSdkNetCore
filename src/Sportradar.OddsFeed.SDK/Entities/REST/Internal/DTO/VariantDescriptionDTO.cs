@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal VariantDescriptionDTO(desc_variant description)
         {
-            Guard.Argument(description, nameof()).NotNull();
+            Guard.Argument(description, nameof(description)).NotNull();
 
             Id = description.id;
             Outcomes = description.outcomes?.Select(o => new OutcomeDescriptionDTO(o)).ToList();

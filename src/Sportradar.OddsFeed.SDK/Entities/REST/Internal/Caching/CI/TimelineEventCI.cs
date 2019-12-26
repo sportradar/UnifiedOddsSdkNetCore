@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         internal TimelineEventCI(BasicEventDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             Id = dto.Id;
             Merge(dto, culture);

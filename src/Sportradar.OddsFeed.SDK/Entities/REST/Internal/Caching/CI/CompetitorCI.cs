@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The name of the competitor in the specified language if it exists, null otherwise</returns>
         public string GetName(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (!Names.ContainsKey(culture))
             {
@@ -86,7 +86,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The country name of the competitor in the specified language if it exists, null otherwise</returns>
         public string GetCountry(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (!_countryNames.ContainsKey(culture))
             {
@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The abbreviation of the competitor in the specified language if it exists, null otherwise</returns>
         public string GetAbbreviation(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (!_abbreviations.ContainsKey(culture))
             {
@@ -267,8 +267,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal CompetitorCI(CompetitorDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(competitor)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
@@ -294,8 +294,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal CompetitorCI(CompetitorProfileDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager = null)
             : base(competitor.Competitor)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
@@ -321,8 +321,8 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         internal CompetitorCI(SimpleTeamProfileDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager = null)
             : base(competitor.Competitor)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
@@ -348,9 +348,9 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         internal CompetitorCI(PlayerCompetitorDTO playerCompetitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(playerCompetitor)
         {
-            Guard.Argument(playerCompetitor, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
-            Guard.Argument(dataRouterManager, nameof()).NotNull();
+            Guard.Argument(playerCompetitor, nameof(playerCompetitor)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
+            Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
 
             _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
@@ -437,7 +437,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
         internal void Merge(CompetitorDTO competitor, CultureInfo culture)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
 
             _isVirtual = competitor.IsVirtual;
             Names[culture] = competitor.Name;
@@ -471,8 +471,8 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
         internal void Merge(CompetitorProfileDTO competitorProfile, CultureInfo culture)
         {
-            Guard.Argument(competitorProfile, nameof()).NotNull();
-            Guard.Argument(competitorProfile.Competitor, nameof()).NotNull();
+            Guard.Argument(competitorProfile, nameof(competitorProfile)).NotNull();
+            Guard.Argument(competitorProfile.Competitor, nameof(competitorProfile.Competitor)).NotNull();
 
             _isVirtual = competitorProfile.Competitor.IsVirtual;
             Names[culture] = competitorProfile.Competitor.Name;
@@ -548,8 +548,8 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
         internal void Merge(SimpleTeamProfileDTO simpleTeamProfile, CultureInfo culture)
         {
-            Guard.Argument(simpleTeamProfile, nameof()).NotNull();
-            Guard.Argument(simpleTeamProfile.Competitor, nameof()).NotNull();
+            Guard.Argument(simpleTeamProfile, nameof(simpleTeamProfile)).NotNull();
+            Guard.Argument(simpleTeamProfile.Competitor, nameof(simpleTeamProfile.Competitor)).NotNull();
 
             _isVirtual = simpleTeamProfile.Competitor.IsVirtual;
             Names[culture] = simpleTeamProfile.Competitor.Name;
@@ -584,7 +584,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
         internal void Merge(PlayerCompetitorDTO playerCompetitor, CultureInfo culture)
         {
-            Guard.Argument(playerCompetitor, nameof()).NotNull();
+            Guard.Argument(playerCompetitor, nameof(playerCompetitor)).NotNull();
 
             Names[culture] = playerCompetitor.Name;
             _abbreviations[culture] = string.IsNullOrEmpty(playerCompetitor.Abbreviation)

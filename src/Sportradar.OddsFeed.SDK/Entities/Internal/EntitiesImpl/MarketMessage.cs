@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         protected MarketMessage(IMessageTimestamp timestamp, IProducer producer, T1 @event, long? requestId, IEnumerable<T> markets, byte[] rawMessage)
             : base(timestamp, producer, @event, requestId, rawMessage)
         {
-            Guard.Argument(@event).Require(@event != null);
+            Guard.Argument(@event, nameof(@event)).Require(@event != null);
 
             _markets = markets == null ? null : new ReadOnlyCollection<T>(markets.ToList());
         }

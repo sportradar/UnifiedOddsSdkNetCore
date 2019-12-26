@@ -40,10 +40,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="matchStatuses">The <see cref="ILocalizedNamedValueCache" /> providing localized(translatable) match status descriptions.</param>
         public NamedValuesProvider(INamedValueCache voidReasons, INamedValueCache betStopReasons, INamedValueCache bettingStatuses, ILocalizedNamedValueCache matchStatuses)
         {
-            Guard.Argument(voidReasons, nameof()).NotNull();
-            Guard.Argument(betStopReasons, nameof()).NotNull();
-            Guard.Argument(bettingStatuses, nameof()).NotNull();
-            Guard.Argument(matchStatuses, nameof()).NotNull();
+            Guard.Argument(voidReasons, nameof(voidReasons)).NotNull();
+            Guard.Argument(betStopReasons, nameof(betStopReasons)).NotNull();
+            Guard.Argument(bettingStatuses, nameof(bettingStatuses)).NotNull();
+            Guard.Argument(matchStatuses, nameof(matchStatuses)).NotNull();
 
             VoidReasons = voidReasons;
             BetStopReasons = betStopReasons;

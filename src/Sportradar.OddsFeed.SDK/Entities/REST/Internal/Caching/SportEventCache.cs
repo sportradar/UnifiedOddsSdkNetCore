@@ -11,7 +11,6 @@ using System.Runtime.Caching;
 using System.Threading.Tasks;
 using App.Metrics.Health;
 using Microsoft.Extensions.Logging;
-
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -99,11 +98,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                                ICacheManager cacheManager)
             : base(cacheManager)
         {
-            Guard.Argument(cache, nameof()).NotNull();
-            Guard.Argument(dataRouterManager, nameof()).NotNull();
-            Guard.Argument(sportEventCacheItemFactory, nameof()).NotNull();
-            Guard.Argument(timer, nameof()).NotNull();
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(cache, nameof(cache)).NotNull();
+            Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
+            Guard.Argument(sportEventCacheItemFactory, nameof(sportEventCacheItemFactory)).NotNull();
+            Guard.Argument(timer, nameof(timer)).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             Cache = cache;
             _dataRouterManager = dataRouterManager;
@@ -196,7 +195,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task" /> representing the retrieval operation</returns>
         private async Task GetScheduleAsync(DateTime date, CultureInfo culture)
         {
-            Guard.Argument(date).Require(date > DateTime.MinValue);
+            Guard.Argument(date, nameof(date)).Require(date > DateTime.MinValue);
 
             //Metric.Context("CACHE").Meter("SportEventCache->GetScheduleAsync", Unit.Calls);
 

@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <returns>True if the validation was successful, otherwise false</returns>
         private static bool ValidateMessage(FeedMessage message)
         {
-            Guard.Argument(message != null);
+            Guard.Argument(message, nameof(message)).NotNull();
 
             var result = TestProducerManager.Create().Exists(message.ProducerId);
 

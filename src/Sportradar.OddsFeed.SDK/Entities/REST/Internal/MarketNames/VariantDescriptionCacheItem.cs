@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             string source)
         {
 
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Id = id;
             Outcomes = outcomes;
@@ -60,9 +60,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The cache item could not be build from the provided DTO</exception>
         public static VariantDescriptionCacheItem Build(VariantDescriptionDTO dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(factory, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(factory, nameof(factory)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             var outcomes = dto.Outcomes == null
                 ? null
@@ -87,8 +87,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal void Merge(VariantDescriptionDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (dto.Outcomes != null)
             {

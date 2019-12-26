@@ -84,8 +84,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
         internal RoundCI(RoundDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             _names = new Dictionary<CultureInfo, string>();
             _phaseOrGroupLongName = new Dictionary<CultureInfo, string>();
@@ -123,7 +123,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
         internal void Merge(RoundDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             Type = dto.Type;
             Group = dto.Group;
@@ -145,7 +145,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>Return the Name if exists, or null</returns>
         public string GetName(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _names == null || !_names.ContainsKey(culture)
                 ? null
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>Return the phase or group long name if exists, or null</returns>
         public string GetPhaseOrGroupLongName(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _phaseOrGroupLongName == null || !_phaseOrGroupLongName.ContainsKey(culture)
                 ? null

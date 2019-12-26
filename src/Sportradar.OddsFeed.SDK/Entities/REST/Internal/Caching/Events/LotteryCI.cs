@@ -77,8 +77,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                          MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
-            Guard.Argument(eventSummary, nameof()).NotNull();
-            Guard.Argument(currentCulture, nameof()).NotNull();
+            Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
+            Guard.Argument(currentCulture, nameof(currentCulture)).NotNull();
 
             Merge(eventSummary, currentCulture);
         }
@@ -213,10 +213,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             var exportable = await base.CreateExportableCIAsync<T>();
             var lottery = exportable as ExportableLotteryCI;
 
-            lottery.CategoryId = _categoryId.ToString();
-            lottery.BonusInfo = _bonusInfo != null ? await _bonusInfo.ExportAsync().ConfigureAwait(false) : null;
-            lottery.DrawInfo = _drawInfo != null ? await _drawInfo.ExportAsync().ConfigureAwait(false) : null;
-            lottery.ScheduledDraws = _scheduledDraws?.Select(s => s.ToString()).ToList();
+            if (lottery != null)
+            {
+                lottery.CategoryId = _categoryId.ToString();
+                lottery.BonusInfo = _bonusInfo != null ? await _bonusInfo.ExportAsync().ConfigureAwait(false) : null;
+                lottery.DrawInfo = _drawInfo != null ? await _drawInfo.ExportAsync().ConfigureAwait(false) : null;
+                lottery.ScheduledDraws = _scheduledDraws?.Select(s => s.ToString()).ToList();
+            }
 
             return exportable;
         }

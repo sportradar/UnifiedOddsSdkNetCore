@@ -23,8 +23,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">>A <see cref="sportCategoriesEndpoint"/> instance containing sport categories</param>
         internal SportCategoriesMapper(sportCategoriesEndpoint data)
         {
-            Guard.Argument(data, nameof()).NotNull();
-            Guard.Argument(data.sport, nameof()).NotNull();
+            Guard.Argument(data, nameof(data)).NotNull();
+            Guard.Argument(data.sport, nameof(data.sport)).NotNull();
 
             _data = data;
         }

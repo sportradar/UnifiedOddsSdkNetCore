@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="allowedDecimalValue">A value specifying the allowed value of the decimal part.</param>
         public DecimalValueMappingValidator(string specifierName, decimal allowedDecimalValue)
         {
-            Guard.Argument(specifierName, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
 
             _specifierName = specifierName;
             _allowedDecimalValue = allowedDecimalValue;
@@ -60,9 +60,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return $"{_specifierName}~{_allowedDecimalValue}";

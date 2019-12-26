@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">The descriptor could not be parsed due to incorrect format</exception>
         internal static IList<string> ParseDescriptor(string descriptor, out string descriptorFormat)
         {
-            Guard.Argument(descriptor, nameof()).NotNull().NotEmpty();
+            Guard.Argument(descriptor, nameof(descriptor)).NotNull().NotEmpty();
 
             var currentIndex = 0;
             var format = descriptor;
@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="FormatException">The <code>expression</code> couldn't be parsed due to incorrect format</exception>
         internal static void ParseExpression(string expression, out string @operator, out string operand)
         {
-            Guard.Argument(expression, nameof()).NotNull().NotEmpty();
+            Guard.Argument(expression, nameof(expression)).NotNull().NotEmpty();
 
             if (expression.Length < 3)
             {
@@ -115,8 +115,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of int</exception>
         internal static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out int specifierValue)
         {
-            Guard.Argument(specifierName, nameof()).NotNull().NotEmpty();
-            Guard.Argument(specifiers, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
+            Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
 
             if (!specifiers.TryGetValue(specifierName, out var specifierValueString))
             {
@@ -138,8 +138,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <exception cref="InvalidOperationException">The specified specifier does not exist or it's value is not string representation of decimal</exception>
         internal static void ParseSpecifier(string specifierName, IReadOnlyDictionary<string, string> specifiers, out decimal specifierValue)
         {
-            Guard.Argument(specifierName, nameof()).NotNull().NotEmpty();
-            Guard.Argument(specifiers, nameof()).NotNull().NotEmpty();
+            Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
+            Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
 
             if (!specifiers.TryGetValue(specifierName, out var specifierValueString))
             {

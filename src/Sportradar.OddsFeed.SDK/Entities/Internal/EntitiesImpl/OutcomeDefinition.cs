@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         internal OutcomeDefinition(IMarketDescription marketDescription, IOutcomeDescription outcomeDescription, IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(cultures, nameof()).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();
 
             _marketDescription = marketDescription;
 
@@ -60,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                    IEnumerable<CultureInfo> cultures,
                                    ExceptionHandlingStrategy exceptionHandlingStrategy)
         {
-            Guard.Argument(cultures, nameof()).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();
 
             _marketDescription = marketDescription;
             _marketCacheProvider = marketCacheProvider;

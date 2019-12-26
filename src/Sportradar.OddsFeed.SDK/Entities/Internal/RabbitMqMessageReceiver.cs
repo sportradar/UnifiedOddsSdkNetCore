@@ -94,10 +94,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="usedReplay">Is connected to the replay server</param>
         public RabbitMqMessageReceiver(IRabbitMqChannel channel, IDeserializer<FeedMessage> deserializer, IRoutingKeyParser keyParser, IProducerManager producerManager, bool usedReplay)
         {
-            Guard.Argument(channel, nameof()).NotNull();
-            Guard.Argument(deserializer, nameof()).NotNull();
-            Guard.Argument(keyParser, nameof()).NotNull();
-            Guard.Argument(producerManager, nameof()).NotNull();
+            Guard.Argument(channel, nameof(channel)).NotNull();
+            Guard.Argument(deserializer, nameof(deserializer)).NotNull();
+            Guard.Argument(keyParser, nameof(keyParser)).NotNull();
+            Guard.Argument(producerManager, nameof(producerManager)).NotNull();
 
             _channel = channel;
             _deserializer = deserializer;
@@ -216,7 +216,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="rawMessage">A raw message received from the broker</param>
         private void RaiseMessageReceived(FeedMessage message, byte[] rawMessage)
         {
-            Guard.Argument(message, nameof()).NotNull();
+            Guard.Argument(message, nameof(message)).NotNull();
 
             FeedMessageReceived?.Invoke(this, new FeedMessageReceivedEventArgs(message, null, rawMessage));
         }

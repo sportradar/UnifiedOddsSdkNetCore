@@ -82,7 +82,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public PlayerProfileDTO(playerExtended record, DateTime? generatedAt)
             :base(record.id, record.name)
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
 
             Type = record.type;
             DateOfBirth = string.IsNullOrEmpty(record.date_of_birth)

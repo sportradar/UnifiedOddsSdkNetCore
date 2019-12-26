@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                             IEnumerable<CultureInfo> cultures)
             : base(id, specifiers, additionalInfo, nameProvider, mappingProvider, marketDefinition, cultures)
         {
-            Guard.Argument(voidReasonsCache, nameof()).NotNull();
+            Guard.Argument(voidReasonsCache, nameof(voidReasonsCache)).NotNull();
 
             _voidReason = voidReason;
             _voidReasonsCache = voidReasonsCache;

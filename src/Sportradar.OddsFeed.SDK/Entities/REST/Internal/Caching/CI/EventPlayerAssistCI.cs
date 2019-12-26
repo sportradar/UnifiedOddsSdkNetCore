@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public EventPlayerAssistCI(EventPlayerAssistDTO dto, CultureInfo culture)
             : base(dto.Id, dto.Name, culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             Type = dto.Type;
         }

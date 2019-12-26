@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
         /// <param name="lotterySchedule">A <see cref="lottery"/> containing lottery schedule data (single lottery with schedule)</param>
         internal LotteryScheduleMapper(lottery_schedule lotterySchedule)
         {
-            Guard.Argument(lotterySchedule, nameof()).NotNull();
+            Guard.Argument(lotterySchedule, nameof(lotterySchedule)).NotNull();
 
             _lotterySchedule = lotterySchedule;
         }

@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// <param name="cacheItem">The cache item</param>
         internal OutcomeMapping(OutcomeMappingCacheItem cacheItem)
         {
-            Guard.Argument(cacheItem, nameof()).NotNull();
+            Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
 
             OutcomeId = cacheItem.OutcomeId;
             ProducerOutcomeId = cacheItem.ProducerOutcomeId;

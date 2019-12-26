@@ -60,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how potential exceptions should be handled</param>
         public NamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, ExceptionHandlingStrategy exceptionStrategy)
         {
-            Guard.Argument(dataProvider, nameof()).NotNull();
+            Guard.Argument(dataProvider, nameof(dataProvider)).NotNull();
 
             _dataProvider = dataProvider;
             _namedValues = new Dictionary<int, string>();
@@ -99,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         /// <param name="id">The id to be tested</param>
         /// <returns>True if the value is defined in the cache; False otherwise</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public bool IsValueDefined(int id)
         {
             lock (_lock)

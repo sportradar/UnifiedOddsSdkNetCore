@@ -1,7 +1,6 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -23,8 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="record">A <see cref="simpleTeamProfileEndpoint"/> containing information about the profile</param>
         public SimpleTeamProfileDTO(simpleTeamProfileEndpoint record)
         {
-            Guard.Argument(record, nameof()).NotNull();
-            Guard.Argument(record.competitor, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
+            Guard.Argument(record.competitor, nameof(record.competitor)).NotNull();
 
             Competitor = new CompetitorDTO(record.competitor);
         }

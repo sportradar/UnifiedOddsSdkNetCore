@@ -21,8 +21,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="channel">The <see cref="streamingChannel"/> used for creating instance</param>
         internal StreamingChannelDTO(streamingChannel channel)
         {
-            Guard.Argument(channel, nameof()).NotNull();
-            Guard.Argument(channel.name, nameof()).NotNull().NotEmpty();
+            Guard.Argument(channel, nameof(channel)).NotNull();
+            Guard.Argument(channel.name, nameof(channel.name)).NotNull().NotEmpty();
 
             Id = channel.id;
             Name = channel.name;

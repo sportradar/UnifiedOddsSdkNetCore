@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal ProductInfoDTO(productInfo productInfo)
         {
-            Guard.Argument(productInfo, nameof()).NotNull();
+            Guard.Argument(productInfo, nameof(productInfo)).NotNull();
 
             IsInLiveScore = productInfo.is_in_live_score != null;
             IsInHostedStatistics = productInfo.is_in_hosted_statistics != null;

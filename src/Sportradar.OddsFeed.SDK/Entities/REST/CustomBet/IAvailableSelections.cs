@@ -20,6 +20,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
         /// <summary>
         /// Gets the list of markets for this event
         /// </summary>
-        IEnumerable<REST.CustomBet.IMarket> Markets { get; }
+        IEnumerable<IMarket> Markets { get; }
     }
 }

@@ -25,8 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CategorySummaryDTO(string id, string name, string countryCode)
             :base(id, name)
         {
-            Guard.Argument(id, nameof()).NotNull().NotEmpty();
-            Guard.Argument(name, nameof()).NotNull().NotEmpty();
+            Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
+            Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
 
             CountryCode = countryCode;
         }
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CategorySummaryDTO(category category)
             : base(category.id, category.name)
         {
-            Guard.Argument(category, nameof()).NotNull();
+            Guard.Argument(category, nameof(category)).NotNull();
 
             CountryCode = category.country_code;
         }

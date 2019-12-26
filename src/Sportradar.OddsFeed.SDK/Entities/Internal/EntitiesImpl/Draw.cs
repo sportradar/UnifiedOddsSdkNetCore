@@ -51,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN" /> representing id of the associated <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ILottery" />
         /// </summary>
         /// <returns>The id of the associated lottery</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<URN> GetLotteryIdAsync()
         {
             var drawCI = (DrawCI)SportEventCache.GetEventCacheItem(Id);
@@ -71,7 +71,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Asynchronously gets <see cref="DrawStatus" /> associated with the current instance
         /// </summary>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing an async operation</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<DrawStatus> GetStatusAsync()
         {
             var drawCI = (DrawCI)SportEventCache.GetEventCacheItem(Id);
@@ -91,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Asynchronously gets <see cref="T:System.Collections.Generic.IEnumerable`1" /> list of associated <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IDrawResult" />
         /// </summary>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing an async operation</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<IEnumerable<IDrawResult>> GetResultsAsync()
         {
             var drawCI = (DrawCI) SportEventCache.GetEventCacheItem(Id);

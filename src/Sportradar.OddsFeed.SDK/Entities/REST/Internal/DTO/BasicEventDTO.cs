@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal BasicEventDTO(basicEvent item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             Id = item.id;
             HomeScore = item.home_scoreSpecified ? (decimal?) item.home_score : null;

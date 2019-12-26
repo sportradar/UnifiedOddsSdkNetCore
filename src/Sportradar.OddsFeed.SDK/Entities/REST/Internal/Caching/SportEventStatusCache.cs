@@ -77,9 +77,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                                     TimeSpan cacheItemExpireTime)
             : base(cacheManager)
         {
-            Guard.Argument(sportEventStatusCache, nameof()).NotNull();
-            Guard.Argument(mapperFactory, nameof()).NotNull();
-            Guard.Argument(sportEventCache, nameof()).NotNull();
+            Guard.Argument(sportEventStatusCache, nameof(sportEventStatusCache)).NotNull();
+            Guard.Argument(mapperFactory, nameof(mapperFactory)).NotNull();
+            Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
 
             _sportEventStatusCache = sportEventStatusCache;
             _mapperFactory = mapperFactory;
@@ -104,7 +104,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 return null;
             }
 
-            Guard.Argument(eventId, nameof()).NotNull();
+            Guard.Argument(eventId, nameof(eventId)).NotNull();
 
             SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "DataRouterManager", Name = "GetSportEventStatusAsync", MeasurementUnit = Unit.Calls });
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = "DataRouterManager", Name = "GetSportEventStatusAsync", MeasurementUnit = Unit.Requests };
@@ -176,7 +176,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 return;
             }
 
-            Guard.Argument(eventId, nameof()).NotNull();
+            Guard.Argument(eventId, nameof(eventId)).NotNull();
 
             lock (_lock)
             {
@@ -252,7 +252,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="cacheItemType">A cache item type</param>
         public override void CacheDeleteItem(URN id, CacheItemType cacheItemType)
         {
-            Guard.Argument(id, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
 
             if (_isDisposed)
             {
@@ -276,7 +276,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         public override bool CacheHasItem(URN id, CacheItemType cacheItemType)
         {
-            Guard.Argument(id, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
 
             if (_isDisposed)
             {
@@ -304,8 +304,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns><c>true</c> if added, <c>false</c> otherwise</returns>
         protected override bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
-            Guard.Argument(id, nameof()).NotNull();
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             if (_isDisposed)
             {

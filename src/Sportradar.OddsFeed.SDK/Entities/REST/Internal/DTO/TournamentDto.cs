@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal TournamentDTO(tournament tournament)
             :base(tournament.id, tournament.name)
         {
-            Guard.Argument(tournament, nameof()).NotNull();
+            Guard.Argument(tournament, nameof(tournament)).NotNull();
 
             Scheduled = tournament.scheduledSpecified
                 ? (DateTime?) tournament.scheduled
@@ -78,7 +78,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal TournamentDTO(tournamentExtended tournament)
             : base(tournament.id, tournament.name)
         {
-            Guard.Argument(tournament, nameof()).NotNull();
+            Guard.Argument(tournament, nameof(tournament)).NotNull();
 
             Scheduled = tournament.scheduledSpecified
                 ? (DateTime?)tournament.scheduled

@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Category(URN id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode, IEnumerable<ISportEvent> tournaments)
             : base(id, names, countryCode)
         {
-            Guard.Argument(tournaments, nameof()).NotNull();
+            Guard.Argument(tournaments, nameof(tournaments)).NotNull();
 
             Tournaments = tournaments as IReadOnlyCollection<ISportEvent> ?? new ReadOnlyCollection<ISportEvent>(tournaments.ToList());
         }

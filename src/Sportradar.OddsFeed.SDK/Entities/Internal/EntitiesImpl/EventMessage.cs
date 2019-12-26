@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         protected EventMessage(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, byte[] rawMessage)
             : base(timestamp, producer)
         {
-            Guard.Argument(@event).Require(@event != null);
+            Guard.Argument(@event, nameof(@event)).Require(@event != null);
 
             Event = @event;
             RequestId = requestId;

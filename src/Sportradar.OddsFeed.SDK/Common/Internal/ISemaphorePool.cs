@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// Releases the <see cref="SemaphoreSlim"/> previously acquired with the same id
         /// </summary>
         /// <param name="id">The Id which was used to acquire the semaphore being released .</param>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         void Release(string id);
     }
 }

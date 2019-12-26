@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="timeChange">The time change</param>
         public ScheduledStartTimeChangeDTO(scheduledStartTimeChange timeChange)
         {
-            Guard.Argument(timeChange, nameof()).NotNull();
+            Guard.Argument(timeChange, nameof(timeChange)).NotNull();
 
             OldTime = timeChange.old_time;
             NewTime = timeChange.new_time;

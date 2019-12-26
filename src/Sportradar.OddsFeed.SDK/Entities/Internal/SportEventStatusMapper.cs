@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="record">A <see cref="sportEventStatus" /> instance containing status data about the associated sport event</param>
         internal SportEventStatusMapper(sportEventStatus record)
         {
-            Guard.Argument(record, nameof()).NotNull();
+            Guard.Argument(record, nameof(record)).NotNull();
 
             _data = record;
         }
@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>a new instance of <see cref="ISingleTypeMapper{ISportEventStatus}"/> instance</returns>
         internal static ISingleTypeMapper<SportEventStatusDTO> Create(sportEventStatus data)
         {
-            Guard.Argument(data, nameof()).NotNull();
+            Guard.Argument(data, nameof(data)).NotNull();
 
             return new SportEventStatusMapper(data);
         }

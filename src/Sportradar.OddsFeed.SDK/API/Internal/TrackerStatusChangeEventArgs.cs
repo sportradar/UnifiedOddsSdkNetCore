@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Event arguments describing the event which occurs when the tracker status is changed
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
+    /// <seealso cref="EventArgs" />
     internal class TrackerStatusChangeEventArgs : EventArgs
     {
         /// <summary>

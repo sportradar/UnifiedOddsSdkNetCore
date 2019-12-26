@@ -46,9 +46,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="staticValue">The value to be added to the value of the specifier</param>
         public ExpressionOperand(IReadOnlyDictionary<string, string> specifiers, string operandString, SimpleMathOperation operation, int staticValue)
         {
-            Guard.Argument(specifiers, nameof()).NotNull().NotEmpty();
-            Guard.Argument(operandString, nameof()).NotNull().NotEmpty();
-            Guard.Argument(operation).Require(System.Enum.IsDefined(typeof(SimpleMathOperation), operation));
+            Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
+            Guard.Argument(operandString, nameof(operandString)).NotNull().NotEmpty();
+            Guard.Argument(operation, nameof(operation)).Require(System.Enum.IsDefined(typeof(SimpleMathOperation), operation));
 
             _specifiers = specifiers;
             _operandString = operandString;
@@ -60,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// Gets the value of the operand as a <see cref="int" />
         /// </summary>
         /// <returns>A <see cref="Task{Int32}" /> containing the value of the operand as a <see cref="int" /></returns>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// Static int value was not provided to the constructor
         /// or
         /// </exception>
@@ -92,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// Gets the value of the operand as a <see cref="decimal" />
         /// </summary>
         /// <returns>A <see cref="Task{Int32}" /> containing the value of the operand as a <see cref="int" /></returns>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// Static decimal value was not provided to the constructor
         /// or
         /// </exception>
@@ -123,7 +123,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// Gets the value of the operand as a <see cref="string" />
         /// </summary>
         /// <returns>A <see cref="Task{String}" /> containing the value of the operand as a <see cref="string" /></returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         public Task<string> GetStringValue()
         {
             throw new NotSupportedException();

@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         internal BonusInfoCI(BonusInfoDTO dto)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             BonusBalls = dto.BonusBalls;
             BonusDrumType = dto.BonusDrumType;

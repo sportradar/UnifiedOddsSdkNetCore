@@ -85,8 +85,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                              MemoryCache fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
-            Guard.Argument(eventSummary, nameof()).NotNull();
-            Guard.Argument(currentCulture, nameof()).NotNull();
+            Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
+            Guard.Argument(currentCulture, nameof(currentCulture)).NotNull();
 
             Merge(eventSummary, currentCulture, true);
         }
@@ -247,7 +247,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="culture">The culture</param>
         private void MergeDrawResults(IEnumerable<DrawResultDTO> results, CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (results == null)
             {
@@ -278,12 +278,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             var exportable = await base.CreateExportableCIAsync<T>();
             var draw = exportable as ExportableDrawCI;
 
-            draw.LotteryId = _lotteryId?.ToString();
-            draw.DrawStatus = _drawStatus;
-            draw.ResultsChronological = _resultsChronological;
-            var resultTasks = _results?.Select(async r => await r.ExportAsync().ConfigureAwait(false));
-            draw.Results = resultTasks != null ? await Task.WhenAll(resultTasks) : null;
-            draw.DisplayId = _displayId;
+            if (draw != null)
+            {
+                draw.LotteryId = _lotteryId?.ToString();
+                draw.DrawStatus = _drawStatus;
+                draw.ResultsChronological = _resultsChronological;
+                var resultTasks = _results?.Select(async r => await r.ExportAsync().ConfigureAwait(false));
+                draw.Results = resultTasks != null ? await Task.WhenAll(resultTasks) : null;
+                draw.DisplayId = _displayId;
+            }
 
             return exportable;
         }

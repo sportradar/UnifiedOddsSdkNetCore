@@ -37,10 +37,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             :base(sportEventSummaryUriFormat, fetcher, deserializer, mapperFactory)
         {
 
-            Guard.Argument(sportEventSummaryUriFormat, nameof()).NotNull().NotEmpty();
-            Guard.Argument(fetcher, nameof()).NotNull();
-            Guard.Argument(deserializer, nameof()).NotNull();
-            Guard.Argument(mapperFactory, nameof()).NotNull();
+            Guard.Argument(sportEventSummaryUriFormat, nameof(sportEventSummaryUriFormat)).NotNull().NotEmpty();
+            Guard.Argument(fetcher, nameof(fetcher)).NotNull();
+            Guard.Argument(deserializer, nameof(deserializer)).NotNull();
+            Guard.Argument(mapperFactory, nameof(mapperFactory)).NotNull();
 
             _sportEventSummaryUriFormat = sportEventSummaryUriFormat;
         }

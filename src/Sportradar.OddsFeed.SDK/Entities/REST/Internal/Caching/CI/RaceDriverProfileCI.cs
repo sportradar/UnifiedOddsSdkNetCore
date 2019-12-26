@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         public RaceDriverProfileCI(RaceDriverProfileDTO item)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             RaceDriverId = item.RaceDriverId;
             RaceTeamId = item.RaceTeamId;

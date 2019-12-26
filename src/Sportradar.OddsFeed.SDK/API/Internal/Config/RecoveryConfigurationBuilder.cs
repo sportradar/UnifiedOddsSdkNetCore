@@ -10,8 +10,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
     /// Class RecoveryConfigurationBuilder
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="Config.ConfigurationBuilderBase{T}" />
-    /// <seealso cref="API.IRecoveryConfigurationBuilder{T}" />
+    /// <seealso cref="ConfigurationBuilderBase{T}" />
+    /// <seealso cref="IRecoveryConfigurationBuilder{T}" />
     internal abstract class RecoveryConfigurationBuilder<T> : ConfigurationBuilderBase<T>, IRecoveryConfigurationBuilder<T> where T : class
     {
         /// <summary>

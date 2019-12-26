@@ -65,7 +65,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </remarks>
         /// <param name="message">The <see cref="IMessage" /> message to be processed</param>
         /// <param name="interest">The <see cref="MessageInterest"/> describing the session from which the message originates </param>
-        /// <exception cref="System.ArgumentException">The Producer.Id of the message and the Producer associated with this manager do not match</exception>
+        /// <exception cref="ArgumentException">The Producer.Id of the message and the Producer associated with this manager do not match</exception>
         void ProcessUserMessage(FeedMessage message, MessageInterest interest);
 
         /// <summary>

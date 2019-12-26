@@ -91,9 +91,9 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <param name="id">The numerical identifier of the resource associated with the URN</param>
         public URN(string prefix, string type, long id)
         {
-            Guard.Argument(prefix, nameof()).NotNull().NotEmpty();
-            Guard.Argument(type, nameof()).NotNull().NotEmpty();
-            Guard.Argument(id).Positive();
+            Guard.Argument(prefix, nameof(prefix)).NotNull().NotEmpty();
+            Guard.Argument(type, nameof(type)).NotNull().NotEmpty();
+            Guard.Argument(id, nameof(id)).Positive();
 
             var tuple = Types.FirstOrDefault(t => t.Item1 == type);
 
@@ -116,10 +116,10 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// </summary>
         /// <param name="urnString">The <see cref="string"/> representation of the URN</param>
         /// <returns>A <see cref="URN"/> constructed by parsing the provided string representation</returns>
-        /// <exception cref="System.FormatException">The format of the provided representation is not correct</exception>
+        /// <exception cref="FormatException">The format of the provided representation is not correct</exception>
         public static URN Parse(string urnString)
         {
-            Guard.Argument(urnString, nameof()).NotNull().NotEmpty();
+            Guard.Argument(urnString, nameof(urnString)).NotNull().NotEmpty();
 
             var match = Regex.Match(urnString, RegexPattern);
             if (!match.Success)
@@ -147,7 +147,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool TryParse(string urnString, out URN urn)
         {
-            Guard.Argument(urnString, nameof()).NotNull().NotEmpty();
+            Guard.Argument(urnString, nameof(urnString)).NotNull().NotEmpty();
 
             var success = false;
 
@@ -164,19 +164,19 @@ namespace Sportradar.OddsFeed.SDK.Messages
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return $"{Prefix}:{Type}:{Id}";
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             if (obj == null)

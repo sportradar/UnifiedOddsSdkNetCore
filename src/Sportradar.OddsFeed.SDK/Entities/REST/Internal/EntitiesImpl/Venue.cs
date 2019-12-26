@@ -61,8 +61,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cultures">A culture of the current instance of <see cref="VenueCI"/></param>
         public Venue(VenueCI ci, IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(ci, nameof()).NotNull();
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(ci, nameof(ci)).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
 

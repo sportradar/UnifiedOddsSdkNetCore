@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 _metricsRoot = metricsRoot;
             }
 
-            container.RegisterInstance<IMetricsRoot>(_metricsRoot, new ContainerControlledLifetimeManager());
+            container.RegisterInstance(_metricsRoot, new ContainerControlledLifetimeManager());
 
             //register common types
             container.RegisterType<HttpClient, HttpClient>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
@@ -147,7 +147,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             // this config is loaded with additional data from API
             container.RegisterInstance<IOddsFeedConfiguration>(config, new ContainerControlledLifetimeManager());
-            container.RegisterInstance<IOddsFeedConfigurationInternal>(config, new ContainerControlledLifetimeManager());
+            container.RegisterInstance(config, new ContainerControlledLifetimeManager());
 
             RegisterProducersProvider(container, config);
 

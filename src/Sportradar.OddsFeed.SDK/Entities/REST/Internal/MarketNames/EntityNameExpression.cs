@@ -42,8 +42,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="sportEvent">A <see cref="ISportEvent"/> related to the entity associated with the current instance.</param>
         internal EntityNameExpression(string propertyName, ISportEvent sportEvent)
         {
-            Guard.Argument(propertyName, nameof()).NotNull().NotEmpty();
-            Guard.Argument(sportEvent, nameof()).NotNull();
+            Guard.Argument(propertyName, nameof(propertyName)).NotNull().NotEmpty();
+            Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
 
             _propertyName = propertyName;
             _sportEvent = sportEvent;

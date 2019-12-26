@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="maxValue">The maximum allowed value for generated sequence numbers</param>
         public IncrementalSequenceGenerator(long minValue, long maxValue)
         {
-            Guard.Argument(maxValue).Require(maxValue > minValue);
+            Guard.Argument(maxValue, nameof(maxValue)).Require(maxValue > minValue);
 
             _minValue = minValue;
             _maxValue = maxValue;

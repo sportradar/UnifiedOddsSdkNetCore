@@ -52,8 +52,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the sport event conditions</param>
         internal SportEventConditionsCI(SportEventConditionsDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Merge(dto, culture);
         }
@@ -65,7 +65,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal SportEventConditionsCI(ExportableSportEventConditionsCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             Attendance = exportable.Attendance;
             EventMode = exportable.EventMode;
@@ -81,8 +83,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the sport event conditions</param>
         internal void Merge(SportEventConditionsDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Attendance = dto.Attendance;
             EventMode = dto.EventMode;
@@ -122,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 Attendance = Attendance,
                 EventMode = EventMode,
                 Referee = Referee != null ? await Referee.ExportAsync().ConfigureAwait(false) : null,
-                WeatherInfo = WeatherInfo != null ? await WeatherInfo.ExportAsync().ConfigureAwait(false) as ExportableWeatherInfoCI : null,
+                WeatherInfo = WeatherInfo != null ? await WeatherInfo.ExportAsync().ConfigureAwait(false) : null,
                 Pitchers = pitcherTasks != null ? await Task.WhenAll(pitcherTasks) : null
             };
         }

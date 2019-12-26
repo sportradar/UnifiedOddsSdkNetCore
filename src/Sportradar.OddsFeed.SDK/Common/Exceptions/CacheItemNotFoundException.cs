@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
     /// <summary>
     /// An exception thrown by the SDK cache components when the requested key was not found in the cache
     /// </summary>
-    /// <seealso cref="Sportradar.OddsFeed.SDK.Common.Exceptions.FeedSdkException" />
+    /// <seealso cref="FeedSdkException" />
     /// <seealso cref="FeedSdkException" />
     [Serializable]
     public class CacheItemNotFoundException : FeedSdkException
@@ -62,9 +62,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder(base.ToString());

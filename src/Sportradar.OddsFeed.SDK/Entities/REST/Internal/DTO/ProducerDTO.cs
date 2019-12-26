@@ -55,7 +55,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="producer">A <see cref="producer"/> containing deserialized response from 'available producers' endpoint</param>
         internal ProducerDTO(producer producer)
         {
-            Guard.Argument(producer, nameof()).NotNull();
+            Guard.Argument(producer, nameof(producer)).NotNull();
 
             Id = (int)producer.id;
             Name = producer.name;

@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="conditions">The <see cref="sportEventConditions"/> used for creating instance</param>
         internal SportEventConditionsDTO(sportEventConditions conditions)
         {
-            Guard.Argument(conditions, nameof()).NotNull();
+            Guard.Argument(conditions, nameof(conditions)).NotNull();
 
             Attendance = conditions.attendance;
             EventMode = conditions.match_mode;

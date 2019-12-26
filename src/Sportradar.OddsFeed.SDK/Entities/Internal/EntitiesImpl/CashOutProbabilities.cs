@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public CashOutProbabilities(IMessageTimestamp timestamp, IProducer producer, T @event, int? betStopReason, int? bettingStatus, IEnumerable<IMarketWithProbabilities> markets, INamedValuesProvider namedValuesProvider, byte[] rawMessage)
             : base(timestamp, producer, @event, null, markets, rawMessage)
         {
-            Guard.Argument(namedValuesProvider, nameof()).NotNull();
+            Guard.Argument(namedValuesProvider, nameof(namedValuesProvider)).NotNull();
 
             _betStopReason = betStopReason;
             _bettingStatus = bettingStatus;

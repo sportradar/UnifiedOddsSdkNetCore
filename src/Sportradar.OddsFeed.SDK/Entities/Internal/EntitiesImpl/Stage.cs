@@ -46,8 +46,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                     ExceptionHandlingStrategy exceptionStrategy)
             : base(ExecutionLogPrivate, id, sportId, sportEntityFactory, sportEventStatusCache, sportEventCache, cultures, exceptionStrategy, matchStatusesCache)
         {
-            Guard.Argument(sportDataCache, nameof()).NotNull();
-            Guard.Argument(matchStatusesCache, nameof()).NotNull();
+            Guard.Argument(sportDataCache, nameof(sportDataCache)).NotNull();
+            Guard.Argument(matchStatusesCache, nameof(matchStatusesCache)).NotNull();
 
             _sportEntityFactory = sportEntityFactory;
             _sportDataCache = sportDataCache;

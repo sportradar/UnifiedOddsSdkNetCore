@@ -69,8 +69,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="sportEvent">A <see cref="sportEvent"/> containing basic information about the event</param>
         internal SportEventSummaryDTO(sportEvent sportEvent)
         {
-            Guard.Argument(sportEvent, nameof()).NotNull();
-            Guard.Argument(sportEvent.id, nameof()).NotNull().NotEmpty();
+            Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
+            Guard.Argument(sportEvent.id, nameof(sportEvent.id)).NotNull().NotEmpty();
 
             Id = URN.Parse(sportEvent.id);
             Scheduled = sportEvent.scheduledSpecified
@@ -112,8 +112,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="parentStage">A <see cref="parentStage"/> containing basic information about the event</param>
         protected SportEventSummaryDTO(parentStage parentStage)
         {
-            Guard.Argument(parentStage, nameof()).NotNull();
-            Guard.Argument(parentStage.id, nameof()).NotNull().NotEmpty();
+            Guard.Argument(parentStage, nameof(parentStage)).NotNull();
+            Guard.Argument(parentStage.id, nameof(parentStage.id)).NotNull().NotEmpty();
 
             Id = URN.Parse(parentStage.id);
             Scheduled = parentStage.scheduledSpecified
@@ -152,8 +152,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="childStage">A <see cref="sportEventChildrenSport_event"/> containing basic information about the event</param>
         protected SportEventSummaryDTO(sportEventChildrenSport_event childStage)
         {
-            Guard.Argument(childStage, nameof()).NotNull();
-            Guard.Argument(childStage.id, nameof()).NotNull().NotEmpty();
+            Guard.Argument(childStage, nameof(childStage)).NotNull();
+            Guard.Argument(childStage.id, nameof(childStage.id)).NotNull().NotEmpty();
 
             Id = URN.Parse(childStage.id);
             Scheduled = childStage.scheduledSpecified

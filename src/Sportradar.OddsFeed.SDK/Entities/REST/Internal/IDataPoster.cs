@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="uri">The <see cref="Uri"/> of the resource to be send to</param>
         /// <param name="content">A <see cref="HttpContent"/> to be posted to the specific <see cref="Uri"/></param>
         /// <returns>A <see cref="Task"/> which, when completed will return a <see cref="HttpResponseMessage"/> containing status code and data</returns>
-        /// <exception cref="Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException">Failed to execute http post</exception>
+        /// <exception cref="Common.Exceptions.CommunicationException">Failed to execute http post</exception>
         Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null);
     }
 }

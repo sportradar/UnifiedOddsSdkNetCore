@@ -135,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="message">A <see cref="FeedMessage" /> instance whose type is to be determined.</param>
         /// <returns>A <see cref="MessageType" /> enum member specifying the type of the provided <see cref="FeedMessage" /></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public MessageType GetMessageTypeFromMessage(FeedMessage message)
         {
             var messageTypeName = message.GetType().Name;

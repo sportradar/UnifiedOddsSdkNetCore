@@ -32,8 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="operand">A <see cref="IOperand"/> representing part of the name expression</param>
         internal PlayerProfileExpression(IProfileCache profileCache, IOperand operand)
         {
-            Guard.Argument(profileCache, nameof()).NotNull();
-            Guard.Argument(operand, nameof()).NotNull();
+            Guard.Argument(profileCache, nameof(profileCache)).NotNull();
+            Guard.Argument(operand, nameof(operand)).NotNull();
 
             _profileCache = profileCache;
             _operand = operand;

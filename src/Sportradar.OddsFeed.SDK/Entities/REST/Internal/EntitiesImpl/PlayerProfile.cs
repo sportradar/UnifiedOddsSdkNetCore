@@ -59,8 +59,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public PlayerProfile(PlayerProfileCI ci, IEnumerable<CultureInfo> cultures)
             :base(ci.Id, cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName))
         {
-            Guard.Argument(ci, nameof()).NotNull();
-            Guard.Argument(cultures, nameof()).NotNull().NotEmpty();
+            Guard.Argument(ci, nameof(ci)).NotNull();
+            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             _playerProfileCI = ci;
             _cultures = cultures.ToList();

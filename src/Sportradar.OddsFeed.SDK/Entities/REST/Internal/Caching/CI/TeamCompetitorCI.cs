@@ -34,8 +34,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public TeamCompetitorCI(TeamCompetitorDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(competitor, culture, dataRouterManager)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Merge(competitor, culture);
         }
@@ -47,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public TeamCompetitorCI(CompetitorCI competitor)
             : base(competitor)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public TeamCompetitorCI(CompetitorDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(competitor, culture, dataRouterManager)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Merge(competitor, culture);
         }
@@ -84,8 +84,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="TeamCompetitorDTO"/></param>
         internal void Merge(TeamCompetitorDTO competitor, CultureInfo culture)
         {
-            Guard.Argument(competitor, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(competitor, nameof(competitor)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             base.Merge(competitor, culture);
             Qualifier = competitor.Qualifier;

@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal TeamStatisticsDTO(teamStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Guard.Argument(statistics, nameof()).NotNull();
+            Guard.Argument(statistics, nameof(statistics)).NotNull();
 
             Name = statistics.name;
             TeamId = !string.IsNullOrEmpty(statistics.id)

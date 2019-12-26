@@ -40,11 +40,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             :base(dateScheduleUriFormat, fetcher, deserializer, mapperFactory)
         {
 
-            Guard.Argument(liveScheduleUriFormat, nameof()).NotNull().NotEmpty();
-            Guard.Argument(dateScheduleUriFormat, nameof()).NotNull().NotEmpty();
-            Guard.Argument(fetcher, nameof()).NotNull();
-            Guard.Argument(deserializer, nameof()).NotNull();
-            Guard.Argument(mapperFactory, nameof()).NotNull();
+            Guard.Argument(liveScheduleUriFormat, nameof(liveScheduleUriFormat)).NotNull().NotEmpty();
+            Guard.Argument(dateScheduleUriFormat, nameof(dateScheduleUriFormat)).NotNull().NotEmpty();
+            Guard.Argument(fetcher, nameof(fetcher)).NotNull();
+            Guard.Argument(deserializer, nameof(deserializer)).NotNull();
+            Guard.Argument(mapperFactory, nameof(mapperFactory)).NotNull();
 
             _liveScheduleUriFormat = liveScheduleUriFormat;
         }

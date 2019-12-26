@@ -612,7 +612,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="culture">The culture</param>
         private void MergeCompetitors(IEnumerable<CompetitorDTO> competitors, CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (competitors == null)
             {
@@ -645,7 +645,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="culture">The culture</param>
         private void MergeGroups(IEnumerable<GroupDTO> groups, CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             if (groups == null)
             {

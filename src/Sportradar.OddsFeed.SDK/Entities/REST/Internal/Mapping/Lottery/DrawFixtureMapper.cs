@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
         /// <param name="drawFixture">A <see cref="draw_fixtures"/> containing lottery draw data</param>
         internal DrawFixtureMapper(draw_fixtures drawFixture)
         {
-            Guard.Argument(drawFixture, nameof()).NotNull();
+            Guard.Argument(drawFixture, nameof(drawFixture)).NotNull();
 
             _drawFixture = drawFixture;
         }

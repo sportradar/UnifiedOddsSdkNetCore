@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public ManagerDTO(manager item)
             : base(item.id, item.name)
         {
-            Guard.Argument(item, nameof()).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
 
             Nationality = item.nationality;
             CountryCode = item.country_code;

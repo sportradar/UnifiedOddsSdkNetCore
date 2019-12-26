@@ -36,8 +36,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal RefereeCI(RefereeDTO referee, CultureInfo culture)
             : base(referee)
         {
-            Guard.Argument(referee, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(referee, nameof(referee)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             _nationality = new Dictionary<CultureInfo, string>();
             Merge(referee, culture);
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The nationality of the referee in the specified language.</returns>
         internal string GetNationality(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _nationality.ContainsKey(culture)
                 ? _nationality[culture]
@@ -75,8 +75,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the referee info.</param>
         internal void Merge(RefereeDTO referee, CultureInfo culture)
         {
-            Guard.Argument(referee, nameof()).NotNull();
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(referee, nameof(referee)).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Name = referee.Name;
             _nationality[culture] = referee.Nationality;

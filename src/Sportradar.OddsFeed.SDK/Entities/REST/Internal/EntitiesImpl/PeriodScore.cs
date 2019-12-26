@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         private readonly decimal _awayScore;
 
         /// <summary>
-        /// The <see cref="PeriodScore.Type"/> property backing field
+        /// The <see cref="Type"/> property backing field
         /// </summary>
         private readonly PeriodType? _type;
 
@@ -51,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="matchStatusesCache">The match statuses cache</param>
         public PeriodScore(PeriodScoreDTO dto, ILocalizedNamedValueCache matchStatusesCache)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
 
             _homeScore = dto.HomeScore;
             _awayScore = dto.AwayScore;

@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal BasicTournamentDTO(sportEvent sportEvent)
             : base(sportEvent)
         {
-            Guard.Argument(sportEvent, nameof()).NotNull();
+            Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
 
             TournamentCoverage = null;
             Category = sportEvent.tournament.category == null
@@ -63,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             })
         {
-            Guard.Argument(tournamentInfo, nameof()).NotNull();
+            Guard.Argument(tournamentInfo, nameof(tournamentInfo)).NotNull();
 
             TournamentCoverage = new TournamentCoverageDTO(tournamentInfo.coverage_info);
             Category = tournamentInfo.tournament.category == null
@@ -89,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 type = null
             })
         {
-            Guard.Argument(tournament, nameof()).NotNull();
+            Guard.Argument(tournament, nameof(tournament)).NotNull();
 
             //TournamentCoverage = new TournamentCoverageDTO(tournament.season_coverage_info);
             Category = tournament.category == null

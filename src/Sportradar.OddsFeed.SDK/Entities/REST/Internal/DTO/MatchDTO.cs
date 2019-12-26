@@ -36,12 +36,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal MatchDTO(sportEvent sportEvent)
             : base(sportEvent)
         {
-            Guard.Argument(sportEvent, nameof()).NotNull();
+            Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
 
             if (sportEvent.season != null)
             {
-                Guard.Argument(sportEvent.season.id, nameof()).NotNull().NotEmpty();
-                Guard.Argument(sportEvent.season.name, nameof()).NotNull().NotEmpty();
+                Guard.Argument(sportEvent.season.id, nameof(sportEvent.season.id)).NotNull().NotEmpty();
+                Guard.Argument(sportEvent.season.name, nameof(sportEvent.season.name)).NotNull().NotEmpty();
                 Season = new SportEntityDTO(sportEvent.season.id, sportEvent.season.name);
             }
             if (sportEvent.tournament_round != null)
@@ -50,8 +50,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
             if (sportEvent.tournament != null)
             {
-                Guard.Argument(sportEvent.tournament.id, nameof()).NotNull().NotEmpty();
-                Guard.Argument(sportEvent.tournament.name, nameof()).NotNull().NotEmpty();
+                Guard.Argument(sportEvent.tournament.id, nameof(sportEvent.tournament.id)).NotNull().NotEmpty();
+                Guard.Argument(sportEvent.tournament.name, nameof(sportEvent.tournament.name)).NotNull().NotEmpty();
                 Tournament = new TournamentDTO(sportEvent.tournament);
             }
         }
@@ -63,12 +63,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal MatchDTO(matchSummaryEndpoint matchSummary)
             : base(matchSummary)
         {
-            Guard.Argument(matchSummary, nameof()).NotNull();
+            Guard.Argument(matchSummary, nameof(matchSummary)).NotNull();
 
             if (matchSummary.sport_event.season != null)
             {
-                Guard.Argument(matchSummary.sport_event.season.id, nameof()).NotNull().NotEmpty();
-                Guard.Argument(matchSummary.sport_event.season.name, nameof()).NotNull().NotEmpty();
+                Guard.Argument(matchSummary.sport_event.season.id, nameof(matchSummary.sport_event.season.id)).NotNull().NotEmpty();
+                Guard.Argument(matchSummary.sport_event.season.name, nameof(matchSummary.sport_event.season.name)).NotNull().NotEmpty();
                 Season = new SportEntityDTO(matchSummary.sport_event.season.id, matchSummary.sport_event.season.name);
             }
             if (matchSummary.sport_event.tournament_round != null)
@@ -77,8 +77,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
             if (matchSummary.sport_event.tournament != null)
             {
-                Guard.Argument(matchSummary.sport_event.tournament.id, nameof()).NotNull().NotEmpty();
-                Guard.Argument(matchSummary.sport_event.tournament.name, nameof()).NotNull().NotEmpty();
+                Guard.Argument(matchSummary.sport_event.tournament.id, nameof(matchSummary.sport_event.tournament.id)).NotNull().NotEmpty();
+                Guard.Argument(matchSummary.sport_event.tournament.name, nameof(matchSummary.sport_event.tournament.name)).NotNull().NotEmpty();
                 Tournament = new TournamentDTO(matchSummary.sport_event.tournament);
             }
         }

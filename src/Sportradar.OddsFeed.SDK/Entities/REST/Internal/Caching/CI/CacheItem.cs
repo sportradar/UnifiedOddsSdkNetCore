@@ -36,9 +36,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided data</param>
         public CacheItem(URN id, string name, CultureInfo culture)
         {
-            Guard.Argument(id, nameof()).NotNull();
+            Guard.Argument(id, nameof(id)).NotNull();
             //Guard.Argument(name, nameof()).NotNull().NotEmpty(); // there were tournaments with empty name!
-            Guard.Argument(culture, nameof()).NotNull();
+            Guard.Argument(culture, nameof(culture)).NotNull();
 
             Id = id;
             Name = new Dictionary<CultureInfo, string> {{culture, name}};
@@ -86,9 +86,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the culture of data in the passed <see cref="CacheItem"/></param>
         public virtual void Merge(CacheItem item, CultureInfo culture)
         {
-            Guard.Argument(culture, nameof()).NotNull();
-            Guard.Argument(item, nameof()).NotNull();
-            Guard.Argument(item.Name, nameof()).NotNull().NotEmpty();
+            Guard.Argument(culture, nameof(culture)).NotNull();
+            Guard.Argument(item, nameof(item)).NotNull();
+            Guard.Argument(item.Name, nameof(item.Name)).NotNull().NotEmpty();
 
             if (item.Name.Count == 1) // must be only 1 name (received from mapper)
             {
@@ -109,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">The culture of the input <see cref="SportEntityDTO"/></param>
         internal void Merge(SportEntityDTO dto, CultureInfo culture)
         {
-            Guard.Argument(dto, nameof()).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
             Name[culture] = dto.Name;
         }
 
@@ -124,9 +124,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString()
         {
             return $"Id={Id}";

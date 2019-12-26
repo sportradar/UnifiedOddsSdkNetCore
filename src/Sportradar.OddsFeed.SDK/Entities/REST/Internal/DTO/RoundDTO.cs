@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="round">The <see cref="matchRound"/> used for creating new instance</param>
         internal RoundDTO(matchRound round)
         {
-            Guard.Argument(round, nameof()).NotNull();
+            Guard.Argument(round, nameof(round)).NotNull();
 
             Type = round.type;
             Number = round.numberSpecified

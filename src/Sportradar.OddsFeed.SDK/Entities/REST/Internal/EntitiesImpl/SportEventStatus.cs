@@ -26,8 +26,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="matchStatusCache">A <see cref="ILocalizedNamedValueCache"/> used to retrieve event status</param>
         public SportEventStatus(SportEventStatusCI cacheItem, ILocalizedNamedValueCache matchStatusCache)
         {
-            Guard.Argument(cacheItem, nameof()).NotNull();
-            Guard.Argument(matchStatusCache, nameof()).NotNull();
+            Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
+            Guard.Argument(matchStatusCache, nameof(matchStatusCache)).NotNull();
 
             _cacheItem = cacheItem;
             _matchStatusCache = matchStatusCache;
