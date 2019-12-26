@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyVersion>1.0.120.7298</AssemblyVersion>
+    <AssemblyVersion>1.0.123.7299</AssemblyVersion>
 
-    <FileVersion>1.0.120.7298</FileVersion>
+    <FileVersion>1.0.123.7299</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,8 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Sportradar.OddsFeed.SDK.API\Sportradar.OddsFeed.SDK.API.csproj" />
-    <ProjectReference Include="..\..\Sportradar.OddsFeed.SDK.Common\Sportradar.OddsFeed.SDK.Common.csproj" />
+    <ProjectReference Include="..\..\Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj" />
   </ItemGroup>
 
   <ItemGroup>

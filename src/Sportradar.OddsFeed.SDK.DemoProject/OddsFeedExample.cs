@@ -5,7 +5,6 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API;
-using Sportradar.OddsFeed.SDK.API.Internal;
 using Sportradar.OddsFeed.SDK.DemoProject.Example;
 using Sportradar.OddsFeed.SDK.Entities;
 

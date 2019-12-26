@@ -12,12 +12,13 @@
     <Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Core 3.0)</Description>
     <PackageId>Sportradar.OddsFeed.SDKCore</PackageId>
     <PackageProjectUrl>http://sdk.sportradar.com</PackageProjectUrl>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
     <Product>Sportradar.OddsFeed.SDKCore</Product>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Version>1.0.10</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -47,14 +48,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.API\Sportradar.OddsFeed.SDK.API.csproj" PrivateAsset="true" />
-    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Common\Sportradar.OddsFeed.SDK.Common.csproj" PrivateAsset="true" />
-    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Entities.REST\Sportradar.OddsFeed.SDK.Entities.REST.csproj" PrivateAsset="true" />
-    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Entities\Sportradar.OddsFeed.SDK.Entities.csproj" PrivateAsset="true" />
-    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Messages\Sportradar.OddsFeed.SDK.Messages.csproj" PrivateAsset="true" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -75,21 +68,12 @@
     <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
+    <PackageReference Include="Unity" Version="5.11.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="BuildEventMerge.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Sportradar.OddsFeed.SDKCore.nuspec">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="BuildEventMerge.bat" />
-  </Target>
 </Project>
