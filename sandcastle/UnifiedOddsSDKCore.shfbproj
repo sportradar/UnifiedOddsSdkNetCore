@@ -13,9 +13,9 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>Cross-platform (.NET Core/.NET Standard)</FrameworkVersion>
     <OutputPath>doc\</OutputPath>
-    <HtmlHelpName>Odds Feed SDK Documentation</HtmlHelpName>
+    <HtmlHelpName>Odds Feed SDK Documentation %28.NetCore3.0%29</HtmlHelpName>
     <Language>en-US</Language>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
@@ -24,7 +24,7 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
-    <HelpFileVersion>1.24.0.0</HelpFileVersion>
+    <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#</SyntaxFilters>
@@ -33,10 +33,10 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>Odds Feed SDK Documentation</HelpTitle>
+    <HelpTitle>Odds Feed SDK Documentation %28.NetCore3.0%29</HelpTitle>
     <FeedbackEMailLinkText>SDK Team</FeedbackEMailLinkText>
     <FeedbackEMailAddress>sdk%40betradar.com</FeedbackEMailAddress>
-    <CopyrightText>Copyright &amp;#169%3b 2014, Sportradar AG</CopyrightText>
+    <CopyrightText>Copyright &amp;#169%3b 2019, Sportradar AG</CopyrightText>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
@@ -45,15 +45,11 @@
     <MSHelpViewerSdkLinkType>Id</MSHelpViewerSdkLinkType>
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
-    <ProjectSummary>Odds Feed SDK</ProjectSummary>
+    <ProjectSummary>Odds Feed SDK  %28.NetCore3.0%29</ProjectSummary>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected</VisibleItems>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK.API\Sportradar.OddsFeed.SDK.API.csproj" />
-      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK.Entities\Sportradar.OddsFeed.SDK.Entities.csproj" />
-      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK.Messages\Sportradar.OddsFeed.SDK.Messages.csproj" />
-      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK.Entities.REST\Sportradar.OddsFeed.SDK.Entities.REST.csproj" />
-      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK.Common\Sportradar.OddsFeed.SDK.Common.csproj" />
+      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj" />
     </DocumentationSources>
     <CollectionTocStyle>Flat</CollectionTocStyle>
     <HelpAttributes />
