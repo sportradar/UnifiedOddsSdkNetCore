@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-access-object containing tournament information (when fetching summary or fixture)
     /// </summary>
-    public class TournamentInfoDTO : SportEventSummaryDTO
+    internal class TournamentInfoDTO : SportEventSummaryDTO
     {
         /// <summary>
         /// Gets the tournament coverage

@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable
     /// <summary>
     /// Defines a contract for classes implementing cache export/import functionally
     /// </summary>
-    public interface IExportableSdkCache
+    internal interface IExportableSdkCache
     {
         /// <summary>
         /// Exports current items in the cache

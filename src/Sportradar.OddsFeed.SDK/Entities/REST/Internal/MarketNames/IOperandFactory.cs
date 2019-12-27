@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// A factory used to construct <see cref="IOperand"/> instances
     /// </summary>
-    public interface IOperandFactory
+    internal interface IOperandFactory
     {
         /// <summary>
         /// Constructs and returns a <see cref="IOperand"/> instance

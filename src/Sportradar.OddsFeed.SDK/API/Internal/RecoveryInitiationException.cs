@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// An exception thrown when the recovery operation cannot be initiated due to to after param to far in the past
     /// </summary>
-    public class RecoveryInitiationException : Exception
+    internal class RecoveryInitiationException : Exception
     {
         /// <summary>
         /// Gets a <see cref="DateTime"/> specifying the after parameter of the failed recovery

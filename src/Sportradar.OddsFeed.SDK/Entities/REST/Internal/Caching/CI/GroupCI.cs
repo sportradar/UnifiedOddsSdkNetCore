@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// A implementation of cache item for Group
     /// </summary>
-    public class GroupCI
+    internal class GroupCI
     {
         /// <summary>
         /// Gets the id of the group

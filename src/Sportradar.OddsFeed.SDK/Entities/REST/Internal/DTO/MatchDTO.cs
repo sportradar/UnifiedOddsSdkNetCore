@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object containing basic information about a match
     /// </summary>
-    public class MatchDTO : CompetitionDTO
+    internal class MatchDTO : CompetitionDTO
     {
         /// <summary>
         /// Gets a <see cref="SportEntityDTO"/> instance specifying the season to which the sport event associated with the current instance belongs to.

@@ -6,7 +6,7 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
-    public class TournamentCoverageDTO
+    internal class TournamentCoverageDTO
     {
         public  bool LiveCoverage { get; }
 

@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Defines an interface which validates a market mapping to ensure it can be used to map a specific market
     /// </summary>
-    public interface IMappingValidator
+    internal interface IMappingValidator
     {
         /// <summary>
         /// Validate the provided specifiers against current instance.

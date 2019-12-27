@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for jersey
     /// </summary>
-    public class JerseyDTO
+    internal class JerseyDTO
     {
         public string BaseColor { get; }
 

@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// Used to issue recovery requests to the feed
     /// </summary>
     [Log(LoggerType.ClientInteraction)]
-    public class RecoveryRequestIssuer : MarshalByRefObject, IEventRecoveryRequestIssuer, IRecoveryRequestIssuer
+    internal class RecoveryRequestIssuer : MarshalByRefObject, IEventRecoveryRequestIssuer, IRecoveryRequestIssuer
     {
         /// <summary>
         /// A format of the URL used to request a recovery of state after the specified timestamp

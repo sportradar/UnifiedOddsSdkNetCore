@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// An implementation of Jersey cache item
     /// </summary>
-    public class JerseyCI
+    internal class JerseyCI
     {
         public string BaseColor { get; }
 

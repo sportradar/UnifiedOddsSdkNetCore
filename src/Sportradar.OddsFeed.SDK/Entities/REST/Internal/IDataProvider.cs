@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// Defines a contract implemented by classes used to provide data specified by it's id
     /// </summary>
     /// <typeparam name="T">Specifies the type of data returned by this <see cref="IDataProvider{T}"/></typeparam>
-    public interface IDataProvider<T> where T : class
+    internal interface IDataProvider<T> where T : class
     {
         /// <summary>
         /// Event raised when the data provider receives the api message

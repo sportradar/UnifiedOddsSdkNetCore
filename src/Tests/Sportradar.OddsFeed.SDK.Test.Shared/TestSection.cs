@@ -209,7 +209,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         }
     }
 
-    public class TestSectionProvider : IConfigurationSectionProvider
+    internal class TestSectionProvider : IConfigurationSectionProvider
     {
         private readonly IOddsFeedConfigurationSection _section;
 

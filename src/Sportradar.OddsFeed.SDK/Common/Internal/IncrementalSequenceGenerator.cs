@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// A <see cref="ISequenceGenerator"/> which generates incremental sequence numbers
     /// </summary>
-    public class IncrementalSequenceGenerator : ISequenceGenerator
+    internal class IncrementalSequenceGenerator : ISequenceGenerator
     {
         /// <summary>
         /// The minimum allowed value for generated sequence numbers

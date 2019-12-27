@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// Defines a contract implemented by classes capable of delivering messages from the feed
     /// </summary>
-    public interface IMessageReceiver
+    internal interface IMessageReceiver
     {
         /// <summary>
         /// Gets a value indicating whether the current <see cref="IMessageReceiver"/> is currently opened;

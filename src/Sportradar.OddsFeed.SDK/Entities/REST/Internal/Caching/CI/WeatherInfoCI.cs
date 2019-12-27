@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Provides information about weather
     /// </summary>
-    public class WeatherInfoCI
+    internal class WeatherInfoCI
     {
         /// <summary>
         /// Gets the temperature in degrees celsius or a null reference if the temperature is not known

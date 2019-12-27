@@ -3,7 +3,7 @@
 */
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
-    public enum RecoveryStatusChangeReason
+    internal enum RecoveryStatusChangeReason
     {
         RECOVERY_STARTED,
 

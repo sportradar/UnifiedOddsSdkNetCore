@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to execute period tasks
     /// </summary>
-    public interface ITimer : IDisposable {
+    internal interface ITimer : IDisposable {
         /// <summary>
         /// Raised when the timer elapses
         /// </summary>

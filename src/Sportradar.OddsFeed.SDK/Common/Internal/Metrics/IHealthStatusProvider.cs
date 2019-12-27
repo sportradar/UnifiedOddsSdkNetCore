@@ -8,8 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Metrics
     /// <summary>
     /// Defines a contract implemented by classes used to provide <see cref="HealthCheckResult"/> for the SDK
     /// </summary>
-    
-    public interface IHealthStatusProvider
+    internal interface IHealthStatusProvider
     {
         /// <summary>
         /// Registers the health check which will be periodically triggered

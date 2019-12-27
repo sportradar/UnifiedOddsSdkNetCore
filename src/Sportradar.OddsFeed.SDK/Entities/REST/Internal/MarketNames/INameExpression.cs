@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes used to generate market / selection names from their name formats / patterns
     /// </summary>
-    public interface INameExpression
+    internal interface INameExpression
     {
         /// <summary>
         /// Asynchronously builds a name of the associated instance

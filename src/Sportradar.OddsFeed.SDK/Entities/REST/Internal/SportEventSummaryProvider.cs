@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// </summary>
     /// <seealso cref="DataProvider{RestMessage, EntityList}" />
     /// <seealso cref="IDataProvider{EntityList}" />
-    public class SportEventSummaryProvider : DataProvider<RestMessage, EntityList<SportEventSummaryDTO>>
+    internal class SportEventSummaryProvider : DataProvider<RestMessage, EntityList<SportEventSummaryDTO>>
     {
         /// <summary>
         /// An address format used to retrieve sport event summary

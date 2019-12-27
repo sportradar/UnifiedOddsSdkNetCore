@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by factories used to construct <see cref="IMarketMappingProvider"/> instances
     /// </summary>
-    public interface IMarketMappingProviderFactory
+    internal interface IMarketMappingProviderFactory
     {
         /// <summary>
         /// Builds and returns a new instance of the <see cref="IMarketMappingProvider"/>

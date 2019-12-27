@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object containing basic information about a sport event
     /// </summary>
-    public class StageDTO : CompetitionDTO
+    internal class StageDTO : CompetitionDTO
     {
         /// <summary>
         /// Gets a <see cref="StageDTO"/> specifying the parent stage associated with the current instance

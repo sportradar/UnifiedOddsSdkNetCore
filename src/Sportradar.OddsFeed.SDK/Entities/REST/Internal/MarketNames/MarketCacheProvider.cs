@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// A <see cref="IMarketDescriptionCache"/> implementation which provides access to correct cache by examining the market specifiers
     /// </summary>
     /// <seealso cref="IMarketDescriptionCache" />
-    public class MarketCacheProvider : IMarketCacheProvider
+    internal class MarketCacheProvider : IMarketCacheProvider
     {
         private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(MarketCacheProvider));
 

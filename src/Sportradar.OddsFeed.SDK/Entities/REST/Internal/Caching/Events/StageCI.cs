@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// </summary>
     /// <seealso cref="CompetitionCI" />
     /// <seealso cref="IStageCI" />
-    public class StageCI : CompetitionCI, IStageCI
+    internal class StageCI : CompetitionCI, IStageCI
     {
         /// <summary>
         /// The category identifier

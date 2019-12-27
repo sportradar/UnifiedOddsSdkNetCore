@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// Creates mapper for tournament schedule
     /// </summary>
-    public class TournamentScheduleMapperFactory : ISingleTypeMapperFactory<tournamentSchedule, EntityList<SportEventSummaryDTO>>
+    internal class TournamentScheduleMapperFactory : ISingleTypeMapperFactory<tournamentSchedule, EntityList<SportEventSummaryDTO>>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance for tournament schedule

@@ -3,7 +3,7 @@
 */
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
-    public class EventClockDTO
+    internal class EventClockDTO
     {
         public string EventTime { get; }
 

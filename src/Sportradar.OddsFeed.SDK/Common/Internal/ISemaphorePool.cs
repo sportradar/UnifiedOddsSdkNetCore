@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// Defines a pool of <see cref="SemaphoreSlim"/> instances which can be used to synchronize access to a shared resource
     /// </summary>
-    public interface ISemaphorePool : IDisposable
+    internal interface ISemaphorePool : IDisposable
     {
         /// <summary>
         /// Acquires a <see cref="SemaphoreSlim"/> - either one already associated with the specified identifier

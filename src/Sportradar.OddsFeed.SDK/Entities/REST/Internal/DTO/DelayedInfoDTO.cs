@@ -6,7 +6,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// Represents a delayed info for sport event
     /// </summary>
-    public class DelayedInfoDTO
+    internal class DelayedInfoDTO
     {
         /// <summary>
         /// Gets a identifier

@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes used to provide names of markets and outcomes
     /// </summary>
-    public interface INameProvider
+    internal interface INameProvider
     {
         /// <summary>
         /// Asynchronously gets the name of the specified market in the requested language

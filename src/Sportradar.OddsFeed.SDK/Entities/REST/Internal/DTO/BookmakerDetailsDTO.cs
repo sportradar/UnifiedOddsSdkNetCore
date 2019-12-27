@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-access-object representing a bookmaker details
     /// </summary>
-    public class BookmakerDetailsDTO
+    internal class BookmakerDetailsDTO
     {
         /// <summary>
         /// Gets the bookmaker id

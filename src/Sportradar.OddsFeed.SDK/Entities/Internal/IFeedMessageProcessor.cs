@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// Defines a contract implemented by classes capable of processing feed messages
     /// </summary>
-    public interface IFeedMessageProcessor
+    internal interface IFeedMessageProcessor
     {
         /// <summary>
         /// The processor identifier

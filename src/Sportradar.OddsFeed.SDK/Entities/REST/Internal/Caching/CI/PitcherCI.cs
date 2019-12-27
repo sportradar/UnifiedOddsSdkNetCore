@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Provides information about pitcher (cache item)
     /// </summary>
-    public class PitcherCI : SportEntityCI
+    internal class PitcherCI : SportEntityCI
     {
         /// <summary>
         /// Gets the name of the pitcher

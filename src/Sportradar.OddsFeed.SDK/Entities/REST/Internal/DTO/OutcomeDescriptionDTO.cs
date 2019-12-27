@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for outcome description
     /// </summary>
-    public class OutcomeDescriptionDTO
+    internal class OutcomeDescriptionDTO
     {
         internal string Id { get; }
 

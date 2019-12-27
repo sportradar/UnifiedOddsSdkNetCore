@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// A factory used to create <see cref="ISingleTypeMapper{ITournamentDetails}" /> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapperFactory{tournamentInfoType, ITournamentDetails}" />
-    public class TournamentInfoMapperFactory : ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDTO>
+    internal class TournamentInfoMapperFactory : ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDTO>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{TournamentInfoDTO}" /> instance

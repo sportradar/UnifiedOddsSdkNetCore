@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// A factory used to build <see cref="IMappingValidator"/> from their string definition
     /// </summary>
     /// <seealso cref="IMappingValidatorFactory" />
-    public class MappingValidatorFactory : IMappingValidatorFactory
+    internal class MappingValidatorFactory : IMappingValidatorFactory
     {
         /// <summary>
         /// A regex pattern used to match specifiers requiring specific decimal value (e.g. x.5)

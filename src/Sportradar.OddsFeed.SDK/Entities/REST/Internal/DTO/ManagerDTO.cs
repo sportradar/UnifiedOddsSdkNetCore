@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for manager
     /// </summary>
-    public class ManagerDTO : SportEntityDTO
+    internal class ManagerDTO : SportEntityDTO
     {
         public string Nationality { get; }
 

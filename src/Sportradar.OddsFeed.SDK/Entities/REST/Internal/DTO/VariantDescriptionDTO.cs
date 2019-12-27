@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data transfer object for variant description
     /// </summary>
-    public class VariantDescriptionDTO
+    internal class VariantDescriptionDTO
     {
         internal string Id { get; }
 

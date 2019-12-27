@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// Defines a contract implemented by classes used for validation of feed(AMQP) messages
     /// </summary>
-    public interface IFeedMessageValidator
+    internal interface IFeedMessageValidator
     {
         /// <summary>
         /// Validates the specified <see cref="FeedMessage"/> instance

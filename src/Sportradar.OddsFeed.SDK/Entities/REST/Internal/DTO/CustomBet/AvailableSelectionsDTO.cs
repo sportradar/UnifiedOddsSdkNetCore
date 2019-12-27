@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
     /// <summary>
     /// Defines a data-transfer-object for available selections for the event
     /// </summary>
-    public class AvailableSelectionsDTO
+    internal class AvailableSelectionsDTO
     {
         /// <summary>
         /// Gets the <see cref="URN"/> of the event

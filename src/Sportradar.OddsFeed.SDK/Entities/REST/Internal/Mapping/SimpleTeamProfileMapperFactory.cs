@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// A factory used to create <see cref="ISingleTypeMapper{SimpleTeamProfileDTO}"/> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapperFactory{TOut,TIn}" />
-    public class SimpleTeamProfileMapperFactory : ISingleTypeMapperFactory<simpleTeamProfileEndpoint, SimpleTeamProfileDTO>
+    internal class SimpleTeamProfileMapperFactory : ISingleTypeMapperFactory<simpleTeamProfileEndpoint, SimpleTeamProfileDTO>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance used to map <see cref="simpleTeamProfileEndpoint"/> instances to <see cref="SimpleTeamProfileDTO"/> instances

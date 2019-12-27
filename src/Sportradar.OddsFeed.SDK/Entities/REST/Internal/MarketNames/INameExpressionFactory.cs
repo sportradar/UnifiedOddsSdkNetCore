@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes used to build <see cref="INameExpression"/> instances from string expressions
     /// </summary>
-    public interface INameExpressionFactory
+    internal interface INameExpressionFactory
     {
         /// <summary>
         /// Builds and returns a <see cref="INameExpression"/> instance which can be used to generate name from the provided expression

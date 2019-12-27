@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <remarks>
     /// The class is not thread safe
     /// </remarks>
-    public class RecoveryOperation : IRecoveryOperation
+    internal class RecoveryOperation : IRecoveryOperation
     {
         /// <summary>
         /// A <see cref="ILogger"/> used for execution logging

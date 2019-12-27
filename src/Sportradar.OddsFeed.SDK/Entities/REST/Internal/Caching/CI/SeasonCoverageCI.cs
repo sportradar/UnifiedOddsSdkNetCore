@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Defines a cache item object for season coverage
     /// </summary>
-    public class SeasonCoverageCI
+    internal class SeasonCoverageCI
     {
         /// <summary>
         /// Gets the string representation of the maximum coverage available for the season associated with the current instance

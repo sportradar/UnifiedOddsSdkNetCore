@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes used to provide mapping ids of markets and outcomes
     /// </summary>
-    public interface IMarketMappingProvider
+    internal interface IMarketMappingProvider
     {
         /// <summary>
         /// Asynchronously gets the market mapping Id of the specified market

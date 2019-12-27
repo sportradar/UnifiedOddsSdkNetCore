@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using Dawn;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Defines a cache item object for lottery draw bonus info
     /// </summary>
-    public class BonusInfoCI
+    internal class BonusInfoCI
     {
         /// <summary>
         /// Gets the bonus balls info

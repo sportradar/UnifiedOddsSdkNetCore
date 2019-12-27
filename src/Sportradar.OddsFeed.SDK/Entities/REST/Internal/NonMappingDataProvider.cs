@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// </summary>
     /// <typeparam name="T">Specifies the type of DTO instance which will be obtained by deserialization and returned</typeparam>
     /// <seealso cref="IDataProvider{T}" />
-    public class NonMappingDataProvider<T> : IDataProvider<T> where T : class
+    internal class NonMappingDataProvider<T> : IDataProvider<T> where T : class
     {
         /// <summary>
         /// Event raised when the data provider receives the api message

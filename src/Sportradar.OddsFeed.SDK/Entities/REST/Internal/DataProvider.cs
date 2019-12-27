@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <typeparam name="TIn">Specifies the type of DTO instance which will be mapped to returned instance</typeparam>
     /// <typeparam name="TOut">Specifies the type of instances provided</typeparam>
     /// <seealso cref="IDataProvider{T}" />
-    public class DataProvider<TIn, TOut> : IDataProvider<TOut> where TIn : RestMessage where TOut : class
+    internal class DataProvider<TIn, TOut> : IDataProvider<TOut> where TIn : RestMessage where TOut : class
     {
         /// <summary>
         /// A <see cref="ILogger"/> used for execution logging

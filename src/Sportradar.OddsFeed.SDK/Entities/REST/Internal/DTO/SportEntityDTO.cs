@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// Represents a base class for all DTO's (data-access-objects) representing sport related entities
     /// </summary>
-    public class SportEntityDTO
+    internal class SportEntityDTO
     {
         /// <summary>
         /// Gets a <see cref="URN"/> representing the ID of the represented sport entity

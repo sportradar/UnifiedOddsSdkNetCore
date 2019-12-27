@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// Defines a contract for handling special cases for processing feed messages
     /// </summary>
-    public interface IFeedMessageHandler
+    internal interface IFeedMessageHandler
     {
         /// <summary>
         /// Stops the processing of fixture change if the same message was already processed

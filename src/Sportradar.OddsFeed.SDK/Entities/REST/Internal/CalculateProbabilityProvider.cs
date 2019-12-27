@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// An implementation of the <see cref="ICalculateProbabilityProvider"/> which fetches the data, deserializes it and than maps / converts it
     /// to the output type
     /// </summary>
-    public class CalculateProbabilityProvider : ICalculateProbabilityProvider
+    internal class CalculateProbabilityProvider : ICalculateProbabilityProvider
     {
         private readonly IDataPoster _poster;
         private readonly IDeserializer<CalculationResponseType> _deserializer;

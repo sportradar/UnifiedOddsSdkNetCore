@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// </summary>
     /// <seealso cref="ISportEventCI" />
     /// <seealso cref="ICompetitionCI" />
-    public class CompetitionCI : SportEventCI, ICompetitionCI
+    internal class CompetitionCI : SportEventCI, ICompetitionCI
     {
         /// <summary>
         /// The booking status

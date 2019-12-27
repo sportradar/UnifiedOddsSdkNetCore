@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing a market mapping for outcome
     /// </summary>
-    public class OutcomeMappingDTO
+    internal class OutcomeMappingDTO
     {
         internal string OutcomeId { get; }
 

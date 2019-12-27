@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// Creates mapper for sport categories
     /// </summary>
-    public class SportCategoriesMapperFactory : ISingleTypeMapperFactory<sportCategoriesEndpoint, SportCategoriesDTO>
+    internal class SportCategoriesMapperFactory : ISingleTypeMapperFactory<sportCategoriesEndpoint, SportCategoriesDTO>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance for sport categories

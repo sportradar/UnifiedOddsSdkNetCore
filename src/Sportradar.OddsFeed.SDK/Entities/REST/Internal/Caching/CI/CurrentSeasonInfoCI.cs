@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// Cache item for current season info
     /// </summary>
     /// <seealso cref="CacheItem" />
-    public class CurrentSeasonInfoCI : CacheItem
+    internal class CurrentSeasonInfoCI : CacheItem
     {
         /// <summary>
         /// Gets a <see cref="string"/> representation of the current season year

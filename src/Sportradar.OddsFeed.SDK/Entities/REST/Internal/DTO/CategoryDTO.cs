@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing a sport category
     /// </summary>
-    public class CategoryDTO : CategorySummaryDTO
+    internal class CategoryDTO : CategorySummaryDTO
     {
         /// <summary>
         /// A <see cref="IEqualityComparer{tournamentExtended}"/> used to compare different <see cref="tournamentExtended"/> instances

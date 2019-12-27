@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Represents a match score
     /// </summary>
-    public class Score
+    internal class Score
     {
         /// <summary>
         /// A score of the home team

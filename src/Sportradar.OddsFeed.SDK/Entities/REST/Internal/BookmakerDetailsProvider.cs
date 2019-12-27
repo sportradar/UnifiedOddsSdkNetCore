@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// A <see cref="IDataProvider{BookmakerDetailsDTO}"/> used to retrieve bookmaker details
     /// </summary>
     /// <seealso cref="DataProvider{bookmaker_details, BookmakerDetailsDTO}" />
-    public class BookmakerDetailsProvider : DataProvider<bookmaker_details, BookmakerDetailsDTO>
+    internal class BookmakerDetailsProvider : DataProvider<bookmaker_details, BookmakerDetailsDTO>
     {
         /// <summary>
         /// A <see cref="IDataFetcher"/> used to fetch the data

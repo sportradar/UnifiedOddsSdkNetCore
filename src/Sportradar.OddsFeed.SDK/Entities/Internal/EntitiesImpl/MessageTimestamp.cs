@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// Class MessageTimestamp
     /// </summary>
     /// <seealso cref="IMessageTimestamp" />
-    public class MessageTimestamp : IMessageTimestamp
+    internal class MessageTimestamp : IMessageTimestamp
     {
         /// <summary>
         /// Gets the value specifying when the message was generated and put in rabbit queue (the milliseconds since EPOCH UTC)

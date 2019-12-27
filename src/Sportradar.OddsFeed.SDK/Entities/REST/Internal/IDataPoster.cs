@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Defines a contract implemented by classes used POST request to obtain <see cref="HttpResponseMessage"/> instance containing status code and data
     /// </summary>
-    public interface IDataPoster
+    internal interface IDataPoster
     {
         /// <summary>
         /// Asynchronously gets a <see cref="HttpResponseMessage"/> as a result of POST request send to the provided <see cref="Uri"/>

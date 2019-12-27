@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for sport categories
     /// </summary>
-    public class SportCategoriesDTO
+    internal class SportCategoriesDTO
     {
         /// <summary>
         /// Gets the <see cref="SportEntityDTO"/> specifying the the parent sport

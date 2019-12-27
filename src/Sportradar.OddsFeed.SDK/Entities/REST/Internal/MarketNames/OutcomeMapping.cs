@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// A implementation of outcome mapping for the market
     /// </summary>
     /// <seealso cref="IOutcomeMapping" />
-    public class OutcomeMapping : IOutcomeMapping
+    internal class OutcomeMapping : IOutcomeMapping
     {
         private readonly IReadOnlyDictionary<CultureInfo, string> _producerOutcomeNames;
 

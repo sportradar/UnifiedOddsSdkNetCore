@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to obtain <see cref="Stream"/> instances containing some data
     /// </summary>
-    public interface IDataFetcher
+    internal interface IDataFetcher
     {
         /// <summary>
         /// Asynchronously gets a <see cref="Stream"/> containing data fetched from the provided <see cref="Uri"/>

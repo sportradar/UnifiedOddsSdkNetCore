@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to build <see cref="ITournament"/> instances
     /// </summary>
-    public interface ISportEntityFactory
+    internal interface ISportEntityFactory
     {
         /// <summary>
         /// Builds and returns a <see cref="IEnumerable{ISport}"/> representing all sports supported by the feed

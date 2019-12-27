@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to provides a probability calculation
     /// </summary>
-    public class Calculation : ICalculation
+    internal class Calculation : ICalculation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Calculation"/> class

@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Base class for cached representation of the sport hierarchy entity (sport, category, tournament)
     /// </summary>
-    public class CacheItem
+    internal class CacheItem
     {
         /// <summary>
         /// Gets a <see cref="URN"/> representing id of the related entity

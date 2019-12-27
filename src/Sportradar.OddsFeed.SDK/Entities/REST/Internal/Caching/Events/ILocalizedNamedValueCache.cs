@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// <summary>
     /// Defines a contract implemented by classes used to cache <see cref="ILocalizedNamedValue"/> instances
     /// </summary>
-    public interface ILocalizedNamedValueCache
+    internal interface ILocalizedNamedValueCache
     {
         /// <summary>
         /// Gets the match status translations asynchronously for specified cultures

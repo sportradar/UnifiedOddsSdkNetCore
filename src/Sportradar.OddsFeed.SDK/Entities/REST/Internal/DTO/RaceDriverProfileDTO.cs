@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for race driver profile
     /// </summary>
-    public class RaceDriverProfileDTO
+    internal class RaceDriverProfileDTO
     {
         public URN RaceDriverId { get; }
 

@@ -17,7 +17,7 @@ using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
-    public class TestSportEventFactory : ISportEntityFactory
+    internal class TestSportEventFactory : ISportEntityFactory
     {
         public Task<IEnumerable<ISport>> BuildSportsAsync(IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {

@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// Creates mapper for tournament seasons
     /// </summary>
-    public class TournamentSeasonsMapperFactory : ISingleTypeMapperFactory<tournamentSeasons, TournamentSeasonsDTO>
+    internal class TournamentSeasonsMapperFactory : ISingleTypeMapperFactory<tournamentSeasons, TournamentSeasonsDTO>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance for tournament seasons

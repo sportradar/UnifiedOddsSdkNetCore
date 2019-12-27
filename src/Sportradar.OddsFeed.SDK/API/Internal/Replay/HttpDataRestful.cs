@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
     /// A <see cref="IDataRestful"/> which uses the HTTP requests to post/get/put/patch and delete the data
     /// </summary>
     [Log(LoggerType.RestTraffic)]
-    public class HttpDataRestful : HttpDataFetcher, IDataRestful
+    internal class HttpDataRestful : HttpDataFetcher, IDataRestful
     {
         private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(HttpDataRestful));
 

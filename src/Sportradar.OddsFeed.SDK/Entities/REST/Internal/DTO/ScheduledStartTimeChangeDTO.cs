@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for scheduled start time change (used in fixtures)
     /// </summary>
-    public class ScheduledStartTimeChangeDTO
+    internal class ScheduledStartTimeChangeDTO
     {
         /// <summary>
         /// Gets the old time

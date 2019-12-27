@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// A class used to connect to the Rabbit mq broker
     /// </summary>
     /// <seealso cref="IRabbitMqChannel" />
-    public class RabbitMqChannel : IRabbitMqChannel
+    internal class RabbitMqChannel : IRabbitMqChannel
     {
         /// <summary>
         /// The <see cref="ILogger"/> used execution logging

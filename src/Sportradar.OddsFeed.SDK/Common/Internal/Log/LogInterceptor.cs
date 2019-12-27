@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
     /// <summary>
     /// A log proxy used to log input and output parameters of a method
     /// </summary>
-    public class LogInterceptor : IInterceptor
+    internal class LogInterceptor : IInterceptor
     {
         /// <summary>
         /// A Predicate used to filter which class methods may be logged

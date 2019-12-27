@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <see cref="AvailableSelectionsDTO"/> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapperFactory{TOut,TIn}" />
-    public class AvailableSelectionsMapperFactory : ISingleTypeMapperFactory<AvailableSelectionsType, AvailableSelectionsDTO>
+    internal class AvailableSelectionsMapperFactory : ISingleTypeMapperFactory<AvailableSelectionsType, AvailableSelectionsDTO>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance used to map <see cref="AvailableSelectionsType"/> instances to

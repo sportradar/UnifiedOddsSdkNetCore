@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// A data-access-object representing a venue
     /// </summary>
     /// <seealso cref="SportEntityDTO" />
-    public class VenueDTO : SportEntityDTO
+    internal class VenueDTO : SportEntityDTO
     {
         /// <summary>
         /// Gets the capacity of the represented venue or a null reference if value is not known

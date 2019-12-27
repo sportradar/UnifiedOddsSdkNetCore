@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Competitor cache item to be saved within cache
     /// </summary>
-    public class CompetitorCI : SportEntityCI, IExportableCI
+    internal class CompetitorCI : SportEntityCI, IExportableCI
     {
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing competitor names in different languages

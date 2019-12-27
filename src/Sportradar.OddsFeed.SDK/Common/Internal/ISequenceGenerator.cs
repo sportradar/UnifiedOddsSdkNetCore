@@ -6,7 +6,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to generate sequence numbers
     /// </summary>
-    public interface ISequenceGenerator
+    internal interface ISequenceGenerator
     {
         /// <summary>
         /// Gets the next available sequence number

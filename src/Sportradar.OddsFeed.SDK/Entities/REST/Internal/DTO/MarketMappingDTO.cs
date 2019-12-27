@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing a market mapping
     /// </summary>
-    public class MarketMappingDTO
+    internal class MarketMappingDTO
     {
         internal IEnumerable<int> ProducerIds { get; }
 

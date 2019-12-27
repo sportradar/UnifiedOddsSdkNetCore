@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for tournament season
     /// </summary>
-    public class TournamentSeasonsDTO
+    internal class TournamentSeasonsDTO
     {
         /// <summary>
         /// Gets the tournament

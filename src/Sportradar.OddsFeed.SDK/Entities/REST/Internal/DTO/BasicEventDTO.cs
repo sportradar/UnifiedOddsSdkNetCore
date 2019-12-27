@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for <see cref="basicEvent"/> used in <see cref="MatchTimelineDTO"/>
     /// </summary>
-    public class BasicEventDTO
+    internal class BasicEventDTO
     {
         public int Id;
         public decimal? HomeScore;

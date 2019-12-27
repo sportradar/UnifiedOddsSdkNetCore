@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// An implementation of the Manager cache item
     /// </summary>
-    public class ManagerCI : CacheItem
+    internal class ManagerCI : CacheItem
     {
         /// <summary>
         /// Gets a <see cref="IDictionary{CultureInfo, String}"/> containing translated nationality of the item

@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// <summary>
     /// Implementation of the <see cref="ILocalizedNamedValue"/>
     /// </summary>
-    public class LocalizedNamedValue : NamedValue, ILocalizedNamedValue
+    internal class LocalizedNamedValue : NamedValue, ILocalizedNamedValue
     {
 
         /// <summary>

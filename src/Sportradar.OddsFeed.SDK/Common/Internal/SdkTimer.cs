@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// A timer used for invocation of period tasks
     /// </summary>
-    public class SdkTimer : ITimer
+    internal class SdkTimer : ITimer
     {
         /// <summary>
         /// Internally used <see cref="Timer"/> instance

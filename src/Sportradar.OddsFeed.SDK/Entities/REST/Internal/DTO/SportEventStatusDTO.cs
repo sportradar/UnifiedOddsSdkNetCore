@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representation for sport event status (primarily received via feed message)
     /// </summary>
-    public class SportEventStatusDTO
+    internal class SportEventStatusDTO
     {
         private const string THROW_PROPERTY = "Throw";
         private const string TRY_PROPERTY = "Try";

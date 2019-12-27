@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// </summary>
     /// <seealso cref="ISportEventStatus" />
     /// <seealso cref="ISingleTypeMapper{ISportEventStatus}" />
-    public class SportEventStatusMapper : ISingleTypeMapper<SportEventStatusDTO>
+    internal class SportEventStatusMapper : ISingleTypeMapper<SportEventStatusDTO>
     {
         /// <summary>
         /// A <see cref="sportEventStatus" /> instance containing status data about the associated sport event

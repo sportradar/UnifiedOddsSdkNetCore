@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// A <see cref="IMappingValidator"/> which wraps multiple market validators
     /// </summary>
     /// <seealso cref="IMappingValidator" />
-    public class CompositeMappingValidator : IMappingValidator
+    internal class CompositeMappingValidator : IMappingValidator
     {
         /// <summary>
         /// The <see cref="IReadOnlyCollection{T}"/> containing actual validators

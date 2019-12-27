@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// <summary>
     /// Defines a contract implemented by classes, which represent cached information about a competition
     /// </summary>
-    public interface ICompetitionCI : ISportEventCI
+    internal interface ICompetitionCI : ISportEventCI
     {
         /// <summary>
         /// Asynchronously fetch event summary associated with the current instance (saving done in <see cref="ISportEventStatusCache"/>)

@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// A base class for all messages dispatched by the SDK
     /// </summary>
     [Serializable]
-    public abstract class Message : IMessage
+    internal abstract class Message : IMessage
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Message" /> class

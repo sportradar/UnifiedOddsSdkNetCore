@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// whether the feed is producing alive messages in a specified interval and if the user is
     /// processing messages in a timely matter.
     /// </summary>
-    public class TimestampTracker : ITimestampTracker
+    internal class TimestampTracker : ITimestampTracker
     {
         /// <summary>
         /// A <see cref="ILogger"/>

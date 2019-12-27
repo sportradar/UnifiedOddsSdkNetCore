@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// Defines extension methods for Func classes which catch pre-defined exception types
     /// </summary>
-    public static class SafeInvoker
+    internal static class SafeInvoker
     {
         /// <summary>
         /// Handles the provided exception by logging it's data along with the provided message

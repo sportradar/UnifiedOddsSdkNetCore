@@ -8,7 +8,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
-    public class EventTimeline : IEventTimeline
+    internal class EventTimeline : IEventTimeline
     {
         public IEnumerable<ITimelineEvent> TimelineEvents { get; }
 

@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Defines a contract for classes implementing getting information from UF Sports API
     /// </summary>
-    public interface IDataRouterManager
+    internal interface IDataRouterManager
     {
         /// <summary>
         /// Occurs when data from Sports API arrives

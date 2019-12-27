@@ -7,7 +7,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
     /// Implementation of <see cref="IReplayResponse"/>
     /// </summary>
     /// <seealso cref="IReplayResponse" />
-    public class ReplayResponse : IReplayResponse
+    internal class ReplayResponse : IReplayResponse
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="IReplayResponse" /> is success.

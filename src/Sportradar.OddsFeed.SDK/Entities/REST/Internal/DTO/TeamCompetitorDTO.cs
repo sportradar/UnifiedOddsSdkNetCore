@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// Provides information about team competitor
     /// </summary>
-    public class TeamCompetitorDTO : CompetitorDTO
+    internal class TeamCompetitorDTO : CompetitorDTO
     {
         /// <summary>
         /// Gets the competitor's qualifier

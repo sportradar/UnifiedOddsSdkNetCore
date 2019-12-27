@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to provide data probability calculations
     /// </summary>
-    public interface ICalculateProbabilityProvider
+    internal interface ICalculateProbabilityProvider
     {
         /// <summary>
         /// Asynchronously gets a <see cref="CalculationDTO"/> instance

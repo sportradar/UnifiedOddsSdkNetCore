@@ -9,7 +9,7 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
-    public class BasicTournamentDTO : SportEventSummaryDTO
+    internal class BasicTournamentDTO : SportEventSummaryDTO
     {
         /// <summary>
         /// Gets the tournament coverage

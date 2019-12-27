@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Class CompetitionStatus
     /// </summary>
     /// <seealso cref="ICompetitionStatus" />
-    public class CompetitionStatus : ICompetitionStatus
+    internal class CompetitionStatus : ICompetitionStatus
     {
         /// <summary>
         /// The sport event status dto

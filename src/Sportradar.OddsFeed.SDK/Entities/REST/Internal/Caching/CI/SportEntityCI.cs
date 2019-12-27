@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// A representation of the sport entity used by the cache
     /// </summary>
-    public class SportEntityCI
+    internal class SportEntityCI
     {
         /// <summary>
         /// Gets the id of the represented sport entity

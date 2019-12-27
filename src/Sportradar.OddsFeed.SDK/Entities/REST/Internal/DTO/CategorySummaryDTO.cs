@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing a sport category
     /// </summary>
-    public class CategorySummaryDTO : SportEntityDTO
+    internal class CategorySummaryDTO : SportEntityDTO
     {
         /// <summary>
         /// The country code

@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Defines a contract implemented by classes representing internal odds feed configuration / settings
     /// </summary>
-    public interface IOddsFeedConfigurationInternal : IOddsFeedConfiguration
+    internal interface IOddsFeedConfigurationInternal : IOddsFeedConfiguration
     {
         /// <summary>
         /// Gets a value indication whether statistics collection is enabled

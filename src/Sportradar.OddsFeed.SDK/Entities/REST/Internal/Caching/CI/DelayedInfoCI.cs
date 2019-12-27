@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Defines a cache item for fixture delayed info
     /// </summary>
-    public class DelayedInfoCI
+    internal class DelayedInfoCI
     {
         /// <summary>
         /// Gets the identifier

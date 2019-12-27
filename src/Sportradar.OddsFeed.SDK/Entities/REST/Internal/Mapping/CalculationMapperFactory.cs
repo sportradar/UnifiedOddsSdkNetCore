@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <see cref="CalculationDTO"/> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapperFactory{TOut,TIn}" />
-    public class CalculationMapperFactory : ISingleTypeMapperFactory<CalculationResponseType, CalculationDTO>
+    internal class CalculationMapperFactory : ISingleTypeMapperFactory<CalculationResponseType, CalculationDTO>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance used to map <see cref="CalculationResponseType"/> instances to

@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
     /// Contains basic information about a sport tournament
     /// </summary>
     /// <seealso cref="SportEntityData" />
-    public class CategoryData : SportEntityData
+    internal class CategoryData : SportEntityData
     {
         /// <summary>
         /// Gets the <see cref="IEnumerable{URN}"/> representing the ids of tournaments, which belong to category represented by the current instance

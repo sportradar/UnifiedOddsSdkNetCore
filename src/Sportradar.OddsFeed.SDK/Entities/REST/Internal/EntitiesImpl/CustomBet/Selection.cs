@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to provides an requested selection
     /// </summary>
-    public class Selection : ISelection
+    internal class Selection : ISelection
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Selection"/> class

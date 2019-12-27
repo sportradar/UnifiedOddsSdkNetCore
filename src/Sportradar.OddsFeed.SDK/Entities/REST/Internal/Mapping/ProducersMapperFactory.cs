@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <see cref="EntityList{ProducerDTO}"/> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapperFactory{TOut,TIn}" />
-    public class ProducersMapperFactory : ISingleTypeMapperFactory<producers, EntityList<ProducerDTO>>
+    internal class ProducersMapperFactory : ISingleTypeMapperFactory<producers, EntityList<ProducerDTO>>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance used to map <see cref="producers"/> instances to

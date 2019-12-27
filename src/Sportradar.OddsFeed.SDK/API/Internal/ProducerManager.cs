@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// Implementation of <see cref="IProducerManager"/>
     /// </summary>
     /// <seealso cref="IProducerManager" />
-    public class ProducerManager : IProducerManager
+    internal class ProducerManager : IProducerManager
     {
         /// <summary>
         /// The producers

@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// Creates mapper for fixture changes
     /// </summary>
-    public class FixtureChangesMapperFactory : ISingleTypeMapperFactory<fixtureChangesEndpoint, IEnumerable<FixtureChangeDTO>>
+    internal class FixtureChangesMapperFactory : ISingleTypeMapperFactory<fixtureChangesEndpoint, IEnumerable<FixtureChangeDTO>>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance for fixture changes

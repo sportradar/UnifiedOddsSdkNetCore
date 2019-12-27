@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments
     /// <summary>
     /// Event arguments for the <see cref="IMessageReceiver.FeedMessageDeserializationFailed"/> event
     /// </summary>
-    public class MessageDeserializationFailedEventArgs : EventArgs
+    internal class MessageDeserializationFailedEventArgs : EventArgs
     {
         /// <summary>
         /// Gets the <see cref="IEnumerable{Byte}"/> containing message unprocessed data

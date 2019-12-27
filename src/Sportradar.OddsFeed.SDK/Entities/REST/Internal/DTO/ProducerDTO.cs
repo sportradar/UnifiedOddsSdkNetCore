@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing producer info returned by Sports API
     /// </summary>
-    public class ProducerDTO
+    internal class ProducerDTO
     {
         /// <summary>
         /// Gets the Id of the associated producer

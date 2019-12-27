@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Defines a cache item for round
     /// </summary>
-    public class RoundCI
+    internal class RoundCI
     {
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo,String}"/> containing round names in different languages

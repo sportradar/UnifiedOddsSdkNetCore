@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// A <see cref="IMappingValidator"/> which checks the specified market specifier against specific value
     /// </summary>
-    public class SpecificValueMappingValidator : IMappingValidator
+    internal class SpecificValueMappingValidator : IMappingValidator
     {
         /// <summary>
         /// The name of the specifier in the valid for attribute

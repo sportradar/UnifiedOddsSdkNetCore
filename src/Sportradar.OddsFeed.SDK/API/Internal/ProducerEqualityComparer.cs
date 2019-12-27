@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// A <see cref="IEqualityComparer{T}"/> used to compare <see cref="IProducer"/> instances
     /// </summary>
-    public class ProducerEqualityComparer : IEqualityComparer<IProducer>
+    internal class ProducerEqualityComparer : IEqualityComparer<IProducer>
     {
         /// <summary>
         /// Determines whether the passed <see cref="IProducer"/> instances are equal

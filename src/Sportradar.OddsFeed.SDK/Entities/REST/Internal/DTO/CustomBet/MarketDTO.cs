@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
     /// <summary>
     /// Defines a data-transfer-object for available selections for the market
     /// </summary>
-    public class MarketDTO
+    internal class MarketDTO
     {
         /// <summary>
         /// Gets the id of the market

@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing competitor's (team's) profile
     /// </summary>
-    public class CompetitorProfileDTO
+    internal class CompetitorProfileDTO
     {
         /// <summary>
         /// A <see cref="CompetitorDTO"/> representing the competitor represented by the current profile

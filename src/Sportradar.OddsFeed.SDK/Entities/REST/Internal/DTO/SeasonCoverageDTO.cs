@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// Defines a data-transfer object for season coverage info
     /// </summary>
-    public class SeasonCoverageDTO
+    internal class SeasonCoverageDTO
     {
         /// <summary>
         /// Gets the maximum covered value

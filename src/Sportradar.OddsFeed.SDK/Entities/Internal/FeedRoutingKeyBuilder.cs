@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// Defines builder for routing keys and checks for feed sessions combo validation
     /// </summary>
-    public static class FeedRoutingKeyBuilder
+    internal static class FeedRoutingKeyBuilder
     {
         //  hi.-.live.odds_change.5.sr:match.12329150.nodeId (.producerId)
         // Note: there is a dot in event_id

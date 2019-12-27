@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// Class MarketDescriptionsMapperFactory
     /// </summary>
-    public class MarketDescriptionsMapperFactory : ISingleTypeMapperFactory<market_descriptions, EntityList<MarketDescriptionDTO>>
+    internal class MarketDescriptionsMapperFactory : ISingleTypeMapperFactory<market_descriptions, EntityList<MarketDescriptionDTO>>
     {
         /// <summary>
         /// Creates and returns an instance of Mapper for mapping <see cref="market_descriptions"/>

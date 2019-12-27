@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object containing basic information about a competition
     /// </summary>
-    public class CompetitionDTO : SportEventSummaryDTO
+    internal class CompetitionDTO : SportEventSummaryDTO
     {
         /// <summary>
         /// Gets the sport event status

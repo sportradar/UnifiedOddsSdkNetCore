@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// A data-access-object representing a player as a member of competitor
     /// </summary>
     /// <seealso cref="PlayerDTO" />
-    public class PlayerCompetitorDTO : PlayerDTO
+    internal class PlayerCompetitorDTO : PlayerDTO
     {
         /// <summary>
         /// Gets the abbreviation

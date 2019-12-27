@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// Represents a <see cref="IOperand"/> capable of handling simple operand - i.e. the operand is the name of a specifier
     /// </summary>
     /// <seealso cref="IOperand" />
-    public class SimpleOperand : SpecifierBasedOperator, IOperand
+    internal class SimpleOperand : SpecifierBasedOperator, IOperand
     {
         /// <summary>
         /// A <see cref="IReadOnlyDictionary{String,String}"/> containing market specifiers.

@@ -17,7 +17,7 @@ using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Test
 {
-    public class FakeRabbitMqChannel : IRabbitMqChannel
+    internal class FakeRabbitMqChannel : IRabbitMqChannel
     {
         private readonly IDeserializer<FeedMessage> _deserializer;
 

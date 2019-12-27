@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// </summary>
     /// <seealso cref="CompetitionCI" />
     /// <seealso cref="IMatchCI" />
-    public class MatchCI : CompetitionCI, IMatchCI
+    internal class MatchCI : CompetitionCI, IMatchCI
     {
         /// <summary>
         /// The season

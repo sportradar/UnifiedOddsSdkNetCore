@@ -7,7 +7,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// Implementation of <see cref="IMarketMetadata"/>
     /// </summary>
     /// <seealso cref="IMarketMetadata" />
-    public class MarketMetadata : IMarketMetadata
+    internal class MarketMetadata : IMarketMetadata
     {
         /// <summary>
         /// Gets a timestamp in UTC when to betstop the associated market. Typically used for outrights and typically is the start-time of the event the market refers to

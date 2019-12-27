@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// which type the data should be deserialized
     /// </summary>
     /// <typeparam name="T">Specifies the type that can be deserialized</typeparam>
-    public class Deserializer<T> : IDeserializer<T> where T : class
+    internal class Deserializer<T> : IDeserializer<T> where T : class
     {
         /// <summary>
         /// A list of <see cref="Type"/> specifying base types which are supported by the deserializer. All subclasses

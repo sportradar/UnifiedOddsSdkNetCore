@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// The implementation is not thread safe and <see cref="ITimeProvider"/> provided by
     /// this type should not be switched in when the SDK is running (i.e. only in unit tests)
     /// </remarks>
-    public static class TimeProviderAccessor
+    internal static class TimeProviderAccessor
     {
         /// <summary>
         /// Gets a <see cref="ITimeProvider"/> providing access to the current time

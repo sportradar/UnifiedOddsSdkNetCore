@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// A contract implemented by types used to perform recovery operation
     /// </summary>
-    public interface IRecoveryOperation
+    internal interface IRecoveryOperation
     {
         /// <summary>
         /// Gets a value indication whether the recovery operation is currently running.

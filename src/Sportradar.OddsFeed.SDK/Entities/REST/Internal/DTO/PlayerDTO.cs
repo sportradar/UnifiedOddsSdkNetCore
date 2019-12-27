@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// A data-access-object representing a player
     /// </summary>
     /// <seealso cref="SportEntityDTO" />
-    public class PlayerDTO : SportEntityDTO
+    internal class PlayerDTO : SportEntityDTO
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerDTO"/> class

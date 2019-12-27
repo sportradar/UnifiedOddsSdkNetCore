@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing a market description attributes
     /// </summary>
-    public class MarketAttributeDTO
+    internal class MarketAttributeDTO
     {
         /// <summary>
         /// Gets the attribute name

@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// Class SportEventStatusCI
     /// </summary>
     /// <seealso cref="ISportEventStatusCI" />
-    public class SportEventStatusCI : ISportEventStatusCI
+    internal class SportEventStatusCI : ISportEventStatusCI
     {
         /// <summary>
         /// Gets a <see cref="EventStatus"/> describing the high-level status of the associated sport event

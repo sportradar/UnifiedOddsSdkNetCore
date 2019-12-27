@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for fixture change
     /// </summary>
-    public class FixtureChangeDTO
+    internal class FixtureChangeDTO
     {
         /// <summary>
         /// Gets the <see cref="URN"/> specifying the sport event

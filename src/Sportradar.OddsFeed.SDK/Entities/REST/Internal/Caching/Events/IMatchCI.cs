@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// <summary>
     /// Defines a contract implemented by classes, which represent cached information about a match sport event
     /// </summary>
-    public interface IMatchCI : ICompetitionCI
+    internal interface IMatchCI : ICompetitionCI
     {
         /// <summary>
         /// Asynchronously gets <see cref="CacheItem"/> instance providing basic information about

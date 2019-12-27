@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// Class PeriodScoreDTO
     /// </summary>
-    public class PeriodScoreDTO
+    internal class PeriodScoreDTO
     {
         /// <summary>
         /// Gets the home score

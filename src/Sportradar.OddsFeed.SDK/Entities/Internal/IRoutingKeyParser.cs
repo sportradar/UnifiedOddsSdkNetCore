@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// Defines a contract implemented by classes used to parse the RabbitMq routing key in order to
     /// determine the sportId of the sport associated with the message
     /// </summary>
-    public interface IRoutingKeyParser {
+    internal interface IRoutingKeyParser {
 
         /// <summary>
         /// Gets a <see cref="URN"/> representing the sportId by parsing the provided <code>routingKey</code>

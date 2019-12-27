@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
     /// Contains basic information about a sport tournament
     /// </summary>
     /// <seealso cref="SportEntityData" />
-    public class TournamentData : SportEntityData
+    internal class TournamentData : SportEntityData
     {
         /// <summary>
         /// Gets a <see cref="DateTime"/> specifying the scheduled start time of the associated tournament or a null reference if start time is not known

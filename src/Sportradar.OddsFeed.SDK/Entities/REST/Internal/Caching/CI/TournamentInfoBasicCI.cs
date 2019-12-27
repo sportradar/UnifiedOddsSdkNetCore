@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
@@ -16,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// Class TournamentInfoBasicCI
     /// </summary>
     /// <seealso cref="CacheItem" />
-    public class TournamentInfoBasicCI : CacheItem
+    internal class TournamentInfoBasicCI : CacheItem
     {
         /// <summary>
         /// Gets the category

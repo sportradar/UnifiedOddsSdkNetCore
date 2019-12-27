@@ -8,7 +8,7 @@ using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
-    public class TestProducerManager : ProducerManager
+    internal class TestProducerManager : ProducerManager
     {
         public TestProducerManager(IProducersProvider producersProvider, IOddsFeedConfiguration config)
             : base(producersProvider, config)

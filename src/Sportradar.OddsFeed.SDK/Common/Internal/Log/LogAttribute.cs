@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
     /// A method or class attribute indicating if the method input and output parameters should be logged
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class LogAttribute : Attribute
+    internal class LogAttribute : Attribute
     {
         /// <summary>
         /// The <see cref="LoggerType"/> of the attribute

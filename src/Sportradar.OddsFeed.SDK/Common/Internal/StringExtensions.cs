@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// String extensions
     /// </summary>
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         /// <summary>
         /// Truncate the string to max length

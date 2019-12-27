@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to issue message recovery requests to the feed.
     /// </summary>
-    public interface IRecoveryRequestIssuer
+    internal interface IRecoveryRequestIssuer
     {
         /// <summary>
         /// Asynchronously requests a recovery for the specified producer for changes which occurred after specified time

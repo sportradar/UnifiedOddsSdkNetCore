@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// A cache item for basic event (used in match timeline) (on REST and DTO is called basicEvent); this has different name to be similar to java version
     /// </summary>
-    public class TimelineEventCI
+    internal class TimelineEventCI
     {
         public int Id;
         public decimal? HomeScore;

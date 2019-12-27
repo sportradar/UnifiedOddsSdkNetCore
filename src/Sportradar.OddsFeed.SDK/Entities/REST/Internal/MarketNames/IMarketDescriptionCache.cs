@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes used to cache market descriptions
     /// </summary>
-    public interface IMarketDescriptionCache : IHealthStatusProvider, IDisposable
+    internal interface IMarketDescriptionCache : IHealthStatusProvider, IDisposable
     {
         /// <summary>
         /// Asynchronously gets a <see cref="IMarketDescription" /> instance for the market specified by <code>id</code> and <code>specifiers</code>

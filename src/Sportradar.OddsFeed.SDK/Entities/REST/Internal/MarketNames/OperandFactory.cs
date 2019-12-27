@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// A default implementation of the <see cref="IOperandFactory"/> contract
     /// </summary>
-    public class OperandFactory : IOperandFactory
+    internal class OperandFactory : IOperandFactory
     {
         /// <summary>
         /// Constructs and returns a <see cref="IOperand" /> instance

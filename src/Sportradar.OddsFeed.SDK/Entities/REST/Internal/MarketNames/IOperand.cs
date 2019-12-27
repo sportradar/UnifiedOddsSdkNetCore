@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Defines a contract implemented by classes representing mathematical operands
     /// </summary>
-    public interface IOperand
+    internal interface IOperand
     {
         /// <summary>
         /// Gets the value of the operand as a <see cref="int"/>

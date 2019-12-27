@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// Base class of the cache item for sport event
     /// </summary>
     /// <seealso cref="SportEventCI" />
-    public class SportEventCI : ISportEventCI, IExportableCI
+    internal class SportEventCI : ISportEventCI, IExportableCI
     {
         /// <summary>
         /// The <see cref="ILogger" /> instance used for execution logging

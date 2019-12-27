@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Provider for match status descriptions
     /// </summary>
-    public class NamedValueDataProvider : IDataProvider<EntityList<NamedValueDTO>>
+    internal class NamedValueDataProvider : IDataProvider<EntityList<NamedValueDTO>>
     {
         /// <summary>
         /// Event raised when the data provider receives the api message

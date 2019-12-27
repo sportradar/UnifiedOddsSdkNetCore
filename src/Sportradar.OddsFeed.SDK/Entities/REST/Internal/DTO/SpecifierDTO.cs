@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representation for specifier
     /// </summary>
-    public class SpecifierDTO
+    internal class SpecifierDTO
     {
         internal string Name { get; }
 

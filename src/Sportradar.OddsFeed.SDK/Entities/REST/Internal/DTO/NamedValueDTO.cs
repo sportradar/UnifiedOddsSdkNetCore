@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-access-object representing a named value
     /// </summary>
-    public class NamedValueDTO
+    internal class NamedValueDTO
     {
         /// <summary>
         /// Gets the id of the match status

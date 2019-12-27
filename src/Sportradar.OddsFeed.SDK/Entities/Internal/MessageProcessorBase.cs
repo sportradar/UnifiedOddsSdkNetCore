@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// Base class for message processor
     /// </summary>
-    public abstract class MessageProcessorBase {
+    internal abstract class MessageProcessorBase {
 
         /// <summary>
         /// Raised when a <see cref="FeedMessage"/> instance has been processed

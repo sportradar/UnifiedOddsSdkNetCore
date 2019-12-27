@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing a fixture
     /// </summary>
-    public class FixtureDTO : MatchDTO
+    internal class FixtureDTO : MatchDTO
     {
         internal DateTime? StartTime { get; }
 

@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for match timeline
     /// </summary>
-    public class MatchTimelineDTO
+    internal class MatchTimelineDTO
     {
         public SportEventSummaryDTO SportEvent { get; }
 

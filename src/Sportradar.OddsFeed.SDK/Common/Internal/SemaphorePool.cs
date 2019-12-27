@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// A <see cref="ISemaphorePool"/> implementation
     /// </summary>
-    public class SemaphorePool : ISemaphorePool
+    internal class SemaphorePool : ISemaphorePool
     {
         //private readonly ILogger _executionLog = SdkLoggerFactory.GetLogger(typeof(SemaphorePool));
 

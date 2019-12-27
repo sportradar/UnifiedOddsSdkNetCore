@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// A <see cref="IMappingValidator"/> which validates the decimal part of the provided value against a predefined value
     /// </summary>
     /// <seealso cref="IMappingValidator" />
-    public class DecimalValueMappingValidator : IMappingValidator
+    internal class DecimalValueMappingValidator : IMappingValidator
     {
         /// <summary>
         /// The name of the specifier in the valid for attribute

@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public const string SdkTestLogRepositoryName = "SdkTestLogRepositoryName";
         public const ExceptionHandlingStrategy ThrowingStrategy = ExceptionHandlingStrategy.THROW;
 
-        public static void ValidateTestEventId(MatchCI ci, IEnumerable<CultureInfo> cultures, bool canHaveOtherLanguage)
+        internal static void ValidateTestEventId(MatchCI ci, IEnumerable<CultureInfo> cultures, bool canHaveOtherLanguage)
         {
             Assert.IsNotNull(ci, "Cached item not found.");
             Assert.AreEqual(EventId, ci.Id);

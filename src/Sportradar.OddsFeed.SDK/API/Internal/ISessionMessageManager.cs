@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     ///  Defines a contract implemented by classes capable of processing feed messages and stashing them. Only 1 per session should be used.
     /// </summary>
-    public interface ISessionMessageManager
+    internal interface ISessionMessageManager
     {
         /// <summary>
         /// Stashes the messages for specified request id and <see cref="IProducer"/>

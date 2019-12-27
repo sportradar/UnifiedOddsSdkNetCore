@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Provides information about venue of a sport event
     /// </summary>
-    public class VenueCI : SportEntityCI
+    internal class VenueCI : SportEntityCI
     {
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing venue name in different languages

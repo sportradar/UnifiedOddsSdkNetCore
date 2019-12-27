@@ -13,7 +13,7 @@ using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
-    public class CurrentSeasonInfo : ICurrentSeasonInfo
+    internal class CurrentSeasonInfo : ICurrentSeasonInfo
     {
         public URN Id { get; }
         public IReadOnlyDictionary<CultureInfo, string> Names { get; }

@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// Provides mapping ids of markets and outcomes
     /// </summary>
     /// <seealso cref="IMarketMappingProvider" />
-    public class MarketMappingProvider : IMarketMappingProvider
+    internal class MarketMappingProvider : IMarketMappingProvider
     {
         /// <summary>
         /// A <see cref="ILogger"/> instance used for execution logging

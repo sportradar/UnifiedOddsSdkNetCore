@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
     {
         private const string InputXml = "whoami.xml";
 
-        public static IDataProvider<BookmakerDetailsDTO> BuildProvider(string apiKey)
+        internal static IDataProvider<BookmakerDetailsDTO> BuildProvider(string apiKey)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 

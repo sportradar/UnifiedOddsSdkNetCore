@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// A data-access-object representing a pitcher
     /// </summary>
     /// <seealso cref="SportEntityDTO" />
-    public class PitcherDTO : SportEntityDTO
+    internal class PitcherDTO : SportEntityDTO
     {
         /// <summary>
         /// Gets the hand with which player pitches

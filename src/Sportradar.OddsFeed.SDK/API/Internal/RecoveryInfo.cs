@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// The recovery info
     /// </summary>
     /// <seealso cref="IRecoveryInfo" />
-    public class RecoveryInfo : IRecoveryInfo
+    internal class RecoveryInfo : IRecoveryInfo
     {
         /// <summary>
         /// Gets the after timestamp of the recovery

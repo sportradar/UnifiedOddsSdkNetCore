@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// A implementation of cache item for SportEventConditions
     /// </summary>
-    public class SportEventConditionsCI
+    internal class SportEventConditionsCI
     {
         /// <summary>
         /// Gets a <see cref="string" /> specifying the attendance of the associated sport event

@@ -1,14 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 // ReSharper disable InconsistentNaming
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     /// <summary>
     /// Enumerates the results of object validation
     /// </summary>
-    public enum ValidationResult
+    internal enum ValidationResult
     {
         /// <summary>
         /// The validation was successful, the validated object is valid

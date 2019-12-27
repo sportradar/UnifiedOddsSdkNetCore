@@ -5,7 +5,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
-    public class SoccerStatus : MatchStatus, ISoccerStatus
+    internal class SoccerStatus : MatchStatus, ISoccerStatus
     {
         public ISoccerStatistics Statistics { get; }
 

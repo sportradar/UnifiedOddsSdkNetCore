@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// <summary>
     /// Defines a contract for classes implementing sport event status cache item
     /// </summary>
-    public interface ISportEventStatusCI
+    internal interface ISportEventStatusCI
     {
         /// <summary>
         /// Gets a <see cref="EventStatus"/> describing the high-level status of the associated sport event

@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// Class provides information about current executing assembly
     /// </summary>
-    public class SdkInfo
+    internal class SdkInfo
     {
         /// <summary>
         /// The production host

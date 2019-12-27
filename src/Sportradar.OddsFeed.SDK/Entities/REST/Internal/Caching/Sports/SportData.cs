@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
     /// Contains basic information about a sport (soccer, basketball, ...)
     /// </summary>
     /// <seealso cref="SportEntityData" />
-    public class SportData : SportEntityData
+    internal class SportData : SportEntityData
     {
         /// <summary>
         /// Gets the <see cref="IEnumerable{CategoryData}"/> representing the categories, which belong to the sport

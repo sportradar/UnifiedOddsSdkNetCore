@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
     /// <summary>
     /// Defines a data-transfer-object for probability calculations
     /// </summary>
-    public class CalculationDTO
+    internal class CalculationDTO
     {
         /// <summary>
         /// Gets the odds

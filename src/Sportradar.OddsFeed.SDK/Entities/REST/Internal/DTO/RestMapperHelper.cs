@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A helper for mapping of rest data to sdk data-transfer-objects
     /// </summary>
-    public static class RestMapperHelper
+    internal static class RestMapperHelper
     {
         /// <summary>
         /// Maps the <see cref="sportEvent"/> instance to the one of the derived types of <see cref="SportEventSummaryDTO"/>

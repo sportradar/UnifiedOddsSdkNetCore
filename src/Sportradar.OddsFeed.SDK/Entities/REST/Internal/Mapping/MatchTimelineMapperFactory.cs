@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// Creates mapper for match timeline
     /// </summary>
-    public class MatchTimelineMapperFactory : ISingleTypeMapperFactory<matchTimelineEndpoint, MatchTimelineDTO>
+    internal class MatchTimelineMapperFactory : ISingleTypeMapperFactory<matchTimelineEndpoint, MatchTimelineDTO>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance for match timeline

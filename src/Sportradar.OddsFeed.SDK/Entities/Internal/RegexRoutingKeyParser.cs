@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// A <see cref="IRoutingKeyParser"/> implementation which uses regex.
     /// </summary>
-    public class RegexRoutingKeyParser : IRoutingKeyParser
+    internal class RegexRoutingKeyParser : IRoutingKeyParser
     {
         /// <summary>
         /// Name of the regex group containing sport id

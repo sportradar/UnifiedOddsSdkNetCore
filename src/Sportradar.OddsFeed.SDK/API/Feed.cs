@@ -70,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// The <see cref="IOddsFeedConfigurationInternal"/> representing internal sdk configuration
         /// </summary>
-        protected readonly IOddsFeedConfigurationInternal InternalConfig;
+        internal readonly IOddsFeedConfigurationInternal InternalConfig;
 
         /// <summary>
         /// Raised when the current instance of <see cref="IOddsFeed"/> loses connection to the feed

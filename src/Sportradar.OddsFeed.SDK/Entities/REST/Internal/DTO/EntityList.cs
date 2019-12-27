@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// Represents a list or collection of sport related entities
     /// </summary>
     /// <typeparam name="T">The type of the entities held by the instance</typeparam>
-    public class EntityList<T> where T : class
+    internal class EntityList<T> where T : class
     {
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> containing sport related instances associated with the current instance

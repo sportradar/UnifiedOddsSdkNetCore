@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// A factory used to create <see cref="ISingleTypeMapper{T}" /> instances used to map <see cref="scheduleEndpoint"/> to instances of <see cref="EntityList{SportEventSummaryDTO}"/>
     /// </summary>
     /// <seealso cref="ISingleTypeMapperFactory{ISportEventsSchedule,scheduleType}" />
-    public class SportEventsScheduleMapperFactory : ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDTO>>
+    internal class SportEventsScheduleMapperFactory : ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDTO>>
     {
         /// <summary>
         /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance

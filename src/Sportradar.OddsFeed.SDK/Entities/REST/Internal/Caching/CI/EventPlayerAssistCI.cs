@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
@@ -15,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// A cache item for event player assist
     /// </summary>
     /// <seealso cref="CacheItem" />
-    public class EventPlayerAssistCI : CacheItem
+    internal class EventPlayerAssistCI : CacheItem
     {
         public string Type { get; }
 

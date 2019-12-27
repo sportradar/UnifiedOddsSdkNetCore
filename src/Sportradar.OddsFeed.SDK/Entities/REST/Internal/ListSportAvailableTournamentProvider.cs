@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// </summary>
     /// <seealso cref="DataProvider{sportTournamentsEndpoint, EntityList}" />
     /// <seealso cref="IDataProvider{EntityList}" />
-    public class ListSportAvailableTournamentProvider : DataProvider<sportTournamentsEndpoint, EntityList<TournamentInfoDTO>>
+    internal class ListSportAvailableTournamentProvider : DataProvider<sportTournamentsEndpoint, EntityList<TournamentInfoDTO>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ListSportAvailableTournamentProvider"/> class

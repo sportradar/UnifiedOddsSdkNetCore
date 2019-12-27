@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// </summary>
     /// <seealso cref="IChannelFactory" />
     /// <seealso cref="IDisposable" />
-    public class ChannelFactory : IChannelFactory, IDisposable
+    internal class ChannelFactory : IChannelFactory, IDisposable
     {
         /// <summary>
         /// The <see cref="IConnectionFactory"/> used to construct connections to the broker

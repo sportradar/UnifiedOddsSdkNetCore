@@ -10,7 +10,7 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
-    public class PeriodStatisticsDTO
+    internal class PeriodStatisticsDTO
     {
         public string PeriodName { get; }
 

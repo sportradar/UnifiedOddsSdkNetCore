@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EventArguments
     /// <summary>
     /// An event argument used by events raised when a message from the feed is received
     /// </summary>
-    public class TournamentReceivedEventArgs : EventArgs
+    internal class TournamentReceivedEventArgs : EventArgs
     {
         /// <summary>
         /// Gets a <see cref="string"/> representing deserialized message

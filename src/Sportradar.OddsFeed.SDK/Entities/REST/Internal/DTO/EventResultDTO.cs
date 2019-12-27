@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// Class EventResultDTO
     /// </summary>
-    public class EventResultDTO
+    internal class EventResultDTO
     {
         /// <summary>
         /// Gets the identifier

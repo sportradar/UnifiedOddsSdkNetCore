@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// </summary>
     /// <typeparam name="TIn">Specifies the type of data with which the created <see cref="ISingleTypeMapper{T}"/> instances work with</typeparam>
     /// <typeparam name="TOut">Specifies the type returned by created <see cref="ISingleTypeMapper{T}"/> instances </typeparam>
-    public interface ISingleTypeMapperFactory<in TIn, out TOut>
+    internal interface ISingleTypeMapperFactory<in TIn, out TOut>
         where TIn : class
         where TOut : class
     {

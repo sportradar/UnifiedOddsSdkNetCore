@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
     /// <summary>
     /// A class used for validation of <see cref="FeedMessage"/> instances
     /// </summary>
-    public class TestFeedMessageValidator : IFeedMessageValidator
+    internal class TestFeedMessageValidator : IFeedMessageValidator
     {
         /// <summary>
         /// Validates the specified <see cref="FeedMessage" /> instance

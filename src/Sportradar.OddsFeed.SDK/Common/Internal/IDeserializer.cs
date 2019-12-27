@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// Defines a contract implemented by classes used to deserialize feed messages to
     /// <typeparam name="T">Defines the base that can be deserialized using the <see cref="IDeserializer{T}"/></typeparam>
     /// </summary>
-    public interface IDeserializer<T> where T : class
+    internal interface IDeserializer<T> where T : class
     {
         /// <summary>
         /// Deserialize the provided <see cref="byte"/> array to a <see cref="T"/> instance

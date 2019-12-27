@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Team competitor cache item representation of <see cref="ITeamCompetitor"/>
     /// </summary>
-    public class TeamCompetitorCI : CompetitorCI
+    internal class TeamCompetitorCI : CompetitorCI
     {
         /// <summary>
         /// Gets a qualifier additionally describing the competitor (e.g. home, away, ...)

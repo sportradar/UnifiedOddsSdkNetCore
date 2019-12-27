@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// <summary>
     /// An <see cref="INamedValue"/> implementation
     /// </summary>
-    public class NamedValue : INamedValue
+    internal class NamedValue : INamedValue
     {
         /// <summary>
         /// Gets the value associated with the current instance

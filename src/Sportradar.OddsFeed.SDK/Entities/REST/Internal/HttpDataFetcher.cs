@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <seealso cref="IDataFetcher" />
     /// <seealso cref="IDataPoster" />
     /// <seealso cref="IDataFetcher" />
-    public class HttpDataFetcher : MarshalByRefObject, IDataFetcher, IDataPoster
+    internal class HttpDataFetcher : MarshalByRefObject, IDataFetcher, IDataPoster
     {
         /// <summary>
         /// A <see cref="HttpClient"/> used to invoke HTTP requests

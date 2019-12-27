@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
     /// Implementation of <see cref="IReplayStatus"/>
     /// </summary>
     /// <seealso cref="IReplayStatus"/>
-    public class ReplayStatus : IReplayStatus
+    internal class ReplayStatus : IReplayStatus
     {
         /// <summary>
         /// Gets the player status. Possible values are: player is playing, player is stopped, player was never playing.

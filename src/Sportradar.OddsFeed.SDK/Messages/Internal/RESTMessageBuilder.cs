@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -10,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
     /// <summary>
     /// A helper class providing an easier way of constructing instances which have only default constructor
     /// </summary>
-    public static class RestMessageBuilder
+    internal static class RestMessageBuilder
     {
         /// <summary>
         /// Builds the coverage record

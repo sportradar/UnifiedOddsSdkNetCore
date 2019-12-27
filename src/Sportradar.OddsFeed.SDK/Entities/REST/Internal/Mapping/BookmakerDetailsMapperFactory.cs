@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// Class BookmakerDetailsMapperFactory
     /// </summary>
-    public class BookmakerDetailsMapperFactory : ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO>
+    internal class BookmakerDetailsMapperFactory : ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO>
     {
         /// <summary>
         /// Creates and returns an instance of Mapper for mapping <see cref="bookmaker_details" />

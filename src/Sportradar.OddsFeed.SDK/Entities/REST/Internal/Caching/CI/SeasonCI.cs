@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// Defines a cache item for season
     /// </summary>
     /// <seealso cref="SportEntityCI" />
-    public class SeasonCI : SportEntityCI
+    internal class SeasonCI : SportEntityCI
     {
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing season names in different languages

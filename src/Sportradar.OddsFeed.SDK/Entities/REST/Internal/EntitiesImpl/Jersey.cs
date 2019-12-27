@@ -6,7 +6,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
-    public class Jersey : IJersey
+    internal class Jersey : IJersey
     {
         public string BaseColor { get; }
         public string Number { get; }

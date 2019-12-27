@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// </summary>
     /// <seealso cref="SpecifierBasedOperator" />
     /// <seealso cref="IOperand" />
-    public class ExpressionOperand : SpecifierBasedOperator, IOperand
+    internal class ExpressionOperand : SpecifierBasedOperator, IOperand
     {
         /// <summary>
         /// A <see cref="IReadOnlyDictionary{TKey,TValue}"/> containing market specifiers

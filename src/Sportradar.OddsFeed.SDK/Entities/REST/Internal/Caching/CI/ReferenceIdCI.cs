@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// A ReferenceId representation for cache
     /// </summary>
-    public class ReferenceIdCI
+    internal class ReferenceIdCI
     {
         /// <summary>
         /// A <see cref="BetradarId"/> property backing field

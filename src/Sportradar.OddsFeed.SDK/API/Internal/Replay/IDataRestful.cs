@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
     /// <summary>
     /// Defines a contract implemented by classes used REST request to obtain <see cref="HttpResponseMessage"/> instance containing status code and data
     /// </summary>
-    public interface IDataRestful : IDataPoster, IDataFetcher
+    internal interface IDataRestful : IDataPoster, IDataFetcher
     {
         /// <summary>
         /// Asynchronously gets a <see cref="HttpResponseMessage"/> as a result of PUT request send to the provided <see cref="Uri"/>

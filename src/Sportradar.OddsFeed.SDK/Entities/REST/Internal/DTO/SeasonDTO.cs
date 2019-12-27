@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// A data-access-object representing a competition season
     /// </summary>
     /// <seealso cref="SportEntityDTO" />
-    public class SeasonDTO : SportEntityDTO
+    internal class SeasonDTO : SportEntityDTO
     {
         /// <summary>
         /// Gets a <see cref="DateTime"/> specifying the start date of the represented season

@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Provides information about race driver profile
     /// </summary>
-    public class CarCI
+    internal class CarCI
     {
         public string Name { get; }
 

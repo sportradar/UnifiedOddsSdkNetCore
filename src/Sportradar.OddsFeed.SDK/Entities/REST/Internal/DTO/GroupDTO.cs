@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing a group
     /// </summary>
-    public class GroupDTO
+    internal class GroupDTO
     {
         internal string Id { get; }
 

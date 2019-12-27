@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Defines a cache item for event timeline (aka MatchTimeline)
     /// </summary>
-    public class EventTimelineCI
+    internal class EventTimelineCI
     {
         private List<TimelineEventCI> _timeline;
         private bool _isFinalized;

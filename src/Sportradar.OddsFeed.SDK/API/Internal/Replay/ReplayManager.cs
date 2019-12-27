@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
     /// </summary>
     /// <seealso cref="IReplayManager" />
     [Log(LoggerType.ClientInteraction)]
-    public class ReplayManager : MarshalByRefObject, IReplayManager
+    internal class ReplayManager : MarshalByRefObject, IReplayManager
     {
         private readonly IDataRestful _dataRestful;
 

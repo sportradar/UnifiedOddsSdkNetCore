@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// A <see cref="ITimeProvider"/> giving access to the current time
     /// </summary>
-    public class RealTimeProvider : ITimeProvider
+    internal class RealTimeProvider : ITimeProvider
     {
         /// <summary>
         /// Gets a <see cref="DateTime"/> specifying the current time

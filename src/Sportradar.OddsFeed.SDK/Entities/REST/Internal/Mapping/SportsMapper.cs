@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// A <see cref="ISingleTypeMapper{T}" /> implementation used to construct <see cref="EntityList{SportDTO}" /> instances
     /// from <see cref="sportsEndpoint"/> instances
     /// </summary>
-    public class SportsMapper : ISingleTypeMapper<EntityList<SportDTO>>
+    internal class SportsMapper : ISingleTypeMapper<EntityList<SportDTO>>
     {
         /// <summary>
         /// A <see cref="sportsEndpoint"/> instance containing data about available sports

@@ -25,7 +25,7 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
-    public class TestDataRouterManager : IDataRouterManager
+    internal class TestDataRouterManager : IDataRouterManager
     {
         public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
 

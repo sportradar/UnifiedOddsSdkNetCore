@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// A data-transfer-object representing player's profile
     /// </summary>
     /// <seealso cref="SportEntityCI" />
-    public class PlayerProfileCI : SportEntityCI, IExportableCI
+    internal class PlayerProfileCI : SportEntityCI, IExportableCI
     {
         private readonly IDataRouterManager _dataRouterManager;
         private string _type;

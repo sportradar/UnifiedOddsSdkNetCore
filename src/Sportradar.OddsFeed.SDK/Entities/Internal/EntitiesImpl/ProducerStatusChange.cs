@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     ///     Represents a message indicating a producer serving odds via the feed went down. The class might be dispatched
     ///     either by the feed or the SDK itself
     /// </summary>
-    public class ProducerStatusChange : Message, IProducerStatusChange
+    internal class ProducerStatusChange : Message, IProducerStatusChange
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProducerStatusChange" /> class

@@ -16,7 +16,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     /// <summary>
-    ///     Represents a market with only basic informations
+    ///     Represents a market with only basic information
     /// </summary>
     internal class Market : IMarket
     {

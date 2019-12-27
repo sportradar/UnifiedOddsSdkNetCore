@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representation for sport event status statistics. The status can be receiver through messages or fetched from the API
     /// </summary>
-    public class SportEventStatisticsDTO
+    internal class SportEventStatisticsDTO
     {
         public IEnumerable<TeamStatisticsDTO> TotalStatisticsDTOs { get; }
 

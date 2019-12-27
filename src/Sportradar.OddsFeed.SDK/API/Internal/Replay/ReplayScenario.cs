@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
     /// <summary>
     /// A basic implementation of the <see cref="IReplayScenario"/>
     /// </summary>
-    class ReplayScenario : IReplayScenario
+    internal class ReplayScenario : IReplayScenario
     {
         /// <summary>
         /// Gets the id of the scenario

@@ -6,7 +6,7 @@ using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
-    public interface IOddsFeedConfigurationSection
+    internal interface IOddsFeedConfigurationSection
     {
         /// <summary>
         /// Gets the access token

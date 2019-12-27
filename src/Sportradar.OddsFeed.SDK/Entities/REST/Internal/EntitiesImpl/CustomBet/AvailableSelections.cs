@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to access available selections for the event
     /// </summary>
-    public class AvailableSelections : REST.CustomBet.IAvailableSelections
+    internal class AvailableSelections : REST.CustomBet.IAvailableSelections
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AvailableSelections"/> class

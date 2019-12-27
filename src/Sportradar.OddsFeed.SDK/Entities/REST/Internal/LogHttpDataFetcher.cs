@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// </summary>
     /// <seealso cref="IDataFetcher" />
     /// <remarks>ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF - the levels are defined in order of increasing priority</remarks>
-    public class LogHttpDataFetcher : HttpDataFetcher, IHealthStatusProvider
+    internal class LogHttpDataFetcher : HttpDataFetcher, IHealthStatusProvider
     {
         private static readonly ILogger RestLog = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(LogHttpDataFetcher));
 

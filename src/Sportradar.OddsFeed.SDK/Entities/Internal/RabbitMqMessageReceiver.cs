@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// <summary>
     /// A <see cref="IMessageReceiver"/> implementation using RabbitMQ broker to deliver feed messages
     /// </summary>
-    public sealed class RabbitMqMessageReceiver : IMessageReceiver
+    internal sealed class RabbitMqMessageReceiver : IMessageReceiver
     {
         /// <summary>
         /// A <see cref="ILogger"/> used for execution logging

@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representation for round
     /// </summary>
-    public class RoundDTO
+    internal class RoundDTO
     {
         internal string Type { get; }
 

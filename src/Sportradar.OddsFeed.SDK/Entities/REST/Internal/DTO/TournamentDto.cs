@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// Provides information about tournament (when fetching the all tournaments for all sports)
     /// </summary>
     /// <seealso cref="TournamentInfoDTO"/>
-    public class TournamentDTO : SportEntityDTO
+    internal class TournamentDTO : SportEntityDTO
     {
         /// <summary>
         /// Gets a <see cref="DateTime"/> indicating when the tournament is scheduled to start, or a null reference if value is not known.

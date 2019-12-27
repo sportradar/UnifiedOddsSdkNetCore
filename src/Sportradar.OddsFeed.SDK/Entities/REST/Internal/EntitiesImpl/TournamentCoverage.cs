@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// Class TournamentCoverage
     /// </summary>
     /// <seealso cref="ITournamentCoverage" />
-    public class TournamentCoverage : ITournamentCoverage
+    internal class TournamentCoverage : ITournamentCoverage
     {
         /// <summary>
         /// Gets a value indicating whether live coverage is available

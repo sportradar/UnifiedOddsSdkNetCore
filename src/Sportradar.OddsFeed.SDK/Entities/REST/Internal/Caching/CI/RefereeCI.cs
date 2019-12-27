@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// Provides information about referee (cache item)
     /// </summary>
-    public class RefereeCI : SportEntityCI
+    internal class RefereeCI : SportEntityCI
     {
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing referee nationality in different languages

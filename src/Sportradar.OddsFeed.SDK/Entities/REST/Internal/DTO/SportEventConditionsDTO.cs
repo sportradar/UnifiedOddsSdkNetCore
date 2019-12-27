@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representation for sport event conditions
     /// </summary>
-    public class SportEventConditionsDTO
+    internal class SportEventConditionsDTO
     {
         internal string Attendance { get; }
 

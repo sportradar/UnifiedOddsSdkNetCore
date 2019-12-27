@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     /// </summary>
     /// <seealso cref="SportEventCI" />
     /// <seealso cref="ITournamentInfoCI" />
-    public class TournamentInfoCI : SportEventCI, ITournamentInfoCI
+    internal class TournamentInfoCI : SportEventCI, ITournamentInfoCI
     {
         /// <summary>
         /// The category identifier

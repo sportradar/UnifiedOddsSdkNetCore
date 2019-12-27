@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <summary>
     /// A cache item for TournamentCoverage
     /// </summary>
-    public class TournamentCoverageCI
+    internal class TournamentCoverageCI
     {
         /// <summary>
         /// Gets a value indicating whether [live coverage].

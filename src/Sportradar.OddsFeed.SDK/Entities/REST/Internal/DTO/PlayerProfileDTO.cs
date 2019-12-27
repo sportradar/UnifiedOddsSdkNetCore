@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object representing player's profile
     /// </summary>
-    public class PlayerProfileDTO : SportEntityDTO
+    internal class PlayerProfileDTO : SportEntityDTO
     {
         /// <summary>
         /// Gets a value describing the type(e.g. forward, defense, ...) of the player represented by current instance

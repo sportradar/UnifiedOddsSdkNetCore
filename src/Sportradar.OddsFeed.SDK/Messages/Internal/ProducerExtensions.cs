@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
     /// <summary>
     /// Class defining extension methods for <see cref="IProducer"/>
     /// </summary>
-    public static class ProducerExtensions
+    internal static class ProducerExtensions
     {
         /// <summary>
         /// Returns a <see cref="TimeSpan"/> specifying the max age of after param when doing a after timestamp recovery

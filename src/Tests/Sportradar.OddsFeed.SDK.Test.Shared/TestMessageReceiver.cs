@@ -11,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
-    public class TestMessageReceiver : IMessageReceiver
+    internal class TestMessageReceiver : IMessageReceiver
     {
         private bool _isOpened;
         public bool IsOpened => _isOpened;

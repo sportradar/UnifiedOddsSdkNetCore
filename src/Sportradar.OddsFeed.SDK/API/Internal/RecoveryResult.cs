@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Contains information about a single recovery operation
     /// </summary>
-    public class RecoveryResult
+    internal class RecoveryResult
     {
         /// <summary>
         /// Gets a value indicating whether the recovery successfully completed. If the recovery was interrupted it is still considered successful
