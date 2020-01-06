@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// </summary>
     internal class SemaphorePool : ISemaphorePool
     {
-        //private readonly ILogger _executionLog = SdkLoggerFactory.GetLogger(typeof(SemaphorePool));
+        //private read-only ILogger _executionLog = SdkLoggerFactory.GetLogger(typeof(SemaphorePool));
 
         /// <summary>
         /// A <see cref="List{T}"/> containing pool's semaphores
@@ -202,7 +202,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     return;
                 }
             }
-            throw new ArgumentException($"No semaphores are aquired with Id:{id}", nameof(id));
+            throw new ArgumentException($"No semaphores are acquired with Id:{id}", nameof(id));
         }
 
         /// <summary>

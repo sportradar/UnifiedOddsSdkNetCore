@@ -685,10 +685,12 @@ namespace Sportradar.OddsFeed.SDK.API
 
             foreach (var formatter in _metricsRoot.OutputMetricsFormatters)
             {
-                using var stream = new MemoryStream();
-                formatter.WriteAsync(stream, snapshot);
-                var result = Encoding.UTF8.GetString(stream.ToArray());
-                _metricsLogger.LogInformation(result);
+                using (var stream = new MemoryStream())
+                {
+                    formatter.WriteAsync(stream, snapshot);
+                    var result = Encoding.UTF8.GetString(stream.ToArray());
+                    _metricsLogger.LogInformation(result);
+                }
             }
             return Task.FromResult(true);
         }

@@ -1,6 +1,6 @@
 
 
-  Software Development Kit License Agreement –Terms and Conditions
+  Software Development Kit License Agreement – Terms and Conditions
 
 1. Subject Matter of the Agreement
 This License Agreement covers the terms and conditions of the provision of all software development kits made available by Sportradar to you. The software development kits under this Agreement mean all software development tools that allow for the creation of applications for a certain software package, software framework, hardware platform, computer system, video game console, operating system, or similar development platform or any product provided by Sportradar (all software development kits are hereinafter together referred to as “SDK”). The SDK is licensed to you subject to the terms of this License Agreement. This License Agreement forms a legally binding contract between you and Sportradar in relation to your use of the SDK. Sportradar means Sportradar AG, Feldlistrasse 2, CH- 9000 St.Gallen, Switzerland.

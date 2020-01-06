@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK", "Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj", "{CE927EB3-4E87-4E45-994B-4B3992A7A139}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{80D2ACC0-BA2E-4BD3-87AF-20EB57F6A8A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.API.Test", "Tests\Sportradar.OddsFeed.SDK.API.Test\Sportradar.OddsFeed.SDK.API.Test.csproj", "{B2CCAA38-BD9A-4E7C-BAFB-EB8FFF70EE7F}"
@@ -19,16 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.Mes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.Test.Shared", "Tests\Sportradar.OddsFeed.SDK.Test.Shared\Sportradar.OddsFeed.SDK.Test.Shared.csproj", "{6DD7FBA4-D758-4634-B922-FF75372AA476}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportradar.OddsFeed.SDK", "Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj", "{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE927EB3-4E87-4E45-994B-4B3992A7A139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE927EB3-4E87-4E45-994B-4B3992A7A139}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE927EB3-4E87-4E45-994B-4B3992A7A139}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE927EB3-4E87-4E45-994B-4B3992A7A139}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B2CCAA38-BD9A-4E7C-BAFB-EB8FFF70EE7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B2CCAA38-BD9A-4E7C-BAFB-EB8FFF70EE7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2CCAA38-BD9A-4E7C-BAFB-EB8FFF70EE7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +49,10 @@ Global
 		{6DD7FBA4-D758-4634-B922-FF75372AA476}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DD7FBA4-D758-4634-B922-FF75372AA476}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DD7FBA4-D758-4634-B922-FF75372AA476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

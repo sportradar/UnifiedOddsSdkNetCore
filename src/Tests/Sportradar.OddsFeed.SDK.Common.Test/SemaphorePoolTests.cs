@@ -18,7 +18,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
         {
             var pool = new SemaphorePool(1);
 
-
             var task1 = pool.Acquire("1");
             var task2 = pool.Acquire("1");
 

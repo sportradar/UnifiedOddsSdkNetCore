@@ -201,7 +201,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 var methodCall = $"{methodInfo.Name}()";
                 if (invocation.Arguments != null && invocation.Arguments.Any())
                 {
-                    methodCall = $"{methodInfo.Name}({string.Join(',', invocation.Arguments.Select(s=> $"{s?.GetType().Name}={s}"))})";
+                    methodCall = $"{methodInfo.Name}({string.Join(",", invocation.Arguments.Select(s=> $"{s?.GetType().Name}={s}"))})";
                 }
                 if (logEnabled)
                 {
