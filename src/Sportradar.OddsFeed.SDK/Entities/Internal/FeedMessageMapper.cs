@@ -653,7 +653,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             try
             {
-                marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, cultures, false).Result;
+                marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, cultures, true).Result;
             }
             catch (CacheItemNotFoundException)
             {

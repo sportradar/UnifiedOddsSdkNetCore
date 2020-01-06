@@ -110,12 +110,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     marketDesc = await ProvideDynamicVariantEndpointMarketAsync(marketId, cultureInfos, marketDescriptor, variantValue).ConfigureAwait(false);
                 }
 
-                if (marketDesc?.Mappings != null && marketDesc.Mappings.Any())
-                {
-                    var marketDescImpl = (MarketDescription) marketDesc;
-                    marketDescImpl.Mappings = marketDescImpl.Mappings.Where(s => s.MarketId.Equals(marketId.ToString()) || s.MarketId.StartsWith($"{marketId}:")).ToList();
-                    marketDesc = marketDescImpl;
-                }
+                //if (marketDesc?.Mappings != null && marketDesc.Mappings.Any())
+                //{
+                //    var marketDescImpl = (MarketDescription) marketDesc;
+                //    marketDescImpl.Mappings = marketDescImpl.Mappings.Where(s => s.MarketId.Equals(marketId.ToString()) || s.MarketId.StartsWith($"{marketId}:")).ToList();
+                //    marketDesc = marketDescImpl;
+                //}
 
                 return marketDesc;
             }
