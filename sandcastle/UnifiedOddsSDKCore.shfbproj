@@ -15,7 +15,7 @@
     <!-- SHFB properties -->
     <FrameworkVersion>Cross-platform (.NET Core/.NET Standard)</FrameworkVersion>
     <OutputPath>doc\</OutputPath>
-    <HtmlHelpName>Odds Feed SDK Documentation %28.NetCore3.0%29</HtmlHelpName>
+    <HtmlHelpName>Odds Feed SDK Documentation %28.NetStandard2.1%29</HtmlHelpName>
     <Language>en-US</Language>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
@@ -33,7 +33,7 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>Odds Feed SDK Documentation %28.NetCore3.0%29</HelpTitle>
+    <HelpTitle>Odds Feed SDK Documentation %28.NetStandard2.1%29</HelpTitle>
     <FeedbackEMailLinkText>SDK Team</FeedbackEMailLinkText>
     <FeedbackEMailAddress>sdk%40betradar.com</FeedbackEMailAddress>
     <CopyrightText>Copyright &amp;#169%3b 2019, Sportradar AG</CopyrightText>

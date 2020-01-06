@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyVersion>1.0.144.7310</AssemblyVersion>
+    <AssemblyVersion>1.0.145.7310</AssemblyVersion>
 
-    <FileVersion>1.0.144.7310</FileVersion>
+    <FileVersion>1.0.145.7310</FileVersion>
 
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
-    <PackageReference Include="coverlet.collector" Version="1.1.0">
+    <PackageReference Include="coverlet.collector" Version="1.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
