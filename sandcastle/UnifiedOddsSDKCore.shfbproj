@@ -49,8 +49,8 @@
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected</VisibleItems>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK\bin\Debug\netstandard2.1\Sportradar.OddsFeed.SDK.dll" />
+<DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK\bin\Debug\netstandard2.1\Sportradar.OddsFeed.SDK.xml" /></DocumentationSources>
     <CollectionTocStyle>Flat</CollectionTocStyle>
     <HelpAttributes />
     <HtmlHelp2xCompilerPath />

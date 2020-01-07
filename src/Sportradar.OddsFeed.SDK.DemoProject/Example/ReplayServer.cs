@@ -23,10 +23,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     public class ReplayServer
     {
         private readonly ILogger _log;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public ReplayServer(ILogger log)
+        public ReplayServer(ILoggerFactory loggerFactory = null)
         {
-            _log = log ?? new NullLogger<ReplayServer>();
+            _loggerFactory = loggerFactory;
+            _log = _loggerFactory?.CreateLogger(typeof(ReplayServer)) ?? new NullLogger<ReplayServer>();
         }
 
         public void Run(MessageInterest messageInterest)
@@ -39,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 
             _log.LogInformation("Creating Feed instance");
-            var replayFeed = new ReplayFeed(configuration);
+            var replayFeed = new ReplayFeed(configuration, _loggerFactory);
 
             _log.LogInformation("Creating IOddsFeedSession");
             var session = replayFeed.CreateBuilder()
@@ -197,7 +199,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Invoked when the the feed is closed
+        /// Invoked when the feed is closed
         /// </summary>
         /// <param name="sender">The instance raising the event</param>
         /// <param name="e">The event arguments</param>

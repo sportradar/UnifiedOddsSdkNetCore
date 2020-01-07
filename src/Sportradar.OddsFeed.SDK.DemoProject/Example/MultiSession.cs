@@ -18,10 +18,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     public class MultiSession
     {
         private readonly ILogger _log;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public MultiSession(ILogger log)
+        public MultiSession(ILoggerFactory loggerFactory = null)
         {
-            _log = log ?? new NullLogger<MultiSession>();
+            _loggerFactory = loggerFactory;
+            _log = _loggerFactory?.CreateLogger(typeof(MultiSession)) ?? new NullLogger<MultiSession>();
         }
 
         public void Run()
@@ -29,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _log.LogInformation("Running the OddsFeed SDK Multi-Session example");
 
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
-            var oddsFeed = new Feed(configuration);
+            var oddsFeed = new Feed(configuration, _loggerFactory);
             AttachToFeedEvents(oddsFeed);
 
             _log.LogInformation("Creating IOddsFeedSessions");
@@ -273,7 +275,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Invoked when the the feed is closed
+        /// Invoked when the feed is closed
         /// </summary>
         /// <param name="sender">The instance raising the event</param>
         /// <param name="e">The event arguments</param>
@@ -304,12 +306,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void WriteHighSportEntity(string msgType, ISportEvent message)
         {
-            _log.LogDebug($"HIGH: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
+            _log.LogInformation($"HIGH: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
         }
 
         private void WriteLowSportEntity(string msgType, ISportEvent message)
         {
-            _log.LogDebug($"LOW: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
+            _log.LogInformation($"LOW: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
         }
     }
 }

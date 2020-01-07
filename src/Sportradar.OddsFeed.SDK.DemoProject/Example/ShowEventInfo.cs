@@ -19,13 +19,15 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     /// </summary>
     public class ShowEventInfo
     {
-        private readonly ILogger _log;
-
         private readonly TaskProcessor _taskProcessor = new TaskProcessor(TimeSpan.FromSeconds(20));
 
-        public ShowEventInfo(ILogger log)
+        private readonly ILogger _log;
+        private readonly ILoggerFactory _loggerFactory;
+
+        public ShowEventInfo(ILoggerFactory loggerFactory = null)
         {
-            _log = log ?? new NullLogger<ShowEventInfo>();
+            _loggerFactory = loggerFactory;
+            _log = _loggerFactory?.CreateLogger(typeof(ShowEventInfo)) ?? new NullLogger<ShowEventInfo>();
         }
 
         public void Run(MessageInterest messageInterest, CultureInfo culture)
@@ -34,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _log.LogInformation("Running the OddsFeed SDK SportEvent Info example");
 
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
-            var oddsFeed = new Feed(configuration);
+            var oddsFeed = new Feed(configuration, _loggerFactory);
             AttachToFeedEvents(oddsFeed);
 
             _log.LogInformation("Creating IOddsFeedSessions");
@@ -135,7 +137,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Invoked when the the feed is closed
+        /// Invoked when the feed is closed
         /// </summary>
         /// <param name="sender">The instance raising the event</param>
         /// <param name="e">The event arguments</param>

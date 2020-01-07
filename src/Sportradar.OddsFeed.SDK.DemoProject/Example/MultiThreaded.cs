@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -15,12 +16,15 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     /// </summary>
     public class MultiThreaded
     {
-        private readonly ILogger _log;
         private readonly BlockingCollection<EventArgs> _messages = new BlockingCollection<EventArgs>();
 
-        public MultiThreaded(ILogger log)
+        private readonly ILogger _log;
+        private readonly ILoggerFactory _loggerFactory;
+
+        public MultiThreaded(ILoggerFactory loggerFactory = null)
         {
-            _log = log;
+            _loggerFactory = loggerFactory;
+            _log = _loggerFactory?.CreateLogger(typeof(MultiThreaded)) ?? new NullLogger<MultiThreaded>();
         }
 
         public void Run(MessageInterest messageInterest)
@@ -34,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 
             _log.LogInformation("Creating Feed instance");
-            var oddsFeed = new Feed(configuration);
+            var oddsFeed = new Feed(configuration, _loggerFactory);
 
             _log.LogInformation("Creating IOddsFeedSession");
             var session = oddsFeed.CreateBuilder()
@@ -49,16 +53,8 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             oddsFeed.Open();
 
             _log.LogInformation("Starting the consumer thread");
-            var thread = new Thread(() =>
-            {
-                while (true)
-                {
-                    var message = _messages.Take();
-                    _log.LogInformation($"Processing message: {message}");
-                }
-            });
+            var thread = new Thread(ThreadStart);
             thread.Start();
-
 
             _log.LogInformation("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
@@ -72,6 +68,16 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             DetachFromSessionEvents(session);
 
             _log.LogInformation("Stopped");
+        }
+
+        private void ThreadStart()
+        {
+            while (true)
+            {
+                var message = _messages.Take();
+                _log.LogInformation($"Processing message: {message}");
+            }
+            // ReSharper disable once FunctionNeverReturns
         }
 
         /// <summary>
@@ -142,14 +148,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             session.OnRollbackBetSettlement -= SessionOnRollbackBetSettlement;
         }
 
-        private void SessionOnRollbackBetSettlement(object sender,
-            RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
+        private void SessionOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
         {
             _messages.Add(rollbackBetSettlementEventArgs);
         }
 
-        private void SessionOnRollbackBetCancel(object sender,
-            RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
+        private void SessionOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
         {
             _messages.Add(rollbackBetCancelEventArgs);
         }
@@ -179,11 +183,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _messages.Add(betCancelEventArgs);
         }
 
-        private void SessionOnUnparsableMessageReceived(object sender,
-            UnparsableMessageEventArgs unparsableMessageEventArgs)
+        private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.LogInformation(
-                $"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+            _log.LogInformation($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
         }
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Invoked when the the feed is closed
+        /// Invoked when the feed is closed
         /// </summary>
         /// <param name="sender">The instance raising the event</param>
         /// <param name="e">The event arguments</param>

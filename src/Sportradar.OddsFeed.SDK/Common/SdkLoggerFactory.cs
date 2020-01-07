@@ -20,11 +20,18 @@ namespace Sportradar.OddsFeed.SDK.Common
         private static ILoggerFactory _factory;
 
         //set by dependency injection
+        /// <summary>
+        /// The constructor used to set <see cref="ILoggerFactory"/> for SDK
+        /// </summary>
+        /// <param name="factory"></param>
         public SdkLoggerFactory(ILoggerFactory factory)
         {
             _factory = factory;
         }
 
+        /// <summary>
+        /// The <see cref="ILoggerFactory"/> used with SDK to create <see cref="ILogger"/>
+        /// </summary>
         public static ILoggerFactory LoggerFactory
         {
             get
@@ -118,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.Common
             {
                 return LoggerFactory.CreateLogger(type);
             }
-            var key = SdkLogRepositoryName + "." + Enum.GetName(typeof(LoggerType), loggerType);
+            var key = repositoryName + "." + Enum.GetName(typeof(LoggerType), loggerType);
             return LoggerFactory.CreateLogger(key);
         }
     }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -15,10 +16,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     public class CacheExportImport
     {
         private readonly ILogger _log;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public CacheExportImport(ILogger log)
+        public CacheExportImport(ILoggerFactory loggerFactory = null)
         {
-            _log = log;
+            _loggerFactory = loggerFactory;
+            _log = _loggerFactory?.CreateLogger(typeof(CacheExportImport)) ?? new NullLogger<CacheExportImport>();
         }
 
         public void Run(MessageInterest messageInterest)
@@ -31,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 
             _log.LogInformation("Creating Feed instance");
-            var oddsFeed = new Feed(configuration);
+            var oddsFeed = new Feed(configuration, _loggerFactory);
             
             if (File.Exists("cache.json"))
             {

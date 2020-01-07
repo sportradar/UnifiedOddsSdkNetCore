@@ -7423,6 +7423,17 @@
             Default repository name for the SDK
             </summary>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.SdkLoggerFactory.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            The constructor used to set <see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> for SDK
+            </summary>
+            <param name="factory"></param>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.SdkLoggerFactory.LoggerFactory">
+            <summary>
+            The <see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> used with SDK to create <see cref="T:Microsoft.Extensions.Logging.ILogger"/>
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.SdkLoggerFactory.GetLoggerForFeedTraffic(System.Type,System.String)">
             <summary>
             Method for getting log4net.ILog for feed traffic

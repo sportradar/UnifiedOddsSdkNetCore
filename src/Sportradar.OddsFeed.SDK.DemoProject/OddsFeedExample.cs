@@ -20,6 +20,8 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
         /// </summary>
         private static ILogger _log;
 
+        private static ILoggerFactory _loggerFactory;
+
         /// <summary>
         /// Main entry point
         /// </summary>
@@ -28,8 +30,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             var services = new ServiceCollection();
             services.AddLogging(configure => configure.AddLog4Net("log4net.config"));
             var serviceProvider = services.BuildServiceProvider();
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            _log = loggerFactory.CreateLogger(typeof(OddsFeedExample));
+            _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            _log = _loggerFactory.CreateLogger(typeof(OddsFeedExample));
+            _log.LogInformation("OddsFeed example");
 
             var key = 'y';
             while (key.Equals('y'))
@@ -69,52 +72,52 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             {
                 case "1":
                     {
-                        new Basic(_log).Run(MessageInterest.AllMessages);
+                        new Basic(_loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "2":
                     {
-                        new MultiSession(_log).Run();
+                        new MultiSession(_loggerFactory).Run();
                         break;
                     }
                 case "3":
                     {
-                        new SpecificDispatchers(_log).Run(MessageInterest.AllMessages);
+                        new SpecificDispatchers(_loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "4":
                     {
-                        new ShowMarketNames(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                        new ShowMarketNames(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "5":
                     {
-                        new ShowEventInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                        new ShowEventInfo(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "6":
                     {
-                        new CompleteInfo(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                        new CompleteInfo(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "7":
                     {
-                        new ShowMarketMappings(_log).Run(MessageInterest.AllMessages, defaultLocale);
+                        new ShowMarketMappings(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "8":
                     {
-                        new ReplayServer(_log).Run(MessageInterest.AllMessages);
+                        new ReplayServer(_loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "9":
                     {
-                        new CacheExportImport(_log).Run(MessageInterest.AllMessages);
+                        new CacheExportImport(_loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "10":
                     {
-                        new MultiThreaded(_log).Run(MessageInterest.AllMessages);
+                        new MultiThreaded(_loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 default:

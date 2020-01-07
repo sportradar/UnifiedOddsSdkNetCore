@@ -18,10 +18,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     public class Basic
     {
         private readonly ILogger _log;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public Basic(ILogger log)
+        public Basic(ILoggerFactory loggerFactory = null)
         {
-            _log = log ?? new NullLogger<Basic>();
+            _loggerFactory = loggerFactory;
+            _log = _loggerFactory?.CreateLogger(typeof(Basic)) ?? new NullLogger<Basic>();
         }
 
         public void Run(MessageInterest messageInterest)
@@ -34,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 
             _log.LogInformation("Creating Feed instance");
-            var oddsFeed = new Feed(configuration);
+            var oddsFeed = new Feed(configuration, _loggerFactory);
 
             _log.LogInformation("Creating IOddsFeedSession");
             var session = oddsFeed.CreateBuilder()
@@ -187,7 +189,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Invoked when the the feed is closed
+        /// Invoked when the feed is closed
         /// </summary>
         /// <param name="sender">The instance raising the event</param>
         /// <param name="e">The event arguments</param>
@@ -218,7 +220,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void WriteSportEntity(string msgType, ISportEvent message)
         {
-            _log.LogDebug($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}");
+            _log.LogInformation($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}");
         }
     }
 }
