@@ -127,7 +127,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     var cachedEvent = _sportEventCache.GetEventCacheItem(eventId) as ICompetitionCI;
                     if (cachedEvent != null)
                     {
-                        //Metric.Context("CACHE").Meter("SportEventStatusCache->FetchSportEventStatusAsync", Unit.Calls).Mark();
                         await cachedEvent.FetchSportEventStatusAsync().ConfigureAwait(false);
                     }
 

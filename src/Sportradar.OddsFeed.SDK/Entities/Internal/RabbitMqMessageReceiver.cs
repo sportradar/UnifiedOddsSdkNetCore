@@ -7,6 +7,7 @@ using Dawn;
 using System.IO;
 using System.Linq;
 using System.Text;
+using App.Metrics.Meter;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
@@ -45,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private readonly IRabbitMqChannel _channel;
 
         /// <summary>
-        /// A <see cref="IDeserializer{T}"/> instance used for de-serialization of messages received from the feed
+        /// A <see cref="IDeserializer{T}"/> instance used for deserialization of messages received from the feed
         /// </summary>
         private readonly IDeserializer<FeedMessage> _deserializer;
 
@@ -88,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// Initializes a new instance of the <see cref="RabbitMqMessageReceiver"/> class
         /// </summary>
         /// <param name="channel">A <see cref="IRabbitMqChannel"/> representing a channel to the RabbitMQ broker</param>
-        /// <param name="deserializer">A <see cref="IDeserializer{T}"/> instance used for de-serialization of messages received from the feed</param>
+        /// <param name="deserializer">A <see cref="IDeserializer{T}"/> instance used for deserialization of messages received from the feed</param>
         /// <param name="keyParser">A <see cref="IRoutingKeyParser"/> used to parse the rabbit's routing key</param>
         /// <param name="producerManager">An <see cref="IProducerManager"/> used to get <see cref="IProducer"/></param>
         /// <param name="usedReplay">Is connected to the replay server</param>
@@ -145,11 +146,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                              : feedMessage.GeneratedAt;
                 }
                 feedMessage.ReceivedAt = receivedAt;
+                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions{Context = "FeedMessageReceived", Name = $"{feedMessage.GetType().Name}"});
             }
             catch (DeserializationException ex)
             {
                 ExecutionLog.LogError($"Failed to parse message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}", ex);
-                //Metric.Context("RABBIT").Meter("RabbitMqMessageReceiver->DeserializationException", Unit.Calls).Mark();
+                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "FeedMessageReceived", Name = "DeserializationFailed" });
                 RaiseDeserializationFailed(eventArgs.Body);
                 return;
             }
@@ -196,7 +198,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 }
             }
 
-            //Metric.Context("RABBIT").Meter("RabbitMqMessageReceiver", Unit.Items).Mark(messageName);
             RaiseMessageReceived(feedMessage, eventArgs.Body);
         }
 

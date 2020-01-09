@@ -139,8 +139,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return;
             }
 
-            //Metric.Context("FEED").Meter("FeedRecoveryManager->OnTimerElapsed", Unit.Calls).Mark();
-
             foreach (var recoveryTracker in _producerRecoveryManagers.Values)
             {
                 recoveryTracker.CheckStatus();

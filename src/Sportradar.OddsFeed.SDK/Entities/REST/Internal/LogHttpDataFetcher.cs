@@ -57,8 +57,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="CommunicationException">Failed to execute http get</exception>
         public override async Task<Stream> GetDataAsync(Uri uri)
         {
-            //Metric.Context("FEED").Meter("LogHttpDataFetcher->GetDataAsync", Unit.Requests).Mark();
-
             var dataId = _sequenceGenerator.GetNext().ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together.
             var watch = new Stopwatch();
 
@@ -114,8 +112,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="CommunicationException">Failed to execute http get</exception>
         public override Stream GetData(Uri uri)
         {
-            //Metric.Context("FEED").Meter("LogHttpDataFetcher->GetData", Unit.Requests).Mark();
-
             var dataId = _sequenceGenerator.GetNext().ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together
             var watch = new Stopwatch();
 
@@ -172,8 +168,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="CommunicationException">Failed to execute http post</exception>
         public override async Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null)
         {
-            //Metric.Context("FEED").Meter("LogHttpDataFetcher->PostDataAsync", Unit.Requests).Mark();
-
             var dataId = _sequenceGenerator.GetNext().ToString("D7");
 
             RestLog.LogInformation($"Id:{dataId} Posting url: {uri.AbsoluteUri}");

@@ -104,8 +104,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            var timerOptions = new TimerOptions { Context = "LocalizedNamedValueCache", Name = "GetAsync", MeasurementUnit = Unit.Requests };
             EntityList<NamedValueDTO> record;
+            var timerOptions = new TimerOptions { Context = "LocalizedNamedValueCache", Name = "GetAsync", MeasurementUnit = Unit.Requests };
             using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions, $"{culture.TwoLetterISOLanguageName}"))
             {
                 record = await _dataProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);

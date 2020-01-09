@@ -10217,7 +10217,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqMessageReceiver._deserializer">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1"/> instance used for de-serialization of messages received from the feed
+            A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1"/> instance used for deserialization of messages received from the feed
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqMessageReceiver._keyParser">
@@ -10260,7 +10260,7 @@
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqMessageReceiver"/> class
             </summary>
             <param name="channel">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IRabbitMqChannel"/> representing a channel to the RabbitMQ broker</param>
-            <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1"/> instance used for de-serialization of messages received from the feed</param>
+            <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1"/> instance used for deserialization of messages received from the feed</param>
             <param name="keyParser">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IRoutingKeyParser"/> used to parse the rabbit's routing key</param>
             <param name="producerManager">An <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducerManager"/> used to get <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/></param>
             <param name="usedReplay">Is connected to the replay server</param>

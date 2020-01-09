@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Linq;
+using App.Metrics;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -53,6 +55,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         private bool _dataFetched;
 
+        private readonly TimerOptions _timerOptions = new TimerOptions { Context = "NamedValueCache", Name = "GetAsync", MeasurementUnit = Unit.Requests };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NamedValueCache"/> class.
         /// </summary>
@@ -77,7 +81,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             EntityList<NamedValueDTO> record;
             try
             {
-                record = _dataProvider.GetDataAsync().Result;
+                using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOptions))
+                {
+                    record = _dataProvider.GetDataAsync().Result;
+                }
             }
             catch (AggregateException ex)
             {

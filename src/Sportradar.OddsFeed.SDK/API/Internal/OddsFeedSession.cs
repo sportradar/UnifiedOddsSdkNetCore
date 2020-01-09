@@ -141,7 +141,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     _messageProcessor.ProcessMessage(message, MessageInterest, e.RawMessage);
                     return;
                 case ValidationResult.SUCCESS:
-                    //Metric.Context("FEED").Meter($"FeedSession->MessageReceived ({MessageInterest.ProducerId})", Unit.Items).Mark();
                     Log.LogDebug($"{WriteMessageInterest()}Message=[{message}] successfully validated. Continuing with message processing.");
                     _messageProcessor.ProcessMessage(message, MessageInterest, e.RawMessage);
                     return;
