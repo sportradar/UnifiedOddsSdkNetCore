@@ -3,6 +3,7 @@
 */
 using System;
 using System.Globalization;
+using App.Metrics;
 using Microsoft.Extensions.Logging;
 using Dawn;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -25,11 +26,23 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private readonly ILogger _log;
         private readonly ILoggerFactory _loggerFactory;
+        private readonly IMetricsRoot _metricsRoot;
 
         public CompleteInfo(ILoggerFactory loggerFactory = null)
         {
             _loggerFactory = loggerFactory;
             _log = _loggerFactory?.CreateLogger(typeof(CompleteInfo)) ?? new NullLogger<CompleteInfo>();
+
+            _metricsRoot = new MetricsBuilder()
+                .Configuration.Configure(
+                    options =>
+                    {
+                        options.DefaultContextLabel = "DemoProject";
+                        options.Enabled = true;
+                        options.ReportingEnabled = true;
+                    })
+                .OutputMetrics.AsPlainText()
+                .Build();
         }
 
         public void Run(MessageInterest messageInterest, CultureInfo culture)
@@ -38,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _log.LogInformation("Running the OddsFeed SDK Complete example");
 
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
-            var oddsFeed = new Feed(configuration, _loggerFactory);
+            var oddsFeed = new Feed(configuration, _loggerFactory, _metricsRoot);
             AttachToFeedEvents(oddsFeed);
 
             _log.LogInformation("Creating IOddsFeedSessions");

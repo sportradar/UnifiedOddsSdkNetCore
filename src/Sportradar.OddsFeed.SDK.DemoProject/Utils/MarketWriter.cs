@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -34,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogInformation("No Markets for this SportEvent.");
                 return;
             }
             foreach (var market in markets)
@@ -47,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogInformation("No Markets for this SportEvent.");
                 return;
             }
             foreach (var market in markets)
@@ -60,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogInformation("No Markets for this SportEvent.");
                 return;
             }
             foreach (var market in markets)
@@ -73,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogInformation("No Markets for this SportEvent.");
                 return;
             }
             foreach (var market in markets)
@@ -85,18 +87,18 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private void WriteMarket(IMarket market, CultureInfo culture)
         {
             var marketName = _taskProcessor.GetTaskResult(market.GetNameAsync(culture));
-            _log.LogDebug($"MarketId:{market.Id}, Specifiers:'{WriteSpecifiers(market.Specifiers)}', Name[{culture.TwoLetterISOLanguageName}]:'{marketName}'");
+            _log.LogInformation($"MarketId:{market.Id}, Specifiers:'{WriteSpecifiers(market.Specifiers)}', Name[{culture.TwoLetterISOLanguageName}]:'{marketName}'");
         }
 
         private void WriteMarket(IMarketWithOdds market, CultureInfo culture)
         {
             if (market == null)
             {
-                _log.LogDebug("Market is null.");
+                _log.LogInformation("Market is null.");
                 return;
             }
             var marketName = _taskProcessor.GetTaskResult(market.GetNameAsync(culture));
-            _log.LogDebug($"MarketId:{market.Id}, Specifiers:'{WriteSpecifiers(market.Specifiers)}', Name[{culture.TwoLetterISOLanguageName}]:'{marketName}', Status:{market.Status}, IsFavorite:{market.IsFavorite}");
+            _log.LogInformation($"MarketId:{market.Id}, Specifiers:'{WriteSpecifiers(market.Specifiers)}', Name[{culture.TwoLetterISOLanguageName}]:'{marketName}', Status:{market.Status}, IsFavorite:{market.IsFavorite}");
             if (market.OutcomeOdds == null)
             {
                 return;
@@ -104,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 
             foreach (var outcome in market.OutcomeOdds)
             {
-                _log.LogDebug(WriteOutcome(outcome, culture));
+                _log.LogInformation(WriteOutcome(outcome, culture));
             }
         }
 
@@ -114,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             var voidReason = market.VoidReason == null
                 ? "null"
                 : $"[{market.VoidReason.Id}-{market.VoidReason.Description}]";
-            _log.LogDebug($"MarketId:{market.Id}, Specifiers:'{WriteSpecifiers(market.Specifiers)}', AdditionalInfo:'{WriteAdditionalInfo(market.AdditionalInfo)}', Name[{culture.TwoLetterISOLanguageName}]:'{marketName}', VoidReason:{voidReason}, MarketDefinition:{market.MarketDefinition?.GetNameTemplate(culture)}");
+            _log.LogInformation($"MarketId:{market.Id}, Specifiers:'{WriteSpecifiers(market.Specifiers)}', AdditionalInfo:'{WriteAdditionalInfo(market.AdditionalInfo)}', Name[{culture.TwoLetterISOLanguageName}]:'{marketName}', VoidReason:{voidReason}, MarketDefinition:{market.MarketDefinition?.GetNameTemplate(culture)}");
         }
 
         private void WriteMarket(IMarketWithSettlement market, CultureInfo culture)
@@ -124,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             {
                 foreach (var outcome in market.OutcomeSettlements)
                 {
-                    _log.LogDebug(WriteOutcome(outcome, culture));
+                    _log.LogInformation(WriteOutcome(outcome, culture));
                 }
             }
         }
@@ -165,7 +167,16 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 
         private string WriteOutcomeDefinition(IOutcomeDefinition outcomeDefinition, CultureInfo culture)
         {
-            return $"NameTemplate[{culture.TwoLetterISOLanguageName}]:{outcomeDefinition?.GetNameTemplate(culture)}";
+            try
+            {
+                return $"NameTemplate[{culture.TwoLetterISOLanguageName}]:{outcomeDefinition?.GetNameTemplate(culture)}";
+            }
+            catch (Exception e)
+            {
+                _log.LogWarning(e.Message, e);
+            }
+
+            return null;
         }
 
         private string WriteOutcome(IOutcome outcome, CultureInfo culture)

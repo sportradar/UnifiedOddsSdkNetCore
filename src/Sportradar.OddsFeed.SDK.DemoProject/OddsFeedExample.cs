@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
         private static void DoExampleSelection()
         {
             Console.WriteLine(string.Empty);
-            Console.WriteLine("  Select which example you want to run:");
+            Console.WriteLine("Select which example you want to run:");
             Console.WriteLine("  1 - Basic \t\t\t(single session, generic dispatcher, basic output)");
             Console.WriteLine("  2 - Multi-Session \t\t(has Low and High priority sessions)");
             Console.WriteLine("  3 - Use specific dispatchers \t(uses specific message dispatchers)");
@@ -60,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             Console.WriteLine("  8 - Extra: Replay Server \t(how to interact with xReplay Server)");
             Console.WriteLine("  9 - Extra: Export/import \t(how to export/import current cache state)");
             Console.WriteLine(" 10 - Extra: Advanced setup \t(single session with multi-threaded message parsing)");
-            Console.Write("  Enter number: ");
+            Console.Write("Enter number: ");
             var k = Console.ReadLine();
 
             var defaultLocale = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build().DefaultLocale;

@@ -220,7 +220,8 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void WriteSportEntity(string msgType, ISportEvent message)
         {
-            _log.LogInformation($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}");
+            msgType = msgType.Replace("`1", string.Empty);
+            _log.LogInformation($"{msgType} message for eventId {message.Id}");
         }
     }
 }
