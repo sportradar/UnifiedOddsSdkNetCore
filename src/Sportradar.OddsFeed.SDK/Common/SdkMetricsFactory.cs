@@ -12,12 +12,18 @@ namespace Sportradar.OddsFeed.SDK.Common
     {
         private static IMetricsRoot _metricsRoot;
 
-        //set by dependency injection
+        /// <summary>
+        /// Used to set <see cref="IMetricsRoot"/> used within sdk
+        /// </summary>
+        /// <param name="metricsRoot">The <see cref="IMetricsRoot"/> used within sdk</param>
         public SdkMetricsFactory(IMetricsRoot metricsRoot)
         {
             _metricsRoot = metricsRoot;
         }
 
+        /// <summary>
+        /// The <see cref="IMetricsRoot"/> used within sdk
+        /// </summary>
         public static IMetricsRoot MetricsRoot
         {
             get

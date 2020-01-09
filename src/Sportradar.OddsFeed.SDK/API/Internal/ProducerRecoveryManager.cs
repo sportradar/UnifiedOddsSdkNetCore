@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly Producer _producer;
 
         /// <summary>
-        /// A <see cref="IRecoveryOperation"/> used to issue & track recovery operations
+        /// A <see cref="IRecoveryOperation"/> used to issue and track recovery operations
         /// </summary>
         private readonly IRecoveryOperation _recoveryOperation;
 

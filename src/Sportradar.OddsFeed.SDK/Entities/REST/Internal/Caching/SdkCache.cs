@@ -7,7 +7,6 @@ using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Counter;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -96,26 +95,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             Guard.Argument(id, nameof(id)).NotNull();
             Guard.Argument(item, nameof(item)).NotNull();
 
-            var counterOptions = new CounterOptions{ Context = $"AddDtoTo_{CacheName}", Name = $"{dtoType}", MeasurementUnit = Unit.Calls };
-            var timerOptions = new TimerOptions
-             {
-                 Context = $"{id} [{culture.TwoLetterISOLanguageName}]", Name = $"{dtoType}",
-                 MeasurementUnit = Unit.Calls, DurationUnit = TimeUnit.Milliseconds, RateUnit = TimeUnit.Milliseconds
-             };
-            _metrics.Measure.Counter.Increment(counterOptions);
-            using (_metrics.Measure.Timer.Time(timerOptions))
+            var timerOptionsCache = new TimerOptions { Context = "SdkCache", Name = $"SaveTo_{CacheName}", MeasurementUnit = Unit.Calls };
+            var timerOptionsDtType = new TimerOptions { Context = "SdkCache", Name = $"{dtoType}", MeasurementUnit = Unit.Calls };
+            using (_metrics.Measure.Timer.Time(timerOptionsCache))
             {
-                //WriteLog($"{CacheName} ::> Saving DTO for id:{id}, lang:[{culture.TwoLetterISOLanguageName}] and type:{dtoType}.");
-                var syncTask = new Task<bool>(() =>
+                using (_metrics.Measure.Timer.Time(timerOptionsDtType))
                 {
-                    var result = CacheAddDtoItem(id, item, culture, dtoType, requester);
-                    //WriteLog($"{CacheName} ::> Saving DTO for id:{id}, lang:[{culture.TwoLetterISOLanguageName}] and type:{dtoType} COMPLETED.");
-                    return result;
-                });
+                    //WriteLog($"{CacheName} ::> Saving DTO for id:{id}, lang:[{culture.TwoLetterISOLanguageName}] and type:{dtoType}.");
+                    var syncTask = new Task<bool>(() =>
+                    {
+                        var result = CacheAddDtoItem(id, item, culture, dtoType, requester);
+                        //WriteLog($"{CacheName} ::> Saving DTO for id:{id}, lang:[{culture.TwoLetterISOLanguageName}] and type:{dtoType} COMPLETED.");
+                        return result;
+                    });
 
-                syncTask.Start();
+                    syncTask.Start();
 
-                return syncTask;
+                    return syncTask;
+                }
             }
         }
 

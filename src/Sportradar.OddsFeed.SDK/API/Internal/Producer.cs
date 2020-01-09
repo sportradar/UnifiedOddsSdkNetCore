@@ -114,7 +114,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="maxInactivitySeconds">The maximum time between two alive messages before the producer is marked as down</param>
         /// <param name="maxRecoveryTime">The maximum time in which recovery must be completed</param>
         /// <param name="scope">The scope of the producer</param>
-        public Producer(int id, string name, string description, string apiUrl, bool active, int maxInactivitySeconds, int maxRecoveryTime, string scope)
+        public Producer(int id, string name, string description, string apiUrl, bool active, int maxInactivitySeconds,
+            int maxRecoveryTime, string scope)
         {
             Guard.Argument(id).Positive();
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
@@ -180,6 +181,35 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public override string ToString()
         {
             return $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]";
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider = null)
+        {
+            //Supported formats: C - compact, F - full, I - only id, J - json
+            if (format == null)
+            {
+                format = "G";
+            }
+            format = format.ToLower();
+
+            if (formatProvider?.GetFormat(GetType()) is ICustomFormatter formatter)
+            {
+                return formatter.Format(format, this, formatProvider);
+            }
+
+            switch (format)
+            {
+                case "c":
+                    return $"{Id}-{Name}";
+                case "f":
+                    return $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]";
+                case "i":
+                    return Id.ToString();
+                //case "g":
+                default:
+                    return $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]";
+
+            }
         }
 
         /// <summary>

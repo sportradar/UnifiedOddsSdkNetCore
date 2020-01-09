@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Counter;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -104,8 +104,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            SdkMetricsFactory.MetricsRoot.Measure.Counter.Increment(new CounterOptions{Context="CACHE", Name= "LocalizedNamedValueCache->FetchAndMerge", MeasurementUnit = Unit.Calls});
-            var record = await _dataProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+            var timerOptions = new TimerOptions { Context = "LocalizedNamedValueCache", Name = "GetAsync", MeasurementUnit = Unit.Requests };
+            EntityList<NamedValueDTO> record;
+            using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions, $"{culture.TwoLetterISOLanguageName}"))
+            {
+                record = await _dataProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+            }
 
             lock (_lock)
             {

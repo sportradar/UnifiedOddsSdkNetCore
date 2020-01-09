@@ -9,11 +9,12 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using App.Metrics;
 using App.Metrics.Health;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
@@ -21,6 +22,8 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
+using ITimer = Sportradar.OddsFeed.SDK.Common.Internal.ITimer;
+
 // ReSharper disable InconsistentlySynchronizedField
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
@@ -67,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         private readonly object _addLock = new object();
 
         /// <summary>
-        /// A <see cref="ITimer"/> instance used to trigger periodic cache refresh-es
+        /// A <see cref="Common.Internal.ITimer"/> instance used to trigger periodic cache refresh-es
         /// </summary>
         private readonly ITimer _timer;
 
@@ -153,36 +156,40 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             var culturesToFetch = _cultures.ToDictionary(ci => ci, ci => datesToFetch);
 
-            foreach (var key in culturesToFetch)
+            var timerOptions = new TimerOptions { Context = "SportEventCache", Name = "GetAll", MeasurementUnit = Unit.Requests };
+            using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions))
             {
-                try
+                foreach (var key in culturesToFetch)
                 {
-                    var tasks = key.Value.Select(d => GetScheduleAsync(d, key.Key)).ToList();
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
-                }
-                catch (ObjectDisposedException ex)
-                {
-                    ExecutionLog.LogWarning($"Periodic events schedule retrieval failed because the instance {ex.ObjectName} is being disposed.");
-                }
-                catch (TaskCanceledException)
-                {
-                    ExecutionLog.LogWarning("Periodic events schedule retrieval failed because the instance is being disposed.");
-                }
-                catch (FeedSdkException ex)
-                {
-                    ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception was: {ex}");
-                }
-                catch (AggregateException ex)
-                {
-                    var baseException = ex.GetBaseException();
-                    if (baseException.GetType() == typeof(ObjectDisposedException))
+                    try
                     {
-                        ExecutionLog.LogWarning($"Error happened during fetching schedule, because the instance {((ObjectDisposedException) baseException).ObjectName} is being disposed.");
+                        var tasks = key.Value.Select(d => GetScheduleAsync(d, key.Key)).ToList();
+                        await Task.WhenAll(tasks).ConfigureAwait(false);
                     }
-                }
-                catch (Exception ex)
-                {
-                    ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception: {ex}");
+                    catch (ObjectDisposedException ex)
+                    {
+                        ExecutionLog.LogWarning($"Periodic events schedule retrieval failed because the instance {ex.ObjectName} is being disposed.");
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        ExecutionLog.LogWarning("Periodic events schedule retrieval failed because the instance is being disposed.");
+                    }
+                    catch (FeedSdkException ex)
+                    {
+                        ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception was: {ex}");
+                    }
+                    catch (AggregateException ex)
+                    {
+                        var baseException = ex.GetBaseException();
+                        if (baseException.GetType() == typeof(ObjectDisposedException))
+                        {
+                            ExecutionLog.LogWarning($"Error happened during fetching schedule, because the instance {((ObjectDisposedException) baseException).ObjectName} is being disposed.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception: {ex}");
+                    }
                 }
             }
         }
@@ -197,8 +204,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             Guard.Argument(date, nameof(date)).Require(date > DateTime.MinValue);
 
-            //Metric.Context("CACHE").Meter("SportEventCache->GetScheduleAsync", Unit.Calls);
-
             var fetchedItem = await _dataRouterManager.GetSportEventsForDateAsync(date, culture).ConfigureAwait(false);
 
             CacheLog.LogInformation($"{fetchedItem.Count()} sport events retrieved for {date.ToShortDateString()} and locale '{culture.TwoLetterISOLanguageName}'.");
@@ -211,8 +216,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>a <see cref="SportEventCI"/> instance representing cached sport event data</returns>
         public SportEventCI GetEventCacheItem(URN id)
         {
-            //Metric.Context("CACHE").Meter("SportEventCache->GetEventCacheItem", Unit.Calls);
-
             lock (_addLock)
             {
                 try
@@ -266,8 +269,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task{T}"/> representing an asynchronous operation</returns>
         public async Task GetEventIdsAsync(URN tournamentId, IEnumerable<CultureInfo> cultures)
         {
-            //Metric.Context("CACHE").Meter("SportEventCache->GetEventIdsAsync by tournamentId", Unit.Calls);
-
             var wantedCultures = cultures?.ToList() ?? _cultures.ToList();
 
             var tasks = wantedCultures.Select(s => _dataRouterManager.GetSportEventsForTournamentAsync(tournamentId, s, null));
@@ -387,8 +388,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 CacheLog.LogDebug($"SportEventCI {arguments.CacheItem.Key} removed from cache. Reason={arguments.RemovedReason}.");
             }
-
-            //Metric.Context("CACHE").Meter("SportEventCache->CacheItemRemovedCallback", Unit.Calls).Mark(arguments.RemovedReason.ToString());
         }
 
         /// <summary>

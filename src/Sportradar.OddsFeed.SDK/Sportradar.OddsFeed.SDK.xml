@@ -3979,7 +3979,11 @@
             The producer
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager._recoveryOperation" -->
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager._recoveryOperation">
+            <summary>
+            A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation"/> used to issue and track recovery operations
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager._timestampTracker">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ITimestampTracker"/> used to track message timings
@@ -5014,8 +5018,8 @@
             <param name="sportEntityFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.ISportEntityFactory"/> used to construct <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ITournament"/> instances</param>
             <param name="sportEventCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache"/> used to retrieve schedules for sport events</param>
             <param name="sportEventStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache"/> used to retrieve status for sport event</param>
-            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.IProfileCache"/> ued to retrieve competitor or player profile</param>
-            <param name="sportDataCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportDataCache"/> ued to retrieve sport data</param>
+            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.IProfileCache"/> used to retrieve competitor or player profile</param>
+            <param name="sportDataCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportDataCache"/> used to retrieve sport data</param>
             <param name="defaultCultures"> A <see cref="T:System.Collections.Generic.IList`1"/> specified as default cultures (from configuration)</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying enum member specifying how instances provided by the current provider will handle exceptions</param>
             <param name="cacheManager">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager"/> used to interact among caches</param>
@@ -7494,6 +7498,17 @@
         <member name="T:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory">
             <summary>
             Provides methods to get <see cref="T:App.Metrics.IMetricsRoot"/> to record sdk metrics
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory.#ctor(App.Metrics.IMetricsRoot)">
+            <summary>
+            Used to set <see cref="T:App.Metrics.IMetricsRoot"/> used within sdk
+            </summary>
+            <param name="metricsRoot">The <see cref="T:App.Metrics.IMetricsRoot"/> used within sdk</param>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory.MetricsRoot">
+            <summary>
+            The <see cref="T:App.Metrics.IMetricsRoot"/> used within sdk
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory.GetMeasure">

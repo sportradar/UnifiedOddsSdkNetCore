@@ -10,8 +10,11 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics;
 using App.Metrics.Health;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -23,6 +26,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using ITimer = Sportradar.OddsFeed.SDK.Common.Internal.ITimer;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
@@ -180,24 +184,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             var cultureInfos = cultures as IReadOnlyList<CultureInfo> ?? cultures.ToList();
-            //Metric.Context("CACHE").Meter("SportDataCache->FetchAndMergeAll", Unit.Calls).Mark($"Getting for cultures='{string.Join(",", cultureInfos.Select(c => c.TwoLetterISOLanguageName))}'.");
-
-            var fetchTasks = cultureInfos.Select(c => _dataRouterManager.GetAllSportsAsync(c)).ToList();
-            fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllTournamentsForAllSportAsync(c)).ToList());
-            fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllLotteriesAsync(c)).ToList());
-
-            if (clearExistingData)
+            var timerOptions = new TimerOptions { Context = "SportDataCache", Name = "GetAll", MeasurementUnit = Unit.Requests };
+            using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions))
             {
-                FetchedCultures.Clear();
-                Categories.Clear();
-                Sports.Clear();
-            }
+                var fetchTasks = cultureInfos.Select(c => _dataRouterManager.GetAllSportsAsync(c)).ToList();
+                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllTournamentsForAllSportAsync(c)).ToList());
+                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllLotteriesAsync(c)).ToList());
 
-            await Task.WhenAll(fetchTasks).ConfigureAwait(false);
+                if (clearExistingData)
+                {
+                    FetchedCultures.Clear();
+                    Categories.Clear();
+                    Sports.Clear();
+                }
 
-            foreach (var culture in cultureInfos)
-            {
-                FetchedCultures.Add(culture);
+                await Task.WhenAll(fetchTasks).ConfigureAwait(false);
+
+                foreach (var culture in cultureInfos)
+                {
+                    FetchedCultures.Add(culture);
+                }
             }
         }
 
@@ -325,7 +331,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogWarning($"An error occured while retrieving sport from cache. id={id} and lang=[{string.Join(",", cultureList)}].", e);
+                    ExecutionLog.LogWarning($"An error occurred while retrieving sport from cache. id={id} and lang=[{string.Join(",", cultureList)}].", e);
                 }
 
                 return new SportData(
@@ -435,8 +441,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task{SportData}"/> representing the asynchronous operation</returns>
         public async Task<SportData> GetSportAsync(URN id, IEnumerable<CultureInfo> cultures)
         {
-            //Metric.Context("CACHE").Meter("SportDataCache->GetSportAsync", Unit.Calls).Mark();
-
             var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
             var sport = await GetSportFromCacheAsync(id, cultureList).ConfigureAwait(false);
             if (sport != null)
@@ -477,8 +481,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task{SportData}"/> representing the asynchronous operation</returns>
         public async Task<CategoryData> GetCategoryAsync(URN id, IEnumerable<CultureInfo> cultures)
         {
-            //Metric.Context("CACHE").Meter("SportDataCache->GetCategoryAsync", Unit.Calls).Mark();
-
             if (!await _semaphore.WaitAsyncSafe().ConfigureAwait(false))
             {
                 return null;
@@ -525,8 +527,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task{SportData}"/> representing the asynchronous operation</returns>
         public async Task<SportData> GetSportForTournamentAsync(URN tournamentId, IEnumerable<CultureInfo> cultures)
         {
-            //Metric.Context("CACHE").Meter("SportDataCache->GetSportForTournamentAsync", Unit.Calls).Mark();
-
             var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
 
             if (!await _semaphore.WaitAsyncSafe().ConfigureAwait(false))
@@ -829,6 +829,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 case DtoType.BookingStatus:
                     break;
                 case DtoType.AvailableSelections:
+                    break;
+                case DtoType.TournamentInfoList:
                     break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");

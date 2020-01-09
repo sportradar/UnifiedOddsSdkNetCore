@@ -87,8 +87,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to construct <see cref="ITournament"/> instances</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> used to retrieve schedules for sport events</param>
         /// <param name="sportEventStatusCache">A <see cref="ISportEventStatusCache"/> used to retrieve status for sport event</param>
-        /// <param name="profileCache">A <see cref="IProfileCache"/> ued to retrieve competitor or player profile</param>
-        /// <param name="sportDataCache">A <see cref="ISportDataCache"/> ued to retrieve sport data</param>
+        /// <param name="profileCache">A <see cref="IProfileCache"/> used to retrieve competitor or player profile</param>
+        /// <param name="sportDataCache">A <see cref="ISportDataCache"/> used to retrieve sport data</param>
         /// <param name="defaultCultures"> A <see cref="IList{CultureInfo}"/> specified as default cultures (from configuration)</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying enum member specifying how instances provided by the current provider will handle exceptions</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
@@ -203,8 +203,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             return ids.Select(item => _sportEntityFactory.BuildSportEvent<ICompetition>(item.Item1,
                                                                                         item.Item2,
                                                                                         culture == null ? _defaultCultures : new[] {culture},
-                                                                                        _exceptionStrategy))
-                      .ToList();
+                                                                                        _exceptionStrategy)).ToList();
         }
 
         /// <summary>

@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     .Configuration.Configure(
                         options =>
                         {
-                            options.DefaultContextLabel = "UF SDK .NET Core";
+                            options.DefaultContextLabel = "UF SDK .NET Std";
                             options.Enabled = true;
                             options.ReportingEnabled = true;
                         })
@@ -80,6 +80,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
 
             container.RegisterInstance(_metricsRoot, new ContainerControlledLifetimeManager());
+            var unused = new SdkMetricsFactory(_metricsRoot);
 
             //register common types
             container.RegisterType<HttpClient, HttpClient>(new ContainerControlledLifetimeManager(), new InjectionConstructor());

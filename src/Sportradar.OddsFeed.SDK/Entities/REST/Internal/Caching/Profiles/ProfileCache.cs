@@ -9,8 +9,11 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics;
 using App.Metrics.Health;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
@@ -130,81 +133,85 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             Guard.Argument(playerId, nameof(playerId)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            // removed register interface !! todo
-            //Metric.Context("CACHE").Meter("ProfileCache->GetPlayerProfileAsync", Unit.Calls);
-
-            await _semaphorePlayer.WaitAsync().ConfigureAwait(false);
-
-            PlayerProfileCI cachedItem;
-            try
+            var timerOptions = new TimerOptions { Context = "ProfileCache", Name = "GetPlayerProfileAsync", MeasurementUnit = Unit.Requests };
+            using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions, $"{playerId}"))
             {
-                cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
-                var wantedCultures = cultures.ToList();
-                var missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
-                if (!missingLanguages.Any())
-                {
-                    return cachedItem;
-                }
+                await _semaphorePlayer.WaitAsync().ConfigureAwait(false);
 
-                // try to fetch for competitor, to avoid requests by each player
-                if (cachedItem?.CompetitorId != null)
+                PlayerProfileCI cachedItem;
+                try
                 {
-                    var competitorCI = (CompetitorCI)_cache.Get(cachedItem.CompetitorId.ToString());
-                    if (competitorCI != null &&
-                        (competitorCI.LastTimeCompetitorProfileFetched < DateTime.Now.AddSeconds(-30)
-                         || LanguageHelper.GetMissingCultures(wantedCultures, competitorCI.CultureCompetitorProfileFetched).Any()))
+                    cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
+                    var wantedCultures = cultures.ToList();
+                    var missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
+                    if (!missingLanguages.Any())
                     {
-                        ExecutionLog.LogDebug($"Fetching competitor profile for competitor {competitorCI.Id} instead of player {cachedItem.Id} for languages=[{string.Join(",", missingLanguages.Select(s => s.TwoLetterISOLanguageName))}].");
+                        return cachedItem;
+                    }
 
-                        try
+                    // try to fetch for competitor, to avoid requests by each player
+                    if (cachedItem?.CompetitorId != null)
+                    {
+                        var competitorCI = (CompetitorCI) _cache.Get(cachedItem.CompetitorId.ToString());
+                        if (competitorCI != null &&
+                            (competitorCI.LastTimeCompetitorProfileFetched < DateTime.Now.AddSeconds(-30)
+                             || LanguageHelper.GetMissingCultures(wantedCultures, competitorCI.CultureCompetitorProfileFetched).Any()))
                         {
-                            await _semaphoreCompetitor.WaitAsync().ConfigureAwait(false);
-                            var cultureTasks = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetCompetitorAsync(competitorCI.Id, c, null));
-                            await Task.WhenAll(cultureTasks.Values).ConfigureAwait(false);
-                        }
-                        catch (Exception)
-                        {
-                            // ignored
-                        }
-                        finally
-                        {
-                            if (!_isDisposed)
+                            ExecutionLog.LogDebug($"Fetching competitor profile for competitor {competitorCI.Id} instead of player {cachedItem.Id} for languages=[{string.Join(",", missingLanguages.Select(s => s.TwoLetterISOLanguageName))}].");
+
+                            try
                             {
-                                _semaphoreCompetitor.Release();
+                                await _semaphoreCompetitor.WaitAsync().ConfigureAwait(false);
+                                var cultureTasks = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetCompetitorAsync(competitorCI.Id, c, null));
+                                await Task.WhenAll(cultureTasks.Values).ConfigureAwait(false);
+                            }
+                            catch (Exception)
+                            {
+                                // ignored
+                            }
+                            finally
+                            {
+                                if (!_isDisposed)
+                                {
+                                    _semaphoreCompetitor.Release();
+                                }
+                            }
+
+                            cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
+                            missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
+                            if (!missingLanguages.Any())
+                            {
+                                return cachedItem;
                             }
                         }
+                    }
 
-                        cachedItem = (PlayerProfileCI)_cache.Get(playerId.ToString());
-                        missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys).ToList();
-                        if (!missingLanguages.Any())
-                        {
-                            return cachedItem;
-                        }
+                    var cultureTaskDictionary = missingLanguages.ToDictionary(c => c,
+                        c => _dataRouterManager.GetPlayerProfileAsync(playerId, c, null));
+
+                    await Task.WhenAll(cultureTaskDictionary.Values).ConfigureAwait(false);
+
+                    cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
+                }
+                catch (Exception ex)
+                {
+                    if (ex is DeserializationException || ex is MappingException)
+                    {
+                        throw new CacheItemNotFoundException($"An error occurred while fetching player profile for player {playerId} in cache", playerId.ToString(), ex);
+                    }
+
+                    throw;
+                }
+                finally
+                {
+                    if (!_isDisposed)
+                    {
+                        _semaphorePlayer.Release();
                     }
                 }
 
-                var cultureTaskDictionary = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetPlayerProfileAsync(playerId, c, null));
-
-                await Task.WhenAll(cultureTaskDictionary.Values).ConfigureAwait(false);
-
-                cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
+                return cachedItem;
             }
-            catch (Exception ex)
-            {
-                if (ex is DeserializationException || ex is MappingException)
-                {
-                    throw new CacheItemNotFoundException($"An error occurred while fetching player profile for player {playerId} in cache", playerId.ToString(), ex);
-                }
-                throw;
-            }
-            finally
-            {
-                if (!_isDisposed)
-                {
-                    _semaphorePlayer.Release();
-                }
-            }
-            return cachedItem;
         }
 
         /// <summary>
@@ -219,42 +226,47 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             Guard.Argument(competitorId, nameof(competitorId)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            //Metric.Context("CACHE").Meter("ProfileCache->GetCompetitorProfileAsync", Unit.Calls);
-
-            await _semaphoreCompetitor.WaitAsync().ConfigureAwait(false);
-
-            CompetitorCI cachedItem;
-            try
+            var timerOptions = new TimerOptions { Context = "ProfileCache", Name = "GetCompetitorProfileAsync", MeasurementUnit = Unit.Requests };
+            using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions, $"{competitorId}"))
             {
-                cachedItem = (CompetitorCI) _cache.Get(competitorId.ToString());
-                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, cachedItem?.Names.Keys).ToList();
-                if (!missingLanguages.Any())
-                {
-                    return cachedItem;
-                }
+                await _semaphoreCompetitor.WaitAsync().ConfigureAwait(false);
 
-                var cultureTasks = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetCompetitorAsync(competitorId, c, null));
-
-                await Task.WhenAll(cultureTasks.Values).ConfigureAwait(false);
-
-                cachedItem = (CompetitorCI) _cache.Get(competitorId.ToString());
-            }
-            catch (Exception ex)
-            {
-                if (ex is DeserializationException || ex is MappingException)
+                CompetitorCI cachedItem;
+                try
                 {
-                    throw new CacheItemNotFoundException("An error occurred while fetching competitor profile not found in cache", competitorId.ToString(), ex);
+                    cachedItem = (CompetitorCI) _cache.Get(competitorId.ToString());
+                    var missingLanguages = LanguageHelper.GetMissingCultures(cultures, cachedItem?.Names.Keys).ToList();
+                    if (!missingLanguages.Any())
+                    {
+                        return cachedItem;
+                    }
+
+                    var cultureTasks = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetCompetitorAsync(competitorId, c, null));
+
+                    await Task.WhenAll(cultureTasks.Values).ConfigureAwait(false);
+
+                    cachedItem = (CompetitorCI) _cache.Get(competitorId.ToString());
                 }
-                throw;
-            }
-            finally
-            {
-                if (!_isDisposed)
+                catch (Exception ex)
                 {
-                    _semaphoreCompetitor.Release();
+                    if (ex is DeserializationException || ex is MappingException)
+                    {
+                        throw new CacheItemNotFoundException(
+                            "An error occurred while fetching competitor profile not found in cache",
+                            competitorId.ToString(), ex);
+                    }
+
+                    throw;
                 }
+                finally
+                {
+                    if (!_isDisposed)
+                    {
+                        _semaphoreCompetitor.Release();
+                    }
+                }
+                return cachedItem;
             }
-            return cachedItem;
         }
 
         /// <summary>
@@ -490,6 +502,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 case DtoType.BookingStatus:
                     break;
                 case DtoType.SportCategories:
+                    break;
+                case DtoType.AvailableSelections:
+                    break;
+                case DtoType.TournamentInfoList:
                     break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
