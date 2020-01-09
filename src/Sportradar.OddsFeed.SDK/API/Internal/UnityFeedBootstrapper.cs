@@ -379,11 +379,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             // fixture provider
             container.RegisterType<IDeserializer<fixturesEndpoint>, Deserializer<fixturesEndpoint>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<fixturesEndpoint, FixtureDTO>, FixtureMapperFactory>(new ContainerControlledLifetimeManager());
+            var fixtureEndpoint = config.Environment == SdkEnvironment.Replay
+                ? config.ReplayApiBaseUrl + "/sports/{1}/sport_events/{0}/fixture.xml" + nodeIdStr
+                : config.ApiBaseUri + "/v1/sports/{1}/sport_events/{0}/fixture.xml";
             container.RegisterType<IDataProvider<FixtureDTO>, DataProvider<fixturesEndpoint, FixtureDTO>>(
                 "fixtureEndpointDataProvider",
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
-                    config.ApiBaseUri + "/v1/sports/{1}/sport_events/{0}/fixture.xml",
+                    fixtureEndpoint,
                     new ResolvedParameter<IDataFetcher>(),
                     new ResolvedParameter<IDeserializer<fixturesEndpoint>>(),
                     new ResolvedParameter<ISingleTypeMapperFactory<fixturesEndpoint, FixtureDTO>>()));
@@ -495,10 +498,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             // provider for getting info about ongoing sport event (match timeline)
             container.RegisterType<IDeserializer<matchTimelineEndpoint>, Deserializer<matchTimelineEndpoint>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<matchTimelineEndpoint, MatchTimelineDTO>, MatchTimelineMapperFactory>(new ContainerControlledLifetimeManager());
+            var timelineEndpoint = config.Environment == SdkEnvironment.Replay
+                ? config.ReplayApiBaseUrl + "/sports/{1}/sport_events/{0}/timeline.xml" + nodeIdStr
+                : config.ApiBaseUri + "/v1/sports/{1}/sport_events/{0}/timeline.xml";
             container.RegisterType<IDataProvider<MatchTimelineDTO>, DataProvider<matchTimelineEndpoint, MatchTimelineDTO>>(
                     new ContainerControlledLifetimeManager(),
                     new InjectionConstructor(
-                        config.ApiBaseUri + "/v1/sports/{1}/sport_events/{0}/timeline.xml",
+                        timelineEndpoint,
                         new ResolvedParameter<IDataFetcher>(),
                         new ResolvedParameter<IDeserializer<matchTimelineEndpoint>>(),
                         new ResolvedParameter<ISingleTypeMapperFactory<matchTimelineEndpoint, MatchTimelineDTO>>()));
