@@ -25,6 +25,12 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-01-14  1.1.0.0
+Added new Replay API endpoints (FEEDSDK-1316)
+Updated DemoProject to use ILoggerFactory
+Added metrics to SpecificEntityWriter in DemoProject
+Fix: fetching outcome mappings for special markets that exists only on dynamic variant endpoint (FEEDSDK-1314)
+
 2020-01-06  1.0.0.0
 Port of UF SDK to .NET Standard 2.1
 Replaced Metrics.NET with App.Metrics

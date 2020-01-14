@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             MessageInterest messageInterest,
             IEnumerable<CultureInfo> defaultCultures,
             Func<OddsFeedSession, IEnumerable<string>> getRoutingKeys)
-            :base(messageMapper, defaultCultures)
+            : base(messageMapper, defaultCultures)
         {
             Guard.Argument(messageReceiver, nameof(messageReceiver)).NotNull();
             Guard.Argument(messageInterest, nameof(messageInterest)).NotNull();
