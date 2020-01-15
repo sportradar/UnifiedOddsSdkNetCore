@@ -688,10 +688,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IProducerManager>(),
                     config.Environment == SdkEnvironment.Replay));
 
-            container.RegisterType<IFeedMessageProcessor, SessionMessageManager>(
+            container.RegisterType<IFeedMessageProcessor>(
                 "SessionMessageManager",
                 new HierarchicalLifetimeManager(),
-                new InjectionConstructor(new ResolvedParameter<IFeedMessageMapper>()));
+                new InjectionFactory(c => c.Resolve<IFeedRecoveryManager>().CreateSessionMessageManager()));
 
             container.RegisterType<CompositeMessageProcessor>(
                 new HierarchicalLifetimeManager(),
