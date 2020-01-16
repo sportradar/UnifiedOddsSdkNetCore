@@ -318,6 +318,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="shutdownEventArgs">A <see cref="ShutdownEventArgs"/> containing additional event information</param>
         private void OnConnectionShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
+            _log.LogError($"The connection is shutdown. Cause: {shutdownEventArgs.Cause}");
             _feedRecoveryManager.ConnectionShutdown();
             ((IGlobalEventDispatcher) this).DispatchDisconnected();
         }

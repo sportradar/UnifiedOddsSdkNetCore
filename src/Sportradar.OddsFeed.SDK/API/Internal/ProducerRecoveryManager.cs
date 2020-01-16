@@ -189,7 +189,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 }
                 else if (Status == ProducerRecoveryStatus.Started)
                 {
-                    ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: Reseting current recovery operation.");
+                    ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: Resetting current recovery operation.");
                     _recoveryOperation.Reset();
                     newStatus = ProducerRecoveryStatus.Error;
                 }

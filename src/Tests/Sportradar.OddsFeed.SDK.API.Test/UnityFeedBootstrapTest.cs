@@ -248,7 +248,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         {
             var stats1 = _childContainer1.Resolve<IFeedMessageProcessor>("SessionMessageManager");
             Assert.IsNotNull(stats1, "Resolved SessionMessageManager cannot be a null reference");
-            Assert.IsInstanceOfType(stats1, typeof(IFeedMessageProcessor), "Resolved SessionMessageManager must be instance of SessionMessageManager");
+            Assert.IsInstanceOfType(stats1, typeof(IFeedMessageProcessor), "Resolved SessionMessageManager must be instance of IFeedMessageProcessor");
+            Assert.IsInstanceOfType(stats1, typeof(ISessionMessageManager), "Resolved SessionMessageManager must be instance of ISessionMessageManager");
 
             var stats2 = _childContainer2.Resolve<IFeedMessageProcessor>("SessionMessageManager");
             Assert.AreNotEqual(stats1, stats2, "SessionMessageManager instances resolved on different containers must not be equal");
