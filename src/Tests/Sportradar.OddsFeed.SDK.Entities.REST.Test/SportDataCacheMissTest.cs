@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
     /// For testing functionality of various caches handling missing fetches
     /// </summary>
     [TestClass]
-    public class CacheMissTest
+    public class SportDataCacheMissTest
     {
         const string AllTournaments = "GetAllTournamentsForAllSportAsync";
         const string AllSports = "GetAllSportsAsync";
