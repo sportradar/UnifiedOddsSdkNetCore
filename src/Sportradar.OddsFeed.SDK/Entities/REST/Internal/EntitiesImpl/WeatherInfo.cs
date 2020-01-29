@@ -64,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string" /> containing compacted representation of the current instance</returns>
         protected override string PrintC()
         {
-            return $"Pitch={Pitch}, Temparature={Temperature}, WeatherConditions={WeatherConditions}, Wind={Wind}";
+            return $"Pitch={Pitch}, Temperature={Temperature}, WeatherConditions={WeatherConditions}, Wind={Wind}";
         }
 
         /// <summary>

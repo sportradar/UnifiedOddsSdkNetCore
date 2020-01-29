@@ -163,7 +163,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public async Task<ExportableProductInfoCI> ExportAsync()
         {
             var linkTasks = _links?.Select(async l => await ((ProductInfoLink) l).ExportAsync().ConfigureAwait(false));
-            var channeltasks = _channels?.Select(async c => await ((StreamingChannel) c).ExportAsync().ConfigureAwait(false));
+            var channelTasks = _channels?.Select(async c => await ((StreamingChannel) c).ExportAsync().ConfigureAwait(false));
 
             return new ExportableProductInfoCI
             {
@@ -171,7 +171,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 IsAutoTraded = _isAutoTraded,
                 IsInHostedStatistics = _isInHostedStatistics,
                 Links = linkTasks != null ? await Task.WhenAll(linkTasks) : null,
-                Channels = channeltasks != null ? await Task.WhenAll(channeltasks) : null,
+                Channels = channelTasks != null ? await Task.WhenAll(channelTasks) : null,
                 IsInLiveScore = _isInLiveScore
             };
         }

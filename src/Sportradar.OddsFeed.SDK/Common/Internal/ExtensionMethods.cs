@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// not throw an exception if the semaphore is already disposed
         /// </summary>
         /// <param name="semaphore">The <see cref="SemaphoreSlim"/> on which to wait</param>
-        /// <returns>True if entering the semaphore succedded (e.g. isntance was not yet disposed); otherwise false</returns>
+        /// <returns>True if entering the semaphore succeeded (e.g. instance was not yet disposed); otherwise false</returns>
         public static bool WaitSafe(this SemaphoreSlim semaphore)
         {
             Guard.Argument(semaphore, nameof(semaphore)).NotNull();

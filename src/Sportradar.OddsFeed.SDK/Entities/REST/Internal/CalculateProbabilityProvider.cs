@@ -21,8 +21,7 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
     /// <summary>
-    /// An implementation of the <see cref="ICalculateProbabilityProvider"/> which fetches the data, deserializes it and than maps / converts it
-    /// to the output type
+    /// An implementation of the <see cref="ICalculateProbabilityProvider"/> which fetches the data, deserializes it and than maps / converts it to the output type
     /// </summary>
     internal class CalculateProbabilityProvider : ICalculateProbabilityProvider
     {

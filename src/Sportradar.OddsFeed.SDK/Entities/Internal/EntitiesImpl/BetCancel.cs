@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public long? EndTime { get; }
 
         /// <summary>
-        /// If the market was cancelled because of a migration from a different sport event, it gets a <see cref="URN"/> specifying the sport event from which the market has migrated
+        /// If the market was canceled because of a migration from a different sport event, it gets a <see cref="URN"/> specifying the sport event from which the market has migrated
         /// </summary>
         /// <value>The superseded by</value>
         public URN SupersededBy { get; }

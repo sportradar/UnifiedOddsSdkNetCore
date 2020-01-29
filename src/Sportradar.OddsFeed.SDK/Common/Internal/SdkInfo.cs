@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// Class provides information about current executing assembly
     /// </summary>
-    internal class SdkInfo
+    internal static class SdkInfo
     {
         /// <summary>
         /// The production host
@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string OutcometextVariantValue = "pre:outcometext";
         /// <summary>
-        /// The outcometext variant value
+        /// The free text variant value
         /// </summary>
         public const string FreeTextVariantValue = "free_text";
         /// <summary>

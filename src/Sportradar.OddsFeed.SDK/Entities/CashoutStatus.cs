@@ -4,7 +4,7 @@
 namespace Sportradar.OddsFeed.SDK.Entities
 {
     /// <summary>
-    /// Enumerates market cash-out availability
+    /// Enumerates market cashout availability
     /// </summary>
     public enum CashoutStatus
     {
@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         AVAILABLE = 1,
 
         /// <summary>
-        /// Indicates cashout for associated market is un-available
+        /// Indicates cashout for associated market is unavailable
         /// </summary>
         UNAVAILABLE = -1,
 
