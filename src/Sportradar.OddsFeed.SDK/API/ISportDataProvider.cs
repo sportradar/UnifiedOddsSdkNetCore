@@ -92,7 +92,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Delete the sport event from cache
         /// </summary>
         /// <param name="id">A <see cref="URN"/> specifying the id of <see cref="ISportEvent"/> to be deleted</param>
-        void DeleteSportEventFromCache(URN id);
+        /// <param name="includeEventStatusDeletion">Delete also <see cref="ISportEventStatus"/> from the cache</param>
+        void DeleteSportEventFromCache(URN id, bool includeEventStatusDeletion = false);
 
         /// <summary>
         /// Delete the tournament from cache

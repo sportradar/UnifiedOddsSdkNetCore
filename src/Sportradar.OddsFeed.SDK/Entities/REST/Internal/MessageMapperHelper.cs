@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// <summary>
     /// Defines static methods used when parsing feed messages
     /// </summary>
-    public static class MessageMapperHelper
+    internal static class MessageMapperHelper
     {
         /// <summary>
         /// Returns a <see cref="VoidFactor"/> member based on information received from the feed

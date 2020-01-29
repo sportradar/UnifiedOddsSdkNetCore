@@ -6,7 +6,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Enumerates simple math operations supported by <see cref="ExpressionOperand"/>
     /// </summary>
-    public enum SimpleMathOperation
+    internal enum SimpleMathOperation
     {
         /// <summary>
         /// Specifies an addition (+)

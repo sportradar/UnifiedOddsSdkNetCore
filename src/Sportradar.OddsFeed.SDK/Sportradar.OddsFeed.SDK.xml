@@ -5114,11 +5114,12 @@
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile"/> representing the specified player or a null reference</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.DeleteSportEventFromCache(Sportradar.OddsFeed.SDK.Messages.URN)">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.DeleteSportEventFromCache(Sportradar.OddsFeed.SDK.Messages.URN,System.Boolean)">
             <summary>
             Delete the sport event from cache
             </summary>
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> to be deleted</param>
+            <param name="includeEventStatusDeletion">Delete also <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEventStatus"/> from the cache</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.DeleteTournamentFromCache(Sportradar.OddsFeed.SDK.Messages.URN)">
             <summary>
@@ -5975,11 +5976,12 @@
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile"/> representing the specified player or a null reference</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.DeleteSportEventFromCache(Sportradar.OddsFeed.SDK.Messages.URN)">
+        <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.DeleteSportEventFromCache(Sportradar.OddsFeed.SDK.Messages.URN,System.Boolean)">
             <summary>
             Delete the sport event from cache
             </summary>
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> to be deleted</param>
+            <param name="includeEventStatusDeletion">Delete also <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEventStatus"/> from the cache</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.DeleteTournamentFromCache(Sportradar.OddsFeed.SDK.Messages.URN)">
             <summary>

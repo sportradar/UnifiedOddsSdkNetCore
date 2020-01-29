@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     /// <summary>
     /// Represents a base class for <see cref="IOperand"/> implementations which deal with market specifiers
     /// </summary>
-    public abstract class SpecifierBasedOperator
+    internal abstract class SpecifierBasedOperator
     {
         /// <summary>
         /// Parses the value of the specified specifier

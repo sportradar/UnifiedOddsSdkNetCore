@@ -386,8 +386,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             try
             {
                 var provider = useCachedProvider
-                    ? _sportEventFixtureProvider
-                    : _sportEventFixtureChangeFixtureProvider;
+                    ? _sportEventFixtureProvider // cached endpoint
+                    : _sportEventFixtureChangeFixtureProvider; // not cached endpoint
                 result = await provider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
                 restCallTime = (int) t.Elapsed.TotalMilliseconds;
             }

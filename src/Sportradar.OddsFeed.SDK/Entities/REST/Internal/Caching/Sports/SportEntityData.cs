@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
     /// <summary>
     /// Contains sport related entity (sport, category, tournament) data
     /// </summary>
-    public abstract class SportEntityData
+    internal abstract class SportEntityData
     {
         /// <summary>
         /// Gets <see cref="URN"/> specifying the id of the associated entity.

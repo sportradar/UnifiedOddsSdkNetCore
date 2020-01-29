@@ -349,10 +349,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Delete the sport event from cache
         /// </summary>
         /// <param name="id">A <see cref="URN"/> specifying the id of <see cref="ISportEvent"/> to be deleted</param>
-        public void DeleteSportEventFromCache(URN id)
+        /// <param name="includeEventStatusDeletion">Delete also <see cref="ISportEventStatus"/> from the cache</param>
+        public void DeleteSportEventFromCache(URN id, bool includeEventStatusDeletion = false)
         {
             Log.LogInformation($"Invoked DeleteSportEventFromCache: Id={id}");
             _cacheManager.RemoveCacheItem(id, CacheItemType.SportEvent, "SportDataProvider");
+
+            if (includeEventStatusDeletion)
+            {
+                _cacheManager.RemoveCacheItem(id, CacheItemType.SportEventStatus, "SportDataProvider");
+            }
         }
 
         /// <summary>
