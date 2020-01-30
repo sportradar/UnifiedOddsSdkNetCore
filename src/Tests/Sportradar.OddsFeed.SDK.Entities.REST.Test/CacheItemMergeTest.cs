@@ -33,7 +33,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 id = SR.Urn("team").ToString(),
                 name = "Team A",
                 @virtual = true,
-                virtualSpecified = true
+                virtualSpecified = true,
+                state = "state"
             };
             var teamType2 = new team
             {
@@ -42,7 +43,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 id = SR.Urn("team").ToString(),
                 name = "Team A",
                 @virtual = true,
-                virtualSpecified = true
+                virtualSpecified = true,
+                state = "state"
             };
             var competitorDTO1 = new CompetitorDTO(teamType1);
             var competitorDTO2 = new CompetitorDTO(teamType2);
@@ -55,6 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(competitorCI.GetName(_cultureFirst), teamType1.name);
             Assert.AreEqual(competitorCI.GetAbbreviation(_cultureFirst), teamType1.abbreviation);
             Assert.AreEqual(competitorCI.IsVirtual, teamType1.@virtual);
+            Assert.AreEqual(competitorCI.State, teamType1.state);
             Assert.AreEqual(teamType1.country, competitorCI.GetCountry(_cultureFirst));
             Assert.AreEqual(teamType2.country, competitorCI.GetCountry(_cultureSecond));
         }
@@ -412,7 +415,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 virtualSpecified = true,
                 qualifier = "qua 1",
                 divisionSpecified = true,
-                division = 1
+                division = 1,
+                state = "state"
             };
             var teamType2 = new teamCompetitor
             {
@@ -424,7 +428,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 virtualSpecified = true,
                 qualifier = "qua 1",
                 divisionSpecified = true,
-                division = 1
+                division = 1,
+                state = "state"
             };
             var competitorDTO1 = new TeamCompetitorDTO(teamType1);
             var competitorDTO2 = new TeamCompetitorDTO(teamType2);
@@ -438,6 +443,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(competitorCI.GetAbbreviation(_cultureFirst), teamType1.abbreviation);
             Assert.AreEqual(competitorCI.IsVirtual, teamType1.@virtual);
             Assert.AreEqual(competitorCI.Qualifier, teamType1.qualifier);
+            Assert.AreEqual(competitorCI.State, teamType1.state);
             Assert.AreEqual(teamType1.country, competitorCI.GetCountry(_cultureFirst));
             Assert.AreEqual(teamType2.country, competitorCI.GetCountry(_cultureSecond));
             Assert.IsNotNull(competitorCI.Division);

@@ -6585,7 +6585,7 @@
             not throw an exception if the semaphore is already disposed
             </summary>
             <param name="semaphore">The <see cref="T:System.Threading.SemaphoreSlim"/> on which to wait</param>
-            <returns>True if entering the semaphore succedded (e.g. isntance was not yet disposed); otherwise false</returns>
+            <returns>True if entering the semaphore succeeded (e.g. instance was not yet disposed); otherwise false</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.ExtensionMethods.WaitAsyncSafe(System.Threading.SemaphoreSlim)">
             <summary>
@@ -6966,7 +6966,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.FreeTextVariantValue">
             <summary>
-            The outcometext variant value
+            The free text variant value
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.PlayerPropsMarketGroup">
@@ -7541,7 +7541,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.CashoutStatus">
             <summary>
-            Enumerates market cash-out availability
+            Enumerates market cashout availability
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.CashoutStatus.AVAILABLE">
@@ -7551,7 +7551,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.CashoutStatus.UNAVAILABLE">
             <summary>
-            Indicates cashout for associated market is un-available
+            Indicates cashout for associated market is unavailable
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.CashoutStatus.CLOSED">
@@ -8124,7 +8124,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.BetCancel`1.SupersededBy">
             <summary>
-            If the market was cancelled because of a migration from a different sport event, it gets a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport event from which the market has migrated
+            If the market was canceled because of a migration from a different sport event, it gets a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport event from which the market has migrated
             </summary>
             <value>The superseded by</value>
         </member>
@@ -11063,6 +11063,11 @@
             A <see cref="T:System.String"/> representing the country code
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI.State">
+            <summary>
+            A <see cref="T:System.String"/> representing the state
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI.Manager">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableManagerCI"/> representing the manager
@@ -12972,6 +12977,12 @@
             </summary>
             <value>The age group</value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor.State">
+            <summary>
+            Gets the state
+            </summary>
+            <value>The state</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ICoverageInfo">
             <summary>
             Defines a contract implemented by classes providing coverage information
@@ -14057,6 +14068,12 @@
             Gets the age group
             </summary>
             <value>The age group</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.State">
+            <summary>
+            Gets the state
+            </summary>
+            <value>The state</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.RaceDriverProfile">
             <summary>
@@ -18936,8 +18953,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.CalculateProbabilityProvider">
             <summary>
-            An implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.ICalculateProbabilityProvider"/> which fetches the data, deserializes it and than maps / converts it
-            to the output type
+            An implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.ICalculateProbabilityProvider"/> which fetches the data, deserializes it and than maps / converts it to the output type
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.CalculateProbabilityProvider.#ctor(System.String,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataPoster,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.REST.CalculationResponseType},Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory{Sportradar.OddsFeed.SDK.Messages.REST.CalculationResponseType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.CalculationDTO})">
@@ -19838,6 +19854,12 @@
             Gets the country code
             </summary>
             <value>The country code</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO.State">
+            <summary>
+            Gets the state
+            </summary>
+            <value>The state</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO.Players">
             <summary>
@@ -22177,6 +22199,12 @@
             Gets the age group
             </summary>
             <value>The age group</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Competitor.State">
+            <summary>
+            Gets the state
+            </summary>
+            <value>The state</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CoverageInfo">
             <summary>

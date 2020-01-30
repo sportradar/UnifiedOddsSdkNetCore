@@ -43,6 +43,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string CountryCode { get; }
 
         /// <summary>
+        /// Gets the state
+        /// </summary>
+        /// <value>The state</value>
+        public string State { get; protected set; }
+
+        /// <summary>
         /// Gets the players
         /// </summary>
         /// <value>The players</value>
@@ -77,6 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 ? null
                 : new ReadOnlyDictionary<string, string>(record.reference_ids.ToDictionary(r => r.name, r => r.value));
             CountryCode = record.country_code;
+            State = record.state;
 
             if (record.players != null && record.players.Any())
             {

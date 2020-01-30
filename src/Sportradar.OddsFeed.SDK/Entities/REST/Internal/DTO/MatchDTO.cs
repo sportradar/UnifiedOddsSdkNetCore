@@ -116,7 +116,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                                                                                     country_code = t.country_code,
                                                                                     reference_ids = t.reference_ids,
                                                                                     division = t.division,
-                                                                                    divisionSpecified = t.divisionSpecified
+                                                                                    divisionSpecified = t.divisionSpecified,
+                                                                                    state = t.state
                                                                                 }).ToArray(),
                                     parent = fixture.parent,
                                     races = fixture.races,

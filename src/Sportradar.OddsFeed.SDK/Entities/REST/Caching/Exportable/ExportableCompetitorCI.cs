@@ -50,6 +50,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public string CountryCode { get; set; }
 
         /// <summary>
+        /// A <see cref="string"/> representing the state
+        /// </summary>
+        public string State { get; set; }
+
+        /// <summary>
         /// A <see cref="ExportableManagerCI"/> representing the manager
         /// </summary>
         public ExportableManagerCI Manager { get; set; }

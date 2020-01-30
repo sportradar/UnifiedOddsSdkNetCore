@@ -376,5 +376,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <value>The age group</value>
         public string AgeGroup => GetCompetitor()?.AgeGroup;
+
+        /// <summary>
+        /// Gets the state
+        /// </summary>
+        /// <value>The state</value>
+        public string State => GetCompetitor()?.State;
     }
 }

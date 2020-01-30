@@ -49,6 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private RaceDriverProfileCI _raceDriverProfile;
         private DateTime _lastTimeCompetitorProfileFetched;
         private List<CultureInfo> _cultureCompetitorProfileFetched;
+        private string _state;
 
         /// <summary>
         /// Last time (if any) competitor profile was fetched
@@ -244,6 +245,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
+        /// Gets the state
+        /// </summary>
+        /// <value>The state</value>
+        public string State
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_state))
+                {
+                    FetchProfileIfNeeded(_primaryCulture);
+                }
+
+                return _state;
+            }
+        }
+
+        /// <summary>
         /// Gets the race driver profile
         /// </summary>
         /// <value>The race driver profile</value>
@@ -382,6 +400,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _referenceId = originalCompetitorCI._referenceId;
             _jerseys = originalCompetitorCI._jerseys;
             _countryCode = originalCompetitorCI._countryCode;
+            _state = originalCompetitorCI._state;
             _manager = originalCompetitorCI._manager;
             _venue = originalCompetitorCI._venue;
             _gender = originalCompetitorCI._gender;
@@ -410,6 +429,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _referenceId = new ReferenceIdCI(exportable.ReferenceIds);
             _jerseys = new List<JerseyCI>(exportable.Jerseys.Select(j => new JerseyCI(j)));
             _countryCode = exportable.CountryCode;
+            _state = exportable.State;
             _manager = exportable.Manager != null ? new ManagerCI(exportable.Manager) : null;
             _venue = exportable.Venue != null ? new VenueCI(exportable.Venue) : null;
             _gender = exportable.Gender;
@@ -447,6 +467,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 : competitor.Abbreviation;
             _referenceId = UpdateReferenceIds(competitor.Id, competitor.ReferenceIds);
             _countryCode = competitor.CountryCode;
+            _state = competitor.State;
             if (competitor.Players != null && competitor.Players.Any())
             {
                 _associatedPlayerIds.Clear();
@@ -460,7 +481,6 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             {
                 _ageGroup = competitor.AgeGroup;
             }
-
             //((List<CultureInfo>)_fetchedCultures).Add(culture);
         }
 
@@ -483,6 +503,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _referenceId =
                 UpdateReferenceIds(competitorProfile.Competitor.Id, competitorProfile.Competitor.ReferenceIds);
             _countryCode = competitorProfile.Competitor.CountryCode;
+            _state = competitorProfile.Competitor.State;
 
             if (competitorProfile.Players != null && competitorProfile.Players.Any())
             {
@@ -523,6 +544,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             {
                 _gender = competitorProfile.Competitor.Gender;
             }
+            
             if (!string.IsNullOrEmpty(competitorProfile.Competitor.AgeGroup))
             {
                 _ageGroup = competitorProfile.Competitor.AgeGroup;
@@ -532,7 +554,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             {
                 _raceDriverProfile = new RaceDriverProfileCI(competitorProfile.RaceDriverProfile);
             }
-
+            
             if (competitorProfile.Players != null && competitorProfile.Players.Any())
             {
                 _lastTimeCompetitorProfileFetched = DateTime.Now;
@@ -560,6 +582,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _referenceId =
                 UpdateReferenceIds(simpleTeamProfile.Competitor.Id, simpleTeamProfile.Competitor.ReferenceIds);
             _countryCode = simpleTeamProfile.Competitor.CountryCode;
+            _state = simpleTeamProfile.Competitor.State;
             if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.Gender))
             {
                 _gender = simpleTeamProfile.Competitor.Gender;
@@ -623,6 +646,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _jerseys.Clear();
             _jerseys.AddRange(item._jerseys);
             _countryCode = item._countryCode ?? _countryCode;
+            _state = item._state ?? _state;
             _manager = item._manager ?? _manager;
             _venue = item._venue ?? _venue;
             _gender = item._gender ?? _gender;
@@ -701,6 +725,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 ReferenceIds = _referenceId.ReferenceIds != null ? new ReadOnlyDictionary<string, string>(_referenceId.ReferenceIds as IDictionary<string, string>) : null,
                 Jerseys = new ReadOnlyCollection<ExportableJerseyCI>(jerseysList),
                 CountryCode = _countryCode,
+                State = _state,
                 Manager = _manager!= null ? await _manager.ExportAsync().ConfigureAwait(false) : null,
                 Venue = _venue != null ? await _venue.ExportAsync().ConfigureAwait(false) : null,
                 Gender = _gender,

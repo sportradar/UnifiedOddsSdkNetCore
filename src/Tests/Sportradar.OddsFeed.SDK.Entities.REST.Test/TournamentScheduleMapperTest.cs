@@ -124,6 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(competitor.CountryName, element.Attribute("country")?.Value);
             Assert.AreEqual(competitor.Abbreviation, element.Attribute("abbreviation")?.Value);
             Assert.AreEqual(competitor.CountryCode, element.Attribute("country_code")?.Value);
+            Assert.AreEqual(competitor.State, element.Attribute("state")?.Value);
             var refs = element.Element(GetXName("reference_ids"));
             if (refs == null)
             {

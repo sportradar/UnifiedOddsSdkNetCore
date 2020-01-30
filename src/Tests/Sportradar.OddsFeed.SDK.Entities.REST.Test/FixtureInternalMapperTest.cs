@@ -172,6 +172,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 assertHelper.AreEqual(() => m.Name, c.name);
                 assertHelper.AreEqual(() => m.Abbreviation, c.abbreviation);
                 assertHelper.AreEqual(() => m.CountryName, c.country);
+                assertHelper.AreEqual(() => m.State, c.state);
                 assertHelper.AreEqual(() => m.IsVirtual, c.virtualSpecified && c.@virtual);
 
                 if (c.divisionSpecified)

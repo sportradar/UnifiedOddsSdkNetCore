@@ -72,6 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                     @virtual = true,
                     virtualSpecified = true,
                     country = SR.S1000,
+                    state = "PA",
                     reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id { name = s.Key, value = s.Value }).ToArray()
                 },
                 generated_at = DateTime.Today,
@@ -92,6 +93,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                     @virtual = true,
                     virtualSpecified = true,
                     country = SR.S1000,
+                    state = "PA",
                     reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id { name = s.Key, value = s.Value }).ToArray()
                 },
                 generated_at = DateTime.Today,
@@ -449,7 +451,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 abbreviation = SR.S1000,
                 @virtual = true,
                 virtualSpecified = true,
-                country = SR.S1000
+                country = SR.S1000,
+                state = "PA"
             };
         }
 
@@ -477,7 +480,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 country_code = SR.S1000,
                 reference_ids = references.ToArray(),
                 divisionSpecified = true,
-                division = SR.I100
+                division = SR.I100,
+                state = "PA"
             };
         }
 
@@ -490,7 +494,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 abbreviation = SR.S1000,
                 @virtual = true,
                 virtualSpecified = true,
-                country = SR.S1000
+                country = SR.S1000,
+                state = "PA"
             };
         }
 

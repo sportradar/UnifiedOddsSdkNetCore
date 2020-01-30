@@ -98,5 +98,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The age group</value>
         string AgeGroup { get; }
+
+        /// <summary>
+        /// Gets the state
+        /// </summary>
+        /// <value>The state</value>
+        string State => "";
     }
 }
