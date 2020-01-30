@@ -38,5 +38,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// Gets a country code of the venue
         /// </summary>
         public string CountryCode { get; set; }
+
+        /// <summary>
+        /// Gets a state of the venue
+        /// </summary>
+        public string State { get; set; }
     }
 }

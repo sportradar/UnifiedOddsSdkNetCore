@@ -12184,6 +12184,11 @@
             Gets a country code of the venue
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableVenueCI.State">
+            <summary>
+            Gets a state of the venue
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableWeatherInfoCI">
             <summary>
             Class used to export/import weather info cache item properties
@@ -15373,6 +15378,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI.CountryCode">
             <summary>
             Gets a country code of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI" /> instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI.State">
+            <summary>
+            Gets a state of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI" /> instance
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VenueDTO,System.Globalization.CultureInfo)">
@@ -21583,6 +21593,11 @@
             Gets the country code of the represented venue
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VenueDTO.State">
+            <summary>
+            Gets the state of the represented venue
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VenueDTO.Coordinates">
             <summary>
             Gets the GPS coordinates of the represented venue.
@@ -24537,6 +24552,12 @@
             Gets a country code of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IVenue" /> instance
             </summary>
             <value>The country code.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Venue.State">
+            <summary>
+            Gets a state of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IVenue" /> instance
+            </summary>
+            <value>The state.</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Venue.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
@@ -29858,6 +29879,11 @@
             Gets a country code of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IVenue" /> instance
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IVenue.State">
+            <summary>
+            Gets a state of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IVenue" /> instance
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IWeatherInfo">
             <summary>
             Defines a contract implemented by classes representing weather conditions
@@ -32648,6 +32674,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.city_name">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.state">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.country_name">

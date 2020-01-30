@@ -454,6 +454,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 capacitySpecified = true,
                 city_name = "my city",
                 country_name = "eng country name",
+                state = "state",
                 map_coordinates = "coordinates",
                 name = "eng name"
             };
@@ -464,6 +465,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 capacitySpecified = true,
                 city_name = "my city",
                 country_name = "de country name",
+                state = "state",
                 map_coordinates = "coordinates",
                 name = "eng name"
             };
@@ -477,6 +479,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(venue1.name, venueCI.GetName(_cultureFirst));
             Assert.AreEqual(venue1.capacity, venueCI.Capacity);
             Assert.AreEqual(venue1.map_coordinates, venueCI.Coordinates);
+            Assert.AreEqual(venue1.state, venueCI.State);
             Assert.AreEqual(venue1.city_name, venueCI.GetCity(_cultureFirst));
             Assert.AreEqual(venue1.country_name, venueCI.GetCountry(_cultureFirst));
             Assert.AreEqual(venue2.country_name, venueCI.GetCountry(_cultureSecond));

@@ -122,6 +122,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             _assertHelper.AreEqual(() => dto.Venue.City, record.sport_event_conditions.venue.city_name);
             _assertHelper.AreEqual(() => dto.Venue.Coordinates, record.sport_event_conditions.venue.map_coordinates);
             _assertHelper.AreEqual(() => dto.Venue.Country, record.sport_event_conditions.venue.country_name);
+            _assertHelper.AreEqual(() => dto.Venue.State, record.sport_event_conditions.venue.state);
             _assertHelper.AreEqual(() => dto.Venue.Capacity, record.sport_event_conditions.venue.capacitySpecified ? (int?)record.sport_event_conditions.venue.capacity : null);
         }
 

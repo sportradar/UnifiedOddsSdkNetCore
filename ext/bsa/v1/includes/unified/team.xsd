@@ -11,11 +11,13 @@
         </xs:sequence>
         <xs:attribute type="unifiedCompetitorUrn" name="id" use="required"/>
         <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="xs:string" name="abbreviation" use="required"/>
+        <xs:attribute type="xs:string" name="abbreviation" use="optional"/>
         <xs:attribute type="xs:string" name="country" use="optional"/>
         <xs:attribute type="countryCode" name="country_code" use="optional" />
         <xs:attribute type="xs:boolean" name="virtual" use="optional" />
         <xs:attribute type="xs:string" name="gender" use="optional" />
+        <xs:attribute type="xs:string" name="age_group" use="optional" />
+        <xs:attribute type="xs:string" name="state" use="optional" />
     </xs:complexType>
     <xs:complexType name="teamExtended">
         <xs:complexContent>

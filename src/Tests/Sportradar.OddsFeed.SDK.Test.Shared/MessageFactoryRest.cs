@@ -605,6 +605,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 city_name = "City " + SR.S1000,
                 country_name = "Country " + SR.S1000,
                 map_coordinates = "Coordinates" + SR.S1000,
+                state = "PA"
             };
             return msg;
         }

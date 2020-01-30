@@ -1287,6 +1287,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         private string city_nameField;
         
+        private string stateField;
+        
         private string country_nameField;
         
         private string country_codeField;
@@ -1345,6 +1347,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
             }
             set {
                 this.city_nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string state {
+            get {
+                return this.stateField;
+            }
+            set {
+                this.stateField = value;
             }
         }
         

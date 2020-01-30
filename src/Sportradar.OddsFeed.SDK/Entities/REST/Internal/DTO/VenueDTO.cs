@@ -33,6 +33,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal string CountryCode { get; }
 
         /// <summary>
+        /// Gets the state of the represented venue
+        /// </summary>
+        internal string State { get; }
+
+        /// <summary>
         /// Gets the GPS coordinates of the represented venue.
         /// </summary>
         internal string Coordinates { get; }
@@ -52,6 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             City = venue.city_name;
             Country = venue.country_name;
             CountryCode = venue.country_code;
+            State = venue.state;
             Coordinates = venue.map_coordinates;
         }
     }

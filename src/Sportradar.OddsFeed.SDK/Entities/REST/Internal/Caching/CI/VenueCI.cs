@@ -50,6 +50,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public string CountryCode { get; private set; }
 
         /// <summary>
+        /// Gets a state of the venue represented by current <see cref="VenueCI" /> instance
+        /// </summary>
+        public string State { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VenueCI"/> class
         /// </summary>
         /// <param name="venue">A <see cref="VenueDTO"/> containing information about a venue</param>
@@ -79,6 +84,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Capacity = exportable.Capacity;
             Coordinates = exportable.Coordinates;
             CountryCode = exportable.CountryCode;
+            State = exportable.State;
         }
 
         /// <summary>
@@ -97,6 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _countryNames[culture] = venue.Country;
             _cityNames[culture] = venue.City;
             CountryCode = venue.CountryCode;
+            State = venue.State;
         }
 
         /// <summary>
@@ -166,7 +173,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 CountryNames = new ReadOnlyDictionary<CultureInfo, string>(_countryNames),
                 Capacity = Capacity,
                 Coordinates =  Coordinates,
-                CountryCode = CountryCode
+                CountryCode = CountryCode,
+                State = State
             });
         }
     }

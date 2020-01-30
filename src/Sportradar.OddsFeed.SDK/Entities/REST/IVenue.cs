@@ -68,5 +68,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets a country code of the venue represented by current <see cref="IVenue" /> instance
         /// </summary>
         string CountryCode { get; }
+
+        /// <summary>
+        /// Gets a state of the venue represented by current <see cref="IVenue" /> instance
+        /// </summary>
+        string State => "";
     }
 }
