@@ -19,6 +19,7 @@ src/**/*.dll
 *.GhostDoc.user.dic
 **/packages
 src/TestResults/*
+src/Help/*
 sandcastle/Help/*
 DemoProject/packages/*
 XsdSchemaFetcher/SchemaFetcher/packages/*

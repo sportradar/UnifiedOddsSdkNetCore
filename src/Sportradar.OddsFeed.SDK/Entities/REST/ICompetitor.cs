@@ -103,6 +103,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the state
         /// </summary>
         /// <value>The state</value>
-        string State => "";
+        string State { get; }
     }
 }

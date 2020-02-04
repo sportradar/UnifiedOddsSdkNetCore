@@ -72,6 +72,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets a state of the venue represented by current <see cref="IVenue" /> instance
         /// </summary>
-        string State => "";
+        string State { get; }
     }
 }

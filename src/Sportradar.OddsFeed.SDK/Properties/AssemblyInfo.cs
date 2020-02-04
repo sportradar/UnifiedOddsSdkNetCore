@@ -1,5 +1,4 @@
-﻿
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Test.Shared")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.API.Test")]

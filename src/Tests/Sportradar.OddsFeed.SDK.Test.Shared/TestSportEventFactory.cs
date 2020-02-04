@@ -743,5 +743,11 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// </summary>
         /// <value>The age group</value>
         public string AgeGroup { get; }
+
+        /// <summary>
+        /// Gets the state
+        /// </summary>
+        /// <value>The state</value>
+        public string State { get; }
     }
 }
