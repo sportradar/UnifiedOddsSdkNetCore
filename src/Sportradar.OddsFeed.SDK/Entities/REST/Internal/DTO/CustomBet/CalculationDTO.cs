@@ -30,7 +30,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
         internal CalculationDTO(CalculationResponseType calculation)
         {
             if (calculation == null)
+            {
                 throw new ArgumentNullException(nameof(calculation));
+            }
 
             Odds = calculation.calculation.odds;
             Probability = calculation.calculation.probability;

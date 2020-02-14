@@ -27,6 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
         }
 
         public double Odds { get; }
+
         public double Probability { get; }
     }
 }

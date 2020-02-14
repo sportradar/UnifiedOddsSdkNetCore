@@ -119,15 +119,36 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
 
             foreach (XmlNode node in xmlNodeList)
             {
-                if (node.Attributes == null)
+                if (node.Attributes == null || node.Attributes.Count == 0)
                 {
                     continue;
                 }
 
-                var urn = node.Attributes["id"].Value;
-                var position = int.TryParse(node.Attributes["position"].Value, out var outValue) ? (int?)outValue : null;
-                var startTime = int.TryParse(node.Attributes["start_time"].Value, out outValue) ? (int?)outValue : null;
-                result.Add(new ReplayEvent(URN.Parse(urn), position, startTime));
+                var idAttribute = node.Attributes["id"];
+                if (idAttribute == null)
+                {
+                    continue;
+                }
+                if (!URN.TryParse(idAttribute.Value, out var id))
+                {
+                    continue;
+                }
+
+                int? position = null;
+                var positionAttribute = node.Attributes["position"];
+                if (positionAttribute != null)
+                {
+                    position = int.TryParse(positionAttribute.Value, out var outValue) ? (int?)outValue : null;
+                }
+
+                int? startTime = null;
+                var startTimeAttribute = node.Attributes["start_time"];
+                if (startTimeAttribute != null)
+                {
+                    startTime = int.TryParse(startTimeAttribute.Value, out var outValue) ? (int?)outValue : null;
+                }
+
+                result.Add(new ReplayEvent(id, position, startTime));
             }
             return result;
         }

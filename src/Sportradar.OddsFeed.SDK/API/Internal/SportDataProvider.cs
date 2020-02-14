@@ -472,11 +472,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             var tasks = new List<Task<IEnumerable<ExportableCI>>>();
             if (cacheType.HasFlag(CacheType.SportData))
+            {
                 tasks.Add(_sportDataCache.ExportAsync());
+            }
             if (cacheType.HasFlag(CacheType.SportEvent))
+            {
                 tasks.Add(_sportEventCache.ExportAsync());
+            }
             if (cacheType.HasFlag(CacheType.Profile))
+            {
                 tasks.Add(_profileCache.ExportAsync());
+            }
             tasks.ForEach(t => t.ConfigureAwait(false));
             return (await Task.WhenAll(tasks)).SelectMany(e => e);
         }

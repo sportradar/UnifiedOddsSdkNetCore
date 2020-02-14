@@ -92,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<ISequenceGenerator, IncrementalSequenceGenerator>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
-                    (long)value,
+                    (long) value,
                     long.MaxValue));
 
             container.RegisterType<IDeserializer<response>, Deserializer<response>>(new ContainerControlledLifetimeManager());
