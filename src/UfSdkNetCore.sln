@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.Mes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.Test.Shared", "Tests\Sportradar.OddsFeed.SDK.Test.Shared\Sportradar.OddsFeed.SDK.Test.Shared.csproj", "{6DD7FBA4-D758-4634-B922-FF75372AA476}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportradar.OddsFeed.SDK", "Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj", "{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK", "Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj", "{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,5 +67,15 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F3F89D5-51AC-4260-A838-8667693E7E25}
+	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = False
+		AssemblyVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.IncrementWithResetOnIncrease
+		AssemblyFileVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.IncrementWithResetOnIncrease
+		UpdatePackageVersion = False
+		AssemblyInfoVersionType = SettingsVersion
+		InheritWinAppVersionFrom = None
 	EndGlobalSection
 EndGlobal
