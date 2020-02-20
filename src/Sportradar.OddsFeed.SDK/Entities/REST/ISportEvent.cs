@@ -32,15 +32,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         Task<URN> GetSportIdAsync();
 
         /// <summary>
-        /// Asynchronously gets a <see cref="DateTime" /> instance specifying for when the sport event associated with the current instance is
-        /// scheduled or a null reference if the value is not known
+        /// Asynchronously gets a <see cref="DateTime" /> instance specifying for when the sport event associated with the current instance is scheduled or a null reference if the value is not known
         /// </summary>
         /// <returns>A <see cref="Task{DateTime}"/> representing the retrieval operation</returns>
         Task<DateTime?> GetScheduledTimeAsync();
 
         /// <summary>
-        /// Asynchronously gets a <see cref="DateTime" /> instance specifying for when the sport event associated with the current instance is
-        /// scheduled to end or a null reference if the value is not known
+        /// Asynchronously gets a <see cref="DateTime" /> instance specifying for when the sport event associated with the current instance is scheduled to end or a null reference if the value is not known
         /// </summary>
         /// <returns>A <see cref="Task{DateTime}"/> representing the retrieval operation</returns>
         Task<DateTime?> GetScheduledEndTimeAsync();

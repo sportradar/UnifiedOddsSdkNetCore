@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 
 namespace Sportradar.OddsFeed.SDK.Entities
@@ -20,9 +22,9 @@ namespace Sportradar.OddsFeed.SDK.Entities
         double? DeadHeatFactor { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement"/> is winning -
-        /// i.e. have the bets placed on this outcome winning or losing
+        /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
         /// </summary>
+        [Obsolete("Results may also include other values. Use GetResult instead.")]
         bool Result { get; }
 
         /// <summary>
@@ -30,5 +32,10 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// the percentage of the stake that should be voided(returned to the punter).
         /// </summary>
         VoidFactor? VoidFactor { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
+        /// </summary>
+        OutcomeResult OutcomeResult => Result ? OutcomeResult.Won : OutcomeResult.Lost;
     }
 }

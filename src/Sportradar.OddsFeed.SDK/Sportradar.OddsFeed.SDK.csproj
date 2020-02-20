@@ -14,8 +14,8 @@
     <RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
     <PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
     <PackageProjectUrl>http://sdk.sportradar.com</PackageProjectUrl>
-    <AssemblyVersion>1.1.13.7339</AssemblyVersion>
-    <FileVersion>1.1.13.7339</FileVersion>
+    <AssemblyVersion>1.1.13.7341</AssemblyVersion>
+    <FileVersion>1.1.13.7341</FileVersion>
     <Version>1.1.1</Version>
   </PropertyGroup>
 

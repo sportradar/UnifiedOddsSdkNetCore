@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>
         internal OutcomeSettlement(double? deadHeatFactor,
                                    string id,
-                                   bool result,
+                                   int result,
                                    VoidFactor? voidFactor,
                                    INameProvider nameProvider,
                                    IMarketMappingProvider mappingProvider,
@@ -33,8 +33,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             : base(id, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
             DeadHeatFactor = deadHeatFactor;
-            Result = result;
+            Result = result == 1;
             VoidFactor = voidFactor;
+            switch (result)
+            {
+                case 0:
+                    OutcomeResult = OutcomeResult.Lost;
+                    break;
+                case 1:
+                    OutcomeResult = OutcomeResult.Won;
+                    break;
+                default:
+                    OutcomeResult = OutcomeResult.UndecidedYet;
+                    break;
+            }
         }
 
         /// <summary>
@@ -49,17 +61,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
         //TODO: An int is used in schema. Is it safe to represent it as a bool here?
         /// <summary>
-        ///     Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement" /> is winning -
-        ///     i.e. have the bets placed on this outcome winning or losing.
+        /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement" /> is winning - i.e. have the bets placed on this outcome winning or losing.
         /// </summary>
         public bool Result { get; }
 
         /// <summary>
-        ///     Gets the <see cref="VoidFactor" /> associated with a current <see cref="IOutcomeSettlement" /> or a null reference.
-        ///     The
-        ///     value indicates
-        ///     the percentage of the stake that should be voided(returned to the punter).
+        /// Gets the <see cref="VoidFactor" /> associated with a current <see cref="IOutcomeSettlement" /> or a null reference.
+        /// The value indicates the percentage of the stake that should be voided(returned to the punter).
         /// </summary>
         public VoidFactor? VoidFactor { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
+        /// </summary>
+        public OutcomeResult OutcomeResult { get; }
     }
 }
