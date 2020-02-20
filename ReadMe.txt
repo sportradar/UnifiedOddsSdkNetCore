@@ -25,6 +25,15 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-02-18  1.2.0.0
+Added State to the Competitor
+Added State to the Venue
+Extended ISportInfoProvider.DeleteSportEventFromCache with option to delete sport event status
+Improved logging for connection errors
+Improved fetching fixtures for Replay environment
+Fix: calling variant endpoint only if user requests market data
+Fix: NullPointerException in ReplayManager
+
 2020-01-15  1.1.1.0
 Fix: DI error for FeedRecoveryManager
 
