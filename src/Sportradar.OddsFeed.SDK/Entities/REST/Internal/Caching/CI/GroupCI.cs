@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
@@ -34,6 +35,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// </summary>
         public IEnumerable<CompetitorCI> Competitors { get; private set; }
 
+        /// <summary>
+        /// The competitors references
+        /// </summary>
+        public IDictionary<URN, ReferenceIdCI> CompetitorsReferences { get; private set; }
+
         private readonly IDataRouterManager _dataRouterManager;
 
         /// <summary>
@@ -53,6 +59,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Competitors = group.Competitors != null
                 ? new ReadOnlyCollection<CompetitorCI>(group.Competitors.Select(c => new CompetitorCI(c, culture, _dataRouterManager)).ToList())
                 : null;
+            CompetitorsReferences = group.Competitors != null
+                ? new ReadOnlyDictionary<URN, ReferenceIdCI>(group.Competitors.ToDictionary(c => c.Id, c => new ReferenceIdCI(c.ReferenceIds)))
+                : null;
         }
 
         /// <summary>
@@ -71,6 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Id = exportable.Id;
             Name = exportable.Name;
             Competitors = exportable.Competitors?.Select(c => new CompetitorCI(c, dataRouterManager)).ToList();
+            CompetitorsReferences = exportable.CompetitorsReferences?.ToDictionary(c => URN.Parse(c.Key), c => new ReferenceIdCI(c.Value));
         }
 
         /// <summary>
@@ -98,6 +108,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 }
             }
             Competitors = new ReadOnlyCollection<CompetitorCI>(tempCompetitors);
+            CompetitorsReferences =
+                new ReadOnlyDictionary<URN, ReferenceIdCI>(tempCompetitors.ToDictionary(c => c.Id, c => c.ReferenceId));
         }
 
         /// <summary>
@@ -112,6 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 Id = Id,
                 Competitors = competitorsTask != null ? await Task.WhenAll(competitorsTask) : null,
+                CompetitorsReferences = CompetitorsReferences?.ToDictionary(c => c.Key.ToString(), c => c.Value.ReferenceIds.ToDictionary(r => r.Key, r => r.Value)),
                 Name = Name
             };
         }

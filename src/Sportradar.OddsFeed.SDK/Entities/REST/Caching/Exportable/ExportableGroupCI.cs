@@ -27,5 +27,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// A <see cref="IEnumerable{T}"/> representation of the competitors
         /// </summary>
         public IEnumerable<ExportableCompetitorCI> Competitors { get; set; }
+
+        /// <summary>
+        /// A <see cref="IDictionary{T}"/> representation of the competitor references
+        /// </summary>
+        public IDictionary<string, Dictionary<string, string>> CompetitorsReferences { get; set; }
     }
 }

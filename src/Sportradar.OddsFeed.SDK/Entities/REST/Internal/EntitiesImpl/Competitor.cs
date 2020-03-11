@@ -57,7 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             get
             {
-                FetchEventCompetitorsReferenceIds();
+                if (_referenceId == null)
+                    FetchEventCompetitorsReferenceIds();
                 return _referenceId != null
                            ? new Reference(_referenceId)
                            : null;

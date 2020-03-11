@@ -403,10 +403,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         {
             if (_competitorsReferences != null)
             {
-                return _competitorsReferences;
+                return await PrepareCompetitorsReferences(_competitorsReferences);
             }
             await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
-            return _competitorsReferences;
+            return await PrepareCompetitorsReferences(_competitorsReferences);
+        }
+
+        private async Task<IDictionary<URN, ReferenceIdCI>> PrepareCompetitorsReferences(IDictionary<URN, ReferenceIdCI> competitorsReferences)
+        {
+            if (competitorsReferences != null)
+            {
+                return competitorsReferences;
+            }
+
+            var groups = await GetGroupsAsync(new[] { DefaultCulture });
+            return groups?.SelectMany(g => g.CompetitorsReferences).Distinct().ToDictionary(c => c.Key, c => c.Value);
         }
 
         /// <summary>
