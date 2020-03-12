@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private readonly object _lock = new object();
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Outcome" /> class
+        /// Initializes a new instance of the <see cref="Outcome" /> class
         /// </summary>
         /// <param name="id">the value uniquely identifying the current <see cref="Outcome" /> instance</param>
         /// <param name="nameProvider">A <see cref="INameProvider"/> used to generate the outcome name(s)</param>

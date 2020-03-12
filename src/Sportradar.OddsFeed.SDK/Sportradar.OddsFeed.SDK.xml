@@ -8145,7 +8145,7 @@
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.BetSettlement`1">
             <summary>
                 Represents a message dispatched by the feed indicating that markets have been cleared
-                and bets associated with them can be settled
+            And bets associated with them can be settled
             </summary>
             <typeparam name="T"></typeparam>
         </member>
@@ -8685,7 +8685,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMessage`2._markets">
             <summary>
-                A <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMessage`2.Markets" /> property backing field
+            A <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMessage`2.Markets" /> property backing field
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMessage`2.#ctor(Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp,Sportradar.OddsFeed.SDK.Messages.IProducer,`1,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{`0},System.Byte[])">
@@ -9202,12 +9202,11 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.DeadHeatFactor">
             <summary>
-                Gets a dead-head factor for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /> instance.
+            Gets a dead-head factor for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement" /> instance.
             </summary>
             <remarks>
-                A dead heat is defined as an event in which there are two or more joint winning contracts.
-                Dead heat rules state that the stake should be divided by the number of competitors involved in the dead heat and
-                then settled at the normal odds
+            A dead heat is defined as an event in which there are two or more joint winning contracts.
+            Dead heat rules state that the stake should be divided by the number of competitors involved in the dead heat and then settled at the normal odds
             </remarks>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.Result">
@@ -9249,7 +9248,7 @@
             </summary>
             <param name="id">the value uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.PlayerOutcomeOdds" /> instance</param>
             <param name="active">
-                a value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds" /> is active - i.e. should bets on
+            A value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds" /> is active - i.e. should bets on
                 it be accepted
             </param>
             <param name="odds">the odds for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds" /> instance</param>
@@ -11377,6 +11376,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableGroupCI.Competitors">
             <summary>
             A <see cref="T:System.Collections.Generic.IEnumerable`1"/> representation of the competitors
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableGroupCI.CompetitorsReferences">
+            <summary>
+            A <see cref="!:IDictionary&lt;T&gt;"/> representation of the competitor references
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableJerseyCI">
@@ -14508,6 +14512,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.GroupCI.Competitors">
             <summary>
             Gets a <see cref="T:System.Collections.Generic.IReadOnlyCollection`1"/> representing group competitors
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.GroupCI.CompetitorsReferences">
+            <summary>
+            The competitors references
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.GroupCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.GroupDTO,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager)">

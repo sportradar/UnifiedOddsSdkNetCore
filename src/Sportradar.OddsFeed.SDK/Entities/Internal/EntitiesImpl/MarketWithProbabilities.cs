@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapped ids of markets and outcomes</param>
         /// <param name="status">a <see cref="MarketStatus"/> enum member specifying the status of the market associated with the current <see cref="IMarketWithProbabilities"/> instance</param>
         /// <param name="outcomeProbabilities">a <see cref="IEnumerable{IOutcomeProbabilities}"/> where each <see cref="IOutcomeProbabilities"/> instance specifies the odds
-        ///     for one outcome associated with the current <see cref="IMarketWithProbabilities"/> instance</param>
+        /// for one outcome associated with the current <see cref="IMarketWithProbabilities"/> instance</param>
         /// <param name="marketDefinition">The associated market definition</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         internal MarketWithProbabilities(int id,

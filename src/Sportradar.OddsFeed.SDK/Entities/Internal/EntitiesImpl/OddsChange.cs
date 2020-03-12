@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private readonly INamedValuesProvider _namedValueProvider;
 
         /// <summary>
-        ///     Gets a <see cref="OddsChangeReason" /> member specifying the reason for the odds change
+        /// Gets a <see cref="OddsChangeReason" /> member specifying the reason for the odds change
         /// </summary>
         public OddsChangeReason? ChangeReason { get; }
 

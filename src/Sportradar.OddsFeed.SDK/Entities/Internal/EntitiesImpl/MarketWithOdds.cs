@@ -50,9 +50,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="status">a <see cref="MarketStatus"/> enum member specifying the status of the market associated with the current <see cref="IMarketWithOdds"/> instance</param>
         /// <param name="cashoutStatus">A <see cref="CashoutStatus"/> to be set</param>
         /// <param name="isFavorite">Gets a value indicating whether the market associated with the current <see cref="IMarketWithOdds"/> instance is the most
-        ///     balanced market.</param>
+        /// balanced market.</param>
         /// <param name="outcomeOdds">a <see cref="IEnumerable{IOutcomeOdds}"/> where each <see cref="IOutcomeOdds"/> instance specifies the odds
-        ///     for one outcome associated with the current <see cref="IMarketWithOdds"/> instance</param>
+        /// for one outcome associated with the current <see cref="IMarketWithOdds"/> instance</param>
         /// <param name="marketMetadata">A <see cref="IMarketMetadata"/> to be set</param>
         /// <param name="marketDefinition">The associated market definition</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>

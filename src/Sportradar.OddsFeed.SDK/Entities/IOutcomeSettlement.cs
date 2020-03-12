@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <summary>
         /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
         /// </summary>
-        [Obsolete("Results may also include other values. Use GetResult instead.")]
+        [Obsolete("Results may also include other values. Use OutcomeResult instead.")]
         bool Result { get; }
 
         /// <summary>

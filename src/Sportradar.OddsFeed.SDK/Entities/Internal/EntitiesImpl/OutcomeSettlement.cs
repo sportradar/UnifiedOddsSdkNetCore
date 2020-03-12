@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -9,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     /// <summary>
-    ///     Represents the result of a market outcome (selection)
+    /// Represents the result of a market outcome (selection)
     /// </summary>
     internal class OutcomeSettlement : Outcome, IOutcomeSettlement
     {
@@ -50,19 +52,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         }
 
         /// <summary>
-        ///     Gets a dead-head factor for the current <see cref="IOutcomeSettlement" /> instance.
+        /// Gets a dead-head factor for the current <see cref="IOutcomeSettlement" /> instance.
         /// </summary>
         /// <remarks>
-        ///     A dead heat is defined as an event in which there are two or more joint winning contracts.
-        ///     Dead heat rules state that the stake should be divided by the number of competitors involved in the dead heat and
-        ///     then settled at the normal odds
+        /// A dead heat is defined as an event in which there are two or more joint winning contracts.
+        /// Dead heat rules state that the stake should be divided by the number of competitors involved in the dead heat and then settled at the normal odds
         /// </remarks>
         public double? DeadHeatFactor { get; }
 
-        //TODO: An int is used in schema. Is it safe to represent it as a bool here?
         /// <summary>
         /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement" /> is winning - i.e. have the bets placed on this outcome winning or losing.
         /// </summary>
+        [Obsolete("Results may also include other values. Use OutcomeResult instead.")]
         public bool Result { get; }
 
         /// <summary>

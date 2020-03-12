@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         where T1 : ISportEvent
     {
         /// <summary>
-        ///     A <see cref="Markets" /> property backing field
+        /// A <see cref="Markets" /> property backing field
         /// </summary>
         private readonly IReadOnlyCollection<T> _markets;
 

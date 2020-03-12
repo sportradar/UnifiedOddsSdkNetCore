@@ -12,7 +12,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     /// <summary>
-    ///     Represents a result of the betting market
+    /// Represents a result of the betting market
     /// </summary>
     internal class MarketWithSettlement : MarketCancel, IMarketWithSettlement
     {

@@ -29,12 +29,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private readonly IMatch _match;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayerOutcomeOdds" /> class
+        /// Initializes a new instance of the <see cref="PlayerOutcomeOdds" /> class
         /// </summary>
         /// <param name="id">the value uniquely identifying the current <see cref="PlayerOutcomeOdds" /> instance</param>
         /// <param name="active">
-        ///     a value indicating whether the current <see cref="OutcomeOdds" /> is active - i.e. should bets on
-        ///     it be accepted
+        /// A value indicating whether the current <see cref="OutcomeOdds" /> is active - i.e. should bets on
+        /// it be accepted
         /// </param>
         /// <param name="odds">the odds for the current <see cref="OutcomeOdds" /> instance</param>
         /// <param name="probabilities">the probabilities for the current <see cref="OutcomeOdds" /> instance</param>

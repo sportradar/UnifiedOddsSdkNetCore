@@ -16,7 +16,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     /// <summary>
-    ///     Represents a market with only basic information
+    /// Represents a market with only basic information
     /// </summary>
     internal class Market : IMarket
     {
@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         protected readonly IMarketMappingProvider MappingProvider;
 
         /// <summary>
-        ///     Gets a <see cref="int" /> value specifying the market type
+        /// Gets a <see cref="int" /> value specifying the market type
         /// </summary>
         public int Id { get; }
 
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private readonly object _lock = new object();
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Market" /> class
+        /// Initializes a new instance of the <see cref="Market" /> class
         /// </summary>
         /// <param name="id">a <see cref="int" /> value specifying the market type</param>
         /// <param name="specifiers">a <see cref="IReadOnlyDictionary{String, String}" /> containing market specifiers</param>

@@ -186,9 +186,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                         }
                     }
 
-                    var cultureTaskDictionary = missingLanguages.ToDictionary(c => c,
-                        c => _dataRouterManager.GetPlayerProfileAsync(playerId, c, null));
-
+                    var cultureTaskDictionary = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetPlayerProfileAsync(playerId, c, null));
                     await Task.WhenAll(cultureTaskDictionary.Values).ConfigureAwait(false);
 
                     cachedItem = (PlayerProfileCI) _cache.Get(playerId.ToString());
@@ -251,9 +249,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 {
                     if (ex is DeserializationException || ex is MappingException)
                     {
-                        throw new CacheItemNotFoundException(
-                            "An error occurred while fetching competitor profile not found in cache",
-                            competitorId.ToString(), ex);
+                        throw new CacheItemNotFoundException("An error occurred while fetching competitor profile not found in cache", competitorId.ToString(), ex);
                     }
 
                     throw;

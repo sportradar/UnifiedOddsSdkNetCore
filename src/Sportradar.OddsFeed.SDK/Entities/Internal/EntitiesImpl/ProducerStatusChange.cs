@@ -6,8 +6,8 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     /// <summary>
-    ///     Represents a message indicating a producer serving odds via the feed went down. The class might be dispatched
-    ///     either by the feed or the SDK itself
+    /// Represents a message indicating a producer serving odds via the feed went down. The class might be dispatched
+    /// either by the feed or the SDK itself
     /// </summary>
     internal class ProducerStatusChange : Message, IProducerStatusChange
     {

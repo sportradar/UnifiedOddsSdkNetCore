@@ -8,8 +8,8 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     /// <summary>
-    ///     Represents a message dispatched by the feed indicating that markets have been cleared
-    ///     and bets associated with them can be settled
+    /// Represents a message dispatched by the feed indicating that markets have been cleared
+    /// And bets associated with them can be settled
     /// </summary>
     /// <typeparam name="T"></typeparam>
     internal class BetSettlement<T> : MarketMessage<IMarketWithSettlement, T>, IBetSettlement<T> where T : ISportEvent

@@ -8,7 +8,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     /// <summary>
-    ///     Represents the odds for an outcome
+    /// Represents the odds for an outcome
     /// </summary>
     internal class OutcomeOdds : OutcomeProbabilities, IOutcomeOdds
     {
