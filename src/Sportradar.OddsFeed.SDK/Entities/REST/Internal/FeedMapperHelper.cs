@@ -23,8 +23,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>The <see cref="IReadOnlyDictionary{TKey,TValue}"/> obtained by splitting the provided values</returns>
         private static IReadOnlyDictionary<string, string> CreateDictionary(string[] values, params string[] separators)
         {
-            Guard.Argument(values, nameof(values)).NotNull().NotEmpty();
-            Guard.Argument(separators, nameof(separators)).NotNull().NotEmpty();
+            Guard.Argument(values, nameof(values)).NotNull();//.NotEmpty();
+            Guard.Argument(separators, nameof(separators)).NotNull();//.NotEmpty();
+            //TODO: Check why .NotEmpty throws in some cases
+            if (values.Length == 0)
+                throw new ArgumentOutOfRangeException(nameof(values));
+            if (separators.Length == 0)
+                throw new ArgumentOutOfRangeException(nameof(separators));
 
             var tuples = new List<Tuple<string, string>>(values.Length);
             foreach (var specifier in values)
