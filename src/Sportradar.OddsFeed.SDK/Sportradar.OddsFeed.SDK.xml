@@ -8144,7 +8144,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.BetSettlement`1">
             <summary>
-                Represents a message dispatched by the feed indicating that markets have been cleared
+            Represents a message dispatched by the feed indicating that markets have been cleared
             And bets associated with them can be settled
             </summary>
             <typeparam name="T"></typeparam>
@@ -8507,7 +8507,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Market">
             <summary>
-                Represents a market with only basic information
+            Represents a market with only basic information
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Market._nameProvider">
@@ -8522,7 +8522,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Market.Id">
             <summary>
-                Gets a <see cref="T:System.Int32" /> value specifying the market type
+            Gets a <see cref="T:System.Int32" /> value specifying the market type
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Market.Specifiers">
@@ -8548,7 +8548,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Market.#ctor(System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,Sportradar.OddsFeed.SDK.Entities.IMarketDefinition,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
-                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Market" /> class
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Market" /> class
             </summary>
             <param name="id">a <see cref="T:System.Int32" /> value specifying the market type</param>
             <param name="specifiers">a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2" /> containing market specifiers</param>
@@ -8760,9 +8760,9 @@
             <param name="status">a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MarketStatus"/> enum member specifying the status of the market associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds"/> instance</param>
             <param name="cashoutStatus">A <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithOdds.CashoutStatus"/> to be set</param>
             <param name="isFavorite">Gets a value indicating whether the market associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds"/> instance is the most
-                balanced market.</param>
+            balanced market.</param>
             <param name="outcomeOdds">a <see cref="T:System.Collections.Generic.IEnumerable`1"/> where each <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds"/> instance specifies the odds
-                for one outcome associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds"/> instance</param>
+            for one outcome associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds"/> instance</param>
             <param name="marketMetadata">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata"/> to be set</param>
             <param name="marketDefinition">The associated market definition</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying languages the current instance supports</param>
@@ -8789,13 +8789,13 @@
             <param name="mappingProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider"/> instance used for providing mapped ids of markets and outcomes</param>
             <param name="status">a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MarketStatus"/> enum member specifying the status of the market associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities"/> instance</param>
             <param name="outcomeProbabilities">a <see cref="T:System.Collections.Generic.IEnumerable`1"/> where each <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities"/> instance specifies the odds
-                for one outcome associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities"/> instance</param>
+            for one outcome associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities"/> instance</param>
             <param name="marketDefinition">The associated market definition</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying languages the current instance supports</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithSettlement">
             <summary>
-                Represents a result of the betting market
+            Represents a result of the betting market
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithSettlement.OutcomeSettlements">
@@ -8990,7 +8990,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OddsChange`1.ChangeReason">
             <summary>
-                Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason" /> member specifying the reason for the odds change
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason" /> member specifying the reason for the odds change
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OddsChange`1.BetStopReason">
@@ -9082,7 +9082,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Outcome.#ctor(System.String,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition)">
             <summary>
-                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Outcome" /> class
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Outcome" /> class
             </summary>
             <param name="id">the value uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Outcome" /> instance</param>
             <param name="nameProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider"/> used to generate the outcome name(s)</param>
@@ -9129,7 +9129,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds">
             <summary>
-                Represents the odds for an outcome
+            Represents the odds for an outcome
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds.AdditionalProbabilities">
@@ -9160,7 +9160,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities">
             <summary>
-                Represents market selection with probabilities
+            Represents market selection with probabilities
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities.Active">
@@ -9186,7 +9186,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement">
             <summary>
-                Represents the result of a market outcome (selection)
+            Represents the result of a market outcome (selection)
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement.#ctor(System.Nullable{System.Double},System.String,System.Int32,System.Nullable{Sportradar.OddsFeed.SDK.Entities.REST.Enums.VoidFactor},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition)">
@@ -9244,12 +9244,12 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.PlayerOutcomeOdds.#ctor(System.String,System.Nullable{System.Boolean},System.Double,System.Nullable{System.Double},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,Sportradar.OddsFeed.SDK.Entities.REST.IMatch,System.Int32,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition,Sportradar.OddsFeed.SDK.Entities.IAdditionalProbabilities)">
             <summary>
-                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.PlayerOutcomeOdds" /> class
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.PlayerOutcomeOdds" /> class
             </summary>
             <param name="id">the value uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.PlayerOutcomeOdds" /> instance</param>
             <param name="active">
             A value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds" /> is active - i.e. should bets on
-                it be accepted
+            it be accepted
             </param>
             <param name="odds">the odds for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds" /> instance</param>
             <param name="probabilities">the probabilities for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds" /> instance</param>
@@ -9275,8 +9275,8 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.ProducerStatusChange">
             <summary>
-                Represents a message indicating a producer serving odds via the feed went down. The class might be dispatched
-                either by the feed or the SDK itself
+            Represents a message indicating a producer serving odds via the feed went down. The class might be dispatched
+            either by the feed or the SDK itself
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.ProducerStatusChange.#ctor(System.Int64,Sportradar.OddsFeed.SDK.Messages.IProducer)">
@@ -10728,39 +10728,39 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.MarketStatus">
             <summary>
-                Enumerates market statuses
+            Enumerates market statuses
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.ACTIVE">
             <summary>
-                Indicating that the market should be displayed and bets on it should be accepted
+            Indicating that the market should be displayed and bets on it should be accepted
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.INACTIVE">
             <summary>
-                Indicates the market should NOT be displayed and bets on it should NOT be accepted
+            Indicates the market should NOT be displayed and bets on it should NOT be accepted
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.SUSPENDED">
             <summary>
-                Indicates that the market should be displayed but the bets on it should NOT be accepted
+            Indicates that the market should be displayed but the bets on it should NOT be accepted
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.HANDED_OVER">
             <summary>
-                Indicates the market was handed over from one odds producer to another.
-                If the odds for this market were already received from another producer this update should be ignored,
-                otherwise associated market should be suspended until such odds are received.
+            Indicates the market was handed over from one odds producer to another.
+            If the odds for this market were already received from another producer this update should be ignored,
+            otherwise associated market should be suspended until such odds are received.
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.SETTLED">
             <summary>
-                Indicates the markets has already been settled by a previous message
+            Indicates the markets has already been settled by a previous message
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.CANCELLED">
             <summary>
-                Indicates the markets has already been cancelled by a previous message
+            Indicates the markets has already been cancelled by a previous message
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest">
