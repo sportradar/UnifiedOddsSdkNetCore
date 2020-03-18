@@ -201,7 +201,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, marketSettlement.id, specifiers);
             var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketSettlement.id, specifiers, _producerManager.Get(producerId), sportId);
-            var outcomes = marketSettlement.Items.Select(outcome => new OutcomeSettlement(
+            var outcomes = marketSettlement.Items?.Select(outcome => new OutcomeSettlement(
                                                                             outcome.dead_heat_factorSpecified
                                                                                 ? (double?)outcome.dead_heat_factor
                                                                                 : null,
