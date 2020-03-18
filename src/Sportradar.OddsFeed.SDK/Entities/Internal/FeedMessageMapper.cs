@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
@@ -201,17 +202,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, marketSettlement.id, specifiers);
             var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketSettlement.id, specifiers, _producerManager.Get(producerId), sportId);
-            var outcomes = marketSettlement.Items?.Select(outcome => new OutcomeSettlement(
-                                                                            outcome.dead_heat_factorSpecified
-                                                                                ? (double?)outcome.dead_heat_factor
-                                                                                : null,
-                                                                            outcome.id,
-                                                                            outcome.result,
-                                                                            MessageMapperHelper.GetVoidFactor(outcome.void_factorSpecified, outcome.void_factor),
-                                                                            nameProvider,
-                                                                            mappingProvider,
-                                                                            cultureInfos,
-                                                                            BuildOutcomeDefinition(marketSettlement.id, sportId, producer, specifiers, outcome.id, cultureInfos)));
+            var outcomes = (IEnumerable<IOutcomeSettlement>) marketSettlement.Items?.Select(outcome => new OutcomeSettlement(
+                               outcome.dead_heat_factorSpecified
+                                   ? (double?)outcome.dead_heat_factor
+                                   : null,
+                               outcome.id,
+                               outcome.result,
+                               MessageMapperHelper.GetVoidFactor(outcome.void_factorSpecified, outcome.void_factor),
+                               nameProvider,
+                               mappingProvider,
+                               cultureInfos,
+                               BuildOutcomeDefinition(marketSettlement.id, sportId, producer, specifiers, outcome.id, cultureInfos)))
+                ?? new List<IOutcomeSettlement>();
 
             return new MarketWithSettlement(marketSettlement.id,
                                             specifiers,
