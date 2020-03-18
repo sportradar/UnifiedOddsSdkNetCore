@@ -622,7 +622,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var eventId = URN.Parse(message.event_id);
             var sportId = URN.Parse("sr:sport:1");
 
-            return new CashOutProbabilities<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
+            var epochTime = SdkInfo.ToEpochTime(DateTime.Now);
+            return new CashOutProbabilities<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, epochTime, epochTime),
                 _producerManager.Get(message.product),
                 GetEventForMessage<T>(eventId, sportId, culturesList),
                 message.odds != null && message.odds.betstop_reasonSpecified
