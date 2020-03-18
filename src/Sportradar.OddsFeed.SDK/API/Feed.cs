@@ -530,6 +530,7 @@ namespace Sportradar.OddsFeed.SDK.API
             _feedRecoveryManager.ProducerDown -= MarkProducerAsDown;
             _feedRecoveryManager.ProducerUp -= MarkProducerAsUp;
             _feedRecoveryManager.CloseFeed -= OnCloseFeed;
+            _feedRecoveryManager.EventRecoveryCompleted -= OnEventRecoveryCompleted;
             _feedRecoveryManager.Close();
 
             _metricsTaskScheduler.Dispose();
@@ -600,6 +601,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 _feedRecoveryManager.ProducerUp += MarkProducerAsUp;
                 _feedRecoveryManager.ProducerDown += MarkProducerAsDown;
                 _feedRecoveryManager.CloseFeed += OnCloseFeed;
+                _feedRecoveryManager.EventRecoveryCompleted += OnEventRecoveryCompleted;
 
                 var interests = Sessions.Select(s => ((OddsFeedSession) s).MessageInterest).ToList();
                 _feedRecoveryManager.Open(interests);
@@ -650,6 +652,11 @@ namespace Sportradar.OddsFeed.SDK.API
                 Interlocked.CompareExchange(ref _opened, 0, 1);
                 throw;
             }
+        }
+
+        private void OnEventRecoveryCompleted(object sender, EventRecoveryCompletedEventArgs e)
+        {
+            ((IGlobalEventDispatcher)this).DispatchEventRecoveryCompleted(e.GetRequestId(), e.GetEventId());
         }
 
         private void LogInit()
