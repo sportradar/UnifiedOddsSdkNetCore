@@ -25,6 +25,11 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-03-23  1.4.0.0
+Fix: invalid timestamp for cashout probabilities
+Fix: handle settlement markets without outcomes
+Fix: EventRecoveryCompleted is properly raised when snapshot completes
+
 2020-03-16  1.3.0.0
 Fix: added IOutcomeSettlement.OutcomeResult instead of IOutcomeSettlement.Result (obsolete)
 Fix: competitor references for seasons
