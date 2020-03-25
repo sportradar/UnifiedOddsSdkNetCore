@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
             object[] args2 =
             {
-                "https://api.betradar.com/v1/replay",
+                "https://stgapi.betradar.com/v1/replay",
                 _httpDataRestful,
                 0
             };

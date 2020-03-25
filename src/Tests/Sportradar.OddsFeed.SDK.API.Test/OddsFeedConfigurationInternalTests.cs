@@ -99,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             // ApiHost is tested separately
             Assert.AreEqual(publicConfig.UseApiSsl, internalConfig.UseApiSsl);
             Assert.AreEqual(internalConfig.UseApiSsl ? "https://" + internalConfig.ApiHost : "http://" + internalConfig.ApiHost, internalConfig.ApiBaseUri);
-            Assert.AreEqual("api.betradar.com/v1/replay", internalConfig.ReplayApiHost);
+            Assert.AreEqual("stgapi.betradar.com/v1/replay", internalConfig.ReplayApiHost);
         }
 
         [TestMethod]

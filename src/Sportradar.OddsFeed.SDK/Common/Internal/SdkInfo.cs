@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// The replay API host
         /// </summary>
-        public const string ReplayApiHost = ProductionApiHost;
+        public const string ReplayApiHost = IntegrationApiHost;
         /// <summary>
         /// The default host port
         /// </summary>
