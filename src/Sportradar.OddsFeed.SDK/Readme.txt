@@ -3,6 +3,9 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-03-25  1.4.1.0
+Changed Replay API URL
+
 2020-03-23  1.4.0.0
 Fix: invalid timestamp for cashout probabilities
 Fix: handle settlement markets without outcomes
