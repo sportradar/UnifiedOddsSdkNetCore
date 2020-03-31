@@ -398,7 +398,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     config.Environment == SdkEnvironment.Replay
-                        ? config.ReplayApiBaseUrl + "/sports/{1}/sport_events/{0}/fixture_change_fixture.xml"
+                        ? config.ReplayApiBaseUrl + "/sports/{1}/sport_events/{0}/fixture.xml"
                         : config.ApiBaseUri + "/v1/sports/{1}/sport_events/{0}/fixture_change_fixture.xml",
                     new ResolvedParameter<IDataFetcher>(),
                     new ResolvedParameter<IDeserializer<fixturesEndpoint>>(),
