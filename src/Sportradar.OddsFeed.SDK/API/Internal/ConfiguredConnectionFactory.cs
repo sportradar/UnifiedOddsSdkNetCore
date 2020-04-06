@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using Dawn;
 using System.Net.Security;
 using System.Security.Authentication;
@@ -59,8 +61,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 Ssl.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
             }
 
-            ClientProperties.Add("SrSdkType", ".net");
-            ClientProperties.Add("SrSdkVersion", SdkInfo.GetVersion());
+            ClientProperties.Add("SrUfSdkType", ".netstd");
+            ClientProperties.Add("SrUfSdkVersion", SdkInfo.GetVersion());
+            ClientProperties.Add("SrUfSdkInit", $"{DateTime.Now:yyyyMMddHHmm}");
+            ClientProperties.Add("SrUfSdkConnName", "RabbitMQ / NETStd");
+            ClientProperties.Add("SrUfSdkBId", $"{_config.BookmakerDetails?.BookmakerId}");
         }
 
         /// <summary>
