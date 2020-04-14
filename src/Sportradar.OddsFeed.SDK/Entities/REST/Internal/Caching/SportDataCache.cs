@@ -187,16 +187,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             var timerOptions = new TimerOptions { Context = "SportDataCache", Name = "GetAll", MeasurementUnit = Unit.Requests };
             using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions))
             {
-                var fetchTasks = cultureInfos.Select(c => _dataRouterManager.GetAllSportsAsync(c)).ToList();
-                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllTournamentsForAllSportAsync(c)).ToList());
-                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllLotteriesAsync(c)).ToList());
-
                 if (clearExistingData)
                 {
                     FetchedCultures.Clear();
                     Categories.Clear();
                     Sports.Clear();
+                    _sportEventCache.DeleteSportEventsFromCache(DateTime.MaxValue);
                 }
+
+                var fetchTasks = cultureInfos.Select(c => _dataRouterManager.GetAllSportsAsync(c)).ToList();
+                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllTournamentsForAllSportAsync(c)).ToList());
+                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllLotteriesAsync(c)).ToList());
 
                 await Task.WhenAll(fetchTasks).ConfigureAwait(false);
 
