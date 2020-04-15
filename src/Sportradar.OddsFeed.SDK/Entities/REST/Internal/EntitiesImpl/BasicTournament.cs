@@ -190,5 +190,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             return exhibitionGames;
         }
+
+        /// <summary>
+        /// Gets the list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule
+        /// </summary>
+        /// <returns>The list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule</returns>
+        public async Task<IEnumerable<ISportEvent>> GetScheduleAsync()
+        {
+            var tournamentInfoCI = (TournamentInfoCI)SportEventCache.GetEventCacheItem(Id);
+            if (tournamentInfoCI == null)
+            {
+                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                return null;
+            }
+            var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await tournamentInfoCI.GetScheduleAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(tournamentInfoCI.GetScheduleAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
+
+            return item?.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, null, Cultures, ExceptionStrategy));
+        }
     }
 }
