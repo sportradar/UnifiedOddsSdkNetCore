@@ -12709,6 +12709,12 @@
             </summary>
             <returns>A <see cref="T:System.Boolean"/> specifying if the tournament is exhibition game</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IBasicTournament.GetScheduleAsync">
+            <summary>
+            Gets the list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule
+            </summary>
+            <returns>The list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IBonusInfo">
             <summary>
             Defines a contract for classes implementing the bonus info
@@ -21845,6 +21851,12 @@
             Asynchronously gets a <see cref="T:System.Boolean"/> specifying if the tournament is exhibition game
             </summary>
             <returns>A <see cref="T:System.Boolean"/> specifying if the tournament is exhibition game</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.BasicTournament.GetScheduleAsync">
+            <summary>
+            Gets the list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule
+            </summary>
+            <returns>The list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.BonusInfo">
             <summary>

@@ -25,6 +25,12 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-04-16  1.5.0.0
+Added GetScheduleAsync to the BasicTournament
+Added bookmakerId to the ClientProperties
+Fix: fixture endpoint on Replay
+Fix: refreshing categories after complete sport data cache reload
+
 2020-03-25  1.4.1.0
 Changed Replay API URL
 
