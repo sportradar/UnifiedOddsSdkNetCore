@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public EventStatus Status => _cacheItem.Status;
 
         /// <summary>
-        /// Gets a value indicating whether a data journalist is present od the associated sport event, or a null reference if the information is not available
+        /// Gets a value indicating whether a data journalist is present in the associated sport event, or a null reference if the information is not available
         /// </summary>
         public int? IsReported => _cacheItem.IsReported;
 

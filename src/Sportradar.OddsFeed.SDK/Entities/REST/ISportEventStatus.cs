@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         EventStatus Status { get; }
 
         /// <summary>
-        /// Gets a value indicating whether a data journalist is present od the associated sport event, or a
+        /// Gets a value indicating whether a data journalist is present in the associated sport event, or a
         /// null reference if the information is not available
         /// </summary>
         int? IsReported { get; }

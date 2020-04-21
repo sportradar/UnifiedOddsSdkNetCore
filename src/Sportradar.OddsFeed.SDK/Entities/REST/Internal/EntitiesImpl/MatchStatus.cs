@@ -15,8 +15,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="CompetitionStatus" />
     /// <seealso cref="IMatchStatus" />
-    internal class MatchStatus : CompetitionStatus, IMatchStatus
+    internal class MatchStatus : CompetitionStatus, IMatchStatusV1
     {
+        private readonly decimal? _homeScore;
+        private readonly decimal? _awayScore;
+
         /// <summary>
         /// The match statuses cache
         /// </summary>
@@ -38,13 +41,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets the score of the home competitor competing on the associated sport event
         /// </summary>
         /// <value>The score of the home competitor competing on the associated sport event</value>
-        public decimal HomeScore { get; }
+        decimal? IMatchStatusV1.HomeScore => _homeScore;
 
         /// <summary>
         /// Gets the score of the away competitor competing on the associated sport event
         /// </summary>
         /// <value>The score of the away competitor competing on the associated sport event</value>
-        public decimal AwayScore { get; }
+        decimal? IMatchStatusV1.AwayScore => _awayScore;
+
+        /// <summary>
+        /// Gets the score of the home competitor competing on the associated sport event
+        /// </summary>
+        /// <value>The score of the home competitor competing on the associated sport event</value>
+        public decimal HomeScore => _homeScore ?? 0;
+
+        /// <summary>
+        /// Gets the score of the away competitor competing on the associated sport event
+        /// </summary>
+        /// <value>The score of the away competitor competing on the associated sport event</value>
+        public decimal AwayScore => _awayScore ?? 0;
 
         /// <summary>
         /// Gets the penalty score of the home competitor competing on the associated sport event (for Ice Hockey)
@@ -92,8 +107,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             {
                 PeriodScores = ci.PeriodScores.Select(s => new PeriodScore(s, _matchStatusesCache));
             }
-            HomeScore = ci.HomeScore ?? 0;
-            AwayScore = ci.AwayScore ?? 0;
+            _homeScore = ci.HomeScore;
+            _awayScore = ci.AwayScore;
             _matchStatusesCache = matchStatusesCache;
             HomePenaltyScore = ci.HomePenaltyScore;
             AwayPenaltyScore = ci.AwayPenaltyScore;

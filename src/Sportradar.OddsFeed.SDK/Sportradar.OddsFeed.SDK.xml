@@ -13804,6 +13804,25 @@
             Gets the indicator wither the event is decided by fed
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IMatchStatusV1">
+            <summary>
+            Defines a contract implemented by classes representing a match status
+            </summary>
+            <remarks>Interface will be merged into base <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IMatchStatus"/> in next major version</remarks>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitionStatus" />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IMatchStatusV1.HomeScore">
+            <summary>
+            Gets the score of the home competitor competing on the associated sport event
+            </summary>
+            <value>The score of the home competitor competing on the associated sport event</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IMatchStatusV1.AwayScore">
+            <summary>
+            Gets the score of the away competitor competing on the associated sport event
+            </summary>
+            <value>The score of the away competitor competing on the associated sport event</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.INamedValue">
             <summary>
             Specifies a contract implemented by classes representing values with names / descriptions
@@ -23099,6 +23118,18 @@
             </summary>
             <value>The list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodScore" /></value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.MatchStatus.Sportradar#OddsFeed#SDK#Entities#REST#IMatchStatusV1#HomeScore">
+            <summary>
+            Gets the score of the home competitor competing on the associated sport event
+            </summary>
+            <value>The score of the home competitor competing on the associated sport event</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.MatchStatus.Sportradar#OddsFeed#SDK#Entities#REST#IMatchStatusV1#AwayScore">
+            <summary>
+            Gets the score of the away competitor competing on the associated sport event
+            </summary>
+            <value>The score of the away competitor competing on the associated sport event</value>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.MatchStatus.HomeScore">
             <summary>
             Gets the score of the home competitor competing on the associated sport event
@@ -24222,7 +24253,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SportEventStatus.IsReported">
             <summary>
-            Gets a value indicating whether a data journalist is present od the associated sport event, or a null reference if the information is not available
+            Gets a value indicating whether a data journalist is present in the associated sport event, or a null reference if the information is not available
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SportEventStatus.HomeScore">
@@ -29422,7 +29453,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ISportEventStatus.IsReported">
             <summary>
-            Gets a value indicating whether a data journalist is present od the associated sport event, or a
+            Gets a value indicating whether a data journalist is present in the associated sport event, or a
             null reference if the information is not available
             </summary>
         </member>
