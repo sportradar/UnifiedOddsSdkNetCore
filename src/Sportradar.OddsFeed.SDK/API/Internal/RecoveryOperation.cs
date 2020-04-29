@@ -242,7 +242,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 throw new InvalidOperationException("The recovery operation is not running");
             }
-            return (TimeProviderAccessor.Current.Now - _startTime).TotalSeconds > _producer.MaxRecoveryTime;
+            return (TimeProviderAccessor.Current.Now - _startTime).TotalSeconds > _producer.MaxRecoveryTime * 60;
         }
 
         /// <summary>
