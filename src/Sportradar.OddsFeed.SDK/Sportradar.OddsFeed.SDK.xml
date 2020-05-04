@@ -11593,6 +11593,21 @@
             The competitor id this player belongs to
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportablePlayerProfileCI.CountryCode">
+            <summary>
+            Gets the country code
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportablePlayerProfileCI.FullName">
+            <summary>
+            Gets the full name of the player
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportablePlayerProfileCI.Nickname">
+            <summary>
+            Gets the nickname of the player
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableProductInfoCI">
             <summary>
             Class used to export/import product info cache item properties
@@ -14719,6 +14734,21 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI.Gender">
             <summary>
             Gets the gender
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI.CountryCode">
+            <summary>
+            Gets the country code
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI.FullName">
+            <summary>
+            Gets the full name of the player
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI.Nickname">
+            <summary>
+            Gets the nickname of the player
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI._fetchedCultures">
@@ -23402,6 +23432,21 @@
             Gets the gender
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PlayerProfile.CountryCode">
+            <summary>
+            Gets the country code
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PlayerProfile.FullName">
+            <summary>
+            Gets the full name of the player
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PlayerProfile.Nickname">
+            <summary>
+            Gets the nickname of the player
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PlayerProfile.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PlayerProfile"/> class
@@ -28960,6 +29005,21 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile.Gender">
             <summary>
             Gets the gender
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile.CountryCode">
+            <summary>
+            Gets the country code
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile.FullName">
+            <summary>
+            Gets the full name of the player
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile.Nickname">
+            <summary>
+            Gets the nickname of the player
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IProductInfo">

@@ -55,5 +55,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         [DataMember]
         string Gender { get; }
+
+        /// <summary>
+        /// Gets the country code
+        /// </summary>
+        [DataMember]
+        string CountryCode => "";
+
+        /// <summary>
+        /// Gets the full name of the player
+        /// </summary>
+        [DataMember]
+        string FullName => "";
+
+        /// <summary>
+        /// Gets the nickname of the player
+        /// </summary>
+        [DataMember]
+        string Nickname => "";
     }
 }

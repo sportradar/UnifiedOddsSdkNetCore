@@ -103,6 +103,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public string Gender => _gender;
 
         /// <summary>
+        /// Gets the country code
+        /// </summary>
+        public string CountryCode { get; private set; }
+
+        /// <summary>
+        /// Gets the full name of the player
+        /// </summary>
+        public string FullName { get; private set; }
+
+        /// <summary>
+        /// Gets the nickname of the player
+        /// </summary>
+        public string Nickname { get; private set; }
+        
+        /// <summary>
         /// Gets the <see cref="IEnumerable{CultureInfo}"/> specifying the languages for which the current instance has translations
         /// </summary>
         /// <value>The fetched cultures</value>
@@ -197,6 +212,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviation = exportable.Abbreviation;
             _gender = exportable.Gender;
             _competitorId = exportable.CompetitorId;
+            CountryCode = exportable.CountryCode;
+            FullName = exportable.FullName;
+            Nickname = exportable.Nickname;
         }
 
         /// <summary>
@@ -217,6 +235,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _height = profile.Height;
             _weight = profile.Weight;
             _gender = profile.Gender;
+            CountryCode = profile.CountryCode;
+            FullName = profile.FullName;
+            Nickname = profile.Nickname;
 
             if (string.IsNullOrEmpty(_abbreviation))
             {
@@ -279,6 +300,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _weight = item._weight ?? _weight;
             _abbreviation = item._abbreviation ?? _abbreviation;
             _gender = item._gender ?? _gender;
+            CountryCode = item.CountryCode ?? CountryCode;
+            FullName = item.FullName ?? FullName;
+            Nickname = item.Nickname ?? Nickname;
             _competitorId = item._competitorId ?? _competitorId;
         }
 
@@ -358,6 +382,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 Weight = _weight,
                 Abbreviation = _abbreviation,
                 Gender = _gender,
+                CountryCode = CountryCode,
+                FullName = FullName,
+                Nickname = Nickname,
                 CompetitorId = _competitorId
             });
         }

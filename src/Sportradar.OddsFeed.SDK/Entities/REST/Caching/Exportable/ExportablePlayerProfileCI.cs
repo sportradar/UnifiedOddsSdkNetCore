@@ -54,5 +54,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// The competitor id this player belongs to
         /// </summary>
         public URN CompetitorId { get; set; }
+
+        /// <summary>
+        /// Gets the country code
+        /// </summary>
+        public string CountryCode { get; set; }
+
+        /// <summary>
+        /// Gets the full name of the player
+        /// </summary>
+        public string FullName { get; set; }
+
+        /// <summary>
+        /// Gets the nickname of the player
+        /// </summary>
+        public string Nickname { get; set; }
     }
 }
