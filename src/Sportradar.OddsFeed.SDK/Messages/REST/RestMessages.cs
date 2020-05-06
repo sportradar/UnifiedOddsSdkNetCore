@@ -7446,6 +7446,90 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    [System.Xml.Serialization.XmlRootAttribute("result_changes", Namespace="http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable=false)]
+    public partial class resultChangesEndpoint {
+        
+        private resultChange[] result_changeField;
+        
+        private System.DateTime generated_atField;
+        
+        private bool generated_atFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("result_change")]
+        public resultChange[] result_change {
+            get {
+                return this.result_changeField;
+            }
+            set {
+                this.result_changeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime generated_at {
+            get {
+                return this.generated_atField;
+            }
+            set {
+                this.generated_atField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool generated_atSpecified {
+            get {
+                return this.generated_atFieldSpecified;
+            }
+            set {
+                this.generated_atFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    public partial class resultChange {
+        
+        private string sport_event_idField;
+        
+        private System.DateTime update_timeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string sport_event_id {
+            get {
+                return this.sport_event_idField;
+            }
+            set {
+                this.sport_event_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime update_time {
+            get {
+                return this.update_timeField;
+            }
+            set {
+                this.update_timeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     [System.Xml.Serialization.XmlRootAttribute("selections", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
     public partial class SelectionsType {

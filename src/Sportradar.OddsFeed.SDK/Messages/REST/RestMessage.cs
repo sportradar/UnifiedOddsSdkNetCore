@@ -232,4 +232,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     public partial class sportTournamentsEndpoint : RestMessage
     {
     }
+
+    public partial class resultChangesEndpoint : RestMessage
+    {
+    }
 }

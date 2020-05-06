@@ -175,5 +175,12 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <param name="items">Collection of <see cref="ExportableCI"/> containing the items to be imported</param>
         Task CacheImportAsync(IEnumerable<ExportableCI> items);
+
+        /// <summary>
+        /// Gets the list of all results that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A list of all results that have changed in the last 24 hours</returns>
+        Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture = null) => null;
     }
 }

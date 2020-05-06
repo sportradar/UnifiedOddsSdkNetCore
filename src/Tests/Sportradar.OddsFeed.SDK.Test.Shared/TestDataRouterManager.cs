@@ -506,5 +506,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Gets the list of all results that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="culture">The culture to be fetched</param>
+        /// <returns>The list of all results that have changed in the last 24 hours</returns>
+        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

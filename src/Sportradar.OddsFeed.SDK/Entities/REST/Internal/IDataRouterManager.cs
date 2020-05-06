@@ -206,5 +206,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="culture">The culture</param>
         /// <returns>The list of the available tournament ids with the sportId it belongs to</returns>
         Task<IEnumerable<Tuple<URN, URN>>> GetSportAvailableTournamentsAsync(URN sportId, CultureInfo culture);
+
+        /// <summary>
+        /// Gets the list of all results that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="culture">The culture to be fetched</param>
+        /// <returns>The list of all results that have changed in the last 24 hours</returns>
+        Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture);
     }
 }

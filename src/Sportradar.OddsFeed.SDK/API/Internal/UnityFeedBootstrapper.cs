@@ -522,7 +522,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IDeserializer<sportCategoriesEndpoint>>(),
                     new ResolvedParameter<ISingleTypeMapperFactory<sportCategoriesEndpoint, SportCategoriesDTO>>()));
 
-            // provider for getting info about sport categories
+            // provider for getting info about fixture changes
             container.RegisterType<IDeserializer<fixtureChangesEndpoint>, Deserializer<fixtureChangesEndpoint>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<fixtureChangesEndpoint, IEnumerable<FixtureChangeDTO>>, FixtureChangesMapperFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<IDataProvider<IEnumerable<FixtureChangeDTO>>, DataProvider<fixtureChangesEndpoint, IEnumerable<FixtureChangeDTO>>>(
@@ -532,6 +532,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IDataFetcher>(),
                     new ResolvedParameter<IDeserializer<fixtureChangesEndpoint>>(),
                     new ResolvedParameter<ISingleTypeMapperFactory<fixtureChangesEndpoint, IEnumerable<FixtureChangeDTO>>>()));
+
+            // provider for getting info about result changes
+            container.RegisterType<IDeserializer<resultChangesEndpoint>, Deserializer<resultChangesEndpoint>>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISingleTypeMapperFactory<resultChangesEndpoint, IEnumerable<ResultChangeDTO>>, ResultChangesMapperFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDataProvider<IEnumerable<ResultChangeDTO>>, DataProvider<resultChangesEndpoint, IEnumerable<ResultChangeDTO>>>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    config.ApiBaseUri + "/v1/sports/{0}/results/changes.xml",
+                    new ResolvedParameter<IDataFetcher>(),
+                    new ResolvedParameter<IDeserializer<resultChangesEndpoint>>(),
+                    new ResolvedParameter<ISingleTypeMapperFactory<resultChangesEndpoint, IEnumerable<ResultChangeDTO>>>()));
 
             // invariant market descriptions provider
             container.RegisterType<IDeserializer<market_descriptions>, Deserializer<market_descriptions>>(new ContainerControlledLifetimeManager());
@@ -670,6 +681,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                            new ResolvedParameter<IDataProvider<AvailableSelectionsDTO>>(),
                                            new ResolvedParameter<ICalculateProbabilityProvider>(),
                                            new ResolvedParameter<IDataProvider<IEnumerable<FixtureChangeDTO>>>(),
+                                           new ResolvedParameter<IDataProvider<IEnumerable<ResultChangeDTO>>>(),
                                            new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("listSportEventProvider"),
                                            new ResolvedParameter<IDataProvider<EntityList<TournamentInfoDTO>>>("availableSportTournaments")));
         }
