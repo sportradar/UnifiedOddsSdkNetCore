@@ -3,6 +3,12 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-05-11  1.6.0.0
+Added FullName, Nickname and CountryCode to IPlayerProfile
+Added support for result changes endpoint
+IMatchStatus provide nullable Home and Away score (extended with IMatchStatusV1)
+Fix: MaxRecoveryTime is properly used to check for timeouts
+
 2020-04-16  1.5.0.0
 Added GetScheduleAsync to the BasicTournament
 Added bookmakerId to the ClientProperties
