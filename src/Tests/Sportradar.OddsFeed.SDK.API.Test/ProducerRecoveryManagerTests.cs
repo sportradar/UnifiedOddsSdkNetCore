@@ -119,7 +119,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             CreateTestInstances(); //get everything to default state
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
             Assert.AreEqual(ProducerRecoveryStatus.Started, _producerRecoveryManager.Status);
-            _timeProvider.AddSeconds(_producer.MaxRecoveryTime + 10);
+            _timeProvider.AddSeconds(_producer.MaxRecoveryTime * 60 + 10);
             _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildAlive(), MessageInterest.AllMessages);
             Assert.AreEqual(ProducerRecoveryStatus.Started, _producerRecoveryManager.Status);
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
@@ -199,7 +199,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         public void behaves_correctly_when_in_error_state()
         {
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
-            _timeProvider.AddSeconds(_producer.MaxRecoveryTime + 10);
+            _timeProvider.AddSeconds(_producer.MaxRecoveryTime * 60 + 10);
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Error, _producerRecoveryManager.Status);
 

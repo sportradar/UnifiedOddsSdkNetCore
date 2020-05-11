@@ -130,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         {
             var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
-            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime - 1);
+            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime * 60 - 1);
             Assert.IsFalse(operation.HasTimedOut());
             _timeProvider.AddSeconds(2);
             Assert.IsTrue(operation.HasTimedOut());
@@ -142,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
             var startTime = _timeProvider.Now;
-            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime + 1);
+            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime * 60 + 1);
             Assert.IsTrue(operation.HasTimedOut());
             var result = operation.CompleteTimedOut();
             Assert.IsNotNull(result);
@@ -318,7 +318,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
 
             operation.Start();
-            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime + 1);
+            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime * 60 + 1);
             Assert.IsTrue(operation.HasTimedOut());
             Assert.IsNotNull(operation.CompleteTimedOut());
 
