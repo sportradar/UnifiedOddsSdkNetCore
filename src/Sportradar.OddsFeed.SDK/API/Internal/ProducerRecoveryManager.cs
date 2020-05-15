@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using Dawn;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -43,6 +44,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// A <see cref="object"/> used to ensure synchronous access to critical regions
         /// </summary>
         private readonly object _syncLock = new object();
+
+        /// <summary>
+        /// A <see cref="SemaphoreSlim"/> used to synchronize status changes
+        /// </summary>
+        private readonly SemaphoreSlim _semaphoreStatusChange = new SemaphoreSlim(1);
 
         /// <summary>
         /// A <see cref="IProducer"/> for which status is tracked
@@ -107,7 +113,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             Task.Run(() =>
             {
-                StatusChanged?.Invoke(this, new TrackerStatusChangeEventArgs(requestId, oldStatus, newStatus));
+                try
+                {
+                    _semaphoreStatusChange.Wait();
+                    StatusChanged?.Invoke(this, new TrackerStatusChangeEventArgs(requestId, oldStatus, newStatus));
+                }
+                finally
+                {
+                    _semaphoreStatusChange.Release();
+                }
             });
         }
 
