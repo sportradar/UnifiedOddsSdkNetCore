@@ -485,8 +485,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <returns>List&lt;CultureInfo&gt;</returns>
         public static IEnumerable<CultureInfo> AvailableLanguages()
         {
-            var codes2 = "it,en,de,fr,se,es,ru,zh,ja,hr,tr,sk,sl,no,da,nl,pl,pt,cs,fi,th,hu,bg,ek,ro,et,lv,bs,sr,ml,lt,id,vi,ko,aa,ka,br".Split(',');
-            var codes3 = "zht,ukr,aze,heb,kaz,sqi,srl".Split(',');
+            var codes2 = "aa,bs,br,bg,my,zh,hr,cs,da,nl,en,et,fi,fr,ka,de,el,hi,hu,Id,ja,km,ko,lo,lv,lt,ml,ms,no,fa,pl,pt,ro,ru,sr,sk,sl,es,sw,se,th,tr,vi,it".Split(',');
+            var codes3 = "sqi,zht,heb,aze,kaz,srl,ukr".Split(',');
 
             var all = CultureInfo.GetCultures(CultureTypes.AllCultures);
             var cultures =

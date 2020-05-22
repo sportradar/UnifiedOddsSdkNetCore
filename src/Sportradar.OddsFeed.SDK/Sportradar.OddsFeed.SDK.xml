@@ -3994,6 +3994,11 @@
             A <see cref="T:System.Object"/> used to ensure synchronous access to critical regions
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager._semaphoreStatusChange">
+            <summary>
+            A <see cref="T:System.Threading.SemaphoreSlim"/> used to synchronize status changes
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.Producer">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> for which status is tracked
