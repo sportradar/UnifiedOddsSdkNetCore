@@ -579,36 +579,35 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </exception>
         public void Open()
         {
-            InitFeed();
-
             if (_isDisposed)
             {
                 throw new ObjectDisposedException(ToString());
             }
 
-            if (Interlocked.CompareExchange(ref _opened, 1, 0) != 0)
-            {
-                throw new InvalidOperationException("The feed is already opened");
-            }
-
-            //SdkInfo.LogSdkVersion(Log);
-            _log.LogInformation($"Feed configuration: [{InternalConfig}]");
-
             try
             {
-                ((ProducerManager) ProducerManager).Lock();
+                InitFeed();
 
-                foreach (var session in Sessions)
+                if (Interlocked.CompareExchange(ref _opened, 1, 0) != 0)
                 {
-                    session.Open();
+                    throw new InvalidOperationException("The feed is already opened");
                 }
 
+                _log.LogInformation($"Feed configuration: [{InternalConfig}]");
+                
                 _connection = UnityContainer.Resolve<IConnectionFactory>().CreateConnection();
                 _connection.ConnectionShutdown += OnConnectionShutdown;
                 _feedRecoveryManager.ProducerUp += MarkProducerAsUp;
                 _feedRecoveryManager.ProducerDown += MarkProducerAsDown;
                 _feedRecoveryManager.CloseFeed += OnCloseFeed;
                 _feedRecoveryManager.EventRecoveryCompleted += OnEventRecoveryCompleted;
+
+                ((ProducerManager) ProducerManager).Lock();
+
+                foreach (var session in Sessions)
+                {
+                    session.Open();
+                }
 
                 var interests = Sessions.Select(s => ((OddsFeedSession) s).MessageInterest).ToList();
                 _feedRecoveryManager.Open(interests);
