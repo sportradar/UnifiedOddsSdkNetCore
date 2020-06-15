@@ -284,14 +284,20 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (Interlocked.CompareExchange(ref _isOpened, 0, 1) == 0)
             {
-                throw new InvalidOperationException("Current FeedRecoveryManager is already closed");
+                return;
             }
 
-            _inactivityTimer.Stop();
-            _inactivityTimer.Elapsed -= OnTimerElapsed;
+            if (_inactivityTimer != null)
+            {
+                _inactivityTimer.Stop();
+                _inactivityTimer.Elapsed -= OnTimerElapsed;
+            }
 
-            _systemSession.Close();
-            _systemSession.AliveReceived -= OnSystemSessionMessageReceived;
+            if (_systemSession != null)
+            {
+                _systemSession.Close();
+                _systemSession.AliveReceived -= OnSystemSessionMessageReceived;
+            }
 
             foreach (var recoveryTracker in _producerRecoveryManagers)
             {

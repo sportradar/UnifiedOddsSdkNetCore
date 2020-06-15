@@ -526,14 +526,21 @@ namespace Sportradar.OddsFeed.SDK.API
                 return;
             }
 
-            _connection.ConnectionShutdown -= OnConnectionShutdown;
-            _feedRecoveryManager.ProducerDown -= MarkProducerAsDown;
-            _feedRecoveryManager.ProducerUp -= MarkProducerAsUp;
-            _feedRecoveryManager.CloseFeed -= OnCloseFeed;
-            _feedRecoveryManager.EventRecoveryCompleted -= OnEventRecoveryCompleted;
-            _feedRecoveryManager.Close();
+            if (_connection != null)
+            {
+                _connection.ConnectionShutdown -= OnConnectionShutdown;
+            }
 
-            _metricsTaskScheduler.Dispose();
+            if (_feedRecoveryManager != null)
+            {
+                _feedRecoveryManager.ProducerDown -= MarkProducerAsDown;
+                _feedRecoveryManager.ProducerUp -= MarkProducerAsUp;
+                _feedRecoveryManager.CloseFeed -= OnCloseFeed;
+                _feedRecoveryManager.EventRecoveryCompleted -= OnEventRecoveryCompleted;
+                _feedRecoveryManager.Close();
+            }
+
+            _metricsTaskScheduler?.Dispose();
 
             foreach (var session in Sessions)
             {
@@ -688,18 +695,22 @@ namespace Sportradar.OddsFeed.SDK.API
                 return Task.FromResult(false);
             }
 
-            var snapshot = _metricsRoot.Snapshot.Get();
-            snapshot.ToMetric();
-
-            foreach (var formatter in _metricsRoot.OutputMetricsFormatters)
+            if (_metricsRoot != null)
             {
-                using (var stream = new MemoryStream())
+                var snapshot = _metricsRoot.Snapshot.Get();
+                snapshot.ToMetric();
+
+                foreach (var formatter in _metricsRoot.OutputMetricsFormatters)
                 {
-                    formatter.WriteAsync(stream, snapshot);
-                    var result = Encoding.UTF8.GetString(stream.ToArray());
-                    _metricsLogger.LogInformation(result);
+                    using (var stream = new MemoryStream())
+                    {
+                        formatter.WriteAsync(stream, snapshot);
+                        var result = Encoding.UTF8.GetString(stream.ToArray());
+                        _metricsLogger.LogInformation(result);
+                    }
                 }
             }
+
             return Task.FromResult(true);
         }
     }

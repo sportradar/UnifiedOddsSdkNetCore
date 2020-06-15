@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string"/> containing compacted representation of the current instance</returns>
         protected override string PrintC()
         {
-            string result = $"{PrintI()}, IsReported: {IsReported}, HomeScore={HomeScore}, AwayScore={AwayScore}";
+            var result = $"{PrintI()}, IsReported: {IsReported}, HomeScore={HomeScore}, AwayScore={AwayScore}";
             return result;
         }
 
@@ -105,9 +105,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string"/> containing details of the current instance</returns>
         protected override string PrintF()
         {
-
             var props = string.Join(", ", Properties.Select(c => c.Key));
-            string result = $"{PrintC()}, Properties: [{props}]";
+            var result = $"{PrintC()}, Properties: [{props}]";
             return result;
         }
 
