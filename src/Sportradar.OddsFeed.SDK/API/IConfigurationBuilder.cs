@@ -107,6 +107,13 @@ namespace Sportradar.OddsFeed.SDK.API
         T SetDisabledProducers(IEnumerable<int> producerIds);
 
         /// <summary>
+        /// Sets the timeout for HTTP responses for this instance of the sdk
+        /// </summary>
+        /// <param name="httpClientTimeout">The timeout for HTTP responses</param>
+        /// <returns>A <see cref="IConfigurationBuilderBase{T}"/> derived instance used to set general configuration properties</returns>
+        T SetHttpClientTimeout(int httpClientTimeout);
+
+        /// <summary>
         /// Builds and returns a <see cref="IOddsFeedConfiguration"/> instance
         /// </summary>
         /// <returns>The constructed <see cref="IOddsFeedConfiguration"/> instance</returns>

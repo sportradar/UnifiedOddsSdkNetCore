@@ -152,6 +152,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public bool AdjustAfterAge => _publicConfig.AdjustAfterAge;
 
         /// <summary>
+        /// Gets a value specifying timeout set for HTTP responses
+        /// </summary>
+        public int HttpClientTimeout => _publicConfig.HttpClientTimeout;
+
+        /// <summary>
         /// Gets a <see cref="string"/> representation of a Sports API base <see cref="Uri"/>
         /// </summary>
         public string ApiBaseUri => UseApiSsl ? "https://" + ApiHost : "http://" + ApiHost;
@@ -373,7 +378,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
               .Append(" UseSsl=").Append(UseSsl)
               .Append(" UseApiSsl=").Append(UseApiSsl)
               .Append(" ExceptionStrategy=").Append(ExceptionHandlingStrategy)
-              .Append(" AdjustAfterAge=").Append(AdjustAfterAge);
+              .Append(" AdjustAfterAge=").Append(AdjustAfterAge)
+              .Append(" HttpClientTimeout=").Append(HttpClientTimeout);
 
             return sb.ToString();
         }

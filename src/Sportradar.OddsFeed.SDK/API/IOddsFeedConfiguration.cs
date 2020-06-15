@@ -108,5 +108,10 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <value><c>true</c> if [adjust after age]; otherwise, <c>false</c></value>
         bool AdjustAfterAge { get; }
+
+        /// <summary>
+        /// Gets a value specifying timeout set for HTTP responses
+        /// </summary>
+        int HttpClientTimeout { get; }
     }
 }

@@ -122,6 +122,18 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The market description minimum fetch interval in seconds
         /// </summary>
         public const int MarketDescriptionMinFetchInterval = 30;
+        /// <summary>
+        /// The minimum HTTP timeout
+        /// </summary>
+        public const int DefaultHttpClientTimeout = 30;
+        /// <summary>
+        /// The minimum HTTP timeout
+        /// </summary>
+        public const int MinHttpClientTimeout = 10;
+        /// <summary>
+        /// The maximum HTTP timeout
+        /// </summary>
+        public const int MaxHttpClientTimeout = 100;
 
         /// <summary>
         /// Gets the assembly version number

@@ -1042,6 +1042,13 @@
             <param name="producerIds">The list of producer ids specifying the producers which should be disabled</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1"/> derived instance used to set general configuration properties</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1.SetHttpClientTimeout(System.Int32)">
+            <summary>
+            Sets the timeout for HTTP responses for this instance of the sdk
+            </summary>
+            <param name="httpClientTimeout">The timeout for HTTP responses</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1"/> derived instance used to set general configuration properties</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1.Build">
             <summary>
             Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration"/> instance
@@ -1599,6 +1606,11 @@
             The node identifier
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.ConfigurationBuilderBase`1.HttpClientTimeout">
+            <summary>
+            Value specifying timeout set for HTTP responses
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.ConfigurationBuilderBase`1.#ctor(System.String,Sportradar.OddsFeed.SDK.API.Internal.IConfigurationSectionProvider)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.Config.ConfigurationBuilderBase`1"/> class
@@ -1657,6 +1669,13 @@
             </summary>
             <param name="producerIds">The list of producer ids specifying the producers which should be disabled</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1" /> derived instance used to set general configuration properties</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.ConfigurationBuilderBase`1.SetHttpClientTimeout(System.Int32)">
+            <summary>
+            Sets the timeout for HTTP responses for this instance of the sdk
+            </summary>
+            <param name="httpClientTimeout">The timeout for HTTP responses</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1"/> derived instance used to set general configuration properties</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.ConfigurationBuilderBase`1.Build">
             <summary>
@@ -2727,6 +2746,11 @@
             </summary>
             <value><c>true</c> if [adjust after age]; otherwise, <c>false</c></value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection.HttpClientTimeout">
+            <summary>
+            Gets a value specifying timeout set for HTTP responses
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.IProducerRecoveryManager">
             <summary>
             Represents contract for tracking <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/> per specific <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/>
@@ -3201,6 +3225,11 @@
             </summary>
             <value><c>true</c> if [enforce after age]; otherwise, <c>false</c></value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfiguration.HttpClientTimeout">
+            <summary>
+            Gets a value specifying timeout set for HTTP responses
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfiguration.Section">
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection"/> used to obtain 'hidden' properties
@@ -3339,6 +3368,11 @@
             Gets a value indicating whether the after age should be enforced before executing recovery request
             </summary>
             <value><c>true</c> if [enforce after age]; otherwise, <c>false</c></value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationInternal.HttpClientTimeout">
+            <summary>
+            Gets a value specifying timeout set for HTTP responses
+            </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationInternal.ApiBaseUri">
             <summary>
@@ -3522,6 +3556,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.AdjustAfterAge">
             <summary>
             Gets the indication whether the after age should be adjusted before executing recovery request
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.HttpClientTimeout">
+            <summary>
+            Gets a value specifying timeout set for HTTP responses
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.GetSection">
@@ -5674,6 +5713,11 @@
             </summary>
             <value><c>true</c> if [adjust after age]; otherwise, <c>false</c></value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration.HttpClientTimeout">
+            <summary>
+            Gets a value specifying timeout set for HTTP responses
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.IOddsFeedSession">
             <summary>
             Represents a session to the odds feed
@@ -7051,6 +7095,21 @@
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MarketDescriptionMinFetchInterval">
             <summary>
             The market description minimum fetch interval in seconds
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.DefaultHttpClientTimeout">
+            <summary>
+            The minimum HTTP timeout
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MinHttpClientTimeout">
+            <summary>
+            The minimum HTTP timeout
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MaxHttpClientTimeout">
+            <summary>
+            The maximum HTTP timeout
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetVersion">
