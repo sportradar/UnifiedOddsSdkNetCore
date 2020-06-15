@@ -157,6 +157,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public bool AdjustAfterAge => (bool) base["adjustAfterAge"];
 
         /// <summary>
+        /// Gets a value specifying timeout set for HTTP responses
+        /// </summary>
+        [ConfigurationProperty("httpClientTimeout", IsRequired = false, DefaultValue = SdkInfo.DefaultHttpClientTimeout)]
+        [IntegerValidator(MinValue = SdkInfo.MinHttpClientTimeout, MaxValue = SdkInfo.MaxHttpClientTimeout, ExcludeRange = false)]
+        public int HttpClientTimeout => (int)base["httpClientTimeout"];
+
+        /// <summary>
         /// Retrieves the <see cref="OddsFeedConfigurationSection"/> from the app.config file
         /// </summary>
         /// <returns>The <see cref="OddsFeedConfigurationSection"/> instance loaded from config file</returns>

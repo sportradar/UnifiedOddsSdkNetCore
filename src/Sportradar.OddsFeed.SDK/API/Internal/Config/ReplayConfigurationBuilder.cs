@@ -40,6 +40,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                                                    DisabledProducers,
                                                    ExceptionHandlingStrategy,
                                                    false,
+                                                   HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout,
                                                    Section);
 
             return config;

@@ -625,5 +625,26 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.IsFalse(CustomBuilder(_testSection).LoadFromConfigFile().SetAdjustAfterAge(true).LoadFromConfigFile().Build().AdjustAfterAge);
             Assert.IsFalse(CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetAdjustAfterAge(false).SetMessagingHost(_testSection.Host).SetApiHost(_testSection.ApiHost).Build().AdjustAfterAge);
         }
+
+
+        [TestMethod]
+        public void httpClientTimeout_has_correct_value()
+        {
+            _testSection.HttpClientTimeout = 50;
+            Assert.AreEqual(_testSection.HttpClientTimeout, IntegrationBuilder(_testSection).Build().HttpClientTimeout);
+            Assert.AreEqual(_testSection.HttpClientTimeout, ProductionBuilder(_testSection).Build().HttpClientTimeout);
+            Assert.AreEqual(_testSection.HttpClientTimeout, ReplayBuilder(_testSection).Build().HttpClientTimeout);
+            Assert.AreEqual(_testSection.HttpClientTimeout, CustomBuilder(_testSection).Build().HttpClientTimeout);
+
+            Assert.AreEqual(80, IntegrationBuilder(_testSection).SetHttpClientTimeout(80).Build().HttpClientTimeout);
+            Assert.AreEqual(80, ProductionBuilder(_testSection).SetHttpClientTimeout(80).Build().HttpClientTimeout);
+            Assert.AreEqual(80, ReplayBuilder(_testSection).SetHttpClientTimeout(80).Build().HttpClientTimeout);
+            Assert.AreEqual(80, CustomBuilder(_testSection).SetHttpClientTimeout(80).Build().HttpClientTimeout);
+
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().HttpClientTimeout);
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().HttpClientTimeout);
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().HttpClientTimeout);
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost(_testSection.Host).SetApiHost(_testSection.ApiHost).Build().HttpClientTimeout);
+        }
     }
 }

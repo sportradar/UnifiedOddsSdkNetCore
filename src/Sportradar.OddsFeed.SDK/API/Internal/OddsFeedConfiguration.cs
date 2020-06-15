@@ -121,6 +121,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public bool AdjustAfterAge { get; }
 
         /// <summary>
+        /// Gets a value specifying timeout set for HTTP responses
+        /// </summary>
+        public int HttpClientTimeout { get; }
+
+        /// <summary>
         /// Gets the <see cref="IOddsFeedConfigurationSection"/> used to obtain 'hidden' properties
         /// </summary>
         /// <value>The <see cref="IOddsFeedConfigurationSection"/> used to obtain 'hidden' properties</value>
@@ -140,6 +145,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             int nodeId,
             ExceptionHandlingStrategy exceptionHandlingStrategy,
             bool adjustAfterAge,
+            int httpClientTimeout,
             IOddsFeedConfigurationSection section)
         {
             Guard.Argument(accessToken, nameof(accessToken)).NotNull().NotEmpty();
@@ -148,6 +154,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(maxRecoveryTimeInSeconds, nameof(maxRecoveryTimeInSeconds)).Min(SdkInfo.MinRecoveryExecutionInSeconds);
             Guard.Argument(apiHost, nameof(apiHost)).NotNull().NotEmpty();
             Guard.Argument(host, nameof(host)).NotNull().NotEmpty();
+            Guard.Argument(httpClientTimeout, nameof(httpClientTimeout)).InRange(SdkInfo.MinHttpClientTimeout, SdkInfo.MaxHttpClientTimeout);
 
             AccessToken = accessToken;
             InactivitySeconds = inactivitySeconds;
@@ -189,6 +196,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Username = accessToken;
             Password = null;
             AdjustAfterAge = adjustAfterAge;
+            HttpClientTimeout = httpClientTimeout;
             Section = section;
         }
 
@@ -211,12 +219,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             List<int> disabledProducers,
             ExceptionHandlingStrategy exceptionHandlingStrategy,
             bool adjustAfterAge,
+            int httpClientTimeout,
             IOddsFeedConfigurationSection section)
         {
             Guard.Argument(accessToken, nameof(accessToken)).NotNull().NotEmpty();
             Guard.Argument(defaultCulture, nameof(defaultCulture)).NotNull();
             Guard.Argument(inactivitySeconds, nameof(inactivitySeconds)).InRange(SdkInfo.MinInactivitySeconds, SdkInfo.MaxInactivitySeconds);
             Guard.Argument(maxRecoveryExecutionInSeconds, nameof(maxRecoveryExecutionInSeconds)).Min(SdkInfo.MinRecoveryExecutionInSeconds);
+            Guard.Argument(httpClientTimeout, nameof(httpClientTimeout)).InRange(SdkInfo.MinHttpClientTimeout, SdkInfo.MaxHttpClientTimeout);
 
             AccessToken = accessToken;
             Environment = environment;
@@ -252,6 +262,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 : null;
             ExceptionHandlingStrategy = exceptionHandlingStrategy;
             AdjustAfterAge = adjustAfterAge;
+            HttpClientTimeout = httpClientTimeout;
             Section = section;
         }
     }
