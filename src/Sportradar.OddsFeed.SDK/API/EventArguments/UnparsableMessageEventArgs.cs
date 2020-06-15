@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Text;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -46,6 +47,17 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
             Producer = producer;
             EventId = eventId;
             _rawMessage = rawMessage;
+        }
+
+        /// <summary>
+        /// Gets the raw xml message received from the feed
+        /// </summary>
+        /// <returns>Returns the raw xml message received from the feed</returns>
+        public string GetRawMessage()
+        {
+            return _rawMessage == null
+                ? null
+                : Encoding.UTF8.GetString(_rawMessage);
         }
     }
 }
