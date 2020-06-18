@@ -89,6 +89,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(userConfig.HttpClientTimeout) };
                     return httpClient;
                 }));
+            container.RegisterType<HttpClient, HttpClient>("RecoveryHttpClient", new ContainerControlledLifetimeManager(), new InjectionFactory(
+                unityContainer =>
+                {
+                    var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(userConfig.RecoveryHttpClientTimeout) };
+                    return httpClient;
+                }));
 
             var seed = (int)DateTime.Now.Ticks;
             var rand = new Random(seed);
@@ -125,6 +131,21 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var logFetcher = container.Resolve<LogHttpDataFetcher>();
             container.RegisterInstance<IDataFetcher>(logFetcher, new ContainerControlledLifetimeManager());
             container.RegisterInstance<IDataPoster>(logFetcher, new ContainerControlledLifetimeManager());
+
+            container.RegisterType<LogHttpDataFetcher, LogHttpDataFetcher>(
+                "RecoveryLogHttpDataFetcher",
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    new ResolvedParameter<HttpClient>(),
+                    userConfig.AccessToken,
+                    new ResolvedParameter<ISequenceGenerator>(),
+                    new ResolvedParameter<IDeserializer<response>>(),
+                    RestConnectionFailureLimit,
+                    RestConnectionFailureTimeoutInSec));
+
+            var recoveryLogFetcher = container.Resolve<LogHttpDataFetcher>("RecoveryLogHttpDataFetcher");
+            container.RegisterInstance<IDataFetcher>("RecoveryDataFetcher", recoveryLogFetcher, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IDataPoster>("RecoveryDataPoster", recoveryLogFetcher, new ContainerControlledLifetimeManager());
 
             container.RegisterType<IDeserializer<bookmaker_details>, Deserializer<bookmaker_details>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO>, BookmakerDetailsMapperFactory>(new ContainerControlledLifetimeManager());
@@ -176,7 +197,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<IEventRecoveryRequestIssuer, RecoveryRequestIssuer>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
-                    new ResolvedParameter<IDataPoster>(),
+                    new ResolvedParameter<IDataPoster>("RecoveryDataPoster"),
                     new ResolvedParameter<ISequenceGenerator>(),
                     config));
 

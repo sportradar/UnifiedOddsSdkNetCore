@@ -164,6 +164,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public int HttpClientTimeout => (int)base["httpClientTimeout"];
 
         /// <summary>
+        /// Gets a value specifying timeout set for recovery HTTP responses
+        /// </summary>
+        [ConfigurationProperty("recoveryHttpClientTimeout", IsRequired = false, DefaultValue = SdkInfo.DefaultHttpClientTimeout)]
+        [IntegerValidator(MinValue = SdkInfo.MinHttpClientTimeout, MaxValue = SdkInfo.MaxHttpClientTimeout, ExcludeRange = false)]
+        public int RecoveryHttpClientTimeout => (int)base["recoveryHttpClientTimeout"];
+
+        /// <summary>
         /// Retrieves the <see cref="OddsFeedConfigurationSection"/> from the app.config file
         /// </summary>
         /// <returns>The <see cref="OddsFeedConfigurationSection"/> instance loaded from config file</returns>

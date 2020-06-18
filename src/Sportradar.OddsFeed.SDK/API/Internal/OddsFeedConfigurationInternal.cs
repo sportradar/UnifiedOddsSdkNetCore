@@ -157,6 +157,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public int HttpClientTimeout => _publicConfig.HttpClientTimeout;
 
         /// <summary>
+        /// Gets a value specifying timeout set for recovery HTTP responses
+        /// </summary>
+        public int RecoveryHttpClientTimeout => _publicConfig.RecoveryHttpClientTimeout;
+
+        /// <summary>
         /// Gets a <see cref="string"/> representation of a Sports API base <see cref="Uri"/>
         /// </summary>
         public string ApiBaseUri => UseApiSsl ? "https://" + ApiHost : "http://" + ApiHost;
@@ -379,7 +384,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
               .Append(" UseApiSsl=").Append(UseApiSsl)
               .Append(" ExceptionStrategy=").Append(ExceptionHandlingStrategy)
               .Append(" AdjustAfterAge=").Append(AdjustAfterAge)
-              .Append(" HttpClientTimeout=").Append(HttpClientTimeout);
+              .Append(" HttpClientTimeout=").Append(HttpClientTimeout)
+              .Append(" RecoveryHttpClientTimeout=").Append(RecoveryHttpClientTimeout);
 
             return sb.ToString();
         }

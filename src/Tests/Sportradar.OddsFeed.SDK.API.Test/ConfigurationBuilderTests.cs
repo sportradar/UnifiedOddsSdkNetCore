@@ -646,5 +646,24 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().HttpClientTimeout);
             Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost(_testSection.Host).SetApiHost(_testSection.ApiHost).Build().HttpClientTimeout);
         }
+
+        [TestMethod]
+        public void recoveryHttpClientTimeout_has_correct_value()
+        {
+            _testSection.RecoveryHttpClientTimeout = 50;
+            Assert.AreEqual(_testSection.RecoveryHttpClientTimeout, IntegrationBuilder(_testSection).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(_testSection.RecoveryHttpClientTimeout, ProductionBuilder(_testSection).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, ReplayBuilder(_testSection).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(_testSection.RecoveryHttpClientTimeout, CustomBuilder(_testSection).Build().RecoveryHttpClientTimeout);
+
+            Assert.AreEqual(80, IntegrationBuilder(_testSection).SetRecoveryHttpClientTimeout(80).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(80, ProductionBuilder(_testSection).SetRecoveryHttpClientTimeout(80).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(80, CustomBuilder(_testSection).SetRecoveryHttpClientTimeout(80).Build().RecoveryHttpClientTimeout);
+
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().RecoveryHttpClientTimeout);
+            Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost(_testSection.Host).SetApiHost(_testSection.ApiHost).Build().RecoveryHttpClientTimeout);
+        }
     }
 }

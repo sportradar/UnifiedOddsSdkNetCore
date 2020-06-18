@@ -30,6 +30,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         protected bool? AdjustAfterAge;
 
         /// <summary>
+        /// Value specifying timeout set for recovery HTTP responses
+        /// </summary>
+        protected int? RecoveryHttpClientTimeout;
+
+        /// <summary>
         /// Construct RecoveryConfigurationBuilder
         /// </summary>
         /// <param name="accessToken">An access token used to authenticate with the feed</param>
@@ -53,6 +58,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             InactivitySeconds = section.InactivitySeconds;
             MaxRecoveryTimeInSeconds = section.MaxRecoveryTime;
             AdjustAfterAge = section.AdjustAfterAge;
+            RecoveryHttpClientTimeout = section.RecoveryHttpClientTimeout;
         }
 
         /// <summary>
@@ -103,6 +109,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         public T SetAdjustAfterAge(bool adjustAfterAge)
         {
             AdjustAfterAge = adjustAfterAge;
+            return this as T;
+        }
+
+        /// <summary>
+        /// Sets the timeout for recovery HTTP responses for this instance of the sdk
+        /// </summary>
+        /// <param name="recoveryHttpClientTimeout">The timeout for recovery HTTP responses</param>
+        /// <returns>A <see cref="IConfigurationBuilderBase{T}"/> derived instance used to set general configuration properties</returns>
+        public T SetRecoveryHttpClientTimeout(int recoveryHttpClientTimeout)
+        {
+            RecoveryHttpClientTimeout = recoveryHttpClientTimeout;
             return this as T;
         }
     }

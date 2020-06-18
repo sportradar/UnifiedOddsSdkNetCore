@@ -146,6 +146,13 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="adjustAfterAge">True if age should be adjusted; False otherwise</param>
         /// <returns>The <see cref="IRecoveryConfigurationBuilder{T}"/> instance used to set additional values</returns>
         T SetAdjustAfterAge(bool adjustAfterAge);
+
+        /// <summary>
+        /// Sets the timeout for recovery HTTP responses for this instance of the sdk
+        /// </summary>
+        /// <param name="recoveryHttpClientTimeout">The timeout for recovery HTTP responses</param>
+        /// <returns>A <see cref="IConfigurationBuilderBase{T}"/> derived instance used to set general configuration properties</returns>
+        T SetRecoveryHttpClientTimeout(int recoveryHttpClientTimeout);
     }
 
     /// <summary>
