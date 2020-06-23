@@ -128,5 +128,32 @@ namespace Sportradar.OddsFeed.SDK.Common
             var key = repositoryName + "." + Enum.GetName(typeof(LoggerType), loggerType);
             return LoggerFactory.CreateLogger(key);
         }
+
+        /// <summary>
+        /// Get the logger level
+        /// </summary>
+        /// <param name="logger">The logger to check</param>
+        /// <returns>The log level supported by the logger</returns>
+        public static LogLevel GetLoggerLogLevel(ILogger logger)
+        {
+            if (logger == null)
+            {
+                return LogLevel.None;
+            }
+            
+            if (logger.IsEnabled(LogLevel.Trace))
+                return LogLevel.Trace;
+            if (logger.IsEnabled(LogLevel.Debug))
+                return LogLevel.Debug;
+            if (logger.IsEnabled(LogLevel.Information))
+                return LogLevel.Information;
+            if (logger.IsEnabled(LogLevel.Warning))
+                return LogLevel.Warning;
+            if (logger.IsEnabled(LogLevel.Error))
+                return LogLevel.Error;
+            if (logger.IsEnabled(LogLevel.Critical))
+                return LogLevel.Critical;
+            return LogLevel.None;
+        }
     }
 }

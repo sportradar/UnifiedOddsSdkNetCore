@@ -667,23 +667,23 @@ namespace Sportradar.OddsFeed.SDK.API
 
         private void LogInit()
         {
-            var msg = "UF SDK .NET initialization. Version: " + SdkInfo.GetVersion();
-            var logger = SdkLoggerFactory.GetLoggerForFeedTraffic(typeof(Feed));
+            var msg = "UF SDK .NET Core initialization. Version: " + SdkInfo.GetVersion();
+            var logger = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
             if (logger == null)
             {
                 return;
             }
-            logger.LogInformation(msg);
+            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForCache(typeof(Feed));
-            logger.LogInformation(msg);
+            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(Feed));
-            logger.LogInformation(msg);
+            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(Feed));
-            logger.LogInformation(msg);
-            logger = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
-            logger.LogInformation(msg);
+            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger = SdkLoggerFactory.GetLoggerForFeedTraffic(typeof(Feed));
+            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForStats(typeof(Feed));
-            logger.LogInformation(msg);
+            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
         }
 
         private Task LogMetricsAsync()
