@@ -14,8 +14,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// </summary>
     internal static class FeedRoutingKeyBuilder
     {
-        //  hi.-.live.odds_change.5.sr:match.12329150.nodeId (.producerId)
+        // hi.-.live.odds_change.5.sr:match.12329150.nodeId (.producerId)
         // Note: there is a dot in event_id
+        // priority.prematch.live.message_type.sport.urn-for-sporteventId.sporteventId.nodeId (.producerId)
         /// <summary>
         /// Validates input list of message interests and returns list of routing keys combination per interest
         /// </summary>

@@ -127,18 +127,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var sessionName = _interest == null ? "system" : _interest.Name;
             string messageBody = null;
             FeedMessage feedMessage;
+            IProducer producer;
+            string messageName;
             try
             {
-                if (FeedLog.IsEnabled(LogLevel.Debug))
+                messageBody = Encoding.UTF8.GetString(eventArgs.Body);
+                feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
+                producer = _producerManager.Get(feedMessage.ProducerId);
+                messageName = feedMessage.GetType().Name;
+
+                if (FeedLog.IsEnabled(LogLevel.Debug) && producer.IsAvailable && !producer.IsDisabled)
                 {
-                    messageBody = Encoding.UTF8.GetString(eventArgs.Body);
                     FeedLog.LogDebug($"<~> {sessionName} <~> {eventArgs.RoutingKey} <~> {messageBody}");
                 }
                 else
                 {
                     FeedLog.LogInformation(eventArgs.RoutingKey);
                 }
-                feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
                 if (eventArgs.BasicProperties?.Headers != null)
                 {
                     feedMessage.SentAt = eventArgs.BasicProperties.Headers.ContainsKey("timestamp_in_ms")
@@ -159,9 +164,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             // send RawFeedMessage if needed
             try
             {
-                //ExecutionLog.LogDebug($"Raw msg [{_interest}]: {feedMessage.GetType().Name} for event {feedMessage.EventId}.");
-                var args = new RawFeedMessageEventArgs(eventArgs.RoutingKey, feedMessage, sessionName);
-                RawFeedMessageReceived?.Invoke(this, args);
+                if (producer.IsAvailable && !producer.IsDisabled)
+                {
+                    //ExecutionLog.LogDebug($"Raw msg [{_interest}]: {feedMessage.GetType().Name} for event {feedMessage.EventId}.");
+                    var args = new RawFeedMessageEventArgs(eventArgs.RoutingKey, feedMessage, sessionName);
+                    RawFeedMessageReceived?.Invoke(this, args);
+                }
             }
             catch (Exception e)
             {
@@ -174,9 +182,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 ExecutionLog.LogWarning($"A message for producer which is not defined was received. Producer={feedMessage.ProducerId}");
                 return;
             }
-
-            var producer = _producerManager.Get(feedMessage.ProducerId);
-            var messageName = feedMessage.GetType().Name;
 
             if (!_useReplay && (!producer.IsAvailable || producer.IsDisabled))
             {
