@@ -5282,6 +5282,24 @@
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A list of all results that have changed in the last 24 hours</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.GetFixtureChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the list of all fixtures that have changed in the last 24 hours
+            </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+            <returns>A list of all fixtures that have changed in the last 24 hours</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.GetResultChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the list of all results that have changed in the last 24 hours
+            </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+            <returns>A list of all results that have changed in the last 24 hours</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.FeedSystemSession">
             <summary>
             System session handles system feed messages
@@ -6174,6 +6192,24 @@
             <summary>
             Gets the list of all results that have changed in the last 24 hours
             </summary>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+            <returns>A list of all results that have changed in the last 24 hours</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.GetFixtureChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the list of all fixtures that have changed in the last 24 hours
+            </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+            <returns>A list of all fixtures that have changed in the last 24 hours</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.GetResultChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the list of all results that have changed in the last 24 hours
+            </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A list of all results that have changed in the last 24 hours</returns>
         </member>
@@ -19505,6 +19541,15 @@
             <param name="id">The id of the event</param>
             <returns>The available selections for event</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetFixtureChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the list of all fixtures that have changed in the last 24 hours
+            </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
+            <param name="culture">The culture to be fetched</param>
+            <returns>The list of all fixtures that have changed in the last 24 hours</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetListOfSportEventsAsync(System.Int32,System.Int32,System.Globalization.CultureInfo)">
             <summary>
             Gets the list of almost all events we are offering prematch odds for.
@@ -19522,10 +19567,12 @@
             <param name="culture">The culture</param>
             <returns>The list of the available tournament ids with the sportId it belongs to</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetResultChangesAsync(System.Globalization.CultureInfo)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetResultChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
             <summary>
             Gets the list of all results that have changed in the last 24 hours
             </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
             <param name="culture">The culture to be fetched</param>
             <returns>The list of all results that have changed in the last 24 hours</returns>
         </member>
@@ -25427,10 +25474,12 @@
             <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be calculated</param>
             <returns>The probability calculation for the specified selections</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetFixtureChangesAsync(System.Globalization.CultureInfo)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetFixtureChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
             <summary>
             Gets the list of all fixtures that have changed in the last 24 hours
             </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
             <param name="culture">The culture to be fetched</param>
             <returns>The list of all fixtures that have changed in the last 24 hours</returns>
         </member>
@@ -25451,10 +25500,12 @@
             <param name="culture">The culture</param>
             <returns>The list of the available tournament ids with the sportId it belongs to</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetResultChangesAsync(System.Globalization.CultureInfo)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetResultChangesAsync(System.Nullable{System.DateTime},Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
             <summary>
             Gets the list of all results that have changed in the last 24 hours
             </summary>
+            <param name="after">A <see cref="T:System.DateTime"/> specifying the starting date and time for filtering</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
             <param name="culture">The culture to be fetched</param>
             <returns>The list of all results that have changed in the last 24 hours</returns>
         </member>

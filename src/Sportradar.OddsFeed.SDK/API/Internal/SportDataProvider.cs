@@ -276,16 +276,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of all fixtures that have changed in the last 24 hours</returns>
-        public async Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(CultureInfo culture = null)
+        public Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(CultureInfo culture = null)
         {
-            culture = culture ?? _defaultCultures.First();
-
-            Log.LogInformation($"Invoked GetFixtureChangesAsync: [Cultures={culture.TwoLetterISOLanguageName}].");
-
-            var result = (await _dataRouterManager.GetFixtureChangesAsync(culture).ConfigureAwait(false))?.ToList();
-
-            Log.LogInformation($"GetFixtureChangesAsync returned {result?.Count} results.");
-            return result;
+            return GetFixtureChangesAsync(null, null, culture);
         }
 
         /// <summary>
@@ -510,13 +503,44 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of all results that have changed in the last 24 hours</returns>
-        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture = null)
+        public Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture = null)
+        {
+            return GetResultChangesAsync(null, null, culture);
+        }
+
+        /// <summary>
+        /// Gets the list of all fixtures that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="after">A <see cref="DateTime"/> specifying the starting date and time for filtering</param>
+        /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A list of all fixtures that have changed in the last 24 hours</returns>
+        public async Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(DateTime? after, URN sportId, CultureInfo culture = null)
         {
             culture = culture ?? _defaultCultures.First();
 
-            Log.LogInformation($"Invoked GetResultChangesAsync: [Cultures={culture.TwoLetterISOLanguageName}].");
+            Log.LogInformation($"Invoked GetFixtureChangesAsync: After={after}, SportId={sportId}, Culture={culture.TwoLetterISOLanguageName}.");
 
-            var result = (await _dataRouterManager.GetResultChangesAsync(culture).ConfigureAwait(false))?.ToList();
+            var result = (await _dataRouterManager.GetFixtureChangesAsync(after, sportId, culture).ConfigureAwait(false))?.ToList();
+
+            Log.LogInformation($"GetFixtureChangesAsync returned {result?.Count} results.");
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the list of all results that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="after">A <see cref="DateTime"/> specifying the starting date and time for filtering</param>
+        /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A list of all results that have changed in the last 24 hours</returns>
+        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture = null)
+        {
+            culture = culture ?? _defaultCultures.First();
+
+            Log.LogInformation($"Invoked GetResultChangesAsync: After={after}, SportId={sportId}, Culture={culture.TwoLetterISOLanguageName}.");
+
+            var result = (await _dataRouterManager.GetResultChangesAsync(after, sportId, culture).ConfigureAwait(false))?.ToList();
 
             Log.LogInformation($"GetResultChangesAsync returned {result?.Count} results.");
             return result;
