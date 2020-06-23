@@ -7,6 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using App.Metrics;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
@@ -1242,7 +1243,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             return new Calculation(result);
         }
 
-        public async Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(CultureInfo culture)
+        /// <summary>
+        /// Gets the list of all fixtures that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="after">A <see cref="DateTime"/> specifying the starting date and time for filtering</param>
+        /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
+        /// <param name="culture">The culture to be fetched</param>
+        /// <returns>The list of all fixtures that have changed in the last 24 hours</returns>
+        public async Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
         {
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetFixtureChangesAsync", MeasurementUnit = Unit.Requests };
             using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}");
@@ -1252,7 +1260,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             int restCallTime;
             try
             {
-                result = await _fixtureChangesProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                var query = GetChangesQueryString(after, sportId);
+                result = await _fixtureChangesProvider.GetDataAsync(culture.TwoLetterISOLanguageName, query).ConfigureAwait(false);
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
             }
             catch (Exception e)
@@ -1382,9 +1391,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// Gets the list of all results that have changed in the last 24 hours
         /// </summary>
+        /// <param name="after">A <see cref="DateTime"/> specifying the starting date and time for filtering</param>
+        /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
         /// <param name="culture">The culture to be fetched</param>
         /// <returns>The list of all results that have changed in the last 24 hours</returns>
-        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture)
+        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
         {
             var timerOptionsGetResultChangesAsync = new TimerOptions { Context = MetricsContext, Name = "GetResultChangesAsync", MeasurementUnit = Unit.Requests };
             using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetResultChangesAsync, $"{culture.TwoLetterISOLanguageName}");
@@ -1394,7 +1405,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             int restCallTime;
             try
             {
-                result = await _resultChangesProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                var query = GetChangesQueryString(after, sportId);
+                result = await _resultChangesProvider.GetDataAsync(culture.TwoLetterISOLanguageName, query).ConfigureAwait(false);
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
             }
             catch (Exception e)
@@ -1410,6 +1422,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             WriteLog($"Executing GetResultChangesAsync took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
             return result?.Select(f => new ResultChange(f)).ToList();
+        }
+
+        private string GetChangesQueryString(DateTime? after, URN sportId)
+        {
+            var paramList = new List<string>();
+            if (after.HasValue)
+            {
+                paramList.Add("afterDateTime=" + HttpUtility.UrlEncode(after.Value.ToString("o")));
+            }
+            if (sportId != null)
+            {
+                paramList.Add("sportId=" + HttpUtility.UrlEncode(sportId.ToString()));
+            }
+
+            if (paramList.Count == 0)
+            {
+                return "";
+            }
+
+            return "?" + string.Join("&", paramList);
         }
 
         private void WriteLog(string text, bool useDebug = false)

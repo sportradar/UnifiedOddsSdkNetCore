@@ -479,7 +479,14 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(CultureInfo culture)
+        /// <summary>
+        /// Gets the list of all fixtures that have changed in the last 24 hours
+        /// </summary>
+        /// <param name="after">A <see cref="System.DateTime"/> specifying the starting date and time for filtering</param>
+        /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
+        /// <param name="culture">The culture to be fetched</param>
+        /// <returns>The list of all fixtures that have changed in the last 24 hours</returns>
+        public async Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -510,9 +517,11 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <summary>
         /// Gets the list of all results that have changed in the last 24 hours
         /// </summary>
+        /// <param name="after">A <see cref="System.DateTime"/> specifying the starting date and time for filtering</param>
+        /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
         /// <param name="culture">The culture to be fetched</param>
         /// <returns>The list of all results that have changed in the last 24 hours</returns>
-        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture)
+        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
