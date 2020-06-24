@@ -239,6 +239,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 select producer;
 
             var producerRecoveryManagers = producersToOpen.Distinct(new ProducerEqualityComparer()).Select(p => _producerRecoveryManagerFactory.GetRecoveryTracker(p, interestList)).ToList();
+
+            if (!producerRecoveryManagers.Any())
+            {
+                throw new InvalidOperationException($"Message interests [{string.Join(", ", interestList)}] cannot be used. There are no suitable active producers.");
+            }
+
             Open(producerRecoveryManagers);
 
             _systemSession.AliveReceived += OnSystemSessionMessageReceived;
