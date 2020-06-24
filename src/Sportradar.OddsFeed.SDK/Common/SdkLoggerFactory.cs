@@ -153,7 +153,37 @@ namespace Sportradar.OddsFeed.SDK.Common
                 return LogLevel.Error;
             if (logger.IsEnabled(LogLevel.Critical))
                 return LogLevel.Critical;
+
             return LogLevel.None;
+        }
+
+        /// <summary>
+        /// Get write logger level
+        /// </summary>
+        /// <param name="logger">The logger to check</param>
+        /// <param name="minLevel">The minimum log level</param>
+        /// <returns>The log level supported by the logger which is not lower then specified minimum level</returns>
+        public static LogLevel GetWriteLogLevel(ILogger logger, LogLevel minLevel)
+        {
+            if (logger == null)
+            {
+                return minLevel;
+            }
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                return minLevel;
+            if (logger.IsEnabled(LogLevel.Debug) && LogLevel.Debug >= minLevel)
+                return LogLevel.Debug;
+            if (logger.IsEnabled(LogLevel.Information) && LogLevel.Information >= minLevel)
+                return LogLevel.Information;
+            if (logger.IsEnabled(LogLevel.Warning) && LogLevel.Warning >= minLevel)
+                return LogLevel.Warning;
+            if (logger.IsEnabled(LogLevel.Error) && LogLevel.Error >= minLevel)
+                return LogLevel.Error;
+            if (logger.IsEnabled(LogLevel.Critical) && LogLevel.Critical >= minLevel)
+                return LogLevel.Critical;
+
+            return minLevel;
         }
     }
 }
