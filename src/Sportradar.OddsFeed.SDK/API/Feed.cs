@@ -673,17 +673,17 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 return;
             }
-            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForCache(typeof(Feed));
-            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(Feed));
-            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(Feed));
-            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForFeedTraffic(typeof(Feed));
-            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
             logger = SdkLoggerFactory.GetLoggerForStats(typeof(Feed));
-            logger.LogInformation($"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
         }
 
         private Task LogMetricsAsync()

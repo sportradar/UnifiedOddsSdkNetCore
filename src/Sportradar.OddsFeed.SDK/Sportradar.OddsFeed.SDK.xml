@@ -7668,6 +7668,14 @@
             <param name="logger">The logger to check</param>
             <returns>The log level supported by the logger</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.SdkLoggerFactory.GetWriteLogLevel(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            Get write logger level
+            </summary>
+            <param name="logger">The logger to check</param>
+            <param name="minLevel">The minimum log level</param>
+            <returns>The log level supported by the logger</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory">
             <summary>
             Provides methods to get <see cref="T:App.Metrics.IMetricsRoot"/> to record sdk metrics
