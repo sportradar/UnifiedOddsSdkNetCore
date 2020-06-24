@@ -3,6 +3,18 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-06-24  1.7.0.0
+Added support for configuring HTTP timeout
+Added overloaded methods for fixture and result changes with filters
+Updated supported languages
+Removed logging of feed message for disabled producers
+Exposed RawMessage on UnparsableMessageEventArgs
+Changed retention policy for variant market cache 
+Improved reporting of invalid message interest combinations 
+Fix: Synchronized Producer Up/Down event dispatching
+Fix: Disposing of Feed instance
+Fix: Permanent failure to open connection to feed
+
 2020-05-11  1.6.0.0
 Added FullName, Nickname and CountryCode to IPlayerProfile
 Added support for result changes endpoint
