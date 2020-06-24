@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         private bool _isDisposed;
 
-        private readonly  CacheItemPolicy _cacheItemPolicy = new CacheItemPolicy { SlidingExpiration = TimeSpan.FromHours(1) };
+        private readonly  CacheItemPolicy _cacheItemPolicy = new CacheItemPolicy { SlidingExpiration = TimeSpan.FromHours(3) };
 
         private readonly ConcurrentDictionary<string, DateTime> _fetchedVariants = new ConcurrentDictionary<string, DateTime>();
 

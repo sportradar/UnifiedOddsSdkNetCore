@@ -7661,6 +7661,13 @@
             <param name="loggerType">A value of <see cref="T:Sportradar.OddsFeed.SDK.Common.LoggerType"/> to be used to get <see cref="T:Microsoft.Extensions.Logging.ILogger"/></param>
             <returns>Returns <see cref="T:Microsoft.Extensions.Logging.ILogger"/> with specific settings for this <see cref="T:Sportradar.OddsFeed.SDK.Common.LoggerType"/></returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.SdkLoggerFactory.GetLoggerLogLevel(Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Get the logger level
+            </summary>
+            <param name="logger">The logger to check</param>
+            <returns>The log level supported by the logger</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory">
             <summary>
             Provides methods to get <see cref="T:App.Metrics.IMetricsRoot"/> to record sdk metrics
