@@ -155,6 +155,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     {
                         tmpKeys.Add($"{key}.{nodeId}.#");
                     }
+                    else
+                    {
+                        tmpKeys.Add($"{key}.#");
+                    }
                 }
                 keys = tmpKeys;
             }
