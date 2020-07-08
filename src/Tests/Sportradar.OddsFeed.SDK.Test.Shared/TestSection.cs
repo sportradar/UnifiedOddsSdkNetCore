@@ -34,6 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 ExceptionHandlingStrategy.THROW,
                 "1,3",
                 1150,
+                SdkInfo.DefaultIntervalBetweenRecoveryRequests,
                 11,
                 false,
                 30,
@@ -61,6 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             ExceptionHandlingStrategy.CATCH,
             null,
             SdkInfo.MaxRecoveryExecutionInSeconds,
+            SdkInfo.DefaultIntervalBetweenRecoveryRequests,
             0,
             false,
             30,
@@ -87,6 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             ExceptionHandlingStrategy.CATCH,
             null,
             SdkInfo.MaxRecoveryExecutionInSeconds,
+            SdkInfo.DefaultIntervalBetweenRecoveryRequests,
             0,
             false,
             30,
@@ -113,6 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             ExceptionHandlingStrategy.THROW,
             "1,3",
             1150,
+            SdkInfo.DefaultIntervalBetweenRecoveryRequests,
             11,
             true,
             30,
@@ -139,6 +143,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             ExceptionHandlingStrategy.THROW,
             "1,3",
             1150,
+            SdkInfo.DefaultIntervalBetweenRecoveryRequests,
             11,
             true,
             30,
@@ -165,6 +170,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             ExceptionHandlingStrategy.THROW,
             null,
             600,
+            SdkInfo.DefaultIntervalBetweenRecoveryRequests,
             33,
             false,
             30,
@@ -191,6 +197,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public ExceptionHandlingStrategy ExceptionHandlingStrategy { get; set; }
         public string DisabledProducers { get; set; }
         public int MaxRecoveryTime { get; set; }
+        public int MinIntervalBetweenRecoveryRequests { get; set; }
         public int NodeId { get; set; }
         public bool AdjustAfterAge { get; set; }
 
@@ -204,7 +211,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// </summary>
         public int RecoveryHttpClientTimeout { get; set; }
 
-        public TestSection(string accessToken, int inactivitySeconds, string host, string virtualHost, int port, string username, string password, string apiHost, bool useSSL, bool useApiSSL, string supportedLanguages, string defaultLanguage, bool statisticsEnabled, int statisticsTimeout, int statisticsRecordLimit, string sdkLogConfigPath, bool useIntegrationEnvironment, ExceptionHandlingStrategy exceptionHandlingStrategy, string disabledProducers, int maxRecoveryTime, int nodeId, bool adjustAfterAge, int httpClientTimeout, int recoveryHttpClientTimeout)
+        public TestSection(string accessToken, int inactivitySeconds, string host, string virtualHost, int port, string username, string password, string apiHost, bool useSSL, bool useApiSSL, string supportedLanguages, string defaultLanguage, bool statisticsEnabled, int statisticsTimeout, int statisticsRecordLimit, string sdkLogConfigPath, bool useIntegrationEnvironment, ExceptionHandlingStrategy exceptionHandlingStrategy, string disabledProducers, int maxRecoveryTime, int minIntervalBetweenRecoveryRequests, int nodeId, bool adjustAfterAge, int httpClientTimeout, int recoveryHttpClientTimeout)
         {
             AccessToken = accessToken;
             InactivitySeconds = inactivitySeconds;
@@ -226,6 +233,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             ExceptionHandlingStrategy = exceptionHandlingStrategy;
             DisabledProducers = disabledProducers;
             MaxRecoveryTime = maxRecoveryTime;
+            MinIntervalBetweenRecoveryRequests = minIntervalBetweenRecoveryRequests;
             NodeId = nodeId;
             AdjustAfterAge = adjustAfterAge;
             HttpClientTimeout = httpClientTimeout;

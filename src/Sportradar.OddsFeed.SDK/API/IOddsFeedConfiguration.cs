@@ -118,5 +118,10 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Gets a value specifying timeout set for recovery HTTP responses
         /// </summary>
         int RecoveryHttpClientTimeout { get; }
+
+        /// <summary>
+        /// Gets the minimal interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        int MinIntervalBetweenRecoveryRequests { get; }
     }
 }

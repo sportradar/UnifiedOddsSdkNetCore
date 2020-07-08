@@ -665,5 +665,30 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().RecoveryHttpClientTimeout);
             Assert.AreEqual(SdkInfo.DefaultHttpClientTimeout, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost(_testSection.Host).SetApiHost(_testSection.ApiHost).Build().RecoveryHttpClientTimeout);
         }
+
+
+        [TestMethod]
+        public void min_interval_between_recovery_requests_has_correct_value()
+        {
+            _testSection.MinIntervalBetweenRecoveryRequests = 100;
+
+            Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, IntegrationBuilder(_testSection).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, ProductionBuilder(_testSection).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(SdkInfo.DefaultIntervalBetweenRecoveryRequests, ReplayBuilder(_testSection).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, CustomBuilder(_testSection).Build().MinIntervalBetweenRecoveryRequests);
+
+            Assert.AreEqual(140, IntegrationBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(140, ProductionBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(140, CustomBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).Build().MinIntervalBetweenRecoveryRequests);
+
+            Assert.AreEqual(SdkInfo.DefaultIntervalBetweenRecoveryRequests, IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(SdkInfo.DefaultIntervalBetweenRecoveryRequests, ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(SdkInfo.DefaultIntervalBetweenRecoveryRequests, ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(SdkInfo.DefaultIntervalBetweenRecoveryRequests, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost(_testSection.Host).SetApiHost(_testSection.ApiHost).Build().MinIntervalBetweenRecoveryRequests);
+
+            Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, IntegrationBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).LoadFromConfigFile().Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, ProductionBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).LoadFromConfigFile().Build().MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, CustomBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).LoadFromConfigFile().Build().MinIntervalBetweenRecoveryRequests);
+        }
     }
 }

@@ -256,6 +256,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                                                    _useApiSsl,
                                                    InactivitySeconds ?? SdkInfo.MinInactivitySeconds,
                                                    MaxRecoveryTimeInSeconds ?? SdkInfo.MaxRecoveryExecutionInSeconds,
+                                                   MinIntervalBetweenRecoveryRequests ?? SdkInfo.DefaultIntervalBetweenRecoveryRequests,
                                                    NodeId,
                                                    DisabledProducers,
                                                    ExceptionHandlingStrategy,

@@ -141,6 +141,13 @@ namespace Sportradar.OddsFeed.SDK.API
         T SetMaxRecoveryTime(int maxRecoveryTimeInSeconds);
 
         /// <summary>
+        /// Sets the minimal interval between recovery requests initiated by alive messages (between 20 and 180 seconds)
+        /// </summary>
+        /// <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}" /> instance used to set general configuration properties</returns>
+        T SetMinIntervalBetweenRecoveryRequests(int minIntervalBetweenRecoveryRequests);
+
+        /// <summary>
         /// Sets the value indicating whether the after age should be adjusted before executing recovery request
         /// </summary>
         /// <param name="adjustAfterAge">True if age should be adjusted; False otherwise</param>

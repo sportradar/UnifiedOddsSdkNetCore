@@ -145,6 +145,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public int MaxRecoveryTime => (int) base["maxRecoveryTime"];
 
         /// <summary>
+        /// Gets the minimal interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        [ConfigurationProperty("minIntervalBetweenRecoveryRequests", IsRequired = false, DefaultValue = SdkInfo.DefaultIntervalBetweenRecoveryRequests)]
+        [IntegerValidator(MinValue = SdkInfo.MinIntervalBetweenRecoveryRequests, MaxValue = SdkInfo.MaxIntervalBetweenRecoveryRequests, ExcludeRange = false)]
+        public int MinIntervalBetweenRecoveryRequests => (int)base["minIntervalBetweenRecoveryRequests"];
+
+        /// <summary>
         /// Gets the node id
         /// </summary>
         [ConfigurationProperty("nodeId", IsRequired = false, DefaultValue = 0)]

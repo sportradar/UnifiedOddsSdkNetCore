@@ -78,6 +78,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public long? RequestId => IsRunning ? (long?)_requestId : null;
 
         /// <summary>
+        /// Gets the start time of the last issued recovery request.
+        /// </summary>
+        public DateTime LastStartTime => _startTime;
+
+        /// <summary>
         /// Gets a value indicating whether [adjusted after age]
         /// </summary>
         /// <value><c>true</c> if [adjusted after age]; otherwise, <c>false</c></value>

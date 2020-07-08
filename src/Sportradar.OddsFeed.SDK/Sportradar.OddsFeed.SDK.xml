@@ -1081,6 +1081,13 @@
             <param name="maxRecoveryTimeInSeconds">Maximum recovery time in seconds</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1"/> instance used to set general configuration properties</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1.SetMinIntervalBetweenRecoveryRequests(System.Int32)">
+            <summary>
+            Sets the minimal interval between recovery requests initiated by alive messages (between 20 and 180 seconds)
+            </summary>
+            <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1" /> instance used to set general configuration properties</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1.SetAdjustAfterAge(System.Boolean)">
             <summary>
             Sets the value indicating whether the after age should be adjusted before executing recovery request
@@ -1898,6 +1905,11 @@
             The maximum recovery time in seconds
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.RecoveryConfigurationBuilder`1.MinIntervalBetweenRecoveryRequests">
+            <summary>
+            The minimal interval between recovery requests initiated by alive messages (seconds)
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.RecoveryConfigurationBuilder`1.AdjustAfterAge">
             <summary>
             The value indicating if the after age should be adjusted
@@ -1936,6 +1948,13 @@
             Sets the maximum time in seconds in which recovery must be completed (minimum 900 seconds)
             </summary>
             <param name="maxRecoveryTimeInSeconds">Maximum recovery time in seconds</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1" /> instance used to set general configuration properties</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.RecoveryConfigurationBuilder`1.SetMinIntervalBetweenRecoveryRequests(System.Int32)">
+            <summary>
+            Sets the minimal interval between recovery requests initiated by alive messages (between 20 and 180 seconds)
+            </summary>
+            <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1" /> instance used to set general configuration properties</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.RecoveryConfigurationBuilder`1.SetAdjustAfterAge(System.Boolean)">
@@ -2759,6 +2778,11 @@
             Gets the timeout for recovery to finish
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection.MinIntervalBetweenRecoveryRequests">
+            <summary>
+            Gets the minimal interval between recovery requests initiated by alive messages (seconds)
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection.NodeId">
             <summary>
             Gets the node id
@@ -2873,6 +2897,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation.RequestId">
             <summary>
             Gets a request Id of the current recovery operation or a null reference if recovery is not running
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation.LastStartTime">
+            <summary>
+            Gets the start time of the last issued recovery request.
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation.Start">
@@ -3187,6 +3216,11 @@
             </summary>
             <value>The maximum recovery time</value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfiguration.MinIntervalBetweenRecoveryRequests">
+            <summary>
+            Gets the minimal interval between recovery requests initiated by alive messages (seconds)
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfiguration.NodeId">
             <summary>
             Gets the node identifier
@@ -3341,6 +3375,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationInternal.MaxRecoveryTime">
             <summary>
             Gets the maximum recovery time
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationInternal.MinIntervalBetweenRecoveryRequests">
+            <summary>
+            Gets the minimal interval between recovery requests initiated by alive messages (seconds)
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationInternal.NodeId">
@@ -3586,6 +3625,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.MaxRecoveryTime">
             <summary>
             Gets the timeout for recovery to finish
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.MinIntervalBetweenRecoveryRequests">
+            <summary>
+            Gets the minimal interval between recovery requests initiated by alive messages (seconds)
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.NodeId">
@@ -4083,6 +4127,11 @@
             A <see cref="T:System.Threading.SemaphoreSlim"/> used to synchronize status changes
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager._minIntervalBetweenRecoveryRequests">
+            <summary>
+            The minimal interval between recovery requests initiated by alive messages (seconds)
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.Producer">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> for which status is tracked
@@ -4104,13 +4153,14 @@
             Occurs when a requested event recovery completes
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.#ctor(Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation,Sportradar.OddsFeed.SDK.API.Internal.ITimestampTracker)">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.#ctor(Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation,Sportradar.OddsFeed.SDK.API.Internal.ITimestampTracker,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager"/> class
             </summary>
             <param name="producer">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> for which status is tracked</param>
             <param name="recoveryOperation">A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation"/> used to issue and track recovery operations</param>
             <param name="timestampTracker">A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ITimestampTracker"/> used to track message timings</param>
+            <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.SetStatusAndRaiseEvent(System.Nullable{System.Int64},Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryStatus)">
             <summary>
@@ -4457,6 +4507,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation.RequestId">
             <summary>
             Gets a request Id of the current recovery operation or a null reference if recovery is not running
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation.LastStartTime">
+            <summary>
+            Gets the start time of the last issued recovery request.
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation._adjustedAfterAge">
@@ -5784,6 +5839,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration.RecoveryHttpClientTimeout">
             <summary>
             Gets a value specifying timeout set for recovery HTTP responses
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration.MinIntervalBetweenRecoveryRequests">
+            <summary>
+            Gets the minimal interval between recovery requests initiated by alive messages (seconds)
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.IOddsFeedSession">
@@ -7148,6 +7208,21 @@
             The maximum recovery execution in seconds
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MinIntervalBetweenRecoveryRequests">
+            <summary>
+            The minimal interval between recovery requests initiated by alive messages (seconds)
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MaxIntervalBetweenRecoveryRequests">
+            <summary>
+            The maximum interval between recovery requests initiated by alive messages (seconds)
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.DefaultIntervalBetweenRecoveryRequests">
+            <summary>
+            The default interval between recovery requests initiated by alive messages (seconds)
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.PlayerProfileMarketPrefix">
             <summary>
             Defines the beginning of the outcome id for player outcomes
@@ -7674,7 +7749,7 @@
             </summary>
             <param name="logger">The logger to check</param>
             <param name="minLevel">The minimum log level</param>
-            <returns>The log level supported by the logger</returns>
+            <returns>The log level supported by the logger which is not lower then specified minimum level</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory">
             <summary>

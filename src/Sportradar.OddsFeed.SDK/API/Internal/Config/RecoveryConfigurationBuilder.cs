@@ -25,6 +25,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         protected int? MaxRecoveryTimeInSeconds;
 
         /// <summary>
+        /// The minimal interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        protected int? MinIntervalBetweenRecoveryRequests;
+
+        /// <summary>
         /// The value indicating if the after age should be adjusted
         /// </summary>
         protected bool? AdjustAfterAge;
@@ -57,6 +62,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
 
             InactivitySeconds = section.InactivitySeconds;
             MaxRecoveryTimeInSeconds = section.MaxRecoveryTime;
+            MinIntervalBetweenRecoveryRequests = section.MinIntervalBetweenRecoveryRequests;
             AdjustAfterAge = section.AdjustAfterAge;
             RecoveryHttpClientTimeout = section.RecoveryHttpClientTimeout;
         }
@@ -98,6 +104,26 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             }
 
             MaxRecoveryTimeInSeconds = maxRecoveryTimeInSeconds;
+            return this as T;
+        }
+
+        /// <summary>
+        /// Sets the minimal interval between recovery requests initiated by alive messages (between 20 and 180 seconds)
+        /// </summary>
+        /// <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}" /> instance used to set general configuration properties</returns>
+        public T SetMinIntervalBetweenRecoveryRequests(int minIntervalBetweenRecoveryRequests)
+        {
+            if (minIntervalBetweenRecoveryRequests < SdkInfo.MinIntervalBetweenRecoveryRequests)
+            {
+                throw new ArgumentException($"Value must be at least {SdkInfo.MinIntervalBetweenRecoveryRequests}.");
+            }
+            if (minIntervalBetweenRecoveryRequests > SdkInfo.MaxIntervalBetweenRecoveryRequests)
+            {
+                throw new ArgumentException($"Value must be less then {SdkInfo.MaxIntervalBetweenRecoveryRequests}.");
+            }
+
+            MinIntervalBetweenRecoveryRequests = minIntervalBetweenRecoveryRequests;
             return this as T;
         }
 

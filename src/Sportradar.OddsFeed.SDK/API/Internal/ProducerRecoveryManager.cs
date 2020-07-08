@@ -51,6 +51,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly SemaphoreSlim _semaphoreStatusChange = new SemaphoreSlim(1);
 
         /// <summary>
+        /// The minimal interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        private readonly int _minIntervalBetweenRecoveryRequests;
+
+        /// <summary>
         /// A <see cref="IProducer"/> for which status is tracked
         /// </summary>
         public IProducer Producer { get; }
@@ -77,7 +82,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="producer">A <see cref="IProducer"/> for which status is tracked</param>
         /// <param name="recoveryOperation">A <see cref="IRecoveryOperation"/> used to issue and track recovery operations</param>
         /// <param name="timestampTracker">A <see cref="ITimestampTracker"/> used to track message timings</param>
-        internal ProducerRecoveryManager(IProducer producer, IRecoveryOperation recoveryOperation, ITimestampTracker timestampTracker)
+        /// <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
+        internal ProducerRecoveryManager(IProducer producer, IRecoveryOperation recoveryOperation, ITimestampTracker timestampTracker, int minIntervalBetweenRecoveryRequests)
         {
             Guard.Argument(producer, nameof(producer)).NotNull();
             Guard.Argument(recoveryOperation, nameof(recoveryOperation)).NotNull();
@@ -87,6 +93,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             _producer = (Producer)producer;
             _recoveryOperation = recoveryOperation;
             _timestampTracker = timestampTracker;
+            _minIntervalBetweenRecoveryRequests = minIntervalBetweenRecoveryRequests;
 
             Status = ProducerRecoveryStatus.NotStarted;
         }
@@ -334,12 +341,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     {
                         try
                         {
-                            if (_recoveryOperation.Start())
+                            var started = StartRecovery();
+                            if (started.HasValue && started.Value)
                             {
                                 ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation started. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
                                 newStatus = ProducerRecoveryStatus.Started;
                             }
-                            else
+                            else if (started.HasValue)
                             {
                                 ExecutionLog.LogWarning($"Producer={_producer.Id}: An error occurred while starting recovery operation with after={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}. Retry will be made at next system alive.");
                             }
@@ -371,12 +379,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                 Debug.Assert(Status == ProducerRecoveryStatus.Completed || Status == ProducerRecoveryStatus.Delayed);
                                 try
                                 {
-                                    if (_recoveryOperation.Start())
+                                    var started = StartRecovery();
+                                    if (started.HasValue && started.Value)
                                     {
                                         ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation started due to un-subscribed alive. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
                                         newStatus = ProducerRecoveryStatus.Started;
                                     }
-                                    else
+                                    else if (started.HasValue)
                                     {
                                         ExecutionLog.LogWarning($"Producer={_producer.Id}: An error occurred while starting recovery operation with after={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}. Retry will be made at next system alive.");
                                         newStatus = ProducerRecoveryStatus.Error;
@@ -482,6 +491,20 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     SetStatusAndRaiseEvent(null, newStatus);
                 }
             }
+        }
+
+
+        private bool? StartRecovery()
+        {
+            var duration = TimeProviderAccessor.Current.Now - _recoveryOperation.LastStartTime;
+
+            if ((int)duration.TotalSeconds > _minIntervalBetweenRecoveryRequests)
+            {
+                return _recoveryOperation.Start();
+            }
+
+            ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation skipped.");
+            return null;
         }
     }
 }

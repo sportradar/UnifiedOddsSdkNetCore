@@ -94,6 +94,18 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const int MaxRecoveryExecutionInSeconds = 3600;
         /// <summary>
+        /// The minimal interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        public const int MinIntervalBetweenRecoveryRequests = 20;
+        /// <summary>
+        /// The maximum interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        public const int MaxIntervalBetweenRecoveryRequests = 180;
+        /// <summary>
+        /// The default interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        public const int DefaultIntervalBetweenRecoveryRequests = 30;
+        /// <summary>
         /// Defines the beginning of the outcome id for player outcomes
         /// </summary>
         public const string PlayerProfileMarketPrefix = "sr:player:";

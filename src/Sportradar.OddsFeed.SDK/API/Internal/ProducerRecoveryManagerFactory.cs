@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var allInterestsList = allInterests as IList<MessageInterest> ?? allInterests.ToList();
             var timestampTracker = new TimestampTracker((Producer) producer, allInterestsList, _config.InactivitySeconds, _config.InactivitySeconds);
             var recoveryOperation = new RecoveryOperation((Producer)producer, _recoveryRequestIssuer, allInterestsList, _config.NodeId, _config.AdjustAfterAge);
-            return new ProducerRecoveryManager(producer, recoveryOperation, timestampTracker);
+            return new ProducerRecoveryManager(producer, recoveryOperation, timestampTracker, _config.MinIntervalBetweenRecoveryRequests);
         }
 
         /// <summary>

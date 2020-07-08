@@ -111,6 +111,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         int MaxRecoveryTime { get; }
 
         /// <summary>
+        /// Gets the minimal interval between recovery requests initiated by alive messages (seconds)
+        /// </summary>
+        int MinIntervalBetweenRecoveryRequests { get; }
+
+        /// <summary>
         /// Gets the node id
         /// </summary>
         /// <remarks>MTS customer must set this value! Use only positive numbers; negative are reserved for internal use.</remarks>
