@@ -283,9 +283,11 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
             recoveryManager.ConnectionShutdown();
             Assert.AreEqual(ProducerRecoveryStatus.Error, recoveryManager.Status);
+            var time = _timeProvider.Now;
+            _timeProvider.AddSeconds(40);
             recoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
             Assert.AreEqual(ProducerRecoveryStatus.Started, recoveryManager.Status);
-            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(_producer, _timeProvider.Now, 0));
+            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(_producer, time, 0));
         }
 
         [TestMethod]
@@ -299,11 +301,13 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.AreEqual(ProducerRecoveryStatus.Completed, _producerRecoveryManager.Status);
 
             // lets feed him a unsubscribed alive ...
-            _timeProvider.AddSeconds(5);
+            _timeProvider.AddSeconds(40);
+            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildAlive(), DefaultInterest);
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive(null, null, false));
             Assert.AreEqual(ProducerRecoveryStatus.Started, _producerRecoveryManager.Status);
 
             // lets try to get it back to completed state ...
+            _timeProvider.AddSeconds(10);
             _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildSnapshotComplete(1), DefaultInterest);
             Assert.AreEqual(ProducerRecoveryStatus.Completed, _producerRecoveryManager.Status);
         }

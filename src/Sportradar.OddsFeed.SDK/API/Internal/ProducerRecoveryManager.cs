@@ -498,7 +498,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             var duration = TimeProviderAccessor.Current.Now - _recoveryOperation.LastStartTime;
 
-            if ((int)duration.TotalSeconds > _minIntervalBetweenRecoveryRequests)
+            if (duration.TotalSeconds > _minIntervalBetweenRecoveryRequests)
             {
                 return _recoveryOperation.Start();
             }
