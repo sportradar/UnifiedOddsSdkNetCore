@@ -218,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             var tasks = competitorUrns.Select(s =>
                                               {
-                                                  var t = _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCI);
+                                                  var t = _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCI, ExceptionStrategy);
                                                   t.ConfigureAwait(false);
                                                   return t;
                                               }).ToList();

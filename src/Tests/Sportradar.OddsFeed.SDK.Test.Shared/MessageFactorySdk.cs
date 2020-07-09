@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -53,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public static ICompetitor GetCompetitor(int id = 0, int playerCount = 0)
         {
-            return new Competitor(new CompetitorCI(new CompetitorDTO(MFR.GetTeam(id)), TestData.Culture, null), null, TestData.Cultures3, new TestSportEventFactory(), (ICompetitionCI) null);
+            return new Competitor(new CompetitorCI(new CompetitorDTO(MFR.GetTeam(id)), TestData.Culture, null), null, TestData.Cultures3, new TestSportEventFactory(), ExceptionHandlingStrategy.THROW, (ICompetitionCI) null);
         }
 
         internal static CoverageInfo GetCoverageInfo(int subItemCount = 0)
@@ -82,12 +83,12 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public static IGroup GetGroup()
         {
-            return new Group(new GroupCI(new GroupDTO(MFR.GetGroup()), TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3, new TestSportEventFactory(), null);
+            return new Group(new GroupCI(new GroupDTO(MFR.GetGroup()), TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3, new TestSportEventFactory(), ExceptionHandlingStrategy.THROW, null);
         }
 
         public static IGroup GetGroupWithCompetitors()
         {
-            return new Group(new GroupCI(new GroupDTO(MFR.GetTournamentGroup()), TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3, new TestSportEventFactory(), null);
+            return new Group(new GroupCI(new GroupDTO(MFR.GetTournamentGroup()), TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3, new TestSportEventFactory(), ExceptionHandlingStrategy.THROW, null);
         }
 
         public static IPeriodScore GetPeriodScore()
@@ -179,7 +180,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public static ITeamCompetitor GetTeamCompetitor(int id = 0)
         {
-            return new TeamCompetitor(new TeamCompetitorCI(new TeamCompetitorDTO(MFR.GetTeamCompetitor()), TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3, new TestSportEventFactory(), null, null);
+            return new TeamCompetitor(new TeamCompetitorCI(new TeamCompetitorDTO(MFR.GetTeamCompetitor()), TestData.Culture, new TestDataRouterManager(new CacheManager())), TestData.Cultures3, new TestSportEventFactory(), ExceptionHandlingStrategy.THROW, null, null);
         }
 
         public static ITournament GetTournament(int id = 0)

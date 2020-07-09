@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -61,10 +62,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="ci">A <see cref="GroupCI"/> used to create new instance</param>
         /// <param name="cultures">A culture of the current instance of <see cref="GroupDTO"/></param>
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to retrieve <see cref="IPlayerProfile"/></param>
+        /// <param name="exceptionStrategy">The exception strategy</param>
         /// <param name="competitorsReferenceIds">A list of <see cref="ReferenceIdCI"/> for all competitors</param>
         public Group(GroupCI ci,
                      IEnumerable<CultureInfo> cultures,
                      ISportEntityFactory sportEntityFactory,
+                     ExceptionHandlingStrategy exceptionStrategy,
                      IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
@@ -85,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 //    competitors.Add(comp);
                 //}
                 //_competitors = competitors;
-                _competitors = ci.Competitors.Select(t => sportEntityFactory.BuildCompetitor(t, cultures, competitorsReferenceIds)).ToList();
+                _competitors = ci.Competitors.Select(t => sportEntityFactory.BuildCompetitor(t, cultures, competitorsReferenceIds, exceptionStrategy)).ToList();
             }
         }
 

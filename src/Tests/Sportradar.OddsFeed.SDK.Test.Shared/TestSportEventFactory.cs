@@ -29,12 +29,12 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             throw new NotImplementedException();
         }
 
-        public Task<IPlayer> BuildPlayerAsync(URN id, IEnumerable<CultureInfo> cultures)
+        public Task<IPlayer> BuildPlayerAsync(URN id, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IPlayer>> BuildPlayersAsync(IEnumerable<URN> ids, IEnumerable<CultureInfo> cultures)
+        public Task<IEnumerable<IPlayer>> BuildPlayersAsync(IEnumerable<URN> ids, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
@@ -61,17 +61,17 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return (T)competition;
         }
 
-        public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI)
+        public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            return new Competitor(ci, null, cultures, this, rootCompetitionCI);
+            return new Competitor(ci, null, cultures, this, exceptionStrategy, rootCompetitionCI);
         }
 
-        public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences)
+        public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
         {
-            return new Competitor(ci, null, cultures, this, competitorsReferences);
+            return new Competitor(ci, null, cultures, this, exceptionStrategy, competitorsReferences);
         }
 
-        public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI ci, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI)
+        public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI ci, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
@@ -83,7 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
-        public Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI)
+        public Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
         /// <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
-        public Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences)
+        public Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
@@ -107,7 +107,18 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="culture">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        public Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI)
+        public Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Builds the instance of the <see cref="ICategorySummary"/> class
+        /// </summary>
+        /// <param name="categoryId">A <see cref="URN"/> of the <see cref="ICategorySummary"/> used to create new instance</param>
+        /// <param name="culture">A culture of the current instance of <see cref="ICategorySummary"/></param>
+        /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
+        public async Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IEnumerable<CultureInfo> culture)
         {
             throw new NotImplementedException();
         }

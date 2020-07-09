@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dawn;
 using System.Linq;
+using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -67,6 +68,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string AgeGroup { get; }
 
         /// <summary>
+        /// Gets the sport id
+        /// </summary>
+        /// <value>The sport id</value>
+        public URN SportId { get; }
+
+        /// <summary>
+        /// Gets the category id
+        /// </summary>
+        /// <value>The category id</value>
+        public URN CategoryId { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CompetitorDTO"/> class from the <see cref="team"/> instance
         /// </summary>
         /// <param name="record">A <see cref="team"/> containing information about a team</param>
@@ -91,6 +104,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
             Gender = record.gender;
             AgeGroup = record.age_group;
+
+            if (record is teamExtended extended)
+            {
+                SportId = extended.sport == null
+                    ? null
+                    : URN.Parse(extended.sport.id);
+                CategoryId = extended.category == null
+                    ? null
+                    : URN.Parse(extended.category.id);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
@@ -22,14 +23,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="ci">A <see cref="TeamCompetitorCI"/> used to create new instance</param>
         /// <param name="culture">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to retrieve <see cref="IPlayer"/></param>
+        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> used in sport entity factory</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> used for fetching profile data</param>
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         public TeamCompetitor(TeamCompetitorCI ci,
                               IEnumerable<CultureInfo> culture,
                               ISportEntityFactory sportEntityFactory,
+                              ExceptionHandlingStrategy exceptionStrategy,
                               IProfileCache profileCache,
                               ICompetitionCI rootCompetitionCI)
-            : base(ci, profileCache, culture, sportEntityFactory, rootCompetitionCI)
+            : base(ci, profileCache, culture, sportEntityFactory, exceptionStrategy, rootCompetitionCI)
         {
             Division = ci.Division;
         }

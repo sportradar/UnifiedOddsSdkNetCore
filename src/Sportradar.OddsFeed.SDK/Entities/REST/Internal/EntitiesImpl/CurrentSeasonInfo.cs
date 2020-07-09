@@ -52,13 +52,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 : new SeasonCoverage(cacheItem.SeasonCoverage);
             Groups = cacheItem.Groups == null
                 ? null
-                : cacheItem.Groups.Select(s => new Group(s, cultureInfos, sportEntityFactory, competitorsReferenceIds));
+                : cacheItem.Groups.Select(s => new Group(s, cultureInfos, sportEntityFactory, exceptionHandlingStrategy, competitorsReferenceIds));
             CurrentRound = cacheItem.CurrentRound == null
                 ? null
                 : new Round(cacheItem.CurrentRound, cultureInfos);
             Competitors = cacheItem.Competitors == null
                 ? null
-                : cacheItem.Competitors.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds));
+                : cacheItem.Competitors.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds, exceptionHandlingStrategy));
             Schedule = cacheItem.Schedule == null
                 ? null
                 : cacheItem.Schedule.Select(s => sportEntityFactory.BuildSportEvent<ISportEvent>(s, null, cultureInfos, exceptionHandlingStrategy));
@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         public CurrentSeasonInfo(ITournamentInfoCI currentSeasonCI,
                                  IEnumerable<CultureInfo> cultures,
-                                 ISportEntityFactory _sportEntityFactory,
+                                 ISportEntityFactory sportEntityFactory,
                                  ExceptionHandlingStrategy exceptionStrategy,
                                  IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
         {
@@ -81,16 +81,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 : new SeasonCoverage(currentSeasonCI.GetSeasonCoverageAsync().Result);
             Groups = currentSeasonCI.GetGroupsAsync(cultureInfos).Result == null
                 ? null
-                : currentSeasonCI.GetGroupsAsync(cultureInfos).Result.Select(s => new Group(s, cultureInfos, _sportEntityFactory, competitorsReferenceIds));
+                : currentSeasonCI.GetGroupsAsync(cultureInfos).Result.Select(s => new Group(s, cultureInfos, sportEntityFactory, exceptionStrategy, competitorsReferenceIds));
             CurrentRound = currentSeasonCI.GetCurrentRoundAsync(cultureInfos).Result == null
                 ? null
                 : new Round(currentSeasonCI.GetCurrentRoundAsync(cultureInfos).Result, cultureInfos);
             Competitors = currentSeasonCI.GetCompetitorsAsync(cultureInfos).Result == null
                 ? null
-                : currentSeasonCI.GetCompetitorsAsync(cultureInfos).Result.Select(s => _sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds));
+                : currentSeasonCI.GetCompetitorsAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds, exceptionStrategy));
             Schedule = currentSeasonCI.GetScheduleAsync(cultureInfos).Result == null
                 ? null
-                : currentSeasonCI.GetScheduleAsync(cultureInfos).Result.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, null, cultureInfos, exceptionStrategy));
+                : currentSeasonCI.GetScheduleAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildSportEvent<ISportEvent>(s, null, cultureInfos, exceptionStrategy));
         }
     }
 }

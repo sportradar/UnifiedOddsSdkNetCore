@@ -131,7 +131,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var competitorUrns = items.ToList();
             if (competitorUrns.Count == 2)
             {
-                return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[0], Cultures, matchCI).ConfigureAwait(false);
+                return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[0], Cultures, matchCI, ExceptionStrategy).ConfigureAwait(false);
             }
 
             ExecutionLog.LogError($"Received {competitorUrns.Count} competitors for match[Id = {Id}]. Match can have only 2 competitors");
@@ -162,7 +162,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var competitorUrns = items.ToList();
             if (competitorUrns.Count == 2)
             {
-                return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[1], Cultures, matchCI).ConfigureAwait(false);
+                return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[1], Cultures, matchCI, ExceptionStrategy).ConfigureAwait(false);
             }
 
             ExecutionLog.LogError($"Received {competitorUrns.Count} competitors for match[Id = {Id}]. Match can have only 2 competitors.");

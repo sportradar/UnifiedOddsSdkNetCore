@@ -178,7 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             return groupCis == null || !groupCis.Any()
                 ? null
-                : new List<IGroup>(groupCis.Select(g => new Group(g, Cultures, _sportEntityFactory, competitorsReferences)));
+                : new List<IGroup>(groupCis.Select(g => new Group(g, Cultures, _sportEntityFactory, ExceptionStrategy, competitorsReferences)));
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<CompetitorCI>>>(seasonCI.GetCompetitorsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Competitors")).ConfigureAwait(false);
 
             var competitorsReferences = await seasonCI.GetCompetitorsReferencesAsync().ConfigureAwait(false);
-            return item?.Select(s => _sportEntityFactory.BuildCompetitor(s, Cultures, competitorsReferences));
+            return item?.Select(s => _sportEntityFactory.BuildCompetitor(s, Cultures, competitorsReferences, ExceptionStrategy));
         }
 
         /// <summary>

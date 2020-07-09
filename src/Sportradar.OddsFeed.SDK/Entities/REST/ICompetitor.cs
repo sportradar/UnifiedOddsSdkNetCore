@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
@@ -104,5 +105,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The state</value>
         string State { get; }
+
+        /// <summary>
+        /// Gets associated sport
+        /// </summary>
+        /// <returns>The associated sport</returns>
+        Task<ISport> GetSportAsync() => null;
+
+        /// <summary>
+        /// Gets associated category
+        /// </summary>
+        /// <returns>The associated category</returns>
+        Task<ICategorySummary> GetCategoryAsync() => null;
     }
 }
