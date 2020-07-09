@@ -25,6 +25,12 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-07-09  1.8.0.0
+Added GetSportAsync() and GetCategoryAsync() to ICompetitor interface
+Throttling recovery requests
+Fix: support Replay routing keys without node id
+Fix: calling Replay fixture endpoint with node id
+
 2020-06-24  1.7.0.0
 Added support for configuring HTTP timeout
 Added overloaded methods for fixture and result changes with filters
