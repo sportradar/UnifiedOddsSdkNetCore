@@ -347,6 +347,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             return true;
         }
 
+        /// <summary>
+        /// Updates cache item fetch time
+        /// </summary>
+        public void UpdateCacheItem(int marketId, string variantValue)
+        {
+            GetItemFromCache(marketId)?.SetFetchInfo(null, DateTime.Now);
+        }
+
         public async Task<IEnumerable<IMarketDescription>> GetAllInvariantMarketDescriptionsAsync(IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();

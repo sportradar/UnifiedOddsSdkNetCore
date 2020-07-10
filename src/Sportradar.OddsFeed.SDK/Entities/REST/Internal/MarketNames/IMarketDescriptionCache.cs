@@ -32,5 +32,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         /// <returns>Returns true if the action succeeded</returns>
         Task<bool> LoadMarketDescriptionsAsync();
+
+        /// <summary>
+        /// Updates cache item fetch time
+        /// </summary>
+        void UpdateCacheItem(int marketId, string variantValue);
     }
 }

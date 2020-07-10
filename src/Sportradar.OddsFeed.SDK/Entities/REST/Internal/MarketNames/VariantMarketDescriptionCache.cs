@@ -285,6 +285,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
+        /// Updates cache item fetch time
+        /// </summary>
+        public void UpdateCacheItem(int marketId, string variantValue)
+        {
+            GetItemFromCache(marketId, variantValue)?.SetFetchInfo(null, DateTime.Now);
+        }
+
+        /// <summary>
         /// Registers the health check which will be periodically triggered
         /// </summary>
         public void RegisterHealthCheck()

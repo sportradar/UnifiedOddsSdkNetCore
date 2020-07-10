@@ -27377,6 +27377,11 @@
             </summary>
             <returns>Returns true if the action succeeded</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketDescriptionCache.UpdateCacheItem(System.Int32,System.String)">
+            <summary>
+            Updates cache item fetch time
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider">
             <summary>
             Defines a contract implemented by classes used to provide mapping ids of markets and outcomes
@@ -27594,6 +27599,11 @@
             Asynchronously loads the list of market descriptions from the Sports API
             </summary>
             <returns>Returns true if the action succeeded</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.InvariantMarketDescriptionCache.UpdateCacheItem(System.Int32,System.String)">
+            <summary>
+            Updates cache item fetch time
+            </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.InvariantMarketDescriptionCache.RegisterHealthCheck">
             <summary>
@@ -28763,6 +28773,11 @@
             Asynchronously loads the list of market descriptions from the Sports API
             </summary>
             <returns>Returns true if the action succeeded</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantMarketDescriptionCache.UpdateCacheItem(System.Int32,System.String)">
+            <summary>
+            Updates cache item fetch time
+            </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantMarketDescriptionCache.RegisterHealthCheck">
             <summary>
