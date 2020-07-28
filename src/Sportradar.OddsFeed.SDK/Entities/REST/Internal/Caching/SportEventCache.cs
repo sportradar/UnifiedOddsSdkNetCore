@@ -8,6 +8,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
+using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Health;
@@ -70,9 +71,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         private readonly object _addLock = new object();
 
         /// <summary>
-        /// A <see cref="Common.Internal.ITimer"/> instance used to trigger periodic cache refresh-es
+        /// A <see cref="ITimer"/> instance used to trigger periodic cache refresh-es
         /// </summary>
         private readonly ITimer _timer;
+
+        /// <summary>
+        /// The timer semaphore slim used reduce concurrency within timer calls
+        /// </summary>
+        private readonly SemaphoreSlim _timerSemaphoreSlim = new SemaphoreSlim(1);
 
         /// <summary>
         /// Value specifying whether the current instance is disposed
@@ -119,8 +125,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             SpecialTournaments = new ConcurrentBag<URN>();
 
             _timer = timer;
-            _timer.Elapsed += OnTimerElapsed;
+            _timer.Elapsed += OnTimerElapsedSync;
             _timer.Start();
+        }
+
+        private void OnTimerElapsedSync(object sender, EventArgs e)
+        {
+            Task.Run(async () => {
+                await OnTimerElapsed(sender, e).ConfigureAwait(false);
+            });
         }
 
         /// <summary>
@@ -128,25 +141,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         /// <param name="sender">A <see cref="object"/> representation of the <see cref="ITimer"/> raising the event</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data</param>
-        private async void OnTimerElapsed(object sender, EventArgs e)
+        private async Task OnTimerElapsed(object sender, EventArgs e)
         {
             //check what needs to be fetched, then go fetched by culture, (not by date)
             var datesToFetch = new List<DateTime>();
 
-            lock (_addLock)
-            {
-                var date = DateTime.Now;
-                for (var i = 0; i < 3; i++)
-                {
-                    if (_fetchedDates.Any(d=> (date-d).TotalDays < 1))
-                    {
-                        continue;
-                    }
+            await _timerSemaphoreSlim.WaitAsync().ConfigureAwait(false);
 
-                    datesToFetch.Add(date);
-                    _fetchedDates.Add(date);
-                    date = date.AddDays(1);
+            var date = DateTime.Now;
+            for (var i = 0; i < 3; i++)
+            {
+                if (_fetchedDates.Any(d => (date - d).TotalDays < 1))
+                {
+                    continue;
                 }
+
+                datesToFetch.Add(date);
+                _fetchedDates.Add(date);
+                date = date.AddDays(1);
             }
 
             if (!datesToFetch.Any())
@@ -156,7 +168,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             var culturesToFetch = _cultures.ToDictionary(ci => ci, ci => datesToFetch);
 
-            var timerOptions = new TimerOptions { Context = "SportEventCache", Name = "GetAll", MeasurementUnit = Unit.Requests };
+            var timerOptions = new TimerOptions {Context = "SportEventCache", Name = "GetAll", MeasurementUnit = Unit.Requests};
             using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions))
             {
                 foreach (var key in culturesToFetch)
@@ -192,6 +204,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                 }
             }
+
+            _timerSemaphoreSlim.Release();
         }
 
         /// <summary>
@@ -308,9 +322,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <remarks>Lists all <see cref="TournamentInfoCI"/> that are cached (once schedule is loaded)</remarks>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
-        public Task<IEnumerable<TournamentInfoCI>> GetActiveTournamentsAsync(CultureInfo culture = null)
+        public async Task<IEnumerable<TournamentInfoCI>> GetActiveTournamentsAsync(CultureInfo culture = null)
         {
-            OnTimerElapsed(null, null); // this can be async
+            var kc = Cache.GetCount();
+            await OnTimerElapsed(null, null).ConfigureAwait(false); // this can be async
+            kc = Cache.GetCount();
             var tourKeys = Cache.Select(s => s.Key).Where(w => w.Contains("tournament") || w.Contains("stage") || w.Contains("outright"));
 
             var tours = new List<TournamentInfoCI>();
@@ -332,7 +348,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             ExecutionLog.LogDebug($"Found {tours.Count} tournaments. Errors: {error}");
 
-            return Task.FromResult<IEnumerable<TournamentInfoCI>>(tours);
+            return tours;
         }
 
         /// <summary>
@@ -775,6 +791,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             if (disposing)
             {
                 _timer.Stop();
+                _timerSemaphoreSlim.Release();
+                _timerSemaphoreSlim.Dispose();
             }
             _isDisposed = true;
         }

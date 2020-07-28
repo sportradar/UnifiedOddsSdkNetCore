@@ -18574,6 +18574,11 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ITimer"/> instance used to trigger periodic cache refresh-es
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache._timerSemaphoreSlim">
+            <summary>
+            The timer semaphore slim used reduce concurrency within timer calls
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache._isDisposed">
             <summary>
             Value specifying whether the current instance is disposed
