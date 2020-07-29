@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
@@ -110,8 +111,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             Guard.Argument(cache, nameof(cache)).NotNull();
             Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
             Guard.Argument(sportEventCacheItemFactory, nameof(sportEventCacheItemFactory)).NotNull();
-            Guard.Argument(timer, nameof(timer)).NotNull();
-            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
+            Guard.Argument(timer, nameof(timer)).NotNull(); 
+            if (cultures == null || !cultures.Any())
+                throw new ArgumentOutOfRangeException(nameof(cultures));
 
             Cache = cache;
             _dataRouterManager = dataRouterManager;
@@ -125,23 +127,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             SpecialTournaments = new ConcurrentBag<URN>();
 
             _timer = timer;
-            _timer.Elapsed += OnTimerElapsedSync;
+            _timer.Elapsed += OnTimerElapsed;
             _timer.Start();
         }
 
-        private void OnTimerElapsedSync(object sender, EventArgs e)
+        private void OnTimerElapsed(object sender, EventArgs e)
         {
             Task.Run(async () => {
-                await OnTimerElapsed(sender, e).ConfigureAwait(false);
+                await OnTimerElapsedAsync().ConfigureAwait(false);
             });
         }
 
         /// <summary>
         /// Invoked when the internally used timer elapses
         /// </summary>
-        /// <param name="sender">A <see cref="object"/> representation of the <see cref="ITimer"/> raising the event</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data</param>
-        private async Task OnTimerElapsed(object sender, EventArgs e)
+        private async Task OnTimerElapsedAsync()
         {
             //check what needs to be fetched, then go fetched by culture, (not by date)
             var datesToFetch = new List<DateTime>();
@@ -324,10 +324,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
         public async Task<IEnumerable<TournamentInfoCI>> GetActiveTournamentsAsync(CultureInfo culture = null)
         {
-            var kc = Cache.GetCount();
-            await OnTimerElapsed(null, null).ConfigureAwait(false); // this can be async
-            kc = Cache.GetCount();
-            var tourKeys = Cache.Select(s => s.Key).Where(w => w.Contains("tournament") || w.Contains("stage") || w.Contains("outright"));
+            await OnTimerElapsedAsync().ConfigureAwait(false); // this is almost not needed anymore, since we call all tournaments for all sports :)
+            var tourKeys = Cache.Select(s => s.Key).Where(w => w.Contains("tournament") || w.Contains("stage") || w.Contains("outright") || w.Contains("simple_tournament")); 
 
             var tours = new List<TournamentInfoCI>();
             var error = string.Empty;
@@ -1159,7 +1157,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// Imports provided items into the cache
         /// </summary>
         /// <param name="items">Collection of <see cref="ExportableCI"/> to be inserted into the cache</param>
-        public async Task ImportAsync(IEnumerable<ExportableCI> items)
+        public Task ImportAsync(IEnumerable<ExportableCI> items)
         {
             lock (_addLock)
             {
@@ -1171,6 +1169,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                 }
             }
+            return Task.FromResult(true);
         }
 
         /// <summary>

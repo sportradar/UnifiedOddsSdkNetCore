@@ -521,7 +521,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 Id = Id.ToString(),
                 Name = new Dictionary<CultureInfo, string>(Names),
-                SportId = _sportId.ToString(),
+                SportId = _sportId?.ToString(),
                 Scheduled = Scheduled,
                 ScheduledEnd = ScheduledEnd,
                 StartTimeTbd = _startTimeTbd,

@@ -18600,12 +18600,10 @@
             <param name="cultures">A list of all supported languages</param>
             <param name="cacheManager">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager"/> used to interact among caches</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache.OnTimerElapsed(System.Object,System.EventArgs)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache.OnTimerElapsedAsync">
             <summary>
             Invoked when the internally used timer elapses
             </summary>
-            <param name="sender">A <see cref="T:System.Object"/> representation of the <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ITimer"/> raising the event</param>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache.GetScheduleAsync(System.DateTime,System.Globalization.CultureInfo)">
             <summary>

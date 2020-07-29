@@ -426,6 +426,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Log.LogInformation($"Invoked GetActiveTournamentsAsync: Culture={culture}.");
             var cul = culture ?? _defaultCultures.First();
+            var unused = await _sportDataCache.GetSportsAsync(_defaultCultures).ConfigureAwait(false); // to be sure all tournaments for all sports are fetched
             var tours = await _sportEventCache.GetActiveTournamentsAsync(cul).ConfigureAwait(false);
             return tours?.Select(t => _sportEntityFactory.BuildSportEvent<ISportEvent>(t.Id, t.GetSportIdAsync().Result, new[] {cul}, _exceptionStrategy));
         }
