@@ -10065,7 +10065,7 @@
             <param name="nodeId">The node id</param>
             <returns></returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedRoutingKeyBuilder.GetStandardKeys">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedRoutingKeyBuilder.GetStandardKeys(System.Int32)">
             <summary>
             Gets the standard keys usually added to all sessions
             </summary>

@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
@@ -992,6 +991,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                                 var stageCI = cacheItem as StageCI;
                                 if (stageCI != null)
                                 {
+                                    //TODO: review - most likely it should never come to this
                                     stageCI.Merge(tour, culture, true);
                                     merged = true;
                                 }

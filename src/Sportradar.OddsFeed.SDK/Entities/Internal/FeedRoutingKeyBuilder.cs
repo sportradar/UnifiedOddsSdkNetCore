@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
@@ -25,9 +25,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns></returns>
         public static IEnumerable<IEnumerable<string>> GenerateKeys(IEnumerable<MessageInterest> interests, int nodeId = 0)
         {
-            Guard.Argument(interests, nameof(interests)).NotNull().NotEmpty();
-
             var messageInterests = interests as IList<MessageInterest> ?? interests.ToList();
+            if (messageInterests.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Missing message interest");
+            }
             var sessionKeys = new List<List<string>>(messageInterests.Count);
 
             ValidateInterestCombination(messageInterests);
@@ -41,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                    sessionKeys.Add(GetBaseKeys(interest, nodeId).Union(GetLiveKeys()).ToList());
                    continue;
                 }
-                sessionKeys.Add(GetBaseKeys(interest, nodeId).Union(GetStandardKeys().Union(GetLiveKeys())).ToList());
+                sessionKeys.Add(GetBaseKeys(interest, nodeId).Union(GetStandardKeys(nodeId).Union(GetLiveKeys())).ToList());
             }
             return sessionKeys;
         }
@@ -50,8 +52,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// Gets the standard keys usually added to all sessions
         /// </summary>
         /// <returns>IEnumerable&lt;System.String&gt;.</returns>
-        public static IEnumerable<string> GetStandardKeys()
+        public static IEnumerable<string> GetStandardKeys(int nodeId)
         {
+            if(nodeId > 0)
+                return new List<string>
+                {
+                    "-.-.-.product_down.#",
+                    $"-.-.-.snapshot_complete.-.-.-.{nodeId}"
+                };
             return new List<string>
             {
                 "-.-.-.product_down.#",
@@ -272,10 +280,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>A <see cref="MessageInterest"/> indicating an interest in messages associated with specific events</returns>
         private static IEnumerable<string> SpecificEventsOnly(IEnumerable<URN> eventIds)
         {
-            Guard.Argument(eventIds, nameof(eventIds)).NotNull().NotEmpty();
+            var urns = eventIds.ToList();
+            if (urns.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Missing eventIds");
+            }
 
             //channels using this routing key will also receive 'system' messages so they have to be manually removed in the receiver
-            return eventIds.Select(u => $"#.{u.Prefix}:{u.Type}.{u.Id}");
+            return urns.Select(u => $"#.{u.Prefix}:{u.Type}.{u.Id}");
         }
     }
 }
