@@ -53,10 +53,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
             : base(new sportEvent
             {
                 id = item == null ? "wns:lottery:1" : item.id,
-                name = item.name,
+                name = item?.name,
                 scheduledSpecified = false,
                 scheduled = DateTime.MinValue,
-                tournament = item.sport == null
+                tournament = item?.sport == null
                     ? null
                     : new tournament
                     {
@@ -64,7 +64,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                     }
             })
         {
-            Guard.Argument(item, nameof(item)).NotNull();
+            if (item == null)
+            {
+                return;
+            }
 
             if (item.sport!=null)
             {

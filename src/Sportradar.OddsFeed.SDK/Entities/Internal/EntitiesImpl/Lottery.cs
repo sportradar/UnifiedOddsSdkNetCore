@@ -94,7 +94,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>The associated category</returns>
         public async Task<ICategorySummary> GetCategoryAsync()
         {
-            var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
+            var lotteryCI = (LotteryCI) SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
@@ -133,7 +133,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<IBonusInfo> GetBonusInfoAsync()
         {
-            var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
+            var lotteryCI = (LotteryCI) SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
@@ -154,7 +154,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<IDrawInfo> GetDrawInfoAsync()
         {
-            var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
+            var lotteryCI = (LotteryCI) SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
@@ -175,7 +175,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<IEnumerable<URN>> GetScheduledDrawsAsync()
         {
-            var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
+            var lotteryCI = (LotteryCI) SportEventCache.GetEventCacheItem(Id);
             if (lotteryCI == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");

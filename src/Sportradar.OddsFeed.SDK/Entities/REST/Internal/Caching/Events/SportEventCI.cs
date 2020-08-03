@@ -150,7 +150,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventCI" /> class
         /// </summary>
-        /// <param name="exportable">A <see cref="ExportableSportEventCI" /> representing the the sport event</param>
+        /// <param name="exportable">A <see cref="ExportableSportEventCI" /> representing the sport event</param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>

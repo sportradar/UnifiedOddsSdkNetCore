@@ -601,30 +601,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     _semaphoreCacheMerge.Release();
                 }
             }
-
-            //var c = _cache.Count();
-            //ExecutionLog.LogDebug($"InvariantMarketDescriptionCache count: {c}.");
-            //foreach (var keyValue in _cache.Where(s=>s.Key != null))
-            //{
-            //    var ci = (MarketDescriptionCacheItem)keyValue.Value;
-            //    if (ci.Mappings != null)
-            //    {
-            //        foreach (var mapping in ci.Mappings)
-            //        {
-            //            if (mapping.OutcomeMappings != null)
-            //            {
-            //                foreach (var outcomeMapping in mapping.OutcomeMappings)
-            //                {
-            //                    if (outcomeMapping.ProducerOutcomeNames.Count != ci.FetchedLanguages.Count)
-            //                    {
-            //                        ExecutionLog.LogError($"Market {ci.Id}: problem with outcome mapping {outcomeMapping.OutcomeId} and mapped marketId {outcomeMapping.MarketId}");
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //var cacheItem = _cache.First();
         }
     }
 }

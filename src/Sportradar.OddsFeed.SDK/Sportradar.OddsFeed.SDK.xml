@@ -15917,7 +15917,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.DrawCI.AreResultsChronologicalAsync">
             <summary>
-            Asynchronously gets a bool value indicating if the results are in chronological order
+            Asynchronously gets a boolean value indicating if the results are in chronological order
             </summary>
             <returns>The value indicating if the results are in chronological order</returns>
         </member>
@@ -16513,7 +16513,7 @@
             <summary>
             Gets the scheduled draws
             </summary>
-            <value>The the scheduled draws</value>
+            <value>The scheduled draws</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.LotteryCI.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager,Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool,System.Globalization.CultureInfo,System.Runtime.Caching.MemoryCache)">
             <summary>

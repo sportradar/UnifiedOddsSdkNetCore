@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -24,13 +23,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
         /// <param name="lotterySchedule">A <see cref="lottery"/> containing lottery schedule data (single lottery with schedule)</param>
         internal LotteryScheduleMapper(lottery_schedule lotterySchedule)
         {
-            Guard.Argument(lotterySchedule, nameof(lotterySchedule)).NotNull();
-
             _lotterySchedule = lotterySchedule;
         }
 
         public LotteryDTO Map()
         {
+            if (_lotterySchedule == null)
+            {
+                return null;
+            }
             return new LotteryDTO(_lotterySchedule);
         }
     }

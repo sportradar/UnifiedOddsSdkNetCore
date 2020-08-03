@@ -40,8 +40,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// Gets the scheduled draws
         /// </summary>
-        /// <value>The the scheduled draws</value>
+        /// <value>The scheduled draws</value>
         private IEnumerable<URN> _scheduledDraws;
+
+        private bool _scheduleFetched;
+        private readonly IDataRouterManager _dataRouterManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LotteryCI"/> class
@@ -58,6 +61,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                          MemoryCache fixtureTimestampCache)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
+            _scheduleFetched = false;
+            _dataRouterManager = dataRouterManager;
         }
 
         /// <summary>
@@ -80,6 +85,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
             Guard.Argument(currentCulture, nameof(currentCulture)).NotNull();
 
+            _scheduleFetched = false;
+            _dataRouterManager = dataRouterManager;
+
             Merge(eventSummary, currentCulture);
         }
 
@@ -98,6 +106,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
+            _scheduleFetched = false;
+            _dataRouterManager = dataRouterManager;
+
             _categoryId = URN.Parse(exportable.CategoryId);
             _bonusInfo = exportable.BonusInfo != null ? new BonusInfoCI(exportable.BonusInfo) : null;
             _drawInfo = exportable.DrawInfo != null ? new DrawInfoCI(exportable.DrawInfo) : null;
@@ -152,11 +163,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<IEnumerable<URN>> GetScheduledDrawsAsync()
         {
-            if (LoadedSummaries.Any())
+            if (_scheduleFetched || _scheduledDraws != null && _scheduledDraws.Any())
             {
                 return _scheduledDraws;
             }
-            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
+            await _dataRouterManager.GetLotteryScheduleAsync(Id, DefaultCulture, null).ConfigureAwait(false);
+            _scheduleFetched = true;
             return _scheduledDraws;
         }
 
@@ -211,16 +223,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         protected override async Task<T> CreateExportableCIAsync<T>()
         {
             var exportable = await base.CreateExportableCIAsync<T>();
-            var lottery = exportable as ExportableLotteryCI;
-
-            if (lottery != null)
+            if (exportable is ExportableLotteryCI lottery)
             {
                 lottery.CategoryId = _categoryId.ToString();
                 lottery.BonusInfo = _bonusInfo != null ? await _bonusInfo.ExportAsync().ConfigureAwait(false) : null;
                 lottery.DrawInfo = _drawInfo != null ? await _drawInfo.ExportAsync().ConfigureAwait(false) : null;
                 lottery.ScheduledDraws = _scheduledDraws?.Select(s => s.ToString()).ToList();
             }
-
             return exportable;
         }
 

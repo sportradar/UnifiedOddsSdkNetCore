@@ -72,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
             if (item.draw_fixture != null)
             {
-                if (item.draw_fixture.id != null)
+                if (item.draw_fixture.id != null && item.draw_fixture.lottery != null)
                 {
                     Lottery = new LotteryDTO(item.draw_fixture.lottery);
                 }
@@ -117,7 +117,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
             Guard.Argument(item?.draw_fixture, nameof(item)).NotNull();
 
             var fixture = item.draw_fixture;
-
             Debug.Assert(fixture != null, nameof(fixture) + " != null");
 
             if (fixture.lottery != null)
