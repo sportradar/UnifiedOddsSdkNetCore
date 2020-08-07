@@ -16867,7 +16867,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI" /> class
             </summary>
-            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI" /> representing the the sport event</param>
+            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI" /> representing the sport event</param>
             <param name="dataRouterManager">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager"/> used to obtain summary and fixture</param>
             <param name="semaphorePool">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool" /> instance used to obtain sync objects</param>
             <param name="defaultCulture">A <see cref="T:System.Globalization.CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
@@ -18799,7 +18799,7 @@
             <summary>
             Builds a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI"/> instance from the provided exportable cache item
             </summary>
-            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> representing the the sport event</param>
+            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> representing the sport event</param>
             <returns>a new instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI"/> instance</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCacheItemFactory.Get(System.Object)">

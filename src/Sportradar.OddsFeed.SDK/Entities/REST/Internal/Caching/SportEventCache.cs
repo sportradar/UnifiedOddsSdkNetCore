@@ -154,7 +154,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     continue;
                 }
-
+                
                 datesToFetch.Add(date);
                 _fetchedDates.Add(date);
                 date = date.AddDays(1);
@@ -1165,7 +1165,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (exportable is ExportableSportEventCI)
                     {
-                        AddNewCacheItem(_sportEventCacheItemFactory.Build(exportable));
+                        var sportEventCI = _sportEventCacheItemFactory.Build(exportable);
+                        if (sportEventCI != null)
+                        {
+                            AddNewCacheItem(sportEventCI);
+                        }
                     }
                 }
             }

@@ -107,7 +107,8 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// Initializes a new instance of the <see cref="URN"/> class.
         /// </summary>
         /// <param name="urn">The urn to be used as a template</param>
-        public URN(URN urn) : this(urn?.Prefix, urn?.Type, urn?.Id ?? 0)
+        public URN(URN urn) 
+            : this(urn?.Prefix, urn?.Type, urn?.Id ?? 0)
         {
         }
 
