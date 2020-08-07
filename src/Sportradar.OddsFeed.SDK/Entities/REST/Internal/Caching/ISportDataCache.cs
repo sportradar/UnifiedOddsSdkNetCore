@@ -49,5 +49,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages in which the data is returned</param>
         /// <returns>A <see cref="Task{SportData}"/> representing the asynchronous operation</returns>
         Task<SportData> GetSportForTournamentAsync(URN tournamentId, IEnumerable<CultureInfo> cultures);
+
+        /// <summary>
+        /// Loads all tournaments for all sports asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task LoadAllTournamentsForAllSportsAsync();
     }
 }

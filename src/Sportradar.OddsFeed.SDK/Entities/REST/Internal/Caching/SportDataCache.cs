@@ -559,6 +559,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <summary>
+        /// Loads all tournaments for all sports asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public Task LoadAllTournamentsForAllSportsAsync()
+        {
+            OnTimerElapsed(null, null);
+            return Task.FromResult(true);
+        }
+
+        /// <summary>
         /// Registers the health check which will be periodically triggered
         /// </summary>
         public void RegisterHealthCheck()
