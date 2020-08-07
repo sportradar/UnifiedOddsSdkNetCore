@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// Gets the standard keys usually added to all sessions
         /// </summary>
         /// <returns>IEnumerable&lt;System.String&gt;.</returns>
-        public static IEnumerable<string> GetStandardKeys(int nodeId)
+        public static IEnumerable<string> GetStandardKeys(int nodeId = 0)
         {
             if(nodeId > 0)
                 return new List<string>

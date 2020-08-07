@@ -187,7 +187,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.IsNotNull(cacheSelector);
             Assert.IsInstanceOfType(cacheSelector, typeof(MarketCacheProvider));
 
-            var profileCache = _childContainer1.Resolve<IProfileCache>();
+            var profileCache = _childContainer1.Resolve<IProfileCache>(); 
             Assert.IsNotNull(profileCache);
             Assert.IsInstanceOfType(profileCache, typeof(ProfileCache));
 

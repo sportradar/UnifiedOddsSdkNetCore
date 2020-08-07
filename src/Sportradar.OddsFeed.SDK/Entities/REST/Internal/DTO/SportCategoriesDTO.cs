@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     internal class SportCategoriesDTO
     {
         /// <summary>
-        /// Gets the <see cref="SportEntityDTO"/> specifying the the parent sport
+        /// Gets the <see cref="SportEntityDTO"/> specifying the parent sport
         /// </summary>
         public SportEntityDTO Sport { get; }
 

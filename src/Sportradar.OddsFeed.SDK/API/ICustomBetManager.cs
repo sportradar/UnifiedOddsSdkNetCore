@@ -19,14 +19,14 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Returns an <see cref="AvailableSelections"/> instance providing the available selections for the event associated with the provided <see cref="URN"/> identifier
         /// </summary>
         /// <param name="eventId">The <see cref="URN"/> identifier of the event for which the available selections should be returned</param>
-        /// <returns>An <see cref="AvailableSelections"/> providing the the available selections of the associated event</returns>
+        /// <returns>An <see cref="AvailableSelections"/> providing the available selections of the associated event</returns>
         Task<IAvailableSelections> GetAvailableSelectionsAsync(URN eventId);
 
         /// <summary>
         /// Returns an <see cref="Calculation"/> instance providing the probability for the specified selections
         /// </summary>
         /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>
-        /// <returns>An <see cref="Calculation"/> providing the the probability for the specified selections</returns>
+        /// <returns>An <see cref="Calculation"/> providing the probability for the specified selections</returns>
         Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections);
 
         /// <summary>

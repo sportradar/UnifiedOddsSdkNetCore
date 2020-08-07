@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string Message { get; }
 
         /// <summary>
-        /// Gets a value specifying the the bookmaker's token will expire
+        /// Gets a value specifying the bookmaker's token will expire
         /// </summary>
         DateTime ExpireAt { get; }
 

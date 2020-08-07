@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// Builds a <see cref="SportEventCI"/> instance from the provided exportable cache item
         /// </summary>
-        /// <param name="exportable">A <see cref="ExportableCI"/> representing the the sport event</param>
+        /// <param name="exportable">A <see cref="ExportableCI"/> representing the sport event</param>
         /// <returns>a new instance of <see cref="SportEventCI"/> instance</returns>
         SportEventCI Build(ExportableCI exportable);
 

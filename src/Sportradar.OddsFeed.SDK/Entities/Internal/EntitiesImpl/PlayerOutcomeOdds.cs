@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private readonly int _teamFlag;
 
         /// <summary>
-        /// A <see cref="IMatch"/> representing the the match associated with the outcome / market
+        /// A <see cref="IMatch"/> representing the match associated with the outcome / market
         /// </summary>
         private readonly IMatch _match;
 
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="probabilities">the probabilities for the current <see cref="OutcomeOdds" /> instance</param>
         /// <param name="nameProvider">A <see cref="INameProvider"/> used to generate the outcome name(s)</param>
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
-        /// <param name="match">A <see cref="IMatch"/> representing the the match associated with the outcome / market</param>
+        /// <param name="match">A <see cref="IMatch"/> representing the match associated with the outcome / market</param>
         /// <param name="teamFlag">A value indicating whether the player is associated with home or away team - 1 : HomeTeam, 2 : AwayTeam</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>

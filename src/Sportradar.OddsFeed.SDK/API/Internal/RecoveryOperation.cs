@@ -251,7 +251,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         }
 
         /// <summary>
-        /// Stops the the recovery operation if all snapshots were received
+        /// Stops the recovery operation if all snapshots were received
         /// </summary>
         /// <param name="interest">The <see cref="MessageInterest"/> of the session which received the snapshot message</param>
         /// <param name="result">If the operation was successfully completed, it contains the results of the completed recovery</param>
