@@ -1199,7 +1199,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="useDebug">if set to <c>true</c> [use debug].</param>
         protected override void WriteLog(string text, bool useDebug = false)
         {
-            //base.WriteLog(text, useDebug);
+            base.WriteLog(text, useDebug);
         }
 
         /// <summary>
@@ -1232,15 +1232,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             foreach (var exportable in items)
             {
-                var exportableSport = exportable as ExportableSportCI;
-                var exportableCategory = exportable as ExportableCategoryCI;
-
-                if (exportableSport != null)
+                if (exportable is ExportableSportCI exportableSport)
                 {
                     AddSport(exportableSport);
+                    continue;
                 }
 
-                if (exportableCategory != null)
+                if (exportable is ExportableCategoryCI exportableCategory)
                 {
                     AddCategory(exportableCategory);
                 }

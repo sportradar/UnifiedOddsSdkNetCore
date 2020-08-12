@@ -36,12 +36,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing player name in different languages
         /// </summary>
-        public readonly IDictionary<CultureInfo, string> Names;
+        public IDictionary<CultureInfo, string> Names;
 
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing player nationality in different languages
         /// </summary>
-        private readonly IDictionary<CultureInfo, string> _nationalities;
+        private IDictionary<CultureInfo, string> _nationalities;
 
         /// <summary>
         /// Gets a value describing the type(e.g. forward, defense, ...) of the player represented by current instance
@@ -121,10 +121,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Gets the <see cref="IEnumerable{CultureInfo}"/> specifying the languages for which the current instance has translations
         /// </summary>
         /// <value>The fetched cultures</value>
-        private readonly IEnumerable<CultureInfo> _fetchedCultures;
+        private IEnumerable<CultureInfo> _fetchedCultures;
 
         private readonly object _lock = new object();
-        private readonly CultureInfo _primaryCulture;
+        private CultureInfo _primaryCulture;
 
         /// <summary>
         /// The competitor id this player belongs to
@@ -188,21 +188,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal PlayerProfileCI(ExportablePlayerProfileCI exportable, IDataRouterManager dataRouterManager)
             : base(exportable)
         {
+            _dataRouterManager = dataRouterManager ?? throw new ArgumentNullException(nameof(dataRouterManager));
+
+            Import(exportable);
+        }
+
+        internal void Import(ExportablePlayerProfileCI exportable)
+        {
             if (exportable == null)
             {
                 throw new ArgumentNullException(nameof(exportable));
             }
 
-            if (dataRouterManager == null)
-            {
-                throw new ArgumentNullException(nameof(dataRouterManager));
-            }
-
             _fetchedCultures = new List<CultureInfo>(exportable.Name.Keys);
             _primaryCulture = exportable.Name.Keys.First();
 
-            _dataRouterManager = dataRouterManager;
-            
             Names = new Dictionary<CultureInfo, string>(exportable.Name);
             _nationalities = new Dictionary<CultureInfo, string>(exportable.Nationalities);
             _type = exportable.Type;

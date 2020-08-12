@@ -163,7 +163,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             : this(URN.Parse(exportable.Id), dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             Names = new Dictionary<CultureInfo, string>(exportable.Name);
-            _sportId = URN.Parse(exportable.SportId);
+            _sportId = _sportId = exportable.SportId == null ? null : URN.Parse(exportable.SportId);
             Scheduled = exportable.Scheduled;
             ScheduledEnd = exportable.ScheduledEnd;
             _startTimeTbd = exportable.StartTimeTbd;
@@ -515,6 +515,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             }
         }
 
+        /// <summary>
+        /// Create exportable cache items
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>Exportable cache items</returns>
         protected virtual Task<T> CreateExportableCIAsync<T>() where T : ExportableSportEventCI, new()
         {
             var exportable = new T

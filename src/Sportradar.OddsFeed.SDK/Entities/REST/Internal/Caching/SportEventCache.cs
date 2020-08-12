@@ -1128,6 +1128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
         private void AddNewCacheItem(SportEventCI item)
         {
+            //TODO: maybe check if already present
             Cache.Add(item.Id.ToString(), item, new CacheItemPolicy { RemovedCallback = CacheItemRemovedCallback });
         }
 
@@ -1157,7 +1158,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// Imports provided items into the cache
         /// </summary>
         /// <param name="items">Collection of <see cref="ExportableCI"/> to be inserted into the cache</param>
-        public Task ImportAsync(IEnumerable<ExportableCI> items)
+        public async Task ImportAsync(IEnumerable<ExportableCI> items)
         {
             lock (_addLock)
             {
@@ -1170,7 +1171,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                 }
             }
-            return Task.FromResult(true);
         }
 
         /// <summary>

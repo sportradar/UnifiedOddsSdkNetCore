@@ -24,23 +24,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing competitor names in different languages
         /// </summary>
-        public readonly IDictionary<CultureInfo, string> Names;
+        public IDictionary<CultureInfo, string> Names;
 
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing competitor's country name in different languages
         /// </summary>
-        private readonly IDictionary<CultureInfo, string> _countryNames;
+        private IDictionary<CultureInfo, string> _countryNames;
 
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing competitor abbreviations in different languages
         /// </summary>
-        private readonly IDictionary<CultureInfo, string> _abbreviations;
+        private IDictionary<CultureInfo, string> _abbreviations;
 
-        private readonly List<URN> _associatedPlayerIds;
+        private List<URN> _associatedPlayerIds;
 
         private bool _isVirtual;
         private ReferenceIdCI _referenceId;
-        private readonly List<JerseyCI> _jerseys;
+        private List<JerseyCI> _jerseys;
         private string _countryCode;
         private ManagerCI _manager;
         private VenueCI _venue;
@@ -307,10 +307,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Gets the <see cref="IEnumerable{CultureInfo}"/> specifying the languages for which the current instance has translations
         /// </summary>
         /// <value>The fetched cultures</value>
-        private readonly IEnumerable<CultureInfo> _fetchedCultures;
+        private IEnumerable<CultureInfo> _fetchedCultures;
         private readonly IDataRouterManager _dataRouterManager;
         private readonly object _lock = new object();
-        private readonly CultureInfo _primaryCulture;
+        private CultureInfo _primaryCulture;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompetitorCI"/> class
@@ -457,6 +457,17 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         internal CompetitorCI(ExportableCompetitorCI exportable, IDataRouterManager dataRouterManager)
             : base(exportable)
         {
+            _dataRouterManager = dataRouterManager ?? throw new ArgumentNullException(nameof(dataRouterManager));
+
+            Import(exportable);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompetitorCI"/> class
+        /// </summary>
+        /// <param name="exportable">A <see cref="ExportableCompetitorCI"/> containing information about the sport entity</param>
+        internal void Import(ExportableCompetitorCI exportable)
+        {
             Names = new Dictionary<CultureInfo, string>(exportable.Name);
             _countryNames = new Dictionary<CultureInfo, string>(exportable.CountryNames);
             _abbreviations = new Dictionary<CultureInfo, string>(exportable.Abbreviations);
@@ -471,7 +482,6 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _gender = exportable.Gender;
             _ageGroup = exportable.AgeGroup;
             _fetchedCultures = new List<CultureInfo>(exportable.FetchedCultures);
-            _dataRouterManager = dataRouterManager;
             _primaryCulture = exportable.PrimaryCulture;
             _raceDriverProfile = exportable.RaceDriverProfile != null ? new RaceDriverProfileCI(exportable.RaceDriverProfile) : null;
             _referenceId = new ReferenceIdCI(exportable.ReferenceIds);
@@ -781,7 +791,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 Abbreviations = new ReadOnlyDictionary<CultureInfo, string>(_abbreviations),
                 AssociatedPlayerIds = new ReadOnlyCollection<string>(_associatedPlayerIds.Select(i => i.ToString()).ToList()),
                 IsVirtual = _isVirtual,
-                ReferenceIds = _referenceId.ReferenceIds != null ? new ReadOnlyDictionary<string, string>(_referenceId.ReferenceIds as IDictionary<string, string>) : null,
+                ReferenceIds = _referenceId?.ReferenceIds != null ? new ReadOnlyDictionary<string, string>(_referenceId.ReferenceIds as IDictionary<string, string>) : null,
                 Jerseys = new ReadOnlyCollection<ExportableJerseyCI>(jerseysList),
                 CountryCode = _countryCode,
                 State = _state,

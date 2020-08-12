@@ -164,7 +164,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
-            _categoryId = URN.Parse(exportable.CategoryId);
+            _categoryId = exportable.CategoryId == null ? null : URN.Parse(exportable.CategoryId);
             _tournamentCoverage = exportable.TournamentCoverage != null
                 ? new TournamentCoverageCI(exportable.TournamentCoverage)
                 : null;
@@ -714,7 +714,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             var exportable = await base.CreateExportableCIAsync<T>();
             var info = exportable as ExportableTournamentInfoCI;
 
-            info.CategoryId = _categoryId.ToString();
+            info.CategoryId = _categoryId?.ToString();
             info.TournamentCoverage = _tournamentCoverage != null ? await _tournamentCoverage.ExportAsync().ConfigureAwait(false) : null;
             var competitorsTasks = _competitors?.Select(async c => await c.ExportAsync().ConfigureAwait(false) as ExportableCompetitorCI);
             info.Competitors = competitorsTasks != null ? await Task.WhenAll(competitorsTasks) : null;

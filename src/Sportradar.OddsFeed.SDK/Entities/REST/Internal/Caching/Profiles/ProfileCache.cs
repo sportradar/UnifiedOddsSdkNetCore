@@ -131,7 +131,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         public async Task<PlayerProfileCI> GetPlayerProfileAsync(URN playerId, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(playerId, nameof(playerId)).NotNull();
-            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();//.NotEmpty();
+            if (!cultures.Any())
+            {
+                throw new ArgumentOutOfRangeException(nameof(cultures));
+            }
 
             var timerOptions = new TimerOptions { Context = "ProfileCache", Name = "GetPlayerProfileAsync", MeasurementUnit = Unit.Requests };
             using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions, $"{playerId}"))
@@ -222,7 +226,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         public async Task<CompetitorCI> GetCompetitorProfileAsync(URN competitorId, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(competitorId, nameof(competitorId)).NotNull();
-            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();//.NotEmpty();
+            if (!cultures.Any())
+            {
+                throw new ArgumentOutOfRangeException(nameof(cultures));
+            }
 
             var timerOptions = new TimerOptions { Context = "ProfileCache", Name = "GetCompetitorProfileAsync", MeasurementUnit = Unit.Requests };
             using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions, $"{competitorId}"))
@@ -632,13 +640,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     if (teamCI != null)
                     {
                         _semaphoreCacheMerge.Wait();
-                        teamCI.Merge(new TeamCompetitorCI(item, _dataRouterManager));
+                        teamCI.Import(item);
                     }
                     else
                     {
                         _semaphoreCacheMerge.Wait();
                         teamCI = new TeamCompetitorCI(ci);
-                        teamCI.Merge(new TeamCompetitorCI(item, _dataRouterManager));
+                        teamCI.Import(item);
                         _cache.Set(item.Id, teamCI, GetCorrectCacheItemPolicy(URN.Parse(item.Id)));
                     }
                 }
@@ -710,7 +718,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 {
                     var ci = (CompetitorCI) _cache.Get(item.Id);
                     _semaphoreCacheMerge.Wait();
-                    ci?.Merge(new CompetitorCI(item, _dataRouterManager));
+                    ci?.Import(item);
                 }
                 catch (Exception ex)
                 {
@@ -860,7 +868,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 {
                     var ci = (PlayerProfileCI) _cache.Get(item.Id);
                     _semaphoreCacheMerge.Wait();
-                    ci?.Merge(new PlayerProfileCI(item, _dataRouterManager));
+                    ci?.Import(item);
                 }
                 catch (Exception ex)
                 {
@@ -977,27 +985,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// Imports provided items into the cache
         /// </summary>
         /// <param name="items">Collection of <see cref="ExportableCI"/> to be inserted into the cache</param>
-#pragma warning disable 1998
         public async Task ImportAsync(IEnumerable<ExportableCI> items)
-#pragma warning restore 1998
         {
             foreach (var exportable in items)
             {
-                var exportableCompetitor = exportable as ExportableCompetitorCI;
-                var exportableTeamCompetitor = exportable as ExportableTeamCompetitorCI;
-                var exportablePlayerProfile = exportable as ExportablePlayerProfileCI;
-
-                if (exportableCompetitor != null)
-                {
-                    AddCompetitor(exportableCompetitor);
-                }
-
-                if (exportableTeamCompetitor != null)
+                if (exportable is ExportableTeamCompetitorCI exportableTeamCompetitor)
                 {
                     AddTeamCompetitor(exportableTeamCompetitor);
+                    continue;
                 }
-
-                if (exportablePlayerProfile != null)
+                if (exportable is ExportableCompetitorCI exportableCompetitor)
+                {
+                    AddCompetitor(exportableCompetitor);
+                    continue;
+                }
+                if (exportable is ExportablePlayerProfileCI exportablePlayerProfile)
                 {
                     AddPlayerProfile(exportablePlayerProfile);
                 }
@@ -1031,7 +1033,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
 
         HealthCheckResult IHealthStatusProvider.StartHealthCheck()
         {
-            return HealthCheckResult.Unhealthy();
+            return HealthCheckResult.Healthy("default");
         }
     }
 }
