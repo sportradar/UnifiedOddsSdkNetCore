@@ -22632,8 +22632,28 @@
             </summary>
             <param name="eventId">a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the event id</param>
             <param name="marketId">a value representing the market id</param>
-            <param name="specifiers">a value representing the specifiers</param>
             <param name="outcomeId">a value representing the outcome id</param>
+            <param name="specifiers">a value representing the specifiers</param>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet.Selection.EventId">
+            <summary>
+            Gets the event id.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet.Selection.MarketId">
+            <summary>
+            Gets the market id.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet.Selection.OutcomeId">
+            <summary>
+            Gets the outcome id.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet.Selection.Specifiers">
+            <summary>
+            Gets the specifiers.
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.DelayedInfo">
             <summary>

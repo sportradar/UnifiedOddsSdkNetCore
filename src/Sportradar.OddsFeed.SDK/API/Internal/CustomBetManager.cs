@@ -22,7 +22,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CustomBetManager));
 
         private readonly IDataRouterManager _dataRouterManager;
-        private readonly ICustomBetSelectionBuilder _customBetSelectionBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomBetManager"/> class
@@ -31,19 +30,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="customBetSelectionBuilder">A <see cref="ICustomBetSelectionBuilder"/> used to build selections</param>
         public CustomBetManager(IDataRouterManager dataRouterManager, ICustomBetSelectionBuilder customBetSelectionBuilder)
         {
-            if (dataRouterManager == null)
-                throw new ArgumentNullException(nameof(dataRouterManager));
-            if (customBetSelectionBuilder == null)
-                throw new ArgumentNullException(nameof(customBetSelectionBuilder));
-
-            _dataRouterManager = dataRouterManager;
-            CustomBetSelectionBuilder = customBetSelectionBuilder;
+            _dataRouterManager = dataRouterManager ?? throw new ArgumentNullException(nameof(dataRouterManager));
+            CustomBetSelectionBuilder = customBetSelectionBuilder ?? throw new ArgumentNullException(nameof(customBetSelectionBuilder));
         }
 
         public async Task<IAvailableSelections> GetAvailableSelectionsAsync(URN eventId)
         {
             if (eventId == null)
+            {
                 throw new ArgumentNullException(nameof(eventId));
+            }
 
             try
             {
@@ -65,7 +61,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
         {
             if (selections == null)
+            {
                 throw new ArgumentNullException(nameof(selections));
+            }
 
             try
             {
