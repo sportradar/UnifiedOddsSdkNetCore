@@ -11566,7 +11566,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableMatchCI.Season">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> representation of the season
+            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI"/> representation of the season
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableMatchCI.TournamentRound">
@@ -11848,6 +11848,44 @@
             <summary>
             A <see cref="T:System.DateTime"/> representation of the changed at
             </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI">
+            <summary>
+            Class used to export/import season cache item properties
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.Id">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the ID of the represented sport entity
+            </summary>
+            <value>The identifier</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.Names">
+            <summary>
+            A <see cref="T:System.Collections.Generic.IDictionary`2"/> containing round names in different languages
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.StartDate">
+            <summary>
+            Gets the start date of the season represented by the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.EndDate">
+            <summary>
+            Gets the end date of the season represented by the current instance
+            </summary>
+            <value>The end time.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.Year">
+            <summary>
+            Gets a <see cref="T:System.String"/> representation of the current season year
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.TournamentId">
+            <summary>
+            Gets the associated tournament identifier.
+            </summary>
+            <value>The associated tournament identifier.</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCoverageCI">
             <summary>
@@ -15178,9 +15216,14 @@
             <summary>
             Defines a cache item for season
             </summary>
-            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SportEntityCI" />
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI._name">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.Id">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the ID of the represented sport entity
+            </summary>
+            <value>The identifier</value>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.Names">
             <summary>
             A <see cref="T:System.Collections.Generic.IDictionary`2"/> containing season names in different languages
             </summary>
@@ -15200,6 +15243,12 @@
             Gets the <see cref="T:System.String"/> representation the year of the season
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.TournamentId">
+            <summary>
+            Gets the associated tournament identifier
+            </summary>
+            <value>The associated tournament identifier</value>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO,System.Globalization.CultureInfo)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI"/> class
@@ -15214,6 +15263,13 @@
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language in which to get the name</param>
             <returns>The name of the associated season in the specified language.</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.HasTranslationsFor(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+            <summary>
+            Determines whether the current instance has translations for the specified languages
+            </summary>
+            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the required languages</param>
+            <returns>True if the current instance contains data in the required locals. Otherwise false.</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.Merge(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO,System.Globalization.CultureInfo)">
             <summary>
             Merges the information from the provided <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO"/> to the current instance
@@ -15226,6 +15282,18 @@
             Merges the information from the provided <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO"/> to the current instance
             </summary>
             <param name="season">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI"/> containing season info</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI"/> class
+            </summary>
+            <param name="exportable">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI"/> used to create new instance</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI.ExportAsync">
+            <summary>
+            Asynchronous export item's properties
+            </summary>
+            <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI"/> instance containing all relevant properties</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCoverageCI">
             <summary>
@@ -16126,7 +16194,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IMatchCI.GetSeasonAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
-            Asynchronously gets <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CacheItem"/> instance providing basic information about
+            Asynchronously gets <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI"/> instance providing basic information about
             the season to which the sport event associated with the current instance belongs to
             </summary>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
@@ -21214,17 +21282,23 @@
             Gets a string representation of the season's year
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO.TournamentId">
+            <summary>
+            Gets the associated tournament identifier.
+            </summary>
+            <value>The associated tournament identifier.</value>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.seasonExtended)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO"/> class
             </summary>
-            <param name="season">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.season"/> containing information about a season.</param>
+            <param name="season">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.seasonExtended"/> containing information about a season.</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.currentSeason)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SeasonDTO"/> class
             </summary>
-            <param name="season">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.season"/> containing information about a season.</param>
+            <param name="season">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.seasonExtended"/> containing information about a season.</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SimpleTeamProfileDTO">
             <summary>
@@ -24309,12 +24383,33 @@
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISeasonInfo" />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SeasonInfo.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IDictionary{System.Globalization.CultureInfo,System.String})">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SeasonInfo.StartDate">
+            <summary>
+            Gets the start date of the season represented by the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SeasonInfo.EndDate">
+            <summary>
+            Gets the end date of the season represented by the current instance
+            </summary>
+            <value>The end date.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SeasonInfo.Year">
+            <summary>
+            Gets a <see cref="T:System.String"/> representation of the current season year
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SeasonInfo.TournamentId">
+            <summary>
+            Gets the associated tournament identifier.
+            </summary>
+            <value>The associated tournament identifier.</value>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SeasonInfo.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.SeasonCI)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SeasonInfo"/> class
             </summary>
-            <param name="id">The identifier</param>
-            <param name="names">The names</param>
+            <param name="seasonCI"></param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Sport">
             <summary>
@@ -29708,6 +29803,28 @@
             Gets the list of translated names
             </summary>
             <value>The list of translated names</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ISeasonInfo.StartDate">
+            <summary>
+            Gets the start date of the season represented by the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ISeasonInfo.EndDate">
+            <summary>
+            Gets the end date of the season represented by the current instance
+            </summary>
+            <value>The end date.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ISeasonInfo.Year">
+            <summary>
+            Gets a <see cref="T:System.String"/> representation of the current season year
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ISeasonInfo.TournamentId">
+            <summary>
+            Gets the associated tournament identifier.
+            </summary>
+            <value>The associated tournament identifier.</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ISoccerEvent">
             <summary>

@@ -15,6 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <seealso cref="SportEntityDTO" />
     internal class CurrentSeasonInfoDTO : SportEntityDTO
     {
+        //TODO: review if this is needed and maybe can be replaced with SeasonDTO
         /// <summary>
         /// Gets a <see cref="string"/> representation of the current season year
         /// </summary>

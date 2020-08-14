@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <summary>
         /// Gets a <see cref="SportEntityDTO"/> instance specifying the season to which the sport event associated with the current instance belongs to.
         /// </summary>
-        public SportEntityDTO Season { get; }
+        public SeasonDTO Season { get; }
 
         /// <summary>
         /// Gets a <see cref="RoundDTO"/> representing the tournament round to which the associated sport event belongs to.
@@ -40,9 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (sportEvent.season != null)
             {
-                Guard.Argument(sportEvent.season.id, nameof(sportEvent.season.id)).NotNull().NotEmpty();
-                Guard.Argument(sportEvent.season.name, nameof(sportEvent.season.name)).NotNull().NotEmpty();
-                Season = new SportEntityDTO(sportEvent.season.id, sportEvent.season.name);
+                Season = new SeasonDTO(sportEvent.season);
             }
             if (sportEvent.tournament_round != null)
             {
@@ -69,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 Guard.Argument(matchSummary.sport_event.season.id, nameof(matchSummary.sport_event.season.id)).NotNull().NotEmpty();
                 Guard.Argument(matchSummary.sport_event.season.name, nameof(matchSummary.sport_event.season.name)).NotNull().NotEmpty();
-                Season = new SportEntityDTO(matchSummary.sport_event.season.id, matchSummary.sport_event.season.name);
+                Season = new SeasonDTO(matchSummary.sport_event.season);
             }
             if (matchSummary.sport_event.tournament_round != null)
             {

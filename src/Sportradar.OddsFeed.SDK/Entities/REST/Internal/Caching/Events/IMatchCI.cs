@@ -16,12 +16,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
     internal interface IMatchCI : ICompetitionCI
     {
         /// <summary>
-        /// Asynchronously gets <see cref="CacheItem"/> instance providing basic information about
+        /// Asynchronously gets <see cref="SeasonCI"/> instance providing basic information about
         /// the season to which the sport event associated with the current instance belongs to
         /// </summary>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
-        Task<CacheItem> GetSeasonAsync(IEnumerable<CultureInfo> cultures);
+        Task<SeasonCI> GetSeasonAsync(IEnumerable<CultureInfo> cultures);
 
         /// <summary>
         /// Asynchronously gets a <see cref="RoundCI"/> instance describing the tournament round to which the

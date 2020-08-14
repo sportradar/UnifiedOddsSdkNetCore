@@ -83,9 +83,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
                 ? await matchCI.GetSeasonAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<CacheItem>>(matchCI.GetSeasonAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Season")).ConfigureAwait(false);
+                : await new Func<IEnumerable<CultureInfo>, Task<SeasonCI>>(matchCI.GetSeasonAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Season")).ConfigureAwait(false);
 
-            return item == null ? null : new SeasonInfo(item.Id, item.Name);
+            return item == null ? null : new SeasonInfo(item);
         }
 
         /// <summary>

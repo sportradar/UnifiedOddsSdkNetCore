@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -18,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Gets the id of the represented sport entity
         /// </summary>
-        public URN Id { get; }
+        public URN Id { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEntityCI"/> class
@@ -51,12 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="id">A <see cref="URN"/> containing the sport entity id</param>
         internal SportEntityCI(URN id)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            Id = id;
+            Id = id ?? throw new ArgumentNullException(nameof(id));
         }
 
         /// <summary>Determines whether the specified object is equal to the current object</summary>

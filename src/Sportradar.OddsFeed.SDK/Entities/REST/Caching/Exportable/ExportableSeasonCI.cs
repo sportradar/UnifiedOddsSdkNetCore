@@ -6,52 +6,45 @@ using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
 {
     /// <summary>
-    /// Defines a contract for classes implementing
+    /// Class used to export/import season cache item properties
     /// </summary>
-    public interface ISeasonInfo
+    [Serializable]
+    public class ExportableSeasonCI
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> identifying the current instance
+        /// Gets a <see cref="URN"/> representing the ID of the represented sport entity
         /// </summary>
-        /// <value>The <see cref="URN"/> identifying the current instance</value>
-        URN Id { get; }
+        /// <value>The identifier</value>
+        public URN Id { get; set; }
 
         /// <summary>
-        /// Gets the name.
+        /// A <see cref="IDictionary{CultureInfo,String}"/> containing round names in different languages
         /// </summary>
-        /// <param name="culture">The culture</param>
-        /// <returns>System.String</returns>
-        string GetName(CultureInfo culture);
-
-        /// <summary>
-        /// Gets the list of translated names
-        /// </summary>
-        /// <value>The list of translated names</value>
-        IReadOnlyDictionary<CultureInfo, string> Names { get; }
+        public IDictionary<CultureInfo, string> Names { get; set; }
 
         /// <summary>
         /// Gets the start date of the season represented by the current instance
         /// </summary>
-        DateTime StartDate => DateTime.MinValue;
+        public DateTime StartDate { get; set; }
 
         /// <summary>
         /// Gets the end date of the season represented by the current instance
         /// </summary>
-        /// <value>The end date.</value>
-        DateTime EndDate => DateTime.MinValue;
+        /// <value>The end time.</value>
+        public DateTime EndDate { get; set; }
 
         /// <summary>
         /// Gets a <see cref="string"/> representation of the current season year
         /// </summary>
-        string Year => null;
+        public string Year { get; set; }
 
         /// <summary>
         /// Gets the associated tournament identifier.
         /// </summary>
         /// <value>The associated tournament identifier.</value>
-        URN TournamentId => null;
+        public URN TournamentId { get; set; }
     }
 }

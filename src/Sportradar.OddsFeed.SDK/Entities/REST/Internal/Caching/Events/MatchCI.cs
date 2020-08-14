@@ -12,7 +12,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Messages;
-using CacheItem = Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CacheItem;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
@@ -26,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// The season
         /// </summary>
-        private CacheItem _season;
+        private SeasonCI _season;
         /// <summary>
         /// The tournament round
         /// </summary>
@@ -120,7 +119,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
-            _season = exportable.Season != null ? new CacheItem(exportable.Season) : null;
+            _season = exportable.Season != null ? new SeasonCI(exportable.Season) : null;
             _tournamentRound = exportable.TournamentRound != null ? new RoundCI(exportable.TournamentRound) : null;
             _tournamentId = exportable.TournamentId != null ? URN.Parse(exportable.TournamentId) : null;
             _fixture = exportable.Fixture != null ? new Fixture(exportable.Fixture) : null;
@@ -133,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// </summary>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
-        public async Task<CacheItem> GetSeasonAsync(IEnumerable<CultureInfo> cultures)
+        public async Task<SeasonCI> GetSeasonAsync(IEnumerable<CultureInfo> cultures)
         {
             var wantedCultures = cultures as CultureInfo[] ?? cultures.ToArray();
             if (_season != null && _season.HasTranslationsFor(wantedCultures))
@@ -256,7 +255,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 if (_season == null)
                 {
-                    _season = new CacheItem(eventSummary.Season.Id, eventSummary.Season.Name, culture);
+                    _season = new SeasonCI(eventSummary.Season, culture);
                 }
                 else
                 {
@@ -371,12 +370,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             if (match != null)
             {
                 match.Season = _season != null
-                    ? new ExportableCI
-                    {
-                        Id = _season.Id.ToString(),
-                        Name = new Dictionary<CultureInfo, string>(
-                            _season.Name ?? new Dictionary<CultureInfo, string>())
-                    }
+                    ? await _season.ExportAsync().ConfigureAwait(false)
                     : null;
                 match.TournamentRound = _tournamentRound != null
                     ? await _tournamentRound.ExportAsync().ConfigureAwait(false)
