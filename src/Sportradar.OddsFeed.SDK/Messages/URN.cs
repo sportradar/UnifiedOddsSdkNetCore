@@ -148,8 +148,6 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool TryParse(string urnString, out URN urn)
         {
-            Guard.Argument(urnString, nameof(urnString)).NotNull().NotEmpty();
-
             var success = false;
 
             try
@@ -157,7 +155,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
                 urn = Parse(urnString);
                 success = true;
             }
-            catch (FormatException)
+            catch (Exception)
             {
                 urn = null;
             }
