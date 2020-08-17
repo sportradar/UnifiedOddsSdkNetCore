@@ -136,14 +136,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 producer = _producerManager.Get(feedMessage.ProducerId);
                 messageName = feedMessage.GetType().Name;
 
-                if (FeedLog.IsEnabled(LogLevel.Debug) && producer.IsAvailable && !producer.IsDisabled)
+                if (producer.IsAvailable && !producer.IsDisabled)
                 {
-                    FeedLog.LogDebug($"<~> {sessionName} <~> {eventArgs.RoutingKey} <~> {messageBody}");
+                    FeedLog.LogInformation($"<~> {sessionName} <~> {eventArgs.RoutingKey} <~> {messageBody}");
                 }
                 else
                 {
-                    FeedLog.LogInformation(eventArgs.RoutingKey);
+                    if (FeedLog.IsEnabled(LogLevel.Debug))
+                    {
+                        FeedLog.LogDebug($"<~> {sessionName} <~> {eventArgs.RoutingKey} <~> {producer.Id}");
+                    }
                 }
+
                 if (eventArgs.BasicProperties?.Headers != null)
                 {
                     feedMessage.SentAt = eventArgs.BasicProperties.Headers.ContainsKey("timestamp_in_ms")
