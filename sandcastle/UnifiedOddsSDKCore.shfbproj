@@ -24,7 +24,7 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
-    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <HelpFileVersion>1.9.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#</SyntaxFilters>
@@ -50,7 +50,8 @@
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK\bin\Debug\netstandard2.1\Sportradar.OddsFeed.SDK.dll" />
-<DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK\bin\Debug\netstandard2.1\Sportradar.OddsFeed.SDK.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\src\Sportradar.OddsFeed.SDK\bin\Debug\netstandard2.1\Sportradar.OddsFeed.SDK.xml" />
+    </DocumentationSources>
     <CollectionTocStyle>Flat</CollectionTocStyle>
     <HelpAttributes />
     <HtmlHelp2xCompilerPath />

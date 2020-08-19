@@ -25,6 +25,19 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-08-19  1.9.0.0
+Extended SeasonInfo with startDate, endDate, year and tournamentId
+FIx: special case when recovery status does not reflect actual state - results in wrong triggering ProducerUp-Down event
+Fix: URN.TryParse could throw unhandled exception
+Fix: several issues with CustomBet(Manager) fixed
+Fix: Export-Import breaks on missing data
+Fix: Lottery throws exception when no schedule is obtained from api
+Fix: missing nodeId in snapshot_complete routing key
+Fix: SportDataProvider.GetActiveTournaments returned null
+Fix: SportEventCache: improved locking mechanism on period fetching of schedule for a date
+Fix: reloading market description in case variant descriptions are not available
+Improved logging of initial message processing
+
 2020-07-09  1.8.0.0
 Added GetSportAsync() and GetCategoryAsync() to ICompetitor interface
 Throttling recovery requests

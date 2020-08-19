@@ -5,10 +5,12 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyVersion>1.8.0.0</AssemblyVersion>
-    <FileVersion>1.8.0.0</FileVersion>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <FileVersion>1.9.0.0</FileVersion>
 
     <LangVersion>8.0</LangVersion>
+
+    <Version>1.9.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
