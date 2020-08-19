@@ -65,7 +65,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// The <see cref="DateTime"/> specifying the first time the recovery was interrupted
         /// </summary>
-        private DateTime? _interruptionTime;
+        internal DateTime? InterruptionTime;
 
         /// <summary>
         /// Gets a value indication whether the recovery operation is currently running.
@@ -158,6 +158,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 _snapshotReceivedSessions.Clear();
             }
+
             return done;
         }
 
@@ -172,7 +173,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (IsRunning)
             {
-                throw new InvalidOperationException("The recovery operation is already running");
+                ExecutionLog.LogError($"{_producer.Name}: trying started recovery which is already in progress.");
+                return false;
             }
 
             var after = _producer.LastTimestampBeforeDisconnect;
@@ -213,7 +215,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             IsRunning = true;
             _startTime = TimeProviderAccessor.Current.Now;
-            _interruptionTime = null;
+            InterruptionTime = null;
             return true;
         }
 
@@ -227,13 +229,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (!IsRunning)
             {
-                throw new InvalidOperationException("The recovery is not running");
+                ExecutionLog.LogError($"{_producer.Name}: trying to interrupt recovery which is not running.");
+                return;
             }
-            if (_interruptionTime.HasValue)
+            if (InterruptionTime.HasValue)
             {
                 return;
             }
-            _interruptionTime = interruptionTime;
+            InterruptionTime = interruptionTime;
         }
 
         /// <summary>
@@ -245,7 +248,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (!IsRunning)
             {
-                throw new InvalidOperationException("The recovery operation is not running");
+                ExecutionLog.LogError($"{_producer.Name}: trying started recovery which is not running.");
+                return false;
             }
             return (TimeProviderAccessor.Current.Now - _startTime).TotalSeconds > _producer.MaxRecoveryTime * 60;
         }
@@ -259,16 +263,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <exception cref="InvalidOperationException">The recovery operation is not running</exception>
         public bool TryComplete(MessageInterest interest, out RecoveryResult result)
         {
+            result = null;
             if (!IsRunning)
             {
-                throw new InvalidOperationException("The recovery operation is not running");
+                ExecutionLog.LogError($"{_producer.Name}: trying to complete recovery which is not running.");
+                return false;
             }
 
-            result = null;
             _snapshotReceivedSessions.Add(interest);
             if (IsRecoveryDone())
             {
-                result = RecoveryResult.ForSuccess(_requestId, _startTime, _interruptionTime);
+                result = RecoveryResult.ForSuccess(_requestId, _startTime, InterruptionTime);
                 IsRunning = false;
                 return true;
             }
@@ -291,11 +296,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (!IsRunning)
             {
-                throw new InvalidOperationException("The recovery is not running");
+                ExecutionLog.LogError($"{_producer.Name}: trying to CompleteTimedOut recovery which is not running.");
+                return null;
             }
             if (!HasTimedOut())
             {
-                throw new InvalidOperationException("The recovery operation is not timed-out");
+                ExecutionLog.LogError($"{_producer.Name}: trying to CompleteTimedOut recovery which is not timed-out.");
+                return null;
             }
 
             IsRunning = false;

@@ -65,7 +65,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             List<TeamCompetitorCI> competitors = null;
             TeamCompetitorCI comp = null;
             RoundCI round = null;
-            CacheItem season = null;
+            SeasonCI season = null;
 
             var cultureInfos = cultures.ToList();
             var cStr = string.Join(",", cultureInfos);
@@ -101,7 +101,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                     if (Equals(culture, Culture))
                     {
                         Assert.AreEqual("Mexico", comp.GetCountry(culture));
-                        Assert.AreEqual("Mexican League 2016", season.Name[culture]);
+                        Assert.AreEqual("Mexican League 2016", season.Names[culture]);
                     }
                     if (culture.TwoLetterISOLanguageName != "de")
                     {
@@ -110,7 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 }
                 Assert.IsTrue(string.IsNullOrEmpty(round.GetName(culture)));
 
-                Assert.IsTrue(Math.Max(ci.LoadedSummaries.Count, ci.LoadedFixtures.Count) >= season.Name.Count);
+                Assert.IsTrue(Math.Max(ci.LoadedSummaries.Count, ci.LoadedFixtures.Count) >= season.Names.Count);
             }
         }
 

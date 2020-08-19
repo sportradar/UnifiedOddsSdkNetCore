@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using SR = Sportradar.OddsFeed.SDK.Test.Shared.StaticRandom;
 // ReSharper disable UnusedMember.Local
@@ -250,11 +251,18 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 delayed_info = GetDelayedInfo(),
                 extra_info = infos.ToArray(),
                 liveodds = SR.S1000,
-                next_live_time = DateTime.Today.ToString(CultureInfo.InvariantCulture),
+                next_live_time = DateTime.Today.ToString(SdkInfo.ISO8601_24H_FullFormat, CultureInfo.InvariantCulture), // should be like "2020-08-18T10:30:00+00:00"
                 start_time_tbdSpecified = true,
                 start_time_tbd = true,
+                start_timeSpecified = true,
+                start_time = DateTime.Today,
+                scheduledSpecified = true,
+                scheduled = DateTime.Today.AddDays(3),
+                scheduled_endSpecified = true,
+                scheduled_end = DateTime.Today.AddDays(4),
                 reference_ids = references.ToArray(),
-                replaced_by = SR.I100 > 50 ? $"sr:match:{SR.I1000}" : string.Empty
+                replaced_by = SR.I100 < 70 ? $"sr:match:{SR.I1000}" : null,
+                status = SR.S10000P
             };
 
             return msg;

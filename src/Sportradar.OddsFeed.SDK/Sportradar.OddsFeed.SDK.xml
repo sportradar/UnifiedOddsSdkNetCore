@@ -4494,7 +4494,7 @@
             The <see cref="T:System.DateTime"/> specifying when the current operation started
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation._interruptionTime">
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation.InterruptionTime">
             <summary>
             The <see cref="T:System.DateTime"/> specifying the first time the recovery was interrupted
             </summary>
@@ -21618,6 +21618,12 @@
             Gets the status (directly from sportEvent)
             </summary>
             <value>The status (directly from sportEvent)</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO.LiveOdds">
+            <summary>
+            Gets the live odds property
+            </summary>
+            <value>The live odds property</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.sportEvent)">
             <summary>

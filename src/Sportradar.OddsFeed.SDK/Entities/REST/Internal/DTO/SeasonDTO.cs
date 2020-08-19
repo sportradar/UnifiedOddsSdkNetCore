@@ -44,7 +44,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             : base(season.id, season.name)
         {
             Guard.Argument(season, nameof(season)).NotNull();
-            Guard.Argument(season.year, nameof(season.year)).NotNull().NotEmpty();
 
             StartDate = season.start_date;
             EndDate = season.end_date;

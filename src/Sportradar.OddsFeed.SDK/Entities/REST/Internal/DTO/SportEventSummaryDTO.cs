@@ -64,6 +64,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string StatusOnEvent { get; }
 
         /// <summary>
+        /// Gets the live odds property
+        /// </summary>
+        /// <value>The live odds property</value>
+        public string LiveOdds { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SportEventSummaryDTO"/> class
         /// </summary>
         /// <param name="sportEvent">A <see cref="sportEvent"/> containing basic information about the event</param>
@@ -104,6 +110,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StartTimeTbd = sportEvent.start_time_tbdSpecified ? (bool?)sportEvent.start_time_tbd : null;
 
             StatusOnEvent = sportEvent.status;
+
+            LiveOdds = sportEvent.liveodds;
         }
 
         /// <summary>
@@ -144,6 +152,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StartTimeTbd = parentStage.start_time_tbdSpecified ? (bool?)parentStage.start_time_tbd : null;
 
             StatusOnEvent = null;
+
+            LiveOdds = null;
         }
 
         /// <summary>
@@ -184,6 +194,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StartTimeTbd = childStage.start_time_tbdSpecified ? (bool?)childStage.start_time_tbd : null;
 
             StatusOnEvent = null;
+
+            LiveOdds = null;
         }
     }
 }

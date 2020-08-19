@@ -56,22 +56,18 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void starting_already_running_operation_throws()
         {
             LiveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
             var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
-            operation.Start();
-            try
-            {
-                operation.Start();
-            }
-            catch (Exception)
-            {
-                _recoveryRequestIssuerMock.Verify(x => x.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), 0), Times.Once);
-                _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), 0), Times.Never);
-                throw;
-            }
+            var result = operation.Start();
+            Assert.IsTrue(result);
+
+            result = operation.Start();
+            Assert.IsFalse(result);
+
+            _recoveryRequestIssuerMock.Verify(x => x.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), 0), Times.Once);
+            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), 0), Times.Never);
         }
 
         [TestMethod]
@@ -117,12 +113,14 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void time_out_cannot_be_complete_if_operation_has_not_timed_out()
         {
             var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
-            operation.CompleteTimedOut();
+            var result = operation.CompleteTimedOut();
+            Assert.IsTrue(operation.IsRunning);
+            Assert.IsFalse(operation.HasTimedOut());
+            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -179,11 +177,12 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void setting_interrupt_on_not_running_instance_throws()
         {
             var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Interrupt(_timeProvider.Now);
+            Assert.IsFalse(operation.IsRunning);
+            Assert.IsNull(operation.InterruptionTime);
         }
 
         [TestMethod]

@@ -119,7 +119,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                                                                                 }).ToArray(),
                                     parent = fixture.parent,
                                     races = fixture.races,
-                                    status = fixture.status
+                                    status = fixture.status,
+                                    replaced_by = fixture.replaced_by,
+                                    next_live_time = fixture.next_live_time,
+                                    sport_event_conditions = fixture.sport_event_conditions
                                 }
                             })
         {

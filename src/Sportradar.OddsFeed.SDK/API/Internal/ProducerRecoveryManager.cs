@@ -248,7 +248,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             if (message.ProducerId != Producer.Id)
             {
-                throw new ArgumentException("The producer.Id of the message and the Producer associated with this manager do not match", nameof(message));
+                ExecutionLog.LogError($"The producer ({message.ProducerId}) of the message and the Producer {Producer.Name} ({Producer.Id}) associated with this manager do not match.");
+                return;
             }
 
             if (!Producer.IsAvailable || Producer.IsDisabled)
@@ -470,6 +471,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         Debug.Assert(_recoveryOperation.IsRunning);
                         ExecutionLog.LogWarning($"Producer id={Producer.Id}: alive violation detected during recovery. Additional recovery from {_timestampTracker.SystemAliveTimestamp} will be done once the current is completed.");
                         _recoveryOperation.Interrupt(SdkInfo.FromEpochTime(_timestampTracker.SystemAliveTimestamp));
+                    }
+
+                    if (Status == ProducerRecoveryStatus.Started && !_recoveryOperation.IsRunning
+                        || Status != ProducerRecoveryStatus.Started && _recoveryOperation.IsRunning)
+                    {
+                        ExecutionLog.LogWarning($"Producer id={Producer.Id}: internal recovery status problem ({Status}-{_recoveryOperation.IsRunning}). Recovery will be done on next system alive.");
+                        newStatus = ProducerRecoveryStatus.Error;
                     }
 
                     // Check whether the recovery is running and has timed-out

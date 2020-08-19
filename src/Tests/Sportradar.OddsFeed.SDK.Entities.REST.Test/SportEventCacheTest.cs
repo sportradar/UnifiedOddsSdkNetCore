@@ -16,7 +16,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Test.Shared;
-using CacheItem = Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CacheItem;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 {
@@ -130,18 +129,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(TestData.Cultures.Count * 3, _dataRouterManager.GetCallCount(DateSchedule), $"{DateSchedule} should be called exactly {TestData.Cultures.Count * 3} times.");
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly 0 times.");
 
-            CacheItem info = null;
+            SeasonCI seasonCI = null;
             Task.Run(async () =>
             {
                 await item.GetTournamentIdAsync();
-                info = await item.GetSeasonAsync(TestData.Cultures);
+                seasonCI = await item.GetSeasonAsync(TestData.Cultures);
                 await item.GetCompetitorsAsync(TestData.Cultures);
             }).GetAwaiter().GetResult();
 
             Assert.AreEqual(TestData.Cultures.Count * 3, _dataRouterManager.GetCallCount(DateSchedule), $"{DateSchedule} should be called exactly {TestData.Cultures.Count * 3} times.");
             //Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly {TestData.Cultures.Count} times.");
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly 0 times.");
-            Assert.IsNotNull(info);
+            Assert.IsNotNull(seasonCI);
 
             ValidateSportEventCacheItem(item, true);
 
@@ -289,7 +288,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             List<URN> competitors = null;
             TeamCompetitorCI comp = null;
             RoundCI round = null;
-            CacheItem season = null;
+            SeasonCI season = null;
 
             Task.Run(async () =>
             {
@@ -300,10 +299,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 season = await item.GetSeasonAsync(TestData.Cultures);
             }).GetAwaiter().GetResult();
 
-            Debug.Assert(date != null, "date != null");
             if (!ignoreDate)
             {
-                Assert.AreEqual(new DateTime(2016, 08, 10), new DateTime(date.Value.Year, date.Value.Month, date.Value.Day));
+                if (date != null)
+                {
+                    Assert.AreEqual(new DateTime(2016, 08, 10), new DateTime(date.Value.Year, date.Value.Month, date.Value.Day));
+                }
             }
 
             Assert.AreEqual(2, competitors.Count);
@@ -318,8 +319,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             }
             Assert.IsTrue(string.IsNullOrEmpty(round.GetName(TestData.Culture)));
 
-            Assert.AreEqual(3, season.Name.Count);
-            Assert.AreEqual("Mexican League 2016", season.Name[TestData.Culture]);
+            Assert.AreEqual(3, season.Names.Count);
+            Assert.AreEqual("Mexican League 2016", season.Names[TestData.Culture]);
         }
     }
 }
