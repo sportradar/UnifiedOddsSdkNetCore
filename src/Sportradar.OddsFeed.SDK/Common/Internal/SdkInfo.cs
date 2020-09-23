@@ -126,6 +126,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string NameProviderCompositeIdSeparator = ",";
         /// <summary>
+        /// The iso8601 24h short format
+        /// </summary>
+        // ReSharper disable once InconsistentNaming
+        public const string ISO8601_24H_Format = "yyyy-MM-dd’T’HH:mm:ss";
+        /// <summary>
         /// The iso8601 24h full format
         /// </summary>
         // ReSharper disable once InconsistentNaming
@@ -239,7 +244,15 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return date;
             }
 
-            DateTime.TryParseExact(input, ISO8601_24H_FullFormat, new DateTimeFormatInfo(), DateTimeStyles.None, out date);
+            if (DateTime.TryParseExact(input, ISO8601_24H_FullFormat, new DateTimeFormatInfo(), DateTimeStyles.None, out date))
+            {
+                return date;
+            }
+
+            if (DateTime.TryParseExact(input, ISO8601_24H_Format, new DateTimeFormatInfo(), DateTimeStyles.None, out date))
+            {
+                return date;
+            }
 
             return date;
         }
