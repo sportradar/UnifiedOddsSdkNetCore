@@ -113,7 +113,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 ExecutionLog.LogDebug($"{Producer.Name}: Attempting to set status to an existing value {Status}. Aborting ...");
                 return;
             }
-            ExecutionLog.LogInformation($"{Producer.Name} Status changed from {Status} to {newStatus}.");
+            
+            ExecutionLog.LogInformation($"{Producer.Name} Status changed from {oldStatus} to {newStatus}.");
 
             Status = newStatus;
             _producer.SetProducerDown(newStatus != ProducerRecoveryStatus.Completed);
@@ -200,9 +201,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return;
             }
 
-            var newStatus = Status;
             lock (_syncLock)
             {
+                ProducerRecoveryStatus? newStatus = null;
+
                 if (Status == ProducerRecoveryStatus.Completed || Status == ProducerRecoveryStatus.Delayed)
                 {
                     ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: Changing the status to Error.");
@@ -218,9 +220,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: No action required.");
                 }
-                if (newStatus != Status)
+                if (newStatus != null && newStatus.Value != Status)
                 {
-                    SetStatusAndRaiseEvent(null, newStatus);
+                    SetStatusAndRaiseEvent(null, newStatus.Value);
                 }
             }
         }
@@ -258,9 +260,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return;
             }
 
-            ProducerRecoveryStatus? newStatus = null;
             lock (_syncLock)
             {
+                ProducerRecoveryStatus? newStatus = null;
+
                 try
                 {
                     if (message is odds_change || message is bet_stop)
@@ -289,7 +292,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     ExecutionLog.LogError($"An unexpected exception occurred while processing user message. Producer={_producer.Id}, Session={interest.Name}, Message={message}, Exception:", ex);
                 }
-                if (newStatus.HasValue && Status != newStatus)
+                if (newStatus != null && newStatus.Value != Status)
                 {
                     SetStatusAndRaiseEvent(null, newStatus.Value);
                 }
@@ -320,8 +323,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return;
             }
 
-            var newStatus = Status;
-
             if (Status == ProducerRecoveryStatus.FatalError || _producer.IgnoreRecovery)
             {
                 return;
@@ -329,6 +330,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             lock (_syncLock)
             {
+                ProducerRecoveryStatus? newStatus = null;
+
                 try
                 {
                     // store the timestamp of most recent system alive before it is overridden by
@@ -405,9 +408,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     ExecutionLog.LogError($"An unexpected exception occurred while processing system message. Producer={_producer.Id}, message={message}. Exception:", ex);
                 }
-                if (newStatus != Status)
+                if (newStatus != null && newStatus.Value != Status)
                 {
-                    SetStatusAndRaiseEvent(null, newStatus);
+                    SetStatusAndRaiseEvent(null, newStatus.Value);
                 }
             }
         }
@@ -442,7 +445,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             // multiple class fields can be accessed from multiple threads(messages from user session(s), system session, here, ...)
             lock (_syncLock)
             {
-                var newStatus = Status;
+                ProducerRecoveryStatus? newStatus = null;
 
                 try
                 {
@@ -494,9 +497,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     ExecutionLog.LogError($"An unexpected exception occurred while checking status. Producer={_producer.Id}. Status={Status}, IsRunning={_recoveryOperation.IsRunning}", ex);
                 }
-                if (newStatus != Status)
+                if (newStatus != null && newStatus.Value != Status)
                 {
-                    SetStatusAndRaiseEvent(null, newStatus);
+                    SetStatusAndRaiseEvent(null, newStatus.Value);
                 }
             }
         }
