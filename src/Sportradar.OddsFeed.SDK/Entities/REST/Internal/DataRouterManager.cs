@@ -1268,6 +1268,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 var message = e.InnerException?.Message ?? e.Message;
+                if (e.Message.Contains("Value cannot be null"))
+                {
+                    _executionLog.LogInformation($"No fixture changes for after={after}, sportId={sportId} and culture={culture.TwoLetterISOLanguageName}.");
+                    return null;
+                }
                 _executionLog.LogError($"Error getting fixture changes. Message={message}", e.InnerException ?? e);
                 if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
