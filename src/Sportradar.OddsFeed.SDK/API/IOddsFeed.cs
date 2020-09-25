@@ -93,5 +93,10 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Occurs when a requested event recovery completes
         /// </summary>
         event EventHandler<EventRecoveryCompletedEventArgs> EventRecoveryCompleted;
+
+        /// <summary>
+        /// Occurs when an exception occurs in the connection loop
+        /// </summary>
+        event EventHandler<ConnectionExceptionEventArgs> ConnectionException;
     }
 }
