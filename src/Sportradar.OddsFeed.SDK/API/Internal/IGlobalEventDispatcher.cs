@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -34,5 +36,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="eventId">The associated event identifier</param>
         /// </summary>
         void DispatchEventRecoveryCompleted(long requestId, URN eventId);
+
+        /// <summary>
+        /// Dispatches the information that the exception was thrown in connection loop
+        /// <param name="callbackExceptionEventArgs">The information about the exception</param>
+        /// </summary>
+        void DispatchConnectionException(CallbackExceptionEventArgs callbackExceptionEventArgs);
     }
 }
