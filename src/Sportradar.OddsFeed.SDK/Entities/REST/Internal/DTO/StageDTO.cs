@@ -3,6 +3,8 @@
 */
 using System.Collections.Generic;
 using System.Linq;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -12,10 +14,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// </summary>
     internal class StageDTO : CompetitionDTO
     {
+        private readonly URN _parentStageId;
+
         /// <summary>
-        /// Gets a <see cref="StageDTO"/> specifying the parent stage associated with the current instance
+        /// Gets a id of the parent stage associated with the current instance
         /// </summary>
-        public StageDTO ParentStage { get; }
+        public URN ParentStageId => _parentStageId; 
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> specifying the child stages associated with the current instance
@@ -36,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             if (sportEvent.parent != null)
             {
-                ParentStage = new StageDTO(sportEvent.parent);
+                URN.TryParse(sportEvent.parent.id, out _parentStageId);
             }
             if (sportEvent.races != null && sportEvent.races.Any())
             {
@@ -57,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             if (stageEvent.sport_event.parent != null)
             {
-                ParentStage = new StageDTO(stageEvent.sport_event.parent);
+                URN.TryParse(stageEvent.sport_event.parent.id, out _parentStageId);
             }
             if (stageEvent.sport_event.races != null && stageEvent.sport_event.races.Any())
             {
@@ -67,24 +71,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 Tournament = new TournamentDTO(stageEvent.sport_event.tournament);
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StageDTO"/> class
-        /// </summary>
-        /// <param name="parentStage">A <see cref="parentStage"/> containing basic information about the event</param>
-        protected StageDTO(parentStage parentStage)
-            : base(new sportEvent
-                        {
-                            id = parentStage.id,
-                            name = parentStage.name,
-                            type = parentStage.type,
-                            scheduledSpecified = parentStage.scheduledSpecified,
-                            scheduled = parentStage.scheduled,
-                            scheduled_endSpecified = parentStage.scheduled_endSpecified,
-                            scheduled_end = parentStage.scheduled_end
-                        })
-        {
         }
 
         /// <summary>

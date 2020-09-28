@@ -218,11 +218,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var cs = culture == null ? _defaultCultures : new[] { culture };
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
-
+            
             Log.LogInformation($"Invoked GetTournament: [Id={id}, Cultures={s}].");
 
+            var sportEventCI = _sportEventCache.GetEventCacheItem(id);
+
             var result = _sportEntityFactory.BuildSportEvent<ILongTermEvent>(id,
-                                                                             null,
+                                                                             sportEventCI?.GetSportIdAsync().Result,
                                                                              culture == null
                                                                                  ? _defaultCultures
                                                                                  : new[] {culture},

@@ -187,7 +187,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             return tournamentId == null
                 ? null
-                : _sportEntityFactory.BuildSportEvent<ILongTermEvent>(tournamentId, null, Cultures, ExceptionStrategy);
+                : _sportEntityFactory.BuildSportEvent<ILongTermEvent>(tournamentId, SportId, Cultures, ExceptionStrategy);
         }
 
         /// <summary>

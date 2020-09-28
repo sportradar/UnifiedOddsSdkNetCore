@@ -507,7 +507,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             lock (MergeLock)
             {
                 Names[culture] = eventSummary.Name;
-                _sportId = eventSummary.SportId;
+                if (eventSummary.SportId != null)
+                {
+                    _sportId = eventSummary.SportId;
+                }
                 Scheduled = eventSummary.Scheduled;
                 ScheduledEnd = eventSummary.ScheduledEnd;
                 _startTimeTbd = eventSummary.StartTimeTbd;

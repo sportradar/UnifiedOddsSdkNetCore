@@ -87,8 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 : null;
             if (sportEvent.tournament?.sport != null)
             {
-                URN sportId;
-                if (URN.TryParse(sportEvent.tournament.sport.id, out sportId))
+                if (URN.TryParse(sportEvent.tournament.sport.id, out var sportId))
                 {
                     SportId = sportId;
                 }

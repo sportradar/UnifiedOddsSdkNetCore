@@ -100,14 +100,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
-            var cacheItem = ExceptionStrategy == ExceptionHandlingStrategy.CATCH
-                ? await stageCI.GetParentStageAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<StageCI>>(stageCI.GetParentStageAsync)
-                    .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ParentStage")).ConfigureAwait(false);
 
-            return cacheItem == null
-                ? null
-                : new Stage(cacheItem.Id, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy);
+            var parentStageId = await stageCI.GetParentStageAsync(Cultures).ConfigureAwait(false);
+            if (parentStageId != null)
+            {
+                //var parentStageCI = (StageCI) SportEventCache.GetEventCacheItem(parentStageId);
+                //if (parentStageCI == null)
+                //{
+                //    return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy);
+                //}
+
+                return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy); ;
+            }
+
+            return null;
         }
 
         public async Task<IEnumerable<IStage>> GetStagesAsync()

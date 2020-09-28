@@ -214,6 +214,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The constructed <see cref="ICompetition"/> derived instance</returns>
         public T BuildSportEvent<T>(URN id, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
         {
+            if (sportId == null)
+            {
+
+            }
             //TODO: review if this based on resourcetypegroup is ok - stage??
             ISportEvent sportEvent;
             switch (id.TypeGroup)

@@ -975,11 +975,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                             var stage = item as StageDTO;
                             if (stage != null)
                             {
-                                ((StageCI)cacheItem).Merge(stage, culture, true);
+                                ((StageCI) cacheItem).Merge(stage, culture, true);
                                 merged = true;
                                 if (stage.Tournament != null)
                                 {
                                     tournamentInfoDTO = new TournamentInfoDTO(stage.Tournament);
+                                }
+
+                                if (stage.ParentStageId != null && !Cache.Contains(stage.ParentStageId.ToString()))
+                                {
+                                    var parentStageCI = _sportEventCacheItemFactory.Build(stage.ParentStageId);
+                                    AddNewCacheItem(parentStageCI);
                                 }
                             }
                         }

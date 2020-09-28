@@ -313,7 +313,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             //    ? await _sportEventCache.GetEventIdsAsync(Id).ConfigureAwait(false)
             //    : await new Func<URN, Task<IEnumerable<Tuple<URN, URN>>>>(_sportEventCache.GetEventIdsAsync).SafeInvokeAsync(Id, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
 
-            return sportEventIds?.Select(i => _sportEntityFactory.BuildSportEvent<ICompetition>(i.Item1, i.Item2, Cultures, ExceptionStrategy)).ToList();
+            return sportEventIds?.Select(i => _sportEntityFactory.BuildSportEvent<ICompetition>(i.Item1, i.Item2 ?? SportId, Cultures, ExceptionStrategy)).ToList();
         }
     }
 }

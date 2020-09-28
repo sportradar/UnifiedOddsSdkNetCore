@@ -442,10 +442,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             var tempProperties = new Dictionary<string, object>(0);
 
-            if (record.results != null && record.results.Any())
+            //TODO: review this
+            if (record.results != null && record.results.competitor.Any())
             {
                 var i = 0;
-                foreach (var resultType in record.results)
+                foreach (var resultType in record.results.competitor)
                 {
                     i++;
                     ApplyPropertyValue(true, $"Result{i}_Climber", resultType.climber, tempProperties);
@@ -478,9 +479,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             EventClock = null;
 
             var eventResults = new List<EventResultDTO>();
-            if (record.results != null && record.results.Any())
+            if (record.results != null && record.results.competitor.Any())
             {
-                foreach (var stageResultCompetitor in record.results)
+                foreach (var stageResultCompetitor in record.results.competitor)
                 {
                     eventResults.Add(new EventResultDTO(stageResultCompetitor));
                 }

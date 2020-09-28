@@ -207,7 +207,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 ? await tournamentInfoCI.GetScheduleAsync(Cultures).ConfigureAwait(false)
                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(tournamentInfoCI.GetScheduleAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
 
-            return item?.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, null, Cultures, ExceptionStrategy));
+            return item?.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, SportId, Cultures, ExceptionStrategy));
         }
     }
 }

@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 : currentSeasonCI.GetCompetitorsAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds, exceptionStrategy));
             Schedule = currentSeasonCI.GetScheduleAsync(cultureInfos).Result == null
                 ? null
-                : currentSeasonCI.GetScheduleAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildSportEvent<ISportEvent>(s, null, cultureInfos, exceptionStrategy));
+                : currentSeasonCI.GetScheduleAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildSportEvent<ISportEvent>(s, currentSeasonCI.GetSportIdAsync().Result, cultureInfos, exceptionStrategy));
         }
     }
 }

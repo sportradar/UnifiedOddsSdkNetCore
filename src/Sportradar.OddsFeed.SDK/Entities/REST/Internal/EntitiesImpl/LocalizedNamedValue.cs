@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
+using Castle.Core.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
@@ -52,6 +54,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public string GetDescription(CultureInfo culture)
         {
             return Descriptions.ContainsKey(culture) ? Descriptions[culture] : null;
+        }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            var desc = Descriptions.IsNullOrEmpty()
+                ? string.Empty
+                : string.Join(";", Descriptions.Select(s => $"{s.Key}={s.Value}"));
+            return $"{Id}:{desc}";
         }
     }
 }

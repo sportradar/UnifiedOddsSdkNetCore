@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// The parent stage
         /// </summary>
-        private StageCI _parentStage;
+        private URN _parentStageId;
         /// <summary>
         /// The child stages
         /// </summary>
@@ -132,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _categoryId = URN.Parse(exportable.CategoryId);
-            _parentStage = exportable.ParentStage != null ? new StageCI(exportable.ParentStage, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache) : null;
+            _parentStageId = exportable.ParentStageId;
             _childStages = exportable.ChildStages?.Select(s => new StageCI(s, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache));
             _stageType = exportable.StageType;
         }
@@ -156,15 +156,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// </summary>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{StageCI}" /> representing the asynchronous operation</returns>
-        public async Task<StageCI> GetParentStageAsync(IEnumerable<CultureInfo> cultures)
+        public async Task<URN> GetParentStageAsync(IEnumerable<CultureInfo> cultures)
         {
-            if (_parentStage != null)
+            if (_parentStageId != null)
             {
-                return _parentStage;
+                return _parentStageId;
             }
             ////the requested data does not contain translatable values - fetch just for default language
             await FetchMissingSummary(cultures, false).ConfigureAwait(false);
-            return _parentStage;
+            return _parentStageId;
         }
 
         /// <summary>
@@ -223,18 +223,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         {
             base.Merge(eventSummary, culture, false);
 
-            if (eventSummary.ParentStage != null)
+            if (eventSummary.ParentStageId != null)
             {
                 // no translatable data - just replace with new value
-                _parentStage = new StageCI(eventSummary.ParentStage, DataRouterManager, SemaphorePool, culture, DefaultCulture, FixtureTimestampCache);
+                _parentStageId = eventSummary.ParentStageId;
             }
-            else
-            {
-                if (eventSummary.Tournament != null)
-                {
-                    _parentStage = new StageCI(eventSummary.Tournament.Id, DataRouterManager, SemaphorePool, culture, FixtureTimestampCache);
-                }
-            }
+            //else
+            //{
+            //    if (eventSummary.Tournament != null)
+            //    {
+            //        _parentStage = new StageCI(eventSummary.Tournament.Id, DataRouterManager, SemaphorePool, culture, FixtureTimestampCache);
+            //    }
+            //}
             if (eventSummary.Stages != null)
             {
                 // no translatable data - just replace with new value
@@ -351,8 +351,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             var exportable = await base.CreateExportableCIAsync<T>();
             var stage = exportable as ExportableStageCI;
 
+            if (stage == null)
+            {
+                return null;
+            }
+
             stage.CategoryId = _categoryId?.ToString();
-            stage.ParentStage = _parentStage != null ? await _parentStage.ExportAsync().ConfigureAwait(false) as ExportableStageCI : null;
+            stage.ParentStageId = _parentStageId;
             var childTasks = _childStages?.Select(async s => await s.ExportAsync().ConfigureAwait(false) as ExportableStageCI);
             stage.ChildStages = childTasks != null ? await Task.WhenAll(childTasks) : null;
             stage.StageType = _stageType;
