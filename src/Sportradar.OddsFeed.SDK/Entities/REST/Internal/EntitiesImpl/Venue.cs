@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -61,6 +62,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public string State { get; }
 
         /// <summary>
+        /// Gets the course
+        /// </summary>
+        /// <value>The course</value>
+        public IEnumerable<IHole> Course { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Venue"/> class.
         /// </summary>
         /// <param name="ci">A <see cref="VenueCI"/> used to create new instance</param>
@@ -81,6 +88,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Countries = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => ci.GetCountry(c) != null).ToDictionary(c => c, ci.GetCountry));
             CountryCode = ci.CountryCode;
             State = ci.State;
+            Course = ci.Course?.Select(s => new Hole(s));
         }
 
         /// <summary>
@@ -116,7 +124,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var cityNames = string.Join(", ", Cities.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
             var countryNames = string.Join(", ", Countries.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
 
-            return $"Id={Id}, Capacity={Capacity}, Coordinates={Coordinates}, Names=[{names}], Cities=[{cityNames}], Countries=[{countryNames}], CountryCode={CountryCode}, State={State}";
+            string course = string.Empty;
+            if (!Course.IsNullOrEmpty())
+            {
+                course = ", Course=[" + string.Join(", ", Course.Select(x => x.Number + "-" + x.Par)) + "]";
+            }
+
+            return $"Id={Id}, Capacity={Capacity}, Coordinates={Coordinates}, Names=[{names}], Cities=[{cityNames}], Countries=[{countryNames}], CountryCode={CountryCode}, State={State}{course}";
         }
 
         /// <summary>

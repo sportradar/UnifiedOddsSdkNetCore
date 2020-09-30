@@ -73,5 +73,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets a state of the venue represented by current <see cref="IVenue" /> instance
         /// </summary>
         string State { get; }
+
+        /// <summary>
+        /// Gets the course
+        /// </summary>
+        /// <value>The course</value>
+        IEnumerable<IHole> Course => null;
     }
 }

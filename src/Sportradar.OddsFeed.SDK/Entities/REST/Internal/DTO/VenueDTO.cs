@@ -1,6 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System.Collections.Generic;
+using System.Linq;
+using Castle.Core.Internal;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -43,11 +47,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal string Coordinates { get; }
 
         /// <summary>
+        /// Gets the course
+        /// </summary>
+        /// <value>The course</value>
+        internal IEnumerable<HoleDTO> Course { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VenueDTO"/> class
         /// </summary>
         /// <param name="venue">A <see cref="venue"/> instance containing venue related information</param>
         internal VenueDTO(venue venue)
-            :base(venue.id, venue.name)
+            : base(venue.id, venue.name)
         {
             Guard.Argument(venue, nameof(venue)).NotNull();
 
@@ -59,6 +69,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             CountryCode = venue.country_code;
             State = venue.state;
             Coordinates = venue.map_coordinates;
+            if (!venue.course.IsNullOrEmpty())
+            {
+                Course = venue.course.Select(s => new HoleDTO(s));
+            }
         }
     }
 }

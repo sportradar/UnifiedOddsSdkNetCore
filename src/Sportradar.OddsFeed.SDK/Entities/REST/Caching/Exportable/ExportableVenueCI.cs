@@ -43,5 +43,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// Gets a state of the venue
         /// </summary>
         public string State { get; set; }
+
+        /// <summary>
+        /// Gets the course
+        /// </summary>
+        /// <value>The course</value>
+        public IEnumerable<ExportableHoleCI> Course { get; set; }
     }
 }

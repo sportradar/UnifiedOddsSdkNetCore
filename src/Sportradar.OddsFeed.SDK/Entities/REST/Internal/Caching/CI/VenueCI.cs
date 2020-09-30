@@ -55,6 +55,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public string State { get; private set; }
 
         /// <summary>
+        /// Gets the course
+        /// </summary>
+        /// <value>The course</value>
+        public IEnumerable<HoleCI> Course { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VenueCI"/> class
         /// </summary>
         /// <param name="venue">A <see cref="VenueDTO"/> containing information about a venue</param>
@@ -68,6 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _names = new Dictionary<CultureInfo, string>();
             _countryNames = new Dictionary<CultureInfo, string>();
             _cityNames = new Dictionary<CultureInfo, string>();
+            Course = new List<HoleCI>();
             Merge(venue, culture);
         }
 
@@ -85,6 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Coordinates = exportable.Coordinates;
             CountryCode = exportable.CountryCode;
             State = exportable.State;
+            Course = exportable.Course?.Select(s=>new HoleCI(s));
         }
 
         /// <summary>
@@ -104,6 +112,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _cityNames[culture] = venue.City;
             CountryCode = venue.CountryCode;
             State = venue.State;
+            Course = venue.Course?.Select(s => new HoleCI(s));
         }
 
         /// <summary>
@@ -172,9 +181,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 CityNames = new ReadOnlyDictionary<CultureInfo, string>(_cityNames),
                 CountryNames = new ReadOnlyDictionary<CultureInfo, string>(_countryNames),
                 Capacity = Capacity,
-                Coordinates =  Coordinates,
+                Coordinates = Coordinates,
                 CountryCode = CountryCode,
-                State = State
+                State = State,
+                Course = Course?.Select(s => new ExportableHoleCI() {Number = s.Number, Par = s.Par})
             });
         }
     }

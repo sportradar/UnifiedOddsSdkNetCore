@@ -11508,6 +11508,22 @@
             A <see cref="!:IDictionary&lt;T&gt;"/> representation of the competitor references
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableHoleCI">
+            <summary>
+            Class used to export/import hole item properties
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableHoleCI.Number">
+            <summary>
+            Gets the number of the hole
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableHoleCI.Par">
+            <summary>
+            Gets the par
+            </summary>
+            <value>The par</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableJerseyCI">
             <summary>
             Class used to export/import jersey item properties
@@ -12386,6 +12402,12 @@
             <summary>
             Gets a state of the venue
             </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableVenueCI.Course">
+            <summary>
+            Gets the course
+            </summary>
+            <value>The course</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableWeatherInfoCI">
             <summary>
@@ -13710,6 +13732,22 @@
             Gets the id of the group represented by the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IGroup"/> instance
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IHole">
+            <summary>
+            Defines a contract implemented by classes representing a hole of a golf course
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IHole.Number">
+            <summary>
+            Gets the number of the hole
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IHole.Par">
+            <summary>
+            Gets the par
+            </summary>
+            <value>The par</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IJersey">
             <summary>
             Defines a contract for classes implementing jersey
@@ -14785,6 +14823,11 @@
             </summary>
             <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> instance containing all relevant properties</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.HoleCI">
+            <summary>
+            A cache item representing a hole (used in golf course)
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.JerseyCI">
             <summary>
             An implementation of Jersey cache item
@@ -15731,6 +15774,12 @@
             <summary>
             Gets a state of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI" /> instance
             </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI.Course">
+            <summary>
+            Gets the course
+            </summary>
+            <value>The course</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VenueDTO,System.Globalization.CultureInfo)">
             <summary>
@@ -20632,6 +20681,11 @@
             A data-transfer-object representing a group
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.HoleDTO">
+            <summary>
+            A data-access-object representing a hole (used in golf course)
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.JerseyDTO">
             <summary>
             A data-transfer-object for jersey
@@ -22039,6 +22093,12 @@
             Gets the GPS coordinates of the represented venue.
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VenueDTO.Course">
+            <summary>
+            Gets the course
+            </summary>
+            <value>The course</value>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VenueDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.venue)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VenueDTO"/> class
@@ -23423,6 +23483,47 @@
             <returns>A <see cref="T:System.String" /> containing details of the current instance.</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Group.PrintJ">
+            <summary>
+            Constructs and returns a <see cref="T:System.String" /> containing a JSON representation of the current instance
+            </summary>
+            <returns>a <see cref="T:System.String" /> containing a JSON representation of the current instance.</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Hole">
+            <summary>
+            Represents a hole
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IHole" />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Hole.Number">
+            <summary>
+            Gets the number of the hole
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Hole.Par">
+            <summary>
+            Gets the par
+            </summary>
+            <value>The par</value>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Hole.PrintI">
+            <summary>
+            Constructs and returns a <see cref="T:System.String"/> containing the id of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String"/> containing the id of the current instance.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Hole.PrintC">
+            <summary>
+            Constructs and returns a <see cref="T:System.String"/> containing compacted representation of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String"/> containing compacted representation of the current instance.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Hole.PrintF">
+            <summary>
+            Constructs and return a <see cref="T:System.String"/> containing details of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String"/> containing details of the current instance.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Hole.PrintJ">
             <summary>
             Constructs and returns a <see cref="T:System.String" /> containing a JSON representation of the current instance
             </summary>
@@ -25152,6 +25253,12 @@
             Gets a state of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IVenue" /> instance
             </summary>
             <value>The state.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Venue.Course">
+            <summary>
+            Gets the course
+            </summary>
+            <value>The course</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Venue.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.VenueCI,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
@@ -30599,6 +30706,12 @@
             <summary>
             Gets a state of the venue represented by current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IVenue" /> instance
             </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IVenue.Course">
+            <summary>
+            Gets the course
+            </summary>
+            <value>The course</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IWeatherInfo">
             <summary>
