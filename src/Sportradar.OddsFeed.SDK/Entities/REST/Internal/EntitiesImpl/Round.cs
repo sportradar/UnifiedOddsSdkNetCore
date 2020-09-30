@@ -27,14 +27,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public int? Number { get; }
 
         /// <summary>
+        /// Gets the group associated with the current round
+        /// </summary>
+        public string Group { get; }
+
+        /// <summary>
         /// Gets the name of the current <see cref="IRound" />
         /// </summary>
         public IDictionary<CultureInfo, string> Name { get; }
 
         /// <summary>
-        /// Gets the name of the group associated with the current round
+        /// Gets the group name of the current <see cref="IRound"/> per language
         /// </summary>
-        public string GroupName { get; }
+        public IDictionary<CultureInfo, string> GroupName { get; }
+
+        /// <summary>
+        /// Gets the phase or group long name of the current <see cref="IRound"/> per language
+        /// </summary>
+        public IDictionary<CultureInfo, string> PhaseOrGroupLongName { get; }
 
         /// <summary>
         /// Gets the id of the group associated with the current round
@@ -64,11 +74,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public int BetradarId { get; }
 
         /// <summary>
-        /// Gets the phase or group long name of the current <see cref="IRound"/> per locale
-        /// </summary>
-        public IDictionary<CultureInfo, string> PhaseOrGroupLongName { get; }
-
-        /// <summary>
         /// Gets the phase of the associated round
         /// </summary>
         public string Phase { get; }
@@ -84,16 +89,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             Type = ci.Type;
             Number = ci.Number;
-            GroupName = ci.Group;
+            Group = ci.Group;
             GroupId = ci.GroupId;
             OtherMatchId = ci.OtherMatchId;
             CupRoundMatches = ci.CupRoundMatches;
             CupRoundMatchNumber = ci.CupRoundMatchNumber;
             Name = new Dictionary<CultureInfo, string>();
+            GroupName = new Dictionary<CultureInfo, string>();
             PhaseOrGroupLongName = new Dictionary<CultureInfo, string>();
             foreach (var c in cultures)
             {
                 Name.Add(c, ci.GetName(c));
+                GroupName.Add(c, ci.GetGroupName(c));
                 PhaseOrGroupLongName.Add(c, ci.GetPhaseOrGroupLongName(c));
             }
             BetradarId = ci.BetradarId ?? 0;
@@ -101,7 +108,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Gets the name for specific locale
+        /// Gets the name for specific language
         /// </summary>
         /// <param name="culture">The cultures</param>
         /// <returns>Return the Name if exists, or null</returns>
@@ -111,7 +118,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Gets the phase or group long name for specific locale
+        /// Gets the group name for specific language
+        /// </summary>
+        /// <param name="culture">The cultures</param>
+        /// <returns>Return the Name if exists, or null</returns>
+        public string GetGroupName(CultureInfo culture)
+        {
+            return GroupName.ContainsKey(culture) ? GroupName[culture] : null;
+        }
+
+        /// <summary>
+        /// Gets the phase or group long name for specific language
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>Return the phase or group long name if exists, or null</returns>
@@ -136,8 +153,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected override string PrintC()
         {
             var names = string.Join(", ", Name.Keys.Select(k => $"{k}={GetName(k)}"));
+            var groupNames = string.Join(", ", GroupName.Keys.Select(k => $"{k}={GetGroupName(k)}"));
             var phase = string.Join(", ", PhaseOrGroupLongName.Keys.Select(k => $"{k}={GetPhaseOrGroupLongName(k)}"));
-            return $"Name=[{names}], Type={Type}, Number={Number}, CupRoundMatches={CupRoundMatches}, CupRoundMatchNumber={CupRoundMatchNumber}, BetradarId={BetradarId}, PhaseOrGroupLongName={phase}, Phase={Phase}";
+            return $"Name=[{names}], GroupName=[{groupNames}], PhaseOrGroupLongName={phase}, Type={Type}, Number={Number}, CupRoundMatches={CupRoundMatches}, CupRoundMatchNumber={CupRoundMatchNumber}, BetradarId={BetradarId}, Phase={Phase}";
         }
 
         /// <summary>

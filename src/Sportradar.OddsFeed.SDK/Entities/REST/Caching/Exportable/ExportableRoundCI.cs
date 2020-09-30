@@ -20,6 +20,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public IDictionary<CultureInfo, string> Names { get; set; }
 
         /// <summary>
+        /// A <see cref="IDictionary{K, V}"/> representation of the round group names in different languages
+        /// </summary>
+        public IDictionary<CultureInfo, string> GroupNames { get; set; }
+
+        /// <summary>
         /// A <see cref="IDictionary{K, V}"/> representation of the phase or group long name in different languages
         /// </summary>
         public IDictionary<CultureInfo, string> PhaseOrGroupLongName { get; set; }

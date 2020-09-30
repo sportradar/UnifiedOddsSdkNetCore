@@ -23,9 +23,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         int? Number { get; }
 
         /// <summary>
-        /// Gets the name of the group associated with the current round
+        /// Gets the group associated with the current round
         /// </summary>
-        string GroupName { get; }
+        string Group { get; }
 
         /// <summary>
         /// Gets the id of the other match
@@ -33,9 +33,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string OtherMatchId { get; }
 
         /// <summary>
-        /// Gets the name of the current <see cref="IRound"/> per locale
+        /// Gets the name of the current <see cref="IRound"/> per language
         /// </summary>
         IDictionary<CultureInfo, string> Name { get; }
+
+        /// <summary>
+        /// Gets the group name of the current <see cref="IRound"/> per language
+        /// </summary>
+        IDictionary<CultureInfo, string> GroupName { get; }
+
+        /// <summary>
+        /// Gets the phase or group long name of the current <see cref="IRound"/> per language
+        /// </summary>
+        IDictionary<CultureInfo, string> PhaseOrGroupLongName { get; }
 
         /// <summary>
         /// Gets a value specifying the number of matches in the current cup round or a null reference
@@ -55,19 +65,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         int BetradarId { get; }
 
         /// <summary>
-        /// Gets the phase or group long name of the current <see cref="IRound"/> per locale
-        /// </summary>
-        IDictionary<CultureInfo, string> PhaseOrGroupLongName { get; }
-
-        /// <summary>
-        /// Gets the name for specific locale
+        /// Gets the name for specific language
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>Return the Name if exists, or null</returns>
         string GetName(CultureInfo culture);
 
         /// <summary>
-        /// Gets the phase or group long name for specific locale
+        /// Gets the name for specific language
+        /// </summary>
+        /// <param name="culture">The culture</param>
+        /// <returns>Return the Name if exists, or null</returns>
+        string GetGroupName(CultureInfo culture)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the phase or group long name for specific language
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>Return the phase or group long name if exists, or null</returns>

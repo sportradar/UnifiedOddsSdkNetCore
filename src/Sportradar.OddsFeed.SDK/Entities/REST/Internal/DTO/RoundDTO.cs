@@ -20,6 +20,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string Group { get; }
 
+        internal string GroupName { get; }
+
         internal URN GroupId { get; }
 
         internal string OtherMatchId { get; }
@@ -46,8 +48,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Number = round.numberSpecified
                 ? (int?)round.number
                 : null;
-            Name = round.name;
+            Name = !string.IsNullOrEmpty(round.name)
+                    ? round.name
+                    : !string.IsNullOrEmpty(round.group_name)
+                        ? round.group_name
+                        : round.group_long_name;
+            GroupName = !string.IsNullOrEmpty(round.group_name)
+                        ? round.group_name
+                        : !string.IsNullOrEmpty(round.name)
+                            ? round.name
+                            : round.group_long_name;
+            PhaseOrGroupLongName = !string.IsNullOrEmpty(round.group_long_name)
+                                    ? round.group_long_name
+                                    : !string.IsNullOrEmpty(round.name)
+                                        ? round.name
+                                        : round.group_name;
             Group = round.group;
+            Phase = round.phase;
             GroupId = string.IsNullOrEmpty(round.group_id)
                 ? null
                 : URN.TryParse(round.group_id, out var groupId)
@@ -63,8 +80,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             BetradarId = round.betradar_idSpecified
                 ? (int?) round.betradar_id
                 : null;
-            PhaseOrGroupLongName = round.group_long_name;
-            Phase = round.phase;
         }
     }
 }

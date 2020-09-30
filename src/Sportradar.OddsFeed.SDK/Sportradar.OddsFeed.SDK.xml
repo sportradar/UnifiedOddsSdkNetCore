@@ -225,6 +225,28 @@
             to languages specified in the configuration</param>
             <returns>Returns the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetStop`1"/> implementation representing the received bet stop message translated to the specified languages</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.API.EventArguments.ConnectionExceptionEventArgs">
+            <summary>
+            Event arguments for the ConnectionException events
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.ConnectionExceptionEventArgs.#ctor(System.Exception,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.EventArguments.ConnectionExceptionEventArgs"/> class
+            </summary>
+            <param name="exception">The exception that caused an error</param>
+            <param name="exception">Details about the error</param>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.EventArguments.ConnectionExceptionEventArgs.Exception">
+            <summary>
+            The exception that caused an error
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.EventArguments.ConnectionExceptionEventArgs.Detail">
+            <summary>
+            Details about the error
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.EventArguments.EventRecoveryCompletedEventArgs">
             <summary>
             Event arguments for the EventRecoveryCompleted events
@@ -704,6 +726,11 @@
             the odds feed went up (back online)
             </summary>
         </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.Feed.ConnectionException">
+            <summary>
+            Occurs when an exception occurs in the connection loop
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Feed.EventRecoveryRequestIssuer">
             <summary>
             Gets a <see cref="T:Sportradar.OddsFeed.SDK.API.IEventRecoveryRequestIssuer"/> instance used to issue recovery requests to the feed
@@ -851,6 +878,12 @@
             Dispatches the information that the requested event recovery completed
             <param name="requestId">The identifier of the recovery request</param>
             <param name="eventId">The associated event identifier</param>
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.DispatchConnectionException(RabbitMQ.Client.Events.CallbackExceptionEventArgs)">
+            <summary>
+            Dispatches the information that the exception was thrown in connection loop
+            <param name="callbackExceptionEventArgs">The information about the exception</param>
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Sportradar#OddsFeed#SDK#API#Internal#IGlobalEventDispatcher#DispatchProducerDown(Sportradar.OddsFeed.SDK.Entities.IProducerStatusChange)">
@@ -2604,6 +2637,12 @@
             Dispatches the information that the requested event recovery completed
             <param name="requestId">The identifier of the recovery request</param>
             <param name="eventId">The associated event identifier</param>
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.IGlobalEventDispatcher.DispatchConnectionException(RabbitMQ.Client.Events.CallbackExceptionEventArgs)">
+            <summary>
+            Dispatches the information that the exception was thrown in connection loop
+            <param name="callbackExceptionEventArgs">The information about the exception</param>
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.IMessageDataExtractor">
@@ -5730,6 +5769,11 @@
             Occurs when a requested event recovery completes
             </summary>
         </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.IOddsFeed.ConnectionException">
+            <summary>
+            Occurs when an exception occurs in the connection loop
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration">
             <summary>
             Defines a contract implemented by classes representing odds feed configuration / settings
@@ -7188,6 +7232,11 @@
             The flex score market attribute name
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.CompetitorsMarketOutcomeType">
+            <summary>
+            The player props market group
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MinInactivitySeconds">
             <summary>
             The minimum inactivity seconds
@@ -7246,6 +7295,11 @@
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.NameProviderCompositeIdSeparator">
             <summary>
             The separator used when the outcome id is a composite of multiple ids - sr:player:1,sr:player:2
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ISO8601_24H_Format">
+            <summary>
+            The iso8601 24h short format
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ISO8601_24H_FullFormat">
@@ -11779,6 +11833,11 @@
             A <see cref="T:System.Collections.Generic.IDictionary`2"/> representation of the round names in different languages
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableRoundCI.GroupNames">
+            <summary>
+            A <see cref="T:System.Collections.Generic.IDictionary`2"/> representation of the round group names in different languages
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableRoundCI.PhaseOrGroupLongName">
             <summary>
             A <see cref="T:System.Collections.Generic.IDictionary`2"/> representation of the phase or group long name in different languages
@@ -12018,7 +12077,7 @@
             A <see cref="T:System.String"/> representing the category id
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStageCI.ParentStage">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStageCI.ParentStageId">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStageCI"/> representing the parent stage
             </summary>
@@ -15112,6 +15171,11 @@
             A <see cref="T:System.Collections.Generic.IDictionary`2"/> containing round names in different languages
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI._groupNames">
+            <summary>
+            A <see cref="T:System.Collections.Generic.IDictionary`2"/> containing round group names in different languages
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI._phaseOrGroupLongName">
             <summary>
             A <see cref="T:System.Collections.Generic.IDictionary`2"/> containing phase or group long name in different languages
@@ -15188,6 +15252,13 @@
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI.GetName(System.Globalization.CultureInfo)">
             <summary>
             Gets the name for specific locale
+            </summary>
+            <param name="culture">The culture</param>
+            <returns>Return the Name if exists, or null</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI.GetGroupName(System.Globalization.CultureInfo)">
+            <summary>
+            Gets the group name for specific locale
             </summary>
             <param name="culture">The culture</param>
             <returns>Return the Name if exists, or null</returns>
@@ -16449,14 +16520,14 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetParentStageAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
-            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI"/> representing the parent stage of the current instance or a null reference if the represented stage does not have the parent stage
+            Asynchronously gets an id of the parent stage of the current instance or a null reference if the represented stage does not have the parent stage
             </summary>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetStagesAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
-            Asynchronously gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> representing child stages of the current instance or a null reference if the represented stage does not have childs
+            Asynchronously gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> representing child stages of the current instance or a null reference if the represented stage does not have children
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
             <returns></returns>
@@ -17180,7 +17251,7 @@
             The category identifier
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI._parentStage">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI._parentStageId">
             <summary>
             The parent stage
             </summary>
@@ -21648,9 +21719,9 @@
             A data-transfer-object containing basic information about a sport event
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.ParentStage">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.ParentStageId">
             <summary>
-            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO"/> specifying the parent stage associated with the current instance
+            Gets a id of the parent stage associated with the current instance
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.Stages">
@@ -21674,12 +21745,6 @@
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO"/> class
             </summary>
             <param name="stageEvent">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stageSummaryEndpoint"/> containing basic information about the event</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.parentStage)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO"/> class
-            </summary>
-            <param name="parentStage">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.parentStage"/> containing basic information about the event</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.sportEventChildrenSport_event)">
             <summary>
@@ -23387,6 +23452,10 @@
             </summary>
             <returns>Return the Description if exists, or null.</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.LocalizedNamedValue.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Manager">
             <summary>
             Class Manager
@@ -24114,6 +24183,11 @@
             Gets a value specifying the round number or a null reference if round number is not defined
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.Group">
+            <summary>
+            Gets the group associated with the current round
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.Name">
             <summary>
             Gets the name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound" />
@@ -24121,7 +24195,12 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.GroupName">
             <summary>
-            Gets the name of the group associated with the current round
+            Gets the group name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per language
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.PhaseOrGroupLongName">
+            <summary>
+            Gets the phase or group long name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per language
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.GroupId">
@@ -24151,11 +24230,6 @@
             Gets the betradar identifier
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.PhaseOrGroupLongName">
-            <summary>
-            Gets the phase or group long name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per locale
-            </summary>
-        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.Phase">
             <summary>
             Gets the phase of the associated round
@@ -24170,14 +24244,21 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.GetName(System.Globalization.CultureInfo)">
             <summary>
-            Gets the name for specific locale
+            Gets the name for specific language
+            </summary>
+            <param name="culture">The cultures</param>
+            <returns>Return the Name if exists, or null</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.GetGroupName(System.Globalization.CultureInfo)">
+            <summary>
+            Gets the group name for specific language
             </summary>
             <param name="culture">The cultures</param>
             <returns>Return the Name if exists, or null</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.GetPhaseOrGroupLongName(System.Globalization.CultureInfo)">
             <summary>
-            Gets the phase or group long name for specific locale
+            Gets the phase or group long name for specific language
             </summary>
             <param name="culture">The culture</param>
             <returns>Return the phase or group long name if exists, or null</returns>
@@ -29620,9 +29701,9 @@
             Gets a value specifying the round number or a null reference if round number is not defined
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.GroupName">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.Group">
             <summary>
-            Gets the name of the group associated with the current round
+            Gets the group associated with the current round
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.OtherMatchId">
@@ -29632,7 +29713,17 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.Name">
             <summary>
-            Gets the name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per locale
+            Gets the name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per language
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.GroupName">
+            <summary>
+            Gets the group name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per language
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.PhaseOrGroupLongName">
+            <summary>
+            Gets the phase or group long name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per language
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.CupRoundMatches">
@@ -29652,21 +29743,23 @@
             Gets the betradar identifier
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.PhaseOrGroupLongName">
-            <summary>
-            Gets the phase or group long name of the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound"/> per locale
-            </summary>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IRound.GetName(System.Globalization.CultureInfo)">
             <summary>
-            Gets the name for specific locale
+            Gets the name for specific language
+            </summary>
+            <param name="culture">The culture</param>
+            <returns>Return the Name if exists, or null</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IRound.GetGroupName(System.Globalization.CultureInfo)">
+            <summary>
+            Gets the name for specific language
             </summary>
             <param name="culture">The culture</param>
             <returns>Return the Name if exists, or null</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IRound.GetPhaseOrGroupLongName(System.Globalization.CultureInfo)">
             <summary>
-            Gets the phase or group long name for specific locale
+            Gets the phase or group long name for specific language
             </summary>
             <param name="culture">The culture</param>
             <returns>Return the phase or group long name if exists, or null</returns>
@@ -33513,7 +33606,19 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.jersey.sleeve_detail">
             <remarks/>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.hole">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.hole.number">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.hole.par">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.venue">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.course">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.id">
@@ -33531,9 +33636,6 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.city_name">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.state">
-            <remarks/>
-        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.country_name">
             <remarks/>
         </member>
@@ -33541,6 +33643,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.map_coordinates">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.venue.state">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.category">
@@ -33726,6 +33831,9 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEvent.parent">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEvent.additional_parents">
+            <remarks/>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEvent.tournament">
             <remarks/>
         </member>
@@ -33748,6 +33856,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEvent.type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEvent.stage_type">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEvent.scheduled">
@@ -33796,6 +33907,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.matchRound.group_long_name">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.matchRound.group_name">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.matchRound.group">
@@ -33877,6 +33991,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.parentStage.type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.parentStage.stage_type">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.parentStage.scheduled">
@@ -34066,6 +34183,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEventChildrenSport_event.type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEventChildrenSport_event.stage_type">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.sportEventChildrenSport_event.scheduled">
@@ -34383,7 +34503,19 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageSportEventStatus.winner_id">
             <remarks/>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.stageResult">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResult.competitor">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResult.coverage">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor.result">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor.id">
@@ -34399,6 +34531,12 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor.pointsSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor.distance">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor.distanceSpecified">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor.wc_points">
@@ -34450,6 +34588,18 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor.gridSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitorResult">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitorResult.value">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitorResult.type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitorResult.specifiers">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.lottery">

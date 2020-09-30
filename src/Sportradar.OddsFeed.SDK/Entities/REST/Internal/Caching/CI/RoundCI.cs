@@ -25,6 +25,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private readonly IDictionary<CultureInfo, string> _names;
 
         /// <summary>
+        /// A <see cref="IDictionary{CultureInfo,String}"/> containing round group names in different languages
+        /// </summary>
+        private readonly IDictionary<CultureInfo, string> _groupNames;
+
+        /// <summary>
         /// A <see cref="IDictionary{CultureInfo,String}"/> containing phase or group long name in different languages
         /// </summary>
         private readonly IDictionary<CultureInfo, string> _phaseOrGroupLongName;
@@ -88,6 +93,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             _names = new Dictionary<CultureInfo, string>();
+            _groupNames = new Dictionary<CultureInfo, string>();
             _phaseOrGroupLongName = new Dictionary<CultureInfo, string>();
             Merge(dto, culture);
         }
@@ -104,6 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             }
 
             _names = new Dictionary<CultureInfo, string>(exportable.Names);
+            _groupNames = new Dictionary<CultureInfo, string>(exportable.GroupNames);
             _phaseOrGroupLongName = new Dictionary<CultureInfo, string>(exportable.PhaseOrGroupLongName);
             Type = exportable.Type;
             Group = exportable.Group;
@@ -134,6 +141,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             CupRoundMatchNumber = dto.CupRoundMatchNumber;
             BetradarId = dto.BetradarId;
             _names[culture] = dto.Name;
+            _groupNames[culture] = dto.GroupName;
             _phaseOrGroupLongName[culture] = dto.PhaseOrGroupLongName;
             Phase = dto.Phase;
         }
@@ -150,6 +158,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             return _names == null || !_names.ContainsKey(culture)
                 ? null
                 : _names[culture];
+        }
+
+        /// <summary>
+        /// Gets the group name for specific locale
+        /// </summary>
+        /// <param name="culture">The culture</param>
+        /// <returns>Return the Name if exists, or null</returns>
+        public string GetGroupName(CultureInfo culture)
+        {
+            Guard.Argument(culture, nameof(culture)).NotNull();
+
+            return _groupNames == null || !_groupNames.ContainsKey(culture)
+                ? null
+                : _groupNames[culture];
         }
 
         /// <summary>
@@ -185,13 +207,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             return Task.FromResult(new ExportableRoundCI
             {
                 Names = new Dictionary<CultureInfo, string>(_names),
+                GroupNames = new Dictionary<CultureInfo, string>(_groupNames),
+                PhaseOrGroupLongName = new Dictionary<CultureInfo, string>(_phaseOrGroupLongName),
                 Type = Type,
                 GroupId = GroupId?.ToString(),
                 Group = Group,
                 OtherMatchId = OtherMatchId,
                 Number = Number,
                 BetradarId = BetradarId,
-                PhaseOrGroupLongName = new Dictionary<CultureInfo, string>(_phaseOrGroupLongName ?? new Dictionary<CultureInfo, string>()),
                 Phase = Phase,
                 CupRoundMatchNumber = CupRoundMatchNumber,
                 CupRoundMatches = CupRoundMatches
