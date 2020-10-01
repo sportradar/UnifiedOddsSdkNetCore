@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             if (_cacheItem.MatchStatusId < 0)
             {
-                //TODO: write ERRROR
+                //TODO: write ERROR
                 return null;
             }
             return await _matchStatusCache.GetAsync(_cacheItem.MatchStatusId).ConfigureAwait(false);

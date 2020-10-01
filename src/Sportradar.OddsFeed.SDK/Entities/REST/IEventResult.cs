@@ -2,8 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
@@ -106,5 +108,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The grid</value>
         int? Grid { get; }
+
+        /// <summary>
+        /// Gets the distance
+        /// </summary>
+        /// <value>The distance</value>
+        double? Distance => null;
+
+        /// <summary>
+        /// Gets the competitor results
+        /// </summary>
+        /// <value>The results</value>
+        IEnumerable<ICompetitorResult> CompetitorResults => null;
     }
 }
