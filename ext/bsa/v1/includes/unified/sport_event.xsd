@@ -1,53 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:include schemaLocation="urn.xsd" />
-    <xs:include schemaLocation="tournament.xsd" />
-    <xs:include schemaLocation="team.xsd" />
-    <xs:include schemaLocation="season.xsd" />
-    <xs:include schemaLocation="group.xsd" />
-    <xs:include schemaLocation="match_round.xsd" />
-    <xs:include schemaLocation="venue.xsd" />
-    <xs:include schemaLocation="sport_event_conditions.xsd" />
-    <xs:complexType name="sportEvent">
-        <xs:sequence>
-            <xs:element type="matchRound" name="tournament_round" minOccurs="0"/>
-            <xs:element type="seasonExtended" name="season" minOccurs="0" />
-            <xs:element type="parentStage" name="parent" minOccurs="0" />
-            <xs:element type="tournament" name="tournament" minOccurs="0" />
-            <xs:element type="sportEventConditions" name="sport_event_conditions" minOccurs="0" maxOccurs="1"/>
-            <xs:element type="sportEventCompetitors" name="competitors" minOccurs="0"/>
-            <xs:element type="sportEventChildren" name="races" minOccurs="0" />
-            <xs:element type="venue" name="venue" minOccurs="0"/>
-        </xs:sequence>
-        <xs:attributeGroup ref="sportEventAttributes" />
-        <xs:attribute type="xs:string" name="liveodds" use="optional" />
-        <xs:attribute type="xs:string" name="status" use="optional" />
-        <xs:attribute type="xs:string" name="next_live_time" use="optional" />
-    </xs:complexType>
-    <xs:complexType name="sportEventCompetitors">
-        <xs:sequence>
-            <xs:element type="teamCompetitor" name="competitor" maxOccurs="unbounded" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="parentStage">
-        <xs:attributeGroup ref="sportEventAttributes" />
-    </xs:complexType>
-    <xs:complexType name="sportEventChildren">
-        <xs:sequence>
-            <xs:element name="sport_event" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attributeGroup ref="sportEventAttributes" />
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:attributeGroup name="sportEventAttributes">
-        <xs:attribute name="id" type="unifiedSportEventUrn" />
-        <xs:attribute name="name" type="xs:string" />
-        <xs:attribute name="type" type="xs:string" />
-        <xs:attribute type="xs:dateTime" name="scheduled" use="optional"/>
-        <xs:attribute type="xs:boolean" name="start_time_tbd" use="optional" />
-        <xs:attribute type="xs:dateTime" name="scheduled_end" use="optional"/>
-        <xs:attribute name="replaced_by" type="unifiedSportEventUrn" use="optional"/>
-    </xs:attributeGroup>
+  <xs:include schemaLocation="urn.xsd"/>
+  <xs:include schemaLocation="tournament.xsd"/>
+  <xs:include schemaLocation="team.xsd"/>
+  <xs:include schemaLocation="season.xsd"/>
+  <xs:include schemaLocation="group.xsd"/>
+  <xs:include schemaLocation="match_round.xsd"/>
+  <xs:include schemaLocation="venue.xsd"/>
+  <xs:include schemaLocation="sport_event_conditions.xsd"/>
+  <xs:complexType name="sportEvent">
+    <xs:sequence>
+      <xs:element type="matchRound" name="tournament_round" minOccurs="0"/>
+      <xs:element type="seasonExtended" name="season" minOccurs="0"/>
+      <xs:element type="parentStage" name="parent" minOccurs="0"/>
+      <xs:element name="additional_parents">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element type="parentStage" name="parent" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:sequence>
+      </xs:sequence>
+      <xs:element type="tournament" name="tournament" minOccurs="0"/>
+      <xs:element type="sportEventConditions" name="sport_event_conditions" minOccurs="0"
+        maxOccurs="1"/>
+      <xs:element type="sportEventCompetitors" name="competitors" minOccurs="0"/>
+      <xs:element type="sportEventChildren" name="races" minOccurs="0"/>
+      <xs:element type="venue" name="venue" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="sportEventAttributes"/>
+    <xs:attribute type="xs:string" name="liveodds" use="optional"/>
+    <xs:attribute type="xs:string" name="status" use="optional"/>
+    <xs:attribute type="xs:string" name="next_live_time" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="sportEventCompetitors">
+    <xs:sequence>
+      <xs:element type="teamCompetitor" name="competitor" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="parentStage">
+    <xs:attributeGroup ref="sportEventAttributes"/>
+  </xs:complexType>
+  <xs:complexType name="sportEventChildren">
+    <xs:sequence>
+      <xs:element name="sport_event" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attributeGroup ref="sportEventAttributes"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:attributeGroup name="sportEventAttributes">
+    <xs:attribute name="id" type="unifiedSportEventUrn"/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute name="stage_type" type="xs:string" use="optional"/>
+    <xs:attribute type="xs:dateTime" name="scheduled" use="optional"/>
+    <xs:attribute type="xs:boolean" name="start_time_tbd" use="optional"/>
+    <xs:attribute type="xs:dateTime" name="scheduled_end" use="optional"/>
+    <xs:attribute name="replaced_by" type="unifiedSportEventUrn"/>
+  </xs:attributeGroup>
 </xs:schema>

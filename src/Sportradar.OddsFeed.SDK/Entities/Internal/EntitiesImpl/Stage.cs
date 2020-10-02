@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
-            var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.CATCH
+            var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.THROW
                 ? await stageCI.GetStagesAsync(Cultures).ConfigureAwait(false)
                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<StageCI>>>(stageCI.GetStagesAsync)
                     .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ChildStages")).ConfigureAwait(false);
@@ -132,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             return cacheItems?.Select(c => new Stage(c.Id, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy));
         }
 
-        public async Task<StageType> GetStageTypeAsync()
+        public async Task<StageType?> GetStageTypeAsync()
         {
             var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
             if (stageCI == null)
@@ -140,7 +140,57 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return StageType.Child;
             }
-            return await stageCI.GetTypeAsync().ConfigureAwait(false);
+            return await stageCI.GetStageTypeAsync().ConfigureAwait(false);
+        }
+
+        public async Task<SportEventType?> GetEventTypeAsync()
+        {
+            var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
+            if (stageCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                return null;
+            }
+            return await stageCI.GetSportEventTypeAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Asynchronously gets a liveOdds
+        /// </summary>
+        /// <returns>A liveOdds</returns>
+        public async Task<string> GetLiveOddsAsync()
+        {
+            var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
+            if (stageCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                return null;
+            }
+            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await stageCI.GetLiveOddsAsync().ConfigureAwait(false)
+                : await new Func<Task<string>>(stageCI.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
+
+            return liveOdds;
+        }
+
+        /// <summary>
+        /// Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
+        /// </summary>
+        /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
+        public async Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync()
+        {
+            var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
+            if (stageCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                return null;
+            }
+            var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await stageCI.GetAdditionalParentStagesAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(stageCI.GetAdditionalParentStagesAsync)
+                    .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("AdditionalParentStages")).ConfigureAwait(false);
+
+            return cacheItems?.Select(c => new Stage(c, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy));
         }
     }
 }

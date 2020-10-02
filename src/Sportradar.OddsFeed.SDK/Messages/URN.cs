@@ -58,7 +58,8 @@ namespace Sportradar.OddsFeed.SDK.Messages
             new Tuple<string, ResourceTypeGroup>("referee", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("market", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("lottery", ResourceTypeGroup.LOTTERY),
-            new Tuple<string, ResourceTypeGroup>("draw", ResourceTypeGroup.DRAW)
+            new Tuple<string, ResourceTypeGroup>("draw", ResourceTypeGroup.DRAW),
+            new Tuple<string, ResourceTypeGroup>("competition_group", ResourceTypeGroup.STAGE)
         };
 
         /// <summary>

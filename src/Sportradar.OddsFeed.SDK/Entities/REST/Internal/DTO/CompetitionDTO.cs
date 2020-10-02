@@ -115,6 +115,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 Venue = new VenueDTO(matchSummary.venue);
             }
+
             GeneratedAt = matchSummary.generated_atSpecified
                               ? matchSummary.generated_at.ToLocalTime()
                               : (DateTime?) null;
@@ -136,6 +137,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             GeneratedAt = stageSummary.generated_atSpecified
                               ? stageSummary.generated_at.ToLocalTime()
                               : (DateTime?) null;
+        }
+
+        internal CompetitionDTO(sportEventChildrenSport_event stageSummary)
+            : base(stageSummary)
+        {
         }
     }
 }

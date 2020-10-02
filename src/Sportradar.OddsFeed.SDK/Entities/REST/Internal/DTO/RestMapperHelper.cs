@@ -326,6 +326,40 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
+        /// Tries tp maps the provided <see cref="string"/> to <see cref="SportEventType"/> enum member
+        /// </summary>
+        /// <param name="value">A <see cref="string"/> representation of the <see cref="SportEventType"/></param>
+        /// <param name="result">When invocation completes contains a mapped value if method returned true. Undefined otherwise</param>
+        /// <returns>A <see cref="SportEventType"/> member obtained by mapping. A null reference is mapped to null reference</returns>
+        public static bool TryGetStageType(string value, out StageType? result)
+        {
+            switch (value)
+            {
+                case null:
+                    result = null;
+                    return true;
+                case "parent":
+                    result = StageType.Parent;
+                    return true;
+                case "child":
+                    result = StageType.Child;
+                    return true;
+                case "event":
+                    result = StageType.Event;
+                    return true;
+                case "round":
+                    result = StageType.Round;
+                    return true;
+                case "competition_group":
+                    result = StageType.CompetitionGroup;
+                    return true;
+                default:
+                    result = null;
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Tries to map the provided <see cref="string"/> to <see cref="CoveredFrom"/> enum member
         /// </summary>
         /// <param name="value">A <see cref="string"/> representation of the <see cref="CoveredFrom"/>, or a null reference. Note that mapping of a null

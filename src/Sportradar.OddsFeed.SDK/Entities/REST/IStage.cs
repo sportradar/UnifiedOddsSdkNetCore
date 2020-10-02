@@ -2,8 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
@@ -40,6 +42,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously get the type of the stage
         /// </summary>
         /// <returns>The type of the stage</returns>
-        Task<StageType> GetStageTypeAsync();
+        Task<StageType?> GetStageTypeAsync();
+
+        /// <summary>
+        /// Asynchronously get the type of the stage
+        /// </summary>
+        /// <returns>The type of the stage</returns>
+        Task<SportEventType?> GetEventTypeAsync() => null;
+
+        /// <summary>
+        /// Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
+        /// </summary>
+        /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
+        Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync() => null;
     }
 }

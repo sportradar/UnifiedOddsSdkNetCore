@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -34,10 +35,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// The child stages
         /// </summary>
         private IEnumerable<StageCI> _childStages;
+
         /// <summary>
-        /// The stage type
+        /// The additional parent ids
         /// </summary>
-        private StageType _stageType;
+        private IEnumerable<URN> _additionalParentIds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StageCI"/> class
@@ -134,7 +136,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             _categoryId = URN.Parse(exportable.CategoryId);
             _parentStageId = exportable.ParentStageId;
             _childStages = exportable.ChildStages?.Select(s => new StageCI(s, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache));
-            _stageType = exportable.StageType;
+            _additionalParentIds = exportable.AdditionalParentIds;
         }
 
         /// <summary>
@@ -168,6 +170,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
+        /// Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
+        /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
+        /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
+        public async Task<IEnumerable<URN>> GetAdditionalParentStagesAsync(IEnumerable<CultureInfo> cultures)
+        {
+            if (!_additionalParentIds.IsNullOrEmpty())
+            {
+                return _additionalParentIds;
+            }
+            ////the requested data does not contain translatable values - fetch just for default language
+            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
+            return _additionalParentIds;
+        }
+
+        /// <summary>
         /// get stages as an asynchronous operation.
         /// </summary>
         /// <param name="cultures">The cultures</param>
@@ -181,16 +199,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             ////the requested data does not contain translatable values - fetch just for default language
             await FetchMissingSummary(cultures, false).ConfigureAwait(false);
             return _childStages;
-        }
-
-        /// <summary>
-        /// get type as an asynchronous operation.
-        /// </summary>
-        /// <returns>A <see cref="Task{URN}" /> representing the asynchronous operation</returns>
-        public async Task<StageType> GetTypeAsync()
-        {
-            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
-            return _stageType;
         }
 
         /// <summary>
@@ -243,16 +251,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                                                                                               DefaultCulture, FixtureTimestampCache)).ToList());
             }
 
-            if (eventSummary.Type != null)
-            {
-                _stageType = eventSummary.Type.Value == SportEventType.Parent
-                                 ? StageType.Parent
-                                 : StageType.Child;
-            }
-
             if (eventSummary.Tournament?.Category != null)
             {
                 _categoryId = eventSummary.Tournament.Category.Id;
+            }
+
+            if (!eventSummary.AdditionalParentIds.IsNullOrEmpty())
+            {
+                _additionalParentIds = eventSummary.AdditionalParentIds;
             }
         }
 
@@ -291,13 +297,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 _categoryId = eventSummary.Category.Id;
             }
 
-            if (eventSummary.Type != null)
-            {
-                _stageType = eventSummary.Type.Value == SportEventType.Parent
-                                 ? StageType.Parent
-                                 : StageType.Child;
-            }
-
             if (eventSummary.Competitors != null)
             {
                 Competitors = new List<URN>(eventSummary.Competitors.Select(t => t.Id));
@@ -323,26 +322,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 {
                     base.MergeFixture(fixture, culture, false);
                     _categoryId = fixture.Tournament?.Category?.Id;
-
-                    if (fixture.Type != null)
-                    {
-                        _stageType = fixture.Type.Value == SportEventType.Parent
-                                         ? StageType.Parent
-                                         : StageType.Child;
-                    }
                 }
             }
             else
             {
                 base.MergeFixture(fixture, culture, false);
                 _categoryId = fixture.Tournament?.Category?.Id;
-
-                if (fixture.Type != null)
-                {
-                    _stageType = fixture.Type.Value == SportEventType.Parent
-                                     ? StageType.Parent
-                                     : StageType.Child;
-                }
             }
         }
 
@@ -360,7 +345,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             stage.ParentStageId = _parentStageId;
             var childTasks = _childStages?.Select(async s => await s.ExportAsync().ConfigureAwait(false) as ExportableStageCI);
             stage.ChildStages = childTasks != null ? await Task.WhenAll(childTasks) : null;
-            stage.StageType = _stageType;
+            stage.AdditionalParentIds = _additionalParentIds;
 
             return exportable;
         }

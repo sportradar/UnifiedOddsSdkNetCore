@@ -47,6 +47,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public SportEventType? Type { get; }
 
         /// <summary>
+        /// Gets a <see cref="StageType"/> specifying the stage type of the associated sport event or a null reference if property is not applicable
+        /// for the associated sport event
+        /// </summary>
+        /// <seealso cref="StageType"/>
+        public StageType? StageType { get; }
+
+        /// <summary>
         /// Gets a <see cref="bool"/> specifying if the start time to be determined is set for the associated sport event
         /// </summary>
         public bool? StartTimeTbd { get; }
@@ -93,15 +100,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 }
             }
             Name = sportEvent.name;
-            SportEventType? type;
-            if (RestMapperHelper.TryGetSportEventType(sportEvent.type, out type))
+            if (RestMapperHelper.TryGetSportEventType(sportEvent.type, out var type))
             {
                 Type = type;
             }
             if (!string.IsNullOrEmpty(sportEvent.replaced_by))
             {
-                URN replacedBy;
-                if (URN.TryParse(sportEvent.replaced_by, out replacedBy))
+                if (URN.TryParse(sportEvent.replaced_by, out var replacedBy))
                 {
                     ReplacedBy = replacedBy;
                 }
@@ -111,6 +116,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StatusOnEvent = sportEvent.status;
 
             LiveOdds = sportEvent.liveodds;
+
+            if (RestMapperHelper.TryGetStageType(sportEvent.stage_type, out var stageType))
+            {
+                StageType = stageType;
+            }
         }
 
         /// <summary>
@@ -135,15 +145,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             //    SportId = sportId;
             //}
             Name = parentStage.name;
-            SportEventType? type;
-            if (RestMapperHelper.TryGetSportEventType(parentStage.type, out type))
+            if (RestMapperHelper.TryGetSportEventType(parentStage.type, out var type))
             {
                 Type = type;
             }
             if (!string.IsNullOrEmpty(parentStage.replaced_by))
             {
-                URN replacedBy;
-                if (URN.TryParse(parentStage.replaced_by, out replacedBy))
+                if (URN.TryParse(parentStage.replaced_by, out var replacedBy))
                 {
                     ReplacedBy = replacedBy;
                 }
@@ -153,6 +161,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StatusOnEvent = null;
 
             LiveOdds = null;
+
+            if (RestMapperHelper.TryGetStageType(parentStage.stage_type, out var stageType))
+            {
+                StageType = stageType;
+            }
         }
 
         /// <summary>
@@ -177,15 +190,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             //    SportId = sportId;
             //}
             Name = childStage.name;
-            SportEventType? type;
-            if (RestMapperHelper.TryGetSportEventType(childStage.type, out type))
+            if (RestMapperHelper.TryGetSportEventType(childStage.type, out var type))
             {
                 Type = type;
             }
             if (!string.IsNullOrEmpty(childStage.replaced_by))
             {
-                URN replacedBy;
-                if (URN.TryParse(childStage.replaced_by, out replacedBy))
+                if (URN.TryParse(childStage.replaced_by, out var replacedBy))
                 {
                     ReplacedBy = replacedBy;
                 }
@@ -195,6 +206,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StatusOnEvent = null;
 
             LiveOdds = null;
+
+            if (RestMapperHelper.TryGetStageType(childStage.stage_type, out var stageType))
+            {
+                StageType = stageType;
+            }
         }
     }
 }

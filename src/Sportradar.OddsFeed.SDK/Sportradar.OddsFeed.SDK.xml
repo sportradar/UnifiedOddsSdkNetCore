@@ -9208,6 +9208,13 @@
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the retrieval operation</returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Match.GetCoverageInfoAsync">
+            <summary>
+            Asynchronously gets the associated coverage info
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the retrieval operation</returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Match.GetNameAsync(System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
@@ -11664,6 +11671,11 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableDelayedInfoCI"/> representation of the delayed info
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableMatchCI.CoverageInfo">
+            <summary>
+            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCoverageInfoCI"/> representation of the coverage info
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportablePitcherCI">
             <summary>
             Class used to export/import pitcher cache item properties
@@ -12043,6 +12055,24 @@
             Gets the <see cref="T:System.String"/> specifying the replacement sport event id
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.LiveOdds">
+            <summary>
+            Gets a liveOdds
+            </summary>
+            <returns>A liveOdds</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.SportEventType">
+            <summary>
+            Gets a <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.SportEventType"/> for the associated sport event.
+            </summary>
+            <returns>A <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.SportEventType"/> for the associated sport event.</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.StageType">
+            <summary>
+            Gets a <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.StageType"/> for the associated sport event.
+            </summary>
+            <returns>A <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.StageType"/> for the associated sport event.</returns>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI.LoadedFixtures">
             <summary>
             Gets the <see cref="T:System.Collections.Generic.List`1"/> specifying the loaded fixtures
@@ -12103,9 +12133,9 @@
             A <see cref="T:System.Collections.Generic.IEnumerable`1"/> representing the child stages
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStageCI.StageType">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStageCI.AdditionalParentIds">
             <summary>
-            A <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStageCI.StageType"/> representing the stage type
+            A list of additional parents ids
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStreamingChannelCI">
@@ -12814,6 +12844,21 @@
             The child
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Event">
+            <summary>
+            The event
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Round">
+            <summary>
+            The round
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.CompetitionGroup">
+            <summary>
+            The competition group
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.TimeType">
             <summary>
             Enumeration of possible time types
@@ -13236,6 +13281,28 @@
             </summary>
             <returns>The associated category</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitorResult">
+            <summary>
+            Defines contract used by classes that provide competitor result information
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitorResult.Type">
+            <summary>
+            Get the type
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitorResult.Value">
+            <summary>
+            Gets the value
+            </summary>
+            <value>The value</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitorResult.Specifiers">
+            <summary>
+            Gets the specifiers
+            </summary>
+            <value>The specifiers</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ICoverageInfo">
             <summary>
             Defines a contract implemented by classes providing coverage information
@@ -13591,6 +13658,18 @@
             Gets the grid
             </summary>
             <value>The grid</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IEventResult.Distance">
+            <summary>
+            Gets the distance
+            </summary>
+            <value>The distance</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IEventResult.CompetitorResults">
+            <summary>
+            Gets the competitor results
+            </summary>
+            <value>The results</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventTimeline">
             <summary>
@@ -13976,6 +14055,12 @@
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IMatch.GetDelayedInfoAsync">
             <summary>
             Asynchronously gets the associated delayed info
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the retrieval operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IMatch.GetCoverageInfoAsync">
+            <summary>
+            Asynchronously gets the associated coverage info
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the retrieval operation</returns>
         </member>
@@ -14485,6 +14570,23 @@
             </summary>
             <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> instance containing all relevant properties</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CoverageInfoCI">
+            <summary>
+            Defines a cache item for coverage info
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CoverageInfoCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCoverageInfoCI)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CoverageInfoCI"/> class
+            </summary>
+            <param name="exportable">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCoverageInfoCI"/> used to create new instance</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CoverageInfoCI.ExportAsync">
+            <summary>
+            Asynchronous export item's properties
+            </summary>
+            <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> instance containing all relevant properties</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CurrentSeasonInfoCI">
             <summary>
             Cache item for current season info
@@ -14827,6 +14929,18 @@
             <summary>
             A cache item representing a hole (used in golf course)
             </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.HoleCI.Number">
+            <summary>
+            Gets the number of the hole
+            </summary>
+            <value>The number</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.HoleCI.Par">
+            <summary>
+            Gets the par
+            </summary>
+            <value>The par</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.JerseyCI">
             <summary>
@@ -16357,6 +16471,13 @@
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IMatchCI.GetCoverageInfoAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+            <summary>
+            Asynchronously gets <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CoverageInfoDTO"/> instance providing coverage info
+            </summary>
+            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IMatchCI.MergeTimeline(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchTimelineDTO,System.Globalization.CultureInfo,System.Boolean)">
             <summary>
             Merges the timeline
@@ -16454,6 +16575,24 @@
             <param name="dto">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO"/> used for merge</param>
             <param name="culture">The culture of the input <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO"/></param>
             <param name="useLock">Should the lock mechanism be used during merge</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI.GetLiveOddsAsync">
+            <summary>
+            Asynchronously gets a liveOdds
+            </summary>
+            <returns>A liveOdds</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI.GetSportEventTypeAsync">
+            <summary>
+            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/> for the associated sport event.
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/> for the associated sport event.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI.GetStageTypeAsync">
+            <summary>
+            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType"/> for the associated sport event.
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType"/> for the associated sport event.</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventStatusCI">
             <summary>
@@ -16574,18 +16713,19 @@
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetAdditionalParentIdsAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+            <summary>
+            Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
+            </summary>
+            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetStagesAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
             Asynchronously gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> representing child stages of the current instance or a null reference if the represented stage does not have children
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
             <returns></returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetTypeAsync">
-            <summary>
-            Asynchronously gets <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType"/> specifying the type of the stage
-            </summary>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ITournamentInfoCI">
             <summary>
@@ -16822,6 +16962,11 @@
             The delayed info
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.MatchCI._coverageInfo">
+            <summary>
+            The coverage info
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.MatchCI.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager,Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool,System.Globalization.CultureInfo,System.Runtime.Caching.MemoryCache)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.MatchCI"/> class
@@ -16904,6 +17049,14 @@
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.MatchCI.GetDelayedInfoAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
             Asynchronously gets <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI" /> instance providing delayed info
+            </summary>
+            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the returned instance should be translated</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing an async operation</returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.MatchCI.GetCoverageInfoAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+            <summary>
+            Asynchronously gets <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CoverageInfoDTO" /> instance providing coverage info
             </summary>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the returned instance should be translated</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing an async operation</returns>
@@ -17142,6 +17295,24 @@
             <param name="culture">A language code of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO" /> data</param>
             <param name="useLock">Should the lock mechanism be used during merge</param>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI.GetLiveOddsAsync">
+            <summary>
+            Asynchronously gets a liveOdds
+            </summary>
+            <returns>A liveOdds</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI.GetSportEventTypeAsync">
+            <summary>
+            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/> for the associated sport event.
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/> for the associated sport event.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI.GetStageTypeAsync">
+            <summary>
+            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType"/> for the associated sport event.
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType"/> for the associated sport event.</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI.CreateExportableCIAsync``1">
             <summary>
             Create exportable cache items
@@ -17310,9 +17481,9 @@
             The child stages
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI._stageType">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI._additionalParentIds">
             <summary>
-            The stage type
+            The additional parent ids
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager,Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool,System.Globalization.CultureInfo,System.Runtime.Caching.MemoryCache)">
@@ -17381,17 +17552,18 @@
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the returned instance should be translated</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the asynchronous operation</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.GetAdditionalParentIdsAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+            <summary>
+            Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
+            </summary>
+            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.GetStagesAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
             get stages as an asynchronous operation.
             </summary>
             <param name="cultures">The cultures</param>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the asynchronous operation</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.GetTypeAsync">
-            <summary>
-            get type as an asynchronous operation.
-            </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the asynchronous operation</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.Merge(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO,System.Globalization.CultureInfo,System.Boolean)">
@@ -20367,6 +20539,11 @@
             </summary>
             <param name="record">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.competitorProfileEndpoint"/> containing information about the profile</param>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorResultDTO">
+            <summary>
+            A data-transfer-object for competitor result
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CurrentSeasonInfoDTO">
             <summary>
             Class CurrentSeasonInfoDTO
@@ -20639,6 +20816,19 @@
             </summary>
             <value>The grid</value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO.Distance">
+            <summary>
+            Gets the distance
+            </summary>
+            <value>The distance</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO.CompetitorResults">
+            <summary>
+            Gets the competitor results
+            </summary>
+            <value>The results</value>
+            <remarks>Sportradar</remarks>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.Feed.resultType)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO"/> class
@@ -20868,6 +21058,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchDTO.Tournament">
             <summary>
             Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentDTO"/> representing the tournament to which the associated sport event belongs to.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchDTO.Coverage">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CoverageInfoDTO"/>
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.sportEvent)">
@@ -21267,6 +21462,14 @@
             <returns>True if the provided <see cref="T:System.String"/> was successfully mapped to <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.BookingStatus"/>; False otherwise</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.RestMapperHelper.TryGetSportEventType(System.String,System.Nullable{Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType}@)">
+            <summary>
+            Tries tp maps the provided <see cref="T:System.String"/> to <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/> enum member
+            </summary>
+            <param name="value">A <see cref="T:System.String"/> representation of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/></param>
+            <param name="result">When invocation completes contains a mapped value if method returned true. Undefined otherwise</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/> member obtained by mapping. A null reference is mapped to null reference</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.RestMapperHelper.TryGetStageType(System.String,System.Nullable{Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType}@)">
             <summary>
             Tries tp maps the provided <see cref="T:System.String"/> to <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/> enum member
             </summary>
@@ -21727,6 +21930,13 @@
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.SportEventType"/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO.StageType">
+            <summary>
+            Gets a <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO.StageType"/> specifying the stage type of the associated sport event or a null reference if property is not applicable
+            for the associated sport event
+            </summary>
+            <seealso cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO.StageType"/>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO.StartTimeTbd">
             <summary>
             Gets a <see cref="T:System.Boolean"/> specifying if the start time to be determined is set for the associated sport event
@@ -21776,6 +21986,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.ParentStageId">
             <summary>
             Gets a id of the parent stage associated with the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.AdditionalParentIds">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the additional parent stages associated with the current instance
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.Stages">
@@ -22700,6 +22915,23 @@
             </summary>
             <returns>The associated category</returns>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitorResult.Type">
+            <summary>
+            Get the type
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitorResult.Value">
+            <summary>
+            Gets the value
+            </summary>
+            <value>The value</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitorResult.Specifiers">
+            <summary>
+            Gets the specifiers
+            </summary>
+            <value>The specifiers</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CoverageInfo">
             <summary>
             Provides coverage information
@@ -23248,6 +23480,18 @@
             Gets the grid
             </summary>
             <value>The grid</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventResult.Distance">
+            <summary>
+            Gets the distance
+            </summary>
+            <value>The distance</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventResult.CompetitorResults">
+            <summary>
+            Gets the results.
+            </summary>
+            <value>The results.</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventResult.GetMatchStatusAsync(System.Globalization.CultureInfo)">
             <summary>
@@ -30332,6 +30576,12 @@
             <returns>The list of stages representing stages of the multi-stage stage</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IStage.GetStageTypeAsync">
+            <summary>
+            Asynchronously get the type of the stage
+            </summary>
+            <returns>The type of the stage</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IStage.GetEventTypeAsync">
             <summary>
             Asynchronously get the type of the stage
             </summary>

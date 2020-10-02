@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -74,5 +75,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="culture">The culture of the input <see cref="SportEventSummaryDTO"/></param>
         /// <param name="useLock">Should the lock mechanism be used during merge</param>
         void Merge(SportEventSummaryDTO dto, CultureInfo culture, bool useLock);
+
+        /// <summary>
+        /// Asynchronously gets a liveOdds
+        /// </summary>
+        /// <returns>A liveOdds</returns>
+        Task<string> GetLiveOddsAsync();
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="SportEventType"/> for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="SportEventType"/> for the associated sport event.</returns>
+        Task<SportEventType?> GetSportEventTypeAsync();
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="StageType"/> for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="StageType"/> for the associated sport event.</returns>
+        Task<StageType?> GetStageTypeAsync();
     }
 }
