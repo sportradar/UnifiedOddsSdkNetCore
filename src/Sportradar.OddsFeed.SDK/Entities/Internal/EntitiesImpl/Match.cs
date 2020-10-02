@@ -251,6 +251,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 : new DelayedInfo(delayedInfoCI);
         }
 
+        /// <summary>
+        /// Asynchronously gets the associated coverage info
+        /// </summary>
+        /// <returns>A <see cref="Task{ICoverageInfo}"/> representing the retrieval operation</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<ICoverageInfo> GetCoverageInfoAsync()
+        {
+            var matchCI = (MatchCI)SportEventCache.GetEventCacheItem(Id);
+            if (matchCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                return null;
+            }
+            var coverageInfoCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await matchCI.GetCoverageInfoAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<CoverageInfoCI>>(matchCI.GetCoverageInfoAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CoverageInfo")).ConfigureAwait(false);
+
+            return coverageInfoCI == null
+                ? null
+                : new CoverageInfo(coverageInfoCI);
+        }
+
         /// <inheritdoc />
         public new async Task<string> GetNameAsync(CultureInfo culture)
         {

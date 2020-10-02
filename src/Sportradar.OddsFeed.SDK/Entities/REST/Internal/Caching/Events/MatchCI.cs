@@ -46,6 +46,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// The delayed info
         /// </summary>
         private DelayedInfoCI _delayedInfo;
+        /// <summary>
+        /// The coverage info
+        /// </summary>
+        private CoverageInfoCI _coverageInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MatchCI"/> class
@@ -125,6 +129,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             _fixture = exportable.Fixture != null ? new Fixture(exportable.Fixture) : null;
             _eventTimeline = exportable.EventTimeline != null ? new EventTimelineCI(exportable.EventTimeline) : null;
             _delayedInfo = exportable.DelayedInfo != null ? new DelayedInfoCI(exportable.DelayedInfo) : null;
+            _coverageInfo = exportable.CoverageInfo != null ? new CoverageInfoCI(exportable.CoverageInfo) : null;
         }
 
         /// <summary>
@@ -222,6 +227,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
+        /// Asynchronously gets <see cref="CoverageInfoDTO" /> instance providing coverage info
+        /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
+        /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public async Task<CoverageInfoCI> GetCoverageInfoAsync(IEnumerable<CultureInfo> cultures)
+        {
+            await FetchMissingFixtures(cultures).ConfigureAwait(false);
+            return _coverageInfo;
+        }
+
+        /// <summary>
         /// Merges the specified event summary
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
@@ -277,6 +294,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 _tournamentId = eventSummary.Tournament.Id;
             }
+            if(eventSummary.Coverage != null)
+            {
+                _coverageInfo = new CoverageInfoCI(eventSummary.Coverage);
+            }
         }
 
         /// <summary>
@@ -322,6 +343,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     _delayedInfo.Merge(fixture.DelayedInfo, culture);
                 }
             }
+
+            if (fixture.Coverage != null)
+            {
+                _coverageInfo = new CoverageInfoCI(fixture.CoverageInfo);
+            }
         }
 
         /// <summary>
@@ -360,6 +386,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 _eventTimeline.Merge(timelineDTO, culture);
             }
+
+            if (timelineDTO.CoverageInfo != null)
+            {
+                _coverageInfo = new CoverageInfoCI(timelineDTO.CoverageInfo);
+            }
         }
 
         protected override async Task<T> CreateExportableCIAsync<T>()
@@ -384,6 +415,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     : null;
                 match.DelayedInfo =
                     _delayedInfo != null ? await _delayedInfo.ExportAsync().ConfigureAwait(false) : null;
+
+                match.CoverageInfo = _coverageInfo != null
+                    ? new ExportableCoverageInfoCI()
+                    {
+                        CoveredFrom = _coverageInfo.CoveredFrom,
+                        Includes = _coverageInfo.Includes,
+                        IsLive = _coverageInfo.IsLive,
+                        Level = _coverageInfo.Level
+                    }
+                    : null;
             }
 
             return exportable;

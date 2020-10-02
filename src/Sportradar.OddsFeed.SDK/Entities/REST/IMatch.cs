@@ -64,5 +64,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>A <see cref="Task{IDelayedInfo}"/> representing the retrieval operation</returns>
         Task<IDelayedInfo> GetDelayedInfoAsync();
+
+        /// <summary>
+        /// Asynchronously gets the associated coverage info
+        /// </summary>
+        /// <returns>A <see cref="Task{ICoverageInfo}"/> representing the retrieval operation</returns>
+        Task<ICoverageInfo> GetCoverageInfoAsync() => null;
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
@@ -58,8 +59,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             _coveredFrom = coveredFrom;
         }
 
-        public CoverageInfo(CoverageInfoDTO dto)
-            :this(dto.Level, dto.IsLive, dto.Includes, dto.CoveredFrom)
+        public CoverageInfo(CoverageInfoCI ci)
+            : this(ci.Level, ci.IsLive, ci.Includes, ci.CoveredFrom)
         { }
 
         /// <summary>

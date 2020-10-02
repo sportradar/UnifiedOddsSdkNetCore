@@ -40,5 +40,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// A <see cref="ExportableDelayedInfoCI"/> representation of the delayed info
         /// </summary>
         public ExportableDelayedInfoCI DelayedInfo { get; set; }
+
+        /// <summary>
+        /// A <see cref="ExportableCoverageInfoCI"/> representation of the coverage info
+        /// </summary>
+        public ExportableCoverageInfoCI CoverageInfo { get; set; }
     }
 }

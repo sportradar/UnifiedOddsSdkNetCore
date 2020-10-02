@@ -61,6 +61,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         Task<DelayedInfoCI> GetDelayedInfoAsync(IEnumerable<CultureInfo> cultures);
 
         /// <summary>
+        /// Asynchronously gets <see cref="CoverageInfoDTO"/> instance providing coverage info
+        /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
+        /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
+        Task<CoverageInfoCI> GetCoverageInfoAsync(IEnumerable<CultureInfo> cultures);
+
+        /// <summary>
         /// Merges the timeline
         /// </summary>
         /// <param name="timelineDTO">The timeline dto</param>

@@ -30,6 +30,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public TournamentDTO Tournament { get; }
 
         /// <summary>
+        /// Gets a <see cref="CoverageInfoDTO"/>
+        /// </summary>
+        public CoverageInfoDTO Coverage { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MatchDTO"/> class
         /// </summary>
         /// <param name="sportEvent">A <see cref="sportEvent"/> instance containing basic information about the sport event</param>
@@ -78,6 +83,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 Guard.Argument(matchSummary.sport_event.tournament.id, nameof(matchSummary.sport_event.tournament.id)).NotNull().NotEmpty();
                 Guard.Argument(matchSummary.sport_event.tournament.name, nameof(matchSummary.sport_event.tournament.name)).NotNull().NotEmpty();
                 Tournament = new TournamentDTO(matchSummary.sport_event.tournament);
+            }
+            if (matchSummary.coverage_info != null)
+            {
+                Coverage = new CoverageInfoDTO(matchSummary.coverage_info);
             }
         }
 
@@ -129,6 +138,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Venue = fixture.venue == null
                 ? null
                 : new VenueDTO(fixture.venue);
+
+            if (fixture.coverage_info != null)
+            {
+                Coverage = new CoverageInfoDTO(fixture.coverage_info);
+            }
         }
     }
 }
