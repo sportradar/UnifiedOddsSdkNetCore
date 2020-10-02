@@ -432,7 +432,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             {
                 if (firstTime)
                 {
-                    HandleErrorCondition("Retrieved market descriptor is lacking outcomes", outcomeId, null, culture, null);
+                    HandleErrorCondition("Retrieved market descriptor has no outcomes", outcomeId, null, culture, null);
                     if (((MarketDescription) marketDescriptor).MarketDescriptionCI.CanBeFetched())
                     {
                         HandleErrorCondition("Reloading market description", outcomeId, null, culture, null);

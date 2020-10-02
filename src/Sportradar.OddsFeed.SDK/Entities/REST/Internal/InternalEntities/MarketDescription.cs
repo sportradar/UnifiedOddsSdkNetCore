@@ -83,16 +83,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 
         public string GetName(CultureInfo culture)
         {
-            string name;
-            return _names.TryGetValue(culture, out name)
+            return _names.TryGetValue(culture, out var name)
                 ? name
                 : null;
         }
 
         public string GetDescription(CultureInfo culture)
         {
-            string description;
-            return _descriptions.TryGetValue(culture, out description)
+            return _descriptions.TryGetValue(culture, out var description)
                 ? description
                 : null;
         }

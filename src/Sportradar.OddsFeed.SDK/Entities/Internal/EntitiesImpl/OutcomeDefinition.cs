@@ -7,8 +7,11 @@ using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
 using System.Linq;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 
@@ -100,7 +103,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 var outcomeDescription = marketDescription.Outcomes.FirstOrDefault(s => s.Id.Equals(_outcomeId, StringComparison.InvariantCultureIgnoreCase));
                 if (outcomeDescription == null)
                 {
-                    throw new CacheItemNotFoundException("Item not found", nameof(_outcomeId), null);
+                    if (marketDescription.OutcomeType.Equals(SdkInfo.CompetitorsMarketOutcomeType))
+                    {
+                        foreach (var cultureInfo in _cultures)
+                        {
+                            _names[cultureInfo] = _outcomeId;
+                        }
+                        return _outcomeId;
+                    }
+                    var outcomesString = WriteOutcomes(marketDescription.Outcomes, culture);
+                    throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for id={_marketDescription.Id} not found. Existing outcomes: {outcomesString}", _outcomeId, null);
                 }
                 foreach (var cultureInfo in _cultures)
                 {
@@ -111,13 +123,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             {
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
-                    throw new CacheItemNotFoundException("Could not provide the requested translated name", nameof(_outcomeId), e);
+                    throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for id={_marketDescription.Id} could not provide the requested translated name", _outcomeId, e);
                 }
             }
 
             return _names.ContainsKey(culture)
                        ? _names[culture]
                        : null;
+        }
+
+        private static string WriteOutcomes(IEnumerable<IOutcomeDescription> outcomes, CultureInfo culture)
+        {
+            var outcomeDescriptions = outcomes.ToList();
+            if (outcomeDescriptions.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            return string.Join(",", outcomeDescriptions.Select(s => $"{s.Id}={s.GetName(culture)}"));
         }
     }
 }
