@@ -49,5 +49,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>Get the event status</returns>
         Task<EventStatus?> GetEventStatusAsync();
+
+        /// <summary>
+        /// Asynchronously gets a liveOdds
+        /// </summary>
+        /// <returns>A liveOdds</returns>
+        Task<string> GetLiveOddsAsync() => null;
     }
 }
