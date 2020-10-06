@@ -184,7 +184,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 Coordinates = Coordinates,
                 CountryCode = CountryCode,
                 State = State,
-                Course = Course?.Select(s => new ExportableHoleCI() {Number = s.Number, Par = s.Par})
+                Course = Course?.Select(s => new ExportableHoleCI {Number = s.Number, Par = s.Par})
             });
         }
     }

@@ -4,10 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Dawn;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;

@@ -343,7 +343,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     _delayedInfo.Merge(fixture.DelayedInfo, culture);
                 }
             }
-
             if (fixture.Coverage != null)
             {
                 _coverageInfo = new CoverageInfoCI(fixture.CoverageInfo);
@@ -386,7 +385,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 _eventTimeline.Merge(timelineDTO, culture);
             }
-
             if (timelineDTO.CoverageInfo != null)
             {
                 _coverageInfo = new CoverageInfoCI(timelineDTO.CoverageInfo);
@@ -415,9 +413,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     : null;
                 match.DelayedInfo =
                     _delayedInfo != null ? await _delayedInfo.ExportAsync().ConfigureAwait(false) : null;
-
                 match.CoverageInfo = _coverageInfo != null
-                    ? new ExportableCoverageInfoCI()
+                    ? new ExportableCoverageInfoCI
                     {
                         CoveredFrom = _coverageInfo.CoveredFrom,
                         Includes = _coverageInfo.Includes,

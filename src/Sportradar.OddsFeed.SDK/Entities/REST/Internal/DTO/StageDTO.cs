@@ -4,9 +4,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 

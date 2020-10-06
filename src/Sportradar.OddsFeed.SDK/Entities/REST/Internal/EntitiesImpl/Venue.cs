@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var cityNames = string.Join(", ", Cities.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
             var countryNames = string.Join(", ", Countries.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
 
-            string course = string.Empty;
+            var course = string.Empty;
             if (!Course.IsNullOrEmpty())
             {
                 course = ", Course=[" + string.Join(", ", Course.Select(x => x.Number + "-" + x.Par)) + "]";

@@ -78,7 +78,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string FlexScoreMarketAttributeName = "is_flex_score";
         /// <summary>
-        /// The player props market group
+        /// The competitors market group
         /// </summary>
         public const string CompetitorsMarketOutcomeType = "competitors";
         /// <summary>

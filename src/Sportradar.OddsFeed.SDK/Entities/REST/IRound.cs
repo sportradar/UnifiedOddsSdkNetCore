@@ -72,10 +72,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string GetName(CultureInfo culture);
 
         /// <summary>
-        /// Gets the name for specific language
+        /// Gets the group name for specific language
         /// </summary>
         /// <param name="culture">The culture</param>
-        /// <returns>Return the Name if exists, or null</returns>
+        /// <returns>Return the group name if exists, or null</returns>
         string GetGroupName(CultureInfo culture)
         {
             return null;
