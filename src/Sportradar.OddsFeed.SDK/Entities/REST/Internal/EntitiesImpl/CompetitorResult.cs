@@ -33,5 +33,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Value = result.Value;
             Specifiers = result.Specifiers;
         }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"Type={Type}, Value={Value}, Specifiers={Specifiers}";
+        }
     }
 }

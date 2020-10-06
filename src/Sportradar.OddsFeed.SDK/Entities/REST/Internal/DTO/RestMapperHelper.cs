@@ -301,7 +301,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Tries tp maps the provided <see cref="string"/> to <see cref="SportEventType"/> enum member
+        /// Tries to map the provided <see cref="string"/> to <see cref="SportEventType"/> enum member
         /// </summary>
         /// <param name="value">A <see cref="string"/> representation of the <see cref="SportEventType"/></param>
         /// <param name="result">When invocation completes contains a mapped value if method returned true. Undefined otherwise</param>
@@ -326,7 +326,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Tries tp maps the provided <see cref="string"/> to <see cref="SportEventType"/> enum member
+        /// Tries to map the provided <see cref="string"/> to <see cref="SportEventType"/> enum member
         /// </summary>
         /// <param name="value">A <see cref="string"/> representation of the <see cref="SportEventType"/></param>
         /// <param name="result">When invocation completes contains a mapped value if method returned true. Undefined otherwise</param>
@@ -346,6 +346,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     return true;
                 case "event":
                     result = StageType.Event;
+                    return true;
+                case "season":
+                    result = StageType.Season;
                     return true;
                 case "round":
                     result = StageType.Round;
