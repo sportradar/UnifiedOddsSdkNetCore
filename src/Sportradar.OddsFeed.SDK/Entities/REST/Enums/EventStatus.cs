@@ -40,29 +40,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         Cancelled = 5,
 
         /// <summary>
-        /// Sportradar aborts scouting the match - this means there will be no live reporting; the match will likely take place anyhow, and after the match has been played Sportradar will likely enter the results and the match will be moved to closed/finished
-        /// </summary>
-        Abandoned = 6,
-
-        /// <summary>
         ///  If a match has passed its scheduled start time but is delayed, unknown when it will start this is something that often happens in Tennis
         /// </summary>
-        Delayed = 7,
-
-        /// <summary>
-        /// If a hitherto unsupported sport-event-status is received
-        /// </summary>
-        Unknown = 8,
-
-        /// <summary>
-        /// Indicates that the associated sport event is postponed
-        /// </summary>
-        Postponed = 9,
+        Delayed = 6,
 
         /// <summary>
         /// Indicates that the associated sport event is interrupted. Interruption is expected to be just a few minutes. Longer interruptions may lead to a match being suspended, or possibly postponed.
         /// </summary>
-        Interrupted = 10,
+        Interrupted = 7,
+
+        /// <summary>
+        /// Indicates that the associated sport event is postponed
+        /// </summary>
+        Postponed = 8,
+
+        /// <summary>
+        /// Sportradar aborts scouting the match - this means there will be no live reporting; the match will likely take place anyhow, and after the match has been played Sportradar will likely enter the results and the match will be moved to closed/finished
+        /// </summary>
+        Abandoned = 9,
+
+        /// <summary>
+        /// If a hitherto unsupported sport-event-status is received
+        /// </summary>
+        Unknown = 10,
 
         /// <summary>
         /// The match is about to start
