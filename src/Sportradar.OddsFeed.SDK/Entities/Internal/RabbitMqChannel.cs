@@ -134,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private void ConsumerOnShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
-            ExecutionLog.LogInformation($"The consumer: {_consumer.ConsumerTag} is shutdown.");
+            ExecutionLog.LogInformation($"The consumer: {string.Join(",", _consumer.ConsumerTags)} is shutdown.");
         }
 
         private void ChannelOnModelShutdown(object sender, ShutdownEventArgs shutdownEventArgs)

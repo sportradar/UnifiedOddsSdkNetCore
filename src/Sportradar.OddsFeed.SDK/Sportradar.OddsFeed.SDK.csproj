@@ -24,23 +24,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics" Version="3.2.0" />
-    <PackageReference Include="App.Metrics.Abstractions" Version="3.2.0" />
-    <PackageReference Include="App.Metrics.Core" Version="3.2.0" />
+    <PackageReference Include="App.Metrics" Version="4.1.0" />
+    <PackageReference Include="App.Metrics.Abstractions" Version="4.1.0" />
+    <PackageReference Include="App.Metrics.Core" Version="4.1.0" />
     <PackageReference Include="App.Metrics.Health.Core" Version="3.2.0" />
-    <PackageReference Include="Castle.Core" Version="4.4.0" />
-    <PackageReference Include="Dawn.Guard" Version="1.10.0" />
-    <PackageReference Include="Humanizer" Version="2.7.9" />
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Dawn.Guard" Version="1.12.0" />
+    <PackageReference Include="Humanizer" Version="2.8.26" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.0.*" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
     <PackageReference Include="System.Threading" Version="4.3.0" />
-    <PackageReference Include="Unity" Version="5.11.3" />
+    <PackageReference Include="Unity" Version="5.11.7" />
   </ItemGroup>
 
   <ItemGroup>

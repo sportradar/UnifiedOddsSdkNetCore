@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         public async Task<string> BuildNameAsync(CultureInfo culture)
         {
             var value = await _operand.GetIntValue().ConfigureAwait(false);
-            return value.Ordinalize();
+            return value.Ordinalize(culture);
         }
     }
 }
