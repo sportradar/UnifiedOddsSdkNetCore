@@ -25,6 +25,22 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-10-13  1.10.0.0
+IRound - GroupName renamed to Group, added GroupName property (breaking change)
+IStage - added GetAdditionalParentStages, GetStageType (breaking change - result changed from SportEventType to StageType)
+IEventResult extended with Distance and CompetitorResults
+ICompetition extended with GetLiveOdds and GetSportEventType property
+Added Course to the IVenue
+Added Coverage to IMatch
+Improvements in recovery manager
+Added support for markets with outcome_type=competitors
+Make replay manager available before the feed is open
+Improved connection error handling and reporting
+Fix: exception thrown when there are no fixture changes
+Fix: soccer events not instance of ISoccerEvent
+Fix: entities null even though data is present on the API
+Fix: event status enumeration
+
 2020-08-19  1.9.0.0
 Extended SeasonInfo with startDate, endDate, year and tournamentId
 FIx: special case when recovery status does not reflect actual state - results in wrong triggering ProducerUp-Down event

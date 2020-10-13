@@ -617,6 +617,11 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<bool?>(null);
         }
+
+        Task<StageType?> IStage.GetStageTypeAsync()
+        {
+            return Task.FromResult<StageType?>(null);
+        }
     }
 
     public class TestCompetitor : ICompetitor

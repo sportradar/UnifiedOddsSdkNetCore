@@ -88,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         public void CoverageInfoDTOMappingTest()
         {
             var coverageInfoFeed = RMF.GetCoverageInfo(10);
-            var coverageInfo = new CoverageInfo(new CoverageInfoDTO(coverageInfoFeed));
+            var coverageInfo = new CoverageInfo(new CoverageInfoCI(new CoverageInfoDTO(coverageInfoFeed)));
 
             Assert.IsNotNull(coverageInfo);
             Assert.AreEqual(coverageInfoFeed.level, coverageInfo.Level);
