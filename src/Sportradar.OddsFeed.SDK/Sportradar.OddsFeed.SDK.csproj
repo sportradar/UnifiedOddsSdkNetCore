@@ -15,8 +15,8 @@
     <PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
     <PackageProjectUrl>http://sdk.sportradar.com</PackageProjectUrl>
     <AssemblyVersion>1.9.0.0</AssemblyVersion>
-    <FileVersion>1.9.0.0</FileVersion>
-    <Version>1.9.0</Version>
+    <FileVersion>1.9.0.0-hg</FileVersion>
+    <Version>1.9.0-hg</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
