@@ -102,7 +102,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 var outcomeDescription = marketDescription.Outcomes.FirstOrDefault(s => s.Id.Equals(_outcomeId, StringComparison.InvariantCultureIgnoreCase));
                 if (outcomeDescription == null)
                 {
-                    if (marketDescription.OutcomeType.Equals(SdkInfo.CompetitorsMarketOutcomeType))
+                    if (!string.IsNullOrEmpty(marketDescription.OutcomeType) && marketDescription.OutcomeType.Equals(SdkInfo.CompetitorsMarketOutcomeType))
                     {
                         foreach (var cultureInfo in _cultures)
                         {
@@ -123,6 +123,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for id={_marketDescription.Id} could not provide the requested translated name", _outcomeId, e);
+                }
+            }
+            catch(Exception ex)
+            {
+                if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                {
+                    throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for id={_marketDescription.Id} could not provide the requested translated name", _outcomeId, ex);
                 }
             }
 

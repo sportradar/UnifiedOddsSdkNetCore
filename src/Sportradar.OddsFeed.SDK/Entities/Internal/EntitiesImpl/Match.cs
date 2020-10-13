@@ -291,24 +291,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             return name;
         }
-
-        /// <summary>
-        /// Asynchronously gets a liveOdds
-        /// </summary>
-        /// <returns>A liveOdds</returns>
-        public async Task<string> GetLiveOddsAsync()
-        {
-            var matchCI = (MatchCI) SportEventCache.GetEventCacheItem(Id);
-            if (matchCI == null)
-            {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
-                return null;
-            }
-            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await matchCI.GetLiveOddsAsync().ConfigureAwait(false)
-                : await new Func<Task<string>>(matchCI.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
-
-            return liveOdds;
-        }
     }
 }

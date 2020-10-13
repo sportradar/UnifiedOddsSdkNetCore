@@ -110,7 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 //    return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy);
                 //}
 
-                return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy); ;
+                return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy);
             }
 
             return null;
@@ -141,36 +141,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return StageType.Child;
             }
             return await stageCI.GetStageTypeAsync().ConfigureAwait(false);
-        }
-
-        public async Task<SportEventType?> GetEventTypeAsync()
-        {
-            var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
-            {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
-                return null;
-            }
-            return await stageCI.GetSportEventTypeAsync().ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Asynchronously gets a liveOdds
-        /// </summary>
-        /// <returns>A liveOdds</returns>
-        public async Task<string> GetLiveOddsAsync()
-        {
-            var stageCI = (StageCI) SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
-            {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
-                return null;
-            }
-            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await stageCI.GetLiveOddsAsync().ConfigureAwait(false)
-                : await new Func<Task<string>>(stageCI.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
-
-            return liveOdds;
         }
 
         /// <summary>

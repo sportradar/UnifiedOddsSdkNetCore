@@ -226,5 +226,43 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             return tasks.Select(s=>s.Result);
         }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="SportEventType"/> for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="SportEventType"/> for the associated sport event.</returns>
+        public async Task<SportEventType?> GetSportEventTypeAsync()
+        {
+            var competitionCI = (CompetitionCI) SportEventCache.GetEventCacheItem(Id);
+            if (competitionCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                return null;
+            }
+            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await competitionCI.GetSportEventTypeAsync().ConfigureAwait(false)
+                : await new Func<Task<SportEventType?>>(competitionCI.GetSportEventTypeAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportEventType")).ConfigureAwait(false);
+
+            return liveOdds;
+        }
+
+        /// <summary>
+        /// Asynchronously gets a liveOdds
+        /// </summary>
+        /// <returns>A liveOdds</returns>
+        public async Task<string> GetLiveOddsAsync()
+        {
+            var competitionCI = (CompetitionCI) SportEventCache.GetEventCacheItem(Id);
+            if (competitionCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                return null;
+            }
+            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await competitionCI.GetLiveOddsAsync().ConfigureAwait(false)
+                : await new Func<Task<string>>(competitionCI.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
+
+            return liveOdds;
+        }
     }
 }

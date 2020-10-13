@@ -58,14 +58,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public DateTime? GeneratedAt { get; protected set; }
 
         /// <summary>
+        /// Gets a <see cref="SportEventType"/> specifying the type of the associated sport event or a null reference if property is not applicable
+        /// for the associated sport event
+        /// </summary>
+        /// <seealso cref="SportEventType"/>
+        public SportEventType? Type { get; }
+
+        /// <summary>
+        /// Gets a <see cref="StageType"/> specifying the stage type of the associated sport event or a null reference if property is not applicable
+        /// for the associated sport event
+        /// </summary>
+        /// <seealso cref="StageType"/>
+        public StageType? StageType { get; }
+
+        /// <summary>
+        /// Gets the live odds property
+        /// </summary>
+        /// <value>The live odds property</value>
+        public string LiveOdds { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
         /// </summary>
         /// <param name="sportEvent">A <see cref="sportEvent"/> instance containing basic information about the sport event</param>
         internal CompetitionDTO(sportEvent sportEvent)
             : base(sportEvent)
         {
-            BookingStatus? bookingStatus;
-            if (RestMapperHelper.TryGetBookingStatus(sportEvent.liveodds, out bookingStatus))
+            if (RestMapperHelper.TryGetBookingStatus(sportEvent.liveodds, out var bookingStatus))
             {
                 BookingStatus = bookingStatus;
             }
@@ -87,6 +106,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             if (Venue == null && sportEvent.venue != null)
             {
                 Venue = new VenueDTO(sportEvent.venue);
+            }
+
+            if (RestMapperHelper.TryGetSportEventType(sportEvent.type, out var type))
+            {
+                Type = type;
+            }
+
+            LiveOdds = sportEvent.liveodds;
+
+            if (RestMapperHelper.TryGetStageType(sportEvent.stage_type, out var stageType))
+            {
+                StageType = stageType;
             }
         }
 
@@ -142,6 +173,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal CompetitionDTO(sportEventChildrenSport_event stageSummary)
             : base(stageSummary)
         {
+            if (RestMapperHelper.TryGetSportEventType(stageSummary.type, out var type))
+            {
+                Type = type;
+            }
+
+            LiveOdds = null;
+
+            if (RestMapperHelper.TryGetStageType(stageSummary.stage_type, out var stageType))
+            {
+                StageType = stageType;
+            }
         }
     }
 }

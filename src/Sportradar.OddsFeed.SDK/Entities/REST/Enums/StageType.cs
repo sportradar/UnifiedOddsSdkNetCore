@@ -36,6 +36,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         /// <summary>
         /// The competition group
         /// </summary>
-        CompetitionGroup
+        CompetitionGroup,
+
+        /// <summary>
+        /// The discipline
+        /// </summary>
+        Discipline,
+
+        /// <summary>
+        /// The race
+        /// </summary>
+        Race,
+
+        /// <summary>
+        /// The stage
+        /// </summary>
+        Stage
     }
 }

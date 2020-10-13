@@ -52,6 +52,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// </summary>
         private IDictionary<URN, ReferenceIdCI> _competitorsReferences;
 
+        private string _liveOdds;
+
+        private SportEventType? _sportEventType;
+
+        private StageType? _stageType;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CompetitionCI"/> class
         /// </summary>
@@ -155,6 +161,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                         exportableCompetition.CompetitorsReferences.ToDictionary(c => URN.Parse(c.Key),
                             c => new ReferenceIdCI(c.Value)))
                     : null;
+                _liveOdds = string.IsNullOrEmpty(exportableCompetition.LiveOdds) ? null : exportableCompetition.LiveOdds;
+                _sportEventType = exportableCompetition.SportEventType;
+                _stageType = exportableCompetition.StageType;
             }
         }
 
@@ -229,6 +238,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             await FetchMissingSummary(cultureInfos, false).ConfigureAwait(false);
             return Competitors;
         }
+
         /// <summary>
         /// get reference ids as an asynchronous operation
         /// </summary>
@@ -267,6 +277,60 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
             }
             return _competitorsQualifiers;
+        }
+
+        /// <summary>
+        /// Asynchronously gets a liveOdds
+        /// </summary>
+        /// <returns>A liveOdds</returns>
+        public async Task<string> GetLiveOddsAsync()
+        {
+            if (!string.IsNullOrEmpty(_liveOdds))
+            {
+                return _liveOdds;
+            }
+            if (LoadedSummaries.Any())
+            {
+                return _liveOdds;
+            }
+            await FetchMissingSummary(new List<CultureInfo> { DefaultCulture }, false).ConfigureAwait(false);
+            return _liveOdds;
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="SportEventType"/> for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="SportEventType"/> for the associated sport event.</returns>
+        public async Task<SportEventType?> GetSportEventTypeAsync()
+        {
+            if (_sportEventType != null)
+            {
+                return _sportEventType;
+            }
+            if (LoadedSummaries.Any())
+            {
+                return _sportEventType;
+            }
+            await FetchMissingSummary(new List<CultureInfo> { DefaultCulture }, false).ConfigureAwait(false);
+            return _sportEventType;
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="StageType"/> for the associated sport event.
+        /// </summary>
+        /// <returns>A <see cref="StageType"/> for the associated sport event.</returns>
+        public async Task<StageType?> GetStageTypeAsync()
+        {
+            if (_stageType != null)
+            {
+                return _stageType;
+            }
+            if (LoadedSummaries.Any())
+            {
+                return _stageType;
+            }
+            await FetchMissingSummary(new List<CultureInfo> { DefaultCulture }, false).ConfigureAwait(false);
+            return _stageType;
         }
 
         /// <summary>
@@ -332,6 +396,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 _bookingStatus = eventSummary.BookingStatus;
             }
+            _liveOdds = eventSummary.LiveOdds;
+            _sportEventType = eventSummary.Type;
+            _stageType = eventSummary.StageType;
         }
 
         /// <summary>
@@ -369,6 +436,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     _bookingStatus = fixture.BookingStatus;
                 }
             }
+            _liveOdds = fixture.LiveOdds;
+            _sportEventType = fixture.Type;
+            _stageType = fixture.StageType;
         }
 
         private void GenerateMatchName(IEnumerable<TeamCompetitorDTO> competitors, CultureInfo culture)
@@ -464,6 +534,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 competition.ReferenceId = _referenceId?.ReferenceIds?.ToDictionary(r => r.Key, r => r.Value);
                 competition.CompetitorsQualifiers = _competitorsQualifiers?.ToDictionary(q => q.Key.ToString(), q => q.Value);
                 competition.CompetitorsReferences = _competitorsReferences?.ToDictionary(r => r.Key.ToString(), r => (IDictionary<string, string>) r.Value.ReferenceIds.ToDictionary(v => v.Key, v => v.Value));
+                competition.LiveOdds = _liveOdds;
+                competition.SportEventType = _sportEventType;
+                competition.StageType = _stageType;
             }
 
             return exportable;

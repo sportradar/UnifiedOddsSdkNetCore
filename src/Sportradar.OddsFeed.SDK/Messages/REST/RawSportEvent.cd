@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.sportEvent">
+    <Position X="5.25" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EEYFA4BBcCBCGCDIAICACAIFSIAVACBCAAQAAgIBYgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.fixture">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgAOAAAIAAgAQEQJAAICwEAQAAAAAACAAIAAABCABAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.matchSummaryEndpoint">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIAAgAAKAAAAACAAAAABEEAAAAQAADCAEAIAFAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="sport_event" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.stageSummaryEndpoint">
+    <Position X="8.5" Y="3.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAACAAAAAAAAAAAAEEAAAAAAABAAEAIAEAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="sport_event" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.tournament">
+    <Position X="0.5" Y="4.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACgAghCQAAAAAAACICAAAAECAAUBKBAAACIAAAAAgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.tournamentExtended">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAIAABCAAAAACAAAAEAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.draw_event">
+    <Position X="8.25" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAYIAgBAAAAAAAAAAAAAAAAECAAAACBAgAAAAAAAIiA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.draw_fixture">
+    <Position X="10.25" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QIYIAABAACAAQAAAAAAAAAAAAAAAACAAgAACBAAAIiA=</HashCode>
+      <FileName>Messages\REST\RestMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

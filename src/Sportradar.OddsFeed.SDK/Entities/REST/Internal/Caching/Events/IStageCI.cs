@@ -25,7 +25,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
         Task<URN> GetParentStageAsync(IEnumerable<CultureInfo> cultures);
-        //TODO: do we need cultures here??
 
         /// <summary>
         /// Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages

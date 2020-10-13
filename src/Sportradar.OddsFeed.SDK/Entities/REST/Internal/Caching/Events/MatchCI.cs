@@ -202,7 +202,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             var wantedCultures = cultures as IList<CultureInfo> ?? cultures.ToList();
             if (_eventTimeline == null || !_eventTimeline.IsFinalized)
             {
-                // if we dont have timeline or is not yet finalized, all cultures should be fetched; otherwise only missing ones
+                // if we don't have timeline or is not yet finalized, all cultures should be fetched; otherwise only missing ones
             }
             else
             {
@@ -394,9 +394,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         protected override async Task<T> CreateExportableCIAsync<T>()
         {
             var exportable = await base.CreateExportableCIAsync<T>();
-            var match = exportable as ExportableMatchCI;
 
-            if (match != null)
+            if (exportable is ExportableMatchCI match)
             {
                 match.Season = _season != null
                     ? await _season.ExportAsync().ConfigureAwait(false)
