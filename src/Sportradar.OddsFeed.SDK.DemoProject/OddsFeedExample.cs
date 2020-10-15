@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
         private static void Main()
         {
             var services = new ServiceCollection();
-            services.AddLogging(configure => configure.AddLog4Net("log4net.config"));
+            services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddLog4Net("log4net.config"));
             var serviceProvider = services.BuildServiceProvider();
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
             _log = _loggerFactory.CreateLogger(typeof(OddsFeedExample));
