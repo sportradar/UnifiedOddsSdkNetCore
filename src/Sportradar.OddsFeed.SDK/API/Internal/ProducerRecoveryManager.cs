@@ -220,6 +220,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     ExecutionLog.LogWarning($"Connection shutdown detected. Producer={Producer}, Status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Action: No action required.");
                 }
+
                 if (newStatus != null && newStatus.Value != Status)
                 {
                     SetStatusAndRaiseEvent(null, newStatus.Value);

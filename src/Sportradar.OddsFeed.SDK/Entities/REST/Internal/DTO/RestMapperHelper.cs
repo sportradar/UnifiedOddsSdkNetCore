@@ -370,6 +370,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 case "stage":
                     result = StageType.Stage;
                     return true;
+                case "practice":
+                    result = StageType.Practice;
+                    return true;
+                case "qualifying":
+                    result = StageType.Qualifying;
+                    return true;
+                case "qualifying_part":
+                    result = StageType.QualifyingPart;
+                    return true;
                 default:
                     result = null;
                     return false;

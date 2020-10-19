@@ -12897,6 +12897,21 @@
             The stage
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Practice">
+            <summary>
+            The practice
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Qualifying">
+            <summary>
+            The qualifying
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.QualifyingPart">
+            <summary>
+            The qualifying part
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.TimeType">
             <summary>
             Enumeration of possible time types

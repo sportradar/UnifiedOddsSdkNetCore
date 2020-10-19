@@ -51,6 +51,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         /// <summary>
         /// The stage
         /// </summary>
-        Stage
+        Stage,
+
+        /// <summary>
+        /// The practice
+        /// </summary>
+        Practice,
+
+        /// <summary>
+        /// The qualifying
+        /// </summary>
+        Qualifying,
+
+        /// <summary>
+        /// The qualifying part
+        /// </summary>
+        QualifyingPart
     }
 }
