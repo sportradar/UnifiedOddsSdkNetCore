@@ -66,6 +66,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         /// <summary>
         /// The qualifying part
         /// </summary>
-        QualifyingPart
+        QualifyingPart,
+
+        /// <summary>
+        /// The lap
+        /// </summary>
+        Lap
     }
 }
