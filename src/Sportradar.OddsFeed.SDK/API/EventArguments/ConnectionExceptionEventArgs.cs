@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// Initializes a new instance of the <see cref="ConnectionExceptionEventArgs"/> class
         /// </summary>
         /// <param name="exception">The exception that caused an error</param>
-        /// <param name="exception">Details about the error</param>
+        /// <param name="detail">Details about the error</param>
         public ConnectionExceptionEventArgs(Exception exception, IDictionary<string, object> detail)
         {
             Exception = exception;

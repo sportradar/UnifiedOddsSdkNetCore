@@ -93,7 +93,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             public int GetHashCode(tournamentExtended obj)
             {
-                return obj?.category.id.GetHashCode() ?? 0;
+                return obj.category.id.GetHashCode();
             }
         }
     }

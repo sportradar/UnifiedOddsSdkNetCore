@@ -9,7 +9,6 @@ namespace Sportradar.OddsFeed.SDK.Entities
     /// Defines a contract implemented by cash-out probability messages
     /// </summary>
     /// <typeparam name="T">A <see cref="ISportEvent"/> derived type specifying the type of the associated sport event</typeparam>
-
     public interface ICashOutProbabilities<out T> : IMarketMessage<IMarketWithProbabilities, T>
         where T : ISportEvent
     {

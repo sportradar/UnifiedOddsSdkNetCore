@@ -398,9 +398,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             status = fixture.StatusOnEvent
         })
         {
-            TournamentCoverage = fixture.CoverageInfo == null
+            TournamentCoverage = fixture.Coverage == null
                 ? null
-                : new TournamentCoverageDTO(new tournamentLiveCoverageInfo { live_coverage = fixture.CoverageInfo.IsLive.ToString().ToLower() });
+                : new TournamentCoverageDTO(new tournamentLiveCoverageInfo { live_coverage = fixture.Coverage.IsLive.ToString().ToLower() });
 
             Category = fixture.Tournament?.Category;
 

@@ -230,34 +230,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         {
             base.Merge(eventSummary, culture, false);
 
-            if (eventSummary.ParentStageId != null)
-            {
-                // no translatable data - just replace with new value
-                _parentStageId = eventSummary.ParentStageId;
-            }
-            //else
-            //{
-            //    if (eventSummary.Tournament != null)
-            //    {
-            //        _parentStage = new StageCI(eventSummary.Tournament.Id, DataRouterManager, SemaphorePool, culture, FixtureTimestampCache);
-            //    }
-            //}
             if (eventSummary.Stages != null)
             {
                 // no translatable data - just replace with new value
-                _childStages = new ReadOnlyCollection<StageCI>(eventSummary
-                                                              .Stages.Select(r => new StageCI(r, DataRouterManager, SemaphorePool, culture,
-                                                                                              DefaultCulture, FixtureTimestampCache)).ToList());
+                _childStages = new ReadOnlyCollection<StageCI>(eventSummary.Stages.Select(r => new StageCI(r, DataRouterManager, SemaphorePool, culture, DefaultCulture, FixtureTimestampCache)).ToList());
             }
-
             if (eventSummary.Tournament?.Category != null)
             {
                 _categoryId = eventSummary.Tournament.Category.Id;
             }
-
-            if (!eventSummary.AdditionalParentIds.IsNullOrEmpty())
+            if (eventSummary.ParentStage != null)
             {
-                _additionalParentIds = eventSummary.AdditionalParentIds;
+                _parentStageId = eventSummary.ParentStage.Id;
+            }
+            if (!eventSummary.AdditionalParents.IsNullOrEmpty())
+            {
+                _additionalParentIds = eventSummary.AdditionalParents.Select(s => s.Id);
             }
         }
 
@@ -290,7 +278,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         private void ActualMergeTournament(TournamentInfoDTO eventSummary, CultureInfo culture)
         {
             base.Merge(eventSummary, culture, false);
-
+            // could also save tournament live coverage?
             if (eventSummary.Category != null)
             {
                 _categoryId = eventSummary.Category.Id;

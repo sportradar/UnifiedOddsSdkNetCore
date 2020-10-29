@@ -235,7 +235,7 @@
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.EventArguments.ConnectionExceptionEventArgs"/> class
             </summary>
             <param name="exception">The exception that caused an error</param>
-            <param name="exception">Details about the error</param>
+            <param name="detail">Details about the error</param>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.EventArguments.ConnectionExceptionEventArgs.Exception">
             <summary>
@@ -11526,6 +11526,16 @@
             A <see cref="T:System.Collections.Generic.IEnumerable`1"/> representation of the scheduled start time changes
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableFixtureCI.ParentStageId">
+            <summary>
+            Gets a id of the parent stage associated with the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableFixtureCI.AdditionalParentsIds">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the additional parent stages associated with the current instance
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableGroupCI">
             <summary>
             Class used to export/import group cache item properties
@@ -13818,6 +13828,16 @@
             Gets the scheduled start time changes
             </summary>
             <value>The scheduled start time changes</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IFixture.ParentStageId">
+            <summary>
+            Gets a id of the parent stage associated with the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IFixture.AdditionalParentsIds">
+            <summary>
+            Gets the list specifying the additional parent ids associated with the current instance
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IFixtureChange">
             <summary>
@@ -20951,6 +20971,16 @@
             A data-transfer-object representing a fixture
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureDTO.ParentStage">
+            <summary>
+            Gets a id of the parent stage associated with the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureDTO.AdditionalParents">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the additional parent stages associated with the current instance
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.GroupDTO">
             <summary>
             A data-transfer-object representing a group
@@ -22048,12 +22078,12 @@
             A data-transfer-object containing basic information about a sport event
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.ParentStageId">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.ParentStage">
             <summary>
             Gets a id of the parent stage associated with the current instance
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.AdditionalParentIds">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO.AdditionalParents">
             <summary>
             Gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the additional parent stages associated with the current instance
             </summary>
@@ -23644,6 +23674,16 @@
             Gets the scheduled start time changes
             </summary>
             <value>The scheduled start time changes</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Fixture.ParentStageId">
+            <summary>
+            Gets a id of the parent stage associated with the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Fixture.AdditionalParentsIds">
+            <summary>
+            Gets the list specifying the additional parent ids associated with the current instance
+            </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Fixture.PrintI">
             <summary>

@@ -508,7 +508,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
         }
 
-
         private bool? StartRecovery()
         {
             var duration = TimeProviderAccessor.Current.Now - _recoveryOperation.LastStartTime;

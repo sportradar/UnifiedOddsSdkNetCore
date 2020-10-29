@@ -396,9 +396,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 _bookingStatus = eventSummary.BookingStatus;
             }
-            _liveOdds = eventSummary.LiveOdds;
-            _sportEventType = eventSummary.Type;
-            _stageType = eventSummary.StageType;
+            if (!string.IsNullOrEmpty(eventSummary.LiveOdds))
+            {
+                _liveOdds = eventSummary.LiveOdds;
+            }
+            if (eventSummary.Type != null)
+            {
+                _sportEventType = eventSummary.Type;
+            }
+            if(eventSummary.StageType != null)
+            {
+                _stageType = eventSummary.StageType;
+            }
         }
 
         /// <summary>
@@ -409,8 +418,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="useLock">Should the lock mechanism be used during merge</param>
         public void MergeFixture(FixtureDTO fixture, CultureInfo culture, bool useLock)
         {
-            //Merge(fixture, culture);
-
             if (useLock)
             {
                 lock (MergeLock)
@@ -436,9 +443,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     _bookingStatus = fixture.BookingStatus;
                 }
             }
-            _liveOdds = fixture.LiveOdds;
-            _sportEventType = fixture.Type;
-            _stageType = fixture.StageType;
+
+            if (!string.IsNullOrEmpty(fixture.LiveOdds))
+            {
+                _liveOdds = fixture.LiveOdds;
+            }
+
+            if (fixture.Type != null)
+            {
+                _sportEventType = fixture.Type;
+            }
+
+            if (fixture.StageType != null)
+            {
+                _stageType = fixture.StageType;
+            }
         }
 
         private void GenerateMatchName(IEnumerable<TeamCompetitorDTO> competitors, CultureInfo culture)

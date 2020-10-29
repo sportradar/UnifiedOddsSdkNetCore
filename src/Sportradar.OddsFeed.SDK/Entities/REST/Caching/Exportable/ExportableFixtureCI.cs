@@ -1,9 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using System.Collections.Generic;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
 {
@@ -31,6 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// <summary>
         /// A <see cref="bool"/> indicating if the start time is TBD
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public bool? StartTimeTBD { get; set; }
 
         /// <summary>
@@ -67,5 +68,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// A <see cref="IEnumerable{T}"/> representation of the scheduled start time changes
         /// </summary>
         public IEnumerable<ExportableScheduledStartTimeChangeCI> ScheduledStartTimeChanges { get; set; }
+
+        /// <summary>
+        /// Gets a id of the parent stage associated with the current instance
+        /// </summary>
+        public URN ParentStageId { get; set; }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> specifying the additional parent stages associated with the current instance
+        /// </summary>
+        public IEnumerable<URN> AdditionalParentsIds { get; set; }
     }
 }

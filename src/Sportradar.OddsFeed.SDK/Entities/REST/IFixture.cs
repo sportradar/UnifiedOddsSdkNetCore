@@ -30,6 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets a value indicating whether the start time is yet to be determent
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         bool? StartTimeTBD { get; }
 
         /// <summary>
@@ -78,5 +79,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The scheduled start time changes</value>
         IEnumerable<IScheduledStartTimeChange> ScheduledStartTimeChanges { get; }
+
+        /// <summary>
+        /// Gets a id of the parent stage associated with the current instance
+        /// </summary>
+        public URN ParentStageId => null;
+
+        /// <summary>
+        /// Gets the list specifying the additional parent ids associated with the current instance
+        /// </summary>
+        public IEnumerable<URN> AdditionalParentsIds => null;
     }
 }
