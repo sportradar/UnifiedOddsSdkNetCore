@@ -202,9 +202,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, marketSettlement.id, specifiers);
             var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketSettlement.id, specifiers, _producerManager.Get(producerId), sportId);
             var outcomes = (IEnumerable<IOutcomeSettlement>) marketSettlement.Items?.Select(outcome => new OutcomeSettlement(
-                               outcome.dead_heat_factorSpecified
-                                   ? (double?)outcome.dead_heat_factor
-                                   : null,
+                               outcome.dead_heat_factorSpecified ? (double?)outcome.dead_heat_factor : null,
                                outcome.id,
                                outcome.result,
                                MessageMapperHelper.GetVoidFactor(outcome.void_factorSpecified, outcome.void_factor),
@@ -256,20 +254,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                nameProvider,
                                                mappingProvider,
                                                MessageMapperHelper.GetEnumValue<MarketStatus>(marketOddsChange.status),
-                                               marketOddsChange.outcome?.Select(outcomeOdds => new OutcomeProbabilities(
-                                                                                                                        outcomeOdds.id,
-                                                                                                                        outcomeOdds.activeSpecified
-                                                                                                                            ? (bool?) (outcomeOdds.active != 0)
-                                                                                                                            : null,
-                                                                                                                        outcomeOdds.probabilitiesSpecified
-                                                                                                                            ? (double?) outcomeOdds.probabilities
-                                                                                                                            : null,
-                                                                                                                        nameProvider,
-                                                                                                                        mappingProvider,
-                                                                                                                        cultureInfos,
-                                                                                                                        BuildOutcomeDefinition(marketOddsChange.id, sportId, producer, specifiers, outcomeOdds.id, cultureInfos))),
+                                               marketOddsChange.outcome?
+                                                   .Select(outcomeOdds => new OutcomeProbabilities(
+                                                                                    outcomeOdds.id,
+                                                                                    outcomeOdds.activeSpecified ? (bool?) (outcomeOdds.active != 0) : null,
+                                                                                    outcomeOdds.probabilitiesSpecified ? (double?) outcomeOdds.probabilities : null,
+                                                                                    nameProvider,
+                                                                                    mappingProvider,
+                                                                                    cultureInfos,
+                                                                                    BuildOutcomeDefinition(marketOddsChange.id, sportId, producer, specifiers, outcomeOdds.id, cultureInfos))),
                                                BuildMarketDefinition(marketOddsChange.id, sportId, producer, specifiers, cultureInfos),
-                                               cultureInfos);
+                                               cultureInfos,
+                                               marketOddsChange.cashout_statusSpecified ? (CashoutStatus?)MessageMapperHelper.GetEnumValue<CashoutStatus>(marketOddsChange.cashout_status) : null);
         }
 
         /// <summary>
@@ -385,9 +381,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 return new PlayerOutcomeOdds(outcome.id,
                                             outcome.activeSpecified ? (bool?)(outcome.active != 0) : null,
                                             outcome.odds,
-                                            outcome.probabilitiesSpecified
-                                                ? (double?)outcome.probabilities
-                                                : null,
+                                            outcome.probabilitiesSpecified ? (double?)outcome.probabilities : null,
                                             nameProvider,
                                             mappingProvider,
                                             match,
@@ -400,9 +394,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             return new OutcomeOdds(outcome.id,
                                     outcome.activeSpecified ? (bool?)(outcome.active != 0) : null,
                                     outcome.odds,
-                                    outcome.probabilitiesSpecified
-                                        ? (double?)outcome.probabilities
-                                        : null,
+                                    outcome.probabilitiesSpecified ? (double?)outcome.probabilities : null,
                                     nameProvider,
                                     mappingProvider,
                                     cultures,
@@ -496,9 +488,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                     message.request_idSpecified ? (long?) message.request_id : null,
                                     message.start_timeSpecified ? (long?) message.start_time : null,
                                     message.end_timeSpecified ? (long?) message.end_time : null,
-                                    string.IsNullOrEmpty(message.superceded_by)
-                                        ? null
-                                        : URN.Parse(message.superceded_by),
+                                    string.IsNullOrEmpty(message.superceded_by) ? null : URN.Parse(message.superceded_by),
                                     message.market.Select(m => GetMarketCancel(GetEventForNameProvider<T>(URN.Parse(message.event_id), message.SportId, culturesList),
                                                                               m, message.ProducerId, message.SportId, culturesList)),
                                     rawMessage);
@@ -591,16 +581,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             return new OddsChange<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
                 _producerManager.Get(message.product),
                 GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, culturesList),
-                message.request_idSpecified
-                    ? (long?)message.request_id
-                    : null,
+                message.request_idSpecified ? (long?)message.request_id : null,
                 MessageMapperHelper.GetEnumValue(message.odds_change_reasonSpecified, message.odds_change_reason, OddsChangeReason.NORMAL),
-                message.odds != null && message.odds.betstop_reasonSpecified
-                    ? (int?)message.odds.betstop_reason
-                    : null,
-                message.odds != null && message.odds.betting_statusSpecified
-                    ? (int?)message.odds.betting_status
-                    : null,
+                message.odds != null && message.odds.betstop_reasonSpecified ? (int?)message.odds.betstop_reason : null,
+                message.odds != null && message.odds.betting_statusSpecified ? (int?)message.odds.betting_status : null,
                 markets,
                 message.odds_generation_properties,
                 _namedValuesProvider,
@@ -624,15 +608,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var sportId = URN.Parse("sr:sport:1");
 
             var epochTime = SdkInfo.ToEpochTime(DateTime.Now);
-            return new CashOutProbabilities<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, epochTime, epochTime),
+            return new CashOutProbabilities<T>(
+                new MessageTimestamp(message.GeneratedAt, message.SentAt, epochTime, epochTime),
                 _producerManager.Get(message.product),
                 GetEventForMessage<T>(eventId, sportId, culturesList),
-                message.odds != null && message.odds.betstop_reasonSpecified
-                    ? (int?)message.odds.betstop_reason
-                    : null,
-                message.odds != null && message.odds.betting_statusSpecified
-                    ? (int?)message.odds.betting_status
-                    : null,
+                message.odds != null && message.odds.betstop_reasonSpecified ? (int?)message.odds.betstop_reason : null,
+                message.odds != null && message.odds.betting_statusSpecified ? (int?)message.odds.betting_status : null,
                 message.odds?.market?.Select(m => GetMarketWithProbabilities(GetEventForNameProvider<T>(eventId, sportId, culturesList), m, message.product, sportId, culturesList)).ToList(),
                 _namedValuesProvider,
                 rawMessage);

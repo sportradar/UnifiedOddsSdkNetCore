@@ -20,5 +20,10 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// probabilities information for one outcome(selection)
         /// </summary>
         IEnumerable<IOutcomeProbabilities> OutcomeProbabilities { get; }
+
+        /// <summary>
+        /// Gets a <see cref="CashoutStatus"/> enum member specifying the availability of cashout, or a null reference
+        /// </summary>
+        CashoutStatus? CashoutStatus => null;
     }
 }

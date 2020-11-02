@@ -81,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         IEnumerable<IScheduledStartTimeChange> ScheduledStartTimeChanges { get; }
 
         /// <summary>
-        /// Gets a id of the parent stage associated with the current instance
+        /// Gets an id of the parent stage associated with the current instance
         /// </summary>
         public URN ParentStageId => null;
 

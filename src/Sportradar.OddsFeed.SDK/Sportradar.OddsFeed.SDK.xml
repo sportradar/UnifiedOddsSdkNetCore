@@ -8198,6 +8198,11 @@
             probabilities information for one outcome(selection)
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities.CashoutStatus">
+            <summary>
+            Gets a <see cref="P:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities.CashoutStatus"/> enum member specifying the availability of cashout, or a null reference
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithSettlement">
             <summary>
             Represents settlement information for a market
@@ -9098,7 +9103,12 @@
             probabilities information for one outcome(selection)
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.#ctor(System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,Sportradar.OddsFeed.SDK.Entities.MarketStatus,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities},Sportradar.OddsFeed.SDK.Entities.IMarketDefinition,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.CashoutStatus">
+            <summary>
+            Gets a <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.CashoutStatus"/> enum member specifying the availability of cashout, or a null reference
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.#ctor(System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,Sportradar.OddsFeed.SDK.Entities.MarketStatus,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities},Sportradar.OddsFeed.SDK.Entities.IMarketDefinition,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Nullable{Sportradar.OddsFeed.SDK.Entities.CashoutStatus})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities"/> class
             </summary>
@@ -9112,6 +9122,7 @@
             for one outcome associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities"/> instance</param>
             <param name="marketDefinition">The associated market definition</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying languages the current instance supports</param>
+            <param name="cashoutStatus">A <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.CashoutStatus"/> enum member specifying the availability of cashout, or a null reference</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithSettlement">
             <summary>
@@ -12922,6 +12933,11 @@
             The qualifying part
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Lap">
+            <summary>
+            The lap
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.TimeType">
             <summary>
             Enumeration of possible time types
@@ -13831,7 +13847,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IFixture.ParentStageId">
             <summary>
-            Gets a id of the parent stage associated with the current instance
+            Gets an id of the parent stage associated with the current instance
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IFixture.AdditionalParentsIds">
