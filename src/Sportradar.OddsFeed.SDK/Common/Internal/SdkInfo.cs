@@ -2,9 +2,12 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -289,6 +292,52 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public static DateTime CombineDateAndTime(DateTime date, DateTime time)
         {
             return date.AddHours(time.ToUniversalTime().Hour).AddMinutes(time.ToUniversalTime().Minute).AddSeconds(time.Second);
+        }
+
+        /// <summary>
+        /// Dictionaries to string of key-value pairs
+        /// </summary>
+        /// <param name="specifiers">The specifiers.</param>
+        /// <returns>System.String.</returns>
+        public static string DictionaryToString(IDictionary<string, string> specifiers)
+        {
+            if (specifiers == null || !specifiers.Any())
+            {
+                return string.Empty;
+            }
+            var tmp = specifiers.Aggregate(string.Empty, (current, pair) => current + $"{pair.Key}={pair.Value}|");
+            return tmp.Remove(tmp.Length - 1);
+        }
+
+        /// <summary>
+        /// List of <see cref="ISpecifier"/> to string
+        /// </summary>
+        /// <param name="specifiers">The specifiers.</param>
+        /// <returns>System.String.</returns>
+        public static string SpecifiersToString(IEnumerable<ISpecifier> specifiers)
+        {
+            if (specifiers == null)
+            {
+                return string.Empty;
+            }
+            var tmp = string.Join("|", specifiers);
+            return tmp;
+        }
+
+        /// <summary>
+        /// Get the list of specifier names
+        /// </summary>
+        /// <param name="specifiers">The specifiers.</param>
+        /// <returns>System.String.</returns>
+        public static string SpecifiersKeysToString(IEnumerable<ISpecifier> specifiers)
+        {
+            if (specifiers == null)
+            {
+                return string.Empty;
+            }
+
+            var tmp = string.Join(",", specifiers.Select(s => s.Name));
+            return tmp;
         }
     }
 }

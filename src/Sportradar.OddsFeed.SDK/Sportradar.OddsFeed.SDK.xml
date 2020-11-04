@@ -21996,7 +21996,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO"/> class.
             </summary>
-            <param name="record">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus" /> instance containing status data about the associated sport event</param>
+            <param name="restSES">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus" /> instance containing status data about the associated sport event</param>
             <param name="statistics"></param>
             <param name="homeAwayCompetitors"></param>
         </member>
@@ -26505,6 +26505,10 @@
             <returns>True if the current mapping can be used to map the specified market. False otherwise</returns>
             <exception cref="T:System.InvalidOperationException">The provided specifiers are not valid</exception>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities.MarketMapping.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities.OutcomeMapping.OutcomeId">
             <summary>
             Gets the id of the outcome
@@ -26556,6 +26560,10 @@
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities.Specifier"/> class.
             </summary>
             <param name="cacheItem">The cache item.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities.Specifier.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.ISportEntityFactory">
             <summary>
@@ -28516,6 +28524,11 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider" />
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProvider.ExecutionLog">
+            <summary>
+            A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance used for execution logging
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProvider.CacheLog">
             <summary>
             A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance used for execution logging
             </summary>
@@ -31254,6 +31267,10 @@
             Gets the special odds value for the Lcoo market
             </summary>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping.LcooMarketMapping.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping.LoMarketMapping">
             <summary>
             Implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping.IMarketMapping"/> for the LiveOdds feed
@@ -31274,6 +31291,10 @@
             <summary>
             Gets the special odds value for the LO market
             </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping.LoMarketMapping.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Market.IMarketAttribute">
             <summary>

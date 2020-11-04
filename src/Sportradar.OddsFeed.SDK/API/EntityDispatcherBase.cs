@@ -51,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.API
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                Log.LogWarning($"Event handler throw an exception while processing message[{message}]. Exception", ex);
+                Log.LogWarning($"Event handler throw an exception while processing message[{message}]. Exception: {ex.Message}", ex);
             }
         }
 
@@ -82,7 +82,8 @@ namespace Sportradar.OddsFeed.SDK.API
             }
             catch (Exception ex)
             {
-                Log.LogWarning($"Event handler throw an exception while processing message {messageName}. Exception", ex);
+                stopwatch.Stop();
+                Log.LogWarning($"Event handler throw an exception while processing message {messageName}. Exception: {ex.Message}", ex);
             }
         }
     }

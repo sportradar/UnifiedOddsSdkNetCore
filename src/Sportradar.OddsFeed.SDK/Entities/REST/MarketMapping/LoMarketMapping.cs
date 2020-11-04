@@ -30,5 +30,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
             SubTypeId = subTypeId;
             Sov = sov;
         }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"TypeId={TypeId}, SubTypeId={SubTypeId}, Sov={Sov}";
+        }
     }
 }

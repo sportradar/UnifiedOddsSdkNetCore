@@ -101,5 +101,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 
             return _validator?.Validate(specifiers) ?? true;
         }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"MarketId={MarketId}, SportId={SportId}, ProducersIds={string.Join(",", ProducerIds)}, SovTemplate={SovTemplate}, ValidFor={ValidFor}, TypeId={MarketTypeId}, SubTypeId={MarketSubTypeId}";
+        }
     }
 }

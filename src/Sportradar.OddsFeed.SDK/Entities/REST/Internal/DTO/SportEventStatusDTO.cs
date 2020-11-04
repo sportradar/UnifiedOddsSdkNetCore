@@ -131,61 +131,61 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventStatusDTO"/> class
         /// </summary>
-        /// <param name="record">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
+        /// <param name="ses">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
         /// <param name="homeAwayCompetitors">The list of competitors with the indicator if it is a home or away team</param>
-        public SportEventStatusDTO(sportEventStatus record, IDictionary<HomeAway, URN> homeAwayCompetitors)
+        public SportEventStatusDTO(sportEventStatus ses, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Guard.Argument(record, nameof(record)).NotNull();
+            Guard.Argument(ses, nameof(ses)).NotNull();
 
             _homeAwayCompetitors = homeAwayCompetitors;
 
             var tempProperties = new Dictionary<string, object>();
 
-            ApplyPropertyValue(record.throwSpecified, THROW_PROPERTY, record.@throw, tempProperties);
-            ApplyPropertyValue(record.trySpecified, TRY_PROPERTY, record.@try, tempProperties);
-            ApplyPropertyValue(record.away_batterSpecified, AWAY_BATTER_PROPERTY, record.away_batter, tempProperties);
-            ApplyPropertyValue(record.away_dismissalsSpecified, AWAY_DISMISSALS_PROPERTY, record.away_dismissals, tempProperties);
-            ApplyPropertyValue(record.away_gamescoreSpecified, AWAY_GAME_SCORE_PROPERTY, record.away_gamescore, tempProperties);
-            ApplyPropertyValue(record.away_legscoreSpecified, AWAY_LEG_SCORE_PROPERTY, record.away_legscore, tempProperties);
-            ApplyPropertyValue(record.away_penalty_runsSpecified, AWAY_PENALTY_RUNS_PROPERTY, record.away_penalty_runs, tempProperties);
-            ApplyPropertyValue(record.away_remaining_bowlsSpecified, AWAY_REMAINING_BOWLS_PROPERTY, record.away_remaining_bowls, tempProperties);
-            ApplyPropertyValue(record.away_suspendSpecified, AWAY_SUSPEND_PROPERTY, record.away_suspend, tempProperties);
-            ApplyPropertyValue(record.away_scoreSpecified, "AwayScore", record.away_score, tempProperties); // BELOW
-            ApplyPropertyValue(record.ballsSpecified, BALLS_PROPERTY, record.balls, tempProperties);
-            ApplyPropertyValue(!string.IsNullOrEmpty(record.bases), BASES_PROPERTY, record.bases, tempProperties);
-            ApplyPropertyValue(record.current_ct_teamSpecified, "CurrentCtTeam", record.current_ct_team, tempProperties);
-            ApplyPropertyValue(record.current_endSpecified, "CurrentEnd", record.current_end, tempProperties);
-            ApplyPropertyValue(record.current_serverSpecified, "CurrentServer", record.current_server, tempProperties);
-            ApplyPropertyValue(record.deliverySpecified, "Delivery", record.delivery, tempProperties);
-            ApplyPropertyValue(record.expedite_modeSpecified, "ExpediteMode", record.expedite_mode, tempProperties);
-            ApplyPropertyValue(record.home_batterSpecified, HOME_BATTER_PROPERTY, record.home_batter, tempProperties);
-            ApplyPropertyValue(record.home_dismissalsSpecified, HOME_DISMISSALS_PROPERTY, record.home_dismissals, tempProperties);
-            ApplyPropertyValue(record.home_gamescoreSpecified, HOME_GAME_SCORE_PROPERTY, record.home_gamescore, tempProperties);
-            ApplyPropertyValue(record.home_legscoreSpecified, HOME_LEG_SCORE_PROPERTY, record.home_legscore, tempProperties);
-            ApplyPropertyValue(record.home_penalty_runsSpecified, HOME_PENALTY_RUNS_PROPERTY, record.home_penalty_runs, tempProperties);
-            ApplyPropertyValue(record.home_remaining_bowlsSpecified, HOME_REMAINING_BOWLS_PROPERTY, record.home_remaining_bowls, tempProperties);
-            ApplyPropertyValue(record.home_suspendSpecified, HOME_SUSPEND_PROPERTY, record.home_suspend, tempProperties);
-            ApplyPropertyValue(record.home_scoreSpecified, "HomeScore", record.home_score, tempProperties); // BELOW
-            ApplyPropertyValue(record.inningsSpecified, "Innings", record.innings, tempProperties);
-            ApplyPropertyValue(true, MATCH_STATUS, record.match_status, tempProperties); //BELOW
-            ApplyPropertyValue(record.outsSpecified, "Outs", record.outs, tempProperties);
-            ApplyPropertyValue(record.overSpecified, "Over", record.over, tempProperties);
-            ApplyPropertyValue(record.positionSpecified, "Position", record.position, tempProperties);
-            ApplyPropertyValue(record.possessionSpecified, "Possession", record.possession, tempProperties);
-            ApplyPropertyValue(record.remaining_redsSpecified, "RemainingReds", record.remaining_reds, tempProperties);
-            ApplyPropertyValue(record.reportingSpecified, "Reporting", record.reporting, tempProperties); // BELOW
-            ApplyPropertyValue(true, "Status", record.status, tempProperties);    //BELOW
-            ApplyPropertyValue(record.strikesSpecified, "Strikes", record.strikes, tempProperties);
-            ApplyPropertyValue(record.tiebreakSpecified, "Tiebreak", record.tiebreak, tempProperties);
-            ApplyPropertyValue(record.visitSpecified, "Visit", record.visit, tempProperties);
-            ApplyPropertyValue(record.yardsSpecified, "Yards", record.yards, tempProperties);
-            ApplyPropertyValue(record.home_penalty_scoreSpecified, "home_penalty_score", record.home_penalty_score, tempProperties);
-            ApplyPropertyValue(record.away_penalty_scoreSpecified, "away_penalty_score", record.away_penalty_score, tempProperties);
+            ApplyPropertyValue(ses.throwSpecified, THROW_PROPERTY, ses.@throw, tempProperties);
+            ApplyPropertyValue(ses.trySpecified, TRY_PROPERTY, ses.@try, tempProperties);
+            ApplyPropertyValue(ses.away_batterSpecified, AWAY_BATTER_PROPERTY, ses.away_batter, tempProperties);
+            ApplyPropertyValue(ses.away_dismissalsSpecified, AWAY_DISMISSALS_PROPERTY, ses.away_dismissals, tempProperties);
+            ApplyPropertyValue(ses.away_gamescoreSpecified, AWAY_GAME_SCORE_PROPERTY, ses.away_gamescore, tempProperties);
+            ApplyPropertyValue(ses.away_legscoreSpecified, AWAY_LEG_SCORE_PROPERTY, ses.away_legscore, tempProperties);
+            ApplyPropertyValue(ses.away_penalty_runsSpecified, AWAY_PENALTY_RUNS_PROPERTY, ses.away_penalty_runs, tempProperties);
+            ApplyPropertyValue(ses.away_remaining_bowlsSpecified, AWAY_REMAINING_BOWLS_PROPERTY, ses.away_remaining_bowls, tempProperties);
+            ApplyPropertyValue(ses.away_suspendSpecified, AWAY_SUSPEND_PROPERTY, ses.away_suspend, tempProperties);
+            ApplyPropertyValue(ses.away_scoreSpecified, "AwayScore", ses.away_score, tempProperties); // BELOW
+            ApplyPropertyValue(ses.ballsSpecified, BALLS_PROPERTY, ses.balls, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(ses.bases), BASES_PROPERTY, ses.bases, tempProperties);
+            ApplyPropertyValue(ses.current_ct_teamSpecified, "CurrentCtTeam", ses.current_ct_team, tempProperties);
+            ApplyPropertyValue(ses.current_endSpecified, "CurrentEnd", ses.current_end, tempProperties);
+            ApplyPropertyValue(ses.current_serverSpecified, "CurrentServer", ses.current_server, tempProperties);
+            ApplyPropertyValue(ses.deliverySpecified, "Delivery", ses.delivery, tempProperties);
+            ApplyPropertyValue(ses.expedite_modeSpecified, "ExpediteMode", ses.expedite_mode, tempProperties);
+            ApplyPropertyValue(ses.home_batterSpecified, HOME_BATTER_PROPERTY, ses.home_batter, tempProperties);
+            ApplyPropertyValue(ses.home_dismissalsSpecified, HOME_DISMISSALS_PROPERTY, ses.home_dismissals, tempProperties);
+            ApplyPropertyValue(ses.home_gamescoreSpecified, HOME_GAME_SCORE_PROPERTY, ses.home_gamescore, tempProperties);
+            ApplyPropertyValue(ses.home_legscoreSpecified, HOME_LEG_SCORE_PROPERTY, ses.home_legscore, tempProperties);
+            ApplyPropertyValue(ses.home_penalty_runsSpecified, HOME_PENALTY_RUNS_PROPERTY, ses.home_penalty_runs, tempProperties);
+            ApplyPropertyValue(ses.home_remaining_bowlsSpecified, HOME_REMAINING_BOWLS_PROPERTY, ses.home_remaining_bowls, tempProperties);
+            ApplyPropertyValue(ses.home_suspendSpecified, HOME_SUSPEND_PROPERTY, ses.home_suspend, tempProperties);
+            ApplyPropertyValue(ses.home_scoreSpecified, "HomeScore", ses.home_score, tempProperties); // BELOW
+            ApplyPropertyValue(ses.inningsSpecified, "Innings", ses.innings, tempProperties);
+            ApplyPropertyValue(true, MATCH_STATUS, ses.match_status, tempProperties); //BELOW
+            ApplyPropertyValue(ses.outsSpecified, "Outs", ses.outs, tempProperties);
+            ApplyPropertyValue(ses.overSpecified, "Over", ses.over, tempProperties);
+            ApplyPropertyValue(ses.positionSpecified, "Position", ses.position, tempProperties);
+            ApplyPropertyValue(ses.possessionSpecified, "Possession", ses.possession, tempProperties);
+            ApplyPropertyValue(ses.remaining_redsSpecified, "RemainingReds", ses.remaining_reds, tempProperties);
+            ApplyPropertyValue(ses.reportingSpecified, "Reporting", ses.reporting, tempProperties); // BELOW
+            ApplyPropertyValue(true, "Status", ses.status, tempProperties);    //BELOW
+            ApplyPropertyValue(ses.strikesSpecified, "Strikes", ses.strikes, tempProperties);
+            ApplyPropertyValue(ses.tiebreakSpecified, "Tiebreak", ses.tiebreak, tempProperties);
+            ApplyPropertyValue(ses.visitSpecified, "Visit", ses.visit, tempProperties);
+            ApplyPropertyValue(ses.yardsSpecified, "Yards", ses.yards, tempProperties);
+            ApplyPropertyValue(ses.home_penalty_scoreSpecified, "home_penalty_score", ses.home_penalty_score, tempProperties);
+            ApplyPropertyValue(ses.away_penalty_scoreSpecified, "away_penalty_score", ses.away_penalty_score, tempProperties);
 
-            if (record.period_scores != null && record.period_scores.Any())
+            if (ses.period_scores != null && ses.period_scores.Any())
             {
                 var periodScores = new List<PeriodScoreDTO>();
-                foreach (var periodScore in record.period_scores)
+                foreach (var periodScore in ses.period_scores)
                 {
                     periodScores.Add(new PeriodScoreDTO(periodScore));
                     ApplyPropertyValue(true, $"PeriodScore{periodScore.number}_Number", periodScore.number, tempProperties);
@@ -196,27 +196,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 PeriodScores = periodScores;
             }
 
-            if (record.clock != null)
+            if (ses.clock != null)
             {
-                EventClock = new EventClockDTO(record.clock.match_time,
-                                               record.clock.stoppage_time,
-                                               record.clock.stoppage_time_announced,
-                                               record.clock.remaining_time,
-                                               record.clock.remaining_time_in_period,
-                                               record.clock.stoppedSpecified,
-                                               record.clock.stopped);
-                ApplyPropertyValue(true, "Clock_MatchTime", record.clock.match_time, tempProperties);
-                ApplyPropertyValue(true, "Clock_RemainingTime", record.clock.remaining_time, tempProperties);
-                ApplyPropertyValue(true, "Clock_RemainingTimeInPeriod", record.clock.remaining_time_in_period, tempProperties);
-                ApplyPropertyValue(true, "Clock_StoppageTime", record.clock.stoppage_time, tempProperties);
-                ApplyPropertyValue(true, "Clock_StoppageTimeAnnounced", record.clock.stoppage_time_announced, tempProperties);
-                ApplyPropertyValue(record.clock.stoppedSpecified, "Clock_Stopped", record.clock.stopped, tempProperties);
+                EventClock = new EventClockDTO(ses.clock.match_time,
+                                               ses.clock.stoppage_time,
+                                               ses.clock.stoppage_time_announced,
+                                               ses.clock.remaining_time,
+                                               ses.clock.remaining_time_in_period,
+                                               ses.clock.stoppedSpecified,
+                                               ses.clock.stopped);
+                ApplyPropertyValue(true, "Clock_MatchTime", ses.clock.match_time, tempProperties);
+                ApplyPropertyValue(true, "Clock_RemainingTime", ses.clock.remaining_time, tempProperties);
+                ApplyPropertyValue(true, "Clock_RemainingTimeInPeriod", ses.clock.remaining_time_in_period, tempProperties);
+                ApplyPropertyValue(true, "Clock_StoppageTime", ses.clock.stoppage_time, tempProperties);
+                ApplyPropertyValue(true, "Clock_StoppageTimeAnnounced", ses.clock.stoppage_time_announced, tempProperties);
+                ApplyPropertyValue(ses.clock.stoppedSpecified, "Clock_Stopped", ses.clock.stopped, tempProperties);
             }
 
-            if (record.results != null && record.results.Any())
+            if (ses.results != null && ses.results.Any())
             {
                 var i = 0;
-                foreach (var resultType in record.results)
+                foreach (var resultType in ses.results)
                 {
                     i++;
                     ApplyPropertyValue(true, $"Result{i}_HomeScore", resultType.home_score, tempProperties);
@@ -227,51 +227,51 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             Properties = new ReadOnlyDictionary<string, object>(tempProperties);
 
-            Status = MessageMapperHelper.GetEnumValue(record.status, EventStatus.Unknown);
+            Status = MessageMapperHelper.GetEnumValue(ses.status, EventStatus.Unknown);
 
-            IsReported = record.reportingSpecified
-                ? (int?) record.reporting
+            IsReported = ses.reportingSpecified
+                ? (int?) ses.reporting
                 : null;
 
-            HomeScore = record.home_scoreSpecified
-                ? (decimal?) record.home_score
+            HomeScore = ses.home_scoreSpecified
+                ? (decimal?) ses.home_score
                 : null;
 
-            AwayScore = record.away_scoreSpecified
-                ? (decimal?) record.away_score
+            AwayScore = ses.away_scoreSpecified
+                ? (decimal?) ses.away_score
                 : null;
 
-            MatchStatusId = record.match_status;
+            MatchStatusId = ses.match_status;
 
             WinnerId = null;
 
-            if (record.reportingSpecified)
+            if (ses.reportingSpecified)
             {
-                ReportingStatus = MessageMapperHelper.GetEnumValue(record.reporting, ReportingStatus.Unknown);
+                ReportingStatus = MessageMapperHelper.GetEnumValue(ses.reporting, ReportingStatus.Unknown);
             }
 
-            if (record.results != null)
+            if (ses.results != null)
             {
                 var eventResults = new List<EventResultDTO>();
-                foreach (var result in record.results)
+                foreach (var result in ses.results)
                 {
                     eventResults.Add(new EventResultDTO(result));
                 }
                 EventResults = eventResults;
             }
 
-            if (record.statistics != null)
+            if (ses.statistics != null)
             {
-                SportEventStatistics = new SportEventStatisticsDTO(record.statistics);
+                SportEventStatistics = new SportEventStatisticsDTO(ses.statistics);
             }
 
-            if (record.home_penalty_scoreSpecified)
+            if (ses.home_penalty_scoreSpecified)
             {
-                HomePenaltyScore = record.home_penalty_score;
+                HomePenaltyScore = ses.home_penalty_score;
             }
-            if (record.away_penalty_scoreSpecified)
+            if (ses.away_penalty_scoreSpecified)
             {
-                AwayPenaltyScore = record.away_penalty_score;
+                AwayPenaltyScore = ses.away_penalty_score;
             }
 
             // load home and away penalty score from the penalty period score
@@ -298,21 +298,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventStatusDTO"/> class.
         /// </summary>
-        /// <param name="record">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
+        /// <param name="restSES">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
         /// <param name="statistics"></param>
         /// <param name="homeAwayCompetitors"></param>
-        public SportEventStatusDTO(restSportEventStatus record, matchStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
+        public SportEventStatusDTO(restSportEventStatus restSES, matchStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
-            Guard.Argument(record, nameof(record)).NotNull();
+            Guard.Argument(restSES, nameof(restSES)).NotNull();
 
             _homeAwayCompetitors = homeAwayCompetitors;
 
             var tempProperties = new Dictionary<string, object>();
 
-            if (record.clock != null)
+            if (restSES.clock != null)
             {
                 var i = 0;
-                foreach (var clock in record.clock)
+                foreach (var clock in restSES.clock)
                 {
                     i++;
                     ApplyPropertyValue(true, $"Clock{i}_MatchTime", clock.match_time, tempProperties);
@@ -321,11 +321,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
                 }
             }
-            ApplyPropertyValue(record.periodSpecified, "Period", record.period, tempProperties);
-            if (record.period_scores != null && record.period_scores.Any())
+            ApplyPropertyValue(restSES.periodSpecified, "Period", restSES.period, tempProperties);
+            if (restSES.period_scores != null && restSES.period_scores.Any())
             {
                 var periodScores = new List<PeriodScoreDTO>();
-                foreach (var periodScore in record.period_scores)
+                foreach (var periodScore in restSES.period_scores)
                 {
                     periodScores.Add(new PeriodScoreDTO(periodScore));
                     if (periodScore.numberSpecified)
@@ -338,50 +338,50 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 }
                 PeriodScores = periodScores;
             }
-            ApplyPropertyValue(true, "WinnerId", record.winner_id, tempProperties);
-            ApplyPropertyValue(true, "WinningReason", record.winning_reason, tempProperties);
-            ApplyPropertyValue(record.aggregate_away_scoreSpecified, "AggregateAwayScore", record.aggregate_away_score, tempProperties);
-            ApplyPropertyValue(record.aggregate_home_scoreSpecified, "AggregateHomeScore", record.aggregate_home_score, tempProperties);
-            ApplyPropertyValue(true, "AggregateWinnerId", record.aggregate_winner_id, tempProperties);
-            ApplyPropertyValue(record.away_scoreSpecified, "AwayScore", record.away_score, tempProperties); // BELOW
-            ApplyPropertyValue(record.home_scoreSpecified, "HomeScore", record.home_score, tempProperties); // BELOW
+            ApplyPropertyValue(true, "WinnerId", restSES.winner_id, tempProperties);
+            ApplyPropertyValue(true, "WinningReason", restSES.winning_reason, tempProperties);
+            ApplyPropertyValue(restSES.aggregate_away_scoreSpecified, "AggregateAwayScore", restSES.aggregate_away_score, tempProperties);
+            ApplyPropertyValue(restSES.aggregate_home_scoreSpecified, "AggregateHomeScore", restSES.aggregate_home_score, tempProperties);
+            ApplyPropertyValue(true, "AggregateWinnerId", restSES.aggregate_winner_id, tempProperties);
+            ApplyPropertyValue(restSES.away_scoreSpecified, "AwayScore", restSES.away_score, tempProperties); // BELOW
+            ApplyPropertyValue(restSES.home_scoreSpecified, "HomeScore", restSES.home_score, tempProperties); // BELOW
 
             Properties = new ReadOnlyDictionary<string, object>(tempProperties);
 
             int statusId;
-            Status = record.status_codeSpecified
-                         ? MessageMapperHelper.GetEnumValue(record.status_code, EventStatus.Unknown)
-                         : int.TryParse(record.status, out statusId)
+            Status = restSES.status_codeSpecified
+                         ? MessageMapperHelper.GetEnumValue(restSES.status_code, EventStatus.Unknown)
+                         : int.TryParse(restSES.status, out statusId)
                              ? MessageMapperHelper.GetEnumValue(statusId, EventStatus.Unknown)
-                             : MessageMapperHelper.GetEnumValue(record.status, EventStatus.Unknown);
+                             : MessageMapperHelper.GetEnumValue(restSES.status, EventStatus.Unknown);
             ApplyPropertyValue(true, "Status", (int) Status, tempProperties);    //BELOW
 
-            //IsReported = record.reportingSpecified
-            //    ? (int?)record.reporting
+            //IsReported = restSES.reportingSpecified
+            //    ? (int?)restSES.reporting
             //    : null;
 
-            HomeScore = record.home_scoreSpecified
-                ? (decimal?)record.home_score
+            HomeScore = restSES.home_scoreSpecified
+                ? (decimal?)restSES.home_score
                 : null;
 
-            AwayScore = record.away_scoreSpecified
-                ? (decimal?)record.away_score
+            AwayScore = restSES.away_scoreSpecified
+                ? (decimal?)restSES.away_score
                 : null;
 
             var matchStatusId = -1;
-            if (record.match_status_codeSpecified)
+            if (restSES.match_status_codeSpecified)
             {
-                matchStatusId = record.match_status_code;
+                matchStatusId = restSES.match_status_code;
                 ApplyPropertyValue(true, MATCH_STATUS, matchStatusId, tempProperties);
             }
-            if (matchStatusId < 0 && !string.IsNullOrEmpty(record.match_status))
+            if (matchStatusId < 0 && !string.IsNullOrEmpty(restSES.match_status))
             {
                 //TODO: status here is received as "2nd_set", not even like descriptions on API (there are no "_" between words)
-                if (int.TryParse(record.match_status, out matchStatusId))
+                if (int.TryParse(restSES.match_status, out matchStatusId))
                 {
                     ApplyPropertyValue(true, MATCH_STATUS, matchStatusId, tempProperties);
                 }
-                else if (record.match_status.Equals("not_started", StringComparison.InvariantCultureIgnoreCase))
+                else if (restSES.match_status.Equals("not_started", StringComparison.InvariantCultureIgnoreCase))
                 {
                     matchStatusId = 0;
                     ApplyPropertyValue(true, MATCH_STATUS, matchStatusId, tempProperties);
@@ -393,9 +393,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
             MatchStatusId = matchStatusId;
 
-            if (!string.IsNullOrEmpty(record.winner_id))
+            if (!string.IsNullOrEmpty(restSES.winner_id))
             {
-                WinnerId = URN.Parse(record.winner_id);
+                WinnerId = URN.Parse(restSES.winner_id);
             }
 
             ReportingStatus = ReportingStatus.Unknown;
@@ -409,7 +409,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 SportEventStatistics = new SportEventStatisticsDTO(statistics, _homeAwayCompetitors);
             }
 
-            DecidedByFed = record.decided_by_fedSpecified ? record.decided_by_fed : (bool?) null;
+            DecidedByFed = restSES.decided_by_fedSpecified ? restSES.decided_by_fed : (bool?) null;
 
             // load home and away penalty score from the penalty period score
             if (HomePenaltyScore == null && AwayPenaltyScore == null && PeriodScores != null && PeriodScores.Any())
@@ -435,18 +435,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventStatusDTO"/> class.
         /// </summary>
-        /// <param name="record">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
-        public SportEventStatusDTO(stageSportEventStatus record)
+        /// <param name="stageSES">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
+        public SportEventStatusDTO(stageSportEventStatus stageSES)
         {
-            Guard.Argument(record, nameof(record)).NotNull();
+            Guard.Argument(stageSES, nameof(stageSES)).NotNull();
 
             var tempProperties = new Dictionary<string, object>(0);
 
             //TODO: review this
-            if (record.results != null && record.results.competitor.Any())
+            if (stageSES.results != null && stageSES.results.competitor.Any())
             {
                 var i = 0;
-                foreach (var resultType in record.results.competitor)
+                foreach (var resultType in stageSES.results.competitor)
                 {
                     i++;
                     ApplyPropertyValue(true, $"Result{i}_Climber", resultType.climber, tempProperties);
@@ -461,16 +461,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     ApplyPropertyValue(true, $"Result{i}_TimeRanking", resultType.time_ranking, tempProperties);
                 }
             }
-            ApplyPropertyValue(true, "WinnerId", record.winner_id, tempProperties);
+            ApplyPropertyValue(true, "WinnerId", stageSES.winner_id, tempProperties);
 
             Properties = new ReadOnlyDictionary<string, object>(tempProperties);
 
-            Status = MessageMapperHelper.GetEnumValue(record.status, EventStatus.Unknown);
+            Status = MessageMapperHelper.GetEnumValue(stageSES.status, EventStatus.Unknown);
             ApplyPropertyValue(true, "Status", (int) Status, tempProperties);
 
             MatchStatusId = -1;
 
-            WinnerId = !string.IsNullOrEmpty(record.winner_id) ? URN.Parse(record.winner_id) : null;
+            WinnerId = !string.IsNullOrEmpty(stageSES.winner_id) ? URN.Parse(stageSES.winner_id) : null;
 
             ReportingStatus = ReportingStatus.Unknown;
 
@@ -479,9 +479,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             EventClock = null;
 
             var eventResults = new List<EventResultDTO>();
-            if (record.results != null && record.results.competitor.Any())
+            if (stageSES.results != null && stageSES.results.competitor.Any())
             {
-                foreach (var stageResultCompetitor in record.results.competitor)
+                foreach (var stageResultCompetitor in stageSES.results.competitor)
                 {
                     eventResults.Add(new EventResultDTO(stageResultCompetitor));
                 }
