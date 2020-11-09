@@ -4,6 +4,7 @@
 using System;
 using Dawn;
 using RabbitMQ.Client;
+using Sportradar.OddsFeed.SDK.API.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
@@ -15,9 +16,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     internal class ChannelFactory : IChannelFactory, IDisposable
     {
         /// <summary>
-        /// The <see cref="IConnectionFactory"/> used to construct connections to the broker
+        /// The <see cref="ConfiguredConnectionFactory"/> used to construct connections to the broker
         /// </summary>
-        private readonly IConnectionFactory _connectionFactory;
+        private readonly ConfiguredConnectionFactory _connectionFactory;
 
         /// <summary>
         /// The object used to ensure thread safety
@@ -38,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// Initializes a new instance of the <see cref="ChannelFactory"/> class.
         /// </summary>
         /// <param name="connectionFactory">The connection factory.</param>
-        public ChannelFactory(IConnectionFactory connectionFactory)
+        public ChannelFactory(ConfiguredConnectionFactory connectionFactory)
         {
             Guard.Argument(connectionFactory, nameof(connectionFactory)).NotNull();
 

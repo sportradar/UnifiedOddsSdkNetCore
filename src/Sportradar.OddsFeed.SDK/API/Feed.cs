@@ -611,7 +611,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
                 _log.LogInformation($"Feed configuration: [{InternalConfig}]");
                 
-                _connection = UnityContainer.Resolve<IConnectionFactory>().CreateConnection();
+                _connection = UnityContainer.Resolve<ConfiguredConnectionFactory>().CreateConnection();
                 _connection.ConnectionShutdown += OnConnectionShutdown;
                 _connection.CallbackException += OnCallbackException;
                 _feedRecoveryManager.ProducerUp += MarkProducerAsUp;

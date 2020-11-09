@@ -14,12 +14,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// A <see cref="IConnectionFactory"/> implementations which properly configures it self before first <see cref="IConnection"/> is created
     /// </summary>
-    internal class ConfiguredConnectionFactory : ConnectionFactory
+    internal class ConfiguredConnectionFactory
     {
         /// <summary>
         /// A <see cref="IOddsFeedConfigurationInternal"/> instance containing configuration information
         /// </summary>
         private readonly IOddsFeedConfigurationInternal _config;
+
+        /// <summary>
+        /// A <see cref="ConnectionFactory"/> instance
+        /// </summary>
+        private readonly ConnectionFactory _connectionFactory;
 
         /// <summary>
         /// A singleton instance of <see cref="IConnection"/> class created by current factory.
@@ -35,51 +40,54 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Initializes a new instance of the <see cref="ConfiguredConnectionFactory"/> class
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfigurationInternal"/> instance containing configuration information</param>
-        public ConfiguredConnectionFactory(IOddsFeedConfigurationInternal config)
+        /// <param name="connectionFactory">A <see cref="ConnectionFactory"/> instance</param>
+        public ConfiguredConnectionFactory(IOddsFeedConfigurationInternal config, ConnectionFactory connectionFactory)
         {
             Guard.Argument(config, nameof(config)).NotNull();
+            Guard.Argument(connectionFactory, nameof(connectionFactory)).NotNull();
 
             _config = config;
+            _connectionFactory = connectionFactory;
         }
 
         /// <summary>
         /// Configures the current <see cref="ConfiguredConnectionFactory"/> based on config options read from <code>_config</code> field
         /// </summary>
-        protected void Configure()
+        private void Configure()
         {
-            HostName = _config.Host;
-            Port = _config.Port;
-            UserName = _config.Username;
-            Password = _config.Password;
-            VirtualHost = _config.VirtualHost;
-            AutomaticRecoveryEnabled = true;
+            _connectionFactory.HostName = _config.Host;
+            _connectionFactory.Port = _config.Port;
+            _connectionFactory.UserName = _config.Username;
+            _connectionFactory.Password = _config.Password;
+            _connectionFactory.VirtualHost = _config.VirtualHost;
+            _connectionFactory.AutomaticRecoveryEnabled = true;
 
-            Ssl.Enabled = _config.UseSsl;
-            Ssl.Version = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            _connectionFactory.Ssl.Enabled = _config.UseSsl;
+            _connectionFactory.Ssl.Version = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
             if (_config.UseSsl)
             {
-                Ssl.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
+                _connectionFactory.Ssl.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
             }
 
-            ClientProperties.Add("SrUfSdkType", ".netstd");
-            ClientProperties.Add("SrUfSdkVersion", SdkInfo.GetVersion());
-            ClientProperties.Add("SrUfSdkInit", $"{DateTime.Now:yyyyMMddHHmm}");
-            ClientProperties.Add("SrUfSdkConnName", "RabbitMQ / NETStd");
-            ClientProperties.Add("SrUfSdkBId", $"{_config.BookmakerDetails?.BookmakerId}");
+            _connectionFactory.ClientProperties.Add("SrUfSdkType", ".netstd");
+            _connectionFactory.ClientProperties.Add("SrUfSdkVersion", SdkInfo.GetVersion());
+            _connectionFactory.ClientProperties.Add("SrUfSdkInit", $"{DateTime.Now:yyyyMMddHHmm}");
+            _connectionFactory.ClientProperties.Add("SrUfSdkConnName", "RabbitMQ / NETStd");
+            _connectionFactory.ClientProperties.Add("SrUfSdkBId", $"{_config.BookmakerDetails?.BookmakerId}");
         }
 
         /// <summary>
         /// Create a connection to the specified endpoint
         /// </summary>
         /// <exception cref="T:RabbitMQ.Client.Exceptions.BrokerUnreachableException">When the configured host name was not reachable</exception>
-        public override IConnection CreateConnection()
+        public IConnection CreateConnection()
         {
             lock (_syncLock)
             {
                 if (_connectionSingleton == null)
                 {
                     Configure();
-                    _connectionSingleton = base.CreateConnection();
+                    _connectionSingleton = _connectionFactory.CreateConnection();
                 }
                 return _connectionSingleton;
             }

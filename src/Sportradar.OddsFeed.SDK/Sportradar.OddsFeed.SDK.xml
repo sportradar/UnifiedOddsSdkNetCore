@@ -1578,6 +1578,11 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationInternal"/> instance containing configuration information
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory._connectionFactory">
+            <summary>
+            A <see cref="T:RabbitMQ.Client.ConnectionFactory"/> instance
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory._connectionSingleton">
             <summary>
             A singleton instance of <see cref="T:RabbitMQ.Client.IConnection"/> class created by current factory.
@@ -1588,11 +1593,12 @@
             A <see cref="T:System.Object"/> used to ensure thread safety when creating the connection singleton
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.#ctor(Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationInternal)">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.#ctor(Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationInternal,RabbitMQ.Client.ConnectionFactory)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory"/> class
             </summary>
             <param name="config">A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationInternal"/> instance containing configuration information</param>
+            <param name="connectionFactory">A <see cref="T:RabbitMQ.Client.ConnectionFactory"/> instance</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.Configure">
             <summary>
@@ -8352,7 +8358,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory._connectionFactory">
             <summary>
-            The <see cref="T:RabbitMQ.Client.IConnectionFactory"/> used to construct connections to the broker
+            The <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory"/> used to construct connections to the broker
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory._lock">
@@ -8370,7 +8376,7 @@
             Value indicating whether the current instance has been disposed
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.#ctor(RabbitMQ.Client.IConnectionFactory)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.#ctor(Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory"/> class.
             </summary>
