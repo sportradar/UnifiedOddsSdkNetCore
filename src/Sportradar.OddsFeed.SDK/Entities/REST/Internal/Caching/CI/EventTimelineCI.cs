@@ -83,6 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 }
                 else
                 {
+                    // add/update
                     foreach (var basicEvent in dto.BasicEvents)
                     {
                         var timelineEvent = _timeline.FirstOrDefault(s => s.Id == basicEvent.Id);
@@ -95,6 +96,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                             _timeline.Add(new TimelineEventCI(basicEvent, culture));
                         }
                     }
+
+                    // delete
+                    _timeline.RemoveAll(timelineEvent => dto.BasicEvents.All(basicEvent => basicEvent.Id != timelineEvent.Id));
                 }
             }
 
