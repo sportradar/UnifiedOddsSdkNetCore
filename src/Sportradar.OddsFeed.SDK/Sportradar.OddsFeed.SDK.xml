@@ -12922,6 +12922,11 @@
             The qualifying part
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Lap">
+            <summary>
+            The lap
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.TimeType">
             <summary>
             Enumeration of possible time types
