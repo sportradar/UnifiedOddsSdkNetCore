@@ -132,15 +132,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
             }
         }
 
-        private static string WriteHttpResponseMessage(HttpResponseMessage message)
-        {
-            if (message == null)
-            {
-                return null;
-            }
-            return $"StatusCode: {message.StatusCode}, ReasonPhrase: '{message.ReasonPhrase}', Version: {message.Version}, Content: {message.Content}";
-        }
-
         public void Intercept(IInvocation invocation)
         {
             var logEnabled = false;
@@ -242,6 +233,56 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
 
                 throw;
             }
+        }
+
+        private static string WriteHttpResponseMessage(HttpResponseMessage message)
+        {
+            if (message == null)
+            {
+                return null;
+            }
+            return $"StatusCode: {message.StatusCode}, ReasonPhrase: '{message.ReasonPhrase}', Version: {message.Version}, Content: {message.Content}";
+        }
+
+        private static string GetMethodArgumentType(Type type)
+        {
+            if (type == null)
+            {
+                return null;
+            }
+
+            if (type.Name.StartsWith("Nullable", StringComparison.InvariantCultureIgnoreCase))
+            {
+                //"System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"
+                var t = type.FullName?.Substring(type.FullName.IndexOf("[", StringComparison.InvariantCultureIgnoreCase) + 2);
+                if (t != null)
+                {
+                    t = t.Substring(0, t.IndexOf(",", StringComparison.InvariantCultureIgnoreCase));
+                    if (t.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase) > 0)
+                    {
+                        t = t.Substring(t.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1);
+                    }
+
+                    return t + "?";
+                }
+            }
+
+            if (type.Name.StartsWith("List", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var t = type.FullName?.Substring(type.FullName.IndexOf("[", StringComparison.InvariantCultureIgnoreCase) + 1);
+                if (t != null)
+                {
+                    t = t.Substring(0, t.IndexOf(",", StringComparison.InvariantCultureIgnoreCase));
+                    if (t.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase) > 0)
+                    {
+                        t = t.Substring(t.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase));
+                    }
+
+                    return $"List<{t}>";
+                }
+            }
+
+            return type.Name;
         }
     }
 }

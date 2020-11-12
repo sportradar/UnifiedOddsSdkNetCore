@@ -5977,7 +5977,7 @@
             Adds event {eventId} to the end of the replay queue
             </summary>
             <param name="eventId">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN" /> of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IMatch" /></param>
-            <param name="starttime">The minutes relative to event start time</param>
+            <param name="startTime">The minutes relative to event start time</param>
             <returns>Returns an <see cref="T:Sportradar.OddsFeed.SDK.API.IReplayResponse"/></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.IReplayManager.RemoveEventFromReplayQueue(Sportradar.OddsFeed.SDK.Messages.URN)">

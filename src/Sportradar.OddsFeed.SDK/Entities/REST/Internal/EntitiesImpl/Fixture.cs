@@ -111,7 +111,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             ExtraInfo = fixtureDto.ExtraInfo;
             if (fixtureDto.TvChannels != null)
             {
-
                 if (TvChannels == null)
                 {
                     TvChannels = fixtureDto.TvChannels.Select(tvChannelDTO => new TvChannel(tvChannelDTO.Name, tvChannelDTO.StartTime, tvChannelDTO.StreamUrl)).ToList();

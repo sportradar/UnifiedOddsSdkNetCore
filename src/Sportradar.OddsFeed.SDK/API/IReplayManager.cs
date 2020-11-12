@@ -16,9 +16,9 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Adds event {eventId} to the end of the replay queue
         /// </summary>
         /// <param name="eventId">The <see cref="URN" /> of the <see cref="IMatch" /></param>
-        /// <param name="starttime">The minutes relative to event start time</param>
+        /// <param name="startTime">The minutes relative to event start time</param>
         /// <returns>Returns an <see cref="IReplayResponse"/></returns>
-        IReplayResponse AddMessagesToReplayQueue(URN eventId, int? starttime = null);
+        IReplayResponse AddMessagesToReplayQueue(URN eventId, int? startTime = null);
 
         /// <summary>
         /// Removes the event from replay queue

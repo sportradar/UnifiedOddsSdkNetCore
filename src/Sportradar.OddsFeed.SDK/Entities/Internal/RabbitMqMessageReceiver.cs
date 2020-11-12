@@ -7,7 +7,9 @@ using Dawn;
 using System.IO;
 using System.Linq;
 using System.Text;
+using App.Metrics;
 using App.Metrics.Meter;
+using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
@@ -131,10 +133,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             string messageName;
             try
             {
-                messageBody = Encoding.UTF8.GetString(eventArgs.Body);
-                feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
-                producer = _producerManager.Get(feedMessage.ProducerId);
-                messageName = feedMessage.GetType().Name;
+                using (var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(new TimerOptions {Context = "FEED", Name = "Message deserialization time"}))
+                {
+                    t.TrackUserValue(eventArgs.RoutingKey);
+                    messageBody = Encoding.UTF8.GetString(eventArgs.Body);
+                    feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
+                    producer = _producerManager.Get(feedMessage.ProducerId);
+                    messageName = feedMessage.GetType().Name;
+                }
 
                 if (producer.IsAvailable && !producer.IsDisabled)
                 {
@@ -155,12 +161,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                              : feedMessage.GeneratedAt;
                 }
                 feedMessage.ReceivedAt = receivedAt;
-                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions{Context = "FeedMessageReceived", Name = $"{feedMessage.GetType().Name}"});
+                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions{Context = "FEED", Name = "Message received"}, MetricTags.Empty, messageName);
             }
             catch (DeserializationException ex)
             {
                 ExecutionLog.LogError($"Failed to parse message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}", ex);
-                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "FeedMessageReceived", Name = "DeserializationFailed" });
+                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "FEED", Name = "Message deserialization exception" }, MetricTags.Empty, eventArgs.RoutingKey);
+                RaiseDeserializationFailed(eventArgs.Body);
+                return;
+            }
+            catch (Exception ex)
+            {
+                ExecutionLog.LogError($"Error consuming feed message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}", ex);
+                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "FEED", Name = "Exception consuming feed message" }, MetricTags.Empty, eventArgs.RoutingKey);
                 RaiseDeserializationFailed(eventArgs.Body);
                 return;
             }
@@ -196,8 +209,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             ExecutionLog.LogInformation($"Message received. Message=[{feedMessage}].");
             if (feedMessage.IsEventRelated)
             {
-                URN sportId;
-                if (!string.IsNullOrEmpty(eventArgs.RoutingKey) && _keyParser.TryGetSportId(eventArgs.RoutingKey, messageName, out sportId))
+                if (!string.IsNullOrEmpty(eventArgs.RoutingKey) && _keyParser.TryGetSportId(eventArgs.RoutingKey, messageName, out var sportId))
                 {
                     feedMessage.SportId = sportId;
                 }
