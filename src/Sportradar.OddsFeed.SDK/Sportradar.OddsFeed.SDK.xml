@@ -7390,6 +7390,27 @@
             <param name="time">The time</param>
             <returns>Returns combined date and time</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.DictionaryToString(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Dictionaries to string of key-value pairs
+            </summary>
+            <param name="specifiers">The specifiers.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.SpecifiersToString(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Market.ISpecifier})">
+            <summary>
+            List of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Market.ISpecifier"/> to string
+            </summary>
+            <param name="specifiers">The specifiers.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.SpecifiersKeysToString(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Market.ISpecifier})">
+            <summary>
+            Get the list of specifier names
+            </summary>
+            <param name="specifiers">The specifiers.</param>
+            <returns>System.String.</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.SdkTimer">
             <summary>
             A timer used for invocation of period tasks
@@ -21989,7 +22010,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO"/> class
             </summary>
-            <param name="record">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus" /> instance containing status data about the associated sport event</param>
+            <param name="ses">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus" /> instance containing status data about the associated sport event</param>
             <param name="homeAwayCompetitors">The list of competitors with the indicator if it is a home or away team</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus,Sportradar.OddsFeed.SDK.Messages.REST.matchStatistics,System.Collections.Generic.IDictionary{Sportradar.OddsFeed.SDK.Entities.REST.Enums.HomeAway,Sportradar.OddsFeed.SDK.Messages.URN})">
@@ -22004,7 +22025,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO"/> class.
             </summary>
-            <param name="record">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus" /> instance containing status data about the associated sport event</param>
+            <param name="stageSES">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus" /> instance containing status data about the associated sport event</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO.GetPropertyValue(System.String)">
             <summary>

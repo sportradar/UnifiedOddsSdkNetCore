@@ -109,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 var tour = eventSummary as TournamentInfoDTO;
                 if (tour != null)
                 {
-                    return new TournamentInfoCI(tour, _dataRouterManager, _semaphorePool, currentCulture, _defaultCulture, _fixtureTimestampCache);
+                    return new StageCI(tour, _dataRouterManager, _semaphorePool, currentCulture, _defaultCulture, _fixtureTimestampCache);
                 }
             }
             if (eventSummary.Id.TypeGroup == ResourceTypeGroup.MATCH)
