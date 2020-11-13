@@ -25,6 +25,13 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-11-13  1.11.0.0
+Added new stage types in StageType enum (Practice, Qualifying, QualifyingPart, Lap)
+Added CashoutStatus to IMarketWithProbabilitiesV1
+Fix: loading sportEventType and stageType from parent stage if available
+Fix: IMarketWithOdds.GetMappedMarketIDsAsync() returns multiple mappings
+Fix: exception casting TournamentInfoCI to StageCI
+
 2020-10-13  1.10.0.0
 IRound - GroupName renamed to Group, added GroupName property (breaking change)
 IStage - added GetAdditionalParentStages, GetStageType (breaking change - result changed from SportEventType to StageType)

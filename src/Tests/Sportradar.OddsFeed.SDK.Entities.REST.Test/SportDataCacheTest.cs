@@ -355,7 +355,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(0, _sportDataCache.Sports.Count);
             Assert.AreEqual(0, _sportDataCache.Categories.Count);
             //Assert.AreEqual(0, _sportDataCache.Tournaments.Count);
-            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), "{callType} should be called exactly 0 times.");
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly 0 times.");
 
             var sports = _sportDataCache.GetSportsAsync(TestData.Cultures).Result; // initial load
             Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count} times.");

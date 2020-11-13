@@ -131,7 +131,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                                     status = fixture.status,
                                     replaced_by = fixture.replaced_by,
                                     next_live_time = fixture.next_live_time,
-                                    sport_event_conditions = fixture.sport_event_conditions
+                                    sport_event_conditions = fixture.sport_event_conditions,
+                                    start_time_tbdSpecified = fixture.start_time_tbdSpecified,
+                                    start_time_tbd = fixture.start_time_tbd
                                 }
                             })
         {

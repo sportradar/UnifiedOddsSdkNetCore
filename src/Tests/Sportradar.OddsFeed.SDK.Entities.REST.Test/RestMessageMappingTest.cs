@@ -112,14 +112,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(msg.scheduled, dto.Scheduled);
             Assert.AreEqual(msg.scheduled_end, dto.ScheduledEnd);
             Assert.AreEqual(!string.IsNullOrEmpty(msg.replaced_by) ? URN.Parse(msg.replaced_by) : null, dto.ReplacedBy);
-            Assert.AreEqual(msg.start_time_tbdSpecified ? (bool?)msg.start_time_tbd : null, dto.StartTimeTBD);
+            Assert.AreEqual(msg.start_time_tbdSpecified ? (bool?)msg.start_time_tbd : null, dto.StartTimeTbd);
             Assert.AreEqual(msg.competitors.Length, dto.Competitors.Count());
 
             for (var i = 0; i < msg.competitors.Length; i++)
             {
                 ValidateTeamCompetitor(msg.competitors[i], dto.Competitors.ToList()[i]);
             }
-            ValidateCoverageInfo(msg.coverage_info, dto.CoverageInfo);
+            ValidateCoverageInfo(msg.coverage_info, dto.Coverage);
             Assert.AreEqual(msg.delayed_info.id, dto.DelayedInfo.Id);
 
             Assert.AreEqual(msg.extra_info.Length, dto.ExtraInfo.ToList().Count);

@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             _assertHelper.AreEqual(() => _entity.Scheduled, _record.fixture.scheduledSpecified ? (DateTime?)_record.fixture.scheduled : null);
             _assertHelper.AreEqual(() => _entity.StartTime, _record.fixture.start_time);
             _assertHelper.AreEqual(() => _entity.NextLiveTime, SdkInfo.ParseDate(_record.fixture.next_live_time));
-            _assertHelper.AreEqual(() => _entity.StartTimeTBD, _record.fixture.start_time_tbdSpecified ? (bool?) _record.fixture.start_time_tbd : null);
+            _assertHelper.AreEqual(() => _entity.StartTimeTbd, _record.fixture.start_time_tbdSpecified ? (bool?) _record.fixture.start_time_tbd : null);
             _assertHelper.AreEqual(() => _entity.StartTimeConfirmed, _record.fixture.start_time_confirmed);
 
             _assertHelper.AreEqual(() => _entity.Season.Id.ToString(), _record.fixture.season.id);
