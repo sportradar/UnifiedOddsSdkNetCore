@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 handler(this, eventArgs);
                 stopwatch.Stop();
-                Log.LogInformation($"Successfully dispatched message[{message}]. Duration:{stopwatch.ElapsedMilliseconds} ms.");
+                Log.LogInformation($"Successfully dispatched message[{message}]. Duration: {stopwatch.ElapsedMilliseconds} ms.");
             }
             catch (Exception ex)
             {
@@ -62,7 +62,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="handler">A <see cref="EventHandler{T}"/> representing the event</param>
         /// <param name="eventArgs">Event arguments</param>
         /// <param name="messageName">The name of the event</param>
-        protected void Dispatch<T>(EventHandler<T> handler, T eventArgs, string messageName)
+        /// <param name="producerId">The producer id</param>
+        protected void Dispatch<T>(EventHandler<T> handler, T eventArgs, string messageName, int producerId)
         {
             if (handler == null)
             {
@@ -78,7 +79,8 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 handler(this, eventArgs);
                 stopwatch.Stop();
-                Log.LogInformation($"Successfully dispatched message {messageName}. Duration:{stopwatch.ElapsedMilliseconds} ms.");
+                var prod = producerId==0 ? string.Empty : $" for producer {producerId}";
+                Log.LogInformation($"Successfully dispatched message {messageName}{prod}. Duration: {stopwatch.ElapsedMilliseconds} ms.");
             }
             catch (Exception ex)
             {

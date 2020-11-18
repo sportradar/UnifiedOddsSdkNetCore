@@ -53,7 +53,7 @@
             <param name="eventArgs">Event arguments</param>
             <param name="message">A message to dispatch</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.EntityDispatcherBase.Dispatch``1(System.EventHandler{``0},``0,System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.API.EntityDispatcherBase.Dispatch``1(System.EventHandler{``0},``0,System.String,System.Int32)">
             <summary>
             Raises the specified event
             </summary>
@@ -61,6 +61,7 @@
             <param name="handler">A <see cref="T:System.EventHandler`1"/> representing the event</param>
             <param name="eventArgs">Event arguments</param>
             <param name="messageName">The name of the event</param>
+            <param name="producerId">The producer id</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.EventArguments.AliveEventArgs">
             <summary>

@@ -433,7 +433,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         void IGlobalEventDispatcher.DispatchDisconnected()
         {
-            Dispatch(Disconnected, new EventArgs(), "Disconnected");
+            Dispatch(Disconnected, new EventArgs(), "Disconnected", 0);
         }
 
         /// <summary>
@@ -445,7 +445,7 @@ namespace Sportradar.OddsFeed.SDK.API
         {
             Guard.Argument(eventId, nameof(eventId)).NotNull();
 
-            Dispatch(EventRecoveryCompleted, new EventRecoveryCompletedEventArgs(requestId, eventId), "EventRecoveryCompleted");
+            Dispatch(EventRecoveryCompleted, new EventRecoveryCompletedEventArgs(requestId, eventId), "EventRecoveryCompleted", 0);
         }
 
         /// <summary>
@@ -454,7 +454,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         public void DispatchConnectionException(CallbackExceptionEventArgs callbackExceptionEventArgs)
         {
-            Dispatch(ConnectionException, new ConnectionExceptionEventArgs(callbackExceptionEventArgs.Exception, callbackExceptionEventArgs.Detail), "ConnectionException");
+            Dispatch(ConnectionException, new ConnectionExceptionEventArgs(callbackExceptionEventArgs.Exception, callbackExceptionEventArgs.Detail), "ConnectionException", 0);
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace Sportradar.OddsFeed.SDK.API
             Guard.Argument(producerStatusChange, nameof(producerStatusChange)).NotNull();
 
             var eventArgs = new ProducerStatusChangeEventArgs(producerStatusChange);
-            Dispatch(ProducerDown, eventArgs, "ProducerDown");
+            Dispatch(ProducerDown, eventArgs, "ProducerDown", producerStatusChange.Producer.Id);
         }
 
         /// <summary>
@@ -478,7 +478,7 @@ namespace Sportradar.OddsFeed.SDK.API
             Guard.Argument(producerStatusChange, nameof(producerStatusChange)).NotNull();
 
             var eventArgs = new ProducerStatusChangeEventArgs(producerStatusChange);
-            Dispatch(ProducerUp, eventArgs, "ProducerUp");
+            Dispatch(ProducerUp, eventArgs, "ProducerUp", producerStatusChange.Producer.Id);
         }
 
         /// <summary>

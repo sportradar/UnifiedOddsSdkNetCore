@@ -134,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     var messageType = _messageDataExtractor.GetMessageTypeFromMessage(message);
 
                     var eventArgs = new UnparsableMessageEventArgs(messageType, message.ProducerId.ToString(), message.EventId, e.RawMessage);
-                    Dispatch(OnUnparsableMessageReceived, eventArgs, "OnUnparsableMessageReceived");
+                    Dispatch(OnUnparsableMessageReceived, eventArgs, "OnUnparsableMessageReceived", message.ProducerId);
                     return;
                 case ValidationResult.PROBLEMS_DETECTED:
                     Log.LogWarning($"{WriteMessageInterest()}Problems were detected while validating message=[{message}], but the message is still eligible for further processing.");
@@ -161,7 +161,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var basicMessageData = _messageDataExtractor.GetBasicMessageData(rawData);
             Log.LogInformation($"{WriteMessageInterest()}Extracted the following data from unparsed message data: [{basicMessageData}], raising OnUnparsableMessageReceived event");
             var dispatchmentEventArgs = new UnparsableMessageEventArgs(basicMessageData.MessageType, basicMessageData.ProducerId, basicMessageData.EventId, rawData);
-            Dispatch(OnUnparsableMessageReceived, dispatchmentEventArgs, "OnUnparsableMessageReceived");
+            var producerId = 0;
+            if (!string.IsNullOrEmpty(basicMessageData.ProducerId))
+            {
+                int.TryParse(basicMessageData.ProducerId, out producerId);
+            }
+            Dispatch(OnUnparsableMessageReceived, dispatchmentEventArgs, "OnUnparsableMessageReceived", producerId);
         }
 
         /// <summary>
