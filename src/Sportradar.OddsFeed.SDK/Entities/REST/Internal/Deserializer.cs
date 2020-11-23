@@ -52,21 +52,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             foreach (var baseType in BaseTypes)
             {
-                foreach (var feedMessagesType in baseType.Assembly.GetTypes().Where(t => t != baseType && baseType.IsAssignableFrom(t)))
+                foreach (var feedMessagesType in baseType.Assembly.GetTypes()
+                    .Where(t => t != baseType && baseType.IsAssignableFrom(t)))
                 {
                     var xmlRootAttribute = feedMessagesType.GetCustomAttribute<XmlRootAttribute>(false);
                     var ignoreNamespaceAttribute = feedMessagesType.GetCustomAttribute<OverrideXmlNamespaceAttribute>(false);
 
                     var rootElementName = xmlRootAttribute == null || string.IsNullOrWhiteSpace(xmlRootAttribute.ElementName)
-                        ? ignoreNamespaceAttribute == null
-                            ? null
-                            : ignoreNamespaceAttribute.RootElementName
-                        : xmlRootAttribute.ElementName;
+                            ? ignoreNamespaceAttribute?.RootElementName
+                            : xmlRootAttribute.ElementName;
 
                     if (string.IsNullOrWhiteSpace(rootElementName))
                     {
                         throw new InvalidOperationException($"Type {feedMessagesType.FullName} cannot be deserialized with {typeof(Deserializer<>).FullName} because the name of RootXmlElement is not specified");
                     }
+
                     if (serializers.ContainsKey(rootElementName))
                     {
                         throw new InvalidOperationException($"Deserializer associated with name {rootElementName} already exists");
@@ -74,7 +74,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
                     var ignoreNamespace = ignoreNamespaceAttribute?.IgnoreNamespace ?? false;
 
-                    serializers.Add(rootElementName, new SerializerWithInfo(new XmlSerializer(feedMessagesType), ignoreNamespace));
+                    var xmlSerializer = new XmlSerializer(feedMessagesType);
+                    var serializer = new SerializerWithInfo(xmlSerializer, ignoreNamespace);
+                    serializers.Add(rootElementName, serializer);
                 }
             }
 

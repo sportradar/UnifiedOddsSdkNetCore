@@ -4425,14 +4425,14 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
     public partial class matchStatistics {
         
-        private teamStatistics[] totalsField;
+        private teamStatistics[][] totalsField;
         
         private matchPeriod[] periodsField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("teams", IsNullable=false)]
         [System.Xml.Serialization.XmlArrayItemAttribute("team", IsNullable=false, NestingLevel=1)]
-        public teamStatistics[] totals {
+        public teamStatistics[][] totals {
             get {
                 return this.totalsField;
             }

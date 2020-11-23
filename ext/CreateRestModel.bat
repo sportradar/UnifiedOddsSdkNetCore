@@ -26,9 +26,16 @@ echo.
 echo Renaming result file to RestMessages.cs
 rename Selections.cs  RestMessages.cs
 
+REM echo.
+REM echo Replace [][] to []:
+REM "../tools/fart.exe" -r -c RestMessages.cs "[][]" "[]"
+
 echo.
-echo Replace [][] to []:
-"../tools/fart.exe" -r -c RestMessages.cs "[][]" "[]"
+echo Fixing "Compiling JScript/CSharp scripts is not supported" error
+echo Fixing matchPeriod - replace "teamStatistics[][] teams" to "teamStatistics[] teams":
+"../tools/fart.exe" -r -c RestMessages.cs "teamStatistics[][] teams" "teamStatistics[] teams"
+echo Fixing tournamentSchedule - replace sportEvent[][] sport_events to sportEvent[] sport_events:
+"../tools/fart.exe" -r -c RestMessages.cs "sportEvent[][] sport_events" "sportEvent[] sport_events"
 
 echo.
 echo Replace sportEventStatus to restSportEventStatus:

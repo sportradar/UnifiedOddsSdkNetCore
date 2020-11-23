@@ -30,6 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 teams.Add(new TeamStatisticsDTO(teamStatistics, homeAwayCompetitors));
             }
+
             TeamStatisticsDTOs = teams;
         }
     }

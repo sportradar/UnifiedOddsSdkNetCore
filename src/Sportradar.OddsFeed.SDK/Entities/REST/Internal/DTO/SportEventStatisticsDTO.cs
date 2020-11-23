@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
+using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -50,12 +51,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(statistics, nameof(statistics)).NotNull();
 
             var teamStats = new List<TeamStatisticsDTO>();
-            if (statistics.totals != null)
+            if (statistics.totals != null && statistics.totals.Any())
             {
+                // can here be more then 1 sub-array? 
                 foreach (var total in statistics.totals)
                 {
-                    teamStats.Add(new TeamStatisticsDTO(total, homeAwayCompetitors));
+                    foreach (var teamStatistics in total)
+                    {
+                        teamStats.Add(new TeamStatisticsDTO(teamStatistics, homeAwayCompetitors));
+                    }
                 }
+
                 TotalStatisticsDTOs = teamStats;
             }
 
