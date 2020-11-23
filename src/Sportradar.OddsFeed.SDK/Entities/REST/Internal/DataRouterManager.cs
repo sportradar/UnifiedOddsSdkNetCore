@@ -595,6 +595,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 }
                 catch (Exception e)
                 {
+                    if (e.Message.Contains("No events scheduled", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                        WriteLog($"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms. No results.");
+                        return new List<Tuple<URN, URN>>();
+                    }
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError($"Error getting sport events for date {dateId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
