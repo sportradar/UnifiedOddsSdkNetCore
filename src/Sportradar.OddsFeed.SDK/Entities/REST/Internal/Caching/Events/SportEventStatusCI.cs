@@ -189,6 +189,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     }
                 }
             }
+            if (SapiStatusDTO?.SportEventStatistics?.TotalStatisticsDTOs != null)
+            {
+                if (FeedStatusDTO != null)
+                {
+                    if (FeedStatusDTO.SportEventStatistics == null)
+                    {
+                        FeedStatusDTO.SportEventStatistics = SapiStatusDTO.SportEventStatistics;
+                    }
+                    else if (FeedStatusDTO.SportEventStatistics.TotalStatisticsDTOs == null)
+                    {
+                        FeedStatusDTO.SportEventStatistics.TotalStatisticsDTOs = SapiStatusDTO.SportEventStatistics.TotalStatisticsDTOs;
+                    }
+                }
+            }
         }
     }
 }

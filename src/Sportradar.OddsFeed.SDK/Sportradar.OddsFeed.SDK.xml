@@ -24179,6 +24179,10 @@
             </summary>
             <returns>a <see cref="T:System.String" /> containing a JSON representation of the current instance</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodStatistics.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Pitcher">
             <summary>
             Provides information about pitcher
@@ -25386,6 +25390,10 @@
             Gets the total count of green cards
             </summary>
             <value>The total count of green cards</value>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.TeamStatistics.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Tournament">
             <summary>

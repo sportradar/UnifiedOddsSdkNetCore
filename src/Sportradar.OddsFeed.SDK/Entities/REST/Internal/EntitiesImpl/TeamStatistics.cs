@@ -38,5 +38,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             CornerKicks = dto.CornerKicks;
             GreenCards = dto.GreenCards;
         }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"TeamId={TeamId}, Name={Name}, HomeAway={HomeAway}, Cards={Cards}, YellowCards={YellowCards}, RedCards={RedCards}, YellowRedCards={YellowRedCards}, CornerKicks={CornerKicks}";
+        }
     }
 }
