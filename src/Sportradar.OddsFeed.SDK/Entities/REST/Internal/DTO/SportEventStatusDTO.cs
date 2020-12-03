@@ -318,7 +318,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     ApplyPropertyValue(true, $"Clock{i}_MatchTime", clock.match_time, tempProperties);
                     ApplyPropertyValue(true, $"Clock{i}_StoppageTime", clock.stoppage_time, tempProperties);
                     ApplyPropertyValue(true, $"Clock{i}_StoppageTimeAnnounced", clock.stoppage_time_announced, tempProperties);
-
                 }
             }
             ApplyPropertyValue(restSES.periodSpecified, "Period", restSES.period, tempProperties);
@@ -443,7 +442,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             var tempProperties = new Dictionary<string, object>(0);
 
             //TODO: review this
-            if (stageSES.results != null && stageSES.results.competitor.Any())
+            var eventResults = new List<EventResultDTO>();
+            if (stageSES.results != null && stageSES.results.competitor != null && stageSES.results.competitor.Any())
             {
                 var i = 0;
                 foreach (var resultType in stageSES.results.competitor)
@@ -459,8 +459,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     ApplyPropertyValue(true, $"Result{i}_StatusComment", resultType.status_comment, tempProperties);
                     ApplyPropertyValue(true, $"Result{i}_Time", resultType.time, tempProperties);
                     ApplyPropertyValue(true, $"Result{i}_TimeRanking", resultType.time_ranking, tempProperties);
+
+                    eventResults.Add(new EventResultDTO(resultType));
                 }
+                EventResults = eventResults;
             }
+
             ApplyPropertyValue(true, "WinnerId", stageSES.winner_id, tempProperties);
 
             Properties = new ReadOnlyDictionary<string, object>(tempProperties);
@@ -477,17 +481,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             PeriodScores = null;
 
             EventClock = null;
-
-            var eventResults = new List<EventResultDTO>();
-            if (stageSES.results != null && stageSES.results.competitor.Any())
-            {
-                foreach (var stageResultCompetitor in stageSES.results.competitor)
-                {
-                    eventResults.Add(new EventResultDTO(stageResultCompetitor));
-                }
-
-                EventResults = eventResults;
-            }
 
             SportEventStatistics = null;
         }
