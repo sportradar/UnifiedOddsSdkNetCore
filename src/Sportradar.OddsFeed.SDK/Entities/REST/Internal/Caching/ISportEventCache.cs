@@ -60,5 +60,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="before">The scheduled DateTime used to delete sport events from cache</param>
         /// <returns>Number of deleted items</returns>
         int DeleteSportEventsFromCache(DateTime before);
+
+        /// <summary>
+        /// Asynchronous gets a <see cref="URN"/> of event's sport id
+        /// </summary>
+        /// <param name="id">A <see cref="URN"/> representing the event identifier</param>
+        /// <returns>A <see cref="Task{T}"/> representing an asynchronous operation</returns>
+        Task<URN> GetEventSportIdAsync(URN id);
     }
 }

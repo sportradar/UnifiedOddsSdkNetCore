@@ -391,6 +391,38 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
         }
 
+        /// <summary>
+        /// Asynchronous gets a <see cref="URN"/> of event's sport id
+        /// </summary>
+        /// <param name="id">A <see cref="URN"/> representing the event identifier</param>
+        /// <returns>A <see cref="Task{T}"/> representing an asynchronous operation</returns>
+        public async Task<URN> GetEventSportIdAsync(URN id)
+        {
+            try
+            {
+                if(!Cache.Contains(id.ToString()))
+                {
+                    await _dataRouterManager.GetSportEventSummaryAsync(id, _cultures.First(), null).ConfigureAwait(false);
+                }
+
+                var item = (SportEventCI) Cache.Get(id.ToString());
+                if (item != null)
+                {
+                    var sportId = await item.GetSportIdAsync().ConfigureAwait(false);
+                    if (sportId != null)
+                    {
+                        return sportId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExecutionLog.LogError($"Error getting cache item sportId for id={id}", ex);
+            }
+
+            return null;
+        }
+
         private void CacheItemRemovedCallback(CacheEntryRemovedArguments arguments)
         {
             if (arguments?.CacheItem == null)
