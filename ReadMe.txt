@@ -25,6 +25,12 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2020-12-04  1.11.1.0
+Fix: getting ScheduleForDay endpoint when no events throw exception
+Fix: missing totalStatistics in SoccerStatus.Statistics
+Fix: soccer events not instance of ISoccerEvent
+Fix: getting null fetching sport and parent stage info for stages
+
 2020-11-13  1.11.0.0
 Added new stage types in StageType enum (Practice, Qualifying, QualifyingPart, Lap)
 Added CashoutStatus to IMarketWithProbabilitiesV1

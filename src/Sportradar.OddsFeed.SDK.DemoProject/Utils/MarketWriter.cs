@@ -209,7 +209,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             var outcomeSettlement = outcome as IOutcomeSettlement;
             if (outcomeSettlement != null)
             {
-                return $"\tOutcomeForSettlement:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Result:{outcomeSettlement.Result.ToString().ToLower()}, VoidFactor: {outcomeSettlement.VoidFactor}, DeadHeatFactor:{outcomeSettlement.DeadHeatFactor}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeSettlement.OutcomeDefinition, culture)}]";
+                return $"\tOutcomeForSettlement:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Result:{outcomeSettlement.OutcomeResult}, VoidFactor: {outcomeSettlement.VoidFactor}, DeadHeatFactor:{outcomeSettlement.DeadHeatFactor}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeSettlement.OutcomeDefinition, culture)}]";
             }
 
             return $"\tOutcomeId:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', OutcomeDefinition:[{WriteOutcomeDefinition(outcome.OutcomeDefinition, culture)}]";
