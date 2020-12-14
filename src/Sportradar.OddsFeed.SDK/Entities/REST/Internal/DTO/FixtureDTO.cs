@@ -8,6 +8,7 @@ using Dawn;
 using System.Linq;
 using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -88,6 +89,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             if (fixture.parent != null)
             {
                 ParentStage = new StageDTO(fixture.parent);
+            }
+            if(ParentStage == null && Type != null && Type == SportEventType.Parent && fixture.tournament != null)
+            {
+                ParentStage = new StageDTO(new TournamentDTO(fixture.tournament));
             }
             if (!fixture.additional_parents.IsNullOrEmpty())
             {

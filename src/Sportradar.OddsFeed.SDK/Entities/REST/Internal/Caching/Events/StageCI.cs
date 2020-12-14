@@ -163,8 +163,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _parentStageId;
             }
-            ////the requested data does not contain translatable values - fetch just for default language
-            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
+            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
             return _parentStageId;
         }
 
@@ -179,8 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _additionalParentIds;
             }
-            ////the requested data does not contain translatable values - fetch just for default language
-            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
+            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
             return _additionalParentIds;
         }
 
@@ -195,8 +193,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _childStages;
             }
-            ////the requested data does not contain translatable values - fetch just for default language
-            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
+            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
             return _childStages;
         }
 
