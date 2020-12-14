@@ -430,6 +430,31 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IDeserializer<fixturesEndpoint>>(),
                     new ResolvedParameter<ISingleTypeMapperFactory<fixturesEndpoint, FixtureDTO>>()));
 
+            // fixture providers for tournamentInfo return data
+            container.RegisterType<IDeserializer<tournamentInfoEndpoint>, Deserializer<tournamentInfoEndpoint>>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDTO>, TournamentInfoMapperFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDataProvider<TournamentInfoDTO>, DataProvider<tournamentInfoEndpoint, TournamentInfoDTO>>(
+                "fixtureEndpointForTournamentDataProvider",
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    fixtureEndpoint,
+                    new ResolvedParameter<IDataFetcher>(),
+                    new ResolvedParameter<IDeserializer<tournamentInfoEndpoint>>(),
+                    new ResolvedParameter<ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDTO>>()));
+
+            container.RegisterType<IDeserializer<tournamentInfoEndpoint>, Deserializer<tournamentInfoEndpoint>>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDTO>, TournamentInfoMapperFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDataProvider<TournamentInfoDTO>, DataProvider<tournamentInfoEndpoint, TournamentInfoDTO>>(
+                "fixtureChangeFixtureEndpointForTournamentDataProvider",
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    config.Environment == SdkEnvironment.Replay
+                        ? config.ReplayApiBaseUrl + "/sports/{1}/sport_events/{0}/fixture.xml" + nodeIdStr
+                        : config.ApiBaseUri + "/v1/sports/{1}/sport_events/{0}/fixture_change_fixture.xml",
+                    new ResolvedParameter<IDataFetcher>(),
+                    new ResolvedParameter<IDeserializer<tournamentInfoEndpoint>>(),
+                    new ResolvedParameter<ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDTO>>()));
+
             //All available tournaments for all sports
             container.RegisterType<IDeserializer<tournamentsEndpoint>, Deserializer<tournamentsEndpoint>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<tournamentsEndpoint, EntityList<SportDTO>>, TournamentsMapperFactory>(new ContainerControlledLifetimeManager());
@@ -677,39 +702,41 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                           new ResolvedParameter<ISingleTypeMapperFactory<sportTournamentsEndpoint, EntityList<TournamentInfoDTO>>>()));
 
             container.RegisterType<IDataRouterManager, DataRouterManager>(
-                  new ContainerControlledLifetimeManager(),
-                  new InjectionConstructor(
-                                           new ResolvedParameter<ICacheManager>(),
-                                           new ResolvedParameter<IProducerManager>(),
-                                           new ResolvedParameter<IMetricsRoot>(),
-                                           new ResolvedParameter<ExceptionHandlingStrategy>(),
-                                           config.DefaultLocale,
-                                           new ResolvedParameter<IDataProvider<SportEventSummaryDTO>>("sportEventSummaryProvider"),
-                                           new ResolvedParameter<IDataProvider<FixtureDTO>>("fixtureEndpointDataProvider"),
-                                           new ResolvedParameter<IDataProvider<FixtureDTO>>("fixtureChangeFixtureEndpointDataProvider"),
-                                           new ResolvedParameter<IDataProvider<EntityList<SportDTO>>>("allTournamentsProvider"),
-                                           new ResolvedParameter<IDataProvider<EntityList<SportDTO>>>("allSportsProvider"),
-                                           new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("dateScheduleProvider"),
-                                           new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("tournamentScheduleProvider"),
-                                           new ResolvedParameter<IDataProvider<PlayerProfileDTO>>(),
-                                           new ResolvedParameter<IDataProvider<CompetitorProfileDTO>>(),
-                                           new ResolvedParameter<IDataProvider<SimpleTeamProfileDTO>>(),
-                                           new ResolvedParameter<IDataProvider<TournamentSeasonsDTO>>(),
-                                           new ResolvedParameter<IDataProvider<MatchTimelineDTO>>(),
-                                           new ResolvedParameter<IDataProvider<SportCategoriesDTO>>(),
-                                           new ResolvedParameter<IDataProvider<EntityList<MarketDescriptionDTO>>>(),
-                                           new ResolvedParameter<IDataProvider<MarketDescriptionDTO>>(),
-                                           new ResolvedParameter<IDataProvider<EntityList<VariantDescriptionDTO>>>(),
-                                           new ResolvedParameter<IDataProvider<DrawDTO>>("drawSummaryProvider"),
-                                           new ResolvedParameter<IDataProvider<DrawDTO>>("drawFixtureProvider"),
-                                           new ResolvedParameter<IDataProvider<LotteryDTO>>("lotteryScheduleProvider"),
-                                           new ResolvedParameter<IDataProvider<EntityList<LotteryDTO>>>("lotteryListProvider"),
-                                           new ResolvedParameter<IDataProvider<AvailableSelectionsDTO>>(),
-                                           new ResolvedParameter<ICalculateProbabilityProvider>(),
-                                           new ResolvedParameter<IDataProvider<IEnumerable<FixtureChangeDTO>>>(),
-                                           new ResolvedParameter<IDataProvider<IEnumerable<ResultChangeDTO>>>(),
-                                           new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("listSportEventProvider"),
-                                           new ResolvedParameter<IDataProvider<EntityList<TournamentInfoDTO>>>("availableSportTournaments")));
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    new ResolvedParameter<ICacheManager>(),
+                    new ResolvedParameter<IProducerManager>(),
+                    new ResolvedParameter<IMetricsRoot>(),
+                    new ResolvedParameter<ExceptionHandlingStrategy>(),
+                    config.DefaultLocale,
+                    new ResolvedParameter<IDataProvider<SportEventSummaryDTO>>("sportEventSummaryProvider"),
+                    new ResolvedParameter<IDataProvider<FixtureDTO>>("fixtureEndpointDataProvider"),
+                    new ResolvedParameter<IDataProvider<FixtureDTO>>("fixtureChangeFixtureEndpointDataProvider"),
+                    new ResolvedParameter<IDataProvider<EntityList<SportDTO>>>("allTournamentsProvider"),
+                    new ResolvedParameter<IDataProvider<EntityList<SportDTO>>>("allSportsProvider"),
+                    new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("dateScheduleProvider"),
+                    new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("tournamentScheduleProvider"),
+                    new ResolvedParameter<IDataProvider<PlayerProfileDTO>>(),
+                    new ResolvedParameter<IDataProvider<CompetitorProfileDTO>>(),
+                    new ResolvedParameter<IDataProvider<SimpleTeamProfileDTO>>(),
+                    new ResolvedParameter<IDataProvider<TournamentSeasonsDTO>>(),
+                    new ResolvedParameter<IDataProvider<MatchTimelineDTO>>(),
+                    new ResolvedParameter<IDataProvider<SportCategoriesDTO>>(),
+                    new ResolvedParameter<IDataProvider<EntityList<MarketDescriptionDTO>>>(),
+                    new ResolvedParameter<IDataProvider<MarketDescriptionDTO>>(),
+                    new ResolvedParameter<IDataProvider<EntityList<VariantDescriptionDTO>>>(),
+                    new ResolvedParameter<IDataProvider<DrawDTO>>("drawSummaryProvider"),
+                    new ResolvedParameter<IDataProvider<DrawDTO>>("drawFixtureProvider"),
+                    new ResolvedParameter<IDataProvider<LotteryDTO>>("lotteryScheduleProvider"),
+                    new ResolvedParameter<IDataProvider<EntityList<LotteryDTO>>>("lotteryListProvider"),
+                    new ResolvedParameter<IDataProvider<AvailableSelectionsDTO>>(),
+                    new ResolvedParameter<ICalculateProbabilityProvider>(),
+                    new ResolvedParameter<IDataProvider<IEnumerable<FixtureChangeDTO>>>(),
+                    new ResolvedParameter<IDataProvider<IEnumerable<ResultChangeDTO>>>(),
+                    new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("listSportEventProvider"),
+                    new ResolvedParameter<IDataProvider<EntityList<TournamentInfoDTO>>>("availableSportTournaments"),
+                    new ResolvedParameter<IDataProvider<TournamentInfoDTO>>("fixtureEndpointForTournamentDataProvider"),
+                    new ResolvedParameter<IDataProvider<TournamentInfoDTO>>("fixtureChangeFixtureEndpointForTournamentDataProvider")));
         }
 
         private static void RegisterSessionTypes(IUnityContainer container, IOddsFeedConfigurationInternal config)
