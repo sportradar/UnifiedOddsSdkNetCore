@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -186,6 +187,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 : await new Func<Task<IEnumerable<URN>>>(lotteryCI.GetScheduledDrawsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ScheduledDraws")).ConfigureAwait(false);
 
             return item;
+        }
+
+        /// <summary>
+        /// Asynchronously gets the list of associated <see cref="IDraw"/>
+        /// </summary>
+        /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
+        public async Task<IEnumerable<IDraw>> GetDrawsAsync()
+        {
+            var lotteryCI = (LotteryCI)SportEventCache.GetEventCacheItem(Id);
+            if (lotteryCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
+                return null;
+            }
+            var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await lotteryCI.GetScheduledDrawsAsync().ConfigureAwait(false)
+                : await new Func<Task<IEnumerable<URN>>>(lotteryCI.GetScheduledDrawsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ScheduledDraws")).ConfigureAwait(false);
+
+            return item.Select(s=> new Draw(s, SportId, SportEventCache, Cultures, ExceptionStrategy));
         }
     }
 }

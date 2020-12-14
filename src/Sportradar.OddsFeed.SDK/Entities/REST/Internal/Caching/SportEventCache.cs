@@ -914,6 +914,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
         }
 
+        private void SaveLotteryDraw(DrawDTO draw, CultureInfo culture)
+        {
+            if (draw == null)
+            {
+                return;
+            }
+            var cacheItem = _sportEventCacheItemFactory.Get(Cache.Get(draw.Id.ToString()));
+            if (cacheItem == null)
+            {
+                var ci2 = (DrawCI) _sportEventCacheItemFactory.Build(draw, culture);
+                AddNewCacheItem(ci2);
+            }
+            else
+            {
+                if (cacheItem is DrawCI drawCI)
+                {
+                    drawCI.Merge(draw, culture, false);
+                }
+                else
+                {
+                    //ignored
+                }
+            }
+        }
+
         private void AddSportEvent(URN id, SportEventSummaryDTO item, CultureInfo culture, ISportEventCI requester, DtoType dtoType)
         {
             TournamentInfoDTO tournamentInfoDTO = null;
@@ -1023,6 +1048,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                                 if (lottery != null)
                                 {
                                     ((LotteryCI) requester).Merge(lottery, culture, true);
+                                    if (!lottery.DrawEvents.IsNullOrEmpty())
+                                    {
+                                        foreach (var drawEvent in lottery.DrawEvents)
+                                        {
+                                            SaveLotteryDraw(drawEvent, culture);
+                                        }
+                                    }
                                     requesterMerged = true;
                                 }
                             }
@@ -1148,6 +1180,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                             if (lottery != null)
                             {
                                 ((LotteryCI)cacheItem).Merge(lottery, culture, true);
+                                if (!lottery.DrawEvents.IsNullOrEmpty())
+                                {
+                                    foreach (var drawEvent in lottery.DrawEvents)
+                                    {
+                                        SaveLotteryDraw(drawEvent, culture);
+                                    }
+                                }
                                 merged = true;
                             }
                         }

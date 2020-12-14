@@ -35,5 +35,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         Task<IEnumerable<URN>> GetScheduledDrawsAsync();
+
+        /// <summary>
+        /// Asynchronously gets the list of associated <see cref="IDraw"/>
+        /// </summary>
+        /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
+        Task<IEnumerable<IDraw>> GetDrawsAsync() => Task.FromResult<IEnumerable<IDraw>>(null);
     }
 }
