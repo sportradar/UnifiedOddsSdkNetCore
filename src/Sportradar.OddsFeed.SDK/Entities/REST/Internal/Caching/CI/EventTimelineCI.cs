@@ -41,7 +41,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public EventTimelineCI(ExportableEventTimelineCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             _timeline = exportable.Timeline?.Select(t => new TimelineEventCI(t)).ToList();
             _isFinalized = exportable.IsFinalized;
@@ -83,6 +85,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 }
                 else
                 {
+                    // delete obsolete timeline events
+                    _timeline.RemoveAll(timelineEvent => dto.BasicEvents.All(basicEvent => basicEvent.Id != timelineEvent.Id));
                     foreach (var basicEvent in dto.BasicEvents)
                     {
                         var timelineEvent = _timeline.FirstOrDefault(s => s.Id == basicEvent.Id);

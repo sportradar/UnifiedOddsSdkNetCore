@@ -10,7 +10,7 @@ The SDK uses the following 3rd party libraries which must be added via the NuGet
     - Castle.Core (4.4.0)
     - Dawn.Guard (1.10.0)
     - Humanizer (2.7.9)
-    - Microsoft.Charp (4.7.0)
+    - Microsoft.CSharp (4.7.0)
     - Microsoft.Extensions.Logging (3.1.0)
     - Newtonsoft.Json (12.0.3)
     - RabbitMQ.Client (4.7.0)

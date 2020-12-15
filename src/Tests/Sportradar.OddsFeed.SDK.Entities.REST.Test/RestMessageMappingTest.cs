@@ -126,8 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             for (var i = 0; i < msg.extra_info.Length; i++)
             {
                 Assert.IsTrue(dto.ExtraInfo.ContainsKey(msg.extra_info[i].key));
-                string eiValue;
-                dto.ExtraInfo.TryGetValue(msg.extra_info[i].key, out eiValue);
+                dto.ExtraInfo.TryGetValue(msg.extra_info[i].key, out var eiValue);
                 Assert.AreEqual(msg.extra_info[i].value, eiValue);
             }
         }
