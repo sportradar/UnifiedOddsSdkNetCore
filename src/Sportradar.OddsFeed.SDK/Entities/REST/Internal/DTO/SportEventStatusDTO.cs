@@ -355,10 +355,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                              : MessageMapperHelper.GetEnumValue(restSES.status, EventStatus.Unknown);
             ApplyPropertyValue(true, "Status", (int) Status, tempProperties);    //BELOW
 
-            //IsReported = restSES.reportingSpecified
-            //    ? (int?)restSES.reporting
-            //    : null;
-
             HomeScore = restSES.home_scoreSpecified
                 ? (decimal?)restSES.home_score
                 : null;
@@ -441,9 +437,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             var tempProperties = new Dictionary<string, object>(0);
 
-            //TODO: review this
             var eventResults = new List<EventResultDTO>();
-            if (stageSES.results != null && stageSES.results.competitor != null && stageSES.results.competitor.Any())
+            if (stageSES.results?.competitor != null && stageSES.results.competitor.Any())
             {
                 var i = 0;
                 foreach (var resultType in stageSES.results.competitor)

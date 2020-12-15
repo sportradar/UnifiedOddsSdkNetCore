@@ -71,7 +71,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             SetDtoTypes();
             if (RegisteredDtoTypes == null)
             {
-                throw new ArgumentNullException(nameof(RegisteredDtoTypes));
+                throw new FieldAccessException(nameof(RegisteredDtoTypes));
             }
             _cacheManager.RegisterCache(CacheName, this);
         }
@@ -101,11 +101,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 using (_metrics.Measure.Timer.Time(timerOptionsDtType))
                 {
-                    //WriteLog($"{CacheName} ::> Saving DTO for id:{id}, lang:[{culture.TwoLetterISOLanguageName}] and type:{dtoType}.");
                     var syncTask = new Task<bool>(() =>
                     {
                         var result = CacheAddDtoItem(id, item, culture, dtoType, requester);
-                        //WriteLog($"{CacheName} ::> Saving DTO for id:{id}, lang:[{culture.TwoLetterISOLanguageName}] and type:{dtoType} COMPLETED.");
                         return result;
                     });
 

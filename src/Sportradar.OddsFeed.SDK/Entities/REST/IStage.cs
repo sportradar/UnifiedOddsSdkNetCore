@@ -46,6 +46,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
         /// </summary>
         /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
-        Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync() => null;
+        Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync() => Task.FromResult<IEnumerable<IStage>>(null);
     }
 }

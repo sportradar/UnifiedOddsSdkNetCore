@@ -122,12 +122,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             _timer.Start();
         }
 
+
         /// <summary>
         /// Fetches the data for pre-configured languages and merges it to internally used dictionaries. First time the method is invoked it fetches the data only for missing languages.
         /// On subsequent calls data for all configured languages is fetched and dictionary are cleared before fetched data is added / merged
         /// </summary>
         /// <param name="sender">A <see cref="ITimer"/> invoking the method</param>
         /// <param name="e">The <see cref="EventArgs"/> providing additional information about the event which invoked the method</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "<Pending>")]
         private async void OnTimerElapsed(object sender, EventArgs e)
         {
 
@@ -208,6 +210,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
         }
 
+
         /// <summary>
         /// Gets a <see cref="SportData"/> representing the parent sport of the tournament specified by <code>tournamentId</code> in the languages specified by <code>cultures</code>, or a null reference
         /// if the specified sport does not exist, or it(or one of it's children) is not available in one of the requested languages
@@ -219,6 +222,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="cultures">A <see cref="IEnumerable{CultrureInfo}"/> specifying the languages to which the sport must be translated</param>
         /// <param name="fetchTournamentIfMissing">Indicates if the tournament should be fetched if not obtained via all tournaments request</param>
         /// <returns>A <see cref="SportData"/> representing the requested sport translated into requested languages</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "<Pending>")]
         private SportData GetSportForTournamentFromCache(URN tournamentId, IEnumerable<CultureInfo> cultures, bool fetchTournamentIfMissing)
         {
             var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
@@ -315,8 +319,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                         categories = new List<CategoryData>();
                         foreach (var categoryId in cachedSport.CategoryIds)
                         {
-                            CategoryCI cachedCategory;
-                            if (!(Categories.TryGetValue(categoryId, out cachedCategory) && cachedCategory.HasTranslationsFor(cultureList)))
+                            if (!(Categories.TryGetValue(categoryId, out var cachedCategory) && cachedCategory.HasTranslationsFor(cultureList)))
                             {
                                 ExecutionLog.LogWarning($"An error occurred while retrieving sport from cache.For sportId = {id} and lang =[{string.Join(",", cultureList)}] we are missing category {categoryId}.");
                                 continue;
@@ -349,8 +352,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="cultures">A <see cref="IEnumerable{CultrureInfo}"/> specifying the languages to which the categories must be translated</param>
         private async Task FetchSportCategoriesIfNeededAsync(URN id, IList<CultureInfo> cultures)
         {
-            SportCI cachedSport;
-            if (!Sports.TryGetValue(id, out cachedSport))
+            if (!Sports.TryGetValue(id, out var cachedSport))
             {
                 return;
             }
@@ -542,7 +544,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     await FetchAndMergeAll(missingCultures, false).ConfigureAwait(false);
                 }
-                //return GetSportForTournamentFromCache(tournamentId, cultureList, false);
             }
             catch (Exception ex)
             {
@@ -573,7 +574,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         public void RegisterHealthCheck()
         {
-            //HealthChecks.RegisterHealthCheck("SportDataCache", new Func<HealthCheckResult>(StartHealthCheck));
+            // later 
         }
 
         /// <summary>
@@ -783,14 +784,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     if (lottery != null)
                     {
                         AddDataFromSportEventSummary(lottery, culture);
-                        //if (lottery.DrawEvents == null || !lottery.DrawEvents.Any())
-                        //{
-                        //    _dataRouterManager.GetLotteryScheduleAsync(lottery.Id, culture);
-                        //}
-                        //else
-                        //{
-                        //    _dataRouterManager.GetDrawFixtureAsync(lottery.DrawEvents.First().Id, culture);
-                        //}
                         saved = true;
                     }
                     else
@@ -860,8 +853,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 AddCategory(match.Tournament.Category.Id, match.Tournament.Category, match.SportId, new List<URN> { match.Tournament.Id }, culture);
                 return;
             }
-            var tour = dto as TournamentInfoDTO;
-            if (tour != null)
+
+            if (dto is TournamentInfoDTO tour)
             {
                 AddSport(tour.SportId, tour.Sport, culture);
                 AddCategory(tour.Category.Id, tour.Category, tour.SportId, new List<URN> { tour.Id }, culture);
@@ -872,6 +865,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 return;
             }
+
             var stage = dto as StageDTO;
             if (stage?.Tournament != null)
             {
@@ -886,8 +880,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 return;
             }
-            var draw = dto as DrawDTO;
-            if (draw != null)
+
+            if (dto is DrawDTO draw)
             {
                 if (draw.Lottery != null)
                 {
@@ -896,13 +890,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 return;
             }
-            var lottery = dto as LotteryDTO;
-            if (lottery != null)
+
+            if (dto is LotteryDTO lottery)
             {
                 AddSport(lottery.Sport.Id, lottery.Sport, culture);
                 AddCategory(lottery.Category.Id, lottery.Category, lottery.SportId ?? lottery.Sport?.Id, null, culture);
-                // ReSharper disable once RedundantJumpStatement
-                return;
             }
         }
 
@@ -969,7 +961,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 return Sports.ContainsKey(id);
             }
 
-            if (cacheItemType == CacheItemType.Category || cacheItemType == CacheItemType.All)
+            if (cacheItemType == CacheItemType.Category)
             {
                 return Categories.ContainsKey(id);
             }
@@ -984,8 +976,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (Sports.ContainsKey(id))
                     {
-                        SportCI ci;
-                        Sports.TryGetValue(id, out ci);
+                        Sports.TryGetValue(id, out var ci);
                         ci?.Merge(new SportCI(item, _dataRouterManager, culture), culture);
                     }
                     else
@@ -1006,7 +997,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
             }
         }
-
         private void AddSport(URN id, SportEntityDTO item, CultureInfo culture)
         {
             lock (_mergeLock)
@@ -1015,8 +1005,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (Sports.ContainsKey(id))
                     {
-                        SportCI ci;
-                        Sports.TryGetValue(id, out ci);
+                        Sports.TryGetValue(id, out var ci);
                         ci?.Merge(new SportCI(new SportDTO(item.Id.ToString(), item.Name, (IEnumerable<tournamentExtended>) null), _dataRouterManager, culture), culture);
                     }
                     else
@@ -1030,7 +1019,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
             }
         }
-
         private void AddSport(URN id, SportCategoriesDTO item, CultureInfo culture)
         {
             lock (_mergeLock)
@@ -1039,8 +1027,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (Sports.ContainsKey(id))
                     {
-                        SportCI ci;
-                        Sports.TryGetValue(id, out ci);
+                        Sports.TryGetValue(id, out var ci);
                         ci?.Merge(new SportCI(new SportDTO(item.Sport.Id.ToString(), item.Sport.Name, item.Categories), _dataRouterManager, culture), culture);
                     }
                     else
@@ -1064,8 +1051,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     var id = URN.Parse(item.Id);
                     if (Sports.ContainsKey(id))
                     {
-                        SportCI ci;
-                        Sports.TryGetValue(id, out ci);
+                        Sports.TryGetValue(id, out var ci);
                         ci?.Merge(new SportCI(item), item.Name.Keys.First());
                     }
                     else
@@ -1080,7 +1066,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
         }
 
-
         /// <summary>
         /// Adds the category
         /// </summary>
@@ -1089,16 +1074,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="culture">The culture</param>
         private void AddCategory(URN id, CategoryDTO item, CultureInfo culture)
         {
-            //WriteLog($"Saving CategoryDTO for id:{id} and lang:[{culture.TwoLetterISOLanguageName}].");
-
             lock (_mergeLock)
             {
                 try
                 {
                     if (Categories.ContainsKey(item.Id))
                     {
-                        CategoryCI ci;
-                        Categories.TryGetValue(item.Id, out ci);
+                        Categories.TryGetValue(item.Id, out var ci);
                         ci?.Merge(new CategoryCI(item, culture, item.Tournaments?.FirstOrDefault()?.Sport.Id ?? id), culture);
                     }
                     else
@@ -1111,8 +1093,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     ExecutionLog.LogError($"Error saving CategoryDTO for {id} and lang={culture.TwoLetterISOLanguageName}.", e);
                 }
             }
-
-            //WriteLog($"Saving CategoryDTO for id:{id} and lang:[{culture.TwoLetterISOLanguageName}] COMPLETED.");
         }
 
         private void AddCategory(URN id, CategorySummaryDTO item, URN sportId, IEnumerable<URN> tournamentIds, CultureInfo culture)
@@ -1124,8 +1104,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (Categories.ContainsKey(id))
                     {
-                        CategoryCI ci;
-                        Categories.TryGetValue(id, out ci);
+                        Categories.TryGetValue(id, out var ci);
                         ci?.Merge(new CategoryCI(item, culture, sportId, tournamentIds), culture);
                     }
                     else
@@ -1136,6 +1115,30 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 catch (Exception e)
                 {
                     ExecutionLog.LogError($"Error saving CategorySummaryDTO for {id} and lang={culture.TwoLetterISOLanguageName}.", e);
+                }
+            }
+        }
+
+        private void AddCategory(ExportableCategoryCI item)
+        {
+            lock (_mergeLock)
+            {
+                try
+                {
+                    var id = URN.Parse(item.Id);
+                    if (Categories.ContainsKey(id))
+                    {
+                        Categories.TryGetValue(id, out var ci);
+                        ci?.Merge(new CategoryCI(item), item.Name.Keys.First());
+                    }
+                    else
+                    {
+                        Categories.Add(id, new CategoryCI(item));
+                    }
+                }
+                catch (Exception e)
+                {
+                    ExecutionLog.LogError($"Error importing ExportableCategoryCI for {item.Id}.", e);
                 }
             }
         }
@@ -1163,31 +1166,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     {
                         ExecutionLog.LogError($"Error saving CategoryDTO for {category.Id} and lang={culture.TwoLetterISOLanguageName}.", e);
                     }
-                }
-            }
-        }
-
-        private void AddCategory(ExportableCategoryCI item)
-        {
-            lock (_mergeLock)
-            {
-                try
-                {
-                    var id = URN.Parse(item.Id);
-                    if (Categories.ContainsKey(id))
-                    {
-                        CategoryCI ci;
-                        Categories.TryGetValue(id, out ci);
-                        ci?.Merge(new CategoryCI(item), item.Name.Keys.First());
-                    }
-                    else
-                    {
-                        Categories.Add(id, new CategoryCI(item));
-                    }
-                }
-                catch (Exception e)
-                {
-                    ExecutionLog.LogError($"Error importing ExportableCategoryCI for {item.Id}.", e);
                 }
             }
         }

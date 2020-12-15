@@ -121,6 +121,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             GC.SuppressFinalize(this);
         }
 
+
         /// <summary>
         /// Asynchronously gets a <see cref="PlayerProfileCI"/> representing the profile for the specified player
         /// </summary>
@@ -128,10 +129,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages in which the information should be available</param>
         /// <returns>A <see cref="Task{PlayerProfileCI}"/> representing the asynchronous operation</returns>
         /// <exception cref="CacheItemNotFoundException">The requested item was not found in cache and could not be obtained from the API</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4457:Parameter validation in \"async\"/\"await\" methods should be wrapped", Justification = "<Pending>")]
         public async Task<PlayerProfileCI> GetPlayerProfileAsync(URN playerId, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(playerId, nameof(playerId)).NotNull();
-            Guard.Argument(cultures, nameof(cultures)).NotNull();//.NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();
             if (!cultures.Any())
             {
                 throw new ArgumentOutOfRangeException(nameof(cultures));
@@ -223,10 +225,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages in which the information should be available</param>
         /// <returns>A <see cref="Task{PlayerProfileCI}"/> representing the asynchronous operation</returns>
         /// <exception cref="CacheItemNotFoundException">The requested item was not found in cache and could not be obtained from the API</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4457:Parameter validation in \"async\"/\"await\" methods should be wrapped", Justification = "<Pending>")]
         public async Task<CompetitorCI> GetCompetitorProfileAsync(URN competitorId, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(competitorId, nameof(competitorId)).NotNull();
-            Guard.Argument(cultures, nameof(cultures)).NotNull();//.NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();
             if (!cultures.Any())
             {
                 throw new ArgumentOutOfRangeException(nameof(cultures));
@@ -286,8 +289,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         {
             var keys = _cache.Select(w => w.Key).ToList();
             var details = $" [Players: {keys.Count(c => c.Contains("player"))}, Competitors: {keys.Count(c => c.Contains("competitor"))}, Teams: {keys.Count(c => c.Equals("team"))}, SimpleTeams: {keys.Count(c => c.Contains(SdkInfo.SimpleTeamIdentifier))}]";
-            //var otherKeys = _cache.Where(w => !w.Key.Contains("competitor")).Select(s => s.Key);
-            //CacheLog.LogDebug($"Ids: {string.Join(",", otherKeys)}");
 
             return _cache.Any()
                 ? new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy($"Cache has { _cache.Count() } items{ details}."))
@@ -357,7 +358,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// <returns><c>true</c> if added, <c>false</c> otherwise</returns>
         protected override bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
-            //CacheLog.LogDebug($"Saving {id}.");
             if (_isDisposed)
             {
                 return false;
@@ -515,14 +515,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
             }
-            //CacheLog.LogDebug($"Saving {id} COMPLETED.");
             return saved;
         }
 
         private bool SaveCompetitorsFromSportEvent(object item, CultureInfo culture)
         {
-            var fixture = item as FixtureDTO;
-            if (fixture != null)
+            if (item is FixtureDTO fixture)
             {
                 if (fixture.Competitors != null && fixture.Competitors.Any())
                 {
@@ -533,8 +531,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 return true;
             }
-            var match = item as MatchDTO;
-            if (match != null)
+
+            if (item is MatchDTO match)
             {
                 if (match.Competitors != null && match.Competitors.Any())
                 {
@@ -545,8 +543,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 return true;
             }
-            var stage = item as StageDTO;
-            if(stage != null)
+
+            if(item is StageDTO stage)
             {
                 if (stage.Competitors != null && stage.Competitors.Any())
                 {
@@ -557,8 +555,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 return true;
             }
-            var tour = item as TournamentInfoDTO;
-            if (tour != null)
+
+            if (item is TournamentInfoDTO tour)
             {
                 if (tour.Competitors != null && tour.Competitors.Any())
                 {
@@ -606,12 +604,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 finally
                 {
-                    if (useSemaphore)
+                    if (useSemaphore && !_isDisposed)
                     {
-                        if (!_isDisposed)
-                        {
-                            _semaphoreCacheMerge.Release();
-                        }
+                        _semaphoreCacheMerge.Release();
                     }
                 }
             }
@@ -687,12 +682,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 finally
                 {
-                    if (useSemaphore)
+                    if (useSemaphore && !_isDisposed)
                     {
-                        if (!_isDisposed)
-                        {
-                            _semaphoreCacheMerge.Release();
-                        }
+                        _semaphoreCacheMerge.Release();
                     }
                 }
             }
@@ -757,12 +749,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 finally
                 {
-                    if (useSemaphore)
+                    if (useSemaphore && !_isDisposed)
                     {
-                        if (!_isDisposed)
-                        {
-                            _semaphoreCacheMerge.Release();
-                        }
+                        _semaphoreCacheMerge.Release();
                     }
                 }
 
@@ -807,12 +796,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 finally
                 {
-                    if (useSemaphore)
+                    if (useSemaphore && !_isDisposed)
                     {
-                        if (!_isDisposed)
-                        {
-                            _semaphoreCacheMerge.Release();
-                        }
+                        _semaphoreCacheMerge.Release();
                     }
                 }
             }
@@ -845,12 +831,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 finally
                 {
-                    if (useSemaphore)
+                    if (useSemaphore && !_isDisposed)
                     {
-                        if (!_isDisposed)
-                        {
-                            _semaphoreCacheMerge.Release();
-                        }
+                        _semaphoreCacheMerge.Release();
                     }
                 }
             }
@@ -925,12 +908,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 finally
                 {
-                    if (useSemaphore)
+                    if (useSemaphore && !_isDisposed)
                     {
-                        if (!_isDisposed)
-                        {
-                            _semaphoreCacheMerge.Release();
-                        }
+                        _semaphoreCacheMerge.Release();
                     }
                 }
             }
@@ -960,18 +940,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// <returns>Collection of <see cref="ExportableCI"/> containing all the items currently in the cache</returns>
         public async Task<IEnumerable<ExportableCI>> ExportAsync()
         {
-            IEnumerable<IExportableCI> exportables;
+            IEnumerable<IExportableCI> exportable;
             try
             {
                 _semaphoreCacheMerge.Wait();
-                exportables = _cache.ToList().Select(i => (IExportableCI) i.Value);
+                exportable = _cache.Select(i => (IExportableCI) i.Value);
             }
             finally
             {
                 _semaphoreCacheMerge.Release();
             }
 
-            var tasks = exportables.Select(e =>
+            var tasks = exportable.Select(e =>
             {
                 var task = e.ExportAsync();
                 task.ConfigureAwait(false);

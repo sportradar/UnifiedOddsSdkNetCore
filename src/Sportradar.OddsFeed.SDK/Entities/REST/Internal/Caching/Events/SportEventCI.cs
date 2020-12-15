@@ -376,13 +376,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             catch (Exception ex)
             {
                 ExecutionLog.LogError($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.", ex);
-                var drm = DataRouterManager as DataRouterManager;
-                if (drm != null)
+                if (DataRouterManager is DataRouterManager drm && drm.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
-                    if (drm.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
-                    {
-                        throw;
-                    }
+                    throw;
                 }
             }
             finally
@@ -427,7 +423,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 }
 
                 // fetch data for missing cultures
-                //ExecutionLog.LogDebug($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}].");
                 Dictionary<CultureInfo, Task> fetchTasks;
                 if (Id.TypeGroup == ResourceTypeGroup.DRAW)
                 {
@@ -443,7 +438,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 }
                 await Task.WhenAll(fetchTasks.Values).ConfigureAwait(false);
                 LoadedFixtures.AddRange(missingCultures);
-                //ExecutionLog.LogDebug($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED.");
             }
             catch (CommunicationException ce)
             {
@@ -481,40 +475,40 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// Merge current instance with the data obtained via provider
         /// </summary>
-        /// <param name="eventSummary">A <see cref="SportEventSummaryDTO" /> used to merge properties with current instance</param>
+        /// <param name="dto">A <see cref="SportEventSummaryDTO" /> used to merge properties with current instance</param>
         /// <param name="culture">A language code of the <see cref="SportEventSummaryDTO" /> data</param>
         /// <param name="useLock">Should the lock mechanism be used during merge</param>
-        public void Merge(SportEventSummaryDTO eventSummary, CultureInfo culture, bool useLock)
+        public void Merge(SportEventSummaryDTO dto, CultureInfo culture, bool useLock)
         {
             if (useLock)
             {
                 lock (MergeLock)
                 {
-                    Merge(eventSummary, culture);
+                    Merge(dto, culture);
                 }
             }
             else
             {
-                Merge(eventSummary, culture);
+                Merge(dto, culture);
             }
         }
 
-        private void Merge(SportEventSummaryDTO eventSummary, CultureInfo culture)
+        private void Merge(SportEventSummaryDTO dto, CultureInfo culture)
         {
-            Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
+            Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             lock (MergeLock)
             {
-                Names[culture] = eventSummary.Name;
-                if (eventSummary.SportId != null)
+                Names[culture] = dto.Name;
+                if (dto.SportId != null)
                 {
-                    _sportId = eventSummary.SportId;
+                    _sportId = dto.SportId;
                 }
-                Scheduled = eventSummary.Scheduled;
-                ScheduledEnd = eventSummary.ScheduledEnd;
-                _startTimeTbd = eventSummary.StartTimeTbd;
-                _replacedBy = eventSummary.ReplacedBy;
+                Scheduled = dto.Scheduled;
+                ScheduledEnd = dto.ScheduledEnd;
+                _startTimeTbd = dto.StartTimeTbd;
+                _replacedBy = dto.ReplacedBy;
             }
         }
 

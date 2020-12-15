@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
-        private static ILogger _log = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
+        private readonly ILogger _log;
 
         /// <summary>
         /// A <see cref="IUnityContainer"/> used to resolve
@@ -259,7 +259,6 @@ namespace Sportradar.OddsFeed.SDK.API
             FeedInitialized = false;
 
             UnityContainer = new UnityContainer();
-            //UnityContainer = new UnityContainer().EnableDiagnostic();
             UnityContainer.RegisterBaseTypes(config, loggerFactory, metricsRoot);
             InternalConfig = UnityContainer.Resolve<IOddsFeedConfigurationInternal>();
             if (isReplay || InternalConfig.Environment == SdkEnvironment.Replay)
@@ -424,7 +423,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         void IDisposable.Dispose()
         {
-            Dispose(true);
+            InternalDispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -534,7 +533,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Disposes the current instance and resources associated with it
         /// </summary>
         /// <param name="disposing">Value indicating whether the managed resources should also be disposed</param>
-        protected virtual void Dispose(bool disposing)
+        protected virtual void InternalDispose(bool disposing)
         {
             if (_isDisposed)
             {

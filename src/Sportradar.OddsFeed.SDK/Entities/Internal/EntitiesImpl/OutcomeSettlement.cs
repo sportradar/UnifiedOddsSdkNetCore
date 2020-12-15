@@ -37,18 +37,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             DeadHeatFactor = deadHeatFactor;
             Result = result == 1;
             VoidFactor = voidFactor;
-            switch (result)
+            OutcomeResult = result switch
             {
-                case 0:
-                    OutcomeResult = OutcomeResult.Lost;
-                    break;
-                case 1:
-                    OutcomeResult = OutcomeResult.Won;
-                    break;
-                default:
-                    OutcomeResult = OutcomeResult.UndecidedYet;
-                    break;
-            }
+                0 => OutcomeResult.Lost,
+                1 => OutcomeResult.Won,
+                _ => OutcomeResult.UndecidedYet
+            };
         }
 
         /// <summary>

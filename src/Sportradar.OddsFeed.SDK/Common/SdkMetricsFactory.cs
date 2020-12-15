@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System.Configuration;
 using App.Metrics;
 
 namespace Sportradar.OddsFeed.SDK.Common

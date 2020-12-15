@@ -205,7 +205,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 ? await lotteryCI.GetScheduledDrawsAsync().ConfigureAwait(false)
                 : await new Func<Task<IEnumerable<URN>>>(lotteryCI.GetScheduledDrawsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ScheduledDraws")).ConfigureAwait(false);
 
-            return item.Select(s=> new Draw(s, SportId, SportEventCache, Cultures, ExceptionStrategy));
+            return item.Select(selector: s => new Draw(s, SportId, SportEventCache, Cultures, ExceptionStrategy));
         }
     }
 }

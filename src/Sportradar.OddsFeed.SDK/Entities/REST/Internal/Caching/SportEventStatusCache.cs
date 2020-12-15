@@ -143,7 +143,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 finally
                 {
-                    //var msg = $"GetSportEventStatusAsync: {eventId} returns status in {t.Elapsed.TotalMilliseconds} ms.";
                     if (!_isDisposed)
                     {
                         _fetchSemaphore.Release();
@@ -211,7 +210,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         public void RegisterHealthCheck()
         {
-            //HealthChecks.RegisterHealthCheck("SportEventStatusCache", new Func<HealthCheckResult>(StartHealthCheck));
         }
 
         /// <summary>
@@ -460,7 +458,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
             }
-            //CacheLog.LogDebug($"Saving {id} COMPLETED. Saved={saved}.");
             return saved;
         }
 

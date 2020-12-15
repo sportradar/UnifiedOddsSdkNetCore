@@ -87,10 +87,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <code>identifiers</code></returns>
         protected virtual Uri GetRequestUri(params object[] identifiers)
         {
-            Guard.Argument(identifiers, nameof(identifiers)).NotNull();//.NotEmpty();
-            //TODO: Check why .NotEmpty throws in some cases
+            Guard.Argument(identifiers, nameof(identifiers)).NotNull();
+
             if (identifiers.Length == 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(identifiers));
+            }
 
             return new Uri(string.Format(_uriFormat, identifiers));
         }

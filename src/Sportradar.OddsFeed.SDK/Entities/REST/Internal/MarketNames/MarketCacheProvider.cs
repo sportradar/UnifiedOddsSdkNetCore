@@ -75,9 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
             try
             {
-                //_executionLog.LogDebug($"Fetching invariant market description for id={marketId} and langs: [{string.Join(",", cultureInfos.Select(s => s.TwoLetterISOLanguageName))}].");
                 marketDescriptor = await _invariantMarketsCache.GetMarketDescriptionAsync(marketId, null, cultureInfos).ConfigureAwait(false);
-                //_executionLog.LogDebug($"Fetching invariant market description for id={marketId} and langs: [{string.Join(",", cultureInfos.Select(s => s.TwoLetterISOLanguageName))}] COMPLETED.");
             }
             catch (Exception e)
             {
@@ -109,13 +107,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     // case 4: dynamic market which is not defined
                     marketDesc = await ProvideDynamicVariantEndpointMarketAsync(marketId, cultureInfos, marketDescriptor, variantValue).ConfigureAwait(false);
                 }
-
-                //if (marketDesc?.Mappings != null && marketDesc.Mappings.Any())
-                //{
-                //    var marketDescImpl = (MarketDescription) marketDesc;
-                //    marketDescImpl.Mappings = marketDescImpl.Mappings.Where(s => s.MarketId.Equals(marketId.ToString()) || s.MarketId.StartsWith($"{marketId}:")).ToList();
-                //    marketDesc = marketDescImpl;
-                //}
 
                 return marketDesc;
             }

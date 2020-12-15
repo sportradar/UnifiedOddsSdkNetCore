@@ -124,15 +124,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// Builds and returns a new instance of the <see cref="ISport"/> representing the sport specified by its id
         /// </summary>
-        /// <param name="sportId">A <see cref="URN"/> identifying the sport which will be represented by the constructed instance</param>
+        /// <param name="id">A <see cref="URN"/> identifying the sport which will be represented by the constructed instance</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>A <see cref="Task{ITournament}"/> representing the asynchronous operation</returns>
-        public async Task<ISport> BuildSportAsync(URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
+        public async Task<ISport> BuildSportAsync(URN id, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
 
-            var sportData = await _sportDataCache.GetSportAsync(sportId, cultureList).ConfigureAwait(false);
+            var sportData = await _sportDataCache.GetSportAsync(id, cultureList).ConfigureAwait(false);
             return sportData == null
                 ? null
                 : BuildSportInternal(sportData, cultureList, exceptionStrategy);
@@ -214,7 +214,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The constructed <see cref="ICompetition"/> derived instance</returns>
         public T BuildSportEvent<T>(URN id, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
         {
-            //TODO: review if this based on resourcetypegroup is ok - stage??
             ISportEvent sportEvent;
             switch (id.TypeGroup)
             {
@@ -262,7 +261,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     }
                 case ResourceTypeGroup.UNKNOWN:
                     {
-                        ExecutionLog.LogWarning($"Received entity with unknown resource type group: id={id}, sportId={sportId}");
+                        ExecutionLog.LogWarning($"Received entity with unknown resource type group: id={id}, id={sportId}");
                         sportEvent = new SportEvent(id, sportId, null, _sportEventCache, cultures, exceptionStrategy);
                         break;
                     }

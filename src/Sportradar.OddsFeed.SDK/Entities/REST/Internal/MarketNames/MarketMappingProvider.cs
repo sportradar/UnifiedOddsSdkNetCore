@@ -145,24 +145,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             if (marketDescription == null)
             {
-                return null;
+                return new List<IMarketMappingData>();
             }
 
             if (marketDescription.Mappings == null || !marketDescription.Mappings.Any())
             {
                 ExecutionLog.LogDebug($"An error occurred getting mapped marketId for marketId={_marketId} (no mappings exist).");
-                return null;
+                return new List<IMarketMappingData>();
             }
 
             var mappings = marketDescription.Mappings.Where(m => m.CanMap(_producer, _sportId, _specifiers)).ToList();
-
-            //var mappings1 = marketDescription.Mappings.Where(m => m.CanMap(_producerManager.Get(1), URN.Parse("sr:sport:1"), new Dictionary<string, string> { { "total", "5.5" } })).ToList();
-            //var mappings2 = marketDescription.Mappings.Where(m => m.CanMap(_producerManager.Get(3), URN.Parse("sr:sport:1"), new Dictionary<string, string> { { "total", "5.5" } })).ToList();
-
+            
             if (!mappings.Any())
             {
                 ExecutionLog.LogDebug($"Market with id:{_marketId}, producer:{_producer}, sportId:{_sportId} has no mappings.");
-                return null;
+                return mappings;
             }
 
             if (mappings.Count > 1)
@@ -279,7 +276,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             if (_producer.Equals(_producerManager.Get(5)))
             {
-                return null;
+                return new List<IMarketMapping>();
             }
 
             var marketDescription = await GetMarketDescriptorAsync(cultures).ConfigureAwait(false);
@@ -287,7 +284,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var marketMappings = GetMarketMapping(marketDescription);
             if (marketMappings == null || !marketMappings.Any())
             {
-                return null;
+                return new List<IMarketMapping>();
             }
 
             var mappings = new List<IMarketMapping>();

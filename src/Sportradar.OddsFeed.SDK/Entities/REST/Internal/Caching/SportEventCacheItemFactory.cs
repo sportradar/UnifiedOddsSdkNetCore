@@ -62,33 +62,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// Builds a <see cref="SportEventCI" /> instance from the provided sport event id
         /// </summary>
-        /// <param name="eventId">A <see cref="URN"/> identifying the sport event</param>
-        /// <returns>a new instance of <see cref="SportEventCI" /> instance</returns>
-        public SportEventCI Build(URN eventId)
+        /// <param name="id">A <see cref="URN"/> identifying the sport event</param>
+        /// <returns>A new instance of <see cref="SportEventCI" /> instance</returns>
+        public SportEventCI Build(URN id)
         {
-            if (eventId.TypeGroup == ResourceTypeGroup.STAGE)
+            if (id.TypeGroup == ResourceTypeGroup.STAGE)
             {
-                return new StageCI(eventId, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
+                return new StageCI(id, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
             }
-            if (eventId.TypeGroup == ResourceTypeGroup.MATCH)
+            if (id.TypeGroup == ResourceTypeGroup.MATCH)
             {
-                return new MatchCI(eventId, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
+                return new MatchCI(id, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
             }
-            if (eventId.TypeGroup == ResourceTypeGroup.SEASON
-                || eventId.TypeGroup == ResourceTypeGroup.BASIC_TOURNAMENT
-                || eventId.TypeGroup == ResourceTypeGroup.TOURNAMENT)
+            if (id.TypeGroup == ResourceTypeGroup.SEASON
+                || id.TypeGroup == ResourceTypeGroup.BASIC_TOURNAMENT
+                || id.TypeGroup == ResourceTypeGroup.TOURNAMENT)
             {
-                return new TournamentInfoCI(eventId, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
+                return new TournamentInfoCI(id, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
             }
-            if (eventId.TypeGroup == ResourceTypeGroup.DRAW)
+            if (id.TypeGroup == ResourceTypeGroup.DRAW)
             {
-                return new DrawCI(eventId, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
+                return new DrawCI(id, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
             }
-            if (eventId.TypeGroup == ResourceTypeGroup.LOTTERY)
+            if (id.TypeGroup == ResourceTypeGroup.LOTTERY)
             {
-                return new LotteryCI(eventId, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
+                return new LotteryCI(id, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
             }
-            return new SportEventCI(eventId, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
+            return new SportEventCI(id, _dataRouterManager, _semaphorePool, _defaultCulture, _fixtureTimestampCache);
         }
 
         /// <summary>

@@ -42,7 +42,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     internal static class UnityFeedBootstrapper
     {
-        private static ILogger _log;
         private static IMetricsRoot _metricsRoot;
 
         private const int RestConnectionFailureLimit = 5;
@@ -59,7 +58,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 var _ = new SdkLoggerFactory(loggerFactory);
             }
-            _log = SdkLoggerFactory.GetLogger(typeof(UnityFeedBootstrapper));
+            var log = SdkLoggerFactory.GetLogger(typeof(UnityFeedBootstrapper));
 
             if(metricsRoot == null)
             {
@@ -99,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var seed = (int)DateTime.Now.Ticks;
             var rand = new Random(seed);
             var value = rand.Next();
-            _log.LogInformation($"Initializing sequence generator with MinValue={value}, MaxValue={long.MaxValue}");
+            log.LogInformation($"Initializing sequence generator with MinValue={value}, MaxValue={long.MaxValue}");
             container.RegisterType<ISequenceGenerator, IncrementalSequenceGenerator>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(

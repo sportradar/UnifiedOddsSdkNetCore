@@ -129,7 +129,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     // fixtureChange was already dispatched (via another session)
                     return;
                 }
-                //ExecutionLog.LogDebug($"{ProcessorId}: processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt}.");
             }
 
             RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(message, interest, rawMessage));
@@ -143,8 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             try
             {
-                var cache = _sportEventCache as SportEventCache;
-                if (cache != null)
+                if (_sportEventCache is SportEventCache cache)
                 {
                     Task.Run(async () => await cache.GetEventIdsAsync(urn, (IEnumerable<CultureInfo>) null)).ConfigureAwait(false);
                 }

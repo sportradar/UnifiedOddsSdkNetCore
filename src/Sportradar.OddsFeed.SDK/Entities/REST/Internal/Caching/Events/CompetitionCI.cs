@@ -62,10 +62,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="CompetitionCI"/> class
         /// </summary>
         /// <param name="id">A <see cref="URN" /> specifying the id of the sport event associated with the current instance</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ...)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public CompetitionCI(URN id,
                              IDataRouterManager dataRouterManager,
                              ISemaphorePool semaphorePool,
@@ -79,11 +79,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="CompetitionCI"/> class
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public CompetitionCI(CompetitionDTO eventSummary,
                              IDataRouterManager dataRouterManager,
                              ISemaphorePool semaphorePool,
@@ -102,11 +102,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="CompetitionCI"/> class
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public CompetitionCI(TournamentInfoDTO eventSummary,
                             IDataRouterManager dataRouterManager,
                             ISemaphorePool semaphorePool,
@@ -125,10 +125,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="CompetitionCI" /> class
         /// </summary>
         /// <param name="exportable">A <see cref="ExportableSportEventCI" /> representing the sport event</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public CompetitionCI(ExportableSportEventCI exportable,
             IDataRouterManager dataRouterManager,
             ISemaphorePool semaphorePool,
@@ -411,52 +411,52 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
-        /// Merges the specified fixture
+        /// Merges the specified fixtureDTO
         /// </summary>
-        /// <param name="fixture">The fixture</param>
+        /// <param name="fixtureDTO">The fixtureDTO</param>
         /// <param name="culture">The culture</param>
         /// <param name="useLock">Should the lock mechanism be used during merge</param>
-        public void MergeFixture(FixtureDTO fixture, CultureInfo culture, bool useLock)
+        public void MergeFixture(FixtureDTO fixtureDTO, CultureInfo culture, bool useLock)
         {
             if (useLock)
             {
                 lock (MergeLock)
                 {
-                    if (fixture.ReferenceIds != null)
+                    if (fixtureDTO.ReferenceIds != null)
                     {
-                        _referenceId = new ReferenceIdCI(fixture.ReferenceIds);
+                        _referenceId = new ReferenceIdCI(fixtureDTO.ReferenceIds);
                     }
-                    if (fixture.BookingStatus != null)
+                    if (fixtureDTO.BookingStatus != null)
                     {
-                        _bookingStatus = fixture.BookingStatus;
+                        _bookingStatus = fixtureDTO.BookingStatus;
                     }
                 }
             }
             else
             {
-                if (fixture.ReferenceIds != null)
+                if (fixtureDTO.ReferenceIds != null)
                 {
-                    _referenceId = new ReferenceIdCI(fixture.ReferenceIds);
+                    _referenceId = new ReferenceIdCI(fixtureDTO.ReferenceIds);
                 }
-                if (fixture.BookingStatus != null)
+                if (fixtureDTO.BookingStatus != null)
                 {
-                    _bookingStatus = fixture.BookingStatus;
+                    _bookingStatus = fixtureDTO.BookingStatus;
                 }
             }
 
-            if (!string.IsNullOrEmpty(fixture.LiveOdds))
+            if (!string.IsNullOrEmpty(fixtureDTO.LiveOdds))
             {
-                _liveOdds = fixture.LiveOdds;
+                _liveOdds = fixtureDTO.LiveOdds;
             }
 
-            if (fixture.Type != null)
+            if (fixtureDTO.Type != null)
             {
-                _sportEventType = fixture.Type;
+                _sportEventType = fixtureDTO.Type;
             }
 
-            if (fixture.StageType != null)
+            if (fixtureDTO.StageType != null)
             {
-                _stageType = fixture.StageType;
+                _stageType = fixtureDTO.StageType;
             }
         }
 

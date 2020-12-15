@@ -85,11 +85,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Builds the instance of the <see cref="ITeamCompetitor"/> class
         /// </summary>
         /// <param name="ci">A <see cref="TeamCompetitorCI"/> used to create new instance</param>
-        /// <param name="culture">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
+        /// <param name="cultures">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI ci, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
+        ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI ci, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ICompetitor"/> class
@@ -115,11 +115,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Builds the instance of the <see cref="ITeamCompetitor"/> class
         /// </summary>
         /// <param name="teamCompetitorId">A <see cref="URN"/> of the <see cref="TeamCompetitorCI"/> used to create new instance</param>
-        /// <param name="culture">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
+        /// <param name="cultures">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
+        Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ICategorySummary"/> class

@@ -29,11 +29,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 return null;
             }
             var id = URN.Parse(item.id);
-            //var sportId = URN.Parse("sr:sport:0");
-            //if (item.tournament?.sport != null)
-            //{
-            //    sportId = URN.Parse(item.tournament.sport.id);
-            //}
 
             switch (id.TypeGroup)
             {
@@ -100,24 +95,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <returns>IDictionary&lt;HomeAway, URN&gt;</returns>
         public static IDictionary<HomeAway, URN> FillHomeAwayCompetitors(IReadOnlyCollection<teamCompetitor> competitors)
         {
+            var homeAwayCompetitors = new Dictionary<HomeAway, URN>();
             if (competitors == null || competitors.Count != 2)
             {
-                return null;
+                return homeAwayCompetitors;
             }
 
-            var homeAwayCompetitors = new Dictionary<HomeAway, URN>();
             var team = competitors.FirstOrDefault(f => f.qualifier == "home");
             if (team == null)
             {
-                homeAwayCompetitors.Clear();
-                return null;
+                return homeAwayCompetitors;
             }
             homeAwayCompetitors.Add(HomeAway.Home, URN.Parse(team.id));
             team = competitors.FirstOrDefault(f => f.qualifier == "away");
             if (team == null)
             {
                 homeAwayCompetitors.Clear();
-                return null;
+                return homeAwayCompetitors;
             }
             homeAwayCompetitors.Add(HomeAway.Away, URN.Parse(team.id));
             return homeAwayCompetitors;

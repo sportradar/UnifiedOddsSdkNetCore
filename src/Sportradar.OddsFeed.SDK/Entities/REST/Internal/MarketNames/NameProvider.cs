@@ -248,7 +248,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var expressionStrings = NameExpressionHelper.ParseDescriptor(nameDescriptor, out nameDescriptorFormat);
             if (expressionStrings == null)
             {
-                return null;
+                return new List<INameExpression>();
             }
 
             var expressions = new List<INameExpression>(expressionStrings.Count);

@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the initialized instance will handle potential exceptions</param>
         /// <param name="matchStatusesCache">A <see cref="ILocalizedNamedValueCache"/> cache for fetching match statuses</param>
-        internal Competition(ILogger executionLog,
+        protected Competition(ILogger executionLog,
                              URN id,
                              URN sportId,
                              ISportEntityFactory sportEntityFactory,
@@ -86,7 +86,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="T:System.String" /> containing compacted representation of the current instance.</returns>
         protected override string PrintC()
         {
-            var result = $"{PrintI()}, Cultures=[{string.Join(", ", Cultures.Select(c => c.TwoLetterISOLanguageName))}]"; //, Status={((SportEventStatus)Status).PrintC()}";
+            var result = $"{PrintI()}, Cultures=[{string.Join(", ", Cultures.Select(c => c.TwoLetterISOLanguageName))}]";
             return result;
         }
 

@@ -71,20 +71,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ScheduledEnd = sportEvent.scheduled_endSpecified
                 ? (DateTime?)sportEvent.scheduled_end.ToLocalTime()
                 : null;
-            if (sportEvent.tournament?.sport != null)
+            if (sportEvent.tournament?.sport != null && URN.TryParse(sportEvent.tournament.sport.id, out var sportId))
             {
-                if (URN.TryParse(sportEvent.tournament.sport.id, out var sportId))
-                {
-                    SportId = sportId;
-                }
+                SportId = sportId;
             }
             Name = sportEvent.name;
-            if (!string.IsNullOrEmpty(sportEvent.replaced_by))
+            if (!string.IsNullOrEmpty(sportEvent.replaced_by) && URN.TryParse(sportEvent.replaced_by, out var replacedBy))
             {
-                if (URN.TryParse(sportEvent.replaced_by, out var replacedBy))
-                {
-                    ReplacedBy = replacedBy;
-                }
+                ReplacedBy = replacedBy;
             }
             StartTimeTbd = sportEvent.start_time_tbdSpecified ? (bool?)sportEvent.start_time_tbd : null;
             StatusOnEvent = sportEvent.status;
@@ -106,18 +100,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ScheduledEnd = parentStage.scheduled_endSpecified
                                ? (DateTime?) parentStage.scheduled_end.ToLocalTime()
                                : null;
-            //URN sportId;
-            //if (URN.TryParse(parentStage.tournament?.sport?.id, out sportId))
-            //{
-            //    SportId = sportId;
-            //}
             Name = parentStage.name;
-            if (!string.IsNullOrEmpty(parentStage.replaced_by))
+            if (!string.IsNullOrEmpty(parentStage.replaced_by) && URN.TryParse(parentStage.replaced_by, out var replacedBy))
             {
-                if (URN.TryParse(parentStage.replaced_by, out var replacedBy))
-                {
-                    ReplacedBy = replacedBy;
-                }
+                ReplacedBy = replacedBy;
             }
             StartTimeTbd = parentStage.start_time_tbdSpecified ? (bool?)parentStage.start_time_tbd : null;
 
@@ -140,18 +126,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ScheduledEnd = childStage.scheduled_endSpecified
                                ? (DateTime?) childStage.scheduled_end.ToLocalTime()
                                : null;
-            //URN sportId;
-            //if (URN.TryParse(childStage.tournament?.sport?.id, out sportId))
-            //{
-            //    SportId = sportId;
-            //}
             Name = childStage.name;
-            if (!string.IsNullOrEmpty(childStage.replaced_by))
+            if (!string.IsNullOrEmpty(childStage.replaced_by) && URN.TryParse(childStage.replaced_by, out var replacedBy))
             {
-                if (URN.TryParse(childStage.replaced_by, out var replacedBy))
-                {
-                    ReplacedBy = replacedBy;
-                }
+                ReplacedBy = replacedBy;
             }
             StartTimeTbd = childStage.start_time_tbdSpecified ? (bool?)childStage.start_time_tbd : null;
 

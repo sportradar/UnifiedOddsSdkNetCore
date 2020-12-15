@@ -8,6 +8,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
@@ -328,7 +329,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             var tourKeys = Cache.Select(s => s.Key).Where(w => w.Contains("tournament") || w.Contains("stage") || w.Contains("outright") || w.Contains("simple_tournament")); 
 
             var tours = new List<TournamentInfoCI>();
-            var error = string.Empty;
+            var errorBuilder = new StringBuilder();
             foreach (var key in tourKeys)
             {
                 try
@@ -337,9 +338,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception)
                 {
-                    error += $",{key}";
+                    errorBuilder.Append($",{key}");
                 }
             }
+
+            var error = errorBuilder.ToString();
             if (!string.IsNullOrEmpty(error))
             {
                 error = error.Substring(1);
@@ -365,19 +368,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     {
 
                         var ci = (SportEventCI) keyValuePair.Value;
-                        if (ci.Scheduled != null)
+                        if (ci.Scheduled != null && ci.Scheduled < before)
                         {
-                            if (ci.Scheduled < before)
-                            {
-                                Cache.Remove(keyValuePair.Key);
-                            }
+                            Cache.Remove(keyValuePair.Key);
                         }
-                        else if (ci.ScheduledEnd != null)
+                        else if (ci.ScheduledEnd != null && ci.ScheduledEnd < before)
                         {
-                            if (ci.ScheduledEnd < before)
-                            {
-                                Cache.Remove(keyValuePair.Key);
-                            }
+                            Cache.Remove(keyValuePair.Key);
                         }
                     }
                     catch (Exception)
@@ -797,7 +794,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         public void RegisterHealthCheck()
         {
-            //HealthChecks.RegisterHealthCheck("SportEventCache", new Func<HealthCheckResult>(StartHealthCheck));
         }
 
         /// <summary>
@@ -807,8 +803,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             var keys = Cache.Select(w => w.Key).ToList();
             var details = $" [Match: {keys.Count(c => c.Contains("match"))}, Stage: {keys.Count(c => c.Contains("race") || c.Contains("stage"))}, Season: {keys.Count(c => c.Contains("season"))}, Tournament: {keys.Count(c => c.Contains("tournament"))}, Draw: {keys.Count(c => c.Contains("draw"))}, Lottery: {keys.Count(c => c.Contains("lottery"))}]";
-            //var otherKeys = Cache.Where(w => w.Key.Contains("tournament")).Select(s=>s.Key);
-            //CacheLog.LogDebug($"Tournament Ids: {string.Join(",", otherKeys)}");
             return Cache.Any() ? HealthCheckResult.Healthy($"Cache has {Cache.Count()} items{details}.") : HealthCheckResult.Unhealthy("Cache is empty.");
         }
 
@@ -1238,11 +1232,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 if (SpecialTournaments.Contains(tournamentInfoDTO.Id))
                 {
-                    //ExecutionLog.LogDebug($"Updating tournament id={tournamentInfoDTO.Id}, introduced by event id={id} and lang=[{culture.TwoLetterISOLanguageName}].");
                 }
                 else
                 {
-                    //ExecutionLog.LogDebug($"Saving tournament id={tournamentInfoDTO.Id}, introduced by event id={id} and lang=[{culture.TwoLetterISOLanguageName}].");
                     SpecialTournaments.Add(tournamentInfoDTO.Id);
                 }
                 AddSportEvent(tournamentInfoDTO.Id, tournamentInfoDTO, culture, null, dtoType);
@@ -1294,7 +1286,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             IEnumerable<IExportableCI> exportables;
             lock (_addLock)
             {
-                exportables = Cache.ToList().Select(i => (IExportableCI) i.Value);
+                exportables = Cache.Select(i => (IExportableCI) i.Value);
             }
 
             var tasks = exportables.Select(e =>

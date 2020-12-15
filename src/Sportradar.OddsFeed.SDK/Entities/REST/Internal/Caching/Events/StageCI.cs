@@ -44,10 +44,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="StageCI"/> class
         /// </summary>
         /// <param name="id">The identifier</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(URN id,
                        IDataRouterManager dataRouterManager,
                        ISemaphorePool semaphorePool,
@@ -61,11 +61,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="StageCI"/> class
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(StageDTO eventSummary,
                        IDataRouterManager dataRouterManager,
                        ISemaphorePool semaphorePool,
@@ -81,11 +81,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="StageCI"/> class
         /// </summary>
         /// <param name="fixture">The event summary</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(FixtureDTO fixture,
                         IDataRouterManager dataRouterManager,
                         ISemaphorePool semaphorePool,
@@ -101,11 +101,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="StageCI"/> class
         /// </summary>
         /// <param name="tournamentSummary">The tournament summary</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(TournamentInfoDTO tournamentSummary,
                         IDataRouterManager dataRouterManager,
                         ISemaphorePool semaphorePool,
@@ -121,10 +121,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Initializes a new instance of the <see cref="StageCI"/> class
         /// </summary>
         /// <param name="exportable">The exportable cache item</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixtureDTO</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(ExportableStageCI exportable,
             IDataRouterManager dataRouterManager,
             ISemaphorePool semaphorePool,
@@ -223,6 +223,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
         /// <param name="culture">The culture</param>
+        /// <param name="useLock">Should the lock mechanism be used during merge</param>
+        public void Merge(TournamentInfoDTO eventSummary, CultureInfo culture, bool useLock)
+        {
+            if (useLock)
+            {
+                lock (MergeLock)
+                {
+                    ActualMergeTournament(eventSummary, culture);
+                }
+            }
+            else
+            {
+                ActualMergeTournament(eventSummary, culture);
+            }
+        }
+
+        /// <summary>
+        /// Merges the specified event summary
+        /// </summary>
+        /// <param name="eventSummary">The event summary</param>
+        /// <param name="culture">The culture</param>
         private void ActualMerge(StageDTO eventSummary, CultureInfo culture)
         {
             base.Merge(eventSummary, culture, false);
@@ -243,27 +264,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             if (!eventSummary.AdditionalParents.IsNullOrEmpty())
             {
                 _additionalParentIds = eventSummary.AdditionalParents.Select(s => s.Id);
-            }
-        }
-
-        /// <summary>
-        /// Merges the specified event summary
-        /// </summary>
-        /// <param name="eventSummary">The event summary</param>
-        /// <param name="culture">The culture</param>
-        /// <param name="useLock">Should the lock mechanism be used during merge</param>
-        public void Merge(TournamentInfoDTO eventSummary, CultureInfo culture, bool useLock)
-        {
-            if (useLock)
-            {
-                lock (MergeLock)
-                {
-                    ActualMergeTournament(eventSummary, culture);
-                }
-            }
-            else
-            {
-                ActualMergeTournament(eventSummary, culture);
             }
         }
 
@@ -293,25 +293,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
-        /// Merges the specified fixture
+        /// Merges the specified fixtureDTO
         /// </summary>
-        /// <param name="fixture">The fixture</param>
+        /// <param name="fixtureDTO">The fixtureDTO</param>
         /// <param name="culture">The culture</param>
         /// <param name="useLock">Should the lock mechanism be used during merge</param>
-        public new void MergeFixture(FixtureDTO fixture, CultureInfo culture, bool useLock)
+        public new void MergeFixture(FixtureDTO fixtureDTO, CultureInfo culture, bool useLock)
         {
             if (useLock)
             {
                 lock (MergeLock)
                 {
-                    base.MergeFixture(fixture, culture, false);
-                    _categoryId = fixture.Tournament?.Category?.Id;
+                    base.MergeFixture(fixtureDTO, culture, false);
+                    _categoryId = fixtureDTO.Tournament?.Category?.Id;
                 }
             }
             else
             {
-                base.MergeFixture(fixture, culture, false);
-                _categoryId = fixture.Tournament?.Category?.Id;
+                base.MergeFixture(fixtureDTO, culture, false);
+                _categoryId = fixtureDTO.Tournament?.Category?.Id;
             }
         }
 
