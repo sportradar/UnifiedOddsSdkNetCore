@@ -487,12 +487,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     return ValidationResult.FAILURE;
                 }
 
-                //if (market.favouriteSpecified && market.favourite != 1)
-                //{
-                //    LogWarning(message, $"market[{marketIndex}].favourite", market.favourite);
-                //    result = ValidationResult.PROBLEMS_DETECTED;
-                //}
-
                 if (!ValidateSpecifiers(message, market, marketIndex))
                 {
                     result = ValidationResult.PROBLEMS_DETECTED;

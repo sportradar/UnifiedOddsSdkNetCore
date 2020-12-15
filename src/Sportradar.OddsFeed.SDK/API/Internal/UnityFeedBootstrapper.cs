@@ -47,6 +47,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private const int RestConnectionFailureLimit = 5;
         private const int RestConnectionFailureTimeoutInSec = 15;
 
+        /// <summary>
+        /// Registers the base types.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="userConfig">The user configuration.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        /// <param name="metricsRoot">The metrics root.</param>
         public static void RegisterBaseTypes(this IUnityContainer container, IOddsFeedConfiguration userConfig, ILoggerFactory loggerFactory, IMetricsRoot metricsRoot)
         {
             Guard.Argument(container, nameof(container)).NotNull();
@@ -1155,6 +1162,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ICustomBetSelectionBuilder>()));
         }
 
+        /// <summary>
+        /// Resolves all open generic.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="openGenericType">Type of the open generic.</param>
+        /// <returns>IEnumerable&lt;System.Object&gt;.</returns>
+        /// <exception cref="ArgumentNullException">argument must be open generic type</exception>
+        /// <remarks>Sportradar</remarks>
         public static IEnumerable<object> ResolveAllOpenGeneric(this IUnityContainer container, Type openGenericType)
         {
             if (!openGenericType.IsGenericTypeDefinition)
@@ -1171,6 +1186,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 );
         }
 
+        /// <summary>
+        /// Resolves all open generic.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="container">The container.</param>
+        /// <param name="openGenericType">Type of the open generic.</param>
+        /// <returns>IEnumerable&lt;T&gt;.</returns>
+        /// <exception cref="ArgumentNullException">argument must be open generic type</exception>
+        /// <remarks>Sportradar</remarks>
         public static IEnumerable<T> ResolveAllOpenGeneric<T>(this IUnityContainer container, Type openGenericType)
         {
             if (!openGenericType.IsGenericTypeDefinition)
@@ -1187,6 +1211,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 );
         }
 
+        /// <summary>
+        /// Resolves all interfaces.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="container">The container.</param>
+        /// <param name="openGenericType">Type of the open generic.</param>
+        /// <returns>IEnumerable&lt;T&gt;.</returns>
+        /// <exception cref="ArgumentNullException">argument must be open generic type</exception>
+        /// <remarks>Sportradar</remarks>
         public static IEnumerable<T> ResolveAllInterfaces<T>(this IUnityContainer container, Type openGenericType)
         {
             if (!openGenericType.IsInterface)

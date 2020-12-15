@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         public void MappedRecordIsNotNull()
         {
             Assert.IsNotNull(_entity);
-            Assert.AreEqual(_entity.Competitors.ToList().Count, 2, "Value fixtures.Competitors.ToList().Count is not correct.");
+            Assert.AreEqual(2, _entity.Competitors.ToList().Count, "Value fixtures.Competitors.ToList().Count is not correct.");
         }
 
         [TestMethod]

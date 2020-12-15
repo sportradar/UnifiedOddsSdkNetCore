@@ -2571,7 +2571,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
         private long end_timeField;
         
         private bool end_timeFieldSpecified;
-        
+
         private string superceded_byField;
         
         /// <remarks/>

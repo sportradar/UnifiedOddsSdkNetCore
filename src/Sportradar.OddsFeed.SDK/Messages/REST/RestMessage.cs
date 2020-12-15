@@ -11,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Messages.Internal;
 namespace Sportradar.OddsFeed.SDK.Messages.REST
 {
     /// <summary>
-    /// Represents all messages (entities) received from the feed's REST API
+    /// Represents all messages (entities) received from the feed REST API
     /// </summary>
     public abstract class RestMessage
     {

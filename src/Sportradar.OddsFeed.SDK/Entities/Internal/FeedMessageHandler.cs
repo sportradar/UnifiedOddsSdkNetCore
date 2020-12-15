@@ -9,11 +9,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     internal class FeedMessageHandler : IFeedMessageHandler
     {
-        /// <summary>
-        /// The execution log
-        /// </summary>
-        //private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(FeedMessageHandler));
-
         private readonly MemoryCache _fixtureCache;
 
         private readonly CacheItemPolicy _cacheItemPolicy;
@@ -47,12 +42,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 var fixtureCacheId = GenerateFixtureChangeId(fixtureChange);
                 if (_fixtureCache.Contains(fixtureCacheId))
                 {
-                    //ExecutionLog.LogDebug($"Processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt} stopped. Already processed.");
                     return true;
                 }
 
                 _fixtureCache.Add(fixtureCacheId, fixtureCacheId, _cacheItemPolicy);
-                //ExecutionLog.LogDebug($"Processing fixtureChange for id={fixtureChange.EventId}, producer={fixtureChange.ProducerId} and timestamp={fixtureChange.GeneratedAt}.");
                 return false;
             }
         }

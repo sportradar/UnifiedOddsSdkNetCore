@@ -363,9 +363,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                             ? AccessToken.Substring(0, 3) + "***" + AccessToken.Substring(AccessToken.Length - 3)
                             : AccessToken;
 
-            //var server = _useReplay
-            //    ? $"Host={Host}, VirtualHost={VirtualHost}, Port={Port}, UseSsl={UseSsl}, UseApiSsl={UseApiSsl}, Username={Username}, Password={Password}, NodeId={NodeId}"
-            //    : $"Host={ReplayApiBaseUrl}, VirtualHost={VirtualHost}, Port={Port}, UseSsl={UseSsl}, UseApiSsl={UseApiSsl}, Username={Username}, Password={Password}, NodeId={NodeId}";
             var sb = new StringBuilder();
             sb.Append("AccessToken=").Append(token)
               .Append(" Username=").Append(Username == AccessToken ? token : Username)

@@ -14,8 +14,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// </summary>
     internal class SemaphorePool : ISemaphorePool
     {
-        //private read-only ILogger _executionLog = SdkLoggerFactory.GetLogger(typeof(SemaphorePool));
-
         /// <summary>
         /// A <see cref="List{T}"/> containing pool's semaphores
         /// </summary>
@@ -71,16 +69,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <exception cref="InvalidOperationException">Semaphore granted entry, but there are no SemaphoreSlim objects available</exception>
         private SemaphoreSlim AcquireInternal(string id)
         {
-            //_executionLog.LogDebug($"Waiting to enter semaphore for id={id}");
             _syncSemaphore.WaitOne();
-            //_executionLog.LogDebug($"Semaphore granted entry to id={id}");
             lock (_syncObject)
             {
                 foreach (var holder in _semaphores)
                 {
                     if (holder.Id == id)
                     {
-                        //_executionLog.LogDebug($"Returning resource for request with id={id}");
                         return holder.Semaphore;
                     }
 
@@ -88,7 +83,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     {
                         holder.Acquire();
                         holder.Id = id;
-                        //_executionLog.LogDebug($"Returning resource for request with id={id}");
                         return holder.Semaphore;
                     }
                 }
@@ -135,10 +129,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
 
             var idFound = false;
-            //_executionLog.LogDebug($"Entering lock for request with id={id}");
             lock (_syncObject)
             {
-                //_executionLog.LogDebug($"Lock for request with id={id} entered");
                 if (_availableSemaphoreIds.Contains(id))
                 {
                     idFound = true;
@@ -151,7 +143,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
             if (!idFound)
             {
-                //_executionLog.LogDebug($"Creating new thread for creation of resource for id={id}");
                 return Task.Run(() => AcquireInternal(id));
             }
 
@@ -169,7 +160,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                         return Task.FromResult(holder.Semaphore);
                     }
                 }
-                //_executionLog.LogDebug($"Spinning while waiting for the semaphore for id={id}");
                 _spinWait.SpinOnce();
             }
         }
@@ -196,7 +186,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     {
                         holder.Id = null;
                         _availableSemaphoreIds.Remove(id);
-                        //_executionLog.LogDebug($"Releasing the resource associated with id={id}");
                         _syncSemaphore.Release();
                     }
                     return;

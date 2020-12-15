@@ -23,7 +23,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         /// <returns>T</returns>
         public static T Create<T>(object[] args, Predicate<MethodInfo> filter = null, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true) where T : class
         {
-            //var tmp = (T)Activator.CreateInstance(typeof(T), args);
             var interceptor = new LogInterceptor(loggerType, canOverrideLoggerType, filter);
             var proxy = (T)new ProxyGenerator().CreateClassProxy(typeof(T), ProxyGenerationOptions.Default, args, interceptor);
             return proxy;

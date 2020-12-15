@@ -235,7 +235,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             public DateTime GeneratedAt { get; private set; }
 
             /// <summary>
-            /// Gets <see cref="TimeSpan"/> specifying the latency between message generation and receival
+            /// Gets <see cref="TimeSpan"/> specifying the latency between message generate and receive time
             /// </summary>
             public TimeSpan Latency { get; private set; }
 

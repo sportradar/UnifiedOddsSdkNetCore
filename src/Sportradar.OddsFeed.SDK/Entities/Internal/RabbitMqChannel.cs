@@ -13,7 +13,7 @@ using Sportradar.OddsFeed.SDK.Common;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     /// <summary>
-    /// A class used to connect to the Rabbit mq broker
+    /// A class used to connect to the RabbitMQ broker
     /// </summary>
     /// <seealso cref="IRabbitMqChannel" />
     internal class RabbitMqChannel : IRabbitMqChannel
