@@ -4,6 +4,7 @@
 using System;
 using Dawn;
 using RabbitMQ.Client;
+using Sportradar.OddsFeed.SDK.API.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
@@ -17,17 +18,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// The <see cref="IConnectionFactory"/> used to construct connections to the broker
         /// </summary>
-        private readonly IConnectionFactory _connectionFactory;
+        private readonly ConfiguredConnectionFactory _connectionFactory;
 
         /// <summary>
         /// The object used to ensure thread safety
         /// </summary>
         private readonly object _lock = new object();
-
-        /// <summary>
-        /// The <see cref="IConnection"/> representing connection to the broker
-        /// </summary>
-        private IConnection _connection;
 
         /// <summary>
         /// Value indicating whether the current instance has been disposed
@@ -38,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// Initializes a new instance of the <see cref="ChannelFactory"/> class.
         /// </summary>
         /// <param name="connectionFactory">The connection factory.</param>
-        public ChannelFactory(IConnectionFactory connectionFactory)
+        public ChannelFactory(ConfiguredConnectionFactory connectionFactory)
         {
             Guard.Argument(connectionFactory, nameof(connectionFactory)).NotNull();
 
@@ -58,7 +54,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
 
             _disposed = true;
-            _connection.Dispose();
+            lock (_lock)
+            {
+                _connectionFactory.Dispose();
+            }
         }
 
         /// <summary>
@@ -69,12 +68,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             lock (_lock)
             {
-                if (_connection == null)
-                {
-                    _connection = _connectionFactory.CreateConnection();
-                }
+                return _connectionFactory.CreateConnection().CreateModel();
+            }
+        }
 
-                return _connection.CreateModel();
+        public void ResetConnection()
+        {
+            lock (_lock)
+            {
+                _connectionFactory.CloseConnection();
+                _connectionFactory.CreateConnection();
             }
         }
 

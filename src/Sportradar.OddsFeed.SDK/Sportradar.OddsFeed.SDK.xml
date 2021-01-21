@@ -685,7 +685,7 @@
             0 indicates false; 1 indicates true
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.API.Feed._connection">
+        <member name="F:Sportradar.OddsFeed.SDK.API.Feed._connectionFactory">
             <summary>
             The <see cref="T:RabbitMQ.Client.IConnection"/> instance representing the connection to the message broker
             </summary>
@@ -1602,9 +1602,12 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.CreateConnection">
             <summary>
-            Create a connection to the specified endpoint
+            Create a connection to the specified endpoint or return existing one
             </summary>
             <exception cref="T:RabbitMQ.Client.Exceptions.BrokerUnreachableException">When the configured host name was not reachable</exception>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.Dispose">
+            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.ConfigurationBuilder._environment">
             <summary>
@@ -8441,17 +8444,12 @@
             The object used to ensure thread safety
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory._connection">
-            <summary>
-            The <see cref="T:RabbitMQ.Client.IConnection"/> representing connection to the broker
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory._disposed">
             <summary>
             Value indicating whether the current instance has been disposed
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.#ctor(RabbitMQ.Client.IConnectionFactory)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.#ctor(Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory"/> class.
             </summary>
@@ -10308,6 +10306,11 @@
             </summary>
             <returns>a <see cref="T:RabbitMQ.Client.IModel"/> representing a channel used to communicate with the broker</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory.ResetConnection">
+            <summary>
+            Resets the connection.
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageHandler">
             <summary>
             Defines a contract for handling special cases for processing feed messages
@@ -10589,18 +10592,23 @@
             Occurs when the current channel received the data
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.#ctor(Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory)">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel._timer">
+            <summary>
+            A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ITimer"/> instance used to trigger periodic connection test
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel._timerSemaphoreSlim">
+            <summary>
+            The timer semaphore slim used reduce concurrency within timer calls
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.#ctor(Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory,Sportradar.OddsFeed.SDK.Common.Internal.ITimer,System.TimeSpan)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel"/> class.
             </summary>
             <param name="channelFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory"/> used to construct the <see cref="T:RabbitMQ.Client.IModel"/> representing Rabbit MQ channel.</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.OnDataReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
-            <summary>
-            Handles the <see cref="E:RabbitMQ.Client.Events.EventingBasicConsumer.Received"/> event
-            </summary>
-            <param name="sender">The <see cref="T:System.Object"/> representation of the instance raising the event.</param>
-            <param name="basicDeliverEventArgs">The <see cref="T:RabbitMQ.Client.Events.BasicDeliverEventArgs"/> instance containing the event data.</param>
+            <param name="timer">Timer used to check if there is connection</param>
+            <param name="maxTimeBetweenMessages">Max timeout between messages to check if connection is ok</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.Open(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -10613,6 +10621,18 @@
             Closes the current channel
             </summary>
             <exception cref="T:System.InvalidOperationException">The instance is already closed</exception>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.ConsumerOnDataReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
+            <summary>
+            Handles the <see cref="E:RabbitMQ.Client.Events.EventingBasicConsumer.Received"/> event
+            </summary>
+            <param name="sender">The <see cref="T:System.Object"/> representation of the instance raising the event.</param>
+            <param name="basicDeliverEventArgs">The <see cref="T:RabbitMQ.Client.Events.BasicDeliverEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.OnTimerElapsedAsync">
+            <summary>
+            Invoked when the internally used timer elapses
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqMessageReceiver">
             <summary>

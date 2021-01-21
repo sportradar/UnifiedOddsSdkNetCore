@@ -86,9 +86,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             specifiers?.TryGetValue(SdkInfo.VariantDescriptionName, out variantValue);
 
-            // case 1: if its not a variant market, return the static market descriptor as is
+            // case 1: if it is not a variant market, return the static market descriptor as is
             if (string.IsNullOrEmpty(variantValue))
             {
+                return marketDescriptor;
+            }
+
+            if (variantValue.Equals("null", StringComparison.InvariantCultureIgnoreCase))
+            {
+                _executionLog.LogError($"Missing/wrong variant value -> marketId:{marketId}, variantValue: {variantValue}");
                 return marketDescriptor;
             }
 

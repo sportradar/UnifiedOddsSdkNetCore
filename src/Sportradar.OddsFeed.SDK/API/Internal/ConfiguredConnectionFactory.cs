@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// A <see cref="IConnectionFactory"/> implementations which properly configures it self before first <see cref="IConnection"/> is created
     /// </summary>
-    internal class ConfiguredConnectionFactory : ConnectionFactory
+    internal class ConfiguredConnectionFactory : ConnectionFactory, IDisposable
     {
         /// <summary>
         /// A <see cref="IOddsFeedConfigurationInternal"/> instance containing configuration information
@@ -69,7 +69,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         }
 
         /// <summary>
-        /// Create a connection to the specified endpoint
+        /// Create a connection to the specified endpoint or return existing one
         /// </summary>
         /// <exception cref="T:RabbitMQ.Client.Exceptions.BrokerUnreachableException">When the configured host name was not reachable</exception>
         public override IConnection CreateConnection()
@@ -82,6 +82,38 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     _connectionSingleton = base.CreateConnection();
                 }
                 return _connectionSingleton;
+            }
+        }
+
+        public bool IsConnected()
+        {
+            lock (_syncLock)
+            {
+                return _connectionSingleton != null && _connectionSingleton.IsOpen;
+            }
+        }
+
+        public void CloseConnection()
+        {
+            lock (_syncLock)
+            {
+                if (_connectionSingleton != null)
+                {
+                    _connectionSingleton.Close();
+                    _connectionSingleton.Dispose();
+                    _connectionSingleton = null;
+                }
+            }
+        }
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            lock (_syncLock)
+            {
+                _connectionSingleton?.Close();
+                _connectionSingleton?.Dispose();
+                GC.SuppressFinalize(this);
             }
         }
     }

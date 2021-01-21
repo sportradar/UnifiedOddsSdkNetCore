@@ -435,7 +435,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Guard.Argument(stageSES, nameof(stageSES)).NotNull();
 
-            var tempProperties = new Dictionary<string, object>(0);
+            var tempProperties = new Dictionary<string, object>();
 
             var eventResults = new List<EventResultDTO>();
             if (stageSES.results?.competitor != null && stageSES.results.competitor.Any())

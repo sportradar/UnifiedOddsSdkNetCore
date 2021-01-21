@@ -59,9 +59,9 @@ namespace Sportradar.OddsFeed.SDK.API
         private long _opened;
 
         /// <summary>
-        /// The <see cref="IConnection"/> instance representing the connection to the message broker
+        /// The <see cref="ConfiguredConnectionFactory"/> instance representing the connection to the message broker
         /// </summary>
-        private IConnection _connection;
+        private ConfiguredConnectionFactory _connectionFactory;
 
         /// <summary>
         /// A <see cref="IList{IOpenable}"/> containing all user constructed sessions
@@ -540,10 +540,9 @@ namespace Sportradar.OddsFeed.SDK.API
                 return;
             }
 
-            if (_connection != null)
+            if (_connectionFactory != null)
             {
-                _connection.ConnectionShutdown -= OnConnectionShutdown;
-                _connection.CallbackException -= OnCallbackException;
+                DetachFromConnectionEvents();
             }
 
             if (_feedRecoveryManager != null)
@@ -609,10 +608,10 @@ namespace Sportradar.OddsFeed.SDK.API
                 }
 
                 _log.LogInformation($"Feed configuration: [{InternalConfig}]");
-                
-                _connection = UnityContainer.Resolve<IConnectionFactory>().CreateConnection();
-                _connection.ConnectionShutdown += OnConnectionShutdown;
-                _connection.CallbackException += OnCallbackException;
+
+                _connectionFactory = (ConfiguredConnectionFactory) UnityContainer.Resolve<IConnectionFactory>();
+                AttachToConnectionEvents();
+
                 _feedRecoveryManager.ProducerUp += MarkProducerAsUp;
                 _feedRecoveryManager.ProducerDown += MarkProducerAsDown;
                 _feedRecoveryManager.CloseFeed += OnCloseFeed;
@@ -673,6 +672,25 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 Interlocked.CompareExchange(ref _opened, 0, 1);
                 throw;
+            }
+        }
+
+        private void AttachToConnectionEvents()
+        {
+            if (_connectionFactory != null)
+            {
+                _connectionFactory.CreateConnection().ConnectionShutdown += OnConnectionShutdown;
+                _connectionFactory.CreateConnection().CallbackException += OnCallbackException;
+            }
+        }
+
+        private void DetachFromConnectionEvents()
+        {
+            if (_connectionFactory != null)
+            {
+                _connectionFactory.CreateConnection().ConnectionShutdown -= OnConnectionShutdown;
+                _connectionFactory.CreateConnection().CallbackException -= OnCallbackException;
+                _connectionFactory.Dispose();
             }
         }
 

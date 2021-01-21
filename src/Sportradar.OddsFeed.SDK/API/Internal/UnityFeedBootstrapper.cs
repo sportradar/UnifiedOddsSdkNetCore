@@ -749,9 +749,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(container, nameof(container)).NotNull();
 
+            var connectionTimer = new SdkTimer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
+            var maxTimeBetweenMessages = TimeSpan.FromSeconds(180);
+
             container.RegisterType<IDeserializer<FeedMessage>, Deserializer<FeedMessage>>(new HierarchicalLifetimeManager());
             container.RegisterType<IRoutingKeyParser, RegexRoutingKeyParser>(new HierarchicalLifetimeManager());
-            container.RegisterType<IRabbitMqChannel, RabbitMqChannel>(new HierarchicalLifetimeManager());
+            container.RegisterType<IRabbitMqChannel, RabbitMqChannel>(new HierarchicalLifetimeManager(),
+                new InjectionConstructor(
+                    new ResolvedParameter<IChannelFactory>(),
+                    connectionTimer,
+                    maxTimeBetweenMessages
+                    ));
             container.RegisterType<IMessageReceiver, RabbitMqMessageReceiver>(
                 new HierarchicalLifetimeManager(),
                 new InjectionConstructor(

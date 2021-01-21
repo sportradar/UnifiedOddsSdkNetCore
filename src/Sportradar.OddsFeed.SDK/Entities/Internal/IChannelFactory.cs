@@ -15,5 +15,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         /// <returns>a <see cref="IModel"/> representing a channel used to communicate with the broker</returns>
         IModel CreateChannel();
+
+        /// <summary>
+        /// Resets the connection.
+        /// </summary>
+        void ResetConnection();
     }
 }
