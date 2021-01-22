@@ -108,8 +108,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 }
             }
             Competitors = new ReadOnlyCollection<CompetitorCI>(tempCompetitors);
-            CompetitorsReferences =
-                new ReadOnlyDictionary<URN, ReferenceIdCI>(tempCompetitors.ToDictionary(c => c.Id, c => c.ReferenceId));
+            CompetitorsReferences = new ReadOnlyDictionary<URN, ReferenceIdCI>(tempCompetitors.ToDictionary(c => c.Id, c => c.ReferenceId));
         }
 
         /// <summary>

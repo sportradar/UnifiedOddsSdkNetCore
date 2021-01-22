@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dawn;
@@ -8,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -667,7 +670,40 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 ? new List<GroupCI>()
                 : new List<GroupCI>(_groups);
 
-            foreach (var group in groups)
+            var groupDTOs = groups.ToList();
+            // remove obsolete groups
+            if (!_groups.IsNullOrEmpty())
+            {
+                try
+                {
+                    foreach (var tmpGroup in _groups)
+                    {
+                        if (!string.IsNullOrEmpty(tmpGroup.Id))
+                        {
+                            if (groupDTOs.First(f =>
+                                f.Id.Equals(tmpGroup.Id, StringComparison.InvariantCultureIgnoreCase)) == null)
+                            {
+                                tmpGroups.Remove(tmpGroup);
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(tmpGroup.Id) && !string.IsNullOrEmpty(tmpGroup.Name))
+                        {
+                            if (groupDTOs.First(f =>
+                                f.Name.Equals(tmpGroup.Name, StringComparison.InvariantCultureIgnoreCase)) == null)
+                            {
+                                tmpGroups.Remove(tmpGroup);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    // ignored
+                }
+            }
+
+            foreach (var group in groupDTOs)
             {
                 var tempGroup = tmpGroups.FirstOrDefault(c => c.Name.Equals(group.Name));
                 if (tempGroup == null)
