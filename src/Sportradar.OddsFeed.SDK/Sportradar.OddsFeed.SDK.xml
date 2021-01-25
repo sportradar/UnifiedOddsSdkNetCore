@@ -687,7 +687,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Feed._connectionFactory">
             <summary>
-            The <see cref="T:RabbitMQ.Client.IConnection"/> instance representing the connection to the message broker
+            The <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory"/> instance representing the connection to the message broker
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Feed.Sessions">
@@ -7340,11 +7340,6 @@
             Defines the beginning of the outcome id for competitor outcomes
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.SimpleTeamIdentifier">
-            <summary>
-            Defines the type of the simple team URI
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.PlayerProfileIdentifier">
             <summary>
             Defines the type of the player URI
@@ -10809,7 +10804,7 @@
             The profile cache
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportDataCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ILocalizedNamedValueCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.IProfileCache)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportDataCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ILocalizedNamedValueCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.IProfileCache,System.Collections.Generic.IReadOnlyCollection{Sportradar.OddsFeed.SDK.Messages.URN})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory"/> class
             </summary>
@@ -10818,6 +10813,7 @@
             <param name="eventStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache"/> used to retrieve statuses of sport events</param>
             <param name="matchStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ILocalizedNamedValueCache"/> used to retrieve match statuses</param>
             <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.IProfileCache"/> used to retrieve player profiles</param>
+            <param name="soccerSportUrns">A list of sport urns that have soccer matches</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory.BuildSportInternal(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports.SportData,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy)">
             <summary>
@@ -35582,6 +35578,18 @@
             Returns a hash code for this instance.
             </summary>
             <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Messages.URN.IsSimpleTeam">
+            <summary>
+            Determines whether URN represents a simple team
+            </summary>
+            <returns><c>true</c> if represents simple team; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Messages.URN.IsSimpleTeam(System.String)">
+            <summary>
+            Determines whether URN represents a simple team
+            </summary>
+            <returns><c>true</c> if represents simple team; otherwise, <c>false</c>.</returns>
         </member>
     </members>
 </doc>

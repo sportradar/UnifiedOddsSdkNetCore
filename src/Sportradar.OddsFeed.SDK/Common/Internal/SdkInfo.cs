@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -154,6 +155,19 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The maximum HTTP timeout
         /// </summary>
         public const int MaxHttpClientTimeout = 100;
+        /// <summary>
+        /// The rest connection failure limit
+        /// </summary>
+        public const int RestConnectionFailureLimit = 5;
+        /// <summary>
+        /// The rest connection failure timeout in sec
+        /// </summary>
+        public const int RestConnectionFailureTimeoutInSec = 15;
+
+        /// <summary>
+        /// The soccer sport urns
+        /// </summary>
+        public static readonly IReadOnlyCollection<URN> SoccerSportUrns = new[] {URN.Parse("sr:sport:1"), URN.Parse("sr:sport:137")};
 
         /// <summary>
         /// Gets the assembly version number
