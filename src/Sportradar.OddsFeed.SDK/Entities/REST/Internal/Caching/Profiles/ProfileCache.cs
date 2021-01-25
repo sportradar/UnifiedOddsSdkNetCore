@@ -288,7 +288,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         private ValueTask<HealthCheckResult> StartHealthCheck()
         {
             var keys = _cache.Select(w => w.Key).ToList();
-            var details = $" [Players: {keys.Count(c => c.Contains("player"))}, Competitors: {keys.Count(c => c.Contains("competitor"))}, Teams: {keys.Count(c => c.Equals("team"))}, SimpleTeams: {keys.Count(c => c.Contains(SdkInfo.SimpleTeamIdentifier))}]";
+            var details = $" [Players: {keys.Count(c => c.Contains("player"))}, Competitors: {keys.Count(c => c.Contains("competitor"))}, Teams: {keys.Count(c => c.Equals("team"))}, SimpleTeams: {keys.Count(URN.IsSimpleTeam)}]";
 
             return _cache.Any()
                 ? new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy($"Cache has { _cache.Count() } items{ details}."))
@@ -929,7 +929,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
 
         private CacheItemPolicy GetCorrectCacheItemPolicy(URN id)
         {
-            return id.Type.Equals(SdkInfo.SimpleTeamIdentifier, StringComparison.InvariantCultureIgnoreCase)
+            return id.IsSimpleTeam()
                 ? _simpleTeamCacheItemPolicy
                 : _normalCacheItemPolicy;
         }

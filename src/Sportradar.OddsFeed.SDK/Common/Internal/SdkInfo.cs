@@ -121,10 +121,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string CompetitorProfileMarketPrefix = "sr:competitor";
         /// <summary>
-        /// Defines the type of the simple team URI
-        /// </summary>
-        public const string SimpleTeamIdentifier = "simpleteam";
-        /// <summary>
         /// Defines the type of the player URI
         /// </summary>
         public const string PlayerProfileIdentifier = "player";

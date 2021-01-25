@@ -5,6 +5,8 @@ using System;
 using Dawn;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+using Castle.Core.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Messages
 {
@@ -53,6 +55,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
             new Tuple<string, ResourceTypeGroup>("team", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("competitor", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("simpleteam", ResourceTypeGroup.OTHER),
+            new Tuple<string, ResourceTypeGroup>("simple_team", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("venue", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("player", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("referee", ResourceTypeGroup.OTHER),
@@ -205,6 +208,38 @@ namespace Sportradar.OddsFeed.SDK.Messages
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
+        }
+
+        /// <summary>
+        /// Determines whether URN represents a simple team
+        /// </summary>
+        /// <returns><c>true</c> if represents simple team; otherwise, <c>false</c>.</returns>
+        public bool IsSimpleTeam()
+        {
+            if (!Type.IsNullOrEmpty() 
+                && (Type.Equals("simpleteam", StringComparison.InvariantCultureIgnoreCase) 
+                    || Type.Equals("simple_team", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether URN represents a simple team
+        /// </summary>
+        /// <returns><c>true</c> if represents simple team; otherwise, <c>false</c>.</returns>
+        public static bool IsSimpleTeam(string urn)
+        {
+            if (!urn.IsNullOrEmpty()
+                && (urn.Contains("simpleteam", StringComparison.InvariantCultureIgnoreCase)
+                    || urn.Contains("simple_team", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
