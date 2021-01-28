@@ -108,7 +108,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(sportEntityFactory, nameof(sportEntityFactory)).NotNull();
             Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
             Guard.Argument(profileCache, nameof(profileCache)).NotNull();
-            Guard.Argument(defaultCultures, nameof(defaultCultures)).NotNull().NotEmpty();
+            Guard.Argument(defaultCultures, nameof(defaultCultures)).NotNull();
             Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
             Guard.Argument(matchStatusCache, nameof(matchStatusCache)).NotNull();
             Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();

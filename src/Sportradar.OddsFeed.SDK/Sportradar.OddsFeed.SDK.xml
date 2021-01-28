@@ -7380,6 +7380,21 @@
             The maximum HTTP timeout
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.RestConnectionFailureLimit">
+            <summary>
+            The rest connection failure limit
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.RestConnectionFailureTimeoutInSec">
+            <summary>
+            The rest connection failure timeout in sec
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.SoccerSportUrns">
+            <summary>
+            The soccer sport urns
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetVersion">
             <summary>
             Gets the assembly version number
@@ -10802,6 +10817,11 @@
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory._profileCache">
             <summary>
             The profile cache
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory._soccerSportUrns">
+            <summary>
+            The list of sport urns that represents soccer sport
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportDataCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ILocalizedNamedValueCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.IProfileCache,System.Collections.Generic.IReadOnlyCollection{Sportradar.OddsFeed.SDK.Messages.URN})">
