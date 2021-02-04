@@ -5,7 +5,6 @@ using System;
 using Dawn;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml.Serialization;
 using Castle.Core.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Messages

@@ -31,12 +31,14 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <summary>
         /// A <see cref="IEnumerable{CultureInfo}"/> specifying the default languages to which the received message is translated
         /// </summary>
-        private readonly IEnumerable<CultureInfo> _defaultCultures;
+        private readonly IReadOnlyList<CultureInfo> _defaultCultures;
 
         /// <summary>
         /// The raw message
         /// </summary>
         private readonly byte[] _rawMessage;
+
+        private readonly IBetStop<T> _betStop;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OddsChangeEventArgs{T}"/> class
@@ -53,8 +55,10 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
 
             _messageMapper = messageMapper;
             _feedMessage = feedMessage;
-            _defaultCultures = cultures as IReadOnlyCollection<CultureInfo>;
+            _defaultCultures = cultures as IReadOnlyList<CultureInfo>;
             _rawMessage = rawMessage;
+
+            _betStop = GetBetStop();
         }
 
         /// <summary>
@@ -65,6 +69,11 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <returns>Returns the <see cref="IBetStop{T}"/> implementation representing the received bet stop message translated to the specified languages</returns>
         public IBetStop<T> GetBetStop(CultureInfo culture = null)
         {
+            if (_betStop != null && culture == null)
+            {
+                return _betStop;
+            }
+
             return _messageMapper.MapBetStop<T>(
                 _feedMessage,
                 culture == null

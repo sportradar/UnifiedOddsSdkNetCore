@@ -6,9 +6,7 @@ using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
 using System.Linq;
-using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -16,7 +14,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using cashout = Sportradar.OddsFeed.SDK.Messages.REST.cashout;
@@ -28,11 +25,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// </summary>
     internal class FeedMessageMapper : IFeedMessageMapper
     {
-        /// <summary>
-        /// The <see cref="ILogger"/> instance used for execution logging
-        /// </summary>
-        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(FeedMessageMapper));
-
         /// <summary>
         /// A <see cref="ISportEntityFactory"/> implementation used to construct <see cref="ISportEvent"/> instances
         /// </summary>
@@ -109,14 +101,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the constructed instance should handle potential exceptions</param>
         /// <returns>A <see cref="ISportEvent"/> derived constructed instance</returns>
-        protected T BuildEvent<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
+        protected T BuildEvent<T>(URN eventId, URN sportId, List<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
         {
             Guard.Argument(eventId, nameof(eventId)).NotNull();
             Guard.Argument(sportId, nameof(sportId)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
-
-            var cultureInfos = cultures as CultureInfo[] ?? cultures.ToArray();
-
+            
             T entity;
             switch (eventId.TypeGroup)
             {
@@ -129,7 +119,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 case ResourceTypeGroup.LOTTERY:
                 case ResourceTypeGroup.UNKNOWN:
                 {
-                    entity = (T) _sportEntityFactory.BuildSportEvent<ISportEvent>(eventId, sportId, cultureInfos, exceptionStrategy);
+                    entity = (T) _sportEntityFactory.BuildSportEvent<ISportEvent>(eventId, sportId, cultures, exceptionStrategy);
                     break;
                 }
                 case ResourceTypeGroup.OTHER:
@@ -148,7 +138,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="sportId">The sport identifier</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <returns>Returns the new <see cref="ICompetition"/> instance</returns>
-        protected T GetEventForMessage<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures) where T : ISportEvent
+        protected T GetEventForMessage<T>(URN eventId, URN sportId, List<CultureInfo> cultures) where T : ISportEvent
         {
             Guard.Argument(eventId, nameof(eventId)).NotNull();
             Guard.Argument(sportId, nameof(sportId)).NotNull();
@@ -164,7 +154,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="sportId">The sport identifier</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <returns>Returns the new <see cref="ICompetition"/> instance</returns>
-        protected T GetEventForNameProvider<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures) where T : ISportEvent
+        protected T GetEventForNameProvider<T>(URN eventId, URN sportId, List<CultureInfo> cultures) where T : ISportEvent
         {
             Guard.Argument(eventId, nameof(eventId)).NotNull();
             Guard.Argument(sportId, nameof(sportId)).NotNull();
@@ -196,11 +186,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var additionalInfo = string.IsNullOrEmpty(marketSettlement.extended_specifiers)
                 ? null
                 : FeedMapperHelper.GetSpecifiers(marketSettlement.extended_specifiers);
-
-            var producer = _producerManager.Get(producerId);
-
+            
             var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, marketSettlement.id, specifiers);
-            var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketSettlement.id, specifiers, _producerManager.Get(producerId), sportId);
+            var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketSettlement.id, specifiers, producerId, sportId);
             var outcomes = (IEnumerable<IOutcomeSettlement>) marketSettlement.Items?.Select(outcome => new OutcomeSettlement(
                                outcome.dead_heat_factorSpecified ? (double?)outcome.dead_heat_factor : null,
                                outcome.id,
@@ -209,8 +197,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                nameProvider,
                                mappingProvider,
                                cultureInfos,
-                               BuildOutcomeDefinition(marketSettlement.id, sportId, producer, specifiers, outcome.id, cultureInfos)))
+                               new OutcomeDefinition(marketSettlement.id, outcome.id, _marketCacheProvider, specifiers, cultureInfos, _externalExceptionStrategy)))
                 ?? new List<IOutcomeSettlement>();
+
+            var marketDefinition = new MarketDefinition(marketSettlement.id, _marketCacheProvider, sportId, producerId, specifiers, cultureInfos, _externalExceptionStrategy);
 
             return new MarketWithSettlement(marketSettlement.id,
                                             specifiers,
@@ -218,7 +208,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                             outcomes,
                                             nameProvider,
                                             mappingProvider,
-                                            BuildMarketDefinition(marketSettlement.id, sportId, producer, specifiers, cultureInfos),
+                                            marketDefinition,
                                             marketSettlement.void_reasonSpecified ? (int?)marketSettlement.void_reason : null,
                                             _namedValuesProvider.VoidReasons,
                                             cultureInfos);
@@ -229,7 +219,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         /// <param name="sportEvent">A <see cref="ISportEvent"/> representing the sport event associated with the generated message</param>
         /// <param name="marketOddsChange">The <see cref="oddsChangeMarket"/> instance used</param>
-        /// <param name="producerId">A producerId specifying message producer</param>
+        /// <param name="producerId">A producerId specifying message producerId</param>
         /// <param name="sportId">A sportId of the <see cref="ISportEvent"/></param>
         /// <param name="cultures">The list of cultures that should be prefetched</param>
         /// <returns>Returns the new <see cref="IMarketWithOdds"/> instance</returns>
@@ -243,11 +233,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var additionalInfo = string.IsNullOrEmpty(marketOddsChange.extended_specifiers)
                 ? null
                 : FeedMapperHelper.GetSpecifiers(marketOddsChange.extended_specifiers);
-
-            var producer = _producerManager.Get(producerId);
-
+            
             var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, marketOddsChange.id, specifiers);
-            var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketOddsChange.id, specifiers, _producerManager.Get(producerId), sportId);
+            var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketOddsChange.id, specifiers, producerId, sportId);
+
+            var marketDefinition = new MarketDefinition(marketOddsChange.id, _marketCacheProvider, sportId, producerId, specifiers, cultureInfos, _externalExceptionStrategy);
+
             return new MarketWithProbabilities(marketOddsChange.id,
                                                specifiers,
                                                additionalInfo,
@@ -262,8 +253,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                                                     nameProvider,
                                                                                     mappingProvider,
                                                                                     cultureInfos,
-                                                                                    BuildOutcomeDefinition(marketOddsChange.id, sportId, producer, specifiers, outcomeOdds.id, cultureInfos))),
-                                               BuildMarketDefinition(marketOddsChange.id, sportId, producer, specifiers, cultureInfos),
+                                                                                    new OutcomeDefinition(marketOddsChange.id, outcomeOdds.id, _marketCacheProvider, specifiers, cultureInfos, _externalExceptionStrategy))),
+                                               marketDefinition,
                                                cultureInfos,
                                                marketOddsChange.cashout_statusSpecified ? (CashoutStatus?)MessageMapperHelper.GetEnumValue<CashoutStatus>(marketOddsChange.cashout_status) : null);
         }
@@ -288,15 +279,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 ? null
                 : FeedMapperHelper.GetSpecifiers(marketOddsChange.extended_specifiers);
 
-            var marketMetadata = marketOddsChange.market_metadata == null
-                             || !marketOddsChange.market_metadata.next_betstopSpecified
+            var marketMetadata = marketOddsChange.market_metadata == null || !marketOddsChange.market_metadata.next_betstopSpecified
                 ? new MarketMetadata(null)
                 : new MarketMetadata(marketOddsChange.market_metadata.next_betstop);
 
-            var producer = _producerManager.Get(producerId);
-
             var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, marketOddsChange.id, specifiers);
-            var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketOddsChange.id, specifiers, _producerManager.Get(producerId), sportId);
+            var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketOddsChange.id, specifiers, producerId, sportId);
+
+            var outcomes = marketOddsChange.outcome?.Select(outcome => 
+                GetOutcomeWithOdds(sportEvent, 
+                                    nameProvider,
+                                    mappingProvider, 
+                                    outcome, 
+                                    cultureInfos,
+                                    new OutcomeDefinition(marketOddsChange.id, outcome.id, _marketCacheProvider, specifiers, cultureInfos, _externalExceptionStrategy)));
+
+            var marketDefinition = new MarketDefinition(marketOddsChange.id, _marketCacheProvider, sportId, producerId, specifiers, cultureInfos, _externalExceptionStrategy);
 
             return new MarketWithOdds(marketOddsChange.id,
                                     specifiers,
@@ -306,9 +304,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                     MessageMapperHelper.GetEnumValue<MarketStatus>(marketOddsChange.status),
                                     marketOddsChange.cashout_statusSpecified ? (CashoutStatus?)MessageMapperHelper.GetEnumValue<CashoutStatus>(marketOddsChange.cashout_status) : null,
                                     marketOddsChange.favouriteSpecified && marketOddsChange.favourite == 1,
-                                    marketOddsChange.outcome?.Select(o => GetOutcomeWithOdds(sportEvent, nameProvider, mappingProvider, o, cultureInfos, BuildOutcomeDefinition(marketOddsChange.id, sportId, producer, specifiers, o.id, cultureInfos))),
+                                    outcomes,
                                     marketMetadata,
-                                    BuildMarketDefinition(marketOddsChange.id, sportId, producer, specifiers, cultureInfos),
+                                    marketDefinition,
                                     cultureInfos);
         }
 
@@ -326,6 +324,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
             Guard.Argument(market, nameof(market)).NotNull();
 
+            var cultureInfos = cultures.ToList();
+
             var specifiers = string.IsNullOrEmpty(market.specifiers)
                 ? null
                 : FeedMapperHelper.GetSpecifiers(market.specifiers);
@@ -334,15 +334,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 ? null
                 : FeedMapperHelper.GetSpecifiers(market.extended_specifiers);
 
-            var producer = _producerManager.Get(producerId);
+            var marketDefinition = new MarketDefinition(market.id, _marketCacheProvider, sportId, producerId, specifiers, cultureInfos, _externalExceptionStrategy);
 
-            var cultureInfos = cultures.ToList();
             return new MarketCancel(market.id,
                                   specifiers,
                                   additionalInfo,
                                   _nameProviderFactory.BuildNameProvider(sportEvent, market.id, specifiers),
-                                  _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, market.id, specifiers, _producerManager.Get(producerId), sportId),
-                                  BuildMarketDefinition(market.id, sportId, producer, specifiers, cultureInfos),
+                                  _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, market.id, specifiers, producerId, sportId),
+                                  marketDefinition,
                                   market.void_reasonSpecified ? market.void_reason : (int?)null,
                                   _voidReasonCache,
                                   cultureInfos);
@@ -438,9 +437,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
 
+            var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
+
             return new FixtureChange<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
                                         _producerManager.Get(message.product),
-                                        GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, cultures),
+                                        GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, culturesList),
                                         message.request_idSpecified ? (long?) message.request_id : null,
                                         MessageMapperHelper.GetEnumValue(message.change_typeSpecified, message.change_type, FixtureChangeType.OTHER),
                                         message.next_live_timeSpecified ? (long?) message.next_live_time : null,
@@ -460,9 +461,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
 
+            var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
+
             return new BetStop<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
                                   _producerManager.Get(message.product),
-                                  GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, cultures),
+                                  GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, culturesList),
                                   message.request_idSpecified ? (long?) message.request_id : null,
                                   MessageMapperHelper.GetEnumValue(message.market_statusSpecified, message.market_status, MarketStatus.SUSPENDED),
                                   message.groups?.Split('|'),
@@ -617,75 +620,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 message.odds?.market?.Select(m => GetMarketWithProbabilities(GetEventForNameProvider<T>(eventId, sportId, culturesList), m, message.product, sportId, culturesList)).ToList(),
                 _namedValuesProvider,
                 rawMessage);
-        }
-
-        /// <summary>
-        /// Builds a <see cref="IMarketDefinition" /> associated with the provided data
-        /// </summary>
-        /// <param name="marketId">the id of the market</param>
-        /// <param name="sportId">the sport id</param>
-        /// <param name="producer">the source of the market</param>
-        /// <param name="specifiers">the received market specifiers</param>
-        /// <param name="cultures">the cultures in which the market data should be prefetched</param>
-        /// <returns></returns>
-        private IMarketDefinition BuildMarketDefinition(int marketId, URN sportId, IProducer producer, IReadOnlyDictionary<string, string> specifiers, IEnumerable<CultureInfo> cultures)
-        {
-            // market descriptor should exist or else the market generation would fail
-            // variant always null because we are interested only in the general market attributes
-            IMarketDescription marketDescription = null;
-
-            try
-            {
-                marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, cultures, false).Result;
-            }
-            catch (CacheItemNotFoundException)
-            {
-                ExecutionLog.LogWarning($"Market description for market={marketId}, sport={sportId} and producer={producer.Name} not found.");
-                if (_externalExceptionStrategy == ExceptionHandlingStrategy.THROW)
-                {
-                    throw;
-                }
-            }
-
-            return marketDescription == null
-                ? null
-                : new MarketDefinition(marketDescription, _marketCacheProvider, sportId, producer, specifiers);
-        }
-
-        /// <summary>
-        /// Builds a <see cref="IOutcomeDefinition" /> associated with the provided data
-        /// </summary>
-        /// <param name="marketId">the id of the market</param>
-        /// <param name="sportId">the sport id</param>
-        /// <param name="producer">the source of the market</param>
-        /// <param name="specifiers">the received market specifiers</param>
-        /// <param name="outcomeId">the id of the market</param>
-        /// <param name="cultures">the cultures in which the market data should be prefetched</param>
-        /// <returns></returns>
-        private IOutcomeDefinition BuildOutcomeDefinition(int marketId, URN sportId, IProducer producer, IReadOnlyDictionary<string, string> specifiers, string outcomeId, IEnumerable<CultureInfo> cultures)
-        {
-            try
-            {
-                var cultureInfos = cultures.ToList();
-                var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, cultureInfos, false).Result;
-                if (marketDescription == null)
-                {
-                    throw new CacheItemNotFoundException($"Market description for market={marketId}, sport={sportId} and producer={producer.Name} not found.", $"MarketId={marketId}", null);
-                }
-                if (marketDescription.Outcomes == null)
-                {
-                    return new OutcomeDefinition(marketDescription, outcomeId, _marketCacheProvider, specifiers, cultureInfos, _externalExceptionStrategy);
-                }
-                var outcomeDescription = marketDescription.Outcomes.FirstOrDefault(s => s.Id.Equals(outcomeId, StringComparison.InvariantCultureIgnoreCase));
-                return outcomeDescription == null
-                       ? new OutcomeDefinition(marketDescription, outcomeId, _marketCacheProvider, specifiers, cultureInfos, _externalExceptionStrategy)
-                       : new OutcomeDefinition(marketDescription, outcomeDescription, cultureInfos);
-            }
-            catch (CacheItemNotFoundException)
-            {
-                ExecutionLog.LogDebug($"Market description for market={marketId}, sport={sportId} and producer={producer.Name} not found. Outcome definition not found (yet)");
-            }
-            return null;
         }
     }
 }

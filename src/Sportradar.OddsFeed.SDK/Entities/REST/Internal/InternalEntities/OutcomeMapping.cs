@@ -38,8 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
                 return null;
             }
 
-            string name;
-            return _producerOutcomeNames.TryGetValue(culture, out name) ? name : null;
+            return _producerOutcomeNames.TryGetValue(culture, out var name) ? name : null;
         }
 
         /// <summary>

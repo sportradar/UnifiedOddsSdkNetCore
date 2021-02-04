@@ -86,6 +86,14 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string CompetitorsMarketOutcomeType = "competitors";
         /// <summary>
+        /// The competitor market group
+        /// </summary>
+        public const string CompetitorMarketOutcomeType = "competitor";
+        /// <summary>
+        /// The player market group
+        /// </summary>
+        public const string PlayerMarketOutcomeType = "player";
+        /// <summary>
         /// The minimum inactivity seconds
         /// </summary>
         public const int MinInactivitySeconds = 20;
@@ -163,7 +171,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The rest connection failure timeout in sec
         /// </summary>
         public const int RestConnectionFailureTimeoutInSec = 15;
-
         /// <summary>
         /// The soccer sport urns
         /// </summary>

@@ -122,7 +122,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(interest, nameof(interest)).NotNull();
-
+            
             var alive = message as alive;
             if (alive != null)
             {
@@ -134,10 +134,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 SnapshotCompleteReceived?.Invoke(this, new SnapshotCompleteEventArgs(_feedMessageMapper, snap, interest, rawMessage));
             }
-
+            
             FeedMessageReceived?.Invoke(this, new FeedMessageReceivedEventArgs(message, interest, rawMessage));
-
-            RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(message, interest, rawMessage));
+            
+            //RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(message, interest, rawMessage));
         }
 
         /// <summary>

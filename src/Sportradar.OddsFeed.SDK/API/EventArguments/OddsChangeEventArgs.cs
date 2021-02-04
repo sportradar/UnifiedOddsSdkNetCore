@@ -29,14 +29,16 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         private readonly odds_change _feedMessage;
 
         /// <summary>
+        /// A <see cref="IEnumerable{CultureInfo}"/> specifying the default languages to which the received message is translated
+        /// </summary>
+        private readonly IReadOnlyCollection<CultureInfo> _defaultCultures;
+
+        /// <summary>
         /// The raw message
         /// </summary>
         private readonly byte[] _rawMessage;
 
-        /// <summary>
-        /// A <see cref="IEnumerable{CultureInfo}"/> specifying the default languages to which the received message is translated
-        /// </summary>
-        private readonly IReadOnlyCollection<CultureInfo> _defaultCultures;
+        private readonly IOddsChange<T> _oddsChange;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OddsChangeEventArgs{T}"/> class
@@ -55,6 +57,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
             _feedMessage = feedMessage;
             _defaultCultures = cultures as IReadOnlyCollection<CultureInfo>;
             _rawMessage = rawMessage;
+
+            _oddsChange = GetOddsChange();
         }
 
         /// <summary>
@@ -65,6 +69,11 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <returns>Returns the <see cref="IOddsChange{T}"/> implementation representing the received odds change message translated to the specified languages</returns>
         public IOddsChange<T> GetOddsChange(CultureInfo culture = null)
         {
+            if (_oddsChange != null && culture == null)
+            {
+                return _oddsChange;
+            }
+
             return _messageMapper.MapOddsChange<T>(
                 _feedMessage,
                 culture == null

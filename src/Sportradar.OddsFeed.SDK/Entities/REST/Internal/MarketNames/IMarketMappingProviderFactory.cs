@@ -17,9 +17,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="sportEvent">A <see cref="ISportEvent"/> instance representing associated sport @event</param>
         /// <param name="marketId">A market identifier, identifying the market associated with the returned instance</param>
         /// <param name="specifiers">A <see cref="IReadOnlyDictionary{String, String}"/> representing specifiers of the associated market</param>
-        /// <param name="producer">An <see cref="IProducer"/> of the <see cref="ISportEvent"/></param>
+        /// <param name="producerId">An id of the <see cref="IProducer"/> of the <see cref="ISportEvent"/></param>
         /// <param name="sportId">A sportId of the <see cref="ISportEvent"/></param>
         /// <returns>Returns an instance of <see cref="IMarketMappingProvider"/></returns>
-        IMarketMappingProvider BuildMarketMappingProvider(ISportEvent sportEvent, int marketId, IReadOnlyDictionary<string, string> specifiers, IProducer producer, URN sportId);
+        IMarketMappingProvider BuildMarketMappingProvider(ISportEvent sportEvent, int marketId, IReadOnlyDictionary<string, string> specifiers, int producerId, URN sportId);
     }
 }

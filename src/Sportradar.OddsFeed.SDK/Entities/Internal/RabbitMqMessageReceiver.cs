@@ -133,13 +133,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             string messageName;
             try
             {
-                using (var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(new TimerOptions {Context = "FEED", Name = "Message deserialization time"}))
+                using (var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(new TimerOptions {Context = "FEED", Name = "Message deserialization time", MeasurementUnit = Unit.Items}))
                 {
                     t.TrackUserValue(eventArgs.RoutingKey);
                     messageBody = Encoding.UTF8.GetString(eventArgs.Body);
                     feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
                     producer = _producerManager.Get(feedMessage.ProducerId);
                     messageName = feedMessage.GetType().Name;
+
+                    if (t.Elapsed.TotalMilliseconds > 300)
+                    {
+                        _keyParser.TryGetSportId(eventArgs.RoutingKey, messageName, out var sportId);
+                        var marketCounts = 0;
+                        var outcomeCounts = 0;
+                        if (feedMessage is odds_change oddsChange)
+                        {
+                            marketCounts = oddsChange.odds?.market?.Length ?? 0;
+                            outcomeCounts = oddsChange.odds?.market?.SelectMany(list => list.outcome).Count() ?? 0;
+                        }
+                        if (feedMessage is bet_settlement betSettlement)
+                        {
+                            marketCounts = betSettlement.outcomes?.Length ?? 0;
+                            outcomeCounts = betSettlement.outcomes?.SelectMany(list => list.Items).Count() ?? 0;
+                        }
+                        ExecutionLog.LogDebug($"Deserialization of {feedMessage.GetType().Name} for {feedMessage.EventId} ({feedMessage.GeneratedAt}) and sport {sportId} took {t.Elapsed.TotalMilliseconds}ms. Markets={marketCounts}, Outcomes={outcomeCounts}");
+                    }
                 }
 
                 if (producer.IsAvailable && !producer.IsDisabled)

@@ -87,14 +87,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// <summary>
         /// Determines whether the current mapping can map market with provided specifiers associated with provided producer and sport
         /// </summary>
-        /// <param name="producer">The <see cref="IProducer" /> associated with the market</param>
+        /// <param name="producerId">The id of the <see cref="IProducer" /> associated with the market</param>
         /// <param name="sportId">The <see cref="URN" /> specifying the sport associated with the market</param>
         /// <param name="specifiers">The market specifiers</param>
         /// <returns>True if the current mapping can be used to map the specified market. False otherwise</returns>
         /// <exception cref="InvalidOperationException">The provided specifiers are not valid</exception>
-        public bool CanMap(IProducer producer, URN sportId, IReadOnlyDictionary<string, string> specifiers)
+        public bool CanMap(int producerId, URN sportId, IReadOnlyDictionary<string, string> specifiers)
         {
-            if (!ProducerIds.Contains(producer.Id) || SportId != null && !SportId.Equals(sportId))
+            if (!ProducerIds.Contains(producerId) || SportId != null && !SportId.Equals(sportId))
             {
                 return false;
             }

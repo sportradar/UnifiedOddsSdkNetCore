@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using System.Collections.Generic;
 using Dawn;
@@ -21,51 +20,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// </summary>
     internal class OutcomeDefinition : IOutcomeDefinition
     {
-        /// <summary>
-        /// The associated market descriptor
-        /// </summary>
-        private readonly IMarketDescription _marketDescription;
-
         private readonly IMarketCacheProvider _marketCacheProvider;
+        private readonly int _marketId;
         private readonly string _outcomeId;
         private readonly IReadOnlyDictionary<string, string> _specifiers;
         private readonly IReadOnlyCollection<CultureInfo> _cultures;
         private readonly ExceptionHandlingStrategy _exceptionHandlingStrategy;
         private readonly IDictionary<CultureInfo, string> _names = new Dictionary<CultureInfo, string>();
+        private readonly object _lock = new object();
 
-        /// <summary>
-        /// Constructs a new market definition. The market definition represents additional market data which can be used for more advanced use cases
-        /// </summary>
-        /// <param name="marketDescription">The associated market descriptor</param>
-        /// <param name="outcomeDescription">The associated outcome descriptor</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
-        internal OutcomeDefinition(IMarketDescription marketDescription, IOutcomeDescription outcomeDescription, IEnumerable<CultureInfo> cultures)
-        {
-            Guard.Argument(cultures, nameof(cultures)).NotNull();
-
-            _marketDescription = marketDescription;
-
-            if (outcomeDescription != null)
-            {
-                _outcomeId = outcomeDescription.Id;
-                foreach (var culture in cultures)
-                {
-                    _names[culture] = outcomeDescription.GetName(culture);
-                }
-            }
-        }
-
-        internal OutcomeDefinition(IMarketDescription marketDescription,
+        internal OutcomeDefinition(int marketId,
                                    string outcomeId,
                                    IMarketCacheProvider marketCacheProvider,
                                    IReadOnlyDictionary<string, string> specifiers,
                                    IEnumerable<CultureInfo> cultures,
                                    ExceptionHandlingStrategy exceptionHandlingStrategy)
         {
-            Guard.Argument(cultures, nameof(cultures)).NotNull();
 
-            _marketDescription = marketDescription;
+            Guard.Argument(marketId, nameof(marketId)).Positive();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();
+            
             _marketCacheProvider = marketCacheProvider;
+            _marketId = marketId;
             _outcomeId = outcomeId;
             _specifiers = specifiers;
             _cultures = cultures as IReadOnlyCollection<CultureInfo>;
@@ -91,45 +67,61 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
 
-            try
+            lock (_lock)
             {
-                var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync((int) _marketDescription.Id, _specifiers, _cultures, true).Result;
-                if (marketDescription?.Outcomes == null || !marketDescription.Outcomes.Any())
+                if (_names.Any())
                 {
-                    return null;
+                    return _names.ContainsKey(culture)
+                        ? _names[culture]
+                        : null;
                 }
-
-                var outcomeDescription = marketDescription.Outcomes.FirstOrDefault(s => s.Id.Equals(_outcomeId, StringComparison.InvariantCultureIgnoreCase));
-                if (outcomeDescription == null)
+                try
                 {
-                    if (!string.IsNullOrEmpty(marketDescription.OutcomeType) && marketDescription.OutcomeType.Equals(SdkInfo.CompetitorsMarketOutcomeType))
+                    var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, _cultures, true).Result;
+                    if (marketDescription?.Outcomes == null || !marketDescription.Outcomes.Any())
                     {
-                        foreach (var cultureInfo in _cultures)
-                        {
-                            _names[cultureInfo] = _outcomeId;
-                        }
-                        return _outcomeId;
+                        return null;
                     }
-                    var outcomesString = WriteOutcomes(marketDescription.Outcomes, culture);
-                    throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for id={_marketDescription.Id} not found. Existing outcomes: {outcomesString}", _outcomeId, null);
+
+                    var outcomeDescription = marketDescription.Outcomes.FirstOrDefault(s => s.Id.Equals(_outcomeId, StringComparison.InvariantCultureIgnoreCase));
+                    if (outcomeDescription == null)
+                    {
+                        if (!string.IsNullOrEmpty(marketDescription.OutcomeType)
+                            &&
+                            (marketDescription.OutcomeType.Equals(SdkInfo.CompetitorsMarketOutcomeType)
+                             || marketDescription.OutcomeType.Equals(SdkInfo.CompetitorMarketOutcomeType)
+                             || marketDescription.OutcomeType.Equals(SdkInfo.PlayerMarketOutcomeType)))
+                        {
+                            foreach (var cultureInfo in _cultures)
+                            {
+                                _names[cultureInfo] = _outcomeId;
+                            }
+
+                            return _outcomeId;
+                        }
+
+                        var outcomesString = GetOutcomes(marketDescription.Outcomes, culture);
+                        throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for market={_marketId} not found. Existing outcomes: {outcomesString}", _outcomeId, null);
+                    }
+
+                    foreach (var cultureInfo in _cultures)
+                    {
+                        _names[cultureInfo] = outcomeDescription.GetName(cultureInfo);
+                    }
                 }
-                foreach (var cultureInfo in _cultures)
+                catch (CacheItemNotFoundException e)
                 {
-                    _names[cultureInfo] = outcomeDescription.GetName(cultureInfo);
+                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    {
+                        throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for market={_marketId} not found. Could not provide the requested translated name ({culture.TwoLetterISOLanguageName})", _outcomeId, e);
+                    }
                 }
-            }
-            catch (CacheItemNotFoundException e)
-            {
-                if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                catch (Exception ex)
                 {
-                    throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for id={_marketDescription.Id} could not provide the requested translated name", _outcomeId, e);
-                }
-            }
-            catch(Exception ex)
-            {
-                if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
-                {
-                    throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for id={_marketDescription.Id} could not provide the requested translated name", _outcomeId, ex);
+                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    {
+                        throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for market={_marketId} could not provide the requested translated name ({culture.TwoLetterISOLanguageName})", _outcomeId, ex);
+                    }
                 }
             }
 
@@ -138,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                        : null;
         }
 
-        private static string WriteOutcomes(IEnumerable<IOutcomeDescription> outcomes, CultureInfo culture)
+        private static string GetOutcomes(IEnumerable<IOutcomeDescription> outcomes, CultureInfo culture)
         {
             var outcomeDescriptions = outcomes.ToList();
             if (outcomeDescriptions.IsNullOrEmpty())

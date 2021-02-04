@@ -38,6 +38,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// </summary>
         private readonly byte[] _rawMessage;
 
+        private readonly IRollbackBetCancel<T> _rollbackBetCancel;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OddsChangeEventArgs{T}"/> class
         /// </summary>
@@ -55,6 +57,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
             _feedMessage = feedMessage;
             _defaultCultures = cultures as IReadOnlyCollection<CultureInfo>;
             _rawMessage = rawMessage;
+
+            _rollbackBetCancel = GetBetCancelRollback();
         }
 
         /// <summary>
@@ -65,6 +69,11 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <returns>Returns the <see cref="IRollbackBetCancel{T}"/> implementation representing the received bet cancel rollback message translated to the specified languages</returns>
         public IRollbackBetCancel<T> GetBetCancelRollback(CultureInfo culture = null)
         {
+            if (_rollbackBetCancel != null && culture == null)
+            {
+                return _rollbackBetCancel;
+            }
+
             return _messageMapper.MapRollbackBetCancel<T>(
                 _feedMessage,
                 culture == null

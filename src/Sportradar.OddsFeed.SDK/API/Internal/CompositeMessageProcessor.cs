@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
@@ -18,6 +20,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// </summary>
     internal class CompositeMessageProcessor : MessageProcessorBase, IFeedMessageProcessor
     {
+        /// <summary>
+        /// The execution log
+        /// </summary>
+        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CompositeMessageProcessor));
+
         private readonly IReadOnlyList<IFeedMessageProcessor> _processors;
 
         /// <summary>
@@ -30,48 +37,26 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Initializes a new instance of the <see cref="CompositeMessageProcessor"/> class
         /// </summary>
         /// <param name="processors">The list of processors.</param>
-        public CompositeMessageProcessor(IEnumerable<IFeedMessageProcessor> processors)
+        public CompositeMessageProcessor(List<IFeedMessageProcessor> processors)
         {
             Guard.Argument(processors, nameof(processors)).NotNull().NotEmpty().Require(processors.All(p => p != null));
 
             ProcessorId = Guid.NewGuid().ToString().Substring(0,4);
 
-            _processors = processors as IReadOnlyList<IFeedMessageProcessor>;
+            _processors = processors;
 
-            if (_processors != null)
+            foreach (var processor in _processors)
             {
-                foreach (var processor in _processors)
-                {
-                    //Debug.WriteLine($"{ProcessorId} - CompositeMessageProcessor has processor {processor.ProcessorId}");
-                    processor.MessageProcessed += OnProcessorMessageProcessedEvent;
-                }
+                processor.MessageProcessed += OnProcessorMessageProcessedEvent;
             }
         }
 
         private void OnProcessorMessageProcessedEvent(object sender, FeedMessageReceivedEventArgs e)
         {
-            //Debug.WriteLine($"{ProcessorId} - CompositeMessageProcessor.OnProcessorMessageProcessedEvent called.");
-            var sendingProcessor = (IFeedMessageProcessor) sender;
-            int index;
-            for (index = 0; index < _processors.Count; index++)
-            {
-                if (sendingProcessor == _processors[index])
-                {
-                    break;
-                }
-            }
-
-            if (index < _processors.Count - 1)
-            {
-                _processors[index + 1].ProcessMessage(e.Message, e.Interest, e.RawMessage);
-                return;
-            }
-
-            //Debug.WriteLine($"{ProcessorId} - CompositeMessageProcessor.OnProcessorMessageProcessedEvent finishing.");
-
+            ExecutionLog.LogDebug($"{ProcessorId} - CompositeMessageProcessor.OnProcessorMessageProcessedEvent called by {sender?.GetType().Name}");
             RaiseOnMessageProcessedEvent(e);
         }
-
+        
         /// <summary>
         /// Processes and dispatches the provided <see cref="FeedMessage"/> instance
         /// </summary>
@@ -82,8 +67,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(interest, nameof(interest)).NotNull();
-
-            _processors.First().ProcessMessage(message, interest, rawMessage);
+            
+            foreach (var processor in _processors)
+            {
+                processor.ProcessMessage(message, interest, rawMessage);
+            }
+            RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(message, interest, rawMessage));
         }
     }
 }

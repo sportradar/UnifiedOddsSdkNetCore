@@ -85,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Logs the correctly formated failure to execution log
+        /// Logs the correctly formatted failure to execution log
         /// </summary>
         /// <typeparam name="T">The type of the incorrect value</typeparam>
         /// <param name="message">The <see cref="FeedMessage"/> containing the incorrect value</param>
@@ -104,12 +104,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         /// <param name="message">The <see cref="FeedMessage"/> instance containing the market whose specifiers are being validated</param>
         /// <param name="market">A <see cref="FeedMarket"/> instance containing the specifiers to validate</param>
-        /// <param name="marketIndex">The index of the <code>market</code> in the <code>message</code></param>
-        private static bool ValidateSpecifiers(FeedMessage message, FeedMarket market, int marketIndex)
+        /// <param name="marketId">The id of the <code>market</code> in the <code>message</code></param>
+        private static bool ValidateSpecifiers(FeedMessage message, FeedMarket market, int marketId)
         {
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(market, nameof(market)).NotNull();
-            Guard.Argument(marketIndex).NotNegative();
+            Guard.Argument(marketId).Positive();
 
             if (string.IsNullOrEmpty(market.SpecifierString))
             {
@@ -126,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 if (ex is FormatException || ex is ArgumentException)
                 {
                     market.ValidationFailed = true;
-                    LogWarning(message, $"markets[{marketIndex}].specifiers", market.SpecifierString);
+                    LogWarning(message, $"market {marketId} specifiers", market.SpecifierString);
                     return false;
                 }
                 throw;
@@ -214,8 +214,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     LogFailure(message, "SportId", message.SportId);
                     return false;
                 }
-                URN eventUrn;
-                if (URN.TryParse(message.EventId, out eventUrn))
+
+                if (URN.TryParse(message.EventId, out var eventUrn))
                 {
                     message.EventURN = eventUrn;
                 }
@@ -269,14 +269,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
 
             var result = ValidationResult.SUCCESS;
-            for (var i = 0; i < markets.Length; i++)
+            foreach (var market in markets)
             {
-                if (!ValidateSpecifiers(message, markets[i], i))
+                if (!ValidateSpecifiers(message, market, market.id))
                 {
                     result = ValidationResult.PROBLEMS_DETECTED;
                 }
 
-                if (!CheckSpecifiersAsync(message.ProducerId, markets[i].id, markets[i].Specifiers).Result)
+                if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).Result)
                 {
                     result = ValidationResult.PROBLEMS_DETECTED;
                 }
@@ -394,10 +394,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
 
             var result = ValidationResult.SUCCESS;
-            for (var marketIndex = 0; marketIndex < message.outcomes.Length; marketIndex++)
+            foreach (var market in message.outcomes)
             {
-                var market = message.outcomes[marketIndex];
-                if (!ValidateSpecifiers(message, market, marketIndex))
+                if (!ValidateSpecifiers(message, market, market.id))
                 {
                     result = ValidationResult.PROBLEMS_DETECTED;
                 }
@@ -478,16 +477,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 return result;
             }
 
-            for (var marketIndex = 0; marketIndex < message.odds.market.Length; marketIndex++)
+            foreach (var market in message.odds.market)
             {
-                var market = message.odds.market[marketIndex];
                 if (market.statusSpecified && !MessageMapperHelper.IsEnumMember<MarketStatus>(market.status))
                 {
-                    LogFailure(message, $"market[{marketIndex}].market_status", market.status);
+                    LogFailure(message, $"market {market.id} market_status", market.status);
                     return ValidationResult.FAILURE;
                 }
 
-                if (!ValidateSpecifiers(message, market, marketIndex))
+                if (!ValidateSpecifiers(message, market, market.id))
                 {
                     result = ValidationResult.PROBLEMS_DETECTED;
                 }
@@ -502,9 +500,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     continue;
                 }
 
-                for (var outcomeIndex = 0; outcomeIndex < market.outcome.Length; outcomeIndex++)
+                foreach (var outcome in market.outcome)
                 {
-                    var outcome = market.outcome[outcomeIndex];
                     result = ValidateOddsChangeOutcomes(message, market, outcome, result);
                 }
             }

@@ -38,6 +38,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// </summary>
         private readonly byte[] _rawMessage;
 
+        private readonly IFixtureChange<T> _fixtureChange;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OddsChangeEventArgs{T}"/> class
         /// </summary>
@@ -55,6 +57,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
             _feedMessage = feedMessage;
             _defaultCultures = cultures as IReadOnlyCollection<CultureInfo>;
             _rawMessage = rawMessage;
+
+            _fixtureChange = GetFixtureChange();
         }
 
         /// <summary>
@@ -65,6 +69,11 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <returns>Returns the <see cref="IFixtureChange{T}"/> implementation representing the received fixture change message translated to the specified languages</returns>
         public IFixtureChange<T> GetFixtureChange(CultureInfo culture = null)
         {
+            if (_fixtureChange != null && culture == null)
+            {
+                return _fixtureChange;
+            }
+
             return _messageMapper.MapFixtureChange<T>(
                 _feedMessage,
                 culture == null

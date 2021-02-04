@@ -996,10 +996,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 var message = e.InnerException?.Message ?? e.Message;
-                _executionLog.LogError($"Error getting variant market description for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
-                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                if (e.Message.Contains("NotFound"))
                 {
-                    throw;
+                    message = message.Contains(".")
+                        ? message.Substring(0, message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
+                        : message;
+                    _executionLog.LogError($"Error getting market variant description for market id={id}, variant={variant} and lang:[{culture.TwoLetterISOLanguageName}]. Not found. Message={message}");
+                }
+                else if (e.Message.Contains("name cannot be null"))
+                {
+                    message = message.Contains(".")
+                        ? message.Substring(0, message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
+                        : message;
+                    _executionLog.LogError($"Error getting market variant description for market id={id}, variant={variant} and lang:[{culture.TwoLetterISOLanguageName}]. Outcome missing name. Message={message}");
+                }
+                else
+                {
+                    _executionLog.LogError($"Error getting market variant description for market id={id}, variant={variant} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}",
+                        e.InnerException ?? e);
+                    if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    {
+                        throw;
+                    }
                 }
             }
 

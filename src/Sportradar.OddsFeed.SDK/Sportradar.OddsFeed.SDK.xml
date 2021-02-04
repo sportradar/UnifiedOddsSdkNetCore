@@ -580,9 +580,9 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.UnparsableMessageEventArgs.GetRawMessage">
             <summary>
-            Gets the raw xml message received from the feed
+            Gets the raw XML message received from the feed
             </summary>
-            <returns>Returns the raw xml message received from the feed</returns>
+            <returns>Returns the raw XML message received from the feed</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Extended.FeedExt">
             <summary>
@@ -1526,13 +1526,18 @@
             message processors it control.
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.CompositeMessageProcessor.ExecutionLog">
+            <summary>
+            The execution log
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.CompositeMessageProcessor.ProcessorId">
             <summary>
             The processor identifier
             </summary>
             <value>The processor identifier.</value>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.CompositeMessageProcessor.#ctor(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageProcessor})">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.CompositeMessageProcessor.#ctor(System.Collections.Generic.List{Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageProcessor})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.CompositeMessageProcessor"/> class
             </summary>
@@ -2262,6 +2267,13 @@
             <param name="messageMapper">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageMapper"/> used to map the feed messages to messages used by the SDK</param>
             <param name="defaultCultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the default languages as specified in the configuration</param>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.EntityDispatcher`1.Dispatch(Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage,System.Byte[])">
+            <summary>
+            Dispatches the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/>
+            </summary>
+            <param name="message"></param>
+            <param name="rawMessage"></param>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.EntityDispatcher`1.DispatchOddsChange(Sportradar.OddsFeed.SDK.Messages.Feed.odds_change,System.Byte[])">
             <summary>
             Dispatches the <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change"/> message
@@ -2332,13 +2344,6 @@
             </summary>
             <remarks>The <see cref="M:Sportradar.OddsFeed.SDK.API.Internal.EntityDispatcher`1.Close"/> method does not dispose resources associated with the current instance so the instance can be re-opened by calling the <see cref="M:Sportradar.OddsFeed.SDK.API.Internal.EntityDispatcher`1.Open"/> method. In order to dispose resources associated
             with the current instance you must call the <see cref="M:System.IDisposable.Dispose"/> method. Once the instance is disposed it can no longer be opened.</remarks>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.EntityDispatcher`1.Dispatch(Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage,System.Byte[])">
-            <summary>
-            Dispatches the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/>
-            </summary>
-            <param name="feedMessage"></param>
-            <param name="rawMessage"></param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.EntityTypeMapper">
             <summary>
@@ -3708,7 +3713,7 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedSession"/> implementation representing a session with the feed
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedSession.Log">
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedSession.ExecutionLog">
             <summary>
             A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance used for execution logging
             </summary>
@@ -7295,6 +7300,16 @@
             The competitors market group
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.CompetitorMarketOutcomeType">
+            <summary>
+            The competitors market group
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.PlayerMarketOutcomeType">
+            <summary>
+            The competitors market group
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MinInactivitySeconds">
             <summary>
             The minimum inactivity seconds
@@ -9035,14 +9050,19 @@
             The associated market descriptor
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition._marketId">
+            <summary>
+            The market identifier
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition._sportId">
             <summary>
             The associated event sport identifier
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition._producer">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition._producerId">
             <summary>
-            The producer which generated the associated market
+            The id of the producer which generated the associated market
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition._specifiers">
@@ -9050,15 +9070,17 @@
             The associated market specifiers
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Market.IMarketDescription,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketCacheProvider,Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.IProducer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition.#ctor(System.Int32,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketCacheProvider,Sportradar.OddsFeed.SDK.Messages.URN,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy)">
             <summary>
             Constructs a new market definition. The market definition represents additional market data which can be used for more advanced use cases
             </summary>
-            <param name="marketDescription">The associated market descriptor</param>
+            <param name="marketId">The id of the market</param>
             <param name="marketCacheProvider">The market cache provider used to retrieve name templates</param>
             <param name="sportId">The associated event sport identifier</param>
-            <param name="producer">The producer which generated the market</param>
+            <param name="producerId">The producer of the producer which generated the market</param>
             <param name="specifiers">The associated market specifiers</param>
+            <param name="cultures">The cultures</param>
+            <param name="exceptionHandlingStrategy">The exception handling strategy</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition.GetNameTemplate(System.Globalization.CultureInfo)">
             <summary>
@@ -9090,6 +9112,11 @@
             Returns a list of valid market mappings
             </summary>
             <returns>a list of valid market mappings</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketDefinition.GetMarketDefinition">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketDefinition" /> associated with the provided data
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMessage`2">
             <summary>
@@ -9535,19 +9562,6 @@
             Represents a outcome definition
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeDefinition._marketDescription">
-            <summary>
-            The associated market descriptor
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeDefinition.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Market.IMarketDescription,Sportradar.OddsFeed.SDK.Entities.REST.Market.IOutcomeDescription,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
-            <summary>
-            Constructs a new market definition. The market definition represents additional market data which can be used for more advanced use cases
-            </summary>
-            <param name="marketDescription">The associated market descriptor</param>
-            <param name="outcomeDescription">The associated outcome descriptor</param>
-            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying languages the current instance supports</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeDefinition.GetNameTemplate(System.Globalization.CultureInfo)">
             <summary>
             Returns the unmodified market name template
@@ -9844,11 +9858,6 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageMapper"/> implementation which maps feed messages to non-specific feed messages
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.ExecutionLog">
-            <summary>
-            The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance used for execution logging
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper._sportEntityFactory">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.ISportEntityFactory"/> implementation used to construct <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> instances
@@ -9887,7 +9896,7 @@
             <param name="marketCacheProvider">The SDK market cache provider used to retrieve market data</param>
             <param name="voidReasonCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.INamedValueCache"/> for possible void reasons</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.BuildEvent``1(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.BuildEvent``1(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.List{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy)">
             <summary>
             Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> derived instance
             </summary>
@@ -9897,7 +9906,7 @@
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the constructed instance should handle potential exceptions</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> derived constructed instance</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.GetEventForMessage``1(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.GetEventForMessage``1(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.List{System.Globalization.CultureInfo})">
             <summary>
             Gets the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> instance
             </summary>
@@ -9906,7 +9915,7 @@
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
             <returns>Returns the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> instance</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.GetEventForNameProvider``1(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.GetEventForNameProvider``1(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.List{System.Globalization.CultureInfo})">
             <summary>
             Gets the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> instance
             </summary>
@@ -9932,7 +9941,7 @@
             </summary>
             <param name="sportEvent">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> representing the sport event associated with the generated message</param>
             <param name="marketOddsChange">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarket"/> instance used</param>
-            <param name="producerId">A producerId specifying message producer</param>
+            <param name="producerId">A producerId specifying message producerId</param>
             <param name="sportId">A sportId of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
             <param name="cultures">The list of cultures that should be prefetched</param>
             <returns>Returns the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds"/> instance</returns>
@@ -10059,29 +10068,6 @@
             <param name="rawMessage">The raw message</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.ICashOutProbabilities`1" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.cashout" /></returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.BuildMarketDefinition(System.Int32,Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.IProducer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
-            <summary>
-            Builds a <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketDefinition" /> associated with the provided data
-            </summary>
-            <param name="marketId">the id of the market</param>
-            <param name="sportId">the sport id</param>
-            <param name="producer">the source of the market</param>
-            <param name="specifiers">the received market specifiers</param>
-            <param name="cultures">the cultures in which the market data should be prefetched</param>
-            <returns></returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.BuildOutcomeDefinition(System.Int32,Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.IProducer,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
-            <summary>
-            Builds a <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition" /> associated with the provided data
-            </summary>
-            <param name="marketId">the id of the market</param>
-            <param name="sportId">the sport id</param>
-            <param name="producer">the source of the market</param>
-            <param name="specifiers">the received market specifiers</param>
-            <param name="outcomeId">the id of the market</param>
-            <param name="cultures">the cultures in which the market data should be prefetched</param>
-            <returns></returns>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageValidator">
             <summary>
             A class used for validation of <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/> instances
@@ -10132,7 +10118,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageValidator.LogFailure``1(Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage,System.String,``0)">
             <summary>
-            Logs the correctly formated failure to execution log
+            Logs the correctly formatted failure to execution log
             </summary>
             <typeparam name="T">The type of the incorrect value</typeparam>
             <param name="message">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/> containing the incorrect value</param>
@@ -10145,7 +10131,7 @@
             </summary>
             <param name="message">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/> instance containing the market whose specifiers are being validated</param>
             <param name="market">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMarket"/> instance containing the specifiers to validate</param>
-            <param name="marketIndex">The index of the <code>market</code> in the <code>message</code></param>
+            <param name="marketId">The id of the <code>market</code> in the <code>message</code></param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageValidator.CheckSpecifiersAsync(System.Int32,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
             <summary>
@@ -26648,11 +26634,11 @@
             </summary>
             <param name="cacheItem">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingCacheItem"/> containing mapping info</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities.MarketMapping.CanMap(Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities.MarketMapping.CanMap(System.Int32,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
             <summary>
             Determines whether the current mapping can map market with provided specifiers associated with provided producer and sport
             </summary>
-            <param name="producer">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer" /> associated with the market</param>
+            <param name="producerId">The id of the <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer" /> associated with the market</param>
             <param name="sportId">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN" /> specifying the sport associated with the market</param>
             <param name="specifiers">The market specifiers</param>
             <returns>True if the current mapping can be used to map the specified market. False otherwise</returns>
@@ -28274,14 +28260,14 @@
             Defines a contract implemented by factories used to construct <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider"/> instances
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProviderFactory.BuildMarketMappingProvider(Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.Messages.URN)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProviderFactory.BuildMarketMappingProvider(Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Int32,Sportradar.OddsFeed.SDK.Messages.URN)">
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider"/>
             </summary>
             <param name="sportEvent">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> instance representing associated sport @event</param>
             <param name="marketId">A market identifier, identifying the market associated with the returned instance</param>
             <param name="specifiers">A <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> representing specifiers of the associated market</param>
-            <param name="producer">An <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
+            <param name="producerId">An id of the <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
             <param name="sportId">A sportId of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
             <returns>Returns an instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider"/></returns>
         </member>
@@ -28716,7 +28702,7 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> describing the mode in which the SDK is running
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProvider.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketCacheProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy,Sportradar.OddsFeed.SDK.Messages.IProducerManager)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProvider.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketCacheProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Int32,Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.NameProvider"/> class
             </summary>
@@ -28725,10 +28711,9 @@
             <param name="sportEvent">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> instance representing associated sport @event</param>
             <param name="marketId">A market identifier of the market associated with the constructed instance</param>
             <param name="specifiers">A <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> representing specifiers of the associated market</param>
-            <param name="producer">An <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> used to get market/outcome mappings</param>
+            <param name="producerId">The id of the <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> used to get market/outcome mappings</param>
             <param name="sportId">A sportId used to get market/outcome mappings</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> describing the mode in which the SDK is running</param>
-            <param name="producerManager">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducerManager"/> used get available <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/></param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProvider.GetMarketDescriptorAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
@@ -28772,23 +28757,22 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> describing the mode in which the SDK is running
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProviderFactory.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketCacheProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy,Sportradar.OddsFeed.SDK.Messages.IProducerManager)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProviderFactory.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketCacheProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.NameProviderFactory"/> class.
             </summary>
             <param name="marketCacheProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketCacheProvider"/> instance used to retrieve market descriptors</param>
             <param name="eventStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache"/> instance used to retrieve event status data</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> specifying how to handle potential exceptions thrown to the user code</param>
-            <param name="producerManager">An <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducerManager"/> used to get <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/></param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProviderFactory.BuildMarketMappingProvider(Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.Messages.URN)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.MarketMappingProviderFactory.BuildMarketMappingProvider(Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent,System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Int32,Sportradar.OddsFeed.SDK.Messages.URN)">
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider" />
             </summary>
             <param name="sportEvent">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent" /> instance representing associated sport @event</param>
             <param name="marketId">A market identifier, identifying the market associated with the returned instance</param>
             <param name="specifiers">A <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2" /> representing specifiers of the associated market</param>
-            <param name="producer">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
+            <param name="producerId">An id of the <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
             <param name="sportId">A sportId of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
             <returns>Returns an instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider"/></returns>
         </member>
@@ -31345,11 +31329,11 @@
             Gets the outcome mappings
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping.IMarketMappingData.CanMap(Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping.IMarketMappingData.CanMap(System.Int32,Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
             <summary>
             Determines whether the current mapping can map market with provided specifiers associated with provided producer and sport
             </summary>
-            <param name="producer">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> associated with the market</param>
+            <param name="producerId">The id of the <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> associated with the market</param>
             <param name="sportId">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport associated with the market</param>
             <param name="specifiers">The market specifiers</param>
             <returns>True if the current mapping can be used to map the specified market. False otherwise</returns>

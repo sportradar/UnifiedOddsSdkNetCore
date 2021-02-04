@@ -38,6 +38,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// </summary>
         private readonly byte[] _rawMessage;
 
+        private readonly IBetSettlement<T> _betSettlement;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OddsChangeEventArgs{T}"/> class
         /// </summary>
@@ -55,6 +57,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
             _feedMessage = feedMessage;
             _defaultCultures = cultures as IReadOnlyCollection<CultureInfo>;
             _rawMessage = rawMessage;
+            
+            _betSettlement = GetBetSettlement();
         }
 
         /// <summary>
@@ -65,6 +69,11 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <returns>Returns the <see cref="IBetSettlement{T}"/> implementation representing the received bet settlement message translated to the specified languages</returns>
         public IBetSettlement<T> GetBetSettlement(CultureInfo culture = null)
         {
+            if (_betSettlement != null && culture == null)
+            {
+                return _betSettlement;
+            }
+
             return _messageMapper.MapBetSettlement<T>(
                 _feedMessage,
                 culture == null

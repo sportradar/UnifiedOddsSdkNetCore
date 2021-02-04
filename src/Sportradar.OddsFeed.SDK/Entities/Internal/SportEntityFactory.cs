@@ -351,7 +351,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             if (competitorCI != null)
             {
-                ExecutionLog.LogDebug($"Transforming CompetitorCI to TeamCompetitorCI for {teamCompetitorId}");
                 var teamCI = new TeamCompetitorCI(competitorCI);
                 return BuildTeamCompetitor(teamCI, cultureInfos, rootCompetitionCI, exceptionStrategy);
             }

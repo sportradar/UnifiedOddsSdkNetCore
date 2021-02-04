@@ -260,7 +260,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 ExecutionLog.LogDebug($"{Producer.Name} Producer is not available or user disabled, however we still receive {message.GetType()} message. Can be ignored.");
                 return;
             }
-
+            
             lock (_syncLock)
             {
                 ProducerRecoveryStatus? newStatus = null;

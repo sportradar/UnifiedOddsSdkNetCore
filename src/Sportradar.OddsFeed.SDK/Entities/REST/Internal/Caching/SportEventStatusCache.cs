@@ -188,10 +188,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     ExecutionLog.LogDebug($"Received SES for {eventId}{source} with EventStatus:{sportEventStatus.Status}");
                     var cacheItem = _sportEventStatusCache.AddOrGetExisting(eventId.ToString(),
                                                                             sportEventStatus,
-                                                                            new CacheItemPolicy
-                                                                            {
-                                                                                AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(_cacheItemExpireTime.TotalSeconds)
-                                                                            }) as SportEventStatusCI;
+                                                                            new CacheItemPolicy {AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(_cacheItemExpireTime.TotalSeconds)}) 
+                                                                            as SportEventStatusCI;
                     if (cacheItem != null)
                     {
                         cacheItem.SetFeedStatus(sportEventStatus.FeedStatusDTO);
