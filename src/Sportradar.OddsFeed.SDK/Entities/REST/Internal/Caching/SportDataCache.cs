@@ -199,7 +199,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
                 var fetchTasks = cultureInfos.Select(c => _dataRouterManager.GetAllSportsAsync(c)).ToList();
                 fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllTournamentsForAllSportAsync(c)).ToList());
-                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllLotteriesAsync(c)).ToList());
+                fetchTasks.AddRange(cultureInfos.Select(c => _dataRouterManager.GetAllLotteriesAsync(c, true)).ToList());
 
                 await Task.WhenAll(fetchTasks).ConfigureAwait(false);
 

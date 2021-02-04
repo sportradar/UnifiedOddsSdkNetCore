@@ -1201,18 +1201,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Gets the list of all lotteries
+        /// Gets the list of available lotteries
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
-        /// <returns>The list of all lotteries ids</returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="ignoreFail">if the fail should be ignored - when user does not have access</param>
+        /// <returns>The list of combination of id of the lottery and associated sport id</returns>
         /// <remarks>This gets called only if WNS is available</remarks>
-        public async Task<IEnumerable<URN>> GetAllLotteriesAsync(CultureInfo culture)
+        public async Task<IEnumerable<Tuple<URN, URN>>> GetAllLotteriesAsync(CultureInfo culture, bool ignoreFail)
         {
             if (!_isWnsAvailable)
             {
-                //WriteLog("Calling GetAllLotteriesAsync is ignored since producer WNS is not available.", true);
-                return null;
+                return new List<Tuple<URN, URN>>();
             }
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetAllLotteriesAsync", MeasurementUnit = Unit.Requests };
             using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
@@ -1231,7 +1230,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError($"Error getting all lotteries for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
-                    if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    if (ignoreFail && ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
                         throw;
                     }
@@ -1240,17 +1239,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 if (result?.Items != null)
                 {
                     await _cacheManager.SaveDtoAsync(URN.Parse($"sr:lotteries:{result.Items.Count()}"), result, culture, DtoType.LotteryList, null).ConfigureAwait(false);
-                    var urns = new List<URN>();
+                    var urns = new List<Tuple<URN, URN>>();
                     foreach (var item in result.Items)
                     {
-                        urns.Add(item.Id);
+                        urns.Add(new Tuple<URN, URN>(item.Id, item.SportId));
                     }
                     WriteLog($"Executing GetAllLotteriesAsync for tournament culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
                     return urns;
                 }
                 WriteLog($"Executing GetAllLotteriesAsync for culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms. {SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)} No data.");
             }
-            return null;
+            return new List<Tuple<URN, URN>>();
         }
 
         /// <summary>

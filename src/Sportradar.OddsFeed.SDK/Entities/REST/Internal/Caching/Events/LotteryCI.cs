@@ -121,6 +121,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>The id of the associated category</returns>
         public async Task<URN> GetCategoryIdAsync()
         {
+            if(_categoryId != null)
+            {
+                return _categoryId;
+            }
+
             if (LoadedSummaries.Any())
             {
                 return _categoryId;
@@ -135,6 +140,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<BonusInfoCI> GetBonusInfoAsync()
         {
+            if(_bonusInfo != null)
+            {
+                return _bonusInfo;
+            }
+
             if (LoadedSummaries.Any())
             {
                 return _bonusInfo;
@@ -149,6 +159,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<DrawInfoCI> GetDrawInfoAsync()
         {
+            if (_drawInfo != null)
+            {
+                return _drawInfo;
+            }
+
             if (LoadedSummaries.Any())
             {
                 return _drawInfo;

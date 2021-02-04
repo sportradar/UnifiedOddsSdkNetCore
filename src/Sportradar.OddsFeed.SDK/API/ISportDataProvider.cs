@@ -210,5 +210,12 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of all results that have changed in the last 24 hours</returns>
         Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture = null) => Task.FromResult<IEnumerable<IResultChange>>(null);
+
+        /// <summary>
+        /// Gets the list of available lotteries
+        /// </summary>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A list of available lotteries</returns>
+        Task<IEnumerable<ILottery>> GetLotteriesAsync(CultureInfo culture = null) => Task.FromResult<IEnumerable<ILottery>>(null);
     }
 }

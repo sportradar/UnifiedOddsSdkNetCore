@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -579,6 +580,30 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             LogInt.LogInformation($"GetResultChangesAsync returned {result?.Count} results.");
             return result;
+        }
+
+        /// <summary>
+        /// Gets the list of available lotteries
+        /// </summary>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+        /// <returns>A list of available lotteries</returns>
+        public async Task<IEnumerable<ILottery>> GetLotteriesAsync(CultureInfo culture = null)
+        {
+            culture ??= _defaultCultures.First();
+
+            LogInt.LogInformation($"Invoked GetLotteriesAsync: Culture={culture.TwoLetterISOLanguageName}.");
+
+            var result = (await _dataRouterManager.GetAllLotteriesAsync(culture, false).ConfigureAwait(false))?.ToList();
+
+            if(!result.IsNullOrEmpty())
+            {
+                var lotteries = result!.Select(s => _sportEntityFactory.BuildSportEvent<ILottery>(s.Item1, s.Item2, new[] {culture}, _exceptionStrategy)).ToList();
+                LogInt.LogInformation($"GetLotteriesAsync returned {lotteries.Count} results.");
+                return lotteries;
+            }
+
+            LogInt.LogInformation($"GetLotteriesAsync returned 0 results.");
+            return new List<ILottery>();
         }
     }
 }

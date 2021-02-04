@@ -363,14 +363,14 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change"/> message received from the feed
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.OddsChangeEventArgs`1._rawMessage">
-            <summary>
-            The raw message
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.OddsChangeEventArgs`1._defaultCultures">
             <summary>
             A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the default languages to which the received message is translated
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.OddsChangeEventArgs`1._rawMessage">
+            <summary>
+            The raw message
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.OddsChangeEventArgs`1.#ctor(Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageMapper,Sportradar.OddsFeed.SDK.Messages.Feed.odds_change,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
@@ -5406,6 +5406,13 @@
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A list of all results that have changed in the last 24 hours</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.GetLotteriesAsync(System.Globalization.CultureInfo)">
+            <summary>
+            Gets the list of available lotteries
+            </summary>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+            <returns>A list of available lotteries</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.FeedSystemSession">
             <summary>
             System session handles system feed messages
@@ -6380,6 +6387,13 @@
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A list of all results that have changed in the last 24 hours</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.GetLotteriesAsync(System.Globalization.CultureInfo)">
+            <summary>
+            Gets the list of available lotteries
+            </summary>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
+            <returns>A list of available lotteries</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.MessageType">
             <summary>
             Enumerates the types of the messages received from the feed
@@ -7302,12 +7316,12 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.CompetitorMarketOutcomeType">
             <summary>
-            The competitors market group
+            The competitor market group
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.PlayerMarketOutcomeType">
             <summary>
-            The competitors market group
+            The player market group
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.MinInactivitySeconds">
@@ -20281,13 +20295,13 @@
             <exception cref="T:System.NotImplementedException"></exception>
             <remarks>This gets called only if WNS is available</remarks>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetAllLotteriesAsync(System.Globalization.CultureInfo)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetAllLotteriesAsync(System.Globalization.CultureInfo,System.Boolean)">
             <summary>
-            Gets the list of all lotteries
+            Gets the list of available lotteries
             </summary>
             <param name="culture">The culture to be fetched</param>
-            <returns>The list of all lotteries ids</returns>
-            <exception cref="T:System.NotImplementedException"></exception>
+            <param name="ignoreFail">if the fail should be ignored - when user does not have access</param>
+            <returns>The list of combination of id of the lottery and associated sport id</returns>
             <remarks>This gets called only if WNS is available</remarks>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetAvailableSelectionsAsync(Sportradar.OddsFeed.SDK.Messages.URN)">
@@ -26462,12 +26476,14 @@
             <param name="requester">The cache item which invoked request</param>
             <returns>The lottery with its schedule</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetAllLotteriesAsync(System.Globalization.CultureInfo)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetAllLotteriesAsync(System.Globalization.CultureInfo,System.Boolean)">
             <summary>
-            Gets the seasons for tournament
+            Gets the list of available lotteries
             </summary>
             <param name="culture">The culture to be fetched</param>
-            <returns>The list of ids of the seasons for specified tournament</returns>
+            <param name="ignoreFail">if the fail should be ignored - when user does not have access</param>
+            <returns>The list of combination of id of the lottery and associated sport id</returns>
+            <remarks>This gets called only if WNS is available</remarks>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetAvailableSelectionsAsync(Sportradar.OddsFeed.SDK.Messages.URN)">
             <summary>

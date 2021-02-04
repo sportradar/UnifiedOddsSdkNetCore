@@ -163,11 +163,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetLotteryScheduleAsync(URN lotteryId, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the seasons for tournament
+        /// Gets the list of available lotteries
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
-        /// <returns>The list of ids of the seasons for specified tournament</returns>
-        Task<IEnumerable<URN>> GetAllLotteriesAsync(CultureInfo culture);
+        /// <param name="ignoreFail">if the fail should be ignored - when user does not have access</param>
+        /// <returns>The list of combination of id of the lottery and associated sport id</returns>
+        /// <remarks>This gets called only if WNS is available</remarks>
+        Task<IEnumerable<Tuple<URN, URN>>> GetAllLotteriesAsync(CultureInfo culture, bool ignoreFail);
 
         /// <summary>
         /// Gets the available selections for event
