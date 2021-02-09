@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
             EventStatusCache = new SportEventStatusCache(_statusMemoryCache, new SportEventStatusMapperFactory(), SportEventCache, _cacheManager, TimeSpan.Zero);
 
-            SportEntityFactory = new SportEntityFactory(SportDataCache, SportEventCache, EventStatusCache, sportEventStatusCache, profileCache);
+            SportEntityFactory = new SportEntityFactory(SportDataCache, SportEventCache, EventStatusCache, sportEventStatusCache, profileCache, SdkInfo.SoccerSportUrns);
         }
 
         public void InitializeSportEntities()

@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             _dataRouterManager.GetDrawSummaryAsync(DrawId, _cultureEn, null).ConfigureAwait(false);
             _dataRouterManager.GetDrawFixtureAsync(DrawId, _cultureEn, null).ConfigureAwait(false);
             _dataRouterManager.GetLotteryScheduleAsync(LotteryId, _cultureEn, null).ConfigureAwait(false);
-            _dataRouterManager.GetAllLotteriesAsync(_cultureEn).ConfigureAwait(false);
+            _dataRouterManager.GetAllLotteriesAsync(_cultureEn, false).ConfigureAwait(false);
             Assert.AreEqual(18, _dataRouterManager.GetCallCount(callType), "DataRouterManager should be called exactly 18 times.");
         }
 

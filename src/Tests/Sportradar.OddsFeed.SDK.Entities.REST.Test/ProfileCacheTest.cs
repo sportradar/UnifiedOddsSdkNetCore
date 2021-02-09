@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 
         private static URN CreateSimpleTeamUrn(int competitorId)
         {
-            return new URN("sr", SdkInfo.SimpleTeamIdentifier, competitorId);
+            return new URN("sr", "simple_team", competitorId);
         }
 
         [TestMethod]

@@ -287,9 +287,9 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public Task GetCompetitorAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
             RecordCall("GetCompetitorAsync");
-            return SdkInfo.SimpleTeamIdentifier.Equals(id?.Type, StringComparison.InvariantCultureIgnoreCase) ?
-                GetSimpleTeamProfileAsync(id, culture, requester) :
-                GetCompetitorProfileAsync(id, culture, requester);
+            return id.IsSimpleTeam()
+                ? GetSimpleTeamProfileAsync(id, culture, requester) 
+                : GetCompetitorProfileAsync(id, culture, requester);
         }
 
         private async Task GetCompetitorProfileAsync(URN id, CultureInfo culture, ISportEventCI requester)
@@ -447,7 +447,14 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             }
         }
 
-        public async Task<IEnumerable<URN>> GetAllLotteriesAsync(CultureInfo culture)
+        /// <summary>
+        /// Gets the list of available lotteries
+        /// </summary>
+        /// <param name="culture">The culture to be fetched</param>
+        /// <param name="ignoreFail">if the fail should be ignored - when user does not have access</param>
+        /// <returns>The list of combination of id of the lottery and associated sport id</returns>
+        /// <remarks>This gets called only if WNS is available</remarks>
+        public async Task<IEnumerable<Tuple<URN, URN>>> GetAllLotteriesAsync(CultureInfo culture, bool ignoreFail)
         {
             RecordCall("GetAllLotteriesAsync");
             var filePath = GetFile("lotteries.{culture}.xml", culture);
@@ -458,10 +465,10 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             if (result != null)
             {
                 await _cacheManager.SaveDtoAsync(URN.Parse($"sr:lotteries:{result.Items.Count()}"), result, culture, DtoType.LotteryList, null).ConfigureAwait(false);
-                var urns = new List<URN>();
+                var urns = new List<Tuple<URN, URN>>();
                 foreach (var item in result.Items)
                 {
-                    urns.Add(item.Id);
+                    urns.Add(new Tuple<URN, URN>(item.Id, item.SportId));
                 }
                 return urns.AsEnumerable();
             }

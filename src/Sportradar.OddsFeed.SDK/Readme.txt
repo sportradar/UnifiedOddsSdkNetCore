@@ -3,6 +3,15 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-02-09  1.13.0.0
+Added ISportDataProvider.GetLotteriesAsync
+Improved translation of market names (upgraded referenced library Humanizer to 2.8.26 and Dawn.Guard to 1.12.0)
+Added support for eSoccer - returns SoccerEvent instead of Match
+Added support for simple_team urn
+Adding removal of obsolete tournament groups
+Improved internal sdk processing. API calls for markets done only per user request. Optimized feed message validation.
+Fix: for a case when sdk does not auto recover after disconnect
+
 2020-12-15  1.12.0.0
 Extended ILottery with GetDraws to return list of IDraw (not just ids)
 Extended ISportDataProvider with GetSportEvent so also IDraw can be obtained

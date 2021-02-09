@@ -8,8 +8,8 @@ The SDK is also available via NuGet package manager. Use the following command i
 The SDK uses the following 3rd party libraries which must be added via the NuGet package manager
     - App.Metrics (3.2.0)
     - Castle.Core (4.4.0)
-    - Dawn.Guard (1.10.0)
-    - Humanizer (2.7.9)
+    - Dawn.Guard (1.12.0)
+    - Humanizer (2.8.26)
     - Microsoft.CSharp (4.7.0)
     - Microsoft.Extensions.Logging (3.1.0)
     - Newtonsoft.Json (12.0.3)
@@ -25,6 +25,15 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-02-09  1.13.0.0
+Added ISportDataProvider.GetLotteriesAsync
+Improved translation of market names (upgraded referenced library Humanizer to 2.8.26 and Dawn.Guard to 1.12.0)
+Added support for eSoccer - returns SoccerEvent instead of Match
+Added support for simple_team urn
+Adding removal of obsolete tournament groups
+Improved internal sdk processing. API calls for markets done only per user request. Optimized feed message validation.
+Fix: for a case when sdk does not auto recover after disconnect
+
 2020-12-15  1.12.0.0
 Extended ILottery with GetDraws to return list of IDraw (not just ids)
 Extended ISportDataProvider with GetSportEvent so also IDraw can be obtained
