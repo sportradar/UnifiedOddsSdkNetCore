@@ -216,12 +216,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
 
-            var alive = message as alive;
-            if (alive != null)
-            {
-                //ProcessAlive(alive);
-                return;
-            }
+            //var alive = message as alive;
+            //if (alive != null)
+            //{
+            //    //ProcessAlive(alive);
+            //    return;
+            //}
 
             var snapShotComplete = message as snapshot_complete;
             if (snapShotComplete != null)

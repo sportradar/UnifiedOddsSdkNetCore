@@ -39,6 +39,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         public bool IsOpened => Interlocked.Read(ref _isOpened) == 1;
 
+        public event EventHandler<AliveEventArgs> OnAlive;
         /// <summary>
         /// Raised when a odds change message is received from the feed
         /// </summary>
@@ -143,7 +144,25 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 DispatchFixtureChange(fixtureChange, rawMessage);
                 return;
             }
+
+            var alive = message as alive;
+            if (alive != null)
+            {
+                DispatchAlive(alive, rawMessage);
+                return;
+            }
             throw new ArgumentException($"FeedMessage of type '{message.GetType().Name}' is not supported.");
+        }
+
+        /// <summary>
+        /// Dispatches the <see cref="odds_change"/> message
+        /// </summary>
+        /// <param name="message">The <see cref="odds_change"/> message to dispatch</param>
+        /// <param name="rawMessage">A raw message received from the feed</param>
+        private void DispatchAlive(alive message, byte[] rawMessage)
+        {
+            var eventArgs = new  AliveEventArgs(MessageMapper, message, rawMessage);
+            Dispatch(OnAlive, eventArgs, message);
         }
 
         /// <summary>

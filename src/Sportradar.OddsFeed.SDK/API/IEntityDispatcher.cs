@@ -16,6 +16,12 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// Raised when a odds change message is received from the feed
         /// </summary>
+        event EventHandler<AliveEventArgs> OnAlive;
+
+
+        /// <summary>
+        /// Raised when a odds change message is received from the feed
+        /// </summary>
         event EventHandler<OddsChangeEventArgs<T>> OnOddsChange;
 
         /// <summary>

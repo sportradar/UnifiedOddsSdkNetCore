@@ -166,6 +166,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.IsInstanceOfType(session, typeof(OddsFeedSession), "Resolved session must be instance of OddsFeedSession");
 
             var session1 = _childContainer2.Resolve<IOddsFeedSession>(new ParameterOverride("messageInterest", MessageInterest.LowPriorityMessages));
+            
             Assert.AreNotEqual(session, session1, "IFeedMessageMapper instances resolved on different containers must be equal");
         }
 

@@ -1288,6 +1288,11 @@
             </summary>
             <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> derived type specifying the type of sport associated with <see cref="T:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1"/></typeparam>
         </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1.OnAlive">
+            <summary>
+            Raised when a odds change message is received from the feed
+            </summary>
+        </member>
         <member name="E:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1.OnOddsChange">
             <summary>
             Raised when a odds change message is received from the feed
@@ -2273,6 +2278,13 @@
             </summary>
             <param name="message"></param>
             <param name="rawMessage"></param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.EntityDispatcher`1.DispatchAlive(Sportradar.OddsFeed.SDK.Messages.Feed.alive,System.Byte[])">
+            <summary>
+            Dispatches the <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change"/> message
+            </summary>
+            <param name="message">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change"/> message to dispatch</param>
+            <param name="rawMessage">A raw message received from the feed</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.EntityDispatcher`1.DispatchOddsChange(Sportradar.OddsFeed.SDK.Messages.Feed.odds_change,System.Byte[])">
             <summary>

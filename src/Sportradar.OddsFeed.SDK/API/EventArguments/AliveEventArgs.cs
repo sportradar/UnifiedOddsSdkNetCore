@@ -4,6 +4,7 @@
 using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
+using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.API.EventArguments
@@ -11,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
     /// <summary>
     /// Event arguments for the alive event
     /// </summary>
-    internal class AliveEventArgs : EventArgs
+    public class AliveEventArgs : EventArgs 
     {
         /// <summary>
         /// A <see cref="IFeedMessageMapper"/> used to map feed message to the one dispatched to the user
