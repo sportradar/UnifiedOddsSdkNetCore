@@ -705,7 +705,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
             foreach (var group in groupDTOs)
             {
-                var tempGroup = tmpGroups.FirstOrDefault(c => c.Name.Equals(group.Name));
+                var tempGroup = !string.IsNullOrEmpty(group.Id)
+                    ? tmpGroups.FirstOrDefault(c => c.Id.Equals(group.Id))
+                    : !string.IsNullOrEmpty(group.Name)
+                        ? tmpGroups.FirstOrDefault(c => c.Name.Equals(group.Name))
+                        : tmpGroups.FirstOrDefault(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name));
                 if (tempGroup == null)
                 {
                     tmpGroups.Add(new GroupCI(group, culture, DataRouterManager));
