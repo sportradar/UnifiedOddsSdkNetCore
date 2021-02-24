@@ -12111,9 +12111,9 @@
             Class used to export/import season cache item properties
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.Id">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSeasonCI.SeasonId">
             <summary>
-            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the ID of the represented sport entity
+            Gets a string representing the Id of the represented sport entity
             </summary>
             <value>The identifier</value>
         </member>

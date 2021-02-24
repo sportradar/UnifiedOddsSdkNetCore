@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// <summary>
         /// A <see cref="ExportableStageCI"/> representing the parent stage
         /// </summary>
-        public URN ParentStageId { get; set; }
+        public string ParentStageId { get; set; }
 
         /// <summary>
         /// A <see cref="IEnumerable{T}"/> representing the child stages
@@ -32,6 +32,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// <summary>
         /// A list of additional parents ids
         /// </summary>
-        public IEnumerable<URN> AdditionalParentIds { get; set; }
+        public IEnumerable<string> AdditionalParentIds { get; set; }
     }
 }

@@ -72,11 +72,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// <summary>
         /// Gets a id of the parent stage associated with the current instance
         /// </summary>
-        public URN ParentStageId { get; set; }
+        public string ParentStageId { get; set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> specifying the additional parent stages associated with the current instance
         /// </summary>
-        public IEnumerable<URN> AdditionalParentsIds { get; set; }
+        public IEnumerable<string> AdditionalParentsIds { get; set; }
     }
 }

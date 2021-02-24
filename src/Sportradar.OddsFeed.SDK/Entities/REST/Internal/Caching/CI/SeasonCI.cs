@@ -136,12 +136,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 throw new ArgumentNullException(nameof(exportable));
             }
 
-            Id = exportable.Id;
+            Id = URN.Parse(exportable.SeasonId);
             Names = new Dictionary<CultureInfo, string>(exportable.Names);
             StartDate = exportable.StartDate;
             EndDate = exportable.EndDate;
             Year = exportable.Year;
-            TournamentId = exportable.TournamentId;
+            TournamentId = URN.Parse(exportable.TournamentId);
         }
 
         /// <summary>
@@ -152,12 +152,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         {
             return Task.FromResult(new ExportableSeasonCI
             {
-                Id = Id,
+                SeasonId = Id?.ToString(),
                 Names = new Dictionary<CultureInfo, string>(Names),
                 StartDate = StartDate,
                 EndDate = EndDate,
                 Year = Year,
-                TournamentId = TournamentId
+                TournamentId = TournamentId?.ToString()
             });
         }
     }

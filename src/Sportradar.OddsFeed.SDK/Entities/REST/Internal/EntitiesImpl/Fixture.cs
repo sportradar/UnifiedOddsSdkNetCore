@@ -182,8 +182,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             References = exportable.References != null ? new Reference(new ReferenceIdCI(exportable.References)) : null;
             ScheduledStartTimeChanges = exportable.ScheduledStartTimeChanges
                 ?.Select(s => new ScheduledStartTimeChange(s)).ToList();
-            ParentStageId = exportable.ParentStageId;
-            AdditionalParentsIds = exportable.AdditionalParentsIds;
+            ParentStageId = string.IsNullOrEmpty(exportable.ParentStageId) ? null : URN.Parse(exportable.ParentStageId);
+            AdditionalParentsIds = exportable.AdditionalParentsIds.IsNullOrEmpty() ? null : exportable.AdditionalParentsIds.Select(URN.Parse).ToList();
         }
 
         /// <summary>
@@ -247,8 +247,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 StartTime = StartTime,
                 TvChannels = channelTasks != null ? await Task.WhenAll(channelTasks) : null,
                 StartTimeTBD = StartTimeTBD,
-                ParentStageId = ParentStageId,
-                AdditionalParentsIds = AdditionalParentsIds
+                ParentStageId = ParentStageId?.ToString(),
+                AdditionalParentsIds = AdditionalParentsIds?.Select(s=>s.ToString()).ToList()
             };
         }
     }

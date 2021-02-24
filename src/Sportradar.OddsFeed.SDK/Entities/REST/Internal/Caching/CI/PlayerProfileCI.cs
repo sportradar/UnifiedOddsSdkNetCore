@@ -211,7 +211,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _weight = exportable.Weight;
             _abbreviation = exportable.Abbreviation;
             _gender = exportable.Gender;
-            _competitorId = exportable.CompetitorId;
+            _competitorId = string.IsNullOrEmpty(exportable.CompetitorId) ? null : URN.Parse(exportable.CompetitorId);
             CountryCode = exportable.CountryCode;
             FullName = exportable.FullName;
             Nickname = exportable.Nickname;
@@ -385,7 +385,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 CountryCode = CountryCode,
                 FullName = FullName,
                 Nickname = Nickname,
-                CompetitorId = _competitorId
+                CompetitorId = _competitorId?.ToString()
             });
         }
     }

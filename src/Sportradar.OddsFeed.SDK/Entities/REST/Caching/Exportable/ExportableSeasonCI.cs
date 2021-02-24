@@ -15,10 +15,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
     public class ExportableSeasonCI
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> representing the ID of the represented sport entity
+        /// Gets a string representing the Id of the represented sport entity
         /// </summary>
         /// <value>The identifier</value>
-        public URN Id { get; set; }
+        public string SeasonId { get; set; }
 
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo,String}"/> containing round names in different languages
@@ -45,6 +45,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// Gets the associated tournament identifier.
         /// </summary>
         /// <value>The associated tournament identifier.</value>
-        public URN TournamentId { get; set; }
+        public string TournamentId { get; set; }
     }
 }

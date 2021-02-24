@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// <summary>
         /// The competitor id this player belongs to
         /// </summary>
-        public URN CompetitorId { get; set; }
+        public string CompetitorId { get; set; }
 
         /// <summary>
         /// Gets the country code

@@ -133,9 +133,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _categoryId = URN.Parse(exportable.CategoryId);
-            _parentStageId = exportable.ParentStageId;
+            _parentStageId = string.IsNullOrEmpty(exportable.ParentStageId) ? null : URN.Parse(exportable.ParentStageId);
             _childStages = exportable.ChildStages?.Select(s => new StageCI(s, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache));
-            _additionalParentIds = exportable.AdditionalParentIds;
+            _additionalParentIds = exportable.AdditionalParentIds.IsNullOrEmpty() ? null : exportable.AdditionalParentIds.Select(URN.Parse).ToList();
         }
 
         /// <summary>
@@ -326,10 +326,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             }
 
             stage.CategoryId = _categoryId?.ToString();
-            stage.ParentStageId = _parentStageId;
+            stage.ParentStageId = _parentStageId?.ToString();
             var childTasks = _childStages?.Select(async s => await s.ExportAsync().ConfigureAwait(false) as ExportableStageCI);
             stage.ChildStages = childTasks != null ? await Task.WhenAll(childTasks) : null;
-            stage.AdditionalParentIds = _additionalParentIds;
+            stage.AdditionalParentIds = _additionalParentIds?.Select(s=>s.ToString()).ToList();
 
             return exportable;
         }
