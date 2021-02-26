@@ -35,9 +35,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public decimal? PointsDecimal { get; }
 
         /// <summary>
-        /// Gets the wc?points
+        /// Gets the wc? points
         /// </summary>
-        /// <value>The wc?points</value>
+        /// <value>The wc? points</value>
         public decimal? WcPoints { get; }
 
         /// <summary>
@@ -98,13 +98,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the home score
         /// </summary>
         /// <value>The home score</value>
-        public decimal HomeScore { get; }
+        public decimal? HomeScore { get; }
 
         /// <summary>
         /// Gets the away score
         /// </summary>
         /// <value>The away score</value>
-        public decimal AwayScore { get; }
+        public decimal? AwayScore { get; }
 
         /// <summary>
         /// Gets the grid

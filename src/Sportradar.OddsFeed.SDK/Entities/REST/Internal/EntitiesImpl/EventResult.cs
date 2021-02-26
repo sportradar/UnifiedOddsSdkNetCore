@@ -39,9 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public decimal? PointsDecimal { get; }
 
         /// <summary>
-        /// Gets the wc?points
+        /// Gets the wc points
         /// </summary>
-        /// <value>The wc?points</value>
+        /// <value>The wc points</value>
         public decimal? WcPoints { get; }
 
         /// <summary>
