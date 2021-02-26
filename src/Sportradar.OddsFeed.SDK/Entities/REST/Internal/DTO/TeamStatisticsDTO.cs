@@ -18,19 +18,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public HomeAway? HomeOrAway { get; }
 
-        public int Cards { get; }
+        public int? Cards { get; }
 
-        public int YellowCards { get; }
+        public int? YellowCards { get; }
 
-        public int RedCards { get; }
+        public int? RedCards { get; }
 
-        public int YellowRedCards { get; }
+        public int? YellowRedCards { get; }
 
-        public int CornerKicks { get; }
+        public int? CornerKicks { get; }
 
-        public int GreenCards { get; }
+        public int? GreenCards { get; }
+        
+        // from feed
+        internal TeamStatisticsDTO(string name, URN teamId, HomeAway? homeAway, int? yellowCards, int? redCards, int? yellowRedCards, int? cornerKicks, int? greenCards)
+        {
+            Name = name; // not available on the AMQP message
+            TeamId = teamId; // not available on the AMQP message
+            HomeOrAway = homeAway;
+            YellowCards = yellowCards;
+            RedCards = redCards;
+            YellowRedCards = yellowRedCards;
+            Cards = yellowCards + redCards + yellowRedCards + greenCards;
+            CornerKicks = cornerKicks;
+            GreenCards = greenCards;
+        }
 
-
+        // from API
         internal TeamStatisticsDTO(teamStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
         {
             Guard.Argument(statistics, nameof(statistics)).NotNull();
@@ -52,8 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (statistics.statistics != null)
             {
-                int tmp;
-                if (int.TryParse(statistics.statistics.yellow_cards, out tmp))
+                if (int.TryParse(statistics.statistics.yellow_cards, out var tmp))
                 {
                     YellowCards = tmp;
                 }
@@ -74,19 +87,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     CornerKicks = tmp;
                 }
             }
-        }
-
-        internal TeamStatisticsDTO(HomeAway? homeAway, int yellowCards, int redCards, int yellowRedCards, int cornerKicks, int greenCards)
-        {
-            Name = "";
-            TeamId = null; // not available on the AMQP message
-            HomeOrAway = homeAway;
-            YellowCards = yellowCards;
-            RedCards = redCards;
-            YellowRedCards = yellowRedCards;
-            Cards = yellowCards + redCards + yellowRedCards + greenCards;
-            CornerKicks = cornerKicks;
-            GreenCards = greenCards;
         }
     }
 }

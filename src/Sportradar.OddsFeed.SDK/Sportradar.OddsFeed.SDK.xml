@@ -21006,9 +21006,9 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO.WcPoints">
             <summary>
-            Gets the wc?points
+            Gets the wc? points
             </summary>
-            <value>The wc?points</value>
+            <value>The wc? points</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO.Time">
             <summary>
@@ -23671,9 +23671,9 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventResult.WcPoints">
             <summary>
-            Gets the wc?points
+            Gets the wc points
             </summary>
-            <value>The wc?points</value>
+            <value>The wc points</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventResult.Time">
             <summary>
@@ -25507,12 +25507,6 @@
             Constructs and returns a <see cref="T:System.String" /> containing a JSON representation of the current instance
             </summary>
             <returns>a <see cref="T:System.String" /> containing a JSON representation of the current instance.</returns>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.TeamStatistics.GreenCards">
-            <summary>
-            Gets the total count of green cards
-            </summary>
-            <value>The total count of green cards</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.TeamStatistics.ToString">
             <summary>Returns a string that represents the current object.</summary>

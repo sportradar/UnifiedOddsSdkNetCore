@@ -18,10 +18,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public int? RedCards { get; }
         public int? YellowRedCards { get; }
         public int? CornerKicks { get; }
-        /// <summary>
-        /// Gets the total count of green cards
-        /// </summary>
-        /// <value>The total count of green cards</value>
         public int? GreenCards { get; }
 
         public TeamStatistics(TeamStatisticsDTO dto)
