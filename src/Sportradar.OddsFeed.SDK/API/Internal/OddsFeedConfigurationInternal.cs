@@ -248,9 +248,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 ExecutionLog.LogInformation($"Attempting to retrieve whoami data. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}");
                 var bookmakerDetailsDTO = _bookmakerDetailsProvider.GetData(hostUrl);
+                ExecutionLog.LogInformation($"Whoami data successfully retrieved. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}");
                 _bookmakerDetails = new BookmakerDetails(bookmakerDetailsDTO);
                 ApiHost = hostName;
-                ExecutionLog.LogInformation($"Whoami data successfully retrieved. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}");
 
                 if (_bookmakerDetails.ServerTimeDifference > TimeSpan.FromSeconds(5))
                 {
@@ -265,7 +265,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogInformation($"Failed to retrieve whoami data. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}, Error message={ex.Message}");
+                ExecutionLog.LogInformation($"Failed to retrieve whoami data. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}", ex);
                 if (rethrow)
                 {
                     throw;
@@ -313,23 +313,22 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                 throw new InvalidOperationException(message, ex);
                             }
                         }
-                        ExecutionLog.LogError($"Failed to load whoami data. Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}");
+                        ExecutionLog.LogError($"Failed to load whoami data. Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}", ex);
                         throw;
                     }
                 }
-
-                //replay server supports both integration & production tokens, so the token must be checked against both environments
                 else
                 {
+                    //replay server supports both integration & production tokens, so the token must be checked against both environments
                     if (!LoadWhoamiData(SdkInfo.IntegrationApiHost, UseApiSsl, false))
                     {
                         try
                         {
                             LoadWhoamiData(SdkInfo.ProductionApiHost, UseApiSsl, true);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            ExecutionLog.LogError($"Failed to load whoami data. Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}");
+                            ExecutionLog.LogError($"Failed to load whoami data. Environment={Enum.GetName(typeof(SdkEnvironment), Environment)}", ex);
                         }
                     }
                 }

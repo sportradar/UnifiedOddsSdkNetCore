@@ -505,10 +505,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 {
                     _sportId = dto.SportId;
                 }
-                Scheduled = dto.Scheduled;
-                ScheduledEnd = dto.ScheduledEnd;
-                _startTimeTbd = dto.StartTimeTbd;
-                _replacedBy = dto.ReplacedBy;
+                if (dto.Scheduled != null)
+                {
+                    Scheduled = dto.Scheduled;
+                }
+                if (dto.ScheduledEnd != null)
+                {
+                    ScheduledEnd = dto.ScheduledEnd;
+                }
+                if (dto.StartTimeTbd != null)
+                {
+                    _startTimeTbd = dto.StartTimeTbd;
+                }
+                if (dto.ReplacedBy != null)
+                {
+                    _replacedBy = dto.ReplacedBy;
+                }
             }
         }
 
