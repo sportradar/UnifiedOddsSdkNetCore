@@ -3,7 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
 {

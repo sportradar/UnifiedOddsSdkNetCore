@@ -511,6 +511,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 }
                 FillCompetitorsReferences(comps);
             }
+            else if (_groups?.Count() > 0)
+            {
+                _groups = null;
+            }
             if (dto.Schedule != null)
             {
                 _scheduleUrns = new ReadOnlyCollection<URN>(dto.Schedule.Select(s => s.Id).ToList());
@@ -676,30 +680,60 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 try
                 {
-                    foreach (var tmpGroup in _groups)
+                    if (groupDTOs.Count > 0 && !groupDTOs.Count.Equals(tmpGroups.Count))
                     {
-                        if (!string.IsNullOrEmpty(tmpGroup.Id))
+                        tmpGroups.Clear();
+                    }
+                    else if(tmpGroups.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)) && !groupDTOs.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)))
+                    {
+                        tmpGroups.Clear();
+                    }
+                    else
+                    {
+                        foreach (var tmpGroup in _groups)
                         {
-                            if (groupDTOs.First(f =>
-                                f.Id.Equals(tmpGroup.Id, StringComparison.InvariantCultureIgnoreCase)) == null)
+                            if (!string.IsNullOrEmpty(tmpGroup.Id))
                             {
-                                tmpGroups.Remove(tmpGroup);
+                                if (groupDTOs.FirstOrDefault(f => f.Id.Equals(tmpGroup.Id, StringComparison.InvariantCultureIgnoreCase)) == null)
+                                {
+                                    tmpGroups.Remove(tmpGroup);
+                                }
                             }
-                        }
 
-                        if (string.IsNullOrEmpty(tmpGroup.Id) && !string.IsNullOrEmpty(tmpGroup.Name))
-                        {
-                            if (groupDTOs.First(f =>
-                                f.Name.Equals(tmpGroup.Name, StringComparison.InvariantCultureIgnoreCase)) == null)
+                            if (string.IsNullOrEmpty(tmpGroup.Id) && !string.IsNullOrEmpty(tmpGroup.Name))
                             {
-                                tmpGroups.Remove(tmpGroup);
+                                if (groupDTOs.FirstOrDefault(f => !string.IsNullOrEmpty(f.Name) && f.Name.Equals(tmpGroup.Name, StringComparison.InvariantCultureIgnoreCase)) == null)
+                                {
+                                    tmpGroups.Remove(tmpGroup);
+                                }
+                            }
+
+                            if (string.IsNullOrEmpty(tmpGroup.Id) && string.IsNullOrEmpty(tmpGroup.Name))
+                            {
+                                if (groupDTOs.First(f => string.IsNullOrEmpty(f.Id) && string.IsNullOrEmpty(f.Name)) == null)
+                                {
+                                    tmpGroups.Remove(tmpGroup);
+                                }
+                            }
+
+                            if (tmpGroups.Count > 0 && tmpGroups.Any(tmpG => !string.IsNullOrEmpty(tmpG.Id) && !_groups.Any(s => s.Id != null && s.Id.Equals(tmpG.Id))))
+                            {
+                                tmpGroups.Clear();
+                                break;
                             }
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // ignored
+                }
+            }
+            else
+            {
+                if (tmpGroups.Count > 0)
+                {
+                    tmpGroups.Clear();
                 }
             }
 
