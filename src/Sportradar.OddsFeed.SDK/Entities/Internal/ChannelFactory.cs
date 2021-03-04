@@ -42,25 +42,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
-        /// <c>false</c> to release only unmanaged resources.</param>
-        protected void Dispose(bool disposing)
-        {
-            if (_disposed || !disposing)
-            {
-                return;
-            }
-
-            _disposed = true;
-            lock (_lock)
-            {
-                _connectionFactory.Dispose();
-            }
-        }
-
-        /// <summary>
         /// Constructs and returns a <see cref="IModel" /> representing a channel used to communicate with the broker
         /// </summary>
         /// <returns>a <see cref="IModel" /> representing a channel used to communicate with the broker</returns>
@@ -82,12 +63,60 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
+        /// Checks if the connection is opened
+        /// </summary>
+        public bool IsConnectionOpen()
+        {
+            lock (_lock)
+            {
+                return _connectionFactory.IsConnected();
+            }
+        }
+
+        /// <summary>
+        /// DateTime when connection was created
+        /// </summary>
+        public DateTime ConnectionCreated
+        {
+            get
+            {
+                if (_connectionFactory != null)
+                {
+                    lock (_lock)
+                    {
+                        return _connectionFactory.ConnectionCreated;
+                    }
+                }
+                return DateTime.MinValue;
+            }
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        private void Dispose(bool disposing)
+        {
+            if (_disposed || !disposing)
+            {
+                return;
+            }
+
+            _disposed = true;
+            lock (_lock)
+            {
+                _connectionFactory.Dispose();
+            }
         }
     }
 }

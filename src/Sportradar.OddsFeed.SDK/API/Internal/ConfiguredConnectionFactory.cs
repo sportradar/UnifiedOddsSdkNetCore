@@ -32,6 +32,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly object _syncLock = new object();
 
         /// <summary>
+        /// Gets the connection created date
+        /// </summary>
+        /// <value>The connection created date</value>
+        public DateTime ConnectionCreated { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ConfiguredConnectionFactory"/> class
         /// </summary>
         /// <param name="config">A <see cref="IOddsFeedConfigurationInternal"/> instance containing configuration information</param>
@@ -40,6 +46,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(config, nameof(config)).NotNull();
 
             _config = config;
+            ConnectionCreated = DateTime.MinValue;
         }
 
         /// <summary>
@@ -78,8 +85,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (_connectionSingleton == null)
                 {
-                    Configure();
+                    if (!ClientProperties.ContainsKey("SrUfSdkType"))
+                    {
+                        Configure(); // configure only the first time, even if disconnect happens
+                    }
                     _connectionSingleton = base.CreateConnection();
+                    ConnectionCreated = DateTime.Now;
                 }
                 return _connectionSingleton;
             }
@@ -102,6 +113,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     _connectionSingleton.Close();
                     _connectionSingleton.Dispose();
                     _connectionSingleton = null;
+                    ConnectionCreated = DateTime.MinValue;
                 }
             }
         }

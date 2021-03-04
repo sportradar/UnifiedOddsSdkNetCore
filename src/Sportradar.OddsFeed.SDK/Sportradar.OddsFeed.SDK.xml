@@ -1594,6 +1594,12 @@
             A <see cref="T:System.Object"/> used to ensure thread safety when creating the connection singleton
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.ConnectionCreated">
+            <summary>
+            Gets the connection created date
+            </summary>
+            <value>The connection created date</value>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.#ctor(Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationInternal)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory"/> class
@@ -8494,23 +8500,33 @@
             </summary>
             <param name="connectionFactory">The connection factory.</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.Dispose(System.Boolean)">
-            <summary>
-            Releases unmanaged and - optionally - managed resources.
-            </summary>
-            <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
-            <c>false</c> to release only unmanaged resources.</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.CreateChannel">
             <summary>
             Constructs and returns a <see cref="T:RabbitMQ.Client.IModel" /> representing a channel used to communicate with the broker
             </summary>
             <returns>a <see cref="T:RabbitMQ.Client.IModel" /> representing a channel used to communicate with the broker</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.IsConnectionOpen">
+            <summary>
+            Checks if the connection is opened
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.ConnectionCreated">
+            <summary>
+            DateTime when connection was created
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
+            <c>false</c> to release only unmanaged resources.</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Alive">
             <summary>
@@ -10319,6 +10335,16 @@
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory.ResetConnection">
             <summary>
             Resets the connection.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory.IsConnectionOpen">
+            <summary>
+            Checks if the connection is opened
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory.ConnectionCreated">
+            <summary>
+            DateTime when connection was created
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageHandler">
