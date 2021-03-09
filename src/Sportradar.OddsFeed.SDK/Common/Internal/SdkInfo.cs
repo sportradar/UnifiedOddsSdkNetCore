@@ -211,6 +211,25 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         }
 
         /// <summary>
+        /// Convert long epoch time to DateTime
+        /// </summary>
+        /// <param name="epochTime">The unix time</param>
+        /// <returns>DateTime</returns>
+        public static DateTime? TryFromEpochTime(long epochTime)
+        {
+            try
+            {
+                var dateTime = FromEpochTime(epochTime);
+                return dateTime;
+            }
+            catch (Exception)
+            {
+                //ignored
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Convert DateTime to the epoch time (in seconds)
         /// </summary>
         /// <param name="date">The date</param>

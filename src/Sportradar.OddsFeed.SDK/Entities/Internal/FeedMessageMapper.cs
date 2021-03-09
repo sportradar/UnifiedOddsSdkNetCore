@@ -279,9 +279,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 ? null
                 : FeedMapperHelper.GetSpecifiers(marketOddsChange.extended_specifiers);
 
-            var marketMetadata = marketOddsChange.market_metadata == null || !marketOddsChange.market_metadata.next_betstopSpecified
-                ? new MarketMetadata(null)
-                : new MarketMetadata(marketOddsChange.market_metadata.next_betstop);
+            var marketMetadata = new MarketMetadata(marketOddsChange.market_metadata);
 
             var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, marketOddsChange.id, specifiers);
             var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, marketOddsChange.id, specifiers, producerId, sportId);

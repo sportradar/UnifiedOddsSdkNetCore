@@ -7449,6 +7449,13 @@
             <param name="epochTime">The unix time</param>
             <returns>DateTime</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.TryFromEpochTime(System.Int64)">
+            <summary>
+            Convert long epoch time to DateTime
+            </summary>
+            <param name="epochTime">The unix time</param>
+            <returns>DateTime</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ToEpochTime(System.DateTime)">
             <summary>
             Convert DateTime to the epoch time (in seconds)
@@ -8273,6 +8280,42 @@
             Gets a epoch timestamp in UTC when to betstop the associated market. Typically used for outrights and typically is the start-time of the event the market refers to
             </summary>
             <value>The next betstop</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.StartTime">
+            <summary>
+            Gets the start time of the event (as epoch timestamp)
+            </summary>
+            <value>The start time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.EndTime">
+            <summary>
+            Gets the end time of the event (as epoch timestamp)
+            </summary>
+            <value>The end time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.NextBetstopDate">
+            <summary>
+            Gets date/time when to betstop the associated market. Typically used for outrights and typically is the start-time of the event the market refers to
+            </summary>
+            <value>The next betstop</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.StartTimeDate">
+            <summary>
+            Gets the start time of the event
+            </summary>
+            <value>The start time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.EndTimeDate">
+            <summary>
+            Gets the end time of the event
+            </summary>
+            <value>The end time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.AamsId">
+            <summary>
+            Gets the Italian AAMS id for this outright
+            </summary>
+            <value>The Italian AAMS id for this outright</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds">
             <summary>
@@ -9186,11 +9229,51 @@
             </summary>
             <value>The next betstop.</value>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.#ctor(System.Nullable{System.Int64})">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.StartTime">
             <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata"/> class.
+            Gets the start time of the event (as epoch timestamp)
             </summary>
-            <param name="nextBetstop">The next betstop.</param>
+            <value>The start time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.EndTime">
+            <summary>
+            Gets the end time of the event (as epoch timestamp)
+            </summary>
+            <value>The end time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.NextBetstopDate">
+            <summary>
+            Gets date/time when to betstop the associated market. Typically used for outrights and typically is the start-time of the event the market refers to
+            </summary>
+            <value>The next betstop</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.StartTimeDate">
+            <summary>
+            Gets the start time of the event
+            </summary>
+            <value>The start time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.EndTimeDate">
+            <summary>
+            Gets the end time of the event
+            </summary>
+            <value>The end time</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.AamsId">
+            <summary>
+            Gets the Italian AAMS id for this outright
+            </summary>
+            <value>The Italian AAMS id for this outright</value>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.#ctor(Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata"/> class
+            </summary>
+            <param name="marketMetadata">The market meta data</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketMetadata.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithOdds.Status">
             <summary>
@@ -32494,6 +32577,12 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.current_ct_teamSpecified">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.period_of_leader">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.period_of_leaderSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Feed.clockType">
             <remarks/>
         </member>
@@ -32546,6 +32635,24 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.next_betstopSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.start_time">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.start_timeSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.end_time">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.end_timeSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.aams_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.aams_idSpecified">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarketOutcome">

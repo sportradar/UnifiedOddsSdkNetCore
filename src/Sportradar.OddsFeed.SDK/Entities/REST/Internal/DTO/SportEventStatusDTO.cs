@@ -181,6 +181,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ApplyPropertyValue(ses.yardsSpecified, "Yards", ses.yards, tempProperties);
             ApplyPropertyValue(ses.home_penalty_scoreSpecified, "home_penalty_score", ses.home_penalty_score, tempProperties);
             ApplyPropertyValue(ses.away_penalty_scoreSpecified, "away_penalty_score", ses.away_penalty_score, tempProperties);
+            ApplyPropertyValue(ses.period_of_leaderSpecified, "period_of_leader", ses.period_of_leader, tempProperties);
 
             if (ses.period_scores != null && ses.period_scores.Any())
             {

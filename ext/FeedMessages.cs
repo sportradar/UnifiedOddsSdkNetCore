@@ -321,6 +321,10 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
         
         private bool current_ct_teamFieldSpecified;
         
+        private int period_of_leaderField;
+        
+        private bool period_of_leaderFieldSpecified;
+        
         /// <remarks/>
         public clockType clock {
             get {
@@ -1209,6 +1213,28 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
                 this.current_ct_teamFieldSpecified = value;
             }
         }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int period_of_leader {
+            get {
+                return this.period_of_leaderField;
+            }
+            set {
+                this.period_of_leaderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool period_of_leaderSpecified {
+            get {
+                return this.period_of_leaderFieldSpecified;
+            }
+            set {
+                this.period_of_leaderFieldSpecified = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -1580,6 +1606,18 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
         
         private bool next_betstopFieldSpecified;
         
+        private long start_timeField;
+        
+        private bool start_timeFieldSpecified;
+        
+        private long end_timeField;
+        
+        private bool end_timeFieldSpecified;
+        
+        private long aams_idField;
+        
+        private bool aams_idFieldSpecified;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public long next_betstop {
@@ -1599,6 +1637,72 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
             set {
                 this.next_betstopFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public long start_time {
+            get {
+                return this.start_timeField;
+            }
+            set {
+                this.start_timeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool start_timeSpecified {
+            get {
+                return this.start_timeFieldSpecified;
+            }
+            set {
+                this.start_timeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public long end_time {
+            get {
+                return this.end_timeField;
+            }
+            set {
+                this.end_timeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool end_timeSpecified {
+            get {
+                return this.end_timeFieldSpecified;
+            }
+            set {
+                this.end_timeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public long aams_id {
+            get {
+                return this.aams_idField;
+            }
+            set {
+                this.aams_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool aams_idSpecified {
+            get {
+                return this.aams_idFieldSpecified;
+            }
+            set {
+                this.aams_idFieldSpecified = value;
             }
         }
     }
