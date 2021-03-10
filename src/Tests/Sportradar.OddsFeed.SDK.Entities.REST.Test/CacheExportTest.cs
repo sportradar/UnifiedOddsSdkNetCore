@@ -216,7 +216,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             var tournaments = _sportEventCache.GetActiveTournamentsAsync().Result; // initial load
             Assert.IsNotNull(tournaments);
 
-             Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly {TestData.Cultures.Count} times.");
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly {TestData.Cultures.Count} times.");
 
             var export = (await _sportEventCache.ExportAsync()).ToList();
             Assert.AreEqual(1187, export.Count);

@@ -136,12 +136,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 throw new ArgumentNullException(nameof(exportable));
             }
 
-            Id = URN.Parse(exportable.SeasonId);
+            Id = string.IsNullOrEmpty(exportable.SeasonId) ? null : URN.Parse(exportable.SeasonId);
             Names = new Dictionary<CultureInfo, string>(exportable.Names);
             StartDate = exportable.StartDate;
             EndDate = exportable.EndDate;
             Year = exportable.Year;
-            TournamentId = URN.Parse(exportable.TournamentId);
+            TournamentId = string.IsNullOrEmpty(exportable.TournamentId) ? null : URN.Parse(exportable.TournamentId);
         }
 
         /// <summary>

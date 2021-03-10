@@ -8012,7 +8012,7 @@
             <summary>
             The start time of the sport event has changed
             </summary>
-            <remarks>On message this value is represented with DATETIME - keeping same name to avoid breaking change</remarks>
+            <remarks>On message this value is represented with DATETIME value - keeping same name to avoid breaking change</remarks>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.CANCELLED">
             <summary>
