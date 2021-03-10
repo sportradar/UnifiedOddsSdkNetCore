@@ -98,6 +98,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
         /// <summary>
         /// Converts the provided int <code>value</code> to the member of the specified enum, or returns <code>defaultValue</code>
+        /// if value of <code>specified</code> is false
+        /// </summary>
+        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <param name="specified">Value indicating whether the value field was specified in the feed message</param>
+        /// <param name="value">The value in the feed message</param>
+        /// <param name="unknownValue">A <see cref="T"/> member to be returned if value is not known, but specified</param>
+        /// <param name="naValue">A <see cref="T"/> member to be returned if value is not specified</param>
+        /// <returns>The <code>value</code> converted to enum <see cref="T"/> member</returns>
+        public static T GetEnumValue<T>(bool specified, int value, T unknownValue, T naValue) where T : struct, IConvertible
+        {
+            return !specified
+                ? naValue
+                : GetEnumValue<T>(value, unknownValue);
+        }
+
+        /// <summary>
+        /// Converts the provided int <code>value</code> to the member of the specified enum, or returns <code>defaultValue</code>
         /// </summary>
         /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
         /// <param name="value">The value in the feed message</param>

@@ -8012,10 +8012,26 @@
             <summary>
             The start time of the sport event has changed
             </summary>
+            <remarks>On message this value is represented with DATETIME - keeping same name to avoid breaking change</remarks>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.CANCELLED">
             <summary>
             The sport event has been canceled
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.FORMAT">
+            <summary>
+             Format changes to the fixture
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.COVERAGE">
+            <summary>
+            Coverage of the sport event has been changed
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.PITCHER">
+            <summary>
+            Pitcher has been changed
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.OTHER">
@@ -8023,9 +8039,9 @@
              Other various changes to the fixture
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.COVERAGE">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.NA">
             <summary>
-            Coverage of the sport event has been changed
+            Type not specified (not available - equal null)
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IAdditionalProbabilities">
@@ -8162,6 +8178,7 @@
             <summary>
             Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType"/> indicating how the fixture was changed (added, re-scheduled, ...)
             </summary>
+            <remarks>If not specified in message, returns <see cref="F:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType.NA"/></remarks>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IFixtureChange`1.NextLiveTime">
             <summary>
@@ -8926,6 +8943,7 @@
             <summary>
             Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.FixtureChangeType"/> indicating how the fixture was changed (added, re-scheduled, ...)
             </summary>
+            <remarks>ToDo: ideally this should be nullable</remarks>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.FixtureChange`1.NextLiveTime">
             <summary>
@@ -29856,6 +29874,18 @@
             <param name="specified">Value indicating whether the value field was specified in the feed message</param>
             <param name="value">The value in the feed message</param>
             <param name="defaultValue">A <see cref="!:T"/> member to be returned if <code>specified</code> is false</param>
+            <returns>The <code>value</code> converted to enum <see cref="!:T"/> member</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MessageMapperHelper.GetEnumValue``1(System.Boolean,System.Int32,``0,``0)">
+            <summary>
+            Converts the provided int <code>value</code> to the member of the specified enum, or returns <code>defaultValue</code>
+            if value of <code>specified</code> is false
+            </summary>
+            <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+            <param name="specified">Value indicating whether the value field was specified in the feed message</param>
+            <param name="value">The value in the feed message</param>
+            <param name="unknownValue">A <see cref="!:T"/> member to be returned if value is not known, but specified</param>
+            <param name="naValue">A <see cref="!:T"/> member to be returned if value is not specified</param>
             <returns>The <code>value</code> converted to enum <see cref="!:T"/> member</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MessageMapperHelper.GetEnumValue``1(System.Int32,``0)">

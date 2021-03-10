@@ -18,6 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <summary>
         /// The start time of the sport event has changed
         /// </summary>
+        /// <remarks>On message this value is represented with DATETIME value - keeping same name to avoid breaking change</remarks>
         START_TIME = 2,
 
         /// <summary>
@@ -26,13 +27,28 @@ namespace Sportradar.OddsFeed.SDK.Entities
         CANCELLED = 3,
 
         /// <summary>
-        ///  Other various changes to the fixture
+        ///  Format changes to the fixture
         /// </summary>
-        OTHER = 4,
+        FORMAT = 4,
 
         /// <summary>
         /// Coverage of the sport event has been changed
         /// </summary>
-        COVERAGE = 5
+        COVERAGE = 5,
+
+        /// <summary>
+        /// Pitcher has been changed
+        /// </summary>
+        PITCHER = 6,
+
+        /// <summary>
+        ///  Other various changes to the fixture
+        /// </summary>
+        OTHER = 101,
+
+        /// <summary>
+        /// Type not specified (not available - equal null)
+        /// </summary>
+        NA = 102
     }
 }

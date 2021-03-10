@@ -14,6 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <summary>
         /// Gets a <see cref="FixtureChangeType"/> indicating how the fixture was changed (added, re-scheduled, ...)
         /// </summary>
+        /// <remarks>If not specified in message, returns <see cref="FixtureChangeType.NA"/></remarks>
         FixtureChangeType ChangeType { get; }
 
         /// <summary>

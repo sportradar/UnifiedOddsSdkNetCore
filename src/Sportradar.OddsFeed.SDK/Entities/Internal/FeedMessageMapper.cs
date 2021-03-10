@@ -441,7 +441,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                         _producerManager.Get(message.product),
                                         GetEventForMessage<T>(URN.Parse(message.event_id), message.SportId, culturesList),
                                         message.request_idSpecified ? (long?) message.request_id : null,
-                                        MessageMapperHelper.GetEnumValue(message.change_typeSpecified, message.change_type, FixtureChangeType.OTHER),
+                                        MessageMapperHelper.GetEnumValue(message.change_typeSpecified, message.change_type, FixtureChangeType.OTHER, FixtureChangeType.NA),
                                         message.next_live_timeSpecified ? (long?) message.next_live_time : null,
                                         message.start_time,
                                         rawMessage);
