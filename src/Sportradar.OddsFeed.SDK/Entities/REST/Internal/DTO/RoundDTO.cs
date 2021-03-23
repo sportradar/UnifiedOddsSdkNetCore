@@ -48,21 +48,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Number = round.numberSpecified
                 ? (int?)round.number
                 : null;
-            Name = !string.IsNullOrEmpty(round.name)
-                    ? round.name
-                    : !string.IsNullOrEmpty(round.group_name)
-                        ? round.group_name
-                        : round.group_long_name;
-            GroupName = !string.IsNullOrEmpty(round.group_name)
-                        ? round.group_name
-                        : !string.IsNullOrEmpty(round.name)
-                            ? round.name
-                            : round.group_long_name;
-            PhaseOrGroupLongName = !string.IsNullOrEmpty(round.group_long_name)
-                                    ? round.group_long_name
-                                    : !string.IsNullOrEmpty(round.name)
-                                        ? round.name
-                                        : round.group_name;
+            Name = !string.IsNullOrEmpty(round.name) ? round.name : null;
+            GroupName = !string.IsNullOrEmpty(round.group_name) ? round.group_name : null;
+            PhaseOrGroupLongName = !string.IsNullOrEmpty(round.group_long_name) ? round.group_long_name : null;
             Group = round.group;
             Phase = round.phase;
             GroupId = string.IsNullOrEmpty(round.group_id)
