@@ -162,13 +162,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await tournamentInfoCI.GetCompetitorsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<CompetitorCI>>>(tournamentInfoCI.GetCompetitorsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Competitors")).ConfigureAwait(false);
+            var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await tournamentInfoCI.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(tournamentInfoCI.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+
+            var competitorsIds = items == null ? new List<URN>() : items.ToList();
+            if (!competitorsIds.Any())
+            {
+                return new List<ICompetitor>();
+            }
 
             var competitorsReferences = await tournamentInfoCI.GetCompetitorsReferencesAsync().ConfigureAwait(false);
 
-            return item?.Select(s => _sportEntityFactory.BuildCompetitor(s, Cultures, competitorsReferences, ExceptionStrategy));
+            var tasks = competitorsIds.Select(s =>
+                                                                {
+                                                                    var t = _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy);
+                                                                    t.ConfigureAwait(false);
+                                                                    return t;
+                                                                }).ToList();
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            return tasks.Select(s=>s.Result);
         }
 
         /// <summary>

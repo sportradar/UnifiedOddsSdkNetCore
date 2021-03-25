@@ -55,10 +55,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public RoundCI CurrentRound { get; private set; }
 
         /// <summary>
-        /// Gets the list of competitors
+        /// Gets the list of competitors ids
         /// </summary>
-        /// <value>The list of competitors</value>
-        public IEnumerable<CompetitorCI> Competitors { get; private set; }
+        /// <value>The list of competitors ids</value>
+        public IEnumerable<URN> CompetitorsIds { get; private set; }
 
         /// <summary>
         /// Gets the list of all <see cref="CompetitionCI"/> that belongs to the season schedule
@@ -66,28 +66,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>The list of all <see cref="CompetitionCI"/> that belongs to the season schedule</returns>
         public IEnumerable<URN> Schedule { get; private set; }
 
-        private readonly IDataRouterManager _dataRouterManager;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentSeasonInfoCI"/> class
         /// </summary>
         /// <param name="dto">The dto</param>
         /// <param name="culture">The culture</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch missing data</param>
-        public CurrentSeasonInfoCI(CurrentSeasonInfoDTO dto, CultureInfo culture, IDataRouterManager dataRouterManager)
+        public CurrentSeasonInfoCI(CurrentSeasonInfoDTO dto, CultureInfo culture)
             : base(dto.Id, dto.Name, culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
-
-            _dataRouterManager = dataRouterManager;
+            
             Year = dto.Year;
             StartDate = dto.StartDate;
             EndDate = dto.EndDate;
 
             SeasonCoverage = dto.SeasonCoverage == null ? null : new SeasonCoverageCI(dto.SeasonCoverage);
-            Groups = dto.Groups == null ? null : dto.Groups.Select(s => new GroupCI(s, culture, _dataRouterManager));
+            Groups = dto.Groups == null ? null : dto.Groups.Select(s => new GroupCI(s, culture));
             CurrentRound = dto.CurrentRound == null ? null : new RoundCI(dto.CurrentRound, culture);
-            Competitors = dto.Competitors == null ? null : dto.Competitors.Select(s => new CompetitorCI(s, culture, _dataRouterManager));
+            CompetitorsIds = dto.Competitors == null ? null : dto.Competitors.Select(s => s.Id);
             Schedule = dto.Schedule == null ? null : dto.Schedule.Select(s => s.Id);
         }
 
@@ -95,18 +91,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="CurrentSeasonInfoCI"/> class
         /// </summary>
         /// <param name="exportable">The exportable</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch missing data</param>
-        public CurrentSeasonInfoCI(ExportableCurrentSeasonInfoCI exportable, IDataRouterManager dataRouterManager)
+        public CurrentSeasonInfoCI(ExportableCurrentSeasonInfoCI exportable)
             : base(exportable)
         {
-            _dataRouterManager = dataRouterManager;
             Year = exportable.Year;
             StartDate = exportable.StartDate;
             EndDate = exportable.EndDate;
             SeasonCoverage = exportable.SeasonCoverage == null ? null : new SeasonCoverageCI(exportable.SeasonCoverage);
-            Groups = exportable.Groups?.Select(g => new GroupCI(g, dataRouterManager)).ToList();
+            Groups = exportable.Groups?.Select(g => new GroupCI(g)).ToList();
             CurrentRound = exportable.CurrentRound == null ? null : new RoundCI(exportable.CurrentRound);
-            Competitors = exportable.Competitors?.Select(c => new CompetitorCI(c, dataRouterManager)).ToList();
+            CompetitorsIds = exportable.Competitors?.Select(URN.Parse).ToList();
             Schedule = exportable.Schedule?.Select(URN.Parse).ToList();
         }
 
@@ -131,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             }
             if (dto.Groups != null)
             {
-                Groups = dto.Groups.Select(s => new GroupCI(s, culture, _dataRouterManager));
+                Groups = dto.Groups.Select(s => new GroupCI(s, culture));
             }
             if (dto.CurrentRound != null)
             {
@@ -139,7 +133,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             }
             if (dto.Competitors != null)
             {
-                Competitors = dto.Competitors.Select(s => new CompetitorCI(s, culture, _dataRouterManager));
+                CompetitorsIds = dto.Competitors.Select(s => s.Id);
             }
             if (dto.Schedule != null)
             {
@@ -154,7 +148,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public async Task<ExportableCurrentSeasonInfoCI> ExportAsync()
         {
             var groupsTask = Groups?.Select(async g => await g.ExportAsync().ConfigureAwait(false));
-            var competitorsTask = Competitors?.Select(async c => await c.ExportAsync().ConfigureAwait(false) as ExportableCompetitorCI);
             return new ExportableCurrentSeasonInfoCI
             {
                 Id = Id.ToString(),
@@ -165,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 SeasonCoverage = SeasonCoverage != null ? await SeasonCoverage.ExportAsync().ConfigureAwait(false) : null,
                 Groups = groupsTask != null ? await Task.WhenAll(groupsTask) : null,
                 CurrentRound = CurrentRound != null ? await CurrentRound.ExportAsync().ConfigureAwait(false) : null,
-                Competitors = competitorsTask != null ? await Task.WhenAll(competitorsTask) : null,
+                Competitors = CompetitorsIds?.Select(s=>s.ToString()),
                 Schedule = Schedule?.Select(s => s.ToString()).ToList()
             };
         }

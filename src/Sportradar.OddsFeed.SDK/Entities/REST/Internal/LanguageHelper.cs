@@ -18,14 +18,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <returns>A <see cref="IEnumerable{CultureInfo}"/> containing missing cultures or a empty list if no cultures are missing</returns>
         internal static IEnumerable<CultureInfo> GetMissingCultures(IEnumerable<CultureInfo> wantedCultures, IEnumerable<CultureInfo> alreadyUsedCultures)
         {
-            Guard.Argument(wantedCultures, nameof(wantedCultures)).NotNull().NotEmpty();
+            var wantedCultureInfos = wantedCultures.ToList();
+            Guard.Argument(wantedCultureInfos, nameof(wantedCultures)).NotNull();
 
             if (alreadyUsedCultures == null)
             {
-                return wantedCultures.Distinct();
+                return wantedCultureInfos.Distinct();
             }
 
-            var missingCultures = wantedCultures.Where(c => !alreadyUsedCultures.Contains(c)).ToList();
+            var missingCultures = wantedCultureInfos.Where(c => !alreadyUsedCultures.Contains(c)).ToList();
 
             return missingCultures.Distinct();
         }

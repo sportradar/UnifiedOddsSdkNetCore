@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using System.Collections.Generic;
 
@@ -24,12 +23,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public string Name { get; set; }
 
         /// <summary>
-        /// A <see cref="IEnumerable{T}"/> representation of the competitors
+        /// A list of competitor id URN as string representation of the competitors ids
         /// </summary>
-        public IEnumerable<ExportableCompetitorCI> Competitors { get; set; }
+        public IEnumerable<string> Competitors { get; set; }
 
         /// <summary>
-        /// A <see cref="IDictionary{T}"/> representation of the competitor references
+        /// A dictionary of competitor ids and references representation of the competitor references
         /// </summary>
         public IDictionary<string, Dictionary<string, string>> CompetitorsReferences { get; set; }
     }

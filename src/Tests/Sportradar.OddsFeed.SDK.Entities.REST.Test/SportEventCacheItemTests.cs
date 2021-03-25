@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 await cacheItem.GetBookingStatusAsync();
                 await cacheItem.GetScheduledAsync();
                 await cacheItem.GetScheduledEndAsync();
-                await cacheItem.GetCompetitorsAsync(TestData.Cultures);
+                await cacheItem.GetCompetitorsIdsAsync(TestData.Cultures);
                 await cacheItem.GetTournamentRoundAsync(TestData.Cultures);
                 await cacheItem.GetSeasonAsync(TestData.Cultures);
                 await cacheItem.GetTournamentIdAsync();

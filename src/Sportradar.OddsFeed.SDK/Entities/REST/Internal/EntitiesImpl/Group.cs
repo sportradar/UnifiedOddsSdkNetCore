@@ -74,21 +74,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             Id = ci.Id;
             Name = ci.Name;
-            if (ci.Competitors != null)
+            if (ci.CompetitorsIds != null)
             {
-                //var competitors = new List<ICompetitor>();
-                //var cultureInfos = cultures.ToList();
-                //foreach (CompetitorCI competitorCI in ci.Competitors)
-                //{
-                //    if (competitorCI == null)
-                //    {
-                //        var x = "2";
-                //    }
-                //    var comp = new Competitor(competitorCI, cultureInfos, sportEntityFactory, competitorsReferenceIds);
-                //    competitors.Add(comp);
-                //}
-                //_competitors = competitors;
-                _competitors = ci.Competitors.Select(t => sportEntityFactory.BuildCompetitor(t, cultures, competitorsReferenceIds, exceptionStrategy)).ToList();
+                _competitors = ci.CompetitorsIds.Select(t => sportEntityFactory.BuildCompetitor(t, cultures, competitorsReferenceIds, exceptionStrategy)).ToList();
             }
         }
 
@@ -108,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected override string PrintC()
         {
             var comps = Competitors == null ? string.Empty : string.Join(", ", Competitors.Select(c => c.Id));
-            string result = $"{PrintI()}, Competitors=[{comps}]";
+            string result = $"{PrintI()}, CompetitorsIds=[{comps}]";
             return result;
         }
 
@@ -119,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected override string PrintF()
         {
             var comps = Competitors == null ? string.Empty : string.Join(", ", Competitors.Select(c => $"{Environment.NewLine}\t " + c.ToString("F")));
-            string result = $"{PrintI()}, Competitors=[{comps}]";
+            string result = $"{PrintI()}, CompetitorsIds=[{comps}]";
             return result;
         }
 

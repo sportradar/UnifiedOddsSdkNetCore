@@ -69,11 +69,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="profileCache">A <see cref="IProfileCache"/> used to retrieve player profiles</param>
         /// <param name="soccerSportUrns">A list of sport urns that have soccer matches</param>
         public SportEntityFactory(ISportDataCache sportDataCache,
-                                    ISportEventCache sportEventCache,
-                                    ISportEventStatusCache eventStatusCache,
-                                    ILocalizedNamedValueCache matchStatusCache,
-                                    IProfileCache profileCache,
-                                    IReadOnlyCollection<URN> soccerSportUrns)
+                                  ISportEventCache sportEventCache,
+                                  ISportEventStatusCache eventStatusCache,
+                                  ILocalizedNamedValueCache matchStatusCache,
+                                  IProfileCache profileCache,
+                                  IReadOnlyCollection<URN> soccerSportUrns)
         {
             Guard.Argument(sportDataCache, nameof(sportDataCache)).NotNull();
             Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
@@ -284,6 +284,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             return new Competitor(ci, _profileCache, cultures, this, exceptionStrategy, rootCompetitionCI);
         }
 
+        /// <summary>
+        /// Builds the instance of the <see cref="ICompetitor"/> class
+        /// </summary>
+        /// <param name="competitorId">A <see cref="CompetitorCI"/> id used to create new instance</param>
+        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
+        /// <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>
+        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
+        /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
+        public ICompetitor BuildCompetitor(URN competitorId, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences,
+            ExceptionHandlingStrategy exceptionStrategy)
+        {
+            return new Competitor(competitorId, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
+        }
+
         public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
         {
             return new Competitor(ci, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
@@ -344,8 +358,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             var cultureInfos = cultures.ToList();
             var competitorCI = await _profileCache.GetCompetitorProfileAsync(teamCompetitorId, cultureInfos).ConfigureAwait(false);
-            var teamCompetitorCI = competitorCI as TeamCompetitorCI;
-            if (teamCompetitorCI != null)
+            if (competitorCI is TeamCompetitorCI teamCompetitorCI)
             {
                 return BuildTeamCompetitor(teamCompetitorCI, cultureInfos, rootCompetitionCI, exceptionStrategy);
             }

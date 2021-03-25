@@ -248,6 +248,18 @@
     <None Update="REST XMLs\Summarys\summary_sr_match_1.nl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="REST XMLs\Summarys\summary_sr_season_80242.nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\Summarys\summary_sr_season_80242.hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\Summarys\summary_sr_season_80242.de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\Summarys\summary_sr_season_80242.en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="REST XMLs\Summarys\summary_sr_season_1.de.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -282,6 +294,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="REST XMLs\Summarys\summary_sr_tournament_1030.nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\Summarys\summary_sr_tournament_40.nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\Summarys\summary_sr_tournament_40.hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\Summarys\summary_sr_tournament_40.de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\Summarys\summary_sr_tournament_40.en.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="REST XMLs\tournaments.de.xml">

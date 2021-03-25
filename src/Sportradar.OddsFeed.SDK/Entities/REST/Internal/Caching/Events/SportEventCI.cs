@@ -308,7 +308,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         protected async Task FetchMissingSummary(IEnumerable<CultureInfo> cultures, bool forceFetch)
         {
-            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();
 
             // to improve performance check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
@@ -397,7 +397,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         protected async Task FetchMissingFixtures(IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
+            Guard.Argument(cultures, nameof(cultures)).NotNull();
 
             // to improve performance check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();

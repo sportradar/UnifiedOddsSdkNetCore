@@ -63,14 +63,12 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                     config));
 
             container.RegisterTypes(_dispatcher, config);
-
-            //var x = container.Registrations.Where(w => w.MappedToType == typeof(ProducerManager));
-
+            
             var newConfig = new OddsFeedConfigurationInternal(config, defaultBookmakerDetailsProvider);
             newConfig.Load();
             container.RegisterInstance<IOddsFeedConfiguration>(newConfig, new ContainerControlledLifetimeManager());
             container.RegisterInstance<IOddsFeedConfigurationInternal>(newConfig, new ContainerControlledLifetimeManager());
-
+            
             container.RegisterAdditionalTypes();
 
             _childContainer1 = container.CreateChildContainer();

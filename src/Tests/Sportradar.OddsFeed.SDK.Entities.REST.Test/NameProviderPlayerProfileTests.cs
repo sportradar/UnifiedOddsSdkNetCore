@@ -128,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         [TestMethod]
         public void competitor_profile_is_called_when_wanted_player_profile()
         {
-            var match = new TestSportEventFactory().BuildSportEvent<IMatch>(URN.Parse("sr:match:1"), URN.Parse("sr:sport:5"), TestData.Cultures, ExceptionHandlingStrategy.THROW);
+            var match = new TestSportEntityFactory().BuildSportEvent<IMatch>(URN.Parse("sr:match:1"), URN.Parse("sr:sport:5"), TestData.Cultures, ExceptionHandlingStrategy.THROW);
 
             _nameProvider = new NameProvider(
                                             new Mock<IMarketCacheProvider>().Object,

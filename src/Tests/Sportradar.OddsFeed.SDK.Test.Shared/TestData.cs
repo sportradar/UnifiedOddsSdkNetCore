@@ -81,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 Task.Run(async () =>
                          {
                              date = await ci.GetScheduledAsync();
-                             //competitors = (await ci.GetCompetitorsAsync(checkCulture)).ToList();
+                             //competitors = (await ci.GetCompetitorsIdsAsync(checkCulture)).ToList();
                              // ReSharper disable once AssignNullToNotNullAttribute
                              //comp = competitors.FirstOrDefault();
                              round = await ci.GetTournamentRoundAsync(checkCulture);

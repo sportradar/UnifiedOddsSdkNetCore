@@ -46,6 +46,22 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// Asynchronously gets the mapping Ids of the specified market
         /// </summary>
         /// <returns>Returns the mapping Ids of the specified market</returns>
+        /// <remarks>The result is <see cref="LoMarketMapping"/> or <see cref="LcooMarketMapping"/></remarks>
+        /// <example>
+        /// <code>
+        /// foreach (var marketMapping in mappedIds)
+        /// {
+        ///     if (marketMapping is LcooMarketMapping lcooId)
+        ///     {
+        ///          _log.LogInformation($"Market {market.Id} mapping TypeId:{lcooId.TypeId}, Sov:'{lcooId.Sov}'");
+        ///     }
+        ///     else if (marketMapping is LoMarketMapping loId)
+        ///     {
+        ///         _log.LogInformation($"Market {market.Id} mapping TypeId:{loId.TypeId}, SubTypeId:{loId.SubTypeId}, Sov:'{loId.Sov}'");
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         Task<IEnumerable<IMarketMapping>> GetMappedMarketIdsAsync();
     }
 }

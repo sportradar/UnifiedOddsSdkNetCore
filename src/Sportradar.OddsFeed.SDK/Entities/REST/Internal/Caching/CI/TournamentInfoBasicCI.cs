@@ -29,27 +29,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <value>The current season</value>
         public CurrentSeasonInfoCI CurrentSeason { get; private set; }
 
-        private readonly IDataRouterManager _dataRouterManager;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentInfoBasicCI"/> class
         /// </summary>
         /// <param name="dto">The dto</param>
         /// <param name="culture">The culture</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch missing data</param>
-        public TournamentInfoBasicCI(TournamentInfoDTO dto, CultureInfo culture, IDataRouterManager dataRouterManager)
+        public TournamentInfoBasicCI(TournamentInfoDTO dto, CultureInfo culture)
             : base(dto.Id, dto.Name, culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
 
-            _dataRouterManager = dataRouterManager;
             if (dto.Category != null)
             {
                 Category = dto.Category.Id;
             }
             if (dto.CurrentSeason != null)
             {
-                CurrentSeason = new CurrentSeasonInfoCI(dto.CurrentSeason, culture, _dataRouterManager);
+                CurrentSeason = new CurrentSeasonInfoCI(dto.CurrentSeason, culture);
             }
         }
 
@@ -57,15 +53,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="TournamentInfoBasicCI"/> class
         /// </summary>
         /// <param name="exportable">The exportable</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch missing data</param>
-        public TournamentInfoBasicCI(ExportableTournamentInfoBasicCI exportable, IDataRouterManager dataRouterManager)
+        public TournamentInfoBasicCI(ExportableTournamentInfoBasicCI exportable)
             : base(exportable)
         {
-            _dataRouterManager = dataRouterManager;
-
             Category = exportable.Category != null ? URN.Parse(exportable.Category) : null;
             CurrentSeason = exportable.CurrentSeason != null
-                ? new CurrentSeasonInfoCI(exportable.CurrentSeason, dataRouterManager)
+                ? new CurrentSeasonInfoCI(exportable.CurrentSeason)
                 : null;
         }
 
@@ -89,7 +82,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 if (CurrentSeason == null)
                 {
-                    CurrentSeason = new CurrentSeasonInfoCI(dto.CurrentSeason, culture, _dataRouterManager);
+                    CurrentSeason = new CurrentSeasonInfoCI(dto.CurrentSeason, culture);
                 }
                 else
                 {

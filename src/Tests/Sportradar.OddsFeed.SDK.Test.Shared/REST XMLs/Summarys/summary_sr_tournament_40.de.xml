@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tournament_info xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2021-03-23T09:41:17+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+  <tournament id="sr:tournament:40" name="Allsvenskan">
+    <sport id="sr:sport:1" name="Fußball"/>
+    <category id="sr:category:9" name="Schweden" country_code="SWE"/>
+    <current_season start_date="2021-04-10" end_date="2021-12-14" year="2021" id="sr:season:80506" name="Allsvenskan 2021"/>
+  </tournament>
+  <season start_date="2021-04-10" end_date="2021-12-14" year="2021" tournament_id="sr:tournament:40" id="sr:season:80506" name="Allsvenskan 2021"/>
+  <coverage_info live_coverage="true"/>
+  <groups>
+    <group>
+      <competitor id="sr:competitor:1807" name="Degerfors IF" abbreviation="DEG" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="924523"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:7101" name="Varbergs BOIS" abbreviation="VBG" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="12900512"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1891" name="Kalmar FF" abbreviation="KAL" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="93298"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1760" name="BK Häcken" abbreviation="HAC" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="4777"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1892" name="Malmö FF" abbreviation="MAL" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="22631"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1793" name="IK Sirius FK" abbreviation="SIR" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="8292003"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1761" name="IFK Göteborg" abbreviation="IFK" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="5136"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1783" name="Mjällby AIF" abbreviation="MJÄ" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="5293700"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1762" name="IF Elfsborg" abbreviation="ELF" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="4778"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1764" name="AIK" abbreviation="AIK" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="4783"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1767" name="Halmstads BK" abbreviation="HAL" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="4771"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1768" name="Örebro SK" abbreviation="ÖSK" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="5260"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1758" name="Hammarby IF" abbreviation="HIF" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="4780"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1769" name="IFK Norrköping FK" abbreviation="NKP" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="5368"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1759" name="Djurgardens IF" abbreviation="DJU" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="22630"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:1836" name="Östersunds FK" abbreviation="ÖSD" country="Schweden" country_code="SWE" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="7478714"/>
+        </reference_ids>
+      </competitor>
+    </group>
+  </groups>
+</tournament_info>

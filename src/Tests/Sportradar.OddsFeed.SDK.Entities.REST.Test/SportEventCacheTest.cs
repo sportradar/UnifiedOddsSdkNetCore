@@ -103,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             {
                 cons = await item.GetConditionsAsync(TestData.Cultures);
                 cons = await item.GetConditionsAsync(TestData.Cultures);
-                await item.GetCompetitorsAsync(TestData.Cultures);
+                await item.GetCompetitorsIdsAsync(TestData.Cultures);
             }).GetAwaiter().GetResult();
 
             Assert.IsNotNull(cons);
@@ -134,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             {
                 await item.GetTournamentIdAsync();
                 seasonCI = await item.GetSeasonAsync(TestData.Cultures);
-                await item.GetCompetitorsAsync(TestData.Cultures);
+                await item.GetCompetitorsIdsAsync(TestData.Cultures);
             }).GetAwaiter().GetResult();
 
             Assert.AreEqual(TestData.Cultures.Count * 3, _dataRouterManager.GetCallCount(DateSchedule), $"{DateSchedule} should be called exactly {TestData.Cultures.Count * 3} times.");
@@ -262,7 +262,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 tasks.Add(ci.GetNamesAsync(new[] { culture }));
                 tasks.Add(ci.GetFixtureAsync(new[] { culture }));
                 tasks.Add(ci.GetTournamentIdAsync());
-                tasks.Add(ci.GetCompetitorsAsync(new[] { culture }));
+                tasks.Add(ci.GetCompetitorsIdsAsync(new[] { culture }));
                 await Task.WhenAll(tasks);
                 if (i % 10 == 3)
                 {
@@ -293,7 +293,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Task.Run(async () =>
             {
                 date = await item.GetScheduledAsync();
-                competitors = (await item.GetCompetitorsAsync(TestData.Cultures)).ToList();
+                competitors = (await item.GetCompetitorsIdsAsync(TestData.Cultures)).ToList();
                 //comp = competitors.FirstOrDefault();
                 round = await item.GetTournamentRoundAsync(TestData.Cultures);
                 season = await item.GetSeasonAsync(TestData.Cultures);

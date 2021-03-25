@@ -207,16 +207,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await competitionCI.GetCompetitorsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(competitionCI.GetCompetitorsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Competitors")).ConfigureAwait(false);
+                ? await competitionCI.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(competitionCI.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
-            var competitorUrns = items as List<URN>;
-            if (competitorUrns == null || !competitorUrns.Any())
+            var competitorsIds = items == null ? new List<URN>() : items.ToList();
+            if (!competitorsIds.Any())
             {
-                return null;
+                return new List<ICompetitor>();
             }
 
-            var tasks = competitorUrns.Select(s =>
+            var tasks = competitorsIds.Select(s =>
                                               {
                                                   var t = _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCI, ExceptionStrategy);
                                                   t.ConfigureAwait(false);

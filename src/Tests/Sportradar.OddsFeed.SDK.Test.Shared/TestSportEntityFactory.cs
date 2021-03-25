@@ -4,21 +4,51 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
-    internal class TestSportEventFactory : ISportEntityFactory
+    internal class TestSportEntityFactory : ISportEntityFactory
     {
+        private ISportDataCache _sportDataCache;
+        private ISportEventCache _sportEventCache;
+        private ISportEventStatusCache _eventStatusCache;
+        private ILocalizedNamedValueCache _matchStatusCache;
+        private IProfileCache _profileCache;
+        private IReadOnlyCollection<URN> _soccerSportUrns;
+        private ICacheManager _cacheManager;
+
+        public TestSportEntityFactory(ISportDataCache sportDataCache = null,
+            ISportEventCache sportEventCache = null,
+            ISportEventStatusCache eventStatusCache = null,
+            ILocalizedNamedValueCache matchStatusCache = null,
+            IProfileCache profileCache = null,
+            IReadOnlyCollection<URN> soccerSportUrns = null)
+        {
+            _cacheManager = new CacheManager();
+            var profileMemoryCache = new MemoryCache("ProfileCache");
+
+            _sportDataCache = sportDataCache;
+            _sportEventCache = sportEventCache;
+            _eventStatusCache = eventStatusCache;
+            _matchStatusCache = matchStatusCache;
+            _profileCache = profileCache ?? new ProfileCache(profileMemoryCache, new TestDataRouterManager(_cacheManager), _cacheManager);
+            _soccerSportUrns = soccerSportUrns ?? SdkInfo.SoccerSportUrns;
+        }
+
         public Task<IEnumerable<ISport>> BuildSportsAsync(IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
@@ -31,12 +61,15 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public Task<IPlayer> BuildPlayerAsync(URN id, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
-            throw new NotImplementedException();
+            var playerNames = cultures.ToDictionary(culture => culture, culture => "PlayerName");
+            var player = new Player(id, playerNames);
+            return Task.FromResult((IPlayer)player);
         }
 
         public Task<IEnumerable<IPlayer>> BuildPlayersAsync(IEnumerable<URN> ids, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
-            throw new NotImplementedException();
+            var results = new List<IPlayer>();
+            return Task.FromResult(results.AsEnumerable());
         }
 
         public T BuildSportEvent<T>(URN id, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
@@ -61,14 +94,20 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return (T)competition;
         }
 
+        public ICompetitor BuildCompetitor(URN competitorId, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences,
+            ExceptionHandlingStrategy exceptionStrategy)
+        {
+            return new Competitor(competitorId, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
+        }
+
         public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            return new Competitor(ci, null, cultures, this, exceptionStrategy, rootCompetitionCI);
+            return new Competitor(ci, _profileCache, cultures, this, exceptionStrategy, rootCompetitionCI);
         }
 
         public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
         {
-            return new Competitor(ci, null, cultures, this, exceptionStrategy, competitorsReferences);
+            return new Competitor(ci, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
         }
 
         public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI ci, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
@@ -82,6 +121,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="competitorId">A <see cref="URN"/> of the <see cref="CompetitorCI"/> used to create new instance</param>
         /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
+        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
         public Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
@@ -106,6 +146,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="teamCompetitorId">A <see cref="URN"/> of the <see cref="TeamCompetitorCI"/> used to create new instance</param>
         /// <param name="culture">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
+        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
         public Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
@@ -165,11 +206,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<DateTime?>(null);
         }
-
-        /// <summary>
-        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
-        /// </summary>
-        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        
         public Task<bool?> GetStartTimeTbdAsync()
         {
             return Task.FromResult<bool?>(null);
@@ -185,20 +222,11 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return Task.FromResult<DateTime?>(null);
         }
 
-        public Task<bool?> GetStartTimeTBDAsync()
-        {
-            return Task.FromResult<bool?>(null);
-        }
-
         public Task<IEnumerable<ITeamCompetitor>> GetCompetitorsAsync()
         {
             return Task.FromResult<IEnumerable<ITeamCompetitor>>(null);
         }
-
-        /// <summary>
-        /// Gets the event status asynchronous
-        /// </summary>
-        /// <returns>Get the event status</returns>
+        
         public Task<EventStatus?> GetEventStatusAsync()
         {
             return Task.FromResult<EventStatus?>(null);
@@ -268,11 +296,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<DateTime?>(null);
         }
-
-        /// <summary>
-        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
-        /// </summary>
-        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        
         public Task<bool?> GetStartTimeTbdAsync()
         {
             return Task.FromResult<bool?>(null);
@@ -286,11 +310,6 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public Task<DateTime?> GetNextLiveTimeAsync()
         {
             return Task.FromResult<DateTime?>(null);
-        }
-
-        public Task<bool?> GetStartTimeTBDAsync()
-        {
-            return Task.FromResult<bool?>(null);
         }
 
         public Task<string> GetNameAsync(CultureInfo culture)
@@ -322,11 +341,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<IEnumerable<ISeason>>(null);
         }
-
-        /// <summary>
-        /// Asynchronously gets a <see cref="bool"/> specifying if the tournament is exhibition game
-        /// </summary>
-        /// <returns>A <see cref="bool"/> specifying if the tournament is exhibition game</returns>
+        
         public Task<bool?> GetExhibitionGamesAsync()
         {
             return Task.FromResult<bool?>(null);
@@ -381,11 +396,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<DateTime?>(null);
         }
-
-        /// <summary>
-        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
-        /// </summary>
-        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        
         public Task<bool?> GetStartTimeTbdAsync()
         {
             return Task.FromResult<bool?>(null);
@@ -445,11 +456,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             };
             return Task.FromResult<IEnumerable<ICompetitor>>(competitors);
         }
-
-        /// <summary>
-        /// Gets the event status asynchronous
-        /// </summary>
-        /// <returns>Get the event status</returns>
+        
         public Task<EventStatus?> GetEventStatusAsync()
         {
             return Task.FromResult<EventStatus?>(null);
@@ -489,11 +496,6 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<DateTime?>(null);
         }
-
-        public Task<bool?> GetStartTimeTBDAsync()
-        {
-            return Task.FromResult<bool?>(null);
-        }
     }
 
     public class TestStage : IStage
@@ -519,11 +521,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<DateTime?>(null);
         }
-
-        /// <summary>
-        /// Asynchronously gets a <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.
-        /// </summary>
-        /// <returns>A <see cref="Nullable{bool}"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        
         public Task<bool?> GetStartTimeTbdAsync()
         {
             return Task.FromResult<bool?>(null);
@@ -568,11 +566,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return Task.FromResult<IEnumerable<ICompetitor>>(null);
         }
-
-        /// <summary>
-        /// Gets the event status asynchronous
-        /// </summary>
-        /// <returns>Get the event status</returns>
+        
         public Task<EventStatus?> GetEventStatusAsync()
         {
             return Task.FromResult<EventStatus?>(null);
@@ -611,11 +605,6 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public Task<DateTime?> GetNextLiveTimeAsync()
         {
             return Task.FromResult<DateTime?>(null);
-        }
-
-        public Task<bool?> GetStartTimeTBDAsync()
-        {
-            return Task.FromResult<bool?>(null);
         }
 
         Task<StageType?> IStage.GetStageTypeAsync()

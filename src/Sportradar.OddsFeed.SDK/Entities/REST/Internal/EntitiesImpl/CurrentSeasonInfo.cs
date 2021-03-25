@@ -39,7 +39,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                                  IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
         {
             Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
-            //Guard.Argument(sportEntityFactory, nameof()).NotNull();
 
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
             Id = cacheItem.Id;
@@ -56,9 +55,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             CurrentRound = cacheItem.CurrentRound == null
                 ? null
                 : new Round(cacheItem.CurrentRound, cultureInfos);
-            Competitors = cacheItem.Competitors == null
+            Competitors = cacheItem.CompetitorsIds == null
                 ? null
-                : cacheItem.Competitors.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds, exceptionHandlingStrategy));
+                : cacheItem.CompetitorsIds.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds, exceptionHandlingStrategy));
             Schedule = cacheItem.Schedule == null
                 ? null
                 : cacheItem.Schedule.Select(s => sportEntityFactory.BuildSportEvent<ISportEvent>(s, null, cultureInfos, exceptionHandlingStrategy));
@@ -85,9 +84,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             CurrentRound = currentSeasonCI.GetCurrentRoundAsync(cultureInfos).Result == null
                 ? null
                 : new Round(currentSeasonCI.GetCurrentRoundAsync(cultureInfos).Result, cultureInfos);
-            Competitors = currentSeasonCI.GetCompetitorsAsync(cultureInfos).Result == null
+            Competitors = currentSeasonCI.GetCompetitorsIdsAsync(cultureInfos).Result == null
                 ? null
-                : currentSeasonCI.GetCompetitorsAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds, exceptionStrategy));
+                : currentSeasonCI.GetCompetitorsIdsAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildCompetitor(s, cultureInfos, competitorsReferenceIds, exceptionStrategy));
             Schedule = currentSeasonCI.GetScheduleAsync(cultureInfos).Result == null
                 ? null
                 : currentSeasonCI.GetScheduleAsync(cultureInfos).Result.Select(s => sportEntityFactory.BuildSportEvent<ISportEvent>(s, currentSeasonCI.GetSportIdAsync().Result, cultureInfos, exceptionStrategy));

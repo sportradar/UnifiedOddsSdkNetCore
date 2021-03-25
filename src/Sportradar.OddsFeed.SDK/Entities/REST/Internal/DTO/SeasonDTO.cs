@@ -56,8 +56,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 EndDate = SdkInfo.CombineDateAndTime(season.end_date, season.end_time);
             }
-            URN.TryParse(season.tournament_id, out var tId);
-            TournamentId = tId;
+
+            if (!string.IsNullOrEmpty(season.tournament_id))
+            {
+                URN.TryParse(season.tournament_id, out var tId);
+                TournamentId = tId;
+            }
         }
 
         /// <summary>
@@ -76,12 +80,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 StartDate = SdkInfo.CombineDateAndTime(season.start_date, season.start_time);
             }
+
             if (season.end_timeSpecified)
             {
                 EndDate = SdkInfo.CombineDateAndTime(season.end_date, season.end_time);
             }
-            URN.TryParse(season.tournament_id, out var tId);
-            TournamentId = tId;
+
+            if (!string.IsNullOrEmpty(season.tournament_id))
+            {
+                URN.TryParse(season.tournament_id, out var tId);
+                TournamentId = tId;
+            }
         }
     }
 }

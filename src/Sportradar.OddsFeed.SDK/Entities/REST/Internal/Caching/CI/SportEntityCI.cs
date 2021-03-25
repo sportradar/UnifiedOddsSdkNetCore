@@ -58,18 +58,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="obj">The object to compare with the current object</param>
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            var other = obj as SportEntityCI;
+            if (other == null)
             {
                 return false;
             }
             if (ReferenceEquals(this, obj))
             {
                 return true;
-            }
-            var other = obj as SportEntityCI;
-            if (other == null)
-            {
-                return false;
             }
             return Id == other.Id;
         }

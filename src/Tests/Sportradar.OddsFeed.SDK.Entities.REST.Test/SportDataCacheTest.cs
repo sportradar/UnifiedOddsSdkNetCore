@@ -354,28 +354,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             const string callType = "GetAllSportsAsync";
             Assert.AreEqual(0, _sportDataCache.Sports.Count);
             Assert.AreEqual(0, _sportDataCache.Categories.Count);
-            //Assert.AreEqual(0, _sportDataCache.Tournaments.Count);
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly 0 times.");
 
             var sports = _sportDataCache.GetSportsAsync(TestData.Cultures).Result; // initial load
             Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count} times.");
-
             Assert.AreEqual(TestData.CacheSportCount, _sportDataCache.Sports.Count);
             Assert.AreEqual(TestData.CacheCategoryCountPlus, _sportDataCache.Categories.Count);
-            //Assert.AreEqual(TestData.CacheTournamentCount, _sportDataCache.Tournaments.Count);
 
-            // the low below adds an additional sport sr:sport:999
-            foreach (var culture in TestData.Cultures)
-            {
-                _dataRouterManager.GetSportEventSummaryAsync(TournamentIdExtra, culture, null).ConfigureAwait(false);
-            }
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount("GetSportEventSummaryAsync"), "GetSportEventSummaryAsync should be called exactly 0 times.");
             var data01 = _sportDataCache.GetSportForTournamentAsync(TournamentIdExtra, TestData.Cultures).Result;
             Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count} times.");
             Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount("GetSportEventSummaryAsync"), $"GetSportEventSummaryAsync should be called exactly {TestData.Cultures.Count} times.");
 
             Assert.AreEqual(TestData.CacheSportCount + 1, _sportDataCache.Sports.Count);
             Assert.AreEqual(TestData.CacheCategoryCountPlus + 1, _sportDataCache.Categories.Count);
-            //Assert.AreEqual(TestData.CacheTournamentCount+1, _sportDataCache.Tournaments.Count);
 
             Assert.IsNotNull(sports);
             Assert.IsNotNull(data01);

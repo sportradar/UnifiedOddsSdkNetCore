@@ -74,6 +74,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// Builds the instance of the <see cref="ICompetitor"/> class
         /// </summary>
+        /// <param name="competitorId">A <see cref="CompetitorCI"/> id used to create new instance</param>
+        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
+        /// <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>
+        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
+        /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
+        ICompetitor BuildCompetitor(URN competitorId, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy);
+
+        /// <summary>
+        /// Builds the instance of the <see cref="ICompetitor"/> class
+        /// </summary>
         /// <param name="ci">A <see cref="CompetitorCI"/> used to create new instance</param>
         /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
         /// <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>

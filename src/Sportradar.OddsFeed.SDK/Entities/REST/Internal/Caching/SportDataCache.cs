@@ -236,7 +236,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     try
                     {
                         cachedTournament = (TournamentInfoCI) _sportEventCache.GetEventCacheItem(tournamentId);
-                        var unused = cachedTournament.GetCompetitorsAsync(cultureList).Result;
+                        var unused = cachedTournament.GetCompetitorsIdsAsync(cultureList).Result;
                     }
                     catch (Exception e)
                     {
@@ -252,7 +252,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     try
                     {
-                        var unused = cachedTournament.GetCompetitorsAsync(cultureList).Result;
+                        var unused = cachedTournament.GetCompetitorsIdsAsync(cultureList).Result;
                     }
                     catch (Exception e)
                     {

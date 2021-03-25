@@ -228,7 +228,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// </summary>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
-        public async Task<IEnumerable<URN>> GetCompetitorsAsync(IEnumerable<CultureInfo> cultures)
+        public async Task<IEnumerable<URN>> GetCompetitorsIdsAsync(IEnumerable<CultureInfo> cultures)
         {
             var cultureInfos = cultures.ToList();
             if (Competitors != null && Competitors.Any() && HasTranslationsFor(cultureInfos))
@@ -542,9 +542,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         protected override async Task<T> CreateExportableCIAsync<T>()
         {
             var exportable = await base.CreateExportableCIAsync<T>();
-            var competition = exportable as ExportableCompetitionCI;
 
-            if (competition != null)
+            if (exportable is ExportableCompetitionCI competition)
             {
                 competition.BookingStatus = _bookingStatus;
                 competition.Venue = _venue != null ? await _venue.ExportAsync() : null;

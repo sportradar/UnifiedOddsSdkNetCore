@@ -25,9 +25,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public ExportableTournamentCoverageCI TournamentCoverage { get; set; }
 
         /// <summary>
-        /// A <see cref="IEnumerable{T}"/> representing the competitors
+        /// A <see cref="IEnumerable{T}"/> representing the competitors ids
         /// </summary>
-        public IEnumerable<ExportableCompetitorCI> Competitors { get; set; }
+        public IEnumerable<string> Competitors { get; set; }
 
         /// <summary>
         /// A <see cref="ExportableCurrentSeasonInfoCI"/> representing the season info

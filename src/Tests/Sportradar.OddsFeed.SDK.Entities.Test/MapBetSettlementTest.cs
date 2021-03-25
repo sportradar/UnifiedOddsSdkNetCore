@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
             namedValuesProviderMock.Setup(x => x.VoidReasons).Returns(voidReasonCache);
 
             _mapper = new FeedMessageMapper(
-                new TestSportEventFactory(),
+                new TestSportEntityFactory(),
                 nameProviderFactoryMock.Object,
                 new Mock<IMarketMappingProviderFactory>().Object,
                 namedValuesProviderMock.Object,

@@ -120,8 +120,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await matchCI.GetCompetitorsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(matchCI.GetCompetitorsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Competitors")).ConfigureAwait(false);
+                ? await matchCI.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(matchCI.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
             if (items == null)
             {
@@ -151,8 +151,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await matchCI.GetCompetitorsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(matchCI.GetCompetitorsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Competitors")).ConfigureAwait(false);
+                ? await matchCI.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(matchCI.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
             if (items == null)
             {

@@ -44,9 +44,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public ExportableRoundCI CurrentRound { get; set; }
 
         /// <summary>
-        /// A <see cref="IEnumerable{T}"/> representation of the competitors
+        /// A list representation of the competitors ids
         /// </summary>
-        public IEnumerable<ExportableCompetitorCI> Competitors { get; set; }
+        public IEnumerable<string> Competitors { get; set; }
 
         /// <summary>
         /// A <see cref="IEnumerable{T}"/> representation of the schedule

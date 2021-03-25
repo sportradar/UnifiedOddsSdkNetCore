@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tournament_info xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2021-03-23T09:55:29+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+  <tournament id="sr:tournament:790" name="CFL">
+    <sport id="sr:sport:16" name="American Football"/>
+    <category id="sr:category:93" name="Canada" country_code="CAN"/>
+    <current_season start_date="2021-06-10" end_date="2021-11-21" year="2021" id="sr:season:80242" name="CFL 2021"/>
+  </tournament>
+  <season start_date="2021-06-10" end_date="2021-11-21" year="2021" tournament_id="sr:tournament:790" id="sr:season:80242" name="CFL 2021"/>
+  <coverage_info live_coverage="true"/>
+  <groups>
+    <group>
+      <competitor id="sr:competitor:4441" name="Hamilton Tiger-Cats" abbreviation="HAM" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115899"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4433" name="Calgary Stampeders" abbreviation="CAL" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115664"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4435" name="Winnipeg Blue Bombers" abbreviation="WIN" country="Canada" country_code="CAN" gender="male" state="MB">
+        <reference_ids>
+          <reference_id name="betradar" value="115662"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4434" name="Edmonton Eskimos" abbreviation="EDM" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115665"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4437" name="Ottawa Redblacks" abbreviation="OTT" country="Canada" country_code="CAN" gender="male" state="ON">
+        <reference_ids>
+          <reference_id name="betradar" value="115660"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4436" name="Toronto Argonauts" abbreviation="TOR" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115663"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4439" name="Montreal Alouettes" abbreviation="MON" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115656"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4438" name="Saskatchewan Roughriders" abbreviation="SAS" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115661"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4440" name="British Columbia Lions" abbreviation="BCL" country="Canada" country_code="CAN" gender="male" state="BC">
+        <reference_ids>
+          <reference_id name="betradar" value="115657"/>
+        </reference_ids>
+      </competitor>
+    </group>
+    <group>
+      <competitor id="sr:competitor:4441" name="Hamilton Tiger-Cats" abbreviation="HAM" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115899"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4437" name="Ottawa Redblacks" abbreviation="OTT" country="Canada" country_code="CAN" gender="male" state="ON">
+        <reference_ids>
+          <reference_id name="betradar" value="115660"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4436" name="Toronto Argonauts" abbreviation="TOR" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115663"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4439" name="Montreal Alouettes" abbreviation="MON" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115656"/>
+        </reference_ids>
+      </competitor>
+    </group>
+    <group>
+      <competitor id="sr:competitor:4433" name="Calgary Stampeders" abbreviation="CAL" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115664"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4435" name="Winnipeg Blue Bombers" abbreviation="WIN" country="Canada" country_code="CAN" gender="male" state="MB">
+        <reference_ids>
+          <reference_id name="betradar" value="115662"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4434" name="Edmonton Eskimos" abbreviation="EDM" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115665"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4438" name="Saskatchewan Roughriders" abbreviation="SAS" country="Canada" country_code="CAN" gender="male">
+        <reference_ids>
+          <reference_id name="betradar" value="115661"/>
+        </reference_ids>
+      </competitor>
+      <competitor id="sr:competitor:4440" name="British Columbia Lions" abbreviation="BCL" country="Canada" country_code="CAN" gender="male" state="BC">
+        <reference_ids>
+          <reference_id name="betradar" value="115657"/>
+        </reference_ids>
+      </competitor>
+    </group>
+  </groups>
+</tournament_info>

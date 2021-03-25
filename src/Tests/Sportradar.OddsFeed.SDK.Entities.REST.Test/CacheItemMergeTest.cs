@@ -140,18 +140,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             var groupDTO1 = new GroupDTO(groupType1);
             var groupDTO2 = new GroupDTO(groupType2);
 
-            var groupCI = new GroupCI(groupDTO1, _cultureFirst, new TestDataRouterManager(new CacheManager()));
+            var groupCI = new GroupCI(groupDTO1, _cultureFirst);
             groupCI.Merge(groupDTO2, _cultureSecond);
 
             Assert.IsNotNull(groupCI);
             Assert.AreEqual(groupType1.name, groupCI.Name);
-            Assert.AreEqual(groupType1.competitor.Length, groupCI.Competitors.Count());
-            Assert.AreEqual(groupType1.competitor[0].id, groupCI.Competitors.ToList()[0].Id.ToString());
-            Assert.AreEqual(groupType1.competitor[1].id, groupCI.Competitors.ToList()[1].Id.ToString());
-            Assert.AreNotEqual(groupCI.Competitors.ToList()[0].Id, groupCI.Competitors.ToList()[1].Id);
-            Assert.AreEqual(groupType1.competitor[0].country, groupCI.Competitors.ToList()[0].GetCountry(_cultureFirst));
-            Assert.AreEqual(groupType2.competitor[0].country, groupCI.Competitors.ToList()[0].GetCountry(_cultureSecond));
-            Assert.AreEqual(groupType2.competitor[1].country, groupCI.Competitors.ToList()[1].GetCountry(_cultureSecond));
+            Assert.AreEqual(groupType1.competitor.Length, groupCI.CompetitorsIds.Count());
+            Assert.AreEqual(groupType1.competitor[0].id, groupCI.CompetitorsIds.ToList()[0].ToString());
+            Assert.AreEqual(groupType1.competitor[1].id, groupCI.CompetitorsIds.ToList()[1].ToString());
+            Assert.AreNotEqual(groupCI.CompetitorsIds.ToList()[0].Id, groupCI.CompetitorsIds.ToList()[1]);
         }
 
         [TestMethod]
