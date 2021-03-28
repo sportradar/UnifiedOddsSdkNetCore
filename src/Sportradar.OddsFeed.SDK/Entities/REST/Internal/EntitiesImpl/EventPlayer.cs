@@ -9,29 +9,29 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
     /// <summary>
-    /// Represents a goal scorer in a sport event
+    /// Represents a player in a sport event timeline event
     /// </summary>
     /// <seealso cref="IPlayer" />
     /// <seealso cref="IEventPlayer" />
-    internal class GoalScorer : BaseEntity, IGoalScorer
+    internal class EventPlayer : BaseEntity, IEventPlayer
     {
         /// <summary>
-        /// Gets the method value
+        /// Gets the bench value
         /// </summary>
-        /// <value>The method value</value>
-        /// <remarks>The attribute can assume values such as 'penalty' and 'own goal'. In case the attribute is not inserted, then the goal is not own goal neither penalty.</remarks>
-        public string Method { get; }
+        /// <value>The bench value - in case of yellow or red card event, it is relevant to know if the player who is getting the card is sitting on the bench at that exact moment.</value>
+        /// <remarks>The attribute is equal to 1 if the player who gets the card is sitting on the bench. In case the player who gets the card is on the field, then the attribute is not added at all.</remarks>
+        public string Bench { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IGoalScorer"/> class
+        /// Initializes a new instance of the <see cref="IEventPlayer"/> class
         /// </summary>
         /// <param name="data">The <see cref="EventPlayerCI"/> data</param>
-        public GoalScorer(EventPlayerCI data)
+        public EventPlayer(EventPlayerCI data)
             : base(data.Id, data.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
             Guard.Argument(data, nameof(data)).NotNull();
 
-            Method = data.Method;
+            Bench = data.Bench;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string" /> containing compacted representation of the current instance</returns>
         protected override string PrintC()
         {
-            return $"{base.PrintC()}, Method={Method}";
+            return $"{base.PrintC()}, Bench={Bench}";
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string" /> containing details of the current instance</returns>
         protected override string PrintF()
         {
-            return $"{base.PrintF()}, Method={Method}";
+            return $"{base.PrintF()}, Bench={Bench}";
         }
 
         /// <summary>

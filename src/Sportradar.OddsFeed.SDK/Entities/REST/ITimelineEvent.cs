@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the player
         /// </summary>
         /// <value>The player</value>
-        IPlayer Player { get; }
+        IEventPlayer Player { get; }
         /// <summary>
         /// Gets the match status code
         /// </summary>

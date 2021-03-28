@@ -13,27 +13,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// A data-transfer-object for <see cref="basicEvent"/> used in <see cref="MatchTimelineDTO"/>
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "DTO is allowed solution wide")]
     internal class BasicEventDTO
     {
-        public int Id;
+        public readonly int Id;
         public decimal? HomeScore;
         public decimal? AwayScore;
         public int? MatchTime;
-        public string Period;
-        public string PeriodName;
-        public string Points;
-        public string StoppageTime;
+        public readonly string Period;
+        public readonly string PeriodName;
+        public readonly string Points;
+        public readonly string StoppageTime;
         public HomeAway? Team;
-        public string Type;
-        public string Value;
+        public readonly string Type;
+        public readonly string Value;
         public int? X;
         public int? Y;
         public DateTime Time;
-        public IEnumerable<EventPlayerAssistDTO> Assists;
-        public SportEntityDTO GoalScorer;
-        public SportEntityDTO Player;
+        public readonly IEnumerable<EventPlayerAssistDTO> Assists;
+        public readonly EventPlayerDTO GoalScorer;
+        public readonly EventPlayerDTO Player;
         public int? MatchStatusCode;
-        public string MatchClock;
+        public readonly string MatchClock;
 
         internal BasicEventDTO(basicEvent item)
         {
@@ -63,11 +64,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
             if (item.goal_scorer != null)
             {
-                GoalScorer = new SportEntityDTO(item.goal_scorer.id, item.goal_scorer.name);
+                GoalScorer = new EventPlayerDTO(item.goal_scorer);
             }
             if (item.player != null)
             {
-                Player = new SportEntityDTO(item.player.id, item.player.name);
+                Player = new EventPlayerDTO(item.player);
             }
             MatchStatusCode = item.match_status_codeSpecified ? (int?) item.match_status_code : null;
             MatchClock = item.match_clock;

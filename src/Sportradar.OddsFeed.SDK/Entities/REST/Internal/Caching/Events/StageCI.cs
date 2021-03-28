@@ -132,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
-            _categoryId = URN.Parse(exportable.CategoryId);
+            _categoryId = string.IsNullOrEmpty(exportable.CategoryId) ? null : URN.Parse(exportable.CategoryId);
             _parentStageId = string.IsNullOrEmpty(exportable.ParentStageId) ? null : URN.Parse(exportable.ParentStageId);
             _childStages = exportable.ChildStages?.Select(s => new StageCI(s, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache));
             _additionalParentIds = exportable.AdditionalParentIds.IsNullOrEmpty() ? null : exportable.AdditionalParentIds.Select(URN.Parse).ToList();

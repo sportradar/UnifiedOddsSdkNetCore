@@ -22,9 +22,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public SportEventStatusDTO SportEventStatus { get; }
 
-        /// <summary>
-        /// Gets the <see cref="DateTime"/> specifying when the associated message was generated (on the server side)
-        /// </summary>
         public DateTime? GeneratedAt { get; }
 
         public IEnumerable<BasicEventDTO> BasicEvents { get; }

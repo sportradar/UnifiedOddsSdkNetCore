@@ -1,7 +1,6 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using System.Collections.Generic;
 using Dawn;
@@ -36,8 +35,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided data</param>
         public CacheItem(URN id, string name, CultureInfo culture)
         {
+            // don not check name, since there were tournaments with empty name
             Guard.Argument(id, nameof(id)).NotNull();
-            //Guard.Argument(name, nameof()).NotNull().NotEmpty(); // there were tournaments with empty name!
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             Id = id;

@@ -3,26 +3,23 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.Serialization;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
-    /// Defines a contract implemented by classes representing goal scorer in a sport event
+    /// Defines a contract implemented by classes representing players or racers in a sport event timeline events
     /// </summary>
-    public interface IGoalScorer : IEntityPrinter
+    public interface IEventPlayer : IEntityPrinter
     {
         /// <summary>
         /// Gets the <see cref="URN"/> uniquely identifying the current <see cref="IPlayer" /> instance
         /// </summary>
-        [DataMember]
         URN Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing player names in different languages
         /// </summary>
-        [DataMember]
         IReadOnlyDictionary<CultureInfo, string> Names { get; }
 
         /// <summary>
@@ -33,10 +30,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string GetName(CultureInfo culture);
 
         /// <summary>
-        /// Gets the method value
+        /// Gets the bench value
         /// </summary>
-        /// <value>The method value</value>
-        /// <remarks>The attribute can assume values such as 'penalty' and 'own goal'. In case the attribute is not inserted, then the goal is not own goal neither penalty.</remarks>
-        string Method => null;
+        /// <value>The bench value - in case of yellow or red card event, it is relevant to know if the player who is getting the card is sitting on the bench at that exact moment.</value>
+        /// <remarks>The attribute is equal to 1 if the player who gets the card is sitting on the bench. In case the player who gets the card is on the field, then the attribute is not added at all.</remarks>
+        public string Bench { get; }
     }
 }

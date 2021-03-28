@@ -11729,6 +11729,21 @@
             A <see cref="T:System.String"/> representing the type
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerCI">
+            <summary>
+            Class used to export/import event player cache item properties
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerCI.Bench">
+            <summary>
+            A <see cref="T:System.String"/> representing the bench value
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerCI.Method">
+            <summary>
+            A <see cref="T:System.String"/> representing the method value
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventTimelineCI">
             <summary>
             Class used to export/import event timeline cache item properties
@@ -12566,12 +12581,12 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableTimelineEventCI.GoalScorer">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI" /> specifying the goal scorer
+            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerCI" /> specifying the goal scorer
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableTimelineEventCI.Player">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI" /> specifying the player
+            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerCI" /> specifying the player
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableTimelineEventCI.MatchStatusCode">
@@ -13933,6 +13948,35 @@
             </summary>
             <value><c>true</c> if stopped; otherwise, <c>false</c></value>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer">
+            <summary>
+            Defines a contract implemented by classes representing players or racers in a sport event timeline events
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer.Id">
+            <summary>
+            Gets the <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer" /> instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer.Names">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> containing player names in different languages
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer.GetName(System.Globalization.CultureInfo)">
+            <summary>
+            Gets the name of the player in the specified language or a null reference
+            </summary>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language of the returned name</param>
+            <returns>The name of the player in the specified language or a null reference.</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer.Bench">
+            <summary>
+            Gets the bench value
+            </summary>
+            <value>The bench value - in case of yellow or red card event, it is relevant to know if the player who is getting the card is sitting on the bench at that exact moment.</value>
+            <remarks>The attribute is equal to 1 if the player who gets the card is sitting on the bench. In case the player who gets the card is on the field, then the attribute is not added at all.</remarks>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventResult">
             <summary>
             Defines methods used by classes that provide event result information
@@ -14160,7 +14204,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IGoalScorer.Id">
             <summary>
-            Gets the <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor" /> instance
+            Gets the <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer" /> instance
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IGoalScorer.Names">
@@ -14174,6 +14218,13 @@
             </summary>
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language of the returned name</param>
             <returns>The name of the player in the specified language or a null reference.</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IGoalScorer.Method">
+            <summary>
+            Gets the method value
+            </summary>
+            <value>The method value</value>
+            <remarks>The attribute can assume values such as 'penalty' and 'own goal'. In case the attribute is not inserted, then the goal is not own goal neither penalty.</remarks>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IGroup">
             <summary>
@@ -15221,6 +15272,53 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CacheItem" />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerAssistCI.ExportAsync">
+            <summary>
+            Asynchronous export item's properties
+            </summary>
+            <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> instance containing all relevant properties</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI">
+            <summary>
+            A cache item for event player
+            Implements the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CacheItem" />
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CacheItem" />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI.Bench">
+            <summary>
+            Gets the bench value
+            </summary>
+            <value>The bench value - in case of yellow or red card event, it is relevant to know if the player who is getting the card is sitting on the bench at that exact moment.</value>
+            <remarks>The attribute is equal to 1 if the player who gets the card is sitting on the bench. In case the player who gets the card is on the field, then the attribute is not added at all.</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI.Method">
+            <summary>
+            Gets the method value
+            </summary>
+            <value>The method value</value>
+            <remarks>The attribute can assume values such as 'penalty' and 'own goal'. In case the attribute is not inserted, then the goal is not own goal neither penalty.</remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerDTO,System.Globalization.CultureInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI"/> class.
+            </summary>
+            <param name="dto">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerDTO"/> data</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language of the provided data</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerCI)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI"/> class.
+            </summary>
+            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI"/> representing the cache item</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IDictionary{System.Globalization.CultureInfo,System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI"/> class.
+            </summary>
+            <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the id of the item</param>
+            <param name="name">The name of the item</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI.ExportAsync">
             <summary>
             Asynchronous export item's properties
             </summary>
@@ -21166,6 +21264,32 @@
             </summary>
             <param name="items">a <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing sport related instances associated with the current instance.</param>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerDTO">
+            <summary>
+            A data-transfer-object representing a player info within timeline events
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEntityDTO" />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerDTO.Bench">
+            <summary>
+            Gets the bench value
+            </summary>
+            <value>The bench value - in case of yellow or red card event, it is relevant to know if the player who is getting the card is sitting on the bench at that exact moment.</value>
+            <remarks>The attribute is equal to 1 if the player who gets the card is sitting on the bench. In case the player who gets the card is on the field, then the attribute is not added at all.</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerDTO.Method">
+            <summary>
+            Gets the method value
+            </summary>
+            <value>The method value</value>
+            <remarks>The attribute can assume values such as 'penalty' and 'own goal'. In case the attribute is not inserted, then the goal is not own goal neither penalty.</remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.eventPlayer)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerDTO"/> class
+            </summary>
+            <param name="record">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.eventPlayer"/> containing information about a player</param>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO">
             <summary>
             Class EventResultDTO
@@ -21548,11 +21672,6 @@
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchTimelineDTO">
             <summary>
             A data-transfer-object for match timeline
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchTimelineDTO.GeneratedAt">
-            <summary>
-            Gets the <see cref="T:System.DateTime"/> specifying when the associated message was generated (on the server side)
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.NamedValueDTO">
@@ -23847,6 +23966,44 @@
             </summary>
             <returns>a <see cref="T:System.String" /> containing a JSON representation of the current instance.</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventPlayer">
+            <summary>
+            Represents a player in a sport event timeline event
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer" />
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer" />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventPlayer.Bench">
+            <summary>
+            Gets the bench value
+            </summary>
+            <value>The bench value - in case of yellow or red card event, it is relevant to know if the player who is getting the card is sitting on the bench at that exact moment.</value>
+            <remarks>The attribute is equal to 1 if the player who gets the card is sitting on the bench. In case the player who gets the card is on the field, then the attribute is not added at all.</remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventPlayer.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer"/> class
+            </summary>
+            <param name="data">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI"/> data</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventPlayer.PrintC">
+            <summary>
+            Constructs and returns a <see cref="T:System.String" /> containing compacted representation of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String" /> containing compacted representation of the current instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventPlayer.PrintF">
+            <summary>
+            Constructs and return a <see cref="T:System.String" /> containing details of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String" /> containing details of the current instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventPlayer.PrintJ">
+            <summary>
+            Constructs and returns a <see cref="T:System.String" /> containing a JSON representation of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String" /> containing a JSON representation of the current instance</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EventResult">
             <summary>
             Class EventResult
@@ -24129,13 +24286,38 @@
             Represents a goal scorer in a sport event
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer" />
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventPlayer" />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.GoalScorer.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,System.Collections.Generic.IDictionary{System.Globalization.CultureInfo,System.String})">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.GoalScorer.Method">
+            <summary>
+            Gets the method value
+            </summary>
+            <value>The method value</value>
+            <remarks>The attribute can assume values such as 'penalty' and 'own goal'. In case the attribute is not inserted, then the goal is not own goal neither penalty.</remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.GoalScorer.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IGoalScorer"/> class
             </summary>
-            <param name="id">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer"/> instance</param>
-            <param name="names">A <see cref="T:System.Collections.Generic.IDictionary`2"/> containing player names in different languages</param>
+            <param name="data">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerCI"/> data</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.GoalScorer.PrintC">
+            <summary>
+            Constructs and returns a <see cref="T:System.String" /> containing compacted representation of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String" /> containing compacted representation of the current instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.GoalScorer.PrintF">
+            <summary>
+            Constructs and return a <see cref="T:System.String" /> containing details of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String" /> containing details of the current instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.GoalScorer.PrintJ">
+            <summary>
+            Constructs and returns a <see cref="T:System.String" /> containing a JSON representation of the current instance
+            </summary>
+            <returns>A <see cref="T:System.String" /> containing a JSON representation of the current instance</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Group">
             <summary>
