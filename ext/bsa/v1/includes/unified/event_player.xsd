@@ -4,6 +4,8 @@
     <xs:complexType name="eventPlayer">
         <xs:attribute type="playerUrn" name="id" use="required"/>
         <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="method" use="optional"/>
+        <xs:attribute type="xs:string" name="bench" use="optional"/>
     </xs:complexType>
     <xs:complexType name="eventPlayerAssist">
         <xs:complexContent>

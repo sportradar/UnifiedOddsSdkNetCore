@@ -1,111 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:include schemaLocation="../../includes/unified/urn.xsd" />
-    <xs:include schemaLocation="../../includes/unified/tournament.xsd" />
-    <xs:include schemaLocation="../../includes/unified/season.xsd" />
-    <xs:include schemaLocation="../../includes/unified/match_round.xsd" />
-    <xs:include schemaLocation="../../includes/unified/team.xsd" />
-    <xs:include schemaLocation="../../includes/unified/venue.xsd" />
-    <xs:include schemaLocation="../../includes/unified/coverage.xsd" />
-    <xs:include schemaLocation="../../includes/unified/sport_event.xsd" />
-    <xs:element name="fixtures_fixture" type="fixturesEndpoint" />
-    <xs:complexType name="fixturesEndpoint">
-        <xs:sequence>
-            <xs:element type="fixture" name="fixture" />
-        </xs:sequence>
-        <xs:attribute type="xs:dateTime" name="generated_at"/>
-    </xs:complexType>
-    <xs:complexType name="fixture">
-        <xs:complexContent>
-            <xs:extension base="sportEvent">
-                <xs:sequence>
-                    <xs:element type="delayedInfo" name="delayed_info" minOccurs="0" />
-                    <xs:element type="tvChannels" name="tv_channels" minOccurs="0" />
-                    <xs:element type="extraInfo" name="extra_info" minOccurs="0" />
-                    <xs:element type="coverageInfo" name="coverage_info" minOccurs="0" />
-                    <xs:element type="productInfo" name="product_info" minOccurs="0" />
-                    <xs:element type="referenceIds" name="reference_ids" minOccurs="0" />
-                    <xs:element type="scheduledStartTimeChanges" name="scheduled_start_time_changes" minOccurs="0" />
-                </xs:sequence>
-                <xs:attribute type="xs:boolean" name="start_time_confirmed" use="optional" />
-                <xs:attribute type="xs:dateTime" name="start_time" use="optional"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    <xs:complexType name="referenceIds">
-        <xs:sequence>
-            <xs:element name="reference_id" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="name" type="xs:string" use="required" />
-                    <xs:attribute name="value" type="xs:string" use="required" />
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="fixtureCompetitors">
-        <xs:sequence>
-            <xs:element type="teamCompetitor" name="competitor" maxOccurs="unbounded" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="delayedInfo">
-        <xs:attribute type="xs:int" name="id" use="required"/>
-        <xs:attribute type="xs:string" name="description" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="tvChannels">
-        <xs:sequence>
-            <xs:element type="tvChannel" name="tv_channel" maxOccurs="unbounded" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="tvChannel">
-        <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="xs:dateTime" name="start_time" use="optional"/>
-        <xs:attribute type="xs:string" name="stream_url" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="extraInfo">
-        <xs:sequence>
-            <xs:element type="info" name="info" maxOccurs="unbounded" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="info">
-        <xs:attribute type="xs:string" name="key" use="required"/>
-        <xs:attribute type="xs:string" name="value" use="required"/>
-    </xs:complexType>
-    <xs:complexType name="productInfo">
-        <xs:sequence>
-            <xs:element type="streamingChannels" name="streaming" minOccurs="0" />
-            <xs:element name="is_in_live_score" minOccurs="0"/>
-            <xs:element name="is_in_hosted_statistics" minOccurs="0"/>
-            <xs:element name="is_in_live_center_soccer" minOccurs="0"/>
-            <xs:element name="is_auto_traded" minOccurs="0"/>
-            <xs:element type="productInfoLinks" name="links" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="streamingChannels">
-        <xs:sequence>
-            <xs:element type="streamingChannel" name="channel" maxOccurs="unbounded" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="streamingChannel">
-        <xs:attribute type="xs:int" name="id" use="required"/>
-        <xs:attribute type="xs:string" name="name" use="required"/>
-    </xs:complexType>
-    <xs:complexType name="productInfoLinks">
-        <xs:sequence>
-            <xs:element type="productInfoLink" name="link" maxOccurs="unbounded" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="productInfoLink">
-        <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="xs:string" name="ref" use="required"/>
-    </xs:complexType>
-    <xs:complexType name="scheduledStartTimeChanges">
-        <xs:sequence>
-            <xs:element type="scheduledStartTimeChange" name="scheduled_start_time_change" maxOccurs="unbounded" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="scheduledStartTimeChange">
-        <xs:attribute type="xs:dateTime" name="old_time" use="required"/>
-        <xs:attribute type="xs:dateTime" name="new_time" use="required"/>
-        <xs:attribute type="xs:dateTime" name="changed_at" use="required"/>
-    </xs:complexType>
+	<xs:include schemaLocation="../../includes/unified/urn.xsd" />
+	<xs:include schemaLocation="../../includes/unified/tournament.xsd" />
+	<xs:include schemaLocation="../../includes/unified/season.xsd" />
+	<xs:include schemaLocation="../../includes/unified/match_round.xsd" />
+	<xs:include schemaLocation="../../includes/unified/team.xsd" />
+	<xs:include schemaLocation="../../includes/unified/venue.xsd" />
+	<xs:include schemaLocation="../../includes/unified/coverage.xsd" />
+	<xs:include schemaLocation="../../includes/unified/sport_event.xsd" />
+	<xs:element name="fixtures_fixture" type="fixturesEndpoint" />
+	<xs:complexType name="fixturesEndpoint">
+		<xs:sequence>
+			<xs:element type="fixture" name="fixture" />
+		</xs:sequence>
+		<xs:attribute type="xs:dateTime" name="generated_at"/>
+	</xs:complexType>
+	<xs:complexType name="fixture">
+		<xs:complexContent>
+			<xs:extension base="sportEvent">
+				<xs:sequence>
+					<xs:element type="delayedInfo" name="delayed_info" minOccurs="0" />
+					<xs:element type="tvChannels" name="tv_channels" minOccurs="0" />
+					<xs:element type="extraInfo" name="extra_info" minOccurs="0" />
+					<xs:element type="coverageInfo" name="coverage_info" minOccurs="0" />
+					<xs:element type="productInfo" name="product_info" minOccurs="0" />
+					<xs:element type="referenceIds" name="reference_ids" minOccurs="0" />
+					<xs:element type="scheduledStartTimeChanges" name="scheduled_start_time_changes" minOccurs="0" />
+				</xs:sequence>
+				<xs:attribute type="xs:boolean" name="start_time_confirmed" use="optional" />
+				<xs:attribute type="xs:dateTime" name="start_time" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="referenceIds">
+		<xs:sequence>
+			<xs:element name="reference_id" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required" />
+					<xs:attribute name="value" type="xs:string" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="fixtureCompetitors">
+		<xs:sequence>
+			<xs:element type="teamCompetitor" name="competitor" maxOccurs="unbounded" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="delayedInfo">
+		<xs:attribute type="xs:int" name="id" use="required"/>
+		<xs:attribute type="xs:string" name="description" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="tvChannels">
+		<xs:sequence>
+			<xs:element type="tvChannel" name="tv_channel" maxOccurs="unbounded" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tvChannel">
+		<xs:attribute type="xs:string" name="name" use="required"/>
+		<xs:attribute type="xs:dateTime" name="start_time" use="optional"/>
+		<xs:attribute type="xs:string" name="stream_url" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="extraInfo">
+		<xs:sequence>
+			<xs:element type="info" name="info" maxOccurs="unbounded" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="info">
+		<xs:attribute type="xs:string" name="key" use="required"/>
+		<xs:attribute type="xs:string" name="value" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="productInfo">
+		<xs:sequence>
+			<xs:element type="streamingChannels" name="streaming" minOccurs="0"/>
+			<xs:element type="productInfoItem" name="is_in_live_score" minOccurs="0"/>
+			<xs:element type="productInfoItem" name="is_in_hosted_statistics" minOccurs="0"/>
+			<xs:element type="productInfoItem" name="is_in_live_center_soccer" minOccurs="0"/>
+			<xs:element type="productInfoItem" name="is_in_live_match_tracker" minOccurs="0"/>
+			<xs:element type="productInfoItem" name="is_auto_traded" minOccurs="0"/>
+			<xs:element type="productInfoLinks" name="links" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="productInfoItem">
+	</xs:complexType>
+	<xs:complexType name="streamingChannels">
+		<xs:sequence>
+			<xs:element type="streamingChannel" name="channel" maxOccurs="unbounded" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="streamingChannel">
+		<xs:attribute type="xs:int" name="id" use="required"/>
+		<xs:attribute type="xs:string" name="name" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="productInfoLinks">
+		<xs:sequence>
+			<xs:element type="productInfoLink" name="link" maxOccurs="unbounded" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="productInfoLink">
+		<xs:attribute type="xs:string" name="name" use="required"/>
+		<xs:attribute type="xs:string" name="ref" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="scheduledStartTimeChanges">
+		<xs:sequence>
+			<xs:element type="scheduledStartTimeChange" name="scheduled_start_time_change" maxOccurs="unbounded" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="scheduledStartTimeChange">
+		<xs:attribute type="xs:dateTime" name="old_time" use="required"/>
+		<xs:attribute type="xs:dateTime" name="new_time" use="required"/>
+		<xs:attribute type="xs:dateTime" name="changed_at" use="required"/>
+	</xs:complexType>
 </xs:schema>

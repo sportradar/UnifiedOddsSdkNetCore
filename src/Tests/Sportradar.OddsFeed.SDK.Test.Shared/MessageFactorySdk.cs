@@ -123,15 +123,34 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             {
                 subItemCount = SR.I(20);
             }
-            var pil = new List<IProductInfoLink>();
-            var sc = new List<IStreamingChannel>();
+            var pil = new List<productInfoLink>();
+            var sc = new List<streamingChannel>();
             while (subItemCount > 0)
             {
                 subItemCount--;
-                pil.Add(GetProductInfoLink());
-                sc.Add(GetStreamingChannel());
+                pil.Add(GetProductInfoLinkApi());
+                sc.Add(GetStreamingChannelApi());
             }
-            return new ProductInfo(true, true, true, true, pil, sc);
+            return new ProductInfo(new ProductInfoDTO(new productInfo()
+            {
+                is_auto_traded = new productInfoItem(),
+                is_in_hosted_statistics = new productInfoItem(),
+                is_in_live_center_soccer = new productInfoItem(),
+                is_in_live_match_tracker = new productInfoItem(),
+                is_in_live_score = new productInfoItem(),
+                links = pil.ToArray(),
+                streaming = sc.ToArray()
+            }));
+        }
+
+        internal static productInfoLink GetProductInfoLinkApi()
+        {
+            return new productInfoLink {@ref = "Ref " + SR.S1000, name = "Name " + SR.S1000};
+        }
+
+        internal static streamingChannel GetStreamingChannelApi(int id = 0)
+        {
+            return new streamingChannel {id = id == 0 ? SR.I1000 : id, name = "Name " + SR.S1000};
         }
 
         internal static IProductInfoLink GetProductInfoLink()

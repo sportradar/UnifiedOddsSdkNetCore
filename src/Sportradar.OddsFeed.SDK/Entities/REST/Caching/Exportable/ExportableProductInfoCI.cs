@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using System.Collections.Generic;
 
@@ -27,6 +26,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// A <see cref="bool"/> indicating if the product is in live center soccer
         /// </summary>
         public bool IsInLiveCenterSoccer;
+
+        /// <summary>
+        /// The <see cref="bool"/>  indicating if the product is in live match tracker
+        /// </summary>
+        public bool IsInLiveMatchTracker;
 
         /// <summary>
         /// A <see cref="bool"/> indicating if the product is in live score

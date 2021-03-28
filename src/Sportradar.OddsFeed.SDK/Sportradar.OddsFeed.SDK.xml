@@ -12104,6 +12104,11 @@
             A <see cref="T:System.Boolean"/> indicating if the product is in live center soccer
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableProductInfoCI.IsInLiveMatchTracker">
+            <summary>
+            The <see cref="T:System.Boolean"/>  indicating if the product is in live match tracker
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableProductInfoCI.IsInLiveScore">
             <summary>
             A <see cref="T:System.Boolean"/> indicating if the product is in live score
@@ -23976,7 +23981,7 @@
             Gets a <see cref="T:System.Collections.Generic.IEnumerable`1" /> representing TV channels covering the sport event
             represented by the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IFixture" /> instance
             </summary>
-            <value>The tv channels.</value>
+            <value>The TV channels.</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Fixture.CoverageInfo">
             <summary>
@@ -24654,6 +24659,11 @@
             The <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.IsInLiveCenterSoccer"/> property backing field
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo._isInLiveMatchTracker">
+            <summary>
+            The <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.IsInLiveMatchTracker"/> property backing field
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo._isInLiveScore">
             <summary>
             The <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.IsInLiveScore"/> property backing field
@@ -24669,26 +24679,9 @@
             The <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.Channels"/> property backing field
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.IProductInfoLink},System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.IStreamingChannel})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo"/> class.
-            </summary>
-            <param name="isAutoTraded"></param>
-            <param name="isInHostedStatistics">a value indicating whether the sport event associated with the current instance is available in hosted solutions</param>
-            <param name="isInLiveCenterSoccer">a value indicating whether the sport event associated with the current instance is available in LiveCenterSoccer solution</param>
-            <param name="isInLiveScore">a value indicating whether the sport event associated with the current instance is available in LiveScore solution</param>
-            <param name="links">a <see cref="T:System.Collections.Generic.IEnumerable`1" /> representing links to the product represented by current instance</param>
-            <param name="channels">a <see cref="T:System.Collections.Generic.IEnumerable`1" /> representing streaming channel associated with product</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableProductInfoCI)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo"/> class.
-            </summary>
-            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableProductInfoCI" /> representing the current item</param>
-        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.IsAutoTraded">
             <summary>
-            TODO: Add comments
+            Gets a value indicating whether the sport event is auto traded
             </summary>
             <value><c>true</c> if this instance is automatic traded; otherwise, <c>false</c>.</value>
         </member>
@@ -24700,6 +24693,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.IsInLiveCenterSoccer">
             <summary>
             Gets a value indicating whether the sport event associated with the current instance is available in LiveCenterSoccer solution
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.IsInLiveMatchTracker">
+            <summary>
+            Gets a value indicating whether the sport event associated with the current instance is available in LiveMatchTracker solution
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.IsInLiveScore">
@@ -24716,6 +24714,18 @@
             <summary>
             Gets a <see cref="T:System.Collections.Generic.IEnumerable`1" /> representing streaming channel associated with product
             </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.ProductInfoDTO)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo"/> class
+            </summary>
+            <param name="dto">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.ProductInfoDTO"/> data</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableProductInfoCI)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo"/> class.
+            </summary>
+            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableProductInfoCI" /> representing the current item</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.ProductInfo.ExportAsync">
             <summary>
@@ -30372,7 +30382,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IProductInfo.IsAutoTraded">
             <summary>
-            TODO: Add comments
+            Gets a value indicating whether the sport event is auto traded
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IProductInfo.IsInHostedStatistics">
@@ -30383,6 +30393,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IProductInfo.IsInLiveCenterSoccer">
             <summary>
             Gets a value indicating whether the sport event associated with the current instance is available in LiveCenterSoccer solution
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IProductInfo.IsInLiveMatchTracker">
+            <summary>
+            Gets a value indicating whether the sport event associated with the current instance is available in LiveMatchTracker solution
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IProductInfo.IsInLiveScore">
@@ -34266,6 +34281,9 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.team.abbreviation">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.team.short_name">
+            <remarks/>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.team.country">
             <remarks/>
         </member>
@@ -34644,6 +34662,9 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.productInfo.is_in_live_center_soccer">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.productInfo.is_in_live_match_tracker">
+            <remarks/>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.productInfo.is_auto_traded">
             <remarks/>
         </member>
@@ -34657,6 +34678,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.streamingChannel.name">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.productInfoItem">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.productInfoLink">
@@ -35281,6 +35305,12 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.eventPlayer.name">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.eventPlayer.method">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.eventPlayer.bench">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.eventPlayerAssist">

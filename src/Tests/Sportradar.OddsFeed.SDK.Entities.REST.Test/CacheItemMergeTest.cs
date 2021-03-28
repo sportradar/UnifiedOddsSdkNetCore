@@ -166,10 +166,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         {
             var productInfoType = new productInfo
             {
-                is_auto_traded = true,
-                is_in_hosted_statistics = true,
-                is_in_live_center_soccer = true,
-                is_in_live_score = true,
+                is_auto_traded = new productInfoItem(),
+                is_in_hosted_statistics = new productInfoItem(),
+                is_in_live_center_soccer = new productInfoItem(),
+                is_in_live_match_tracker = new productInfoItem(),
+                is_in_live_score = new productInfoItem(),
                 links = new[]
                 {
                     new productInfoLink {name = "info link 1", @ref = "ref 1"},
@@ -185,18 +186,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 }
             };
             var productInfoDTO = new ProductInfoDTO(productInfoType);
-            var productInfo = new ProductInfo(productInfoDTO.IsAutoTraded,
-                                              productInfoDTO.IsInHostedStatistics,
-                                              productInfoDTO.IsInLiveCenterSoccer,
-                                              productInfoDTO.IsInLiveScore,
-                                              productInfoDTO.ProductInfoLinks?.Select(s=>new ProductInfoLink(s.Reference, s.Name)),
-                                              productInfoDTO.StreamingChannels?.Select(s=>new StreamingChannel(s.Id, s.Name)));
+            var productInfo = new ProductInfo(productInfoDTO);
 
             Assert.IsNotNull(productInfo);
-            Assert.AreEqual(productInfoType.is_auto_traded, productInfo.IsAutoTraded);
-            Assert.AreEqual(productInfoType.is_in_hosted_statistics, productInfo.IsInHostedStatistics);
-            Assert.AreEqual(productInfoType.is_in_live_center_soccer, productInfo.IsInLiveCenterSoccer);
-            Assert.AreEqual(productInfoType.is_in_live_score, productInfo.IsInLiveScore);
+            Assert.AreEqual(productInfoType.is_auto_traded != null, productInfo.IsAutoTraded);
+            Assert.AreEqual(productInfoType.is_in_hosted_statistics != null, productInfo.IsInHostedStatistics);
+            Assert.AreEqual(productInfoType.is_in_live_center_soccer != null, productInfo.IsInLiveCenterSoccer);
+            Assert.AreEqual(productInfoType.is_in_live_match_tracker != null, productInfo.IsInLiveMatchTracker);
+            Assert.AreEqual(productInfoType.is_in_live_score != null, productInfo.IsInLiveScore);
             Assert.AreEqual(productInfoType.links.Length, productInfo.Links.Count());
             Assert.AreEqual(productInfoType.streaming.Length, productInfo.Channels.Count());
             Assert.AreNotEqual(productInfo.Links.ToList()[0].Name, productInfo.Links.ToList()[2].Name);

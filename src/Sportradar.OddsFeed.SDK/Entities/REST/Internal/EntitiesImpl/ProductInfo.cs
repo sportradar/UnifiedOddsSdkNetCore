@@ -33,6 +33,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         private readonly bool _isInLiveCenterSoccer;
 
         /// <summary>
+        /// The <see cref="IsInLiveMatchTracker"/> property backing field
+        /// </summary>
+        private readonly bool _isInLiveMatchTracker;
+
+        /// <summary>
         /// The <see cref="IsInLiveScore"/> property backing field
         /// </summary>
         private readonly bool _isInLiveScore;
@@ -48,61 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         private readonly IReadOnlyCollection<IStreamingChannel> _channels;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductInfo"/> class.
-        /// </summary>
-        /// <param name="isAutoTraded"></param>
-        /// <param name="isInHostedStatistics">a value indicating whether the sport event associated with the current instance is available in hosted solutions</param>
-        /// <param name="isInLiveCenterSoccer">a value indicating whether the sport event associated with the current instance is available in LiveCenterSoccer solution</param>
-        /// <param name="isInLiveScore">a value indicating whether the sport event associated with the current instance is available in LiveScore solution</param>
-        /// <param name="links">a <see cref="IEnumerable{IProductInfoLink}" /> representing links to the product represented by current instance</param>
-        /// <param name="channels">a <see cref="IEnumerable{IStreamingChannel}" /> representing streaming channel associated with product</param>
-        public ProductInfo(bool isAutoTraded, bool isInHostedStatistics, bool isInLiveCenterSoccer, bool isInLiveScore, IEnumerable<IProductInfoLink> links, IEnumerable<IStreamingChannel> channels)
-        {
-            _isAutoTraded = isAutoTraded;
-            _isInHostedStatistics = isInHostedStatistics;
-            _isInLiveCenterSoccer = isInLiveCenterSoccer;
-            _isInLiveScore = isInLiveScore;
-
-            if (links != null)
-            {
-                _links = links as IReadOnlyCollection<IProductInfoLink> ?? new ReadOnlyCollection<IProductInfoLink>(links.ToList());
-            }
-            if (channels != null)
-            {
-                _channels = channels as IReadOnlyCollection<IStreamingChannel> ?? new ReadOnlyCollection<IStreamingChannel>(channels.ToList());
-            }
-        }
-
-        public ProductInfo(ProductInfoDTO dto)
-            :this(dto.IsAutoTraded,
-                dto.IsInHostedStatistics,
-                dto.IsInLiveCenterSoccer,
-                dto.IsInLiveScore,
-                dto.ProductInfoLinks?.Select(s => new ProductInfoLink(s.Reference, s.Name)),
-                dto.StreamingChannels?.Select(s => new StreamingChannel(s.Id, s.Name)))
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProductInfo"/> class.
-        /// </summary>
-        /// <param name="exportable">A <see cref="ExportableProductInfoCI" /> representing the current item</param>
-        public ProductInfo(ExportableProductInfoCI exportable)
-        {
-            if (exportable == null)
-                throw new ArgumentNullException(nameof(exportable));
-
-            _isAutoTraded = exportable.IsAutoTraded;
-            _isInHostedStatistics = exportable.IsInHostedStatistics;
-            _isInLiveCenterSoccer = exportable.IsInLiveCenterSoccer;
-            _isInLiveScore = exportable.IsInLiveScore;
-            _links = exportable.Links?.Select(l => new ProductInfoLink(l)).ToList();
-            _channels = exportable.Channels?.Select(c => new StreamingChannel(c)).ToList();
-        }
-
-        /// <summary>
-        /// TODO: Add comments
+        /// Gets a value indicating whether the sport event is auto traded
         /// </summary>
         /// <value><c>true</c> if this instance is automatic traded; otherwise, <c>false</c>.</value>
         public bool IsAutoTraded => _isAutoTraded;
@@ -116,6 +67,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets a value indicating whether the sport event associated with the current instance is available in LiveCenterSoccer solution
         /// </summary>
         public bool IsInLiveCenterSoccer => _isInLiveCenterSoccer;
+
+        /// <summary>
+        /// Gets a value indicating whether the sport event associated with the current instance is available in LiveMatchTracker solution
+        /// </summary>
+        public bool IsInLiveMatchTracker => _isInLiveMatchTracker;
 
         /// <summary>
         /// Gets a value indicating whether the sport event associated with the current instance is available in LiveScore solution
@@ -132,6 +88,55 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         public IEnumerable<IStreamingChannel> Channels => _channels;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductInfo"/> class
+        /// </summary>
+        /// <param name="dto">The <see cref="ProductInfoDTO"/> data</param>
+        public ProductInfo(ProductInfoDTO dto)
+        {
+            if(dto == null)
+            {
+                return;
+            }
+
+            _isAutoTraded = dto.IsAutoTraded;
+            _isInHostedStatistics = dto.IsInHostedStatistics;
+            _isInLiveCenterSoccer = dto.IsInLiveCenterSoccer;
+            _isInLiveMatchTracker = dto.IsInLiveMatchTracker;
+            _isInLiveScore = dto.IsInLiveScore;
+
+            if (dto.ProductInfoLinks != null)
+            {
+                var links = dto.ProductInfoLinks.Select(s => (IProductInfoLink)new ProductInfoLink(s.Reference, s.Name)).ToList();
+                _links = new ReadOnlyCollection<IProductInfoLink>(links);
+            }
+            if (dto.StreamingChannels != null)
+            {
+                var channels = dto.StreamingChannels.Select(s => (IStreamingChannel)new StreamingChannel(s.Id, s.Name)).ToList();
+                _channels = new ReadOnlyCollection<IStreamingChannel>(channels);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductInfo"/> class.
+        /// </summary>
+        /// <param name="exportable">A <see cref="ExportableProductInfoCI" /> representing the current item</param>
+        public ProductInfo(ExportableProductInfoCI exportable)
+        {
+            if (exportable == null)
+            {
+                throw new ArgumentNullException(nameof(exportable));
+            }
+
+            _isAutoTraded = exportable.IsAutoTraded;
+            _isInHostedStatistics = exportable.IsInHostedStatistics;
+            _isInLiveCenterSoccer = exportable.IsInLiveCenterSoccer;
+            _isInLiveMatchTracker = exportable.IsInLiveMatchTracker;
+            _isInLiveScore = exportable.IsInLiveScore;
+            _links = exportable.Links?.Select(l => new ProductInfoLink(l)).ToList();
+            _channels = exportable.Channels?.Select(c => new StreamingChannel(c)).ToList();
+        }
+
         protected override string PrintI()
         {
             return $"IsAutoTraded={_isAutoTraded}";
@@ -141,14 +146,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             var l = _links == null ? string.Empty : string.Join("; ", _links.Select(k => ((ProductInfoLink)k).ToString("c")));
             var c = _channels == null ? string.Empty : string.Join("; ", _channels.Select(k => ((StreamingChannel)k).ToString("c")));
-            return $"IsAutoTraded={_isAutoTraded}, IsInHostedStatistics={_isInHostedStatistics}, IsInLiveScore={_isInLiveScore}, IsInLiveCenterSoccer={_isInLiveCenterSoccer}, Links=[{l}], Channels=[{c}]";
+            return $"IsAutoTraded={_isAutoTraded}, IsInHostedStatistics={_isInHostedStatistics}, IsInLiveCenterSoccer={_isInLiveCenterSoccer}, IsInLiveMatchTracker={_isInLiveMatchTracker}, IsInLiveScore={_isInLiveScore}, Links=[{l}], Channels=[{c}]";
         }
 
         protected override string PrintF()
         {
             var l = _links == null ? string.Empty : string.Join("; ", _links.Select(k => ((ProductInfoLink)k).ToString("f")));
             var c = _channels == null ? string.Empty : string.Join("; ", _channels.Select(k => ((StreamingChannel)k).ToString("f")));
-            return $"IsAutoTraded={_isAutoTraded}, IsInHostedStatistics={_isInHostedStatistics}, IsInLiveScore={_isInLiveScore}, IsInLiveCenterSoccer={_isInLiveCenterSoccer}, Links=[{l}], Channels=[{c}]";
+            return $"IsAutoTraded={_isAutoTraded}, IsInHostedStatistics={_isInHostedStatistics}, IsInLiveCenterSoccer={_isInLiveCenterSoccer}, IsInLiveMatchTracker={_isInLiveMatchTracker}, IsInLiveScore={_isInLiveScore}, Links=[{l}], Channels=[{c}]";
         }
 
         protected override string PrintJ()
@@ -167,12 +172,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             return new ExportableProductInfoCI
             {
-                IsInLiveCenterSoccer = _isInLiveCenterSoccer,
                 IsAutoTraded = _isAutoTraded,
                 IsInHostedStatistics = _isInHostedStatistics,
+                IsInLiveCenterSoccer = _isInLiveCenterSoccer,
+                IsInLiveMatchTracker = _isInLiveMatchTracker,
+                IsInLiveScore = _isInLiveScore,
                 Links = linkTasks != null ? await Task.WhenAll(linkTasks) : null,
-                Channels = channelTasks != null ? await Task.WhenAll(channelTasks) : null,
-                IsInLiveScore = _isInLiveScore
+                Channels = channelTasks != null ? await Task.WhenAll(channelTasks) : null
             };
         }
     }

@@ -14,13 +14,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// </summary>
     internal class ProductInfoDTO
     {
-        internal bool IsInLiveScore { get; }
+        internal bool IsAutoTraded { get; }
 
         internal bool IsInHostedStatistics { get; }
 
         internal bool IsInLiveCenterSoccer { get; }
 
-        internal bool IsAutoTraded { get; }
+        internal bool IsInLiveMatchTracker { get; }
+
+        internal bool IsInLiveScore { get; }
 
         internal IEnumerable<ProductInfoLinkDTO> ProductInfoLinks { get; }
 
@@ -30,10 +32,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Guard.Argument(productInfo, nameof(productInfo)).NotNull();
 
-            IsInLiveScore = productInfo.is_in_live_score != null;
+            IsAutoTraded = productInfo.is_auto_traded != null;
             IsInHostedStatistics = productInfo.is_in_hosted_statistics != null;
             IsInLiveCenterSoccer = productInfo.is_in_live_center_soccer != null;
-            IsAutoTraded = productInfo.is_auto_traded != null;
+            IsInLiveMatchTracker = productInfo.is_in_live_match_tracker != null;
+            IsInLiveScore = productInfo.is_in_live_score != null;
 
             ProductInfoLinks = productInfo.links != null && productInfo.links.Any()
                 ? new ReadOnlyCollection<ProductInfoLinkDTO>(productInfo.links.Select(p => new ProductInfoLinkDTO(p)).ToList())

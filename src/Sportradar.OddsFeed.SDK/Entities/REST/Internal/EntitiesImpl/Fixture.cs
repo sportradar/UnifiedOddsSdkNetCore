@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets a <see cref="IEnumerable{ITvChannel}" /> representing TV channels covering the sport event
         /// represented by the current <see cref="IFixture" /> instance
         /// </summary>
-        /// <value>The tv channels.</value>
+        /// <value>The TV channels.</value>
         public IEnumerable<ITvChannel> TvChannels { get; }
 
         /// <summary>
@@ -136,12 +136,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             }
             if (fixtureDto.ProductInfo != null)
             {
-                ProductInfo = new ProductInfo(fixtureDto.ProductInfo.IsAutoTraded,
-                                               fixtureDto.ProductInfo.IsInHostedStatistics,
-                                               fixtureDto.ProductInfo.IsInLiveCenterSoccer,
-                                               fixtureDto.ProductInfo.IsInLiveScore,
-                                               fixtureDto.ProductInfo.ProductInfoLinks?.Select(t=> new ProductInfoLink(t.Reference, t.Name)),
-                                               fixtureDto.ProductInfo.StreamingChannels?.Select(t=> new StreamingChannel(t.Id, t.Name)));
+                ProductInfo = new ProductInfo(fixtureDto.ProductInfo);
             }
 
             if (fixtureDto.ReferenceIds != null)

@@ -99,8 +99,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         [TestMethod]
         public void MappingVenueTest()
         {
-            if (_record.fixture.venue == null) return;
-
+            if (_record.fixture.venue == null)
+            {
+                return;
+            }
 
             _assertHelper.AreEqual(() => _entity.Venue.Id.ToString(), _record.fixture.venue.id);
             _assertHelper.AreEqual(() => _entity.Venue.Name, _record.fixture.venue.name);
@@ -110,7 +112,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             _assertHelper.AreEqual(() => _entity.Venue.State, _record.fixture.venue.state);
             _assertHelper.AreEqual(() => _entity.Venue.Capacity, _record.fixture.venue.capacitySpecified ? (int?)_record.fixture.venue.capacity : null);
         }
-
 
         [TestMethod]
         public void MappingTvChannelsTest()

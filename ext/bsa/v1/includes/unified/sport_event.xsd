@@ -59,6 +59,6 @@
     <xs:attribute type="xs:dateTime" name="scheduled" use="optional"/>
     <xs:attribute type="xs:boolean" name="start_time_tbd" use="optional"/>
     <xs:attribute type="xs:dateTime" name="scheduled_end" use="optional"/>
-    <xs:attribute name="replaced_by" type="unifiedSportEventUrn"/>
+    <xs:attribute name="replaced_by" type="unifiedSportEventUrn" use="optional"/>
   </xs:attributeGroup>
 </xs:schema>

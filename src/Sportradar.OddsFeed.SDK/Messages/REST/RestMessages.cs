@@ -343,6 +343,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         private string abbreviationField;
         
+        private string short_nameField;
+        
         private string countryField;
         
         private string country_codeField;
@@ -409,6 +411,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
             }
             set {
                 this.abbreviationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string short_name {
+            get {
+                return this.short_nameField;
+            }
+            set {
+                this.short_nameField = value;
             }
         }
         
@@ -1999,13 +2012,15 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         private streamingChannel[] streamingField;
         
-        private object is_in_live_scoreField;
+        private productInfoItem is_in_live_scoreField;
         
-        private object is_in_hosted_statisticsField;
+        private productInfoItem is_in_hosted_statisticsField;
         
-        private object is_in_live_center_soccerField;
+        private productInfoItem is_in_live_center_soccerField;
         
-        private object is_auto_tradedField;
+        private productInfoItem is_in_live_match_trackerField;
+        
+        private productInfoItem is_auto_tradedField;
         
         private productInfoLink[] linksField;
         
@@ -2021,7 +2036,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         }
         
         /// <remarks/>
-        public object is_in_live_score {
+        public productInfoItem is_in_live_score {
             get {
                 return this.is_in_live_scoreField;
             }
@@ -2031,7 +2046,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         }
         
         /// <remarks/>
-        public object is_in_hosted_statistics {
+        public productInfoItem is_in_hosted_statistics {
             get {
                 return this.is_in_hosted_statisticsField;
             }
@@ -2041,7 +2056,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         }
         
         /// <remarks/>
-        public object is_in_live_center_soccer {
+        public productInfoItem is_in_live_center_soccer {
             get {
                 return this.is_in_live_center_soccerField;
             }
@@ -2051,7 +2066,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         }
         
         /// <remarks/>
-        public object is_auto_traded {
+        public productInfoItem is_in_live_match_tracker {
+            get {
+                return this.is_in_live_match_trackerField;
+            }
+            set {
+                this.is_in_live_match_trackerField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public productInfoItem is_auto_traded {
             get {
                 return this.is_auto_tradedField;
             }
@@ -2105,6 +2130,15 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
                 this.nameField = value;
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    public partial class productInfoItem {
     }
     
     /// <remarks/>
@@ -5051,6 +5085,10 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         private string nameField;
         
+        private string methodField;
+        
+        private string benchField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string id {
@@ -5070,6 +5108,28 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string method {
+            get {
+                return this.methodField;
+            }
+            set {
+                this.methodField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string bench {
+            get {
+                return this.benchField;
+            }
+            set {
+                this.benchField = value;
             }
         }
     }
