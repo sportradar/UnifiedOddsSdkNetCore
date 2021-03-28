@@ -11563,6 +11563,12 @@
             A <see cref="T:System.String"/> representing the category id
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI.ShortName">
+            <summary>
+            Gets the short name
+            </summary>
+            <value>The short name</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCoverageInfoCI">
             <summary>
             Class used to export/import coverage info cache item properties
@@ -13643,6 +13649,12 @@
             </summary>
             <returns>The associated category</returns>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor.ShortName">
+            <summary>
+            Gets the short name
+            </summary>
+            <value>The short name</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitorResult">
             <summary>
             Defines contract used by classes that provide competitor result information
@@ -14843,6 +14855,12 @@
             Gets the race driver profile
             </summary>
             <value>The race driver profile</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.ShortName">
+            <summary>
+            Gets the short name
+            </summary>
+            <value>The short name</value>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI._fetchedCultures">
             <summary>
@@ -20848,7 +20866,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO">
             <summary>
-            A data-access-object representing a sport competitor
+            A data-transfer-object representing a sport competitor
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PlayerDTO" />
         </member>
@@ -20901,7 +20919,7 @@
             <summary>
             Gets the age group
             </summary>
-            <value>The gender</value>
+            <value>The age group</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO.SportId">
             <summary>
@@ -20914,6 +20932,12 @@
             Gets the category id
             </summary>
             <value>The category id</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO.ShortName">
+            <summary>
+            Gets the short name
+            </summary>
+            <value>The short name</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.team)">
             <summary>
@@ -23297,6 +23321,12 @@
             Gets associated category
             </summary>
             <returns>The associated category</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Competitor.ShortName">
+            <summary>
+            Gets the short name
+            </summary>
+            <value>The short name</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Competitor.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.IProfileCache,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.REST.Internal.ISportEntityFactory,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ICompetitionCI)">
             <summary>

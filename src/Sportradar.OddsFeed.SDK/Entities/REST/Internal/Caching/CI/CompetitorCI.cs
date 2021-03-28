@@ -52,6 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private string _state;
         private URN _sportId;
         private URN _categoryId;
+        private string _shortName;
 
         /// <summary>
         /// Last time (if any) competitor profile was fetched
@@ -304,6 +305,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public RaceDriverProfileCI RaceDriverProfile => _raceDriverProfile;
 
         /// <summary>
+        /// Gets the short name
+        /// </summary>
+        /// <value>The short name</value>
+        public string ShortName => _shortName;
+
+        /// <summary>
         /// Gets the <see cref="IEnumerable{CultureInfo}"/> specifying the languages for which the current instance has translations
         /// </summary>
         /// <value>The fetched cultures</value>
@@ -445,6 +452,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _dataRouterManager = originalCompetitorCI._dataRouterManager;
             _primaryCulture = originalCompetitorCI._primaryCulture;
             _raceDriverProfile = originalCompetitorCI._raceDriverProfile;
+            _shortName = originalCompetitorCI._shortName;
             _lastTimeCompetitorProfileFetched = originalCompetitorCI._lastTimeCompetitorProfileFetched;
             _cultureCompetitorProfileFetched = originalCompetitorCI._cultureCompetitorProfileFetched;
         }
@@ -496,6 +504,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             }
             _sportId = exportable.SportId != null ? URN.Parse(exportable.SportId) : null;
             _categoryId = exportable.CategoryId != null ? URN.Parse(exportable.CategoryId) : null;
+            _shortName = exportable.ShortName;
         }
 
         /// <summary>
@@ -529,7 +538,6 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             {
                 _ageGroup = competitor.AgeGroup;
             }
-            //((List<CultureInfo>)_fetchedCultures).Add(culture);
             if (competitor.SportId != null)
             {
                 _sportId = competitor.SportId;
@@ -538,6 +546,10 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             if (competitor.CategoryId != null)
             {
                 _categoryId = competitor.CategoryId;
+            }
+            if(!string.IsNullOrEmpty(competitor.ShortName))
+            {
+                _shortName = competitor.ShortName;
             }
         }
 
@@ -626,6 +638,11 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 _categoryId = competitorProfile.Competitor.CategoryId;
             }
 
+            if(!string.IsNullOrEmpty(competitorProfile.Competitor.ShortName))
+            {
+                _shortName = competitorProfile.Competitor.ShortName;
+            }
+
             ((List<CultureInfo>) _fetchedCultures).Add(culture);
         }
 
@@ -661,6 +678,10 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             {
                 _lastTimeCompetitorProfileFetched = DateTime.Now;
                 _cultureCompetitorProfileFetched.Add(culture);
+            }
+            if(!string.IsNullOrEmpty(simpleTeamProfile.Competitor.ShortName))
+            {
+                _shortName = simpleTeamProfile.Competitor.ShortName;
             }
             ((List<CultureInfo>) _fetchedCultures).Add(culture);
         }
@@ -722,6 +743,10 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             _cultureCompetitorProfileFetched = item._cultureCompetitorProfileFetched?.ToList();
             _sportId = item._sportId ?? _sportId;
             _categoryId = item._categoryId ?? _categoryId;
+            if(!string.IsNullOrEmpty(item.ShortName))
+            {
+                _shortName = item.ShortName;
+            }
         }
 
         private ReferenceIdCI UpdateReferenceIds(URN id, IDictionary<string, string> referenceIds)
@@ -805,7 +830,8 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                                                      : (DateTime?) null,
                 CultureCompetitorProfileFetched = _cultureCompetitorProfileFetched,
                 SportId = _sportId?.ToString(),
-                CategoryId = _categoryId?.ToString()
+                CategoryId = _categoryId?.ToString(),
+                ShortName = _shortName
             };
 
             return exportable;

@@ -117,5 +117,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>The associated category</returns>
         Task<ICategorySummary> GetCategoryAsync() => null;
+
+        /// <summary>
+        /// Gets the short name
+        /// </summary>
+        /// <value>The short name</value>
+        public string ShortName => null;
     }
 }

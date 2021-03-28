@@ -239,6 +239,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
+        /// Gets the short name
+        /// </summary>
+        /// <value>The short name</value>
+        public string ShortName => GetOrLoadCompetitor()?.ShortName;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Competitor"/> class
         /// </summary>
         /// <param name="ci">A <see cref="CompetitorCI"/> used to create new instance</param>

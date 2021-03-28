@@ -11,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     /// <summary>
-    /// A data-access-object representing a sport competitor
+    /// A data-transfer-object representing a sport competitor
     /// </summary>
     /// <seealso cref="PlayerDTO" />
     internal class CompetitorDTO : PlayerDTO
@@ -64,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <summary>
         /// Gets the age group
         /// </summary>
-        /// <value>The gender</value>
+        /// <value>The age group</value>
         public string AgeGroup { get; }
 
         /// <summary>
@@ -78,6 +78,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <value>The category id</value>
         public URN CategoryId { get; }
+
+        /// <summary>
+        /// Gets the short name
+        /// </summary>
+        /// <value>The short name</value>
+        public string ShortName { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompetitorDTO"/> class from the <see cref="team"/> instance
@@ -113,6 +119,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 CategoryId = extended.category == null
                     ? null
                     : URN.Parse(extended.category.id);
+            }
+
+            if (!string.IsNullOrEmpty(record.short_name))
+            {
+                ShortName = record.short_name;
             }
         }
     }
