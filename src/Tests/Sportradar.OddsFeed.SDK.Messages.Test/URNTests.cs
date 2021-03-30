@@ -147,5 +147,14 @@ namespace Sportradar.OddsFeed.SDK.Messages.Test
             Assert.AreEqual(ResourceTypeGroup.MATCH, urn.TypeGroup, "Value of the typeGroup ils not correct");
             Assert.AreEqual(1234, urn.Id, "Value of the Id is not correct");
         }
+
+        [TestMethod]
+        public void UrnWithNegativeId()
+        {
+            var urnString = "wns:draw:-2143997118";
+            var urn = URN.Parse(urnString);
+            Assert.IsNotNull(urn, "urn should not be null");
+            Assert.AreEqual(ResourceTypeGroup.DRAW, urn.TypeGroup, "Value of TypeGroup is not correct");
+        }
     }
 }

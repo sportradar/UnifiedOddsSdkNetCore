@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <summary>
         /// A regex pattern used for parsing of URN strings
         /// </summary>
-        private static readonly string RegexPattern = $@"\A(?<{PrefixGroupName}>[a-zA-Z]+):(?<{TypeGroupName}>[a-zA-Z_]+):(?<{IdGroupName}>\d+)\z";
+        private static readonly string RegexPattern = $@"\A(?<{PrefixGroupName}>[a-zA-Z]+):(?<{TypeGroupName}>[a-zA-Z_]+):(?<{IdGroupName}>[-]?\d+)\z";
 
         /// <summary>
         /// The name of the regex group used to store the prefix
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         {
             Guard.Argument(prefix, nameof(prefix)).NotNull().NotEmpty();
             Guard.Argument(type, nameof(type)).NotNull().NotEmpty();
-            Guard.Argument(id, nameof(id)).Positive();
+            Guard.Argument(id, nameof(id)).NotZero();
 
             var tuple = Types.FirstOrDefault(t => t.Item1 == type);
 
