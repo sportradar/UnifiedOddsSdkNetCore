@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         private readonly IDataProvider<TournamentInfoDTO> _sportEventFixtureForTournamentProvider;
         /// <summary>
-        /// The sport event fixture provider without cacher for when tournamentInfo is returned
+        /// The sport event fixture provider without cache for when tournamentInfo is returned
         /// </summary>
         private readonly IDataProvider<TournamentInfoDTO> _sportEventFixtureChangeFixtureForTournamentProvider;
 

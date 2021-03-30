@@ -217,6 +217,18 @@ namespace Sportradar.OddsFeed.SDK.API
         }
 
         /// <summary>
+        /// Gets a <see cref="IEventChangeManager"/> instance used to automatically receive fixture and result changes
+        /// </summary>
+        public IEventChangeManager EventChangeManager
+        {
+            get
+            {
+                InitFeed();
+                return UnityContainer.Resolve<IEventChangeManager>();
+            }
+        }
+
+        /// <summary>
         /// A <see cref="IFeedRecoveryManager"/> for managing recoveries and producer statuses in sessions
         /// </summary>
         private IFeedRecoveryManager _feedRecoveryManager;
@@ -565,6 +577,8 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 session.Close();
             }
+
+            EventChangeManager.Stop();
 
             if (disposing)
             {

@@ -248,6 +248,31 @@
             Details about the error
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.API.EventArguments.EventChangeEventArgs">
+            <summary>
+            Event arguments of <see cref="E:Sportradar.OddsFeed.SDK.API.IEventChangeManager.FixtureChange"/> or <see cref="E:Sportradar.OddsFeed.SDK.API.IEventChangeManager.ResultChange"/> event
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.EventArguments.EventChangeEventArgs.SportEventId">
+            <summary>
+            Gets the <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport event
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.EventArguments.EventChangeEventArgs.UpdateTime">
+            <summary>
+            Gets the <see cref="T:System.DateTime"/> specifying the last update time
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.EventArguments.EventChangeEventArgs.SportEvent">
+            <summary>
+            Gets the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/>
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.EventChangeEventArgs.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,System.DateTime,Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.EventArguments.EventChangeEventArgs"/> class
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.EventArguments.EventRecoveryCompletedEventArgs">
             <summary>
             Event arguments for the EventRecoveryCompleted events
@@ -775,6 +800,11 @@
             Gets a <see cref="T:Sportradar.OddsFeed.SDK.API.ICustomBetManager" /> instance used to perform various custom bet operations
             </summary>
             <value>The custom bet manager</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Feed.EventChangeManager">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.API.IEventChangeManager"/> instance used to automatically receive fixture and result changes
+            </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Feed._feedRecoveryManager">
             <summary>
@@ -1321,6 +1351,87 @@
         <member name="E:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1.OnFixtureChange">
             <summary>
             Raised when a fixture change message is received from the feed
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.API.IEventChangeManager">
+            <summary>
+            Defines a contract implemented by classes capable of getting list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IFixtureChange"/> and/or <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange"/>
+            </summary>
+        </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.IEventChangeManager.FixtureChange">
+            <summary>
+            Raised for <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IFixtureChange"/> message
+            </summary>
+        </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.IEventChangeManager.ResultChange">
+            <summary>
+            Raised for <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange"/> message
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IEventChangeManager.LastFixtureChange">
+            <summary>
+            Gets the timestamp of last processed fixture change
+            </summary>
+            <value>The last fixture change.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IEventChangeManager.LastResultChange">
+            <summary>
+            Gets the timestamp of last processed result change
+            </summary>
+            <value>The last result change.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IEventChangeManager.FixtureChangeInterval">
+            <summary>
+            Gets the interval for getting new list of fixture changes
+            </summary>
+            <value>The fixture change interval.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IEventChangeManager.ResultChangeInterval">
+            <summary>
+            Gets the interval for getting new list of fixture changes
+            </summary>
+            <value>The fixture change interval.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IEventChangeManager.IsRunning">
+            <summary>
+            Gets a value indicating whether this instance is running.
+            </summary>
+            <value><c>true</c> if this instance is running; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IEventChangeManager.SetFixtureChangeInterval(System.TimeSpan)">
+            <summary>
+            Sets the fixture change interval between two Sports API requests. Must be between 1 min and 12 hours.
+            </summary>
+            <param name="fixtureChangeInterval">The fixture change interval.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IEventChangeManager.SetResultChangeInterval(System.TimeSpan)">
+            <summary>
+            Sets the result change interval between two Sports API requests. Must be between 1 min and 12 hours.
+            </summary>
+            <param name="resultChangeInterval">The result change interval.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IEventChangeManager.SetFixtureChangeTimestamp(System.DateTime)">
+            <summary>
+            Sets the last processed fixture change timestamp.
+            </summary>
+            <param name="fixtureChangeTimestamp">The fixture change timestamp.</param>
+            <remarks>It can be only set when it is stopped</remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IEventChangeManager.SetResultChangeTimestamp(System.DateTime)">
+            <summary>
+            Sets the last processed result change timestamp.
+            </summary>
+            <param name="resultChangeTimestamp">The result change timestamp.</param>
+            <remarks>It can be only set when it is stopped</remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IEventChangeManager.Start">
+            <summary>
+            Starts scheduled job for fetching fixture and result changes
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IEventChangeManager.Stop">
+            <summary>
+            Stops scheduled job for fetching fixture and result changes
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.IEventRecoveryRequestIssuer">
@@ -5838,6 +5949,11 @@
         <member name="E:Sportradar.OddsFeed.SDK.API.IOddsFeed.ConnectionException">
             <summary>
             Occurs when an exception occurs in the connection loop
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IOddsFeed.EventChangeManager">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.API.IEventChangeManager"/> instance used to automatically receive fixture and result changes
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration">
@@ -11314,19 +11430,224 @@
             Defines a contract implemented by messages indicating that a producer status changed to down or up
             </summary>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange">
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1">
             <summary>
-            Defines a contract implemented by classes representing result change
+            Defines a contract implemented by bet-cancel-rollback messages
+            </summary>
+            <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> derived type specifying the type of the associated sport event</typeparam>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1.StartTime">
+            <summary>
+            Gets number of milliseconds from UTC epoch representing the start of rollback cancellation period.
+            A null value indicates the period started with market activation
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange.SportEventId">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1.EndTime">
             <summary>
-            Gets the <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport event
+            Gets number of milliseconds from UTC epoch representing the end of rollback cancellation period.
+            A null value indicates the period ended when the market was closed
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange.UpdateTime">
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1">
             <summary>
-            Gets the <see cref="T:System.DateTime"/> specifying the last update time
+            Defines a contract implemented by bet-settlement-rollback messages
+            </summary>
+            <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> derived type specifying the type of the associated sport event</typeparam>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted">
+            <summary>
+            Defines a contract implemented by messages indicating that all messages from the requested snapshot were send
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted.RequestId">
+            <summary>
+            Get the id of the request which triggered the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted"/> message
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.MarketStatus">
+            <summary>
+            Enumerates market statuses
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.ACTIVE">
+            <summary>
+            Indicating that the market should be displayed and bets on it should be accepted
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.INACTIVE">
+            <summary>
+            Indicates the market should NOT be displayed and bets on it should NOT be accepted
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.SUSPENDED">
+            <summary>
+            Indicates that the market should be displayed but the bets on it should NOT be accepted
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.HANDED_OVER">
+            <summary>
+            Indicates the market was handed over from one odds producer to another.
+            If the odds for this market were already received from another producer this update should be ignored,
+            otherwise associated market should be suspended until such odds are received.
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.SETTLED">
+            <summary>
+            Indicates the markets has already been settled by a previous message
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.CANCELLED">
+            <summary>
+            Indicates the markets has already been cancelled by a previous message
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest">
+            <summary>
+            Defines which messages will be provided by feed
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.Name">
+            <summary>
+            Gets the name of the message interest
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.ProducerId">
+            <summary>
+            Gets the routing key used to select appropriate AMQP exchange
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.IsScopeInterest">
+            <summary>
+            Gets the value indicating whether the current interest is a scope interest
+            (live, prematch or virt)
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.Events">
+            <summary>
+            The list of events (only used with <see cref="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.SpecificEventsOnly(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN})"/> type)
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.IsEventSpecific">
+            <summary>
+            Gets a value indicating whether the current instance is related to only specific events
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.Scope">
+            <summary>
+            Gets the scopes that specific message interest covers
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.#ctor(System.String,System.Int32,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN},System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> class
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.ToString">
+            <summary>
+            Constructs a <see cref="T:System.String"/> representation of the current instance
+            </summary>
+            <returns>Returns current instance represented as string</returns>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.AllMessages">
+            <summary>
+            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in all messages
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in all messages</returns>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.LiveMessagesOnly">
+            <summary>
+            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in live messages
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in live messages</returns>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.PrematchMessagesOnly">
+            <summary>
+            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in pre-match messages
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in pre-match messages</returns>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.HighPriorityMessages">
+            <summary>
+            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in hi priority messages
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in high priority messages</returns>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.LowPriorityMessages">
+            <summary>
+            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in low priority messages
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in low priority messages</returns>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.VirtualSportMessages">
+            <summary>
+            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages for virtual sports
+            </summary>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages for virtual sports</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.SpecificEventsOnly(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN})">
+            <summary>
+            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages associated with specific events
+            </summary>
+            <param name="eventIds">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the target events</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages associated with specific events</returns>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.MessageScopes">
+            <summary>
+            List of <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> representing defined messages scopes
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.DefinedInterests">
+            <summary>
+            Gets all available <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> instances
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.FromScope(System.String)">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> representing a scope specified by it's name.
+            </summary>
+            <param name="scopeName">The name of the scope</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> representing a scope specified by it's name. </returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.IsCombinationValid(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.MessageInterest})">
+            <summary>
+            Determines whether the provided list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> is a valid combination of sessions
+            </summary>
+            <param name="interests"></param>
+            <returns>True if the provided combination is valid. Otherwise false</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason">
+            <summary>
+            Enumerates possible reasons why the odds-change was generated
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason.NORMAL">
+            <summary>
+            Indicates the message was generated by normal service execution
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason.RISK_ADJUSTMENT">
+            <summary>
+            Indicates the message was generated due to risk adjustment
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason.SYSTEM_DOWN">
+            <summary>
+            Indicates the message was generated because the feed system went down
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.OddsDisplayType">
+            <summary>
+            Enumerates possible options for displaying outcome odds
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsDisplayType.Decimal">
+            <summary>
+            The decimal format
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsDisplayType.American">
+            <summary>
+            The American odds format
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableBonusInfoCI">
@@ -20353,7 +20674,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager._sportEventFixtureChangeFixtureForTournamentProvider">
             <summary>
-            The sport event fixture provider without cacher for when tournamentInfo is returned
+            The sport event fixture provider without cache for when tournamentInfo is returned
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager._cacheManager">
@@ -30738,6 +31059,21 @@
             was generated, or a null reference if time of generation is not defined
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange">
+            <summary>
+            Defines a contract implemented by classes representing result change
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange.SportEventId">
+            <summary>
+            Gets the <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport event
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IResultChange.UpdateTime">
+            <summary>
+            Gets the <see cref="T:System.DateTime"/> specifying the last update time
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IRound">
             <summary>
             Defines a contract implemented by classes providing basic tournament round information
@@ -31965,226 +32301,6 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Market.ISpecifier.Name">
             <summary>
             Gets the name of the specifier represented by the current instance
-            </summary>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1">
-            <summary>
-            Defines a contract implemented by bet-cancel-rollback messages
-            </summary>
-            <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> derived type specifying the type of the associated sport event</typeparam>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1.StartTime">
-            <summary>
-            Gets number of milliseconds from UTC epoch representing the start of rollback cancellation period.
-            A null value indicates the period started with market activation
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1.EndTime">
-            <summary>
-            Gets number of milliseconds from UTC epoch representing the end of rollback cancellation period.
-            A null value indicates the period ended when the market was closed
-            </summary>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1">
-            <summary>
-            Defines a contract implemented by bet-settlement-rollback messages
-            </summary>
-            <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> derived type specifying the type of the associated sport event</typeparam>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted">
-            <summary>
-            Defines a contract implemented by messages indicating that all messages from the requested snapshot were send
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted.RequestId">
-            <summary>
-            Get the id of the request which triggered the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted"/> message
-            </summary>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.MarketStatus">
-            <summary>
-            Enumerates market statuses
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.ACTIVE">
-            <summary>
-            Indicating that the market should be displayed and bets on it should be accepted
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.INACTIVE">
-            <summary>
-            Indicates the market should NOT be displayed and bets on it should NOT be accepted
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.SUSPENDED">
-            <summary>
-            Indicates that the market should be displayed but the bets on it should NOT be accepted
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.HANDED_OVER">
-            <summary>
-            Indicates the market was handed over from one odds producer to another.
-            If the odds for this market were already received from another producer this update should be ignored,
-            otherwise associated market should be suspended until such odds are received.
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.SETTLED">
-            <summary>
-            Indicates the markets has already been settled by a previous message
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MarketStatus.CANCELLED">
-            <summary>
-            Indicates the markets has already been cancelled by a previous message
-            </summary>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest">
-            <summary>
-            Defines which messages will be provided by feed
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.Name">
-            <summary>
-            Gets the name of the message interest
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.ProducerId">
-            <summary>
-            Gets the routing key used to select appropriate AMQP exchange
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.IsScopeInterest">
-            <summary>
-            Gets the value indicating whether the current interest is a scope interest
-            (live, prematch or virt)
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.Events">
-            <summary>
-            The list of events (only used with <see cref="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.SpecificEventsOnly(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN})"/> type)
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.IsEventSpecific">
-            <summary>
-            Gets a value indicating whether the current instance is related to only specific events
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.MessageInterest.Scope">
-            <summary>
-            Gets the scopes that specific message interest covers
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.#ctor(System.String,System.Int32,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN},System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> class
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.ToString">
-            <summary>
-            Constructs a <see cref="T:System.String"/> representation of the current instance
-            </summary>
-            <returns>Returns current instance represented as string</returns>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.AllMessages">
-            <summary>
-            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in all messages
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in all messages</returns>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.LiveMessagesOnly">
-            <summary>
-            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in live messages
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in live messages</returns>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.PrematchMessagesOnly">
-            <summary>
-            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in pre-match messages
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in pre-match messages</returns>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.HighPriorityMessages">
-            <summary>
-            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in hi priority messages
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in high priority messages</returns>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.LowPriorityMessages">
-            <summary>
-            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in low priority messages
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in low priority messages</returns>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.VirtualSportMessages">
-            <summary>
-            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages for virtual sports
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages for virtual sports</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.SpecificEventsOnly(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN})">
-            <summary>
-            Constructs a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages associated with specific events
-            </summary>
-            <param name="eventIds">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the target events</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> indicating an interest in messages associated with specific events</returns>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.MessageScopes">
-            <summary>
-            List of <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> representing defined messages scopes
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.MessageInterest.DefinedInterests">
-            <summary>
-            Gets all available <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> instances
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.FromScope(System.String)">
-            <summary>
-            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> representing a scope specified by it's name.
-            </summary>
-            <param name="scopeName">The name of the scope</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> representing a scope specified by it's name. </returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.MessageInterest.IsCombinationValid(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.MessageInterest})">
-            <summary>
-            Determines whether the provided list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> is a valid combination of sessions
-            </summary>
-            <param name="interests"></param>
-            <returns>True if the provided combination is valid. Otherwise false</returns>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason">
-            <summary>
-            Enumerates possible reasons why the odds-change was generated
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason.NORMAL">
-            <summary>
-            Indicates the message was generated by normal service execution
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason.RISK_ADJUSTMENT">
-            <summary>
-            Indicates the message was generated due to risk adjustment
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsChangeReason.SYSTEM_DOWN">
-            <summary>
-            Indicates the message was generated because the feed system went down
-            </summary>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.OddsDisplayType">
-            <summary>
-            Enumerates possible options for displaying outcome odds
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsDisplayType.Decimal">
-            <summary>
-            The decimal format
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.OddsDisplayType.American">
-            <summary>
-            The American odds format
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs">

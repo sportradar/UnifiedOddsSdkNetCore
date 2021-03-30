@@ -98,5 +98,10 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Occurs when an exception occurs in the connection loop
         /// </summary>
         event EventHandler<ConnectionExceptionEventArgs> ConnectionException;
+
+        /// <summary>
+        /// Gets a <see cref="IEventChangeManager"/> instance used to automatically receive fixture and result changes
+        /// </summary>
+        IEventChangeManager EventChangeManager => null;
     }
 }

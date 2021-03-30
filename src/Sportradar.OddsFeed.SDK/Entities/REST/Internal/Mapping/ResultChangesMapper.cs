@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">>A <see cref="resultChangesEndpoint"/> instance containing result changes</param>
         internal ResultChangesMapper(resultChangesEndpoint data)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (data.result_change == null)
-                throw new ArgumentNullException(nameof(data.result_change));
-
-            _data = data;
+            _data = data ?? throw new ArgumentNullException(nameof(data));
         }
 
         /// <summary>
@@ -40,6 +34,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <returns>Constructed <see cref="IEnumerable{ResultChangeDTO}"/> instance</returns>
         public IEnumerable<ResultChangeDTO> Map()
         {
+            if(_data.result_change == null)
+            {
+                return new List<ResultChangeDTO>();
+            }
+
             return _data.result_change.Select(f => new ResultChangeDTO(f, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null)).ToList();
         }
     }

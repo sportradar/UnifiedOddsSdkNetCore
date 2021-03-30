@@ -305,6 +305,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             return result;
         }
 
+        internal ISportEvent GetSportEventForEventChange(URN id)
+        {
+            var result = _sportEntityFactory.BuildSportEvent<ISportEvent>(id,
+                id.TypeGroup == ResourceTypeGroup.MATCH ? _sportEventCache.GetEventSportIdAsync(id).Result : null, 
+                _defaultCultures,
+                _exceptionStrategy);
+            
+            return result;
+        }
+
         /// <summary>
         /// Asynchronously gets a <see cref="ICompetitionStatus"/> for specific sport event
         /// </summary>
