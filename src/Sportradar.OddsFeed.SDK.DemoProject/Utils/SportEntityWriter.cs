@@ -2,7 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-
 using System.Globalization;
 using System.Linq;
 using System.Text;

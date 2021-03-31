@@ -3,6 +3,30 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-03-31  1.14.0.0
+Added IEventChangeManager to IOddsFeed for periodical fixture and result change updates
+Changed type of property ITimelineEvent.Player from IPlayer to IEventPlayer (breaking change)
+Added IEventPlayer.Bench property in ITimelineEvent.Player property
+Added IGoalScorer.Method in ITimelineEvent.GoalScorer property
+Added property ICompetitor.ShortName
+Added property IProductInfo.IsInLiveMatchTracker
+Improved how internal cache sport event items handle competitor lists
+Changed ExportableCurrentSeasonInfoCI, ExportableGroupCI, ExportableTournamentInfoCI to return Competitors ids as list of string instead of ExportableCompetitorCI
+Improved caching of competitors data on tournaments, seasons
+Reverted populating Round Name, GroupName and PhaseOrGroupLongName to exactly what is received from API
+Updated FixtureChangeType - also if not specified in fixtureChange message returns FixtureChangeType.NA
+Added period_of_leader to the SportEventStatus.Properties
+Added StartTime, EndTime and AamsId to the IMarketMetaData
+Improved connection handling when disconnected
+Improved merging tournament groups (when no group name or id)
+Added some logs for errors when using unaccepted token
+Fix: WNS event ids can have negative value
+Fix: merging tournament groups
+Fix: TeamStatistics returned 0 when actually null
+Fix: EventResult Home and Away Score could be returned as 0, when actually null
+Fix: exporting/importing season data
+Fix: resolution of dependencies - removed some Guard check
+
 2021-02-09  1.13.0.0
 Added ISportDataProvider.GetLotteriesAsync
 Improved translation of market names (upgraded referenced library Humanizer to 2.8.26 and Dawn.Guard to 1.12.0)
