@@ -160,10 +160,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             if (IsRunning)
             {
                 LogInt.LogInformation("Stopping periodical fetching of fixture and result changes.");
+                IsRunning = false;
             }
             _fixtureTimer.Stop();
             _resultTimer.Stop();
-            IsRunning = false;
         }
 
         private void FixtureTimerOnElapsed(object sender, EventArgs e)
@@ -201,10 +201,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         LogExec.LogInformation($"Invoking GetFixtureChanges. After={LastFixtureChange}");
                         changes = _sportDataProvider.GetFixtureChangesAsync(LastFixtureChange, null, _config.DefaultLocale).Result;
                     }
-                    
+
+                    changes = changes.OrderBy(o => o.UpdateTime);
+
                     foreach (var fixtureChange in changes)
                     {
-                        if(!IsRunning)
+                        if (!IsRunning)
                         {
                             break;
                         }
@@ -212,7 +214,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         var eventUpdate = _eventUpdates.FirstOrDefault(a => a.Key.SportEventId.Equals(fixtureChange.SportEventId));
                         if (eventUpdate.Key != null)
                         {
-                            if(fixtureChange.UpdateTime > eventUpdate.Key.UpdateTime)
+                            if (fixtureChange.UpdateTime > eventUpdate.Key.UpdateTime)
                             {
                                 _eventUpdates.TryRemove(eventUpdate.Key, out bool _);
                             }
@@ -222,11 +224,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                 continue;
                             }
                         }
+
                         _sportEventCache.CacheDeleteItem(fixtureChange.SportEventId, CacheItemType.All);
                         var sportEvent = _sportDataProvider.GetSportEventForEventChange(fixtureChange.SportEventId);
                         _eventUpdates.TryAdd(new EventChangeEventArgs(fixtureChange.SportEventId, fixtureChange.UpdateTime, sportEvent), true);
                         UpdateLastFixtureChange(fixtureChange.UpdateTime);
                     }
+                    
+
                     LogExec.LogInformation($"Invoking GetFixtureChanges took {t.Elapsed.TotalSeconds}s.");
                 }
                 catch (Exception ex)
@@ -273,6 +278,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         LogExec.LogInformation($"Invoking GetResultChanges. After={LastResultChange}");
                         changes = _sportDataProvider.GetResultChangesAsync(LastResultChange, null, _config.DefaultLocale).Result;
                     }
+                    
+                    changes = changes.OrderBy(o => o.UpdateTime);
                     
                     foreach (var resultChange in changes)
                     {

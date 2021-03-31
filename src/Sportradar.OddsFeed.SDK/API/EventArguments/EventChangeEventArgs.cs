@@ -8,7 +8,7 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.API.EventArguments
 {
     /// <summary>
-    /// Event arguments of <see cref="IEventChangeManager.FixtureChange"/> or <see cref="IEventChangeManager.ResultChange"/> event
+    /// Event arguments for <see cref="IEventChangeManager.FixtureChange"/> and <see cref="IEventChangeManager.ResultChange"/> event
     /// </summary>
     public class EventChangeEventArgs : EventArgs
     {

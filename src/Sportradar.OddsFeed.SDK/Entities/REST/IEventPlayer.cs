@@ -34,6 +34,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The bench value - in case of yellow or red card event, it is relevant to know if the player who is getting the card is sitting on the bench at that exact moment.</value>
         /// <remarks>The attribute is equal to 1 if the player who gets the card is sitting on the bench. In case the player who gets the card is on the field, then the attribute is not added at all.</remarks>
-        public string Bench { get; }
+        string Bench { get; }
     }
 }

@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets a value indicating whether the sport event associated with the current instance is available in LiveMatchTracker solution
         /// </summary>
-        public bool IsInLiveMatchTracker { get; }
+        bool IsInLiveMatchTracker => false;
 
         /// <summary>
         /// Gets a value indicating whether the sport event associated with the current instance is available in LiveScore solution

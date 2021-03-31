@@ -65,17 +65,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <param name="name">The name of the item</param>
         protected CacheItem(URN id, IDictionary<CultureInfo, string> name)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-            Id = id;
-            Name = name;
+            Id = id ?? throw new ArgumentNullException(nameof(id));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         /// <summary>

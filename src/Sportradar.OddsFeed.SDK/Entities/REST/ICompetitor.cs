@@ -110,18 +110,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets associated sport
         /// </summary>
         /// <returns>The associated sport</returns>
-        Task<ISport> GetSportAsync() => null;
+        Task<ISport> GetSportAsync() => Task.FromResult<ISport>(null);
 
         /// <summary>
         /// Gets associated category
         /// </summary>
         /// <returns>The associated category</returns>
-        Task<ICategorySummary> GetCategoryAsync() => null;
+        Task<ICategorySummary> GetCategoryAsync() => Task.FromResult<ICategorySummary>(null);
 
         /// <summary>
         /// Gets the short name
         /// </summary>
         /// <value>The short name</value>
-        public string ShortName => null;
+        string ShortName => null;
     }
 }

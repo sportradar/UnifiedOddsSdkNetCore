@@ -153,15 +153,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Gets the reference ids
         /// </summary>
-        public ReferenceIdCI ReferenceId
-        {
-            get
-            {
-                //DEBUG
-                //FetchProfileIfNeeded(_primaryCulture);
-                return _referenceId;
-            }
-        }
+        public ReferenceIdCI ReferenceId => _referenceId;
 
         /// <summary>
         /// Gets the list of associated player ids
@@ -542,7 +534,6 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             {
                 _sportId = competitor.SportId;
             }
-
             if (competitor.CategoryId != null)
             {
                 _categoryId = competitor.CategoryId;
@@ -628,6 +619,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 _lastTimeCompetitorProfileFetched = DateTime.Now;
                 _cultureCompetitorProfileFetched.Add(culture);
             }
+
             if (competitorProfile.Competitor.SportId != null)
             {
                 _sportId = competitorProfile.Competitor.SportId;
@@ -673,7 +665,6 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
             {
                 _ageGroup = simpleTeamProfile.Competitor.AgeGroup;
             }
-
             if (simpleTeamProfile.Competitor.Players != null && simpleTeamProfile.Competitor.Players.Any())
             {
                 _lastTimeCompetitorProfileFetched = DateTime.Now;
@@ -848,8 +839,7 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
         /// <param name="obj">The object to compare with the current object</param>
         public override bool Equals(object obj)
         {
-            var other = obj as CompetitorCI;
-            if (other == null)
+            if (!(obj is CompetitorCI other))
             {
                 return false;
             }

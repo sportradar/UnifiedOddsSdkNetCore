@@ -297,7 +297,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             IDictionary<URN, ReferenceIdCI> competitorsReferences)
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
-            //Guard.Argument(ci, nameof()).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
             Guard.Argument(sportEntityFactory, nameof(sportEntityFactory)).NotNull();
 

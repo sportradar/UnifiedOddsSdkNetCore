@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public bool IsInLiveCenterSoccer;
 
         /// <summary>
-        /// The <see cref="bool"/>  indicating if the product is in live match tracker
+        /// The <see cref="bool"/> indicating if the product is in live match tracker
         /// </summary>
         public bool IsInLiveMatchTracker;
 

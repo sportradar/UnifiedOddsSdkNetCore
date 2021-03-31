@@ -41,9 +41,9 @@ namespace Sportradar.OddsFeed.SDK.API
         TimeSpan FixtureChangeInterval { get; }
 
         /// <summary>
-        /// Gets the interval for getting new list of fixture changes
+        /// Gets the interval for getting new list of result changes
         /// </summary>
-        /// <value>The fixture change interval.</value>
+        /// <value>The result change interval.</value>
         TimeSpan ResultChangeInterval { get; }
 
         /// <summary>
