@@ -39,9 +39,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             YellowCards = yellowCards;
             RedCards = redCards;
             YellowRedCards = yellowRedCards;
-            Cards = yellowCards + redCards + yellowRedCards + greenCards;
             CornerKicks = cornerKicks;
             GreenCards = greenCards;
+            var valueExists = false;
+            var c = 0;
+            if(yellowCards != null)
+            {
+                valueExists = true;
+                c += yellowCards.Value;
+            }
+            if(redCards != null)
+            {
+                valueExists = true;
+                c += redCards.Value;
+            }
+            if(yellowRedCards != null)
+            {
+                valueExists = true;
+                c += yellowRedCards.Value;
+            }
+            if(greenCards != null)
+            {
+                valueExists = true;
+                c += greenCards.Value;
+            }
+            Cards = valueExists ? c : (int?)null;
         }
 
         // from API
