@@ -25,6 +25,9 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-04-07  1.14.1.0
+Fix: parsing TeamStatistics for SportEventStatus
+
 2021-03-31  1.14.0.0
 Added IEventChangeManager to IOddsFeed for periodical fixture and result change updates
 Changed type of property ITimelineEvent.Player from IPlayer to IEventPlayer (breaking change)
