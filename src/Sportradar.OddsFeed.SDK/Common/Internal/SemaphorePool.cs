@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// A <see cref="SpinWait"/> used to spin while waiting for the resource to become available
         /// </summary>
-        private readonly SpinWait _spinWait;
+        private SpinWait _spinWait;
 
         /// <summary>
         /// The <see cref="object"/> used to ensure thread-safety

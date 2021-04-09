@@ -73,13 +73,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// </summary>
         private readonly CacheItemPolicy _simpleTeamCacheItemPolicy = new CacheItemPolicy {AbsoluteExpiration = DateTimeOffset.MaxValue, Priority = CacheItemPriority.NotRemovable};
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ProfileCache"/> class
-    /// </summary>
-    /// <param name="cache">A <see cref="MemoryCache"/> used to store fetched information</param>
-    /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to fetch data</param>
-    /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
-    public ProfileCache(MemoryCache cache,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProfileCache"/> class
+        /// </summary>
+        /// <param name="cache">A <see cref="MemoryCache"/> used to store fetched information</param>
+        /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to fetch data</param>
+        /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
+        public ProfileCache(MemoryCache cache,
                         IDataRouterManager dataRouterManager,
                         ICacheManager cacheManager)
             : base(cacheManager, null)
@@ -121,7 +121,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
 
         /// <summary>
         /// Asynchronously gets a <see cref="PlayerProfileCI"/> representing the profile for the specified player
