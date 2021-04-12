@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Gets the id of the represented sport entity
         /// </summary>
-        public URN Id { get; protected set; }
+        public URN Id { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEntityCI"/> class

@@ -37,7 +37,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private IDictionary<CultureInfo, string> _abbreviations;
 
         private List<URN> _associatedPlayerIds;
-
         private bool _isVirtual;
         private ReferenceIdCI _referenceId;
         private List<JerseyCI> _jerseys;
@@ -163,7 +162,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         {
             get
             {
-                FetchProfileIfNeeded(_primaryCulture);
+                if (!_associatedPlayerIds.Any())
+                {
+                    FetchProfileIfNeeded(_primaryCulture);
+                }
                 return _associatedPlayerIds;
             }
         }
@@ -176,7 +178,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         {
             get
             {
-                FetchProfileIfNeeded(_primaryCulture);
+                if (!_jerseys.Any())
+                {
+                    FetchProfileIfNeeded(_primaryCulture);
+                }
                 return _jerseys;
             }
         }
@@ -515,8 +520,14 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 ? SdkInfo.GetAbbreviationFromName(competitor.Name)
                 : competitor.Abbreviation;
             _referenceId = UpdateReferenceIds(competitor.Id, competitor.ReferenceIds);
-            _countryCode = competitor.CountryCode;
-            _state = competitor.State;
+            if(!string.IsNullOrEmpty(competitor.CountryCode))
+            {
+                _countryCode = competitor.CountryCode;
+            }
+            if (!string.IsNullOrEmpty(competitor.State))
+            {
+                _state = competitor.State;
+            }
             if (competitor.Players != null && competitor.Players.Any())
             {
                 _associatedPlayerIds.Clear();
@@ -561,21 +572,24 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 ? SdkInfo.GetAbbreviationFromName(competitorProfile.Competitor.Name)
                 : competitorProfile.Competitor.Abbreviation;
             _referenceId = UpdateReferenceIds(competitorProfile.Competitor.Id, competitorProfile.Competitor.ReferenceIds);
-            _countryCode = competitorProfile.Competitor.CountryCode;
-            _state = competitorProfile.Competitor.State;
-
+            if(!string.IsNullOrEmpty(competitorProfile.Competitor.CountryCode))
+            {
+                _countryCode = competitorProfile.Competitor.CountryCode;
+            }
+            if (!string.IsNullOrEmpty(competitorProfile.Competitor.State))
+            {
+                _state = competitorProfile.Competitor.State;
+            }
             if (competitorProfile.Players != null && competitorProfile.Players.Any())
             {
                 _associatedPlayerIds.Clear();
                 _associatedPlayerIds.AddRange(competitorProfile.Players.Select(s => s.Id));
             }
-
             if (competitorProfile.Jerseys != null && competitorProfile.Jerseys.Any())
             {
                 _jerseys.Clear();
                 _jerseys.AddRange(competitorProfile.Jerseys.Select(s => new JerseyCI(s)));
             }
-
             if (competitorProfile.Manager != null)
             {
                 if (_manager == null)
@@ -587,7 +601,6 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                     _manager.Merge(competitorProfile.Manager, culture);
                 }
             }
-
             if (competitorProfile.Venue != null)
             {
                 if (_venue == null)
@@ -655,8 +668,14 @@ _lastTimeCompetitorProfileFetched = DateTime.MinValue;
                 ? SdkInfo.GetAbbreviationFromName(simpleTeamProfile.Competitor.Name)
                 : simpleTeamProfile.Competitor.Abbreviation;
             _referenceId = UpdateReferenceIds(simpleTeamProfile.Competitor.Id, simpleTeamProfile.Competitor.ReferenceIds);
-            _countryCode = simpleTeamProfile.Competitor.CountryCode;
-            _state = simpleTeamProfile.Competitor.State;
+            if(!string.IsNullOrEmpty(simpleTeamProfile.Competitor.CountryCode))
+            {
+                _countryCode = simpleTeamProfile.Competitor.CountryCode;
+            }
+            if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.State))
+            {
+                _state = simpleTeamProfile.Competitor.State;
+            }
             if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.Gender))
             {
                 _gender = simpleTeamProfile.Competitor.Gender;
