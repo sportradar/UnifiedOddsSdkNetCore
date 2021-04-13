@@ -7,6 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -15,6 +16,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
+using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
@@ -131,8 +133,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     return null;
                 }
 
+                // select appropriate mappings if found; producer and sport is checked later
+                List<IMarketMappingData> mappings = null;
+                if(variantDescription.Mappings != null)
+                {
+                    mappings = variantDescription.Mappings.Where(s => s.MarketId.Equals(marketDescriptor.Id.ToString())).ToList();
+                    if (!mappings.Any())
+                    {
+                        mappings = null;
+                    }
+                }
+
                 ((MarketDescription) marketDescriptor).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
-                ((MarketDescription) marketDescriptor).SetMappings(variantDescription.Mappings as IReadOnlyCollection<IMarketMappingData>);
+                ((MarketDescription) marketDescriptor).SetMappings((mappings ?? variantDescription.Mappings) as IReadOnlyCollection<IMarketMappingData>);
                 var variantCI = ((VariantDescription) variantDescription).VariantDescriptionCacheItem;
                 ((MarketDescription)marketDescriptor).SetFetchInfo(variantCI.SourceCache, variantCI.LastDataReceived);
 

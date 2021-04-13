@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 throw new InvalidOperationException($"Required specifier[{_specifierName}] does not exist in the provided specifiers");
             }
-            return _specifierValue == specifiers[_specifierName];
+            return _specifierValue.Equals(specifiers[_specifierName]);
         }
 
         /// <summary>
