@@ -36,5 +36,6 @@ XsdSchemaFetcher/SchemaFetcher/packages/*
 
 packages/**
 **/Logs
+**/Help
 
 UpgradeLog.htm
