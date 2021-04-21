@@ -462,6 +462,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
 
             ApplyPropertyValue(true, "WinnerId", stageSES.winner_id, tempProperties);
+            ApplyPropertyValue(stageSES.period_of_leaderSpecified, "period_of_leader", stageSES.period_of_leader, tempProperties);
 
             Properties = new ReadOnlyDictionary<string, object>(tempProperties);
 

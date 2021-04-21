@@ -35731,6 +35731,12 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageSportEventStatus.winner_id">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageSportEventStatus.period_of_leader">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stageSportEventStatus.period_of_leaderSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.stageResult">
             <remarks/>
         </member>

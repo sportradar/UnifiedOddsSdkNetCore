@@ -8,5 +8,6 @@
         </xs:sequence>
         <xs:attribute name="status" type="xs:string" />
         <xs:attribute name="winner_id" type="unifiedCompetitorUrn" use="optional" />
+        <xs:attribute name="period_of_leader" type="xs:int" use="optional"/>
     </xs:complexType>
 </xs:schema>

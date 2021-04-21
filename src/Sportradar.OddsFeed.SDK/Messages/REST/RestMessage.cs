@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
         /// <summary>
         /// The message name
         /// </summary>
-        public static readonly string MessageName = typeof(cashout).Name;
+        public static readonly string MessageName = nameof(cashout);
 
         /// <summary>
         /// When overridden in derived class, it gets a value indicating whether the current <see cref="FeedMessage" />

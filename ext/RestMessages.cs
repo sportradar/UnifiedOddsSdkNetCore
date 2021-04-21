@@ -6121,6 +6121,10 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         private string winner_idField;
         
+        private int period_of_leaderField;
+        
+        private bool period_of_leaderFieldSpecified;
+        
         /// <remarks/>
         public stageResult results {
             get {
@@ -6150,6 +6154,28 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
             }
             set {
                 this.winner_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int period_of_leader {
+            get {
+                return this.period_of_leaderField;
+            }
+            set {
+                this.period_of_leaderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool period_of_leaderSpecified {
+            get {
+                return this.period_of_leaderFieldSpecified;
+            }
+            set {
+                this.period_of_leaderFieldSpecified = value;
             }
         }
     }
