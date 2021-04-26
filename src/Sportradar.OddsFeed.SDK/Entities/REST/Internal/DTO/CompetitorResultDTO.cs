@@ -28,5 +28,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Value = result.value;
             Specifiers = result.specifiers;
         }
+
+        internal CompetitorResultDTO(periodStatusCompetitorResult result)
+        {
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(result));
+            }
+
+            Type = result.type;
+            Value = result.value;
+            Specifiers = result.specifiers;
+        }
     }
 }

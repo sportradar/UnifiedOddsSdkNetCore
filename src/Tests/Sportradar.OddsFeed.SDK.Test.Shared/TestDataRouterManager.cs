@@ -15,6 +15,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery;
@@ -530,6 +531,20 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="culture">The culture to be fetched</param>
         /// <returns>The list of all results that have changed in the last 24 hours</returns>
         public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get stage event period summary as an asynchronous operation
+        /// </summary>
+        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="culture">The language to be fetched</param>
+        /// <param name="requester">The cache item which invoked request</param>
+        /// <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+        /// <param name="periods">The list of period ids to fetch the results for</param>
+        /// <returns>The periods summary or null if not found</returns>
+        public Task<PeriodSummaryDTO> GetPeriodSummaryAsync(URN id, CultureInfo culture, ISportEventCI requester, ICollection<URN> competitorIds = null, ICollection<int> periods = null)
         {
             throw new NotImplementedException();
         }

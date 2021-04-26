@@ -5530,6 +5530,16 @@
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A list of available lotteries</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.GetPeriodStatusesAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN},System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Get sport event period summary as an asynchronous operation
+            </summary>
+            <param name="id">The id of the sport event to be fetched</param>
+            <param name="culture">The language to be fetched</param>
+            <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+            <param name="periods">The list of period ids to fetch the results for</param>
+            <returns>The period statuses or empty if not found</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.FeedSystemSession">
             <summary>
             System session handles system feed messages
@@ -6515,6 +6525,16 @@
             </summary>
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A list of available lotteries</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.GetPeriodStatusesAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Messages.URN},System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Get sport event period summary as an asynchronous operation
+            </summary>
+            <param name="id">The id of the sport event to be fetched</param>
+            <param name="culture">The language to be fetched</param>
+            <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+            <param name="periods">The list of period ids to fetch the results for</param>
+            <returns>The period statuses or empty if not found</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.MessageType">
             <summary>
@@ -13879,6 +13899,12 @@
             </summary>
             <value>a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> containing additional event status values</value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitionStatus.PeriodOfLadder">
+            <summary>
+            Gets the period of ladder
+            </summary>
+            <value>The period of ladder</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor">
             <summary>
             Represents a team competing in a sport event
@@ -17531,6 +17557,12 @@
             Gets the indicator wither the event is decided by fed
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventStatusCI.PeriodOfLadder">
+            <summary>
+            Gets the period of ladder.
+            </summary>
+            <value>The period of ladder.</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI">
             <summary>
             Defines a contract implemented by classes, which represent cached information about a stage
@@ -18237,6 +18269,12 @@
             <summary>
             Gets the indicator wither the event is decided by fed
             </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI.PeriodOfLadder">
+            <summary>
+            Gets the period of ladder.
+            </summary>
+            <value>The period of ladder.</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI.GetPropertyValue(System.String)">
             <summary>
@@ -20677,6 +20715,11 @@
             The sport event fixture provider without cache for when tournamentInfo is returned
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager._stagePeriodSummaryProvider">
+            <summary>
+            The stage event period summary provider
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager._cacheManager">
             <summary>
             The cache manager
@@ -20697,7 +20740,7 @@
             The exception handling strategy
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager,Sportradar.OddsFeed.SDK.Messages.IProducerManager,App.Metrics.IMetricsRoot,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PlayerProfileDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorProfileDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SimpleTeamProfileDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentSeasonsDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchTimelineDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportCategoriesDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VariantDescriptionDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.LotteryDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.LotteryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.AvailableSelectionsDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.ICalculateProbabilityProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureChangeDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.ResultChangeDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentInfoDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentInfoDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentInfoDTO})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager,Sportradar.OddsFeed.SDK.Messages.IProducerManager,App.Metrics.IMetricsRoot,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PlayerProfileDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorProfileDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SimpleTeamProfileDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentSeasonsDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchTimelineDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportCategoriesDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VariantDescriptionDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.LotteryDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.LotteryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.AvailableSelectionsDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.ICalculateProbabilityProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureChangeDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.ResultChangeDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentInfoDTO}},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentInfoDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentInfoDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataProvider{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager"/> class
             </summary>
@@ -20734,6 +20777,7 @@
             <param name="availableSportTournamentsProvider">The sports available tournaments provider</param>
             <param name="sportEventFixtureForTournamentProvider">The sport event fixture provider for when tournamentInfo is returned</param>
             <param name="sportEventFixtureChangeFixtureForTournamentProvider">The sport event fixture provider without cache for when tournamentInfo is returned</param>
+            <param name="stagePeriodSummaryProvider">Stage period summary provider</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetSportEventSummaryAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
             <summary>
@@ -20943,6 +20987,17 @@
             <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
             <param name="culture">The culture to be fetched</param>
             <returns>The list of all results that have changed in the last 24 hours</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetPeriodSummaryAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI,System.Collections.Generic.ICollection{Sportradar.OddsFeed.SDK.Messages.URN},System.Collections.Generic.ICollection{System.Int32})">
+            <summary>
+            Get stage event period summary as an asynchronous operation
+            </summary>
+            <param name="id">The id of the sport event to be fetched</param>
+            <param name="culture">The language to be fetched</param>
+            <param name="requester">The cache item which invoked request</param>
+            <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+            <param name="periods">The list of period ids to fetch the results for</param>
+            <returns>Task</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DateScheduleProvider">
             <summary>
@@ -22025,6 +22080,23 @@
             A data-transfer-object representing a market mapping for outcome
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodCompetitorResultDTO">
+            <summary>
+            Class PeriodCompetitorResultDTO.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodCompetitorResultDTO.Id">
+            <summary>
+            Gets the competitor id
+            </summary>
+            <value>The competitor id</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodCompetitorResultDTO.CompetitorResults">
+            <summary>
+            Gets the competitor results
+            </summary>
+            <value>The results</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodScoreDTO">
             <summary>
             Class PeriodScoreDTO
@@ -22071,6 +22143,65 @@
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodScoreDTO"/> class
             </summary>
             <param name="periodScore">The period score</param>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodStatusDTO">
+            <summary>
+            Class PeriodStatusDTO.
+            </summary>
+            <remarks>Sportradar</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodStatusDTO.Number">
+            <summary>
+            Gets the number of the specific lap.
+            </summary>
+            <value>The number of the specific lap.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodStatusDTO.Type">
+            <summary>
+            Gets the type
+            </summary>
+            <value>The type</value>
+            <remarks>Possible values: lap</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodStatusDTO.Status">
+            <summary>
+            Gets the status.
+            </summary>
+            <value>The status.</value>
+            <remarks>Possible values: not_started, started, completed.</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodStatusDTO.PeriodResults">
+            <summary>
+            Gets the period results
+            </summary>
+            <value>The results</value>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO">
+            <summary>
+            A data-transfer-object containing data for stage period summary
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO.Id">
+            <summary>
+            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the sport event associated with the current instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO.PeriodStatuses">
+            <summary>
+            Gets the period statuses
+            </summary>
+            <value>The period statuses</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO.GeneratedAt">
+            <summary>
+            Gets the <see cref="T:System.DateTime"/> specifying when the associated message was generated (on the server side)
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO"/> class
+            </summary>
+            <param name="stagePeriod">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint"/> containing data</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PitcherDTO">
             <summary>
@@ -22700,6 +22831,12 @@
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO.WinnerId">
+            <summary>
+            Gets the winner identifier
+            </summary>
+            <value>The winner identifier</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO.PeriodOfLadder">
             <summary>
             Gets the winner identifier
             </summary>
@@ -23639,6 +23776,12 @@
             Gets a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2" /> containing additional event status values
             </summary>
             <value>a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2" /> containing additional event status values</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus.PeriodOfLadder">
+            <summary>
+            Gets the period of ladder.
+            </summary>
+            <value>The period of ladder.</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus.GetPropertyValue(System.String)">
             <summary>
@@ -24912,6 +25055,18 @@
             <param name="id">The value associated with the current instance.</param>
             <param name="description">The description associated with the current instance.</param>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodCompetitorResult.Id">
+            <summary>
+            Gets the competitor id
+            </summary>
+            <value>The competitor id</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodCompetitorResult.CompetitorResults">
+            <summary>
+            Gets the competitor results
+            </summary>
+            <value>The results</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodScore">
             <summary>
             Represents a score of a sport event period
@@ -25010,6 +25165,32 @@
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodStatistics.ToString">
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodStatus.Number">
+            <summary>
+            Gets the number of the specific lap.
+            </summary>
+            <value>The number of the specific lap.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodStatus.Type">
+            <summary>
+            Gets the type
+            </summary>
+            <value>The type</value>
+            <remarks>Possible values: lap</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodStatus.Status">
+            <summary>
+            Gets the status.
+            </summary>
+            <value>The status.</value>
+            <remarks>Possible values: not_started, started, completed.</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.PeriodStatus.PeriodResults">
+            <summary>
+            Gets the period results
+            </summary>
+            <value>The results</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Pitcher">
             <summary>
@@ -25433,7 +25614,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.RestMessage">
             <summary>
-            Represents a base class for classes representing messages received from the RESS API
+            Represents a base class for classes representing messages received from the REST API
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IRestMessage" />
         </member>
@@ -26808,6 +26989,11 @@
             The tournament list
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType.PeriodSummary">
+            <summary>
+            The period summary
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EventArguments.TournamentReceivedEventArgs">
             <summary>
             An event argument used by events raised when a message from the feed is received
@@ -27237,6 +27423,17 @@
             <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport for which the fixtures should be returned</param>
             <param name="culture">The culture to be fetched</param>
             <returns>The list of all results that have changed in the last 24 hours</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetPeriodSummaryAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI,System.Collections.Generic.ICollection{Sportradar.OddsFeed.SDK.Messages.URN},System.Collections.Generic.ICollection{System.Int32})">
+            <summary>
+            Get stage event period summary as an asynchronous operation
+            </summary>
+            <param name="id">The id of the sport event to be fetched</param>
+            <param name="culture">The language to be fetched</param>
+            <param name="requester">The cache item which invoked request</param>
+            <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+            <param name="periods">The list of period ids to fetch the results for</param>
+            <returns>The periods summary or null if not found</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IMappingValidator">
             <summary>
@@ -28259,6 +28456,42 @@
             </summary>
             <param name="data">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.matchTimelineEndpoint" /> instance which the created <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /> will map</param>
             <returns>New <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /> instance</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PeriodSummaryMapper">
+            <summary>
+            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1"/> implementation used to map <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint"/> instances to <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO"/> instances
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" />
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PeriodSummaryMapper._data">
+            <summary>
+            A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint"/> instance containing data
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PeriodSummaryMapper.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PeriodSummaryMapper"/> class.
+            </summary>
+            <param name="data">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint"/> instance containing fixture data</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PeriodSummaryMapper.Map">
+            <summary>
+            Maps it's data to <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO"/> instance
+            </summary>
+            <returns>The created <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO"/> instance </returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PeriodSummaryMapperFactory">
+            <summary>
+            A factory used to create <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1"/> instances
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory`2" />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PeriodSummaryMapperFactory.CreateMapper(Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint)">
+            <summary>
+            Creates and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /> instance used to map <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint"/> instances to <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO"/> instances
+            </summary>
+            <param name="data">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint" /> instance containing fixture data</param>
+            <returns>a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /> instance used to map <see cref="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint"/> instances to <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodSummaryDTO"/> instances</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.PlayerProfileMapper">
             <summary>
@@ -30753,6 +30986,23 @@
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
             <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /></param>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodCompetitorResult">
+            <summary>
+            Defines a contract implemented by classes representing competitor result per period
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodCompetitorResult.Id">
+            <summary>
+            Gets the competitor id
+            </summary>
+            <value>The competitor id</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodCompetitorResult.CompetitorResults">
+            <summary>
+            Gets the competitor results
+            </summary>
+            <value>The results</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodScore">
             <summary>
             Defines a contract implemented by classes representing a score of a sport event period
@@ -30801,6 +31051,37 @@
             Gets the list of team statistics for specific period
             </summary>
             <value>The list of team statistics for specific period</value>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodStatus">
+            <summary>
+            Defines a contract implemented by classes representing period status
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodStatus.Number">
+            <summary>
+            Gets the number of the specific lap.
+            </summary>
+            <value>The number of the specific lap.</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodStatus.Type">
+            <summary>
+            Gets the type
+            </summary>
+            <value>The type</value>
+            <remarks>Possible values: lap</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodStatus.Status">
+            <summary>
+            Gets the status.
+            </summary>
+            <value>The status.</value>
+            <remarks>Possible values: not_started, started, completed.</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IPeriodStatus.PeriodResults">
+            <summary>
+            Gets the period results
+            </summary>
+            <value>The results</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IPitcher">
             <summary>
@@ -34480,6 +34761,21 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.match_status_codeSpecified">
             <remarks/>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint.sport_event">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint.period_statuses">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint.generated_at">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.stagePeriodEndpoint.generated_atSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.AvailableSelectionsType">
             <remarks/>
         </member>
@@ -36047,6 +36343,45 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.resultChange.update_time">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.periodStatus">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatus.competitor">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatus.number">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatus.numberSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatus.type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatus.status">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.periodStatusCompetitor">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatusCompetitor.result">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatusCompetitor.id">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.periodStatusCompetitorResult">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatusCompetitorResult.value">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatusCompetitorResult.type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodStatusCompetitorResult.specifiers">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.SelectionsType">

@@ -615,5 +615,37 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             LogInt.LogInformation($"GetLotteriesAsync returned 0 results.");
             return new List<ILottery>();
         }
+
+        /// <summary>
+        /// Get sport event period summary as an asynchronous operation
+        /// </summary>
+        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="culture">The language to be fetched</param>
+        /// <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+        /// <param name="periods">The list of period ids to fetch the results for</param>
+        /// <returns>The period statuses or empty if not found</returns>
+        public async Task<IEnumerable<IPeriodStatus>> GetPeriodStatusesAsync(URN id, CultureInfo culture = null, IEnumerable<URN> competitorIds = null, IEnumerable<int> periods = null)
+        {
+            culture ??= _defaultCultures.First();
+
+            var urns = competitorIds?.ToList();
+            var ints = periods?.ToList();
+            var compIds = urns.IsNullOrEmpty() ? "null" : string.Join(", ", urns);
+            var periodIds = ints.IsNullOrEmpty() ? "null" : string.Join(", ", ints);
+
+            LogInt.LogInformation($"Invoked GetPeriodStatusesAsync: Id={id}, Culture={culture.TwoLetterISOLanguageName}, Competitors={compIds}, Periods={periodIds}.");
+
+            var periodSummaryDTO = await _dataRouterManager.GetPeriodSummaryAsync(id, culture, null, urns, ints).ConfigureAwait(false);
+
+            if(periodSummaryDTO != null && !periodSummaryDTO.PeriodStatuses.IsNullOrEmpty())
+            {
+                var periodStatuses = periodSummaryDTO.PeriodStatuses.Select(s => new PeriodStatus(s)).ToList();
+                LogInt.LogInformation($"GetPeriodStatusesAsync returned {periodStatuses.Count} results.");
+                return periodStatuses;
+            }
+
+            LogInt.LogInformation("GetPeriodStatusesAsync returned 0 results.");
+            return new List<IPeriodStatus>();
+        }
     }
 }

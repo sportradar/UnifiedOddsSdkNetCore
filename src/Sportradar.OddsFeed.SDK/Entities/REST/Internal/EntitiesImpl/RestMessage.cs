@@ -6,7 +6,7 @@ using System;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
     /// <summary>
-    /// Represents a base class for classes representing messages received from the RESS API
+    /// Represents a base class for classes representing messages received from the REST API
     /// </summary>
     /// <seealso cref="IRestMessage" />
     internal abstract class RestMessage : IRestMessage

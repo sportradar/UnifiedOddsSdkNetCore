@@ -7853,6 +7853,224 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    [System.Xml.Serialization.XmlRootAttribute("period_summary", Namespace="http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable=false)]
+    public partial class stagePeriodEndpoint {
+        
+        private sportEvent sport_eventField;
+        
+        private periodStatus[] period_statusesField;
+        
+        private System.DateTime generated_atField;
+        
+        private bool generated_atFieldSpecified;
+        
+        /// <remarks/>
+        public sportEvent sport_event {
+            get {
+                return this.sport_eventField;
+            }
+            set {
+                this.sport_eventField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("period_status", IsNullable=false)]
+        public periodStatus[] period_statuses {
+            get {
+                return this.period_statusesField;
+            }
+            set {
+                this.period_statusesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime generated_at {
+            get {
+                return this.generated_atField;
+            }
+            set {
+                this.generated_atField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool generated_atSpecified {
+            get {
+                return this.generated_atFieldSpecified;
+            }
+            set {
+                this.generated_atFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    public partial class periodStatus {
+        
+        private periodStatusCompetitor[] competitorField;
+        
+        private int numberField;
+        
+        private bool numberFieldSpecified;
+        
+        private string typeField;
+        
+        private string statusField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("competitor")]
+        public periodStatusCompetitor[] competitor {
+            get {
+                return this.competitorField;
+            }
+            set {
+                this.competitorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int number {
+            get {
+                return this.numberField;
+            }
+            set {
+                this.numberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool numberSpecified {
+            get {
+                return this.numberFieldSpecified;
+            }
+            set {
+                this.numberFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string status {
+            get {
+                return this.statusField;
+            }
+            set {
+                this.statusField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    public partial class periodStatusCompetitor {
+        
+        private periodStatusCompetitorResult[] resultField;
+        
+        private string idField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("result")]
+        public periodStatusCompetitorResult[] result {
+            get {
+                return this.resultField;
+            }
+            set {
+                this.resultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    public partial class periodStatusCompetitorResult {
+        
+        private string valueField;
+        
+        private string typeField;
+        
+        private string specifiersField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string specifiers {
+            get {
+                return this.specifiersField;
+            }
+            set {
+                this.specifiersField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     [System.Xml.Serialization.XmlRootAttribute("selections", Namespace="http://schemas.sportradar.com/custombet/v1/endpoints", IsNullable=false)]
     public partial class SelectionsType {

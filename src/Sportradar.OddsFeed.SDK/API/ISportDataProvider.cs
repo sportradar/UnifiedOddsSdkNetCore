@@ -217,5 +217,15 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of available lotteries</returns>
         Task<IEnumerable<ILottery>> GetLotteriesAsync(CultureInfo culture = null) => Task.FromResult<IEnumerable<ILottery>>(null);
+
+        /// <summary>
+        /// Get sport event period summary as an asynchronous operation
+        /// </summary>
+        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="culture">The language to be fetched</param>
+        /// <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+        /// <param name="periods">The list of period ids to fetch the results for</param>
+        /// <returns>The period statuses or empty if not found</returns>
+        Task<IEnumerable<IPeriodStatus>> GetPeriodStatusesAsync(URN id, CultureInfo culture = null, IEnumerable<URN> competitorIds = null, IEnumerable<int> periods = null) => Task.FromResult<IEnumerable<IPeriodStatus>>(null);
     }
 }

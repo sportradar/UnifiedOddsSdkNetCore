@@ -105,6 +105,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         public bool? DecidedByFed => FeedStatusDTO?.DecidedByFed ?? SapiStatusDTO?.DecidedByFed;
 
         /// <summary>
+        /// Gets the period of ladder.
+        /// </summary>
+        /// <value>The period of ladder.</value>
+        public int? PeriodOfLadder => FeedStatusDTO?.PeriodOfLadder ?? SapiStatusDTO?.PeriodOfLadder;
+
+        /// <summary>
         /// Gets the value of the property specified by it's name
         /// </summary>
         /// <param name="propertyName">The name of the property</param>

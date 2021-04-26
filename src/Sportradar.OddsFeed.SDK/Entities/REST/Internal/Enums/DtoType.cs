@@ -119,6 +119,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums
         /// <summary>
         /// The tournament list
         /// </summary>
-        TournamentInfoList
+        TournamentInfoList,
+        /// <summary>
+        /// The period summary
+        /// </summary>
+        PeriodSummary
     }
 }

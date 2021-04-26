@@ -108,5 +108,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Gets the indicator wither the event is decided by fed
         /// </summary>
         bool? DecidedByFed { get; }
+
+        /// <summary>
+        /// Gets the period of ladder.
+        /// </summary>
+        /// <value>The period of ladder.</value>
+        int? PeriodOfLadder { get; }
     }
 }

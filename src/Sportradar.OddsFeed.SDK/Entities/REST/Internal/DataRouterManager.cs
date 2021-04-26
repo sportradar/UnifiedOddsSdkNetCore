@@ -162,6 +162,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// The sport event fixture provider without cache for when tournamentInfo is returned
         /// </summary>
         private readonly IDataProvider<TournamentInfoDTO> _sportEventFixtureChangeFixtureForTournamentProvider;
+        /// <summary>
+        /// The stage event period summary provider
+        /// </summary>
+        private readonly IDataProvider<PeriodSummaryDTO> _stagePeriodSummaryProvider;
 
         /// <summary>
         /// The cache manager
@@ -219,6 +223,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="availableSportTournamentsProvider">The sports available tournaments provider</param>
         /// <param name="sportEventFixtureForTournamentProvider">The sport event fixture provider for when tournamentInfo is returned</param>
         /// <param name="sportEventFixtureChangeFixtureForTournamentProvider">The sport event fixture provider without cache for when tournamentInfo is returned</param>
+        /// <param name="stagePeriodSummaryProvider">Stage period summary provider</param>
         public DataRouterManager(ICacheManager cacheManager,
                                  IProducerManager producerManager,
                                  IMetricsRoot metricsRoot,
@@ -251,7 +256,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                                  IDataProvider<EntityList<SportEventSummaryDTO>> listSportEventProvider,
                                  IDataProvider<EntityList<TournamentInfoDTO>> availableSportTournamentsProvider,
                                  IDataProvider<TournamentInfoDTO> sportEventFixtureForTournamentProvider,
-                                 IDataProvider<TournamentInfoDTO> sportEventFixtureChangeFixtureForTournamentProvider)
+                                 IDataProvider<TournamentInfoDTO> sportEventFixtureChangeFixtureForTournamentProvider,
+                                 IDataProvider<PeriodSummaryDTO> stagePeriodSummaryProvider)
         {
             Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
             Guard.Argument(producerManager, nameof(producerManager)).NotNull();
@@ -284,6 +290,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             Guard.Argument(availableSportTournamentsProvider, nameof(availableSportTournamentsProvider)).NotNull();
             Guard.Argument(sportEventFixtureForTournamentProvider, nameof(sportEventFixtureForTournamentProvider)).NotNull();
             Guard.Argument(sportEventFixtureChangeFixtureForTournamentProvider, nameof(sportEventFixtureChangeFixtureForTournamentProvider)).NotNull();
+            Guard.Argument(stagePeriodSummaryProvider, nameof(stagePeriodSummaryProvider)).NotNull();
 
             _cacheManager = cacheManager;
             var wnsProducer = producerManager.Get(7);
@@ -319,6 +326,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _availableSportTournamentsProvider = availableSportTournamentsProvider;
             _sportEventFixtureForTournamentProvider = sportEventFixtureForTournamentProvider;
             _sportEventFixtureChangeFixtureForTournamentProvider = sportEventFixtureChangeFixtureForTournamentProvider;
+            _stagePeriodSummaryProvider = stagePeriodSummaryProvider;
 
             _sportEventSummaryProvider.RawApiDataReceived += OnRawApiDataReceived;
             _sportEventFixtureProvider.RawApiDataReceived += OnRawApiDataReceived;
@@ -348,6 +356,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _availableSportTournamentsProvider.RawApiDataReceived += OnRawApiDataReceived;
             _sportEventFixtureForTournamentProvider.RawApiDataReceived += OnRawApiDataReceived;
             _sportEventFixtureChangeFixtureForTournamentProvider.RawApiDataReceived += OnRawApiDataReceived;
+            _stagePeriodSummaryProvider.RawApiDataReceived += OnRawApiDataReceived;
         }
 
         private void OnRawApiDataReceived(object sender, RawApiDataEventArgs e)
@@ -1502,6 +1511,73 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             WriteLog($"Executing GetResultChangesAsync took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
             return result?.Select(f => new ResultChange(f)).ToList();
+        }
+
+        /// <summary>
+        /// Get stage event period summary as an asynchronous operation
+        /// </summary>
+        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="culture">The language to be fetched</param>
+        /// <param name="requester">The cache item which invoked request</param>
+        /// <param name="competitorIds">The list of competitor ids to fetch the results for</param>
+        /// <param name="periods">The list of period ids to fetch the results for</param>
+        /// <returns>Task</returns>
+        public async Task<PeriodSummaryDTO> GetPeriodSummaryAsync(URN id, CultureInfo culture, ISportEventCI requester, ICollection<URN> competitorIds = null, ICollection<int> periods = null)
+        {
+            var timerOptionsGetPeriodSummaryAsync = new TimerOptions{Context = MetricsContext, Name = "GetPeriodSummaryAsync", MeasurementUnit = Unit.Requests};
+            using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetPeriodSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]");
+
+            var compIds = competitorIds.IsNullOrEmpty() ? "null" : string.Join(", ", competitorIds);
+            var periodIds = periods.IsNullOrEmpty() ? "null" : string.Join(", ", periods);
+
+            WriteLog($"Executing GetPeriodSummaryAsync for event id={id} and culture={culture.TwoLetterISOLanguageName}, Competitors={compIds}, Periods={periodIds}", true);
+
+            //host/v1/sports/en/sport_events/sr:stage:{id}/period_summary.xml?competitors=sr:competitor:{id}&competitors=sr:competitor:{id}&periods=2&periods=3&periods=4
+            var query = string.Empty;
+            var compQuery = string.Empty;
+            var periodQuery = string.Empty;
+            if (!competitorIds.IsNullOrEmpty())
+            {
+                compQuery = string.Join("&", competitorIds.Select(s => $"competitors={s}"));
+            }
+            if (!periods.IsNullOrEmpty())
+            {
+                periodQuery = string.Join("&", periods.Select(s => $"periods={s}"));
+            }
+            if (!compQuery.IsNullOrEmpty())
+            {
+                query = "?" + compQuery;
+            }
+            if (!periodQuery.IsNullOrEmpty())
+            {
+                query = query.IsNullOrEmpty() ? "?" + periodQuery : query + "&" + periodQuery;
+            }
+
+            PeriodSummaryDTO result = null;
+            int restCallTime;
+            try
+            {
+                result = await _stagePeriodSummaryProvider.GetDataAsync(culture.TwoLetterISOLanguageName, id.ToString(), query).ConfigureAwait(false);
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+            }
+            catch (Exception e)
+            {
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                var message = e.InnerException?.Message ?? e.Message;
+                _executionLog.LogError($"Error getting period summary for event id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
+                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW && requester != null)
+                {
+                    throw;
+                }
+            }
+
+            if (result != null)
+            {
+                await _cacheManager.SaveDtoAsync(id, result, culture, DtoType.SportEventSummary, requester).ConfigureAwait(false);
+            }
+            WriteLog($"Executing GetPeriodSummaryAsync for event id={id} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
+
+            return result;
         }
 
         private string GetChangesQueryString(DateTime? after, URN sportId)

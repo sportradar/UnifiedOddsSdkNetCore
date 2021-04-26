@@ -48,5 +48,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>a <see cref="IReadOnlyDictionary{String, Object}"/> containing additional event status values</value>
         IReadOnlyDictionary<string, object> Properties { get; }
+
+        /// <summary>
+        /// Gets the period of ladder
+        /// </summary>
+        /// <value>The period of ladder</value>
+        int? PeriodOfLadder => null;
     }
 }

@@ -79,6 +79,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public URN WinnerId { get; }
 
         /// <summary>
+        /// Gets the winner identifier
+        /// </summary>
+        /// <value>The winner identifier</value>
+        public int? PeriodOfLadder { get; }
+
+        /// <summary>
         /// Gets the reporting status
         /// </summary>
         /// <value>The reporting status</value>
@@ -246,6 +252,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             WinnerId = null;
 
+            PeriodOfLadder = ses.period_of_leaderSpecified ? ses.period_of_leader : (int?)null;
+
             if (ses.reportingSpecified)
             {
                 ReportingStatus = MessageMapperHelper.GetEnumValue(ses.reporting, ReportingStatus.Unknown);
@@ -394,6 +402,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 WinnerId = URN.Parse(restSES.winner_id);
             }
 
+            PeriodOfLadder = null;
+
             ReportingStatus = ReportingStatus.Unknown;
 
             EventClock = null;
@@ -472,6 +482,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             MatchStatusId = -1;
 
             WinnerId = !string.IsNullOrEmpty(stageSES.winner_id) ? URN.Parse(stageSES.winner_id) : null;
+
+            PeriodOfLadder = stageSES.period_of_leaderSpecified ? stageSES.period_of_leader : (int?)null;
 
             ReportingStatus = ReportingStatus.Unknown;
 

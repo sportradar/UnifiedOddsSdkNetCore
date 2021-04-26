@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  targetNamespace="http://schemas.sportradar.com/sportsapi/v1/unified"
+  xmlns="http://schemas.sportradar.com/sportsapi/v1/unified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="../../includes/unified/sport_event.xsd"/>
+  <xs:include schemaLocation="../../includes/unified/stage/period_statuses.xsd"/>
+  <xs:element name="period_summary" type="stagePeriodEndpoint"/>
+  <xs:complexType name="stagePeriodEndpoint">
+    <xs:sequence>
+      <xs:element type="sportEvent" name="sport_event"/>
+      <xs:element type="periodStatuses" name="period_statuses"/>
+    </xs:sequence>
+    <xs:attribute type="xs:dateTime" name="generated_at"/>
+  </xs:complexType>
+</xs:schema>

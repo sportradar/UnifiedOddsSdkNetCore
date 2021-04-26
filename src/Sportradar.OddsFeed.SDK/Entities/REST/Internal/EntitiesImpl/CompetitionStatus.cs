@@ -52,6 +52,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public IReadOnlyDictionary<string, object> Properties { get; }
 
         /// <summary>
+        /// Gets the period of ladder.
+        /// </summary>
+        /// <value>The period of ladder.</value>
+        public int? PeriodOfLadder { get; }
+
+        /// <summary>
         /// Gets the value of the property specified by it's name
         /// </summary>
         /// <param name="propertyName">The name of the property</param>
@@ -87,6 +93,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 EventResults = ci.EventResults.Select(s => new EventResult(s, matchStatusesCache));
             }
             Properties = ci.Properties;
+            PeriodOfLadder = ci.PeriodOfLadder;
         }
     }
 }
