@@ -1,4 +1,7 @@
-﻿namespace Sportradar.OddsFeed.SDK.Entities.Internal
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     internal class AdditionalProbabilities : IAdditionalProbabilities
     {

@@ -1,4 +1,7 @@
-﻿namespace Sportradar.OddsFeed.SDK.Entities
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+namespace Sportradar.OddsFeed.SDK.Entities
 {
     /// <summary>
     /// Additional probability attributes for markets which potentially will be (partly) refunded

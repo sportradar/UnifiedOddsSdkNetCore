@@ -1,0 +1,5 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/

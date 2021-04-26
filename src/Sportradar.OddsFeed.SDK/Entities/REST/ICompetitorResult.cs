@@ -1,4 +1,7 @@
-﻿namespace Sportradar.OddsFeed.SDK.Entities.REST
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
     /// Defines contract used by classes that provide competitor result information

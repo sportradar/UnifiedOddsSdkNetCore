@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-// ReSharper disable InconsistentNaming
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     /// <summary>

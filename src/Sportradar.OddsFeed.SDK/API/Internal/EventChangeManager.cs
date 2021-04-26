@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+using System;
 
 namespace Sportradar.OddsFeed.SDK.API
 {

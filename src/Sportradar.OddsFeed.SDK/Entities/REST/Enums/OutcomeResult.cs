@@ -1,4 +1,7 @@
-﻿namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
 {
     /// <summary>
     /// An indication of the outcome result
