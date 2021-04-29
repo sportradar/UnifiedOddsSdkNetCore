@@ -220,6 +220,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
                 return null;
             }
+
+            //var oneCulture = new List<CultureInfo> {Cultures.First()};
             var eventTimelineCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
                 ? await matchCI.GetEventTimelineAsync(Cultures).ConfigureAwait(false)
                 : await new Func<IEnumerable<CultureInfo>, Task<EventTimelineCI>>(matchCI.GetEventTimelineAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("EventTimeline")).ConfigureAwait(false);

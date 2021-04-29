@@ -25,6 +25,14 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-04-29  1.15.0.0
+Added ISportDataProvider.GetPeriodStatusesAsync to fetch period summary for stages
+Extended ICompetitionStatus with PeriodOfLadder
+Added support for SportEventStatus PeriodOfLeader - added to Properties
+Improved handling of outright market mappings (before for some markets there were no mappings returned)
+Improved merging of Competitor data
+Fix: IMarketWithOdds.GetValidMappings() returns incorrect results
+
 2021-04-07  1.14.1.0
 Fix: parsing TeamStatistics for SportEventStatus
 

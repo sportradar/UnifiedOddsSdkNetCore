@@ -121,7 +121,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             return marketDescriptor;
         }
 
-        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId, IList<CultureInfo> locales, IMarketDescription marketDescriptor, string variantValue)
+        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId, IList<CultureInfo> locales, IMarketDescription marketDescription, string variantValue)
         {
             try
             {
@@ -136,19 +136,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 List<IMarketMappingData> mappings = null;
                 if(variantDescription.Mappings != null)
                 {
-                    mappings = variantDescription.Mappings.Where(s => s.MarketId.Equals(marketDescriptor.Id.ToString())).ToList();
+                    mappings = variantDescription.Mappings.Where(s => s.MarketId.Equals(marketDescription.Id.ToString())).ToList();
                     if (!mappings.Any())
                     {
                         mappings = null;
                     }
                 }
 
-                ((MarketDescription) marketDescriptor).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
-                ((MarketDescription) marketDescriptor).SetMappings((mappings ?? variantDescription.Mappings) as IReadOnlyCollection<IMarketMappingData>);
-                var variantCI = ((VariantDescription) variantDescription).VariantDescriptionCacheItem;
-                ((MarketDescription)marketDescriptor).SetFetchInfo(variantCI.SourceCache, variantCI.LastDataReceived);
+                if (marketDescription != null)
+                {
+                    if (!mappings.IsNullOrEmpty() || !variantDescription.Mappings.IsNullOrEmpty())
+                    {
+                        ((MarketDescription) marketDescription).SetMappings((mappings ?? variantDescription.Mappings) as IReadOnlyCollection<IMarketMappingData>);
+                        var variantCI = ((VariantDescription) variantDescription).VariantDescriptionCacheItem;
+                        ((MarketDescription) marketDescription).SetFetchInfo(variantCI.SourceCache, variantCI.LastDataReceived);
+                    }
 
-                return marketDescriptor;
+                    if (!variantDescription.Outcomes.IsNullOrEmpty())
+                    {
+                        ((MarketDescription) marketDescription).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
+                        var variantCI = ((VariantDescription) variantDescription).VariantDescriptionCacheItem;
+                        ((MarketDescription) marketDescription).SetFetchInfo(variantCI.SourceCache, variantCI.LastDataReceived);
+                    }
+                }
+
+                return marketDescription;
             }
             catch (Exception e)
             {
@@ -158,7 +170,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             return null;
         }
 
-        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IList<CultureInfo> locales, IMarketDescription marketDescriptor, string variantValue)
+        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IList<CultureInfo> locales, IMarketDescription marketDescription, string variantValue)
         {
             IMarketDescription variantDescription = null;
             try
@@ -171,18 +183,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 _executionLog.LogWarning($"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
             }
 
-            if (marketDescriptor.Mappings.IsNullOrEmpty() && variantDescription != null && !variantDescription.Mappings.IsNullOrEmpty())
+            if (marketDescription != null && variantDescription != null)
             {
-                ((MarketDescription) marketDescriptor).SetMappings(variantDescription.Mappings as IReadOnlyCollection<IMarketMappingData>);
-                ((MarketDescription)marketDescriptor).SetFetchInfo("VariantCache", DateTime.Now);
-            }
-            if (marketDescriptor.Outcomes.IsNullOrEmpty() && variantDescription != null && !variantDescription.Outcomes.IsNullOrEmpty())
-            {
-                ((MarketDescription) marketDescriptor).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
-                ((MarketDescription)marketDescriptor).SetFetchInfo("VariantCache", DateTime.Now);
+                if (marketDescription.Mappings.IsNullOrEmpty() && !variantDescription.Mappings.IsNullOrEmpty())
+                {
+                    ((MarketDescription) marketDescription).SetMappings(variantDescription.Mappings as IReadOnlyCollection<IMarketMappingData>);
+                    ((MarketDescription) marketDescription).SetFetchInfo("VariantCache", DateTime.Now);
+                }
+
+                if (marketDescription.Outcomes.IsNullOrEmpty() && !variantDescription.Outcomes.IsNullOrEmpty())
+                {
+                    ((MarketDescription) marketDescription).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
+                    ((MarketDescription) marketDescription).SetFetchInfo("VariantCache", DateTime.Now);
+                }
             }
 
-            return marketDescriptor;
+            return marketDescription ?? variantDescription;
         }
 
         private static bool IsMarketPlayerProps(IMarketDescription marketDescriptor)
