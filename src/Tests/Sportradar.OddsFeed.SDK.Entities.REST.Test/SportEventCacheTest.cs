@@ -257,7 +257,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             {
                 var culture = TestData.Cultures4[StaticRandom.I(4)];
                 i--;
-                Debug.Write($"Loading culture: {culture.TwoLetterISOLanguageName}");
+                Debug.Write($"Loading {i} culture: {culture.TwoLetterISOLanguageName}\n");
                 var ci = (MatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
                 tasks.Add(ci.GetNamesAsync(new[] { culture }));
                 tasks.Add(ci.GetFixtureAsync(new[] { culture }));
@@ -266,7 +266,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 await Task.WhenAll(tasks);
                 if (i % 10 == 3)
                 {
-                    Debug.Write($"Deleting culture: {culture.TwoLetterISOLanguageName}");
+                    Debug.Write($"Deleting {i} culture: {culture.TwoLetterISOLanguageName}\n");
                     _sportEventCache.CacheDeleteItem(TestData.EventId, CacheItemType.All);
                 }
                 else

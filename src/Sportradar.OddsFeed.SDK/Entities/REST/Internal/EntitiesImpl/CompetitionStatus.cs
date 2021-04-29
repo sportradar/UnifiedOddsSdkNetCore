@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public EventStatus Status { get; }
 
         /// <summary>
-        /// Returns a <see cref="ReportingStatus" />  describing the reporting status of the associated sport event
+        /// Returns a <see cref="ReportingStatus" /> describing the reporting status of the associated sport event
         /// </summary>
         /// <value>The reporting status.</value>
         public ReportingStatus ReportingStatus { get; }

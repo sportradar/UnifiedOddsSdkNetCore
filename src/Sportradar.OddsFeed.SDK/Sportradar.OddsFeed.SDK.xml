@@ -22148,7 +22148,6 @@
             <summary>
             Class PeriodStatusDTO.
             </summary>
-            <remarks>Sportradar</remarks>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PeriodStatusDTO.Number">
             <summary>
@@ -22838,9 +22837,9 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO.PeriodOfLadder">
             <summary>
-            Gets the winner identifier
+            Gets the period of ladder.
             </summary>
-            <value>The winner identifier</value>
+            <value>The period of ladder</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO.ReportingStatus">
             <summary>
@@ -23761,7 +23760,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus.ReportingStatus">
             <summary>
-            Returns a <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus.ReportingStatus" />  describing the reporting status of the associated sport event
+            Returns a <see cref="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus.ReportingStatus" /> describing the reporting status of the associated sport event
             </summary>
             <value>The reporting status.</value>
         </member>

@@ -79,9 +79,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public URN WinnerId { get; }
 
         /// <summary>
-        /// Gets the winner identifier
+        /// Gets the period of ladder.
         /// </summary>
-        /// <value>The winner identifier</value>
+        /// <value>The period of ladder</value>
         public int? PeriodOfLadder { get; }
 
         /// <summary>

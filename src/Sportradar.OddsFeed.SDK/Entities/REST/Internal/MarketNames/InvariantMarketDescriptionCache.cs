@@ -362,7 +362,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
             await GetMarketInternalAsync(1, cultureList).ConfigureAwait(false);
             return _cache
-                .ToList()
                 .Select(c => new MarketDescription(c.Value as MarketDescriptionCacheItem, cultureList))
                 .ToList();
         }

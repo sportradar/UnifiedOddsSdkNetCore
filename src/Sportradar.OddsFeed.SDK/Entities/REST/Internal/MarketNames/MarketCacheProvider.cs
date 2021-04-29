@@ -7,6 +7,7 @@ using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -159,10 +160,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IList<CultureInfo> locales, IMarketDescription marketDescriptor, string variantValue)
         {
-            IMarketDescription variantDescriptor = null;
+            IMarketDescription variantDescription = null;
             try
             {
-                variantDescriptor = await _variantMarketsCache.GetMarketDescriptionAsync(marketId, variantValue, locales).ConfigureAwait(false);
+                variantDescription = await _variantMarketsCache.GetMarketDescriptionAsync(marketId, variantValue, locales).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -170,7 +171,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 _executionLog.LogWarning($"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
             }
 
-            return variantDescriptor ?? marketDescriptor;
+            if (marketDescriptor.Mappings.IsNullOrEmpty() && variantDescription != null && !variantDescription.Mappings.IsNullOrEmpty())
+            {
+                ((MarketDescription) marketDescriptor).SetMappings(variantDescription.Mappings as IReadOnlyCollection<IMarketMappingData>);
+                ((MarketDescription)marketDescriptor).SetFetchInfo("VariantCache", DateTime.Now);
+            }
+            if (marketDescriptor.Outcomes.IsNullOrEmpty() && variantDescription != null && !variantDescription.Outcomes.IsNullOrEmpty())
+            {
+                ((MarketDescription) marketDescriptor).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
+                ((MarketDescription)marketDescriptor).SetFetchInfo("VariantCache", DateTime.Now);
+            }
+
+            return marketDescriptor;
         }
 
         private static bool IsMarketPlayerProps(IMarketDescription marketDescriptor)
