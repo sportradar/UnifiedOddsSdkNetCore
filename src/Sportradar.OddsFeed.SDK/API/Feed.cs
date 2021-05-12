@@ -650,6 +650,12 @@ namespace Sportradar.OddsFeed.SDK.API
                 {
                     _metricsTaskScheduler.Start();
                 }
+
+                _log.LogInformation("Producers:");
+                foreach (var p in ProducerManager.Producers.OrderBy(o => o.Id))
+                {
+                    _log.LogInformation($"\tProducer {p.Id}-{p.Name.FixedLength(15)}\tIsAvailable={p.IsAvailable} \tIsEnabled={!p.IsDisabled}");
+                }
             }
             catch (CommunicationException ex)
             {
@@ -696,21 +702,23 @@ namespace Sportradar.OddsFeed.SDK.API
 
         private void AttachToConnectionEvents()
         {
-            if (_connectionFactory != null)
+            if (_connectionFactory == null)
             {
-                _connectionFactory.CreateConnection().ConnectionShutdown += OnConnectionShutdown;
-                _connectionFactory.CreateConnection().CallbackException += OnCallbackException;
+                return;
             }
+            _connectionFactory.CreateConnection().ConnectionShutdown += OnConnectionShutdown;
+            _connectionFactory.CreateConnection().CallbackException += OnCallbackException;
         }
 
         private void DetachFromConnectionEvents()
         {
-            if (_connectionFactory != null)
+            if (_connectionFactory == null)
             {
-                _connectionFactory.CreateConnection().ConnectionShutdown -= OnConnectionShutdown;
-                _connectionFactory.CreateConnection().CallbackException -= OnCallbackException;
-                _connectionFactory.Dispose();
+                return;
             }
+            _connectionFactory.CreateConnection().ConnectionShutdown -= OnConnectionShutdown;
+            _connectionFactory.CreateConnection().CallbackException -= OnCallbackException;
+            _connectionFactory.Dispose();
         }
 
         private void OnCallbackException(object sender, CallbackExceptionEventArgs e)

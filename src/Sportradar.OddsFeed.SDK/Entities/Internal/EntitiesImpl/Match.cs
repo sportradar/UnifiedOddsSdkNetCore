@@ -220,11 +220,35 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
                 return null;
             }
-
-            //var oneCulture = new List<CultureInfo> {Cultures.First()};
+            
             var eventTimelineCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
                 ? await matchCI.GetEventTimelineAsync(Cultures).ConfigureAwait(false)
                 : await new Func<IEnumerable<CultureInfo>, Task<EventTimelineCI>>(matchCI.GetEventTimelineAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("EventTimeline")).ConfigureAwait(false);
+
+            return eventTimelineCI == null
+                ? null
+                : new EventTimeline(eventTimelineCI);
+        }
+
+        /// <summary>
+        /// Asynchronously gets the associated event timeline for single culture
+        /// </summary>
+        /// <param name="culture">The languages to which the returned instance should be translated</param>
+        /// <remarks>Recommended to be used when only <see cref="IEventTimeline"/> is needed for this <see cref="IMatch"/></remarks>
+        /// <returns>A <see cref="Task{IEventTimeline}"/> representing the retrieval operation</returns>
+        public async Task<IEventTimeline> GetEventTimelineAsync(CultureInfo culture)
+        {
+            var matchCI = (IMatchCI)SportEventCache.GetEventCacheItem(Id);
+            if (matchCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                return null;
+            }
+
+            var oneCulture = new List<CultureInfo> {culture ?? Cultures.First()};
+            var eventTimelineCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await matchCI.GetEventTimelineAsync(oneCulture).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<EventTimelineCI>>(matchCI.GetEventTimelineAsync).SafeInvokeAsync(oneCulture, ExecutionLog, GetFetchErrorMessage("EventTimeline")).ConfigureAwait(false);
 
             return eventTimelineCI == null
                 ? null

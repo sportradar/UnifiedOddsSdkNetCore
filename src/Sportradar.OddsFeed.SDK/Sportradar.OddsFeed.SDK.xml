@@ -9624,6 +9624,14 @@
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the retrieval operation</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Match.GetEventTimelineAsync(System.Globalization.CultureInfo)">
+            <summary>
+            Asynchronously gets the associated event timeline for single culture
+            </summary>
+            <param name="culture">The languages to which the returned instance should be translated</param>
+            <remarks>Recommended to be used when only <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventTimeline"/> is needed for this <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IMatch"/></remarks>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the retrieval operation</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Match.GetDelayedInfoAsync">
             <summary>
             Asynchronously gets the associated delayed info
@@ -14838,6 +14846,15 @@
             <summary>
             Asynchronously gets the associated event timeline
             </summary>
+            <remarks>Makes calls to timeline API endpoint for all specified cultures in config</remarks>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the retrieval operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IMatch.GetEventTimelineAsync(System.Globalization.CultureInfo)">
+            <summary>
+            Asynchronously gets the associated event timeline for single culture
+            </summary>
+            <param name="culture">The languages to which the returned instance should be translated</param>
+            <remarks>Recommended to be used when only <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IEventTimeline"/> is needed for this <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IMatch"/></remarks>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the retrieval operation</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IMatch.GetDelayedInfoAsync">
