@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
+using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Json.Extensions;
 using App.Metrics.Scheduling;
 using Microsoft.Extensions.Logging;
@@ -759,22 +760,25 @@ namespace Sportradar.OddsFeed.SDK.API
                 _log.LogDebug("Metrics logging is not enabled.");
                 return Task.FromResult(false);
             }
-
-            if (_metricsRoot != null)
+            if (_metricsRoot == null)
             {
-                var snapshot = _metricsRoot.Snapshot.Get();
-                snapshot.ToMetric();
-
-                foreach (var formatter in _metricsRoot.OutputMetricsFormatters)
-                {
-                    using (var stream = new MemoryStream())
-                    {
-                        formatter.WriteAsync(stream, snapshot);
-                        var result = Encoding.UTF8.GetString(stream.ToArray());
-                        _metricsLogger.LogInformation(result);
-                    }
-                }
+                return Task.FromResult(true);
             }
+
+            var snapshot = _metricsRoot.Snapshot.Get();
+            snapshot.ToMetric();
+
+            // write to statistics log
+            _metricsLogger.LogInformation("Sdk metrics:");
+            var metricsFormatter = new MetricsTextOutputFormatter();
+            using var stream = new MemoryStream();
+            metricsFormatter.WriteAsync(stream, snapshot);
+            var result = Encoding.UTF8.GetString(stream.ToArray());
+            _metricsLogger.LogInformation(result);
+
+            // call all report runners defined by user
+            var tasks = _metricsRoot.ReportRunner.RunAllAsync();
+            Task.WhenAll(tasks);
 
             return Task.FromResult(true);
         }
