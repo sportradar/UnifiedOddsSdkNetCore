@@ -12,12 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// </summary>
     internal class OutcomeOdds : OutcomeProbabilities, IOutcomeOdds
     {
-        private double _odds;
-
-        /// <summary>
-        /// Additional probability attributes for markets which potentially will be (partly) refunded
-        /// </summary>
-        public IAdditionalProbabilities AdditionalProbabilities { get; }
+        private readonly double _odds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OutcomeOdds" /> class
@@ -40,10 +35,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             IEnumerable<CultureInfo> cultures,
             IOutcomeDefinition outcomeDefinition,
             IAdditionalProbabilities additionalProbabilities)
-            : base(id, active, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition)
+            : base(id, active, probabilities, nameProvider, mappingProvider, cultures, outcomeDefinition, additionalProbabilities)
         {
             _odds = odds;
-            AdditionalProbabilities = additionalProbabilities;
         }
 
         /// <summary>

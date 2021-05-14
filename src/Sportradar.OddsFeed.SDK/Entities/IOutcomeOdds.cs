@@ -14,10 +14,5 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <param name="oddsDisplayType">Display type of the odds (default: <see cref="OddsDisplayType.Decimal"/>)</param>
         /// <returns>The value of the outcome odds in specified format</returns>
         double? GetOdds(OddsDisplayType oddsDisplayType = OddsDisplayType.Decimal);
-
-        /// <summary>
-        /// Additional probability attributes for markets which potentially will be (partly) refunded
-        /// </summary>
-        IAdditionalProbabilities AdditionalProbabilities { get; }
     }
 }

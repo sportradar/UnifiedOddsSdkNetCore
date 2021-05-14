@@ -797,7 +797,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             int restCallTime;
             try
             {
-                if (id.IsSimpleTeam() || id.ToString().StartsWith(SdkInfo.OutcometextVariantValue, StringComparison.InvariantCultureIgnoreCase))
+                if (id.IsSimpleTeam() || id.ToString().StartsWith(SdkInfo.OutcomeTextVariantValue, StringComparison.InvariantCultureIgnoreCase))
                 {
                     simpleTeamResult = await _simpleTeamProvider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
                 }

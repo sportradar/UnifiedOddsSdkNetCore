@@ -7431,7 +7431,7 @@
             The variant description name
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.OutcometextVariantValue">
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.OutcomeTextVariantValue">
             <summary>
             The outcometext variant value
             </summary>
@@ -8539,6 +8539,12 @@
             Gets a <see cref="P:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities.CashoutStatus"/> enum member specifying the availability of cashout, or a null reference
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities.MarketMetadata">
+            <summary>
+            Gets the market metadata which contains the additional market information
+            </summary>
+            <value>The market metadata which contains the additional market information</value>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithSettlement">
             <summary>
             Represents settlement information for a market
@@ -9508,7 +9514,13 @@
             Gets a <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.CashoutStatus"/> enum member specifying the availability of cashout, or a null reference
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.#ctor(System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,Sportradar.OddsFeed.SDK.Entities.MarketStatus,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities},Sportradar.OddsFeed.SDK.Entities.IMarketDefinition,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Nullable{Sportradar.OddsFeed.SDK.Entities.CashoutStatus})">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.MarketMetadata">
+            <summary>
+            Gets the market metadata which contains the additional market information
+            </summary>
+            <value>The market metadata which contains the additional market information</value>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.#ctor(System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,Sportradar.OddsFeed.SDK.Entities.MarketStatus,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities},Sportradar.OddsFeed.SDK.Entities.IMarketDefinition,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Nullable{Sportradar.OddsFeed.SDK.Entities.CashoutStatus},Sportradar.OddsFeed.SDK.Entities.IMarketMetadata)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities"/> class
             </summary>
@@ -9523,6 +9535,7 @@
             <param name="marketDefinition">The associated market definition</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying languages the current instance supports</param>
             <param name="cashoutStatus">A <see cref="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithProbabilities.CashoutStatus"/> enum member specifying the availability of cashout, or a null reference</param>
+            <param name="marketMetadata">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketMetadata"/> to be set</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.MarketWithSettlement">
             <summary>
@@ -9865,11 +9878,6 @@
             Represents the odds for an outcome
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds.AdditionalProbabilities">
-            <summary>
-            Additional probability attributes for markets which potentially will be (partly) refunded
-            </summary>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds.#ctor(System.String,System.Nullable{System.Boolean},System.Double,System.Nullable{System.Double},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition,Sportradar.OddsFeed.SDK.Entities.IAdditionalProbabilities)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeOdds" /> class
@@ -9906,7 +9914,12 @@
             Gets the probabilities for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds" /> instance or a null reference if probabilities are not known.
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities.#ctor(System.String,System.Nullable{System.Boolean},System.Nullable{System.Double},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition)">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities.AdditionalProbabilities">
+            <summary>
+            Additional probability attributes for markets which potentially will be (partly) refunded
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities.#ctor(System.String,System.Nullable{System.Boolean},System.Nullable{System.Double},Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.INameProvider,Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition,Sportradar.OddsFeed.SDK.Entities.IAdditionalProbabilities)">
             <summary>Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities" /> class</summary>
             <param name="id">The value uniquely identifying the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities" /> instance</param>
             <param name="active">A value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeProbabilities" /> is active - i.e. should bets on it be accepted
@@ -9916,6 +9929,7 @@
             <param name="mappingProvider">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying languages the current instance supports</param>
             <param name="outcomeDefinition">The associated <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition"/></param>
+            <param name="additionalProbabilities">Additional probability attributes for markets which potentially will be (partly) refunded</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.OutcomeSettlement">
             <summary>
@@ -11384,11 +11398,6 @@
             <param name="oddsDisplayType">Display type of the odds (default: <see cref="F:Sportradar.OddsFeed.SDK.Entities.OddsDisplayType.Decimal"/>)</param>
             <returns>The value of the outcome odds in specified format</returns>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds.AdditionalProbabilities">
-            <summary>
-            Additional probability attributes for markets which potentially will be (partly) refunded
-            </summary>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities">
             <summary>
             Represents a selection with probabilities information
@@ -11403,6 +11412,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.Probabilities">
             <summary>
             Gets the probabilities for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds"/> instance
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.AdditionalProbabilities">
+            <summary>
+            Additional probability attributes for markets which potentially will be (partly) refunded
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement">

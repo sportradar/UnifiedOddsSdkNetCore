@@ -28,6 +28,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public CashoutStatus? CashoutStatus { get; }
 
         /// <summary>
+        /// Gets the market metadata which contains the additional market information
+        /// </summary>
+        /// <value>The market metadata which contains the additional market information</value>
+        public IMarketMetadata MarketMetadata { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MarketWithProbabilities"/> class
         /// </summary>
         /// <param name="id">a <see cref="int"/> value specifying the market type</param>
@@ -41,6 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="marketDefinition">The associated market definition</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="cashoutStatus">A <see cref="CashoutStatus"/> enum member specifying the availability of cashout, or a null reference</param>
+        /// <param name="marketMetadata">A <see cref="IMarketMetadata"/> to be set</param>
         internal MarketWithProbabilities(int id,
                                          IReadOnlyDictionary<string, string> specifiers,
                                          IReadOnlyDictionary<string, string> additionalInfo,
@@ -50,7 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                          IEnumerable<IOutcomeProbabilities> outcomeProbabilities,
                                          IMarketDefinition marketDefinition,
                                          IEnumerable<CultureInfo> cultures,
-                                         CashoutStatus? cashoutStatus)
+                                         CashoutStatus? cashoutStatus,
+                                         IMarketMetadata marketMetadata)
             : base(id, specifiers, additionalInfo, nameProvider, mappingProvider, marketDefinition, cultures)
         {
             Status = status;
@@ -61,6 +69,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
 
             CashoutStatus = cashoutStatus;
+
+            MarketMetadata = marketMetadata;
         }
     }
 }
