@@ -429,7 +429,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             return new MarketMetadata(marketMetadata);
         }
 
-
         /// <summary>
         /// Maps (converts) the provided <see cref="alive"/> instance to the <see cref="IAlive"/> instance
         /// </summary>

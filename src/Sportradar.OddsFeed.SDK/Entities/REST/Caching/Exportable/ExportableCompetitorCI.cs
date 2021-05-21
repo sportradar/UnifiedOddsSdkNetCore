@@ -101,12 +101,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// <summary>
         /// A <see cref="string"/> representing the sport id
         /// </summary>
-        public String SportId { get; set; }
+        public string SportId { get; set; }
 
         /// <summary>
         /// A <see cref="string"/> representing the category id
         /// </summary>
-        public String CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
         /// <summary>
         /// Gets the short name

@@ -15231,6 +15231,11 @@
             </summary>
             <value>The associated player ids</value>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.GetAssociatedPlayerIds">
+            <summary>
+            Get associated player ids if already cached (no competitor profile is fetched)
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.Jerseys">
             <summary>
             Gets the jerseys of known competitors
@@ -15290,6 +15295,12 @@
             Gets the short name
             </summary>
             <value>The short name</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.RootSource">
+            <summary>
+            Gets the type of the root source
+            </summary>
+            <value>The root source</value>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI._fetchedCultures">
             <summary>
@@ -19348,19 +19359,24 @@
             Value indicating whether the current instance was already disposed
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._semaphorePlayer">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._fetchedPlayerProfiles">
             <summary>
-            A <see cref="T:System.Threading.SemaphoreSlim"/> used to synchronize multi-threaded access
+            The bag of currently fetching player profiles
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._semaphoreCompetitor">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._fetchedCompetitorProfiles">
             <summary>
-            A <see cref="T:System.Threading.SemaphoreSlim"/> used to synchronize multi-threaded access
+            The bag of currently fetching competitor profiles
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._semaphoreCacheMerge">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._mergeUrns">
             <summary>
-            A <see cref="T:System.Threading.SemaphoreSlim"/> used to synchronize merging on cache item
+            The bag of currently merging ids
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._exportSemaphore">
+            <summary>
+            The semaphore used for export/import operation
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._normalCacheItemPolicy">

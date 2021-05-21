@@ -294,14 +294,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             var competitorsReferences = await seasonCI.GetCompetitorsReferencesAsync().ConfigureAwait(false);
 
-            var tasks = competitorsIds.Select(s =>
-            {
-                var t = _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy);
-                t.ConfigureAwait(false);
-                return t;
-            }).ToList();
+            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
-
             return tasks.Select(s=>s.Result);
         }
 
@@ -324,9 +318,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 await Task.WhenAll(tasks).ConfigureAwait(false);
                 sportEventIds = tasks.First().Result;
             }
-            //var sportEventIds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-            //    ? await _sportEventCache.GetEventIdsAsync(Id).ConfigureAwait(false)
-            //    : await new Func<URN, Task<IEnumerable<Tuple<URN, URN>>>>(_sportEventCache.GetEventIdsAsync).SafeInvokeAsync(Id, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
 
             return sportEventIds?.Select(i => _sportEntityFactory.BuildSportEvent<ICompetition>(i.Item1, i.Item2 ?? SportId, Cultures, ExceptionStrategy)).ToList();
         }
