@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -12,6 +14,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
@@ -33,12 +36,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// The child stages
         /// </summary>
-        private IEnumerable<StageCI> _childStages;
+        private IEnumerable<URN> _childStages;
 
         /// <summary>
         /// The additional parent ids
         /// </summary>
         private IEnumerable<URN> _additionalParentIds;
+
+        private bool _stageScheduleFetched;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StageCI"/> class
@@ -87,11 +92,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(FixtureDTO fixture,
-                        IDataRouterManager dataRouterManager,
-                        ISemaphorePool semaphorePool,
-                        CultureInfo currentCulture,
-                        CultureInfo defaultCulture,
-                        MemoryCache fixtureTimestampCache)
+                       IDataRouterManager dataRouterManager,
+                       ISemaphorePool semaphorePool,
+                       CultureInfo currentCulture,
+                       CultureInfo defaultCulture,
+                       MemoryCache fixtureTimestampCache)
             : base(fixture, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(fixture, currentCulture, true);
@@ -107,11 +112,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(TournamentInfoDTO tournamentSummary,
-                        IDataRouterManager dataRouterManager,
-                        ISemaphorePool semaphorePool,
-                        CultureInfo currentCulture,
-                        CultureInfo defaultCulture,
-                        MemoryCache fixtureTimestampCache)
+                       IDataRouterManager dataRouterManager,
+                       ISemaphorePool semaphorePool,
+                       CultureInfo currentCulture,
+                       CultureInfo defaultCulture,
+                       MemoryCache fixtureTimestampCache)
             : base(tournamentSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(tournamentSummary, currentCulture, true);
@@ -126,16 +131,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         public StageCI(ExportableStageCI exportable,
-            IDataRouterManager dataRouterManager,
-            ISemaphorePool semaphorePool,
-            CultureInfo defaultCulture,
-            MemoryCache fixtureTimestampCache)
+                       IDataRouterManager dataRouterManager,
+                       ISemaphorePool semaphorePool,
+                       CultureInfo defaultCulture,
+                       MemoryCache fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _categoryId = string.IsNullOrEmpty(exportable.CategoryId) ? null : URN.Parse(exportable.CategoryId);
-            _parentStageId = string.IsNullOrEmpty(exportable.ParentStageId) ? null : URN.Parse(exportable.ParentStageId);
-            _childStages = exportable.ChildStages?.Select(s => new StageCI(s, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache));
-            _additionalParentIds = exportable.AdditionalParentIds.IsNullOrEmpty() ? null : exportable.AdditionalParentIds.Select(URN.Parse).ToList();
+            _parentStageId = string.IsNullOrEmpty(exportable.ParentStageId)
+                ? null
+                : URN.Parse(exportable.ParentStageId);
+            _childStages = exportable.ChildStages?.Select(URN.Parse);
+            _additionalParentIds = exportable.AdditionalParentIds.IsNullOrEmpty()
+                ? null
+                : exportable.AdditionalParentIds.Select(URN.Parse).ToList();
         }
 
         /// <summary>
@@ -182,18 +191,39 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             return _additionalParentIds;
         }
 
+
         /// <summary>
-        /// get stages as an asynchronous operation.
+        /// Get stages as an asynchronous operation.
         /// </summary>
         /// <param name="cultures">The cultures</param>
         /// <returns>A <see cref="Task{T}" /> representing the asynchronous operation</returns>
-        public async Task<IEnumerable<StageCI>> GetStagesAsync(IEnumerable<CultureInfo> cultures)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2486:Generic exceptions should not be ignored", Justification = "Some stages just do not have schedule")]
+        public async Task<IEnumerable<URN>> GetStagesAsync(IEnumerable<CultureInfo> cultures)
         {
             if (_childStages != null)
             {
                 return _childStages;
             }
+
             await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
+
+            if (_childStages == null && !_stageScheduleFetched)
+            {
+                try
+                {
+                    _stageScheduleFetched = true;
+                    var results = await DataRouterManager.GetSportEventsForTournamentAsync(Id, DefaultCulture, this).ConfigureAwait(false);
+
+                    if (!results.IsNullOrEmpty())
+                    {
+                        _childStages = new ReadOnlyCollection<URN>(results.Select(r => r.Item1).ToList());
+                    }
+                }
+                catch
+                {
+                }
+            }
+
             return _childStages;
         }
 
@@ -250,8 +280,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
             if (eventSummary.Stages != null)
             {
-                // no translatable data - just replace with new value
-                _childStages = new ReadOnlyCollection<StageCI>(eventSummary.Stages.Select(r => new StageCI(r, DataRouterManager, SemaphorePool, culture, DefaultCulture, FixtureTimestampCache)).ToList());
+                _childStages = new ReadOnlyCollection<URN>(eventSummary.Stages.Select(r => r.Id).ToList());
             }
             if (eventSummary.Tournament?.Category != null)
             {
@@ -327,8 +356,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
             stage.CategoryId = _categoryId?.ToString();
             stage.ParentStageId = _parentStageId?.ToString();
-            var childTasks = _childStages?.Select(async s => await s.ExportAsync().ConfigureAwait(false) as ExportableStageCI);
-            stage.ChildStages = childTasks != null ? await Task.WhenAll(childTasks) : null;
+            stage.ChildStages = _childStages?.Select(s => s.ToString());
             stage.AdditionalParentIds = _additionalParentIds?.Select(s=>s.ToString()).ToList();
 
             return exportable;

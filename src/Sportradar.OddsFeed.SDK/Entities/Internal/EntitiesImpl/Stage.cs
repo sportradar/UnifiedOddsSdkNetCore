@@ -126,10 +126,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
             var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.THROW
                 ? await stageCI.GetStagesAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<StageCI>>>(stageCI.GetStagesAsync)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(stageCI.GetStagesAsync)
                     .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ChildStages")).ConfigureAwait(false);
 
-            return cacheItems?.Select(c => new Stage(c.Id, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy));
+            return cacheItems?.Select(c => new Stage(c, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy));
         }
 
         public async Task<StageType?> GetStageTypeAsync()
