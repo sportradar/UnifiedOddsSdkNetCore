@@ -47,12 +47,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cultures">A list of all languages for this instance</param>
         /// <param name="exceptionStrategy">The <see cref="ExceptionHandlingStrategy"/> indicating how to handle potential exceptions thrown during execution</param>
         public Tournament(URN id,
-                            URN sportId,
-                            ISportEntityFactory sportEntityFactory,
-                            ISportEventCache sportEventCache,
-                            ISportDataCache sportDataCache,
-                            IEnumerable<CultureInfo> cultures,
-                            ExceptionHandlingStrategy exceptionStrategy)
+                          URN sportId,
+                          ISportEntityFactory sportEntityFactory,
+                          ISportEventCache sportEventCache,
+                          ISportDataCache sportDataCache,
+                          IEnumerable<CultureInfo> cultures,
+                          ExceptionHandlingStrategy exceptionStrategy)
             : base(id, sportId, ExecutionLogPrivate, sportEventCache, cultures, exceptionStrategy)
         {
             Guard.Argument(id, nameof(id)).NotNull();
@@ -219,6 +219,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 : await new Func<Task<bool?>>(tournamentInfoCI.GetExhibitionGamesAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ExhibitionGames")).ConfigureAwait(false);
 
             return exhibitionGames;
+        }
+
+        /// <summary>
+        /// Gets the list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule
+        /// </summary>
+        /// <returns>The list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule</returns>
+        public async Task<IEnumerable<ISportEvent>> GetScheduleAsync()
+        {
+            var tournamentInfoCI = (TournamentInfoCI)SportEventCache.GetEventCacheItem(Id);
+            if (tournamentInfoCI == null)
+            {
+                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                return null;
+            }
+            var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                ? await tournamentInfoCI.GetScheduleAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(tournamentInfoCI.GetScheduleAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
+
+            return item?.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, SportId, Cultures, ExceptionStrategy));
         }
     }
 }

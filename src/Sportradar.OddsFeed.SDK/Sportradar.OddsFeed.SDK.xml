@@ -26520,6 +26520,12 @@
             </summary>
             <returns>A <see cref="T:System.Boolean"/> specifying if the tournament is exhibition game</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Tournament.GetScheduleAsync">
+            <summary>
+            Gets the list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule
+            </summary>
+            <returns>The list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.TournamentCoverage">
             <summary>
             Class TournamentCoverage
@@ -32244,6 +32250,12 @@
             Asynchronously gets a <see cref="T:System.Boolean"/> specifying if the tournament is exhibition game
             </summary>
             <returns>A <see cref="T:System.Boolean"/> specifying if the tournament is exhibition game</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.ITournament.GetScheduleAsync">
+            <summary>
+            Gets the list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule
+            </summary>
+            <returns>The list of all <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> that belongs to the basic tournament schedule</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ITournamentCoverage">
             <summary>

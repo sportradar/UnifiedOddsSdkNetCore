@@ -304,6 +304,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 }
             }
 
+            if (_scheduleUrns.IsNullOrEmpty() && _currentSeasonInfo != null)
+            {
+                _scheduleUrns = _currentSeasonInfo.Schedule;
+            }
+
             return _scheduleUrns;
         }
 

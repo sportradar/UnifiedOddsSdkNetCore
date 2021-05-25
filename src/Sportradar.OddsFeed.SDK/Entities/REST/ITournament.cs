@@ -34,5 +34,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>A <see cref="bool"/> specifying if the tournament is exhibition game</returns>
         Task<bool?> GetExhibitionGamesAsync();
+
+        /// <summary>
+        /// Gets the list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule
+        /// </summary>
+        /// <returns>The list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule</returns>
+        Task<IEnumerable<ISportEvent>> GetScheduleAsync() => Task.FromResult<IEnumerable<ISportEvent>>(null);
     }
 }
