@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="57c763f7-d815-483e-be76-45c4ea172117" visible="False" title="Welcome to the [TODO: Add project name]">
+  <Topic id="57c763f7-d815-483e-be76-45c4ea172117" visible="True" isDefault="true" isSelected="true" title="UnifiedFeed SDK .NET Standard 2.1">
     <HelpKeywords>
-      <HelpKeyword index="K" term="Welcome" />
+      <HelpKeyword index="K" term="UF SDK" />
     </HelpKeywords>
   </Topic>
-  <Topic id="6b70bd0c-cd8a-492f-9da5-d23d12c8deec" visible="False" isExpanded="true" isSelected="true" title="Version History">
+  <Topic id="6b70bd0c-cd8a-492f-9da5-d23d12c8deec" visible="False" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="version, history" />
     </HelpKeywords>

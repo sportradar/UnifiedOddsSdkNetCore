@@ -25,6 +25,15 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-05-28  1.16.0.0
+Extended IMatch with GetEventTimeline for single culture
+IOutcomeProbabilities extended with property AdditionalProbabilities
+IMarketWithProbabilities extended with MarketMetaData
+Extended ITournament with GetScheduleAsync
+Fix: Issue retrieving child stages from parent using  GetStagesAsync() method
+Fix: corrected which market description is returned for variant markets
+Improvement: optimized fetching of player/competitor profiles
+
 2021-04-29  1.15.0.0
 Added ISportDataProvider.GetPeriodStatusesAsync to fetch period summary for stages
 Extended ICompetitionStatus with PeriodOfLadder

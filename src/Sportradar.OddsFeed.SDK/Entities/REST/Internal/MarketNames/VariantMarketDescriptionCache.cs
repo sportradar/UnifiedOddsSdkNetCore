@@ -359,7 +359,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     ExecutionLog.LogWarning($"Error deleting fetchedVariants for {id}", e);
                 }
 
-                _cache.Remove(id);
+                if (_cache.Contains(id))
+                {
+                    _cache.Remove(id);
+                }
             }
         }
 
