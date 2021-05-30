@@ -1,18 +1,18 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dawn;
-using System.Threading;
-using System.Threading.Tasks;
 using Castle.Core.Internal;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
@@ -68,6 +68,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private readonly TimeSpan _maxTimeBetweenMessages;
 
+        private readonly string _exchange;
+
         /// <summary>
         /// The timer semaphore slim used reduce concurrency within timer calls
         /// </summary>
@@ -79,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="channelFactory">A <see cref="IChannelFactory"/> used to construct the <see cref="IModel"/> representing Rabbit MQ channel.</param>
         /// <param name="timer">Timer used to check if there is connection</param>
         /// <param name="maxTimeBetweenMessages">Max timeout between messages to check if connection is ok</param>
-        public RabbitMqChannel(IChannelFactory channelFactory, ITimer timer, TimeSpan maxTimeBetweenMessages)
+        public RabbitMqChannel(IChannelFactory channelFactory, ITimer timer, TimeSpan maxTimeBetweenMessages, string exchange)
         {
             Guard.Argument(channelFactory, nameof(channelFactory)).NotNull();
 
@@ -89,6 +91,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             _timer = timer;
             _maxTimeBetweenMessages = maxTimeBetweenMessages;
+            _exchange = exchange;
             _timer.Elapsed += OnTimerElapsed;
         }
 
@@ -109,7 +112,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             {
                 throw new ArgumentNullException(nameof(routingKeys), "Missing routing keys");
             }
-            
+
             _timer.Start();
         }
 
@@ -163,7 +166,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             foreach (var routingKey in _routingKeys)
             {
                 ExecutionLog.LogInformation($"Binding queue={declareResult.QueueName} with routingKey={routingKey}");
-                _channel.QueueBind(declareResult.QueueName, "unifiedfeed", routingKey);
+                _channel.QueueBind(declareResult.QueueName, _exchange, routingKey);
             }
 
             _channel.ModelShutdown += ChannelOnModelShutdown;
@@ -194,7 +197,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private void OnTimerElapsed(object sender, EventArgs e)
         {
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 await OnTimerElapsedAsync().ConfigureAwait(false);
             });
         }
@@ -214,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                         CreateAndAttachEvents();
                     }
 
-                    if(_channelFactory.ConnectionCreated > _lastMessageReceived)
+                    if (_channelFactory.ConnectionCreated > _lastMessageReceived)
                     {
                         // it means, the connection was reseted in between
                         DetachEvents();
@@ -238,7 +242,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     ExecutionLog.LogWarning("Error checking connection: " + e.Message);
                 }
             }
-            
+
             _timerSemaphoreSlim.Release();
         }
     }

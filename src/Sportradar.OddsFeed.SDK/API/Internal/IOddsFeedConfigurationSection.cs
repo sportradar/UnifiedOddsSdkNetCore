@@ -29,6 +29,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         string VirtualHost { get; }
 
         /// <summary>
+        /// Gets the exchange to which queues are bound on the messaging broker
+        /// </summary>
+        string Exchange { get; }
+
+        /// <summary>
         /// Gets the port used to connect to the messaging broker
         /// </summary>
         int Port { get; }

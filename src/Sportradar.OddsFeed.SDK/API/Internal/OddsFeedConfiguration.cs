@@ -1,13 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Collections.Generic;
 using Dawn;
-using System.Globalization;
-using System.Linq;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -105,6 +105,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public string VirtualHost { get; set; }
 
         /// <summary>
+        /// Gets a value specifying the exchange to which queues are bound on the messaging broker
+        /// </summary>
+        public string Exchange { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether a secure connection to the messaging server should be used
         /// </summary>
         public bool UseSsl { get; }
@@ -149,6 +154,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             string apiHost,
             string host,
             string virtualHost,
+            string exchange,
             bool useSsl,
             int maxRecoveryTimeInSeconds,
             int minIntervalBetweenRecoveryRequests,
@@ -180,6 +186,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             // ApiHost & UseApiSsl is set below
             Host = host;
             VirtualHost = virtualHost;
+            Exchange = exchange;
             UseSsl = useSsl;
             MaxRecoveryTime = maxRecoveryTimeInSeconds;
             MinIntervalBetweenRecoveryRequests = minIntervalBetweenRecoveryRequests;
@@ -223,6 +230,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             List<CultureInfo> wantedCultures,
             string host,
             string virtualHost,
+            string exchange,
             int port,
             string username,
             string password,
@@ -264,6 +272,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Locales = new List<CultureInfo>(locales.Distinct());
             Host = host;
             VirtualHost = virtualHost;
+            Exchange = exchange;
             Port = port;
             Username = string.IsNullOrEmpty(username) ? accessToken : username;
             Password = password;

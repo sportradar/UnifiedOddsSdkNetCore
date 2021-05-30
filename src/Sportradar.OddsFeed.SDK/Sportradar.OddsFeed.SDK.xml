@@ -929,7 +929,7 @@
             </summary>
             <param name="producerStatusChange">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.IProducerStatusChange"/> instance to be dispatched</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.GetConfigurationBuilder">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.GetConfigurationBuilder(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Constructs a <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration"/> instance from provided information
             </summary>
@@ -1672,6 +1672,11 @@
             A <see cref="T:System.Object"/> used to ensure thread safety
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ConfigurationSectionProvider._configuration">
+            <summary>
+            The loaded configuration.
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ConfigurationSectionProvider._section">
             <summary>
             The loaded section.
@@ -1683,7 +1688,7 @@
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection"/></returns>
             <exception cref="T:System.InvalidOperationException">The configuration could not be loaded or the configuration does not contain the requested section</exception>
-            <exception cref="T:System.Configuration.ConfigurationErrorsException">The section in the configuration file is not valid</exception>
+            <exception cref="!:ConfigurationErrorsException">The section in the configuration file is not valid</exception>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory">
             <summary>
@@ -1903,6 +1908,11 @@
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.CustomConfigurationBuilder._apiHost">
             <summary>
             The host name of the Sports API
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.CustomConfigurationBuilder._exchange">
+            <summary>
+            Specifies the exchange to which queues are bound on the messaging broker
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.CustomConfigurationBuilder._useMessagingSsl">
@@ -2625,7 +2635,6 @@
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection"/></returns>
             <exception cref="T:System.InvalidOperationException">The configuration could not be loaded or the configuration does not contain the requested section</exception>
-            <exception cref="!:ConfigurationErrorsException">The section in the configuration file is not valid</exception>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.IDispatcherStore">
             <summary>
@@ -2859,6 +2868,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection.VirtualHost">
             <summary>
             Gets the name of the virtual host configured on the messaging broker
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection.Exchange">
+            <summary>
+            Gets the exchange to which queues are bound on the messaging broker
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection.Port">
@@ -3433,6 +3447,11 @@
             </summary>
             <value>The virtual host</value>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfiguration.Exchange">
+            <summary>
+            Gets a value specifying the exchange to which queues are bound on the messaging broker
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfiguration.UseSsl">
             <summary>
             Gets a value indicating whether a secure connection to the messaging server should be used
@@ -3572,6 +3591,11 @@
             Gets a value specifying the virtual host of the AQMP broker
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationInternal.Exchange">
+            <summary>
+            Gets a value specifying the exchange to which queues are bound on the AQMP broker
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationInternal.Username">
             <summary>
             Gets the user name for connecting to the AQMP broker
@@ -3682,7 +3706,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection">
             <summary>
-            Represents Odds Feed SDK <see cref="T:System.Configuration.ConfigurationSection"/> read from app.config file
+            Represents Odds Feed SDK <see cref="T:Microsoft.Extensions.Configuration.ConfigurationSection"/> read from app.config file
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.SectionName">
@@ -3708,6 +3732,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.VirtualHost">
             <summary>
             Gets the name of the virtual host configured on the messaging broker
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.Exchange">
+            <summary>
+            Gets the exchange to which queues are bound on the messaging broker
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.Port">
@@ -3817,13 +3846,12 @@
             Gets a value specifying timeout set for recovery HTTP responses
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.GetSection">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.GetSection(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Retrieves the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection"/> from the app.config file
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection"/> instance loaded from config file</returns>
             <exception cref="T:System.InvalidOperationException">The configuration could not be loaded or the configuration does not contain the requested section</exception>
-            <exception cref="T:System.Configuration.ConfigurationErrorsException">The section in the configuration file is not valid</exception>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedSession">
             <summary>
@@ -6046,6 +6074,11 @@
             Gets a value specifying the virtual host of the AQMP broker
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration.Exchange">
+            <summary>
+            Gets a value specifying the exchange to which queues are bound on the AQMP broker
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration.UseSsl">
             <summary>
             Gets a value specifying whether the connection to AMQP broker should use SSL encryption
@@ -7394,6 +7427,11 @@
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ReplayHost">
             <summary>
             The replay host
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.Exchange">
+            <summary>
+            
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ReplayApiHost">
@@ -10891,7 +10929,7 @@
             The timer semaphore slim used reduce concurrency within timer calls
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.#ctor(Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory,Sportradar.OddsFeed.SDK.Common.Internal.ITimer,System.TimeSpan)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.#ctor(Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory,Sportradar.OddsFeed.SDK.Common.Internal.ITimer,System.TimeSpan,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel"/> class.
             </summary>

@@ -1,17 +1,17 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Sportradar.OddsFeed.SDK.Common;
 using System.Collections.Generic;
 using System.Globalization;
-
-using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
     /// <summary>
     /// Defines a contract implemented by classes representing odds feed configuration / settings
     /// </summary>
-    public interface IOddsFeedConfiguration {
+    public interface IOddsFeedConfiguration
+    {
 
         /// <summary>
         /// Gets the access token used when accessing feed's REST interface
@@ -87,6 +87,11 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Gets a value specifying the virtual host of the AQMP broker
         /// </summary>
         string VirtualHost { get; }
+
+        /// <summary>
+        /// Gets a value specifying the exchange to which queues are bound on the AQMP broker
+        /// </summary>
+        string Exchange { get; }
 
         /// <summary>
         /// Gets a value specifying whether the connection to AMQP broker should use SSL encryption

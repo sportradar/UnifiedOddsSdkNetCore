@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Configuration;
 
@@ -17,9 +18,19 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private readonly object _syncLock = new object();
 
         /// <summary>
+        /// The loaded configuration.
+        /// </summary>
+        private readonly IConfiguration _configuration;
+
+        /// <summary>
         /// The loaded section.
         /// </summary>
         private IOddsFeedConfigurationSection _section;
+
+        public ConfigurationSectionProvider(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         /// <summary>
         /// Gets the <see cref="IOddsFeedConfigurationSection"/>
@@ -33,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (_section == null)
                 {
-                    _section = OddsFeedConfigurationSection.GetSection();
+                    _section = OddsFeedConfigurationSection.GetSection(_configuration);
                 }
             }
             return _section;

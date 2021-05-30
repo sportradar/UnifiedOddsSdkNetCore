@@ -1,17 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using System;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     /// <summary>
     /// Represents Odds Feed SDK <see cref="ConfigurationSection"/> read from app.config file
     /// </summary>
-    internal class OddsFeedConfigurationSection : ConfigurationSection, IOddsFeedConfigurationSection
+    internal class OddsFeedConfigurationSection : IOddsFeedConfigurationSection
     {
         /// <summary>
         /// The name of the section element in the app.config file
@@ -21,181 +21,156 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the access token
         /// </summary>
-        [ConfigurationProperty("accessToken", IsRequired = true)]
-        public string AccessToken => (string) base["accessToken"];
+        public string AccessToken { get; set; }
 
         /// <summary>
         /// Gets a value specifying maximum allowed feed inactivity window
         /// </summary>
-        [ConfigurationProperty("inactivitySeconds", IsRequired = false, DefaultValue=20)]
-        [IntegerValidator(MinValue = SdkInfo.MinInactivitySeconds, MaxValue = SdkInfo.MaxInactivitySeconds, ExcludeRange = false)]
-        public int InactivitySeconds => (int) base["inactivitySeconds"];
+        public int InactivitySeconds { get; set; } = 20;
 
         /// <summary>
         /// Gets the URL of the messaging broker
         /// </summary>
-        [ConfigurationProperty("host", IsRequired = false, DefaultValue = null)]
-        public string Host => (string) base["host"];
+        public string Host { get; set; }
 
         /// <summary>
         /// Gets the name of the virtual host configured on the messaging broker
         /// </summary>
-        [ConfigurationProperty("virtualHost", IsRequired=false, DefaultValue = null)]
-        public string VirtualHost => (string) base["virtualHost"];
+        public string VirtualHost { get; set; }
+
+        /// <summary>
+        /// Gets the exchange to which queues are bound on the messaging broker
+        /// </summary>
+        public string Exchange { get; set; }
 
         /// <summary>
         /// Gets the port used to connect to the messaging broker
         /// </summary>
-        [ConfigurationProperty("port", IsRequired = false, DefaultValue = 0)]
-        public int Port => (int) base["port"];
+        public int Port { get; set; }
 
         /// <summary>
         /// Gets the username used to connect to the messaging broker
         /// </summary>
-        [ConfigurationProperty("username", IsRequired = false, DefaultValue = null)]
-        public string Username => (string) base["username"];
+        public string Username { get; set; }
 
         /// <summary>
         /// Gets the password used to connect to the messaging broker
         /// </summary>
-        [ConfigurationProperty("password", IsRequired = false, DefaultValue = null)]
-        public string Password => (string) base["password"];
+        public string Password { get; set; }
 
         /// <summary>
         /// Gets the URL of the API host
         /// </summary>
-        [ConfigurationProperty("apiHost", IsRequired = false, DefaultValue = null)]
-        public string ApiHost => (string) base["apiHost"];
+        public string ApiHost { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether a secure connection to the messaging broker should be used
         /// </summary>
-        [ConfigurationProperty("useSSL", IsRequired = false, DefaultValue = true)]
         // ReSharper disable once InconsistentNaming
-        public bool UseSSL => (bool) base["useSSL"];
+        public bool UseSSL { get; set; } = true;
 
         /// <summary>
         /// Gets a value indicating whether a secure connection to the Sports API should be used
         /// </summary>
-        [ConfigurationProperty("useApiSSL", IsRequired = false, DefaultValue = true)]
         // ReSharper disable once InconsistentNaming
-        public bool UseApiSSL => (bool) base["useApiSSL"];
+        public bool UseApiSSL { get; set; } = true;
 
         /// <summary>
         /// Gets the comma delimited string of all wanted languages
         /// </summary>
         /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
-        [ConfigurationProperty("supportedLanguages", IsRequired = false, DefaultValue = null)]
-        public string SupportedLanguages => (string) base["supportedLanguages"];
+        public string SupportedLanguages { get; set; }
 
         /// <summary>
         /// Gets the 2-letter ISO string of default language
         /// </summary>
         /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
-        [ConfigurationProperty("defaultLanguage", IsRequired = false, DefaultValue = null)]
-        public string DefaultLanguage => (string) base["defaultLanguage"];
+        public string DefaultLanguage { get; set; }
 
         /// <summary>
         /// Is statistics collecting enabled
         /// </summary>
-        [ConfigurationProperty("statisticsEnabled", IsRequired = false, DefaultValue = false)]
-        public bool StatisticsEnabled => (bool) base["statisticsEnabled"];
+        public bool StatisticsEnabled { get; set; }
 
         /// <summary>
         /// Gets the timeout for automatically collecting statistics
         /// </summary>
-        [ConfigurationProperty("statisticsTimeout", IsRequired = false, DefaultValue = 1800)]
-        public int StatisticsTimeout => (int) base["statisticsTimeout"];
+        public int StatisticsTimeout { get; set; } = 1800;
 
         /// <summary>
         /// Gets the limit of records for automatically writing statistics
         /// </summary>
-        [ConfigurationProperty("statisticsMaxRecord", IsRequired = false, DefaultValue = 1000000)]
-        public int StatisticsRecordLimit => (int) base["statisticsMaxRecord"];
+        public int StatisticsRecordLimit { get; set; } = 1000000;
 
         /// <summary>
         /// Gets the file path to the configuration file for the log4net repository used by the SDK
         /// </summary>
-        [ConfigurationProperty("sdkLogConfigPath", IsRequired = false)]
-        public string SdkLogConfigPath => (string) base["sdkLogConfigPath"];
+        public string SdkLogConfigPath { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the unified feed integration environment should be used
         /// </summary>
-        [ConfigurationProperty("useIntegrationEnvironment", IsRequired = false, DefaultValue = false)]
-        public bool UseIntegrationEnvironment => (bool) base["useIntegrationEnvironment"];
+        public bool UseIntegrationEnvironment { get; set; }
 
         /// <summary>
         /// Gets a <see cref="Common.ExceptionHandlingStrategy"/> enum member specifying how to handle exceptions thrown to outside callers
         /// </summary>
-        [ConfigurationProperty("exceptionHandlingStrategy", IsRequired = false, DefaultValue = ExceptionHandlingStrategy.CATCH)]
-        public ExceptionHandlingStrategy ExceptionHandlingStrategy => (ExceptionHandlingStrategy) base["exceptionHandlingStrategy"];
+        public ExceptionHandlingStrategy ExceptionHandlingStrategy { get; set; } = ExceptionHandlingStrategy.CATCH;
 
         /// <summary>
         /// Gets the comma delimited list of ids of disabled producers
         /// </summary>
-        [ConfigurationProperty("disabledProducers", IsRequired = false)]
-        public string DisabledProducers => (string) base["disabledProducers"];
+        public string DisabledProducers { get; set; }
 
         /// <summary>
         /// Gets the timeout for recovery to finish
         /// </summary>
-        [ConfigurationProperty("maxRecoveryTime", IsRequired = false, DefaultValue = SdkInfo.MaxRecoveryExecutionInSeconds)]
-        [IntegerValidator(MinValue = SdkInfo.MinRecoveryExecutionInSeconds, MaxValue = SdkInfo.MaxRecoveryExecutionInSeconds, ExcludeRange = false)]
-        public int MaxRecoveryTime => (int) base["maxRecoveryTime"];
+        public int MaxRecoveryTime { get; set; } = SdkInfo.MaxRecoveryExecutionInSeconds;
 
         /// <summary>
         /// Gets the minimal interval between recovery requests initiated by alive messages (seconds)
         /// </summary>
-        [ConfigurationProperty("minIntervalBetweenRecoveryRequests", IsRequired = false, DefaultValue = SdkInfo.DefaultIntervalBetweenRecoveryRequests)]
-        [IntegerValidator(MinValue = SdkInfo.MinIntervalBetweenRecoveryRequests, MaxValue = SdkInfo.MaxIntervalBetweenRecoveryRequests, ExcludeRange = false)]
-        public int MinIntervalBetweenRecoveryRequests => (int)base["minIntervalBetweenRecoveryRequests"];
+        public int MinIntervalBetweenRecoveryRequests { get; set; } = SdkInfo.DefaultIntervalBetweenRecoveryRequests;
 
         /// <summary>
         /// Gets the node id
         /// </summary>
-        [ConfigurationProperty("nodeId", IsRequired = false, DefaultValue = 0)]
-        public int NodeId => (int) base["nodeId"];
+        public int NodeId { get; set; }
 
         /// <summary>
         /// Gets the indication whether the after age should be adjusted before executing recovery request
         /// </summary>
-        [ConfigurationProperty("adjustAfterAge", IsRequired = false, DefaultValue = false)]
-        public bool AdjustAfterAge => (bool) base["adjustAfterAge"];
+        public bool AdjustAfterAge { get; set; }
 
         /// <summary>
         /// Gets a value specifying timeout set for HTTP responses
         /// </summary>
-        [ConfigurationProperty("httpClientTimeout", IsRequired = false, DefaultValue = SdkInfo.DefaultHttpClientTimeout)]
-        [IntegerValidator(MinValue = SdkInfo.MinHttpClientTimeout, MaxValue = SdkInfo.MaxHttpClientTimeout, ExcludeRange = false)]
-        public int HttpClientTimeout => (int)base["httpClientTimeout"];
+        public int HttpClientTimeout { get; set; } = SdkInfo.DefaultHttpClientTimeout;
 
         /// <summary>
         /// Gets a value specifying timeout set for recovery HTTP responses
         /// </summary>
-        [ConfigurationProperty("recoveryHttpClientTimeout", IsRequired = false, DefaultValue = SdkInfo.DefaultHttpClientTimeout)]
-        [IntegerValidator(MinValue = SdkInfo.MinHttpClientTimeout, MaxValue = SdkInfo.MaxHttpClientTimeout, ExcludeRange = false)]
-        public int RecoveryHttpClientTimeout => (int)base["recoveryHttpClientTimeout"];
+        public int RecoveryHttpClientTimeout { get; set; } = SdkInfo.DefaultHttpClientTimeout;
 
         /// <summary>
         /// Retrieves the <see cref="OddsFeedConfigurationSection"/> from the app.config file
         /// </summary>
         /// <returns>The <see cref="OddsFeedConfigurationSection"/> instance loaded from config file</returns>
         /// <exception cref="InvalidOperationException">The configuration could not be loaded or the configuration does not contain the requested section</exception>
-        /// <exception cref="ConfigurationErrorsException">The section in the configuration file is not valid</exception>
-        internal static OddsFeedConfigurationSection GetSection()
+        internal static OddsFeedConfigurationSection GetSection(IConfiguration config)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (config == null)
             {
                 throw new InvalidOperationException("Could not load exe configuration");
             }
 
-            var section = (OddsFeedConfigurationSection) config.GetSection(SectionName);
+            var section = config.GetSection(SectionName).Get<OddsFeedConfigurationSection>();
+
             if (section == null)
             {
                 throw new InvalidOperationException($"Could not retrieve section {SectionName} from exe configuration");
             }
+
             return section;
         }
     }

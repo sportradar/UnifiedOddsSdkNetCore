@@ -28,6 +28,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                                                    SupportedLocales,
                                                    SdkInfo.ReplayHost,
                                                    null,
+                                                   null,
                                                    SdkInfo.DefaultHostPort,
                                                    null,
                                                    null,

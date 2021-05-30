@@ -35,6 +35,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                                                    SupportedLocales,
                                                    _environment == SdkEnvironment.Production ? SdkInfo.ProductionHost : SdkInfo.IntegrationHost,
                                                    null,
+                                                   SdkInfo.Exchange,
                                                    SdkInfo.DefaultHostPort,
                                                    null,
                                                    null,

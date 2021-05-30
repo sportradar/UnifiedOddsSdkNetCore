@@ -1,18 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using Dawn;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Formatters.Json.Extensions;
 using App.Metrics.Scheduling;
+using Dawn;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -27,6 +20,14 @@ using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Unity;
 using Unity.Resolution;
 
@@ -505,9 +506,9 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Constructs a <see cref="IOddsFeedConfiguration"/> instance from provided information
         /// </summary>
         /// <returns>A <see cref="IOddsFeedConfiguration"/> instance created from provided information</returns>
-        public static ITokenSetter GetConfigurationBuilder()
-        { 
-            return new TokenSetter(new ConfigurationSectionProvider());
+        public static ITokenSetter GetConfigurationBuilder(IConfiguration configuration)
+        {
+            return new TokenSetter(new ConfigurationSectionProvider(configuration));
         }
 
         /// <summary>

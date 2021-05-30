@@ -1,20 +1,20 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
 using Dawn;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -121,6 +121,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public string VirtualHost => string.IsNullOrEmpty(_publicConfig.VirtualHost) ? _bookmakerDetails?.VirtualHost : _publicConfig.VirtualHost;
 
         /// <summary>
+        /// Gets a value specifying the exchange to which queues are bound on the AQMP broker
+        /// </summary>
+        public string Exchange => string.IsNullOrEmpty(_publicConfig.Exchange) ? SdkInfo.Exchange : _publicConfig.Exchange;
+
+        /// <summary>
         /// Gets the user name for connecting to the AQMP broker
         /// </summary>
         public string Username => _publicConfig.Username;
@@ -213,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(bookmakerDetailsProvider, nameof(bookmakerDetailsProvider)).NotNull();
 
             _publicConfig = publicConfig;
-            _bookmakerDetailsProvider = (BookmakerDetailsProvider) bookmakerDetailsProvider;
+            _bookmakerDetailsProvider = (BookmakerDetailsProvider)bookmakerDetailsProvider;
 
             StatisticsEnabled = true;
             StatisticsTimeout = 1800;
@@ -369,6 +374,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
               .Append(" NodeId=").Append(NodeId)
               .Append(" BookmakerId=").Append(_bookmakerDetails?.BookmakerId)
               .Append(" VirtualHost=").Append(_bookmakerDetails?.VirtualHost)
+              .Append(" Exchange=").Append(Exchange)
               .Append(" TokenExpires=").Append(_bookmakerDetails?.ExpireAt.ToShortDateString())
               .Append(" InactivitySeconds=").Append(InactivitySeconds)
               .Append(" DefaultLocale=").Append(DefaultLocale)

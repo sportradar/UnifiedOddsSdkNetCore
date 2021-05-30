@@ -1,14 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Entities.REST.Market;
+using Sportradar.OddsFeed.SDK.Messages;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -37,6 +37,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The replay host
         /// </summary>
         public const string ReplayHost = "replaymq.betradar.com";
+        /// <summary>
+        /// The exchange to which queues are bound on the messaging broker
+        /// </summary>
+        public const string Exchange = "unifiedfeed";
         /// <summary>
         /// The replay API host
         /// </summary>
@@ -174,7 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// The soccer sport urns
         /// </summary>
-        public static readonly IReadOnlyCollection<URN> SoccerSportUrns = new[] {URN.Parse("sr:sport:1"), URN.Parse("sr:sport:137")};
+        public static readonly IReadOnlyCollection<URN> SoccerSportUrns = new[] { URN.Parse("sr:sport:1"), URN.Parse("sr:sport:137") };
 
         /// <summary>
         /// Gets the assembly version number

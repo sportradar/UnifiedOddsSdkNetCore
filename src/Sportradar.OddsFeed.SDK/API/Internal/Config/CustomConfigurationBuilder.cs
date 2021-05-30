@@ -1,10 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using System;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal.Config
 {
@@ -44,6 +44,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// The host name of the Sports API
         /// </summary>
         private string _apiHost;
+
+        /// <summary>
+        /// Specifies the exchange to which queues are bound on the messaging broker
+        /// </summary>
+        private string _exchange;
 
         /// <summary>
         /// Value specifying whether SSL should be used when connecting to messaging broker
@@ -230,6 +235,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             {
                 _apiHost = section.ApiHost;
             }
+            _exchange = section.Exchange;
             _useMessagingSsl = section.UseSSL;
             _useApiSsl = section.UseApiSSL;
         }
@@ -248,6 +254,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                                                    SupportedLocales,
                                                    _messagingHost,
                                                    _virtualHost,
+                                                   _exchange,
                                                    _messagingPort ?? (_useMessagingSsl ? SdkInfo.DefaultHostPort : SdkInfo.DefaultHostPort + 1),
                                                    string.IsNullOrEmpty(_messagingUsername) ? AccessToken : _messagingUsername,
                                                    _messagingPassword,
@@ -262,7 +269,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                                                    ExceptionHandlingStrategy,
                                                    AdjustAfterAge ?? false,
                                                    HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout,
-                                                   RecoveryHttpClientTimeout ?? HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout, 
+                                                   RecoveryHttpClientTimeout ?? HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout,
                                                    Section);
 
             return config;

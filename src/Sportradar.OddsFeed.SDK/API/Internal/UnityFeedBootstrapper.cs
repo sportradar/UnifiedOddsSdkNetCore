@@ -1,16 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using Dawn;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.Caching;
 using App.Metrics;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.API.Internal.Replay;
@@ -32,10 +24,18 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.REST;
-using cashout = Sportradar.OddsFeed.SDK.Messages.REST.cashout;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Runtime.Caching;
 using Unity;
-using Unity.Lifetime;
 using Unity.Injection;
+using Unity.Lifetime;
+using cashout = Sportradar.OddsFeed.SDK.Messages.REST.cashout;
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
@@ -58,13 +58,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            if(loggerFactory != null)
+            if (loggerFactory != null)
             {
                 var _ = new SdkLoggerFactory(loggerFactory);
             }
             var log = SdkLoggerFactory.GetLogger(typeof(UnityFeedBootstrapper));
 
-            if(metricsRoot == null)
+            if (metricsRoot == null)
             {
                 _metricsRoot = new MetricsBuilder()
                     .Configuration.Configure(
@@ -106,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<ISequenceGenerator, IncrementalSequenceGenerator>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
-                    (long) value,
+                    (long)value,
                     long.MaxValue));
 
             container.RegisterType<IDeserializer<response>, Deserializer<response>>(new ContainerControlledLifetimeManager());
@@ -770,7 +770,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 new InjectionConstructor(
                     new ResolvedParameter<IChannelFactory>(),
                     connectionTimer,
-                    maxTimeBetweenMessages
+                    maxTimeBetweenMessages,
+                    config.Exchange
                     ));
             container.RegisterType<IMessageReceiver, RabbitMqMessageReceiver>(
                 new HierarchicalLifetimeManager(),
@@ -1261,7 +1262,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             return container.Registrations
                 .Where(c => c.RegisteredType == openGenericType)
-                .Select(r => (T) container.Resolve(r.RegisteredType, r.Name));
+                .Select(r => (T)container.Resolve(r.RegisteredType, r.Name));
         }
     }
 }
