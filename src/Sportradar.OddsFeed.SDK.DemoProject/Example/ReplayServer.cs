@@ -1,19 +1,20 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Dawn;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Sportradar.OddsFeed.SDK.API;
+using Sportradar.OddsFeed.SDK.API.EventArguments;
+using Sportradar.OddsFeed.SDK.DemoProject.Utils;
+using Sportradar.OddsFeed.SDK.Entities;
+using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Microsoft.Extensions.Logging;
-using Dawn;
-using Microsoft.Extensions.Logging.Abstractions;
-using Sportradar.OddsFeed.SDK.API;
-using Sportradar.OddsFeed.SDK.API.EventArguments;
-using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
@@ -22,11 +23,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     /// </summary>
     public class ReplayServer
     {
+        private readonly IConfiguration _configuration;
         private readonly ILogger _log;
         private readonly ILoggerFactory _loggerFactory;
 
-        public ReplayServer(ILoggerFactory loggerFactory = null)
+        public ReplayServer(IConfiguration configuration, ILoggerFactory loggerFactory = null)
         {
+            _configuration = configuration;
             _loggerFactory = loggerFactory;
             _log = _loggerFactory?.CreateLogger(typeof(ReplayServer)) ?? new NullLogger<ReplayServer>();
         }
@@ -36,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _log.LogInformation("Running the OddsFeed SDK Replay Server example");
 
             _log.LogInformation("Retrieving configuration from application configuration file");
-            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectReplay().LoadFromConfigFile().Build();
+            var configuration = Feed.GetConfigurationBuilder(_configuration).SetAccessTokenFromConfigFile().SelectReplay().LoadFromConfigFile().Build();
             //you can also create the IOddsFeedConfiguration instance by providing required values
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 
@@ -301,7 +304,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             Console.WriteLine("Sample events:");
             for (int i = 0; i < ExampleReplayEvents.SampleEvents.Count; i++)
             {
-                Console.WriteLine($"{i, 2} {ExampleReplayEvents.SampleEvents[i]}");
+                Console.WriteLine($"{i,2} {ExampleReplayEvents.SampleEvents[i]}");
             }
 
             Console.WriteLine();

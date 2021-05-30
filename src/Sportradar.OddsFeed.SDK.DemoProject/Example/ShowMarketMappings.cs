@@ -1,16 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Globalization;
-using Microsoft.Extensions.Logging;
 using Dawn;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.REST;
+using System;
+using System.Globalization;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
@@ -24,11 +25,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private readonly TaskProcessor _taskProcessor = new TaskProcessor(TimeSpan.FromSeconds(20));
 
+        private readonly IConfiguration _configuration;
         private readonly ILogger _log;
         private readonly ILoggerFactory _loggerFactory;
 
-        public ShowMarketMappings(ILoggerFactory loggerFactory = null)
+        public ShowMarketMappings(IConfiguration configuration, ILoggerFactory loggerFactory = null)
         {
+            _configuration = configuration;
             _loggerFactory = loggerFactory;
             _log = _loggerFactory?.CreateLogger(typeof(ShowMarketMappings)) ?? new NullLogger<ShowMarketMappings>();
         }
@@ -38,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _log.LogInformation("Running the OddsFeed SDK Display Markets Names example");
 
             _log.LogInformation("Retrieving configuration from application configuration file");
-            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
+            var configuration = Feed.GetConfigurationBuilder(_configuration).SetAccessTokenFromConfigFile().SelectCustom().LoadFromConfigFile().Build();
 
             _log.LogInformation("Creating Feed instance");
             var oddsFeed = new Feed(configuration, _loggerFactory);

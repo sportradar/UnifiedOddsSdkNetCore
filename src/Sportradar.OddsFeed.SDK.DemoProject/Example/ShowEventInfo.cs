@@ -1,16 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Globalization;
-using Microsoft.Extensions.Logging;
 using Dawn;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.REST;
+using System;
+using System.Globalization;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
@@ -21,11 +22,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
     {
         private readonly TaskProcessor _taskProcessor = new TaskProcessor(TimeSpan.FromSeconds(20));
 
+        private readonly IConfiguration _configuration;
         private readonly ILogger _log;
         private readonly ILoggerFactory _loggerFactory;
 
-        public ShowEventInfo(ILoggerFactory loggerFactory = null)
+        public ShowEventInfo(IConfiguration configuration, ILoggerFactory loggerFactory = null)
         {
+            _configuration = configuration;
             _loggerFactory = loggerFactory;
             _log = _loggerFactory?.CreateLogger(typeof(ShowEventInfo)) ?? new NullLogger<ShowEventInfo>();
         }
@@ -35,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             Console.WriteLine(string.Empty);
             _log.LogInformation("Running the OddsFeed SDK SportEvent Info example");
 
-            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
+            var configuration = Feed.GetConfigurationBuilder(_configuration).SetAccessTokenFromConfigFile().SelectCustom().LoadFromConfigFile().Build();
             var oddsFeed = new Feed(configuration, _loggerFactory);
             AttachToFeedEvents(oddsFeed);
 

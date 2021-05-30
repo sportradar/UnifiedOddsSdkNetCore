@@ -1,12 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.DemoProject.Example;
 using Sportradar.OddsFeed.SDK.Entities;
+using System;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject
 {
@@ -15,6 +16,8 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
     /// </summary>
     internal class OddsFeedExample
     {
+        private static IConfiguration _configuration;
+
         /// <summary>
         /// A <see cref="ILogger"/> instance used for execution logging
         /// </summary>
@@ -29,7 +32,14 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
         {
             var services = new ServiceCollection();
             services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddLog4Net("log4net.config"));
+            services.AddSingleton<IConfiguration>(
+                configure => new ConfigurationBuilder()
+                .AddXmlFile("Sportradar.OddsFeed.SDK.DemoProject.dll.config", false)
+                .AddEnvironmentVariables()
+                .Build());
+
             var serviceProvider = services.BuildServiceProvider();
+            _configuration = serviceProvider.GetService<IConfiguration>();
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
             _log = _loggerFactory.CreateLogger(typeof(OddsFeedExample));
             _log.LogInformation("OddsFeed example");
@@ -63,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             Console.Write("Enter number: ");
             var k = Console.ReadLine();
 
-            var defaultLocale = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build().DefaultLocale;
+            var defaultLocale = Feed.GetConfigurationBuilder(_configuration).SetAccessTokenFromConfigFile().SelectCustom().LoadFromConfigFile().Build().DefaultLocale;
 
             Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
@@ -72,52 +82,52 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             {
                 case "1":
                     {
-                        new Basic(_loggerFactory).Run(MessageInterest.AllMessages);
+                        new Basic(_configuration, _loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "2":
                     {
-                        new MultiSession(_loggerFactory).Run();
+                        new MultiSession(_configuration, _loggerFactory).Run();
                         break;
                     }
                 case "3":
                     {
-                        new SpecificDispatchers(_loggerFactory).Run(MessageInterest.AllMessages);
+                        new SpecificDispatchers(_configuration, _loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "4":
                     {
-                        new ShowMarketNames(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
+                        new ShowMarketNames(_configuration, _loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "5":
                     {
-                        new ShowEventInfo(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
+                        new ShowEventInfo(_configuration, _loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "6":
                     {
-                        new CompleteInfo(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
+                        new CompleteInfo(_configuration, _loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "7":
                     {
-                        new ShowMarketMappings(_loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
+                        new ShowMarketMappings(_configuration, _loggerFactory).Run(MessageInterest.AllMessages, defaultLocale);
                         break;
                     }
                 case "8":
                     {
-                        new ReplayServer(_loggerFactory).Run(MessageInterest.AllMessages);
+                        new ReplayServer(_configuration, _loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "9":
                     {
-                        new CacheExportImport(_loggerFactory).Run(MessageInterest.AllMessages);
+                        new CacheExportImport(_configuration, _loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 case "10":
                     {
-                        new MultiThreaded(_loggerFactory).Run(MessageInterest.AllMessages);
+                        new MultiThreaded(_configuration, _loggerFactory).Run(MessageInterest.AllMessages);
                         break;
                     }
                 default:
