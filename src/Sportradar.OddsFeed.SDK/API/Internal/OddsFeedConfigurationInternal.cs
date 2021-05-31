@@ -207,6 +207,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <value>The bookmaker details</value>
         public IBookmakerDetails BookmakerDetails => _bookmakerDetails;
 
+        public Dictionary<string, Endpoint> Endpoints => _publicConfig.Endpoints;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OddsFeedConfigurationInternal"/> class
         /// </summary>

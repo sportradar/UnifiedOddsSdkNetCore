@@ -141,6 +141,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public int RecoveryHttpClientTimeout { get; }
 
         /// <summary>
+        /// Provider api endpoints
+        /// </summary>
+        public Dictionary<string, Endpoint> Endpoints => Section.Endpoints;
+
+        /// <summary>
         /// Gets the <see cref="IOddsFeedConfigurationSection"/> used to obtain 'hidden' properties
         /// </summary>
         /// <value>The <see cref="IOddsFeedConfigurationSection"/> used to obtain 'hidden' properties</value>

@@ -1,10 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using Dawn;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -12,6 +9,9 @@ using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -24,22 +24,22 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// A format of the URL used to request a recovery of state after the specified timestamp
         /// </summary>
-        private const string AfterTimestampRecoveryUrlFormat = @"{0}recovery/initiate_request?after={1}&request_id={2}";
+        private readonly string _afterTimestampRecoveryUrlFormat;
 
         /// <summary>
         /// A format of the URL used to request full odds recovery
         /// </summary>
-        private const string FullOddsRecoveryUrlFormat = @"{0}recovery/initiate_request?request_id={1}";
+        private readonly string _fullOddsRecoveryUrlFormat;
 
         /// <summary>
         /// A url format used to request recovery of all messages for a specific event
         /// </summary>
-        private const string EventMessagesRecoveryUrlFormat = @"{0}odds/events/{1}/initiate_request?request_id={2}";
+        private readonly string _eventMessagesRecoveryUrlFormat;
 
         /// <summary>
         /// A url format used to request recovery of stateful messages for a specific event
         /// </summary>
-        private const string EventStatefulMessagesRecoveryUrlFormat = @"{0}stateful_messages/events/{1}/initiate_request?request_id={2}";
+        private readonly string _eventStatefulMessagesRecoveryUrlFormat;
 
         /// <summary>
         /// A <see cref="IDataPoster"/> instance used to issue the request to the feed API
@@ -71,6 +71,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             _dataPoster = dataPoster;
             _sequenceGenerator = sequenceGenerator;
             _nodeId = config.NodeId;
+
+            _afterTimestampRecoveryUrlFormat = config.GetEndpoint("afterTimestampRecovery", @"{0}recovery/initiate_request?after={1}&request_id={2}");
+            _fullOddsRecoveryUrlFormat = config.GetEndpoint("fullOddsRecovery", @"{0}recovery/initiate_request?request_id={1}");
+            _eventMessagesRecoveryUrlFormat = config.GetEndpoint("eventMessagesRecovery", @"{0}odds/events/{1}/initiate_request?request_id={2}");
+            _eventStatefulMessagesRecoveryUrlFormat = config.GetEndpoint("eventStatefulMessagesRecovery", @"{0}stateful_messages/events/{1}/initiate_request?request_id={2}");
         }
 
         /// <summary>
@@ -89,8 +94,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 throw new ArgumentException($"Producer {producer} is disabled in the SDK", nameof(producer));
             }
             var requestNumber = _sequenceGenerator.GetNext();
-            var myProducer = (Producer) producer;
-            var url = string.Format(EventMessagesRecoveryUrlFormat, myProducer.ApiUrl, eventId, requestNumber);
+            var myProducer = (Producer)producer;
+            var url = string.Format(_eventMessagesRecoveryUrlFormat, myProducer.ApiUrl, eventId, requestNumber);
             if (_nodeId != 0)
             {
                 url = $"{url}&node_id={_nodeId}";
@@ -127,8 +132,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
 
             var requestNumber = _sequenceGenerator.GetNext();
-            var myProducer = (Producer) producer;
-            var url = string.Format(EventStatefulMessagesRecoveryUrlFormat, myProducer.ApiUrl, eventId, requestNumber);
+            var myProducer = (Producer)producer;
+            var url = string.Format(_eventStatefulMessagesRecoveryUrlFormat, myProducer.ApiUrl, eventId, requestNumber);
             if (_nodeId != 0)
             {
                 url = $"{url}&node_id={_nodeId}";
@@ -176,7 +181,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             var timestampAfter = SdkInfo.ToEpochTime(dateAfter);
             var requestNumber = _sequenceGenerator.GetNext();
-            var url = string.Format(AfterTimestampRecoveryUrlFormat, ((Producer)producer).ApiUrl, timestampAfter, requestNumber);
+            var url = string.Format(_afterTimestampRecoveryUrlFormat, ((Producer)producer).ApiUrl, timestampAfter, requestNumber);
             if (nodeId != 0)
             {
                 url = $"{url}&node_id={nodeId}";
@@ -195,9 +200,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             finally
             {
-                var responseCode = responseMessage == null ? 0 : (int) responseMessage.StatusCode;
+                var responseCode = responseMessage == null ? 0 : (int)responseMessage.StatusCode;
                 var responseMsg = responseMessage == null ? string.Empty : responseMessage.ReasonPhrase;
-                var producerV1 = (Producer) producer;
+                var producerV1 = (Producer)producer;
                 producerV1.RecoveryInfo = new RecoveryInfo(timestampAfter, timestampRequested, requestNumber, nodeId, responseCode, responseMsg);
             }
 
@@ -229,7 +234,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
 
             var requestNumber = _sequenceGenerator.GetNext();
-            var url = string.Format(FullOddsRecoveryUrlFormat, ((Producer)producer).ApiUrl, requestNumber);
+            var url = string.Format(_fullOddsRecoveryUrlFormat, ((Producer)producer).ApiUrl, requestNumber);
             if (nodeId != 0)
             {
                 url = $"{url}&node_id={nodeId}";
@@ -248,9 +253,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             finally
             {
-                var responseCode = responseMessage == null ? 0 : (int) responseMessage.StatusCode;
+                var responseCode = responseMessage == null ? 0 : (int)responseMessage.StatusCode;
                 var responseMsg = responseMessage == null ? string.Empty : responseMessage.ReasonPhrase;
-                var producerV1 = (Producer) producer;
+                var producerV1 = (Producer)producer;
                 producerV1.RecoveryInfo = new RecoveryInfo(0, timestampRequested, requestNumber, nodeId, responseCode, responseMsg);
             }
 

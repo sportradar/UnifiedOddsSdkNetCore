@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using System;
+using System.Collections.Generic;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -151,6 +152,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets a value specifying timeout set for recovery HTTP responses
         /// </summary>
         public int RecoveryHttpClientTimeout { get; set; } = SdkInfo.DefaultHttpClientTimeout;
+
+        /// <summary>
+        /// Provider api endpoints
+        /// </summary>
+        public Dictionary<string, Endpoint> Endpoints { get; set; }
 
         /// <summary>
         /// Retrieves the <see cref="OddsFeedConfigurationSection"/> from the app.config file

@@ -1,6 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Sportradar.OddsFeed.SDK.API.Internal;
 using Sportradar.OddsFeed.SDK.Common;
 using System.Collections.Generic;
 using System.Globalization;
@@ -128,5 +129,30 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Gets the minimal interval between recovery requests initiated by alive messages (seconds)
         /// </summary>
         int MinIntervalBetweenRecoveryRequests { get; }
+
+        /// <summary>
+        /// Provider api endpoints
+        /// </summary>
+        Dictionary<string, Endpoint> Endpoints { get; }
+
+        /// <summary>
+        /// Gets the endpoint specified in the configuration
+        /// file by key or the default value if the value is 
+        /// not found.
+        /// </summary>
+        string GetEndpoint(string key, string defaultValue, bool isReplay = false)
+        {
+            string resource = null;
+
+            if (Endpoints != null)
+            {
+                if (Endpoints.TryGetValue(key, out var endpoint))
+                {
+                    resource = isReplay ? endpoint.ReplayUrl : endpoint.BaseUrl;
+                }
+            }
+
+            return resource ?? defaultValue;
+        }
     }
 }

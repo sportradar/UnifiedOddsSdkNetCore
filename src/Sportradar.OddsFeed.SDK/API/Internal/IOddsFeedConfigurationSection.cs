@@ -1,7 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using Sportradar.OddsFeed.SDK.Common;
+using System.Collections.Generic;
 // ReSharper disable InconsistentNaming
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
@@ -141,5 +143,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets a value specifying timeout set for recovery HTTP responses
         /// </summary>
         int RecoveryHttpClientTimeout { get; }
+
+        /// <summary>
+        /// Provider api endpoints
+        /// </summary>
+        Dictionary<string, Endpoint> Endpoints { get; }
     }
 }

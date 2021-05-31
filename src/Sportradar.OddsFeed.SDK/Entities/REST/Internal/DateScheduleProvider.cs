@@ -1,12 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             IDataFetcher fetcher,
             IDeserializer<scheduleEndpoint> deserializer,
             ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDTO>> mapperFactory)
-            :base(dateScheduleUriFormat, fetcher, deserializer, mapperFactory)
+            : base(dateScheduleUriFormat, fetcher, deserializer, mapperFactory)
         {
 
             Guard.Argument(liveScheduleUriFormat, nameof(liveScheduleUriFormat)).NotNull().NotEmpty();
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         protected override Uri GetRequestUri(params object[] identifiers)
         {
             return identifiers.Length == 1
-                ? new Uri(string.Format(_liveScheduleUriFormat, identifiers))
+                ? new Uri(string.Format(_liveScheduleUriFormat, identifiers[0], "live"))
                 : base.GetRequestUri(identifiers);
         }
     }
