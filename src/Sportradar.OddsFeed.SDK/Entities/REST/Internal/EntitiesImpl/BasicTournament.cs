@@ -174,14 +174,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             var competitorsReferences = await tournamentInfoCI.GetCompetitorsReferencesAsync().ConfigureAwait(false);
 
-            var tasks = competitorsIds.Select(s =>
-                                                                {
-                                                                    var t = _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy);
-                                                                    t.ConfigureAwait(false);
-                                                                    return t;
-                                                                }).ToList();
+            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
-
             return tasks.Select(s=>s.Result);
         }
 

@@ -51,14 +51,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the initialized instance will handle potential exceptions</param>
         /// <param name="matchStatusesCache">A <see cref="ILocalizedNamedValueCache"/> cache for fetching match statuses</param>
         protected Competition(ILogger executionLog,
-                             URN id,
-                             URN sportId,
-                             ISportEntityFactory sportEntityFactory,
-                             ISportEventStatusCache sportEventStatusCache,
-                             ISportEventCache sportEventCache,
-                             IEnumerable<CultureInfo> cultures,
-                             ExceptionHandlingStrategy exceptionStrategy,
-                             ILocalizedNamedValueCache matchStatusesCache)
+                              URN id,
+                              URN sportId,
+                              ISportEntityFactory sportEntityFactory,
+                              ISportEventStatusCache sportEventStatusCache,
+                              ISportEventCache sportEventCache,
+                              IEnumerable<CultureInfo> cultures,
+                              ExceptionHandlingStrategy exceptionStrategy,
+                              ILocalizedNamedValueCache matchStatusesCache)
             :base(id, sportId, executionLog, sportEventCache, cultures, exceptionStrategy)
         {
             Guard.Argument(id, nameof(id)).NotNull();
@@ -215,16 +215,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             {
                 return new List<ICompetitor>();
             }
-
-            var tasks = competitorsIds.Select(s =>
-                                              {
-                                                  var t = _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCI, ExceptionStrategy);
-                                                  t.ConfigureAwait(false);
-                                                  return t;
-                                              }).ToList();
+            
+            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCI, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
-
-            return tasks.Select(s=>s.Result);
+            return tasks.Select(s => s.Result);
         }
 
         /// <summary>

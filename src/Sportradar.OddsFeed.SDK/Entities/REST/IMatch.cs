@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
@@ -56,8 +58,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Asynchronously gets the associated event timeline
         /// </summary>
+        /// <remarks>Makes calls to timeline API endpoint for all specified cultures in config</remarks>
         /// <returns>A <see cref="Task{IEventTimeline}"/> representing the retrieval operation</returns>
         Task<IEventTimeline> GetEventTimelineAsync();
+
+        /// <summary>
+        /// Asynchronously gets the associated event timeline for single culture
+        /// </summary>
+        /// <param name="culture">The languages to which the returned instance should be translated</param>
+        /// <remarks>Recommended to be used when only <see cref="IEventTimeline"/> is needed for this <see cref="IMatch"/></remarks>
+        /// <returns>A <see cref="Task{IEventTimeline}"/> representing the retrieval operation</returns>
+        Task<IEventTimeline> GetEventTimelineAsync(CultureInfo culture) => Task.FromResult<IEventTimeline>(null);
 
         /// <summary>
         /// Asynchronously gets the associated delayed info
@@ -69,6 +80,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously gets the associated coverage info
         /// </summary>
         /// <returns>A <see cref="Task{ICoverageInfo}"/> representing the retrieval operation</returns>
-        Task<ICoverageInfo> GetCoverageInfoAsync() => null;
+        Task<ICoverageInfo> GetCoverageInfoAsync() => Task.FromResult<ICoverageInfo>(null);
     }
 }

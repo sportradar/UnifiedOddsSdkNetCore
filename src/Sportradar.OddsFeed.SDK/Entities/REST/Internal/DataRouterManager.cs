@@ -79,6 +79,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         private readonly IDataProvider<EntityList<SportEventSummaryDTO>> _sportEventsForTournamentProvider;
         /// <summary>
+        /// The sport events for race schedule tournament provider
+        /// </summary>
+        private readonly IDataProvider<EntityList<SportEventSummaryDTO>> _sportEventsForRaceTournamentProvider;
+        /// <summary>
         /// The player profile provider
         /// </summary>
         private readonly IDataProvider<PlayerProfileDTO> _playerProfileProvider;
@@ -224,6 +228,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="sportEventFixtureForTournamentProvider">The sport event fixture provider for when tournamentInfo is returned</param>
         /// <param name="sportEventFixtureChangeFixtureForTournamentProvider">The sport event fixture provider without cache for when tournamentInfo is returned</param>
         /// <param name="stagePeriodSummaryProvider">Stage period summary provider</param>
+        /// <param name="sportEventsForRaceTournamentProvider">The sport events for race schedule tournament provider</param>
         public DataRouterManager(ICacheManager cacheManager,
                                  IProducerManager producerManager,
                                  IMetricsRoot metricsRoot,
@@ -257,7 +262,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                                  IDataProvider<EntityList<TournamentInfoDTO>> availableSportTournamentsProvider,
                                  IDataProvider<TournamentInfoDTO> sportEventFixtureForTournamentProvider,
                                  IDataProvider<TournamentInfoDTO> sportEventFixtureChangeFixtureForTournamentProvider,
-                                 IDataProvider<PeriodSummaryDTO> stagePeriodSummaryProvider)
+                                 IDataProvider<PeriodSummaryDTO> stagePeriodSummaryProvider,
+                                 IDataProvider<EntityList<SportEventSummaryDTO>> sportEventsForRaceTournamentProvider)
         {
             Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
             Guard.Argument(producerManager, nameof(producerManager)).NotNull();
@@ -291,6 +297,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             Guard.Argument(sportEventFixtureForTournamentProvider, nameof(sportEventFixtureForTournamentProvider)).NotNull();
             Guard.Argument(sportEventFixtureChangeFixtureForTournamentProvider, nameof(sportEventFixtureChangeFixtureForTournamentProvider)).NotNull();
             Guard.Argument(stagePeriodSummaryProvider, nameof(stagePeriodSummaryProvider)).NotNull();
+            Guard.Argument(sportEventsForRaceTournamentProvider, nameof(sportEventsForRaceTournamentProvider)).NotNull();
 
             _cacheManager = cacheManager;
             var wnsProducer = producerManager.Get(7);
@@ -327,6 +334,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _sportEventFixtureForTournamentProvider = sportEventFixtureForTournamentProvider;
             _sportEventFixtureChangeFixtureForTournamentProvider = sportEventFixtureChangeFixtureForTournamentProvider;
             _stagePeriodSummaryProvider = stagePeriodSummaryProvider;
+            _sportEventsForRaceTournamentProvider = sportEventsForRaceTournamentProvider;
 
             _sportEventSummaryProvider.RawApiDataReceived += OnRawApiDataReceived;
             _sportEventFixtureProvider.RawApiDataReceived += OnRawApiDataReceived;
@@ -357,6 +365,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _sportEventFixtureForTournamentProvider.RawApiDataReceived += OnRawApiDataReceived;
             _sportEventFixtureChangeFixtureForTournamentProvider.RawApiDataReceived += OnRawApiDataReceived;
             _stagePeriodSummaryProvider.RawApiDataReceived += OnRawApiDataReceived;
+            sportEventsForRaceTournamentProvider.RawApiDataReceived += OnRawApiDataReceived;
         }
 
         private void OnRawApiDataReceived(object sender, RawApiDataEventArgs e)
@@ -704,15 +713,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 EntityList<SportEventSummaryDTO> result = null;
                 int restCallTime;
                 try
-                {
+                { 
                     result = await _sportEventsForTournamentProvider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
-                    restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                    restCallTime = (int)t.Elapsed.TotalMilliseconds; 
                 }
                 catch (Exception e)
                 {
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
-                    if (!e.Message.Contains("No schedule for this tournament") && !e.Message.Contains("This is a place-holder tournament."))
+                    if (e.Message.Contains("raceScheduleEndpoint") && id.TypeGroup.Equals(ResourceTypeGroup.STAGE))
+                    {
+                        try
+                        {
+                            result = await _sportEventsForRaceTournamentProvider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                            restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                        }
+                        catch (Exception ex)
+                        {
+                            _executionLog.LogDebug($"Error getting sport events for tournament for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", ex.InnerException ?? ex);
+                        }
+                    }
+                    else if (!e.Message.Contains("No schedule for this tournament") && !e.Message.Contains("This is a place-holder tournament."))
                     {
                         _executionLog.LogError($"Error getting sport events for tournament for id={id} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}", e.InnerException ?? e);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
@@ -797,7 +818,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             int restCallTime;
             try
             {
-                if (id.IsSimpleTeam() || id.ToString().StartsWith(SdkInfo.OutcometextVariantValue, StringComparison.InvariantCultureIgnoreCase))
+                if (id.IsSimpleTeam() || id.ToString().StartsWith(SdkInfo.OutcomeTextVariantValue, StringComparison.InvariantCultureIgnoreCase))
                 {
                     simpleTeamResult = await _simpleTeamProvider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
                 }

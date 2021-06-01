@@ -192,18 +192,18 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             if (playerOutcome != null)
             {
                 var competitor = _taskProcessor.GetTaskResult(playerOutcome.GetCompetitorAsync());
-                return $"\tOutcomeForPlayer:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{playerOutcome.Active?.ToString().ToLower()}, Odds:{playerOutcome.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{playerOutcome.GetOdds(OddsDisplayType.American)}, Probabilities:{playerOutcome.Probabilities}, HomeOrAwayTeam:{playerOutcome.HomeOrAwayTeam}, Competitor:{competitor?.Id}, OutcomeDefinition:[{WriteOutcomeDefinition(playerOutcome.OutcomeDefinition, culture)}]";
+                return $"\tOutcomeForPlayer:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{playerOutcome.Active?.ToString().ToLower()}, Odds:{playerOutcome.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{playerOutcome.GetOdds(OddsDisplayType.American)}, Probabilities:{playerOutcome.Probabilities}, AdditionalProbabilities[PO]={GetAdditionalProbabilities(playerOutcome.AdditionalProbabilities)}, HomeOrAwayTeam:{playerOutcome.HomeOrAwayTeam}, Competitor:{competitor?.Id}, OutcomeDefinition:[{WriteOutcomeDefinition(playerOutcome.OutcomeDefinition, culture)}]";
             }
             var outcomeOdds = outcome as IOutcomeOdds;
             if (outcomeOdds != null)
             {
-                return $"\tOutcomeWithOdds:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeOdds.Active?.ToString().ToLower()}, Odds:{outcomeOdds.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{outcomeOdds.GetOdds(OddsDisplayType.American)}, Probabilities:{outcomeOdds.Probabilities}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeOdds.OutcomeDefinition, culture)}]";
+                return $"\tOutcomeWithOdds:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeOdds.Active?.ToString().ToLower()}, Odds:{outcomeOdds.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{outcomeOdds.GetOdds(OddsDisplayType.American)}, Probabilities:{outcomeOdds.Probabilities}, AdditionalProbabilities[OO]={GetAdditionalProbabilities(outcomeOdds.AdditionalProbabilities)}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeOdds.OutcomeDefinition, culture)}]";
             }
 
             var outcomeProbabilities = outcome as IOutcomeProbabilities;
             if (outcomeProbabilities != null)
             {
-                return $"\tOutcomeWithProbabilities:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeProbabilities.Active?.ToString().ToLower()}, Probabilities:{outcomeProbabilities.Probabilities}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeProbabilities.OutcomeDefinition, culture)}]";
+                return $"\tOutcomeWithProbabilities:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeProbabilities.Active?.ToString().ToLower()}, Probabilities:{outcomeProbabilities.Probabilities}, AdditionalProbabilities[OP]={GetAdditionalProbabilities(null)}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeProbabilities.OutcomeDefinition, culture)}]";
             }
 
             var outcomeSettlement = outcome as IOutcomeSettlement;
@@ -213,6 +213,16 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             }
 
             return $"\tOutcomeId:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', OutcomeDefinition:[{WriteOutcomeDefinition(outcome.OutcomeDefinition, culture)}]";
+        }
+
+        private string GetAdditionalProbabilities(IAdditionalProbabilities probabilities)
+        {
+            if (probabilities == null)
+            {
+                return string.Empty;
+            }
+
+            return $"Win={probabilities.Win}, Lose={probabilities.Lose}, HalfWin={probabilities.HalfWin}, HalfLose={probabilities.HalfLose}, Refund={probabilities.Refund}";
         }
     }
 }

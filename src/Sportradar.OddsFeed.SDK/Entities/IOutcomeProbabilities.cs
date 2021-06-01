@@ -18,5 +18,10 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// Gets the probabilities for the current <see cref="IOutcomeOdds"/> instance
         /// </summary>
         double? Probabilities { get; }
+
+        /// <summary>
+        /// Additional probability attributes for markets which potentially will be (partly) refunded
+        /// </summary>
+        IAdditionalProbabilities AdditionalProbabilities => null;
     }
 }

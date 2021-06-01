@@ -183,22 +183,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 _executionLog.LogWarning($"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
             }
 
-            if (marketDescription != null && variantDescription != null)
-            {
-                if (marketDescription.Mappings.IsNullOrEmpty() && !variantDescription.Mappings.IsNullOrEmpty())
-                {
-                    ((MarketDescription) marketDescription).SetMappings(variantDescription.Mappings as IReadOnlyCollection<IMarketMappingData>);
-                    ((MarketDescription) marketDescription).SetFetchInfo("VariantCache", DateTime.Now);
-                }
-
-                if (marketDescription.Outcomes.IsNullOrEmpty() && !variantDescription.Outcomes.IsNullOrEmpty())
-                {
-                    ((MarketDescription) marketDescription).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
-                    ((MarketDescription) marketDescription).SetFetchInfo("VariantCache", DateTime.Now);
-                }
-            }
-
-            return marketDescription ?? variantDescription;
+            return variantDescription ?? marketDescription;
         }
 
         private static bool IsMarketPlayerProps(IMarketDescription marketDescriptor)
@@ -208,7 +193,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private static bool IsMarketOutcomeText(IMarketDescription marketDescriptor)
         {
-            return !string.IsNullOrEmpty(marketDescriptor?.OutcomeType) && marketDescriptor.OutcomeType.Equals(SdkInfo.FreeTextVariantValue);
+            return !string.IsNullOrEmpty(marketDescriptor?.OutcomeType) && marketDescriptor.OutcomeType.Equals(SdkInfo.FreeTextVariantValue); // covers also SdkInfo.OutcomeTextVariantValue
         }
 
         /// <summary>

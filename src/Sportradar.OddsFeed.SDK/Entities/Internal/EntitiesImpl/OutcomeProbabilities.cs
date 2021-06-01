@@ -22,6 +22,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         public double? Probabilities { get; }
 
+        /// <summary>
+        /// Additional probability attributes for markets which potentially will be (partly) refunded
+        /// </summary>
+        public IAdditionalProbabilities AdditionalProbabilities { get; }
+
         /// <summary>Initializes a new instance of the <see cref="OutcomeProbabilities" /> class</summary>
         /// <param name="id">The value uniquely identifying the current <see cref="OutcomeProbabilities" /> instance</param>
         /// <param name="active">A value indicating whether the current <see cref="OutcomeProbabilities" /> is active - i.e. should bets on it be accepted
@@ -31,17 +36,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>
+        /// <param name="additionalProbabilities">Additional probability attributes for markets which potentially will be (partly) refunded</param>
         internal OutcomeProbabilities(string id,
                                       bool? active,
                                       double? probabilities,
                                       INameProvider nameProvider,
                                       IMarketMappingProvider mappingProvider,
                                       IEnumerable<CultureInfo> cultures,
-                                      IOutcomeDefinition outcomeDefinition)
+                                      IOutcomeDefinition outcomeDefinition,
+                                      IAdditionalProbabilities additionalProbabilities)
             : base(id, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
             Active = active;
             Probabilities = probabilities;
+            AdditionalProbabilities = additionalProbabilities;
         }
     }
 }

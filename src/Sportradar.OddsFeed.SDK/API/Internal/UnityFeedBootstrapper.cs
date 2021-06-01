@@ -509,6 +509,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         new ResolvedParameter<IDeserializer<tournamentSchedule>>(),
                         new ResolvedParameter<ISingleTypeMapperFactory<tournamentSchedule, EntityList<SportEventSummaryDTO>>>()));
 
+            // race schedule for stage tournament provider
+            container.RegisterType<IDeserializer<raceScheduleEndpoint>, Deserializer<raceScheduleEndpoint>>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISingleTypeMapperFactory<raceScheduleEndpoint, EntityList<SportEventSummaryDTO>>, TournamentRaceScheduleMapperFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDataProvider<EntityList<SportEventSummaryDTO>>, TournamentRaceScheduleProvider>(
+                "tournamentRaceScheduleProvider",
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    config.ApiBaseUri + "/v1/sports/{1}/tournaments/{0}/schedule.xml",
+                    new ResolvedParameter<IDataFetcher>(),
+                    new ResolvedParameter<IDeserializer<raceScheduleEndpoint>>(),
+                    new ResolvedParameter<ISingleTypeMapperFactory<raceScheduleEndpoint, EntityList<SportEventSummaryDTO>>>()));
+
             // player profile provider
             container.RegisterType<IDeserializer<playerProfileEndpoint>, Deserializer<playerProfileEndpoint>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<playerProfileEndpoint, PlayerProfileDTO>, PlayerProfileMapperFactory>(new ContainerControlledLifetimeManager());
@@ -754,7 +766,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IDataProvider<EntityList<TournamentInfoDTO>>>("availableSportTournaments"),
                     new ResolvedParameter<IDataProvider<TournamentInfoDTO>>("fixtureEndpointForTournamentDataProvider"),
                     new ResolvedParameter<IDataProvider<TournamentInfoDTO>>("fixtureChangeFixtureEndpointForTournamentDataProvider"),
-                    new ResolvedParameter<IDataProvider<PeriodSummaryDTO>>("stagePeriodSummaryProvider")));
+                    new ResolvedParameter<IDataProvider<PeriodSummaryDTO>>("stagePeriodSummaryProvider"),
+                    new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("tournamentRaceScheduleProvider")));
         }
 
         private static void RegisterSessionTypes(IUnityContainer container, IOddsFeedConfigurationInternal config)

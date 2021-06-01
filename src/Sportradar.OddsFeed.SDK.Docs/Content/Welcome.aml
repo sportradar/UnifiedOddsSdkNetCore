@@ -1,55 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="57c763f7-d815-483e-be76-45c4ea172117" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<introduction>
-			<para>This is a sample conceptual topic.  You can use this as a starting point for adding more conceptual
-content to your help project.</para>
-		</introduction>
+    <introduction>
+      <para>
+        UnifiedFeed SDK is a client library that enables easier integration with the Betradar XML feeds. SDK exposes XML feed service interface in a more user-friendly way and isolates the client from having to do XML feed parsing, proper connection handling, error recovery, event queuing, data caching and dispatching. It also makes a client solution more stable and robust when it comes to feed handling, especially with the release of new and updated XML feed versions.
+      </para>
+      <para>
+        For a quick start consider consulting the Example project also found in Downloads.
+      </para>
+    </introduction>
 
-		<section>
-			<title>Getting Started</title>
-			<content>
-				<para>To get started, add a documentation source to the project (a Visual Studio solution, project, or
-assembly and XML comments file).  See the <legacyBold>Getting Started</legacyBold> topics in the Sandcastle Help
-File Builder's help file for more information.  The following default items are included in this project:</para>
-
-				<list class="bullet">
-					<listItem>
-						<para><localUri>ContentLayout.content</localUri> - Use the content layout file to manage the
-conceptual content in the project and define its layout in the table of contents.</para>
-					</listItem>
-
-					<listItem>
-						<para>The <localUri>.\media</localUri> folder - Place images in this folder that you will reference
-from conceptual content using <codeInline>medialLink</codeInline> or <codeInline>mediaLinkInline</codeInline>
-elements.  If you will not have any images in the file, you may remove this folder.</para>
-					</listItem>
-
-					<listItem>
-						<para>The <localUri>.\icons</localUri> folder - This contains a default logo for the help file.  You
-may replace it or remove it and the folder if not wanted.  If removed or if you change the file name, update
-the <ui>Transform Args</ui> project properties page by removing or changing the filename in the
-<codeInline>logoFile</codeInline> transform argument.  Note that unlike images referenced from conceptual topics,
-the logo file should have its <legacyBold>BuildAction</legacyBold> property set to <codeInline>Content</codeInline>.</para>
-					</listItem>
-
-					<listItem>
-						<para>The <localUri>.\Content</localUri> folder - Use this to store your conceptual topics.  You may
-name the files and organize them however you like.  One suggestion is to lay the files out on disk as you have
-them in the content layout file as shown in this project but the choice is yours.  Files can be added via the
-Solution Explorer or from within the content layout file editor.  Files must appear in the content layout file
-in order to be compiled into the help file.</para>
-					</listItem>
-				</list>
-
-				<para>See the <legacyBold>Conceptual Content</legacyBold> topics in the Sandcastle Help File Builder's
-help file for more information.  See the <legacyBold> Sandcastle MAML Guide</legacyBold> for details on Microsoft
-Assistance Markup Language (MAML) which is used to create these topics.</para>
-			</content>
-		</section>
+    <section>
+      <title>Getting Started</title>
+      <content>
+        <para>
+          For a quick start consider consulting the Example project also found in Downloads.
+        </para>
+      </content>
+      <sections>
+        <section>
+          <title>Obtaining the SDK</title>
+          <content>
+            <para>
+              The SDK is provided as a code library (Sportradar.OddsFeed.SDK.dll), which is available on the SDK
+              site and via the NuGet package manager. The usage of NuGet package manager is
+              recommended, since it supports update notifications and makes it easier to obtain new
+              releases of the SDK.
+            </para>
+          </content>
+        </section>
+      </sections>
+    </section>
 
 		<relatedTopics>
-			<link xlink:href="6b70bd0c-cd8a-492f-9da5-d23d12c8deec" />
+			<!--<link xlink:href="6b70bd0c-cd8a-492f-9da5-d23d12c8deec" />-->
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>
