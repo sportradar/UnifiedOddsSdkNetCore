@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <returns>The created<see cref="MarketDescriptionDTO"/> instance</returns>
         MarketDescriptionDTO ISingleTypeMapper<MarketDescriptionDTO>.Map()
         {
-            var descriptions = _data.market.Select(m => new MarketDescriptionDTO(m)).ToList();
+            var descriptions = _data.market.Where(w => w.id != 0).Select(m => new MarketDescriptionDTO(m)).ToList();
             return descriptions.FirstOrDefault();
         }
     }
