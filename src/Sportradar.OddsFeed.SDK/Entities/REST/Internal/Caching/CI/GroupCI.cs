@@ -9,6 +9,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -130,12 +132,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
         public async Task<ExportableGroupCI> ExportAsync()
         {
+            var cr = new Dictionary<string, Dictionary<string, string>>();
+            if (!CompetitorsReferences.IsNullOrEmpty())
+            {
+                foreach (var competitorsReference in CompetitorsReferences)
+                {
+                    try
+                    {
+                        var refs = competitorsReference.Value.ReferenceIds?.ToDictionary(r => r.Key, r => r.Value);
+                        cr.Add(competitorsReference.Key.ToString(), refs);
+                    }
+                    catch (Exception e)
+                    {
+                        SdkLoggerFactory.GetLoggerForExecution(typeof(GroupCI)).LogError("Exporting GroupCI", e);
+                    }
+                }
+            }
+
             return new ExportableGroupCI
             {
                 Id = Id,
                 Name = Name,
                 Competitors = CompetitorsIds?.Select(s=>s.ToString()),
-                CompetitorsReferences = CompetitorsReferences?.ToDictionary(c => c.Key.ToString(), c => c.Value.ReferenceIds.ToDictionary(r => r.Key, r => r.Value))
+                CompetitorsReferences = cr.IsNullOrEmpty() ? null : cr
             };
         }
     }

@@ -375,5 +375,27 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             var tmp = string.Join(",", specifiers.Select(s => s.Name));
             return tmp;
         }
+
+        /// <summary>
+        /// Gets the fixed length unique identifier
+        /// </summary>
+        /// <param name="length">The length of the returned string</param>
+        /// <param name="containDash">if set to <c>true</c> [contain dash].</param>
+        public static string GetGuid(int length, bool containDash = false)
+        {
+            var g = Guid.NewGuid().ToString();
+
+            if (!containDash)
+            {
+                g = g.Replace("-", string.Empty);
+            }
+
+            if (length > 0 && length < g.Length)
+            {
+                g = g.Substring(0, length);
+            }
+
+            return g;
+        }
     }
 }

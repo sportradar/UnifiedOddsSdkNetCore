@@ -194,18 +194,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     playerTasks.Add(_profileCache.GetPlayerProfileAsync(id, cultureList));
                 }
             }
+
             await Task.WhenAll(competitorTasks).ConfigureAwait(false);
             await Task.WhenAll(playerTasks).ConfigureAwait(false);
 
             var result = new List<IPlayer>();
             foreach (var competitorTask in competitorTasks)
             {
-                result.Add(new Competitor(competitorTask.Result, _profileCache, cultureList, this, exceptionStrategy, (ICompetitionCI) null));
+                if (competitorTask.IsCompleted && competitorTask.Result != null)
+                {
+                    result.Add(new Competitor(competitorTask.Result, _profileCache, cultureList, this, exceptionStrategy, (ICompetitionCI) null));
+                }
             }
 
             foreach (var playerTask in playerTasks)
             {
-                result.Add(new PlayerProfile(playerTask.Result, cultureList));
+                if (playerTask.IsCompleted && playerTask.Result != null)
+                {
+                    result.Add(new PlayerProfile(playerTask.Result, cultureList));
+                }
             }
 
             return result;
