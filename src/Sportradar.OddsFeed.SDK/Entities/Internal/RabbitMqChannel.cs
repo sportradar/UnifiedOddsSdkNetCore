@@ -128,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             DetachEvents();
 
             _timer.Stop();
-            _timerSemaphoreSlim.Release();
+            _timerSemaphoreSlim.ReleaseSafe();
             _timerSemaphoreSlim.Dispose();
         }
 
@@ -157,7 +157,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             ExecutionLog.LogInformation("Opening the channel ...");
             _channel = _channelFactory.CreateChannel();
-            ExecutionLog.LogInformation($"Channel opened with channelNumber: {_channel.ChannelNumber}");
+            ExecutionLog.LogInformation($"Channel opened with channelNumber: {_channel.ChannelNumber}. MaxAllowedTimeBetweenMessages={_maxTimeBetweenMessages.TotalSeconds}s.");
             var declareResult = _channel.QueueDeclare();
 
             foreach (var routingKey in _routingKeys)
@@ -205,17 +205,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private async Task OnTimerElapsedAsync()
         {
             await _timerSemaphoreSlim.WaitAsync().ConfigureAwait(false);
+
             if (IsOpened)
             {
                 try
                 {
                     if (_channel == null)
                     {
+                        ExecutionLog.LogInformation("Creating connection channel and attaching events ...");
                         CreateAndAttachEvents();
                     }
 
                     if(_channelFactory.ConnectionCreated > _lastMessageReceived)
                     {
+                        ExecutionLog.LogInformation("Recreating connection channel and attaching events ...");
                         // it means, the connection was reseted in between
                         DetachEvents();
                         CreateAndAttachEvents();
@@ -235,11 +238,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogWarning("Error checking connection: " + e.Message);
+                    ExecutionLog.LogWarning("Error checking connection for channelNumber {_channel?.ChannelNumber}: " + e.Message);
                 }
             }
             
-            _timerSemaphoreSlim.Release();
+            _timerSemaphoreSlim.ReleaseSafe();
         }
     }
 }
