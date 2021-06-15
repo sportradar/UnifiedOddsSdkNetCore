@@ -25,6 +25,13 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-06-15  1.17.0.0
+Added pitcher, batter, pitch_count, pitches_seen, total_hits, total_pitches to SportEventStatus.Properties
+PeriodScore - match status code 120 mapped to penalties
+Improved importing, exporting competitors
+Improved getting competitor players
+Fix: throwing exception when no market description received from API for variant markets
+
 2021-05-28  1.16.0.0
 Extended IMatch with GetEventTimeline for single culture
 IOutcomeProbabilities extended with property AdditionalProbabilities

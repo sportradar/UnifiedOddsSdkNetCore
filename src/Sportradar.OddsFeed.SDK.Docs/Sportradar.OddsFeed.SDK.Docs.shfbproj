@@ -39,7 +39,7 @@
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <HelpTitle>Odds Feed SDK Core Documentation</HelpTitle>
-    <HelpFileVersion>1.15.0</HelpFileVersion>
+    <HelpFileVersion>1.17.0</HelpFileVersion>
     <NamingMethod>MemberName</NamingMethod>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <RootNamespaceContainer>False</RootNamespaceContainer>
