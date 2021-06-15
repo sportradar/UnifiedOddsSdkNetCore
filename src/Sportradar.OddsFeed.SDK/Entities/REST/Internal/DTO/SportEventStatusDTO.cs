@@ -188,6 +188,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ApplyPropertyValue(ses.home_penalty_scoreSpecified, "home_penalty_score", ses.home_penalty_score, tempProperties);
             ApplyPropertyValue(ses.away_penalty_scoreSpecified, "away_penalty_score", ses.away_penalty_score, tempProperties);
             ApplyPropertyValue(ses.period_of_leaderSpecified, "period_of_leader", ses.period_of_leader, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(ses.pitcher), "pitcher", ses.pitcher, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(ses.batter), "batter", ses.batter, tempProperties);
+            ApplyPropertyValue(ses.pitch_countSpecified, "pitch_count", ses.pitch_count, tempProperties);
+            ApplyPropertyValue(ses.pitches_seenSpecified, "pitches_seen", ses.pitches_seen, tempProperties);
+            ApplyPropertyValue(ses.total_hitsSpecified, "total_hits", ses.total_hits, tempProperties);
+            ApplyPropertyValue(ses.total_pitchesSpecified, "total_pitches", ses.total_pitches, tempProperties);
 
             if (ses.period_scores != null && ses.period_scores.Any())
             {
@@ -526,7 +532,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
             else
             {
-                //it this ok?
+                //is this ok?
                 target.Remove(name);
             }
         }

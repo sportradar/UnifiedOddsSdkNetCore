@@ -249,6 +249,26 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
         
         private bool away_batterFieldSpecified;
         
+        private string pitcherField;
+        
+        private string batterField;
+        
+        private int pitch_countField;
+        
+        private bool pitch_countFieldSpecified;
+        
+        private int pitches_seenField;
+        
+        private bool pitches_seenFieldSpecified;
+        
+        private int total_hitsField;
+        
+        private bool total_hitsFieldSpecified;
+        
+        private int total_pitchesField;
+        
+        private bool total_pitchesFieldSpecified;
+        
         private int possessionField;
         
         private bool possessionFieldSpecified;
@@ -815,6 +835,116 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
             set {
                 this.away_batterFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string pitcher {
+            get {
+                return this.pitcherField;
+            }
+            set {
+                this.pitcherField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string batter {
+            get {
+                return this.batterField;
+            }
+            set {
+                this.batterField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int pitch_count {
+            get {
+                return this.pitch_countField;
+            }
+            set {
+                this.pitch_countField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pitch_countSpecified {
+            get {
+                return this.pitch_countFieldSpecified;
+            }
+            set {
+                this.pitch_countFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int pitches_seen {
+            get {
+                return this.pitches_seenField;
+            }
+            set {
+                this.pitches_seenField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pitches_seenSpecified {
+            get {
+                return this.pitches_seenFieldSpecified;
+            }
+            set {
+                this.pitches_seenFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int total_hits {
+            get {
+                return this.total_hitsField;
+            }
+            set {
+                this.total_hitsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool total_hitsSpecified {
+            get {
+                return this.total_hitsFieldSpecified;
+            }
+            set {
+                this.total_hitsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int total_pitches {
+            get {
+                return this.total_pitchesField;
+            }
+            set {
+                this.total_pitchesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool total_pitchesSpecified {
+            get {
+                return this.total_pitchesFieldSpecified;
+            }
+            set {
+                this.total_pitchesFieldSpecified = value;
             }
         }
         

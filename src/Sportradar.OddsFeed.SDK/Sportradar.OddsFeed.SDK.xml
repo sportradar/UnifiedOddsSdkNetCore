@@ -7657,6 +7657,13 @@
             <param name="specifiers">The specifiers.</param>
             <returns>System.String.</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetGuid(System.Int32,System.Boolean)">
+            <summary>
+            Gets the fixed length unique identifier
+            </summary>
+            <param name="length">The length of the returned string</param>
+            <param name="containDash">if set to <c>true</c> [contain dash].</param>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.SdkTimer">
             <summary>
             A timer used for invocation of period tasks
@@ -19497,9 +19504,19 @@
             The execution log
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SdkCache.CacheLog">
+            <summary>
+            The cache log
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SdkCache._cacheManager">
             <summary>
             The cache manager
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SdkCache._metrics">
+            <summary>
+            The metrics
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SdkCache.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager,App.Metrics.IMetricsRoot)">
@@ -33287,6 +33304,36 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.away_batterSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.pitcher">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.batter">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.pitch_count">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.pitch_countSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.pitches_seen">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.pitches_seenSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.total_hits">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.total_hitsSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.total_pitches">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.total_pitchesSpecified">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.possession">
