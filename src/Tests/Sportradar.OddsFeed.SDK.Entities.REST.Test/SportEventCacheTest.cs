@@ -255,8 +255,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             var tasks = new List<Task>();
             while (i > 0)
             {
-                var culture = TestData.Cultures4[StaticRandom.I(4)];
                 i--;
+                var culture = TestData.Cultures4[StaticRandom.I(4)];
                 Debug.Write($"Loading {i} culture: {culture.TwoLetterISOLanguageName}\n");
                 var ci = (MatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
                 tasks.Add(ci.GetNamesAsync(new[] { culture }));

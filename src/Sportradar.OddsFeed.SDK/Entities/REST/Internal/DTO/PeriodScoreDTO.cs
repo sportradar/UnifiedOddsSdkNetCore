@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     // <match_status description="Overtime" id="40"/>
                     tempPeriodType = PeriodType.Overtime;
                 }
-                else if (MatchStatusCode == 50 || MatchStatusCode == 51 || MatchStatusCode == 52)
+                else if (MatchStatusCode == 50 || MatchStatusCode == 51 || MatchStatusCode == 52 || MatchStatusCode == 120)
                 {
                     // <match_status description="Penalties" id="50"/>
                     // <match_status description="Penalties" id="51"/>
