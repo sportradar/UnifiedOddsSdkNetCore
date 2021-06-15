@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
@@ -112,10 +113,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             get
             {
-                var associatedPlayerIds = GetOrLoadCompetitor()?.AssociatedPlayerIds?.ToList();
-                if (associatedPlayerIds != null && associatedPlayerIds.Any())
+                try
                 {
-                    return _sportEntityFactory.BuildPlayersAsync(associatedPlayerIds, _cultures, _exceptionStrategy).Result;
+                    var associatedPlayerIds = GetOrLoadCompetitor()?.AssociatedPlayerIds;
+                    if (associatedPlayerIds != null && associatedPlayerIds.Any())
+                    {
+                        return _sportEntityFactory.BuildPlayersAsync(associatedPlayerIds, _cultures, _exceptionStrategy).Result;
+                    }
+                }
+                catch (Exception e)
+                {
+                    SdkLoggerFactory.GetLoggerForExecution(typeof(Competitor)).LogError("Getting Competitor associated players", e);
                 }
 
                 return new List<IPlayer>();

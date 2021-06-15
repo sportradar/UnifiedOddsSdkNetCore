@@ -817,7 +817,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             }
             else
             {
-                _cache.Add(item.Id, new CompetitorCI(item, _dataRouterManager), GetCorrectCacheItemPolicy(URN.Parse(item.Id)));
+                if (!string.IsNullOrEmpty(item.Id))
+                {
+                    _cache.Add(item.Id, new CompetitorCI(item, _dataRouterManager), GetCorrectCacheItemPolicy(URN.Parse(item.Id)));
+                }
             }
         }
 
