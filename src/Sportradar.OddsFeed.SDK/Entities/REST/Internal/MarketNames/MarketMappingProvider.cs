@@ -145,7 +145,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             if (marketDescription.Mappings == null || !marketDescription.Mappings.Any())
             {
-                CacheLog.LogDebug($"An error occurred getting mapped marketId for marketId={_marketId} (no mappings exist).");
+                CacheLog.LogDebug($"MarketDescription for marketId={_marketId} has no mappings.");
                 return new List<IMarketMappingData>();
             }
 
