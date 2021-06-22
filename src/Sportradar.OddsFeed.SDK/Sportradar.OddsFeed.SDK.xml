@@ -7961,6 +7961,81 @@
             Log for the SDK statistics
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Common.OperationManager">
+            <summary>
+            Defines methods used to get or set various values for sdk operations
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.OperationManager.SportEventStatusCacheTimeout">
+            <summary>
+            Gets the sport event status cache timeout - how long status is cached
+            </summary>
+            <value>The sport event status cache timeout.</value>
+            <remarks>Can be between 1 min and 60 min - default 5 min (absolute expiration)</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.OperationManager.ProfileCacheTimeout">
+            <summary>
+            Gets the competitor/player cache timeout - how long cache item is cached
+            </summary>
+            <value>The competitor/player cache timeout.</value>
+            <remarks>Can be between 1 hour and 48 hours - default 24 hours (sliding expiration)</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.OperationManager.VariantMarketDescriptionCacheTimeout">
+            <summary>
+            Gets the variant market description cache timeout - how long cache item is cached
+            </summary>
+            <value>The variant market description cache timeout.</value>
+            <remarks>Can be between 1 hour and 24 hours - default 3 hours (sliding expiration)</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout">
+            <summary>
+            Gets the ignore BetPal timeline sport event status cache timeout - how long cache item is cached. How long should the event id from BetPal producer be cached. SportEventStatus from timeline endpoint for these events are ignored.
+            </summary>
+            <value>The ignore BetPal timeline sport event status timeout.</value>
+            <remarks>Can be between 1 hour and 24 hours - default 3 hours (sliding expiration)</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.OperationManager.IgnoreBetPalTimelineSportEventStatus">
+            <summary>
+            Gets a value indicating whether to ignore sport event status from timeline endpoint for sport events on BetPal producer
+            </summary>
+            <value><c>true</c> if sport event status from timeline endpoint should be ignored, otherwise <c>false</c>.</value>
+            <remarks>Default <c>false</c></remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.#cctor">
+            <summary>
+            Constructor for default instance of the <see cref="T:Sportradar.OddsFeed.SDK.Common.OperationManager"/>
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetSportEventStatusCacheTimeout(System.TimeSpan)">
+            <summary>
+            Sets the sport event status cache timeout
+            </summary>
+            <param name="timeout">The timeout.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetProfileCacheTimeout(System.TimeSpan)">
+            <summary>
+            Sets the profile cache timeout.
+            </summary>
+            <param name="timeout">The timeout.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetVariantMarketDescriptionCacheTimeout(System.TimeSpan)">
+            <summary>
+            Sets the variant market description cache timeout
+            </summary>
+            <param name="timeout">The timeout.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetIgnoreBetPalTimelineSportEventStatusCacheTimeout(System.TimeSpan)">
+            <summary>
+            Sets the ignore BetPal timeline sport event status cache timeout. How long should the event id from BetPal be cached. SportEventStatus from timeline endpoint for these events are ignored.
+            </summary>
+            <param name="timeout">The timeout.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetIgnoreBetPalTimelineSportEventStatus(System.Boolean)">
+            <summary>
+            Sets the value indicating whether to ignore sport event status from timeline endpoint for sport events on BetPal producer
+            </summary>
+            <param name="ignore">if set to <c>true</c> ignore</param>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.SdkEnvironment">
             <summary>
             Enumeration of all possible environments
@@ -8666,7 +8741,7 @@
             The cache manager
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.CacheMessageProcessor.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory{Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus,Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager,Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageHandler)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.CacheMessageProcessor.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory{Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus,Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager,Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageHandler,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.CacheMessageProcessor"/> class
             </summary>
@@ -8674,6 +8749,7 @@
             <param name="sportEventCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache"/> used to handle <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change"/></param>
             <param name="cacheManager">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager"/> used to interact among caches</param>
             <param name="feedMessageHandler">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageHandler"/> for handling special cases</param>
+            <param name="sportEventStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache"/> used to save eventId from BetPal to ignore timeline SES</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.CacheMessageProcessor.ProcessMessage(Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage,Sportradar.OddsFeed.SDK.Entities.MessageInterest,System.Byte[])">
             <summary>
@@ -19115,6 +19191,15 @@
             <param name="eventId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the id of the sport event whose status to get</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI"/> representing the status of the specified sport event</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache.AddEventIdForTimelineIgnore(Sportradar.OddsFeed.SDK.Messages.URN,System.Int32,System.Type)">
+            <summary>
+            Adds the event identifier for timeline ignore
+            </summary>
+            <param name="eventId">The event identifier.</param>
+            <param name="producerId">The producer identifier.</param>
+            <param name="messageType">Type of the feed message.</param>
+            <remarks>Used for BetPal events to have ignored timeline event status cache</remarks>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.LocalizedNamedValueCache">
             <summary>
             A implementation of the interface <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ILocalizedNamedValueCache"/>
@@ -19384,11 +19469,6 @@
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._exportSemaphore">
             <summary>
             The semaphore used for export/import operation
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._normalCacheItemPolicy">
-            <summary>
-            The cache item policy
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache._simpleTeamCacheItemPolicy">
@@ -20165,20 +20245,15 @@
             A <see cref="T:System.Object"/> to ensure thread safety when adding items to cache
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache._cacheItemExpireTime">
-            <summary>
-            The cache item expire time
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.#ctor(System.Runtime.Caching.MemoryCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory{Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus,Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager,System.TimeSpan)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.#ctor(System.Runtime.Caching.MemoryCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory{Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus,Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventStatusDTO},Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager,System.Runtime.Caching.MemoryCache)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventStatusCache"/> class
             </summary>
-            <param name="sportEventStatusCache"> A <see cref="T:System.Runtime.Caching.MemoryCache"/> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI"/> instances</param>
+            <param name="sportEventStatusCache">A <see cref="T:System.Runtime.Caching.MemoryCache"/> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI"/> instances</param>
             <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory`2"/> used to created <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1"/> instances</param>
             <param name="sportEventCache">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCache"/> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></param>
             <param name="cacheManager">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ICacheManager"/> used to interact among caches</param>
-            <param name="cacheItemExpireTime">The time in which cache item expires</param>
+            <param name="ignoreEventsTimelineCache">A <see cref="T:System.Runtime.Caching.MemoryCache"/> used to cache event ids for which the SES from timeline endpoint should be ignored</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.GetSportEventStatusAsync(Sportradar.OddsFeed.SDK.Messages.URN)">
             <summary>
@@ -20187,6 +20262,9 @@
             </summary>
             <param name="eventId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN" /> representing the id of the sport event whose status to get</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI" /> representing the status of the specified sport event</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.AddEventIdForTimelineIgnore(Sportradar.OddsFeed.SDK.Messages.URN,System.Int32,System.Type)">
+            <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.AddSportEventStatus(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI,System.String,System.String)">
             <summary>

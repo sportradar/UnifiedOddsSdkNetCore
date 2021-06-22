@@ -212,9 +212,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ISequenceGenerator>(),
                     config));
 
-            container.RegisterType<RecoveryRequestIssuer>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionFactory(c => c.Resolve<IEventRecoveryRequestIssuer>()));
+            container.RegisterFactory<RecoveryRequestIssuer>(c => c.Resolve<IEventRecoveryRequestIssuer>(), new ContainerControlledLifetimeManager());
 
             container.RegisterType<ISportDataProvider, SportDataProvider>(
                 new ContainerControlledLifetimeManager(),
@@ -297,8 +295,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             RegisterSportEventCache(container, config.Locales.ToList());
             RegisterSportDataCache(container, config.Locales.ToList());
             RegisterCacheMessageProcessor(container);
-            RegisterSessionTypes(container, config);
             RegisterFeedRecoveryManager(container, config);
+            RegisterSessionTypes(container, config);
             RegisterMarketMappingProviderTypes(container);
             RegisterFeedSystemSession(container);
             RegisterCashOutProbabilitiesProvider(container, config);
@@ -770,6 +768,22 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("tournamentRaceScheduleProvider")));
         }
 
+        private static void RegisterFeedRecoveryManager(IUnityContainer container, IOddsFeedConfigurationInternal config)
+        {
+            container.RegisterType<IProducerRecoveryManagerFactory, ProducerRecoveryManagerFactory>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<ITimer, SdkTimer>("FeedRecoveryManagerTimer",
+                                                     new HierarchicalLifetimeManager(),
+                                                     new InjectionConstructor(TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(60)));
+
+            container.RegisterType<IFeedRecoveryManager, FeedRecoveryManager>(new ContainerControlledLifetimeManager(),
+                                                                              new InjectionConstructor(new ResolvedParameter<IProducerRecoveryManagerFactory>(),
+                                                                                                       config,
+                                                                                                       container.Resolve<ITimer>("FeedRecoveryManagerTimer"),
+                                                                                                       new ResolvedParameter<IProducerManager>(),
+                                                                                                       new ResolvedParameter<FeedSystemSession>()));
+        }
+
         private static void RegisterSessionTypes(IUnityContainer container, IOddsFeedConfigurationInternal config)
         {
             Guard.Argument(container, nameof(container)).NotNull();
@@ -794,35 +808,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IProducerManager>(),
                     config.Environment == SdkEnvironment.Replay));
 
-            container.RegisterType<IFeedMessageProcessor>(
-                "SessionMessageManager",
-                new HierarchicalLifetimeManager(),
-                new InjectionFactory(c => c.Resolve<IFeedRecoveryManager>().CreateSessionMessageManager()));
+            container.RegisterFactory<IFeedMessageProcessor>("SessionMessageManager",
+                                                             c => c.Resolve<IFeedRecoveryManager>().CreateSessionMessageManager(),
+                                                             new HierarchicalLifetimeManager());
 
-            container.RegisterType<CompositeMessageProcessor>(
-                new HierarchicalLifetimeManager(),
-                new InjectionFactory(c => new CompositeMessageProcessor(c.ResolveAll<IFeedMessageProcessor>().ToList())));
-        }
-
-        private static void RegisterFeedRecoveryManager(IUnityContainer container, IOddsFeedConfigurationInternal config)
-        {
-            container.RegisterType<IProducerRecoveryManagerFactory, ProducerRecoveryManagerFactory>(new HierarchicalLifetimeManager());
-
-            container.RegisterType<ITimer, SdkTimer>(
-                "FeedRecoveryManagerTimer",
-                new HierarchicalLifetimeManager(),
-                new InjectionConstructor(
-                    TimeSpan.FromSeconds(15),
-                    TimeSpan.FromSeconds(60)));
-
-            container.RegisterType<IFeedRecoveryManager, FeedRecoveryManager>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(
-                    new ResolvedParameter<IProducerRecoveryManagerFactory>(),
-                    config,
-                    container.Resolve<ITimer>("FeedRecoveryManagerTimer"),
-                    new ResolvedParameter<IProducerManager>(),
-                    new ResolvedParameter<FeedSystemSession>()));
+            container.RegisterFactory<CompositeMessageProcessor>(c => new CompositeMessageProcessor(c.ResolveAll<IFeedMessageProcessor>().ToList()),
+                                                                 new HierarchicalLifetimeManager());
         }
 
         private static void RegisterCacheMessageProcessor(IUnityContainer container)
@@ -848,10 +839,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO>, SportEventStatusMapperFactory>(
                 new ContainerControlledLifetimeManager());
 
-            container.RegisterInstance(
-                "EventStatusCache_Cache",
-                new MemoryCache("eventStatusCache"),
-                new ContainerControlledLifetimeManager());
+            container.RegisterInstance("EventStatusCache_Cache",
+                                       new MemoryCache("eventStatusCache"),
+                                       new ContainerControlledLifetimeManager());
+
+            container.RegisterInstance("IgnoreEventsTimelineCache_Cache",
+                                       new MemoryCache("ignoreEventsTimelineCache"),
+                                       new ContainerControlledLifetimeManager());
 
             container.RegisterType<ISportEventStatusCache, SportEventStatusCache>(
                 new HierarchicalLifetimeManager(),
@@ -860,7 +854,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO>>(),
                     new ResolvedParameter<ISportEventCache>(),
                     new ResolvedParameter<ICacheManager>(),
-                    TimeSpan.FromMinutes(5)));
+                    new ResolvedParameter<MemoryCache>("IgnoreEventsTimelineCache_Cache")));
 
             container.RegisterType<IFeedMessageProcessor, CacheMessageProcessor>(
                 "CacheMessageProcessor",
@@ -869,11 +863,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO>>(),
                     new ResolvedParameter<ISportEventCache>(),
                     new ResolvedParameter<ICacheManager>(),
-                    new ResolvedParameter<IFeedMessageHandler>()));
+                    new ResolvedParameter<IFeedMessageHandler>(),
+                    new ResolvedParameter<ISportEventStatusCache>()));
 
-            container.RegisterType<CacheMessageProcessor>(
-                new HierarchicalLifetimeManager(),
-                new InjectionFactory(c => c.Resolve<IFeedMessageProcessor>("CacheMessageProcessor")));
+            container.RegisterFactory<CacheMessageProcessor>(c => c.Resolve<IFeedMessageProcessor>("CacheMessageProcessor"), new HierarchicalLifetimeManager());
         }
 
         private static void RegisterSportEventCache(IUnityContainer container, IEnumerable<CultureInfo> cultures)
@@ -1219,7 +1212,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (!openGenericType.IsGenericTypeDefinition)
             {
-                throw new ArgumentNullException("argument must be open generic type");
+                throw new ArgumentNullException(nameof(openGenericType), "argument must be open generic type");
             }
 
             return container.Registrations.Where(c =>
@@ -1244,7 +1237,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (!openGenericType.IsGenericTypeDefinition)
             {
-                throw new ArgumentNullException("argument must be open generic type");
+                throw new ArgumentNullException(nameof(openGenericType), "argument must be open generic type");
             }
 
             return container.Registrations.Where(c =>
@@ -1269,7 +1262,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (!openGenericType.IsInterface)
             {
-                throw new ArgumentNullException("argument must be open generic type");
+                throw new ArgumentNullException(nameof(openGenericType), "argument must be open generic type");
             }
 
             return container.Registrations

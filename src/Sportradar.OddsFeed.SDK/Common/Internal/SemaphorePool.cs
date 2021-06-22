@@ -106,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 _syncSemaphore.Dispose();
                 foreach (var holder in _semaphores)
                 {
-                    holder.Semaphore.Release();
+                    holder.Semaphore.ReleaseSafe();
                 }
             }
         }

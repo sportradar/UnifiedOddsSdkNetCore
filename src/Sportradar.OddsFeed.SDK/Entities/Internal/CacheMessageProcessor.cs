@@ -52,6 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private readonly ICacheManager _cacheManager;
 
         private readonly IFeedMessageHandler _feedMessageHandler;
+        private readonly ISportEventStatusCache _sportEventStatusCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheMessageProcessor"/> class
@@ -60,15 +61,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> used to handle <see cref="fixture_change"/></param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
         /// <param name="feedMessageHandler">A <see cref="IFeedMessageHandler"/> for handling special cases</param>
+        /// <param name="sportEventStatusCache">A <see cref="ISportEventStatusCache"/> used to save eventId from BetPal to ignore timeline SES</param>
         public CacheMessageProcessor(ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO> mapperFactory,
                                      ISportEventCache sportEventCache,
                                      ICacheManager cacheManager,
-                                     IFeedMessageHandler feedMessageHandler)
+                                     IFeedMessageHandler feedMessageHandler,
+                                     ISportEventStatusCache sportEventStatusCache)
         {
             Guard.Argument(mapperFactory, nameof(mapperFactory)).NotNull();
             Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
             Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
             Guard.Argument(feedMessageHandler, nameof(feedMessageHandler)).NotNull();
+            Guard.Argument(sportEventStatusCache, nameof(sportEventStatusCache)).NotNull();
 
             ProcessorId = "CMP" + Guid.NewGuid().ToString().Substring(0, 4);
 
@@ -76,6 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             _sportEventCache = (SportEventCache) sportEventCache;
             _cacheManager = cacheManager;
             _feedMessageHandler = feedMessageHandler;
+            _sportEventStatusCache = sportEventStatusCache;
         }
 
         /// <summary>
@@ -88,6 +93,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(interest, nameof(interest)).NotNull();
+
+            if (message.IsEventRelated)
+            {
+                _sportEventStatusCache.AddEventIdForTimelineIgnore(message.EventURN, message.ProducerId, message.GetType());
+            }
             
             // process odds_change
             var oddsChange = message as odds_change;

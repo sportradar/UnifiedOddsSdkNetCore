@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return new BookmakerDetailsDTO(
                 RestMessageBuilder.BuildBookmakerDetails(
                     TestData.BookmakerId,
-                    DateTime.Now,
+                    DateTime.Now.AddDays(1),
                     response_code.OK,
                     TestData.VirtualHost),
                     TimeSpan.Zero);

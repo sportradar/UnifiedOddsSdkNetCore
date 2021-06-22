@@ -24,6 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         private MemoryCache _eventMemoryCache;
         private MemoryCache _profileCache;
         private MemoryCache _statusMemoryCache;
+        private MemoryCache _ignoreTimelineMemoryCache;
         internal SportEventCache SportEventCache;
         internal SportDataCache SportDataCache;
         internal ISportEventStatusCache EventStatusCache;
@@ -46,6 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             _eventMemoryCache = new MemoryCache("EventCache");
             _profileCache = new MemoryCache("ProfileCache");
             _statusMemoryCache = new MemoryCache("StatusCache");
+            _ignoreTimelineMemoryCache = new MemoryCache("IgnoreTimeline");
 
             _cacheManager = new CacheManager();
             _dataRouterManager = new TestDataRouterManager(_cacheManager);
@@ -59,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             var namedValuesProviderMock = new Mock<INamedValuesProvider>();
             namedValuesProviderMock.Setup(args => args.MatchStatuses).Returns(sportEventStatusCache);
 
-            EventStatusCache = new SportEventStatusCache(_statusMemoryCache, new SportEventStatusMapperFactory(), SportEventCache, _cacheManager, TimeSpan.Zero);
+            EventStatusCache = new SportEventStatusCache(_statusMemoryCache, new SportEventStatusMapperFactory(), SportEventCache, _cacheManager, _ignoreTimelineMemoryCache);
 
             SportEntityFactory = new SportEntityFactory(SportDataCache, SportEventCache, EventStatusCache, sportEventStatusCache, profileCache, SdkInfo.SoccerSportUrns);
         }

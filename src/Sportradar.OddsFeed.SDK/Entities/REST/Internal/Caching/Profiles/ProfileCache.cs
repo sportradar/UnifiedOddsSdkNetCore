@@ -15,6 +15,7 @@ using App.Metrics.Health;
 using App.Metrics.Timer;
 using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -70,11 +71,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// The semaphore used for export/import operation
         /// </summary>
         private readonly SemaphoreSlim _exportSemaphore = new SemaphoreSlim(1);
-
-        /// <summary>
-        /// The cache item policy
-        /// </summary>
-        private readonly CacheItemPolicy _normalCacheItemPolicy = new CacheItemPolicy {SlidingExpiration = TimeSpan.FromHours(24), RemovedCallback = OnCacheItemRemoval};
 
         /// <summary>
         /// The cache item policy
@@ -1025,8 +1021,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         private CacheItemPolicy GetCorrectCacheItemPolicy(URN id)
         {
             return id.IsSimpleTeam()
-                ? _simpleTeamCacheItemPolicy
-                : _normalCacheItemPolicy;
+                       ? _simpleTeamCacheItemPolicy
+                       : new CacheItemPolicy {SlidingExpiration = OperationManager.ProfileCacheTimeout, RemovedCallback = OnCacheItemRemoval};
         }
 
         /// <summary>

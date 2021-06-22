@@ -12,6 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.API;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -60,8 +62,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// Value indicating whether the current instance was already disposed
         /// </summary>
         private bool _isDisposed;
-
-        private readonly  CacheItemPolicy _cacheItemPolicy = new CacheItemPolicy { SlidingExpiration = TimeSpan.FromHours(3) };
 
         private readonly ConcurrentDictionary<string, DateTime> _fetchedVariants = new ConcurrentDictionary<string, DateTime>();
 
@@ -516,8 +516,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 if (cachedItem == null)
                 {
                     cachedItem = new CacheItem(cacheId, MarketDescriptionCacheItem.Build(description, _mappingValidatorFactory, culture, CacheName));
-                    _cache.Add(cachedItem, _cacheItemPolicy);
-
+                    _cache.Add(cachedItem, new CacheItemPolicy {SlidingExpiration = OperationManager.VariantMarketDescriptionCacheTimeout});
                 }
                 else
                 {
