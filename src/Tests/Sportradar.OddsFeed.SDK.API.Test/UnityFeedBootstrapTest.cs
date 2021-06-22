@@ -55,20 +55,17 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             container.RegisterInstance<IDataProvider<BookmakerDetailsDTO>>(defaultBookmakerDetailsProvider, new ContainerControlledLifetimeManager());
             container.RegisterInstance<BookmakerDetailsProvider>(defaultBookmakerDetailsProvider, new ContainerControlledLifetimeManager());
 
-            //override
-            container.RegisterType<IProducerManager, ProducerManager>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(
-                    new TestProducersProvider(),
-                    config));
-
-            container.RegisterTypes(_dispatcher, config);
-            
             var newConfig = new OddsFeedConfigurationInternal(config, defaultBookmakerDetailsProvider);
             newConfig.Load();
             container.RegisterInstance<IOddsFeedConfiguration>(newConfig, new ContainerControlledLifetimeManager());
             container.RegisterInstance<IOddsFeedConfigurationInternal>(newConfig, new ContainerControlledLifetimeManager());
             
+            container.RegisterTypes(_dispatcher, config);
+            
+            //override
+            container.RegisterType<IProducerManager, ProducerManager>(new ContainerControlledLifetimeManager(),
+                                                                      new InjectionConstructor(new TestProducersProvider(), config));
+
             container.RegisterAdditionalTypes();
 
             _childContainer1 = container.CreateChildContainer();

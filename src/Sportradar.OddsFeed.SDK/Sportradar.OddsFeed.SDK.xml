@@ -8003,7 +8003,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.#cctor">
             <summary>
-            Constructor for default instance of the <see cref="T:Sportradar.OddsFeed.SDK.Common.OperationManager"/>
+            Initialization of default values of the <see cref="T:Sportradar.OddsFeed.SDK.Common.OperationManager"/>
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetSportEventStatusCacheTimeout(System.TimeSpan)">
