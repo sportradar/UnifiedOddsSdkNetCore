@@ -385,7 +385,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 // release semaphore
                 // ReSharper disable once PossibleNullReferenceException
-                semaphore.Release();
+                semaphore.ReleaseSafe();
                 SemaphorePool.Release(id);
             }
         }
@@ -467,7 +467,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 // release semaphore
                 // ReSharper disable once PossibleNullReferenceException
-                semaphore.Release();
+                semaphore.ReleaseSafe();
                 SemaphorePool.Release(id);
             }
         }

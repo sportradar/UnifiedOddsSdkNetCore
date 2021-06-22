@@ -247,26 +247,47 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.IsNotNull(eventCI, "Cached item not found.");
         }
 
-        [TestMethod]
-        public async Task SportEventCacheItemConcurrencyTest()
+        [TestMethod, Timeout(150000)]
+        public async Task SportEventCacheItemSequentialTest()
         {
+            // slow implementation of async calls
+            var stopWatch = Stopwatch.StartNew();
             Assert.AreEqual(0, _memoryCache.Count());
             var i = 1000;
-            var tasks = new List<Task>();
             while (i > 0)
             {
                 i--;
+                var startTime = stopWatch.Elapsed;
                 var culture = TestData.Cultures4[StaticRandom.I(4)];
-                Debug.Write($"Loading {i} culture: {culture.TwoLetterISOLanguageName}\n");
+
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Loading {i} culture: {culture.TwoLetterISOLanguageName}");
                 var ci = (MatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
-                tasks.Add(ci.GetNamesAsync(new[] { culture }));
-                tasks.Add(ci.GetFixtureAsync(new[] { culture }));
-                tasks.Add(ci.GetTournamentIdAsync());
-                tasks.Add(ci.GetCompetitorsIdsAsync(new[] { culture }));
-                await Task.WhenAll(tasks);
+
+                var name = await ci.GetNamesAsync(new[] { culture });
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} name");
+                var fixture = await ci.GetFixtureAsync(new[] { culture });
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} fixture");
+                var tour = await ci.GetTournamentIdAsync();
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} tournament");
+                var booking  = await ci.GetBookingStatusAsync();
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} booking status");
+                var comps = await ci.GetCompetitorsIdsAsync(new[] {culture});
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} competitors");
+                var venue = await ci.GetVenueAsync(new[] { culture });
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} venue");
+                var liveOdds = await ci.GetLiveOddsAsync();
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} live odds");
+                var eventType = await ci.GetSportEventTypeAsync();
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} sport event type");
+                var stageType = await ci.GetStageTypeAsync();
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} stage type");
+                var status = await ci.FetchSportEventStatusAsync();
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} status");
+
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Tasks {i} completed.");
                 if (i % 10 == 3)
                 {
-                    Debug.Write($"Deleting {i} culture: {culture.TwoLetterISOLanguageName}\n");
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Deleting {i} culture: {culture.TwoLetterISOLanguageName}");
                     _sportEventCache.CacheDeleteItem(TestData.EventId, CacheItemType.All);
                 }
                 else
@@ -276,8 +297,86 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                     var c2 = _dataRouterManager.GetCallCount(SportEventSummary);
                     Assert.AreEqual(c1, c2);
                 }
+
+                var took = stopWatch.Elapsed - startTime;
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Iteration {i} completed. Took {took.Milliseconds} ms.");
             }
             Assert.AreEqual(2, _memoryCache.Count());
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheItemConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var tasks = new List<Task>();
+            MatchCI ci = null;
+            while (i > 0)
+            {
+                var startTime = stopWatch.Elapsed;
+                i--;
+                tasks.Clear();
+                var culture = TestData.Cultures4[StaticRandom.I(4)];
+                try
+                {
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Loading {i} culture: {culture.TwoLetterISOLanguageName}");
+                    
+                    ci = (MatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} culture: {culture.TwoLetterISOLanguageName}");
+
+                    tasks.Add(ci.GetNamesAsync(new[] { culture }));
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} name");
+                    tasks.Add(ci.GetFixtureAsync(new[] { culture }));
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} fixture");
+                    tasks.Add(ci.GetTournamentIdAsync());
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} tournament");
+                    tasks.Add(ci.GetBookingStatusAsync());
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} booking status");
+                    tasks.Add(ci.GetCompetitorsIdsAsync(new[] { culture }));
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} competitors");
+                    tasks.Add(ci.GetVenueAsync(new[] { culture }));
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} venue");
+                    tasks.Add(ci.GetLiveOddsAsync());
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} live odds");
+                    tasks.Add(ci.GetSportEventTypeAsync());
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} sport event type");
+                    tasks.Add(ci.GetStageTypeAsync());
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} stage type");
+                    tasks.Add(ci.FetchSportEventStatusAsync());
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} status");
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Prepare tasks {i} culture: {culture.TwoLetterISOLanguageName}");
+
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Error: {e}");
+                }
+                
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Tasks {i} completed.");
+                if (i % 10 == 3)
+                {
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Deleting {i} culture: {culture.TwoLetterISOLanguageName}");
+                    _sportEventCache.CacheDeleteItem(TestData.EventId, CacheItemType.All);
+                }
+                else
+                {
+                    var c1 = _dataRouterManager.GetCallCount(SportEventSummary);
+                    TestData.ValidateTestEventId(ci, new[] { culture }, true);
+                    var c2 = _dataRouterManager.GetCallCount(SportEventSummary);
+                    Assert.AreEqual(c1, c2);
+                }
+
+                var took = stopWatch.Elapsed - startTime;
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Iteration {i} completed. Took {took.Milliseconds} ms.");
+            }
+            Assert.AreEqual(2, _memoryCache.Count());
+        }
+
+        private string GetElapsed(Stopwatch stopwatch)
+        {
+            return stopwatch == null ? string.Empty : stopwatch.Elapsed.TotalSeconds.ToString("N5");
         }
 
         private static void ValidateSportEventCacheItem(IMatchCI item, bool ignoreDate = false)
