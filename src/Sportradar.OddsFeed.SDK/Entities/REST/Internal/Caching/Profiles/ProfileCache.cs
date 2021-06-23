@@ -15,7 +15,6 @@ using App.Metrics.Health;
 using App.Metrics.Timer;
 using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;

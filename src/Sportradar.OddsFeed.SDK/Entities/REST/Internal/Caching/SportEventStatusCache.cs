@@ -13,7 +13,6 @@ using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;

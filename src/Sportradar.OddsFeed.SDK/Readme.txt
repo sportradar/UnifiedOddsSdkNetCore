@@ -3,6 +3,10 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-06-23  1.18.0.0
+Added OperationManager to provide option to set sdk values
+Added option to ignore sport event status from timeline endpoint for BetPal events
+
 2021-06-15  1.17.0.0
 Added pitcher, batter, pitch_count, pitches_seen, total_hits, total_pitches to SportEventStatus.Properties
 PeriodScore - match status code 120 mapped to penalties

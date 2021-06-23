@@ -12,7 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
