@@ -3,9 +3,11 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Dawn;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -14,10 +16,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// </summary>
     internal class SemaphorePool : ISemaphorePool
     {
+        private readonly ILogger _executionLog = SdkLoggerFactory.GetLogger(typeof(SemaphorePool));
+
         /// <summary>
         /// A <see cref="List{T}"/> containing pool's semaphores
         /// </summary>
-        private readonly List<SemaphoreHolder> _semaphores;
+        private readonly List<SemaphoreHolder> _semaphoreHolders;
 
         /// <summary>
         /// A <see cref="List{T}"/> containing ids of resources currently available
@@ -50,15 +54,16 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="count">The number of <see cref="SemaphoreSlim"/> instances to be created in the pool</param>
         public SemaphorePool(int count)
         {
-            _semaphores = new List<SemaphoreHolder>();
+            _semaphoreHolders = new List<SemaphoreHolder>();
             _availableSemaphoreIds = new List<string>();
             for (var i = 0; i < count; i++)
             {
-                _semaphores.Add(new SemaphoreHolder(new SemaphoreSlim(1)));
+                _semaphoreHolders.Add(new SemaphoreHolder(new SemaphoreSlim(1)));
             }
             _syncSemaphore = new Semaphore(count, count);
             _spinWait = new SpinWait();
             _syncObject = new object();
+            _executionLog.LogDebug($"SemaphorePool with size {count} created.");
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             _syncSemaphore.WaitOne();
             lock (_syncObject)
             {
-                foreach (var holder in _semaphores)
+                foreach (var holder in _semaphoreHolders)
                 {
                     if (holder.Id == id)
                     {
@@ -94,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!disposing || _disposed)
             {
@@ -104,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             lock (_syncObject)
             {
                 _syncSemaphore.Dispose();
-                foreach (var holder in _semaphores)
+                foreach (var holder in _semaphoreHolders)
                 {
                     holder.Semaphore.ReleaseSafe();
                 }
@@ -150,7 +155,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             {
                 lock (_syncObject)
                 {
-                    foreach (var holder in _semaphores)
+                    foreach (var holder in _semaphoreHolders)
                     {
                         if (holder.Id != id)
                         {
@@ -158,6 +163,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                         }
                         holder.Acquire();
                         return Task.FromResult(holder.Semaphore);
+                    }
+                    if (!_availableSemaphoreIds.Contains(id))
+                    {
+                        _availableSemaphoreIds.Add(id);
+                        return Task.Run(() => AcquireInternal(id));
                     }
                 }
                 _spinWait.SpinOnce();
@@ -175,7 +185,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
             lock (_syncObject)
             {
-                foreach (var holder in _semaphores)
+                foreach (var holder in _semaphoreHolders)
                 {
                     if (holder.Id != id)
                     {

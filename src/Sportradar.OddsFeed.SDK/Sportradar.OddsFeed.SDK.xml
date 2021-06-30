@@ -7758,7 +7758,7 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool"/> implementation
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool._semaphores">
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool._semaphoreHolders">
             <summary>
             A <see cref="T:System.Collections.Generic.List`1"/> containing pool's semaphores
             </summary>

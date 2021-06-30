@@ -317,7 +317,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return;
             }
-
+            
             var id = $"{Id}_Summary";
             SemaphoreSlim semaphore = null;
             try
@@ -406,7 +406,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return;
             }
-
+            
             var id = $"{Id}_Fixture";
             SemaphoreSlim semaphore = null;
             try
@@ -497,7 +497,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
-
+            
             lock (MergeLock)
             {
                 Names[culture] = dto.Name;

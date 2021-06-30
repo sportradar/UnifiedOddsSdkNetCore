@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using Dawn;
 using System.Globalization;
@@ -183,7 +184,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>Asynchronously returns the <see cref="BookingStatus"/> if available</returns>
         public async Task<BookingStatus?> GetBookingStatusAsync()
         {
-            if (LoadedFixtures.Any() || Id.TypeGroup == ResourceTypeGroup.STAGE || _bookingStatus != null)
+            if (_bookingStatus != null || Id.TypeGroup == ResourceTypeGroup.STAGE ||  LoadedFixtures.Any())
             {
                 return _bookingStatus;
             }
