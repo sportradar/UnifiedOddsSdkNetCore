@@ -218,15 +218,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             {
                 _messagingUsername = section.Username;
             }
-            if (!string.IsNullOrEmpty(section.Username))
+            if (!string.IsNullOrEmpty(section.Password))
             {
                 _messagingPassword = section.Password;
             }
-            if (!string.IsNullOrEmpty(section.Username))
+            if (!string.IsNullOrEmpty(section.VirtualHost))
             {
                 _virtualHost = section.VirtualHost;
             }
-            if (!string.IsNullOrEmpty(section.Username))
+            if (!string.IsNullOrEmpty(section.ApiHost))
             {
                 _apiHost = section.ApiHost;
             }
