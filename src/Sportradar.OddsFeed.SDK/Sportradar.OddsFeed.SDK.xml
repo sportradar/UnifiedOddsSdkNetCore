@@ -15436,12 +15436,6 @@
             <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI"/> containing information about the sport entity</param>
             <param name="dataRouterManager">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager"/> used to fetch <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO"/></param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.Import(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/> class
-            </summary>
-            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI"/> containing information about the sport entity</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.Merge(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO,System.Globalization.CultureInfo)">
             <summary>
             Merges the information from the provided <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitorDTO"/> into the current instance
@@ -15482,6 +15476,12 @@
             </summary>
             <typeparam name="T"></typeparam>
             <returns>Task&lt;T&gt;.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.Import(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/> class
+            </summary>
+            <param name="exportable">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitorCI"/> containing information about the sport entity</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI.ExportAsync">
             <summary>

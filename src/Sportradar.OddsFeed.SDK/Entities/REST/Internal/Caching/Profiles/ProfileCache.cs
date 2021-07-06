@@ -684,7 +684,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding team competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding team competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
                 finally
                 {
@@ -732,7 +732,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error importing team competitor for id={item.Id}.", ex);
+                    ExecutionLog.LogError(ex, $"Error importing team competitor for id={item.Id}.");
                 }
                 finally
                 {
@@ -763,7 +763,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
                 finally
                 {
@@ -800,7 +800,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error importing competitor for id={item.Id}.", ex);
+                    ExecutionLog.LogError(ex, $"Error importing competitor for id={item.Id}.");
                 }
                 finally
                 {
@@ -834,7 +834,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
                 finally
                 {
@@ -881,7 +881,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding competitor for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
                 finally
                 {
@@ -916,7 +916,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding player profile for id={item.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding player profile for id={item.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
                 finally
                 {
@@ -945,7 +945,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error importing player profile for id={item.Id}.", ex);
+                    ExecutionLog.LogError(ex, $"Error importing player profile for id={item.Id}.");
                 }
                 finally
                 {
@@ -994,7 +994,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding player profile for id={item.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding player profile for id={item.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
                 finally
                 {

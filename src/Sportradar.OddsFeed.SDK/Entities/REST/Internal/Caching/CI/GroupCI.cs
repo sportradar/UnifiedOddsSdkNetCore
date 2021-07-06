@@ -144,7 +144,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                     }
                     catch (Exception e)
                     {
-                        SdkLoggerFactory.GetLoggerForExecution(typeof(GroupCI)).LogError("Exporting GroupCI", e);
+                        SdkLoggerFactory.GetLoggerForExecution(typeof(GroupCI)).LogError(e, "Exporting GroupCI");
                     }
                 }
             }

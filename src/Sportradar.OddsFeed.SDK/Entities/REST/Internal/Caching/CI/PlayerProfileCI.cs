@@ -3,7 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Dawn;
 using System.Globalization;
 using System.Linq;
@@ -374,8 +373,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             return Task.FromResult<ExportableCI>(new ExportablePlayerProfileCI
             {
                 Id = Id.ToString(),
-                Name = new ReadOnlyDictionary<CultureInfo, string>(Names),
-                Nationalities = new ReadOnlyDictionary<CultureInfo, string>(_nationalities),
+                Name = new Dictionary<CultureInfo, string>(Names),
+                Nationalities = new Dictionary<CultureInfo, string>(_nationalities),
                 Type = _type,
                 DateOfBirth = _dateOfBirth,
                 Height = _height,

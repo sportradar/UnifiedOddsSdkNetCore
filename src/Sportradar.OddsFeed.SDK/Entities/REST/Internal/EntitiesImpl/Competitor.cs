@@ -115,15 +115,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             {
                 try
                 {
-                    var associatedPlayerIds = GetOrLoadCompetitor()?.AssociatedPlayerIds;
-                    if (associatedPlayerIds != null && associatedPlayerIds.Any())
+                    var associatedPlayerIds = GetOrLoadCompetitor()?.AssociatedPlayerIds?.ToList();
+                    if (!associatedPlayerIds.IsNullOrEmpty())
                     {
                         return _sportEntityFactory.BuildPlayersAsync(associatedPlayerIds, _cultures, _exceptionStrategy).Result;
                     }
                 }
                 catch (Exception e)
                 {
-                    SdkLoggerFactory.GetLoggerForExecution(typeof(Competitor)).LogError("Getting Competitor associated players", e);
+                    SdkLoggerFactory.GetLoggerForExecution(typeof(Competitor)).LogError(e, "Getting Competitor associated players");
                 }
 
                 return new List<IPlayer>();

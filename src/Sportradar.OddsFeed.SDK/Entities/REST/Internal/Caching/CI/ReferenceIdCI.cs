@@ -110,8 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             }
             if (referenceIds.TryGetValue("aams", out val))
             {
-                int i;
-                _aamsId = int.TryParse(val, out i)
+                _aamsId = int.TryParse(val, out var i)
                               ? (int?)i
                               : null;
             }
