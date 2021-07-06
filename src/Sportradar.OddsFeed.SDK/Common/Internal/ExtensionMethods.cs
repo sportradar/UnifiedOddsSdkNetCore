@@ -24,11 +24,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         {
             Guard.Argument(stream, nameof(stream)).NotNull();
 
-            using (var memoryStream = new MemoryStream())
-            {
-                stream.CopyTo(memoryStream);
-                return Encoding.UTF8.GetString(memoryStream.ToArray());
-            }
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            return Encoding.UTF8.GetString(memoryStream.ToArray());
         }
 
         /// <summary>
@@ -82,11 +80,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public static bool ReleaseSafe(this SemaphoreSlim semaphore)
         {
-            Guard.Argument(semaphore, nameof(semaphore)).NotNull();
-
             try
             {
-                semaphore.Release();
+                semaphore?.Release();
                 return true;
             }
             catch (ObjectDisposedException)
