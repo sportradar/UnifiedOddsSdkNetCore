@@ -3,6 +3,11 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-07-07  1.18.1.0
+Fix: problem within SemaphorePool not acquiring new semaphore - waiting indefinitely
+Fix: setting configuration via CustomConfigurationBuilder
+Fix: exception with modified competitor players list
+
 2021-06-23  1.18.0.0
 Added OperationManager to provide option to set sdk values
 Added option to ignore sport event status from timeline endpoint for BetPal events
