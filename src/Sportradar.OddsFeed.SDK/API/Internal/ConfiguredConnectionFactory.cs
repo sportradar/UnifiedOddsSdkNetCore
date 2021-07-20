@@ -109,7 +109,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (_connectionSingleton != null)
                 {
-                    _connectionSingleton.Close();
+                    if (_connectionSingleton.IsOpen)
+                    {
+                        _connectionSingleton.Close();
+                    }
                     _connectionSingleton.Dispose();
                     _connectionSingleton = null;
                     ConnectionCreated = DateTime.MinValue;
@@ -122,7 +125,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             lock (_syncLock)
             {
-                _connectionSingleton?.Close();
+                if (_connectionSingleton?.IsOpen == true)
+                {
+                    _connectionSingleton?.Close();
+                }
                 _connectionSingleton?.Dispose();
                 GC.SuppressFinalize(this);
             }

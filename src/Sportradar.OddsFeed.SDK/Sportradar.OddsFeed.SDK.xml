@@ -13676,6 +13676,11 @@
             The lap
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Prologue">
+            <summary>
+            The prologue
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.TimeType">
             <summary>
             Enumeration of possible time types
@@ -22143,6 +22148,13 @@
             <summary>
             A data transfer object for market description
             </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO.OverrideId(System.Int64)">
+            <summary>
+            Overrides the identifier.
+            </summary>
+            <param name="newId">The new identifier.</param>
+            <remarks>Used when returned variant market description has different id then the requesting one</remarks>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketMappingDTO">
             <summary>
