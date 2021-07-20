@@ -128,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 }
                 finally
                 {
-                    _semaphoreStatusChange.Release();
+                    _semaphoreStatusChange.ReleaseSafe();
                 }
             });
         }

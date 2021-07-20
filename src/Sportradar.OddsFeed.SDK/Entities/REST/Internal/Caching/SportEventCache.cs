@@ -18,6 +18,7 @@ using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
@@ -206,7 +207,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
             }
 
-            _timerSemaphoreSlim.Release();
+            _timerSemaphoreSlim.ReleaseSafe();
         }
 
         /// <summary>
@@ -815,7 +816,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             if (disposing)
             {
                 _timer.Stop();
-                _timerSemaphoreSlim.Release();
+                _timerSemaphoreSlim.ReleaseSafe();
                 _timerSemaphoreSlim.Dispose();
             }
             _isDisposed = true;

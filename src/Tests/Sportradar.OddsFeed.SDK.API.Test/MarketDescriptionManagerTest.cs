@@ -3,7 +3,6 @@
 */
 using System.Linq;
 using System.Runtime.Caching;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.API.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;

@@ -14,6 +14,7 @@ using App.Metrics.Health;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -140,7 +141,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (!_isDisposed)
                     {
-                        _fetchSemaphore.Release();
+                        _fetchSemaphore.ReleaseSafe();
                     }
                 }
             }
