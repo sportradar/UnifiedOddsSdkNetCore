@@ -219,7 +219,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     if(_channelFactory.ConnectionCreated > _lastMessageReceived)
                     {
                         ExecutionLog.LogInformation("Recreating connection channel and attaching events ...");
-                        // it means, the connection was reseted in between
+                        // it means, the connection was reset in between
                         DetachEvents();
                         CreateAndAttachEvents();
                     }
