@@ -92,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             //return marketDescription?.GetName(culture);
 
             GetMarketDefinition();
-            return _marketDescription.GetName(culture);
+            return _marketDescription?.GetName(culture);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public string GetOutcomeType()
         {
             GetMarketDefinition();
-            return _marketDescription.OutcomeType;
+            return _marketDescription?.OutcomeType;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public IList<string> GetGroups()
         {
             GetMarketDefinition();
-            return _marketDescription.Groups == null
+            return _marketDescription?.Groups == null
                 ? null
                 : new ReadOnlyCollection<string>(_marketDescription.Groups.ToList());
         }
@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public IDictionary<string, string> GetAttributes()
         {
             GetMarketDefinition();
-            return _marketDescription.Attributes == null
+            return _marketDescription?.Attributes == null
                 ? null
                 : new ReadOnlyDictionary <string, string> (_marketDescription.Attributes.ToDictionary(k => k.Name, v => v.Description));
         }
