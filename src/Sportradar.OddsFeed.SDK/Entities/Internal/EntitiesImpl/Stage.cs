@@ -30,10 +30,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private readonly ISportDataCache _sportDataCache;
 
         private readonly ISportEntityFactory _sportEntityFactory;
-        /// <summary>
-        /// The match statuses cache
-        /// </summary>
-        private readonly ILocalizedNamedValueCache _matchStatusesCache;
 
         public Stage(URN id,
                     URN sportId,
@@ -51,7 +47,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             _sportEntityFactory = sportEntityFactory;
             _sportDataCache = sportDataCache;
-            _matchStatusesCache = matchStatusesCache;
         }
 
         public async Task<ISportSummary> GetSportAsync()
@@ -110,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 //    return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy);
                 //}
 
-                return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy);
+                return new Stage(parentStageId, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, MatchStatusCache, Cultures, ExceptionStrategy);
             }
 
             return null;
@@ -129,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(stageCI.GetStagesAsync)
                     .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ChildStages")).ConfigureAwait(false);
 
-            return cacheItems?.Select(c => new Stage(c, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy));
+            return cacheItems?.Select(c => new Stage(c, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, MatchStatusCache, Cultures, ExceptionStrategy));
         }
 
         public async Task<StageType?> GetStageTypeAsync()
@@ -160,7 +155,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(stageCI.GetAdditionalParentStagesAsync)
                     .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("AdditionalParentStages")).ConfigureAwait(false);
 
-            return cacheItems?.Select(c => new Stage(c, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy));
+            return cacheItems?.Select(c => new Stage(c, GetSportAsync().Result.Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, MatchStatusCache, Cultures, ExceptionStrategy));
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="IStageStatus"/> containing information about the progress of the stage 
+        /// </summary>
+        /// <returns>A <see cref="Task{IStageStatus}"/> containing information about the progress of the stage</returns>
+        public new async Task<IStageStatus> GetStatusAsync()
+        {
+            var item = await base.GetStatusAsync().ConfigureAwait(false);
+            return item == null ? null : new StageStatus(((CompetitionStatus) item).SportEventStatusCI, MatchStatusCache);
         }
     }
 }

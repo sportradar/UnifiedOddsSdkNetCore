@@ -8987,7 +8987,7 @@
             An instance of a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.ISportEntityFactory"/> used to create <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> instances
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Competition._matchStatusesCache">
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Competition.MatchStatusCache">
             <summary>
             The match statuses cache
             </summary>
@@ -10188,6 +10188,12 @@
             Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Stage.GetStatusAsync">
+            <summary>
+            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IStageStatus"/> containing information about the progress of the stage 
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> containing information about the progress of the stage</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments.FeedMessageReceivedEventArgs">
             <summary>
@@ -23942,6 +23948,11 @@
             </summary>
             <value>The period of ladder.</value>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus.MatchStatusCache">
+            <summary>
+            The cache for match statuses
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus.GetPropertyValue(System.String)">
             <summary>
             Gets the value of the property specified by it's name
@@ -25115,11 +25126,6 @@
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus" />
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IMatchStatus" />
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.MatchStatus._matchStatusesCache">
-            <summary>
-            The match statuses cache
-            </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.MatchStatus.EventClock">
             <summary>
@@ -26473,6 +26479,27 @@
             </summary>
             <param name="id">a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> uniquely identifying the sport represented by the constructed instance</param>
             <param name="names">a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> containing translated sport names</param>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.StageStatus">
+            <summary>
+            Class StageStatus
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CompetitionStatus" />
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IStageStatus" />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.StageStatus.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventStatusCI,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ILocalizedNamedValueCache)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.MatchStatus"/> class
+            </summary>
+            <param name="ci">The cache item</param>
+            <param name="matchStatusesCache">The match statuses cache</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.StageStatus.GetMatchStatusAsync(System.Globalization.CultureInfo)">
+            <summary>
+            Get match status as an asynchronous operation
+            </summary>
+            <param name="culture">The culture used to fetch status id and description</param>
+            <returns>ILocalizedNamedValue</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.StreamingChannel">
             <summary>
@@ -32120,6 +32147,25 @@
             Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IStage.GetStatusAsync">
+            <summary>
+            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IStageStatus"/> containing information about the progress of the stage
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> containing information about the progress of the stage</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IStageStatus">
+            <summary>
+            Defines a contract implemented by classes representing a stage status
+            </summary>
+            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitionStatus" />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.IStageStatus.GetMatchStatusAsync(System.Globalization.CultureInfo)">
+            <summary>
+            Asynchronously gets the stage match status
+            </summary>
+            <param name="culture">The culture used to get stage match status id and description</param>
+            <returns>Returns the stage match status id and description in selected culture</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IStreamingChannel">
             <summary>

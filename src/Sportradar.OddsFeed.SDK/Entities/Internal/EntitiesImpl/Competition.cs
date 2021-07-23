@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <summary>
         /// The match statuses cache
         /// </summary>
-        private readonly ILocalizedNamedValueCache _matchStatusesCache;
+        protected readonly ILocalizedNamedValueCache MatchStatusCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Competition"/> class
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             _sportEntityFactory = sportEntityFactory;
             SportEventStatusCache = sportEventStatusCache;
-            _matchStatusesCache = matchStatusesCache;
+            MatchStatusCache = matchStatusesCache;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             return item == null
                 ? null
-                : new CompetitionStatus(item, _matchStatusesCache);
+                : new CompetitionStatus(item, MatchStatusCache);
         }
 
         /// <summary>

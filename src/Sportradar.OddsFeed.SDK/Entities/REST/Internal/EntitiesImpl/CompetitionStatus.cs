@@ -58,6 +58,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public int? PeriodOfLadder { get; }
 
         /// <summary>
+        /// The cache for match statuses
+        /// </summary>
+        protected readonly ILocalizedNamedValueCache MatchStatusCache;
+
+        /// <summary>
         /// Gets the value of the property specified by it's name
         /// </summary>
         /// <param name="propertyName">The name of the property</param>
@@ -82,15 +87,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public CompetitionStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
+            Guard.Argument(matchStatusesCache, nameof(matchStatusesCache)).NotNull();
 
             SportEventStatusCI = ci;
+            if (matchStatusesCache != null)
+            {
+                MatchStatusCache = matchStatusesCache;
+            }
 
             WinnerId = ci.WinnerId;
             Status = ci.Status;
             ReportingStatus = ci.ReportingStatus;
             if (ci.EventResults != null)
             {
-                EventResults = ci.EventResults.Select(s => new EventResult(s, matchStatusesCache));
+                EventResults = ci.EventResults.Select(s => new EventResult(s, MatchStatusCache));
             }
             Properties = ci.Properties;
             PeriodOfLadder = ci.PeriodOfLadder;

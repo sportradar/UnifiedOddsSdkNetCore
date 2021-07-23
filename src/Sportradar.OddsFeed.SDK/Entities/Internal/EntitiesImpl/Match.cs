@@ -32,7 +32,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private static readonly ILogger ExecutionLogPrivate = SdkLoggerFactory.GetLogger(typeof(Match));
 
         private readonly ISportEntityFactory _sportEntityFactory;
-        protected readonly ILocalizedNamedValueCache MatchStatusCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Match"/> class.
@@ -56,7 +55,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             : base(ExecutionLogPrivate, id, sportId, sportEntityFactory, sportEventStatusCache, sportEventCache, cultures, exceptionStrategy, matchStatusCache)
         {
             _sportEntityFactory = sportEntityFactory;
-            MatchStatusCache = matchStatusCache;
         }
 
         /// <summary>

@@ -47,5 +47,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
         Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync() => Task.FromResult<IEnumerable<IStage>>(null);
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="IStageStatus"/> containing information about the progress of the stage
+        /// </summary>
+        /// <returns>A <see cref="Task{IStageStatus}"/> containing information about the progress of the stage</returns>
+        new Task<IStageStatus> GetStatusAsync() => Task.FromResult<IStageStatus>(null);
     }
 }

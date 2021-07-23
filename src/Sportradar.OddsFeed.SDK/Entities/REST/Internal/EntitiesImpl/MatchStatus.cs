@@ -2,7 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,11 +18,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     {
         private readonly decimal? _homeScore;
         private readonly decimal? _awayScore;
-
-        /// <summary>
-        /// The match statuses cache
-        /// </summary>
-        private readonly ILocalizedNamedValueCache _matchStatusesCache;
 
         /// <summary>
         /// Gets the <see cref="IEventClock" /> instance describing the timings in the current event
@@ -83,9 +77,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>ILocalizedNamedValue</returns>
         public async Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture)
         {
-            return SportEventStatusCI == null || SportEventStatusCI.MatchStatusId < 0  || _matchStatusesCache == null
+            return SportEventStatusCI == null || SportEventStatusCI.MatchStatusId < 0  || MatchStatusCache == null
                 ? null
-                : await _matchStatusesCache.GetAsync(SportEventStatusCI.MatchStatusId, new List<CultureInfo> {culture}).ConfigureAwait(false);
+                : await MatchStatusCache.GetAsync(SportEventStatusCI.MatchStatusId, new List<CultureInfo> {culture}).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -96,20 +90,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public MatchStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
             : base(ci, matchStatusesCache)
         {
-            Guard.Argument(ci, nameof(ci)).NotNull();
-            Guard.Argument(matchStatusesCache, nameof(matchStatusesCache)).NotNull();
-
             if (ci.EventClock != null)
             {
                 EventClock = new EventClock(ci.EventClock);
             }
             if (ci.PeriodScores != null)
             {
-                PeriodScores = ci.PeriodScores.Select(s => new PeriodScore(s, _matchStatusesCache));
+                PeriodScores = ci.PeriodScores.Select(s => new PeriodScore(s, MatchStatusCache));
             }
             _homeScore = ci.HomeScore;
             _awayScore = ci.AwayScore;
-            _matchStatusesCache = matchStatusesCache;
             HomePenaltyScore = ci.HomePenaltyScore;
             AwayPenaltyScore = ci.AwayPenaltyScore;
             DecidedByFed = ci.DecidedByFed;
