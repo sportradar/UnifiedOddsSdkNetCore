@@ -10178,11 +10178,6 @@
             A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance used for execution logging
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Stage._matchStatusesCache">
-            <summary>
-            The match statuses cache
-            </summary>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Stage.GetAdditionalParentStagesAsync">
             <summary>
             Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages

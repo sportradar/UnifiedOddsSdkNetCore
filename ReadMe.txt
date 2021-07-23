@@ -25,6 +25,13 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-07-23  1.19.0.0
+IStage extended with getStatusAsync method providing IStageStatus and method for getting match status
+Added Prologue value to StageType enum
+Added improvement for connection recovery when disconnection happens
+FIx: implemented safe release of all internal SemaphoreSlims
+Fix: added handling of variant market description when different market id between requesting and received id
+
 2021-07-07  1.18.1.0
 Fix: problem within SemaphorePool not acquiring new semaphore - waiting indefinitely
 Fix: setting configuration via CustomConfigurationBuilder
