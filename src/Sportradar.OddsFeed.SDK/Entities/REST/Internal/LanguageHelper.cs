@@ -26,7 +26,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 return wantedCultureInfos.Distinct();
             }
 
-            var missingCultures = wantedCultureInfos.Where(c => !alreadyUsedCultures.Contains(c)).ToList();
+            var alreadyUsedCultureInfos = alreadyUsedCultures.ToList();
+            var missingCultures = wantedCultureInfos.Where(c => !alreadyUsedCultureInfos.Contains(c)).ToList();
 
             return missingCultures.Distinct();
         }
