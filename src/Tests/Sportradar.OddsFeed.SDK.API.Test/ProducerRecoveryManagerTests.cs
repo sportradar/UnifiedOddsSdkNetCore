@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
         private void CreateTestInstances()
         {
-            _producer = new Producer(3, "Ctrl", "Betradar Ctrl", "https://api.betradar.com/v1/pre/", true, 20, 1800, "live");
+            _producer = new Producer(3, "Ctrl", "Betradar Ctrl", "https://api.betradar.com/v1/pre/", true, 20, 1800, "live", 4320);
             _messageBuilder = new FeedMessageBuilder(_producer);
             _timestampTracker = new TimestampTracker(_producer, new [] {DefaultInterest}, 20, 20);
             _recoveryOperation = new RecoveryOperation(_producer, _recoveryRequestIssuerMock.Object, new[] {DefaultInterest}, 0, false);

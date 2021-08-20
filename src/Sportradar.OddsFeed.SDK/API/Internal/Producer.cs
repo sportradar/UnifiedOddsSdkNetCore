@@ -59,9 +59,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public DateTime LastTimestampBeforeDisconnect { get; private set; }
 
         /// <summary>
-        /// Gets the maximum recovery time
+        /// Gets the maximum recovery time in seconds
         /// </summary>
-        /// <value>The maximum recovery time</value>
+        /// <value>The maximum recovery time in seconds</value>
         public int MaxRecoveryTime { get; }
 
         /// <summary>
@@ -101,6 +101,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <value>The recovery info about last recovery attempt</value>
         public IRecoveryInfo RecoveryInfo { get; internal set; }
 
+        /// <inheritdoc />
+        public int StatefulRecoveryWindow { get; }
+
         internal ConcurrentDictionary<long, URN> EventRecoveries { get; }
 
         /// <summary>
@@ -112,10 +115,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="apiUrl">The API URL</param>
         /// <param name="active">if set to <c>true</c> [active]</param>
         /// <param name="maxInactivitySeconds">The maximum time between two alive messages before the producer is marked as down</param>
-        /// <param name="maxRecoveryTime">The maximum time in which recovery must be completed</param>
+        /// <param name="maxRecoveryTime">The maximum time in seconds in which recovery must be completed</param>
         /// <param name="scope">The scope of the producer</param>
-        public Producer(int id, string name, string description, string apiUrl, bool active, int maxInactivitySeconds,
-            int maxRecoveryTime, string scope)
+        /// <param name="statefulRecoveryWindowInMinutes">The stateful recovery window in minutes</param>
+        public Producer(int id, string name, string description, string apiUrl, bool active, int maxInactivitySeconds, int maxRecoveryTime, string scope, int statefulRecoveryWindowInMinutes)
         {
             Guard.Argument(id).Positive();
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
@@ -142,6 +145,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             MaxInactivitySeconds = maxInactivitySeconds;
             MaxRecoveryTime = maxRecoveryTime;
             Scope = scope.Split('|');
+            StatefulRecoveryWindow = statefulRecoveryWindowInMinutes;
 
             IgnoreRecovery = false;
             EventRecoveries = new ConcurrentDictionary<long, URN>();

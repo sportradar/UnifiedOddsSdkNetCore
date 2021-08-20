@@ -2104,7 +2104,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.RecoveryConfigurationBuilder`1.SetMaxRecoveryTime(System.Int32)">
             <summary>
-            Sets the maximum time in seconds in which recovery must be completed (minimum 900 seconds)
+            Sets the maximum time in seconds in which recovery must be completed (minimum 600 seconds)
             </summary>
             <param name="maxRecoveryTimeInSeconds">Maximum recovery time in seconds</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1" /> instance used to set general configuration properties</returns>
@@ -3789,7 +3789,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.MaxRecoveryTime">
             <summary>
-            Gets the timeout for recovery to finish
+            Gets the timeout for recovery to finish (in seconds)
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.MinIntervalBetweenRecoveryRequests">
@@ -4038,9 +4038,9 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.Producer.MaxRecoveryTime">
             <summary>
-            Gets the maximum recovery time
+            Gets the maximum recovery time in seconds
             </summary>
-            <value>The maximum recovery time</value>
+            <value>The maximum recovery time in seconds</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.Producer.MaxInactivitySeconds">
             <summary>
@@ -4078,7 +4078,10 @@
             </summary>
             <value>The recovery info about last recovery attempt</value>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Producer.#ctor(System.Int32,System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.String)">
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.Producer.StatefulRecoveryWindow">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Producer.#ctor(System.Int32,System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.String,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.Producer"/> class
             </summary>
@@ -4088,8 +4091,9 @@
             <param name="apiUrl">The API URL</param>
             <param name="active">if set to <c>true</c> [active]</param>
             <param name="maxInactivitySeconds">The maximum time between two alive messages before the producer is marked as down</param>
-            <param name="maxRecoveryTime">The maximum time in which recovery must be completed</param>
+            <param name="maxRecoveryTime">The maximum time in seconds in which recovery must be completed</param>
             <param name="scope">The scope of the producer</param>
+            <param name="statefulRecoveryWindowInMinutes">The stateful recovery window in minutes</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Producer.SetDisabled(System.Boolean)">
             <summary>
@@ -33962,6 +33966,12 @@
             Gets the recovery info about last recovery attempt
             </summary>
             <value>The recovery info about last recovery attempt</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.IProducer.StatefulRecoveryWindow">
+            <summary>
+            Gets the stateful recovery window in minutes.
+            </summary>
+            <value>The stateful recovery window in minutes.</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.IProducerManager">
             <summary>

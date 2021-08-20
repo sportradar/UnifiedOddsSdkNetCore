@@ -18,8 +18,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
     {
         private static FakeTimeProvider _timeProvider;
 
-        private static readonly Producer LiveProducer = new Producer(1, "LO", "Live Odds", "https://api.betradar.com/v1/liveodds/", true, 20, 1800, "live");
-        private static readonly Producer PremiumCricketProducer = new Producer(5, "PremiumCricket", "Premium Cricket", "https://api.betradar.com/v1/premium_cricket/", true, 20, 1800, "prematch|live");
+        private static readonly Producer LiveProducer = new Producer(1, "LO", "Live Odds", "https://api.betradar.com/v1/liveodds/", true, 20, 1800, "live", 600);
+        private static readonly Producer PremiumCricketProducer = new Producer(5, "PremiumCricket", "Premium Cricket", "https://api.betradar.com/v1/premium_cricket/", true, 20, 1800, "prematch|live", 4320);
 
         private Mock<IRecoveryRequestIssuer> _recoveryRequestIssuerMock;
 

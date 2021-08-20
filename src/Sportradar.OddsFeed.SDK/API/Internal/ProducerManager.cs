@@ -243,7 +243,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>The <see cref="IProducer"/> instance</returns>
         public static IProducer GetUnknownProducer()
         {
-            return new Producer(id: SdkInfo.UnknownProducerId, name: "Unknown", description: "Unknown producer", apiUrl: "unknown", active: true, maxInactivitySeconds: 20, maxRecoveryTime: 3600, scope: "live|prematch|virtual");
+            return new Producer(id: SdkInfo.UnknownProducerId, name: "Unknown", description: "Unknown producer", apiUrl: "unknown", active: true, maxInactivitySeconds: 20, maxRecoveryTime: 3600, scope: "live|prematch|virtual", statefulRecoveryWindowInMinutes: 100);
         }
     }
 }

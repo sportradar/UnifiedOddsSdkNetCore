@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             var producerManager = TestProducerManager.Create();
 
             var producer1 = producerManager.Get(1);
-            var producer2 = new Producer(1, "Lo", "Live Odds", "lo", true, 60, 3600, "live");
+            var producer2 = new Producer(1, "Lo", "Live Odds", "lo", true, 60, 3600, "live", 600);
             Assert.IsNotNull(producer1);
             Assert.AreEqual(1, producer1.Id);
             Assert.IsNotNull(producer2);

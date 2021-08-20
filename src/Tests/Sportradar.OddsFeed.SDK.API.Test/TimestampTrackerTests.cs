@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
     {
         private static FakeTimeProvider _timeProvider;
 
-        private static readonly Producer PremiumCricketProducer = new Producer(5, "PremiumCricket", "Premium Cricket", "https://api.betradar.com/v1/premium_cricket/", true, 20, 1800, "prematch|live");
+        private static readonly Producer PremiumCricketProducer = new Producer(5, "PremiumCricket", "Premium Cricket", "https://api.betradar.com/v1/premium_cricket/", true, 20, 1800, "prematch|live", 4320);
 
         private static readonly FeedMessageBuilder MessageBuilder = new FeedMessageBuilder(PremiumCricketProducer);
 

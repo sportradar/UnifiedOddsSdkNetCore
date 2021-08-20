@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using App.Metrics.ReservoirSampling.Uniform;
 
 namespace Sportradar.OddsFeed.SDK.Messages
 {
@@ -53,9 +54,9 @@ namespace Sportradar.OddsFeed.SDK.Messages
         DateTime LastTimestampBeforeDisconnect { get; }
 
         /// <summary>
-        /// Gets the maximum recovery time
+        /// Gets the maximum recovery time (in seconds)
         /// </summary>
-        /// <value>The maximum recovery time</value>
+        /// <value>The maximum recovery time (in seconds)</value>
         int MaxRecoveryTime { get; }
 
         /// <summary>
@@ -69,5 +70,11 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// </summary>
         /// <value>The recovery info about last recovery attempt</value>
         IRecoveryInfo RecoveryInfo { get; }
+
+        /// <summary>
+        /// Gets the stateful recovery window in minutes.
+        /// </summary>
+        /// <value>The stateful recovery window in minutes.</value>
+        int StatefulRecoveryWindow { get; }
     }
 }

@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         /// <returns>A <see cref="TimeSpan"/> specifying the max age of after param when doing a after timestamp recovery.</returns>
         public static TimeSpan MaxAfterAge(this IProducer producer)
         {
-            return TimeSpan.FromMinutes(producer.MaxRecoveryTime);
+            return TimeSpan.FromMinutes(producer.StatefulRecoveryWindow);
         }
     }
 }

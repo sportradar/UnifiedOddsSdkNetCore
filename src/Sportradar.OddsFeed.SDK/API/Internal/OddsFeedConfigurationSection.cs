@@ -138,7 +138,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public string DisabledProducers => (string) base["disabledProducers"];
 
         /// <summary>
-        /// Gets the timeout for recovery to finish
+        /// Gets the timeout for recovery to finish (in seconds)
         /// </summary>
         [ConfigurationProperty("maxRecoveryTime", IsRequired = false, DefaultValue = SdkInfo.MaxRecoveryExecutionInSeconds)]
         [IntegerValidator(MinValue = SdkInfo.MinRecoveryExecutionInSeconds, MaxValue = SdkInfo.MaxRecoveryExecutionInSeconds, ExcludeRange = false)]

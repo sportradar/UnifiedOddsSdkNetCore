@@ -88,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         }
 
         /// <summary>
-        /// Sets the maximum time in seconds in which recovery must be completed (minimum 900 seconds)
+        /// Sets the maximum time in seconds in which recovery must be completed (minimum 600 seconds)
         /// </summary>
         /// <param name="maxRecoveryTimeInSeconds">Maximum recovery time in seconds</param>
         /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}" /> instance used to set general configuration properties</returns>

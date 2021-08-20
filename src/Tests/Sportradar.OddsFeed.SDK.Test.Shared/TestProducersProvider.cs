@@ -23,11 +23,11 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
             var producers = new List<IProducer>
             {
-                new Producer(1, "LO", "Live Odds", "lo", true, maxInactivitySeconds, maxRecoveryTime, "live"),
-                new Producer(3, "Ctrl", "Betradar Ctrl", "pre", true, maxInactivitySeconds, maxRecoveryTime, "prematch"),
-                new Producer(4, "BetPal", "BetPal", "betpal", true, maxInactivitySeconds, maxRecoveryTime, "live"),
-                new Producer(5, "PremiumCricket", "Premium Cricket", "premium_cricket", true, maxInactivitySeconds, maxRecoveryTime, "live|prematch"),
-                new Producer(6, "VF", "Virtual football", "vf", false, maxInactivitySeconds, maxRecoveryTime, "virtual")
+                new Producer(1, "LO", "Live Odds", "lo", true, maxInactivitySeconds, maxRecoveryTime, "live", 600),
+                new Producer(3, "Ctrl", "Betradar Ctrl", "pre", true, maxInactivitySeconds, maxRecoveryTime, "prematch", 4320),
+                new Producer(4, "BetPal", "BetPal", "betpal", true, maxInactivitySeconds, maxRecoveryTime, "live", 4320),
+                new Producer(5, "PremiumCricket", "Premium Cricket", "premium_cricket", true, maxInactivitySeconds, maxRecoveryTime, "live|prematch", 4320),
+                new Producer(6, "VF", "Virtual football", "vf", false, maxInactivitySeconds, maxRecoveryTime, "virtual", 180)
             };
 
             return producers;
