@@ -345,6 +345,22 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
         
         private bool period_of_leaderFieldSpecified;
         
+        private int home_drive_countField;
+        
+        private bool home_drive_countFieldSpecified;
+        
+        private int away_drive_countField;
+        
+        private bool away_drive_countFieldSpecified;
+        
+        private int home_play_countField;
+        
+        private bool home_play_countFieldSpecified;
+        
+        private int away_play_countField;
+        
+        private bool away_play_countFieldSpecified;
+        
         /// <remarks/>
         public clockType clock {
             get {
@@ -1363,6 +1379,94 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed {
             }
             set {
                 this.period_of_leaderFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int home_drive_count {
+            get {
+                return this.home_drive_countField;
+            }
+            set {
+                this.home_drive_countField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool home_drive_countSpecified {
+            get {
+                return this.home_drive_countFieldSpecified;
+            }
+            set {
+                this.home_drive_countFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int away_drive_count {
+            get {
+                return this.away_drive_countField;
+            }
+            set {
+                this.away_drive_countField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool away_drive_countSpecified {
+            get {
+                return this.away_drive_countFieldSpecified;
+            }
+            set {
+                this.away_drive_countFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int home_play_count {
+            get {
+                return this.home_play_countField;
+            }
+            set {
+                this.home_play_countField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool home_play_countSpecified {
+            get {
+                return this.home_play_countFieldSpecified;
+            }
+            set {
+                this.home_play_countFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int away_play_count {
+            get {
+                return this.away_play_countField;
+            }
+            set {
+                this.away_play_countField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool away_play_countSpecified {
+            get {
+                return this.away_play_countFieldSpecified;
+            }
+            set {
+                this.away_play_countFieldSpecified = value;
             }
         }
     }

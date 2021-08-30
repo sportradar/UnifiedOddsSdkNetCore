@@ -1140,7 +1140,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1.SetMaxRecoveryTime(System.Int32)">
             <summary>
-            Sets the maximum time in seconds in which recovery must be completed (minimum 900 seconds)
+            Sets the maximum time in seconds in which recovery must be completed (minimum 600 seconds)
             </summary>
             <param name="maxRecoveryTimeInSeconds">Maximum recovery time in seconds</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1"/> instance used to set general configuration properties</returns>
@@ -33585,6 +33585,30 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.period_of_leaderSpecified">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.home_drive_count">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.home_drive_countSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.away_drive_count">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.away_drive_countSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.home_play_count">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.home_play_countSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.away_play_count">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.away_play_countSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Feed.clockType">
             <remarks/>
         </member>
@@ -33951,9 +33975,9 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.IProducer.MaxRecoveryTime">
             <summary>
-            Gets the maximum recovery time
+            Gets the maximum recovery time (in seconds)
             </summary>
-            <value>The maximum recovery time</value>
+            <value>The maximum recovery time (in seconds)</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.IProducer.MaxInactivitySeconds">
             <summary>

@@ -194,6 +194,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ApplyPropertyValue(ses.pitches_seenSpecified, "pitches_seen", ses.pitches_seen, tempProperties);
             ApplyPropertyValue(ses.total_hitsSpecified, "total_hits", ses.total_hits, tempProperties);
             ApplyPropertyValue(ses.total_pitchesSpecified, "total_pitches", ses.total_pitches, tempProperties);
+            ApplyPropertyValue(ses.home_drive_countSpecified, "home_drive_count", ses.home_drive_count, tempProperties);
+            ApplyPropertyValue(ses.home_play_countSpecified, "home_play_count", ses.home_play_count, tempProperties);
+            ApplyPropertyValue(ses.away_drive_countSpecified, "away_drive_count", ses.away_drive_count, tempProperties);
+            ApplyPropertyValue(ses.away_play_countSpecified, "away_play_count", ses.away_play_count, tempProperties);
 
             if (ses.period_scores != null && ses.period_scores.Any())
             {
