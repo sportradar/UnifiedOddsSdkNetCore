@@ -56,6 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             SovTemplate = mapping.sov_template;
             ValidFor = mapping.valid_for;
 
+            OutcomeMappings = new List<OutcomeMappingDTO>();
             if (mapping.mapping_outcome != null)
             {
                 OutcomeMappings = mapping.mapping_outcome.Select(o => new OutcomeMappingDTO(o, mapping.market_id));
@@ -88,6 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             SovTemplate = mapping.sov_template;
             ValidFor = mapping.valid_for;
 
+            OutcomeMappings = new List<OutcomeMappingDTO>();
             if (mapping.mapping_outcome != null)
             {
                 OutcomeMappings = mapping.mapping_outcome.Select(o => new OutcomeMappingDTO(o, string.IsNullOrEmpty(mapping.product_market_id) ? mapping.market_id : mapping.product_market_id));

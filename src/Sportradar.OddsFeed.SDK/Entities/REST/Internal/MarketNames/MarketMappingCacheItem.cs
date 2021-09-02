@@ -44,6 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             ValidFor = dto.ValidFor;
             Validator = validator;
 
+            OutcomeMappings = new List<OutcomeMappingCacheItem>();
             if (dto.OutcomeMappings != null)
             {
                 OutcomeMappings = dto.OutcomeMappings.Select(o => new OutcomeMappingCacheItem(o, culture)).ToList();
