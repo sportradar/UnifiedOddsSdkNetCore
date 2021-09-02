@@ -7798,14 +7798,6 @@
             </summary>
             <param name="count">The number of <see cref="T:System.Threading.SemaphoreSlim"/> instances to be created in the pool</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.AcquireInternal(System.String)">
-            <summary>
-            Executes the actual acquirement
-            </summary>
-            <param name="id">The id under which to acquire the semaphore</param>
-            <returns>The acquired <see cref="T:System.Threading.SemaphoreSlim"/></returns>
-            <exception cref="T:System.InvalidOperationException">Semaphore granted entry, but there are no SemaphoreSlim objects available</exception>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.Dispose(System.Boolean)">
             <summary>
             Releases unmanaged and - optionally - managed resources.
@@ -7823,6 +7815,14 @@
             </summary>
             <param name="id">The id to be associated with the acquired <see cref="T:System.Threading.SemaphoreSlim"/> instance</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.AcquireInternal(System.String)">
+            <summary>
+            Executes the actual acquirement
+            </summary>
+            <param name="id">The id under which to acquire the semaphore</param>
+            <returns>The acquired <see cref="T:System.Threading.SemaphoreSlim"/></returns>
+            <exception cref="T:System.InvalidOperationException">Semaphore granted entry, but there are no SemaphoreSlim objects available</exception>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.Release(System.String)">
             <summary>
