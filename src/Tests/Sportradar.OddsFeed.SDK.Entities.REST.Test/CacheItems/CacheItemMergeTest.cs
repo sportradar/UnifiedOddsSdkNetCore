@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +16,7 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
 using SR = Sportradar.OddsFeed.SDK.Test.Shared.StaticRandom;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
+namespace Sportradar.OddsFeed.SDK.Entities.REST.Test.CacheItems
 {
     [TestClass]
     public class CacheItemMergeTest

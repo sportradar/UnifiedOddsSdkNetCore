@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj" />
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Test.Shared\Sportradar.OddsFeed.SDK.Test.Shared.csproj" />
   </ItemGroup>
 
 </Project>

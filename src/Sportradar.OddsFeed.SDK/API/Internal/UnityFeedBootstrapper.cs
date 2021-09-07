@@ -268,7 +268,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<IDispatcherStore, DispatcherStore>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISemaphorePool, SemaphorePool>(
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(25));
+                new InjectionConstructor(25, config.ExceptionHandlingStrategy));
 
             Func<OddsFeedSession, IEnumerable<string>> func = session => null;
 

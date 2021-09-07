@@ -3,10 +3,13 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Test.Shared;
 
 namespace Sportradar.OddsFeed.SDK.Common.Test
 {
@@ -14,28 +17,33 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
     public class SemaphorePoolTests
     {
         [TestMethod]
-        public void semaphore_can_be_acquired_with_same_id()
+        public void SemaphoreCanBeAcquiredWithSameId()
         {
-            var pool = new SemaphorePool(1);
+            var pool = new SemaphorePool(1, ExceptionHandlingStrategy.THROW);
 
-            var task1 = pool.Acquire("1");
-            var task2 = pool.Acquire("1");
+            var task1 = pool.AcquireAsync("1");
+            var task2 = pool.AcquireAsync("1");
 
             Thread.Sleep(10);
 
             var semaphore1 = task1.Result;
             var semaphore2 = task2.Result;
             Assert.AreEqual(semaphore1, semaphore2, "semaphore1 and semaphore2 should be equal");
+            Assert.AreEqual(1, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(1, pool.AvailableSemaphoreIds.Count);
+            Assert.AreEqual("1", pool.AvailableSemaphoreIds.First());
+            Assert.AreEqual("1", pool.SemaphoreHolders[0].Id);
+            Assert.AreEqual(2, pool.SemaphoreHolders[0].UsageCount);
         }
 
         [TestMethod]
-        public void used_semaphores_cannot_be_acquired_with_different_id()
+        public void UsedSemaphoresCannotBeAcquiredWithDifferentId()
         {
-            var pool = new SemaphorePool(3);
+            var pool = new SemaphorePool(3, ExceptionHandlingStrategy.THROW);
 
-            var task1 = pool.Acquire("1");
-            var task2 = pool.Acquire("2");
-            var task3 = pool.Acquire("3");
+            var task1 = pool.AcquireAsync("1");
+            var task2 = pool.AcquireAsync("2");
+            var task3 = pool.AcquireAsync("3");
 
             var semaphore1 = task1.Result;
             var semaphore2 = task2.Result;
@@ -45,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
             Assert.IsNotNull(semaphore2);
             Assert.IsNotNull(semaphore3);
 
-            var task4 = pool.Acquire("4");
+            var task4 = pool.AcquireAsync("4");
             Thread.Sleep(5);
             Assert.IsFalse(task4.IsCompleted);
 
@@ -55,40 +63,45 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
         }
 
         [TestMethod]
-        public void used_semaphore_can_be_acquired_with_same_id()
+        public void UsedSemaphoreCanBeAcquiredWithSameId()
         {
-            var pool = new SemaphorePool(1);
+            var pool = new SemaphorePool(1, ExceptionHandlingStrategy.THROW);
 
-            var task1 = pool.Acquire("1");
-            var task3 = pool.Acquire("1");
+            var task1 = pool.AcquireAsync("1");
+            var task3 = pool.AcquireAsync("1");
 
             var semaphore1 = task1.Result;
             var semaphore3 = task3.Result;
 
-            var task2 = pool.Acquire("2");
+            var task2 = pool.AcquireAsync("2");
             Thread.Sleep(5);
             Assert.IsFalse(task2.IsCompleted);
 
             Assert.IsNotNull(semaphore1);
             Assert.AreEqual(semaphore3, semaphore1, "Semaphore1 and Semaphore3 must be equal");
+            Assert.AreEqual(1, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(2, pool.AvailableSemaphoreIds.Count);
+            Assert.AreEqual("1", pool.AvailableSemaphoreIds.First());
+            Assert.AreEqual("1", pool.SemaphoreHolders[0].Id);
+            Assert.AreEqual(2, pool.SemaphoreHolders[0].UsageCount);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void releasing_unused_semaphore_throws()
+        public void ReleasingUnusedSemaphoreThrows()
         {
-            var pool = new SemaphorePool(1);
+            var pool = new SemaphorePool(1, ExceptionHandlingStrategy.THROW);
             pool.Release("1");
         }
 
         [TestMethod]
-        public void released_semaphore_can_be_re_acquired()
+        public void ReleasedSemaphoreCanBeReacquired()
         {
-            var pool = new SemaphorePool(1);
+            var pool = new SemaphorePool(1, ExceptionHandlingStrategy.THROW);
 
-            var task1 = pool.Acquire("1");
+            var task1 = pool.AcquireAsync("1");
             Thread.Sleep(5);
-            var task2 = pool.Acquire("2");
+            var task2 = pool.AcquireAsync("2");
 
             var semaphore1 = task1.Result;
             Assert.IsNotNull(semaphore1);
@@ -97,24 +110,33 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
             pool.Release("1");
             var semaphore2 = task2.Result;
             Assert.AreEqual(semaphore2, semaphore1, "Semaphore1 and Semaphore2 should be equal");
+            Assert.AreEqual(1, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(1, pool.AvailableSemaphoreIds.Count);
+            Assert.AreEqual("2", pool.AvailableSemaphoreIds.First());
+            Assert.AreEqual("2", pool.SemaphoreHolders[0].Id);
+            Assert.AreEqual(1, pool.SemaphoreHolders[0].UsageCount);
         }
 
         [TestMethod]
-        public void semaphore_can_be_acquired_only_after_all_acquisitions_are_released()
+        public void SemaphoreCanBeAcquiredOnlyAfterAllAcquisitionsAreReleased()
         {
-            var pool = new SemaphorePool(1);
+            var pool = new SemaphorePool(1, ExceptionHandlingStrategy.THROW);
 
-            var task11 = pool.Acquire("1");
-            var task12 = pool.Acquire("1");
-            var task13 = pool.Acquire("1");
-
+            var task11 = pool.AcquireAsync("1");
+            var task12 = pool.AcquireAsync("1");
+            var task13 = pool.AcquireAsync("1");
 
             var semaphore1 = task11.Result;
             Assert.IsNotNull(semaphore1);
             Assert.AreEqual(semaphore1, task12.Result, "both semaphores should be equal");
             Assert.AreEqual(semaphore1, task13.Result, "Both semaphores should be equal");
+            Assert.AreEqual(1, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(1, pool.AvailableSemaphoreIds.Count);
+            Assert.AreEqual("1", pool.AvailableSemaphoreIds.First());
+            Assert.AreEqual("1", pool.SemaphoreHolders[0].Id);
+            Assert.AreEqual(3, pool.SemaphoreHolders[0].UsageCount);
 
-            var task2 = pool.Acquire("2");
+            var task2 = pool.AcquireAsync("2");
             Thread.Sleep(5);
             Assert.IsFalse(task2.IsCompleted);
 
@@ -130,20 +152,23 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
             var semaphore2 = task2.Result;
 
             Assert.AreEqual(semaphore2, semaphore1, "Semaphore1 and Semaphore2 should be equal");
+            Assert.AreEqual(1, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(1, pool.AvailableSemaphoreIds.Count);
+            Assert.AreEqual("2", pool.SemaphoreHolders[0].Id);
+            Assert.AreEqual(1, pool.SemaphoreHolders[0].UsageCount);
         }
 
         [TestMethod]
-        public void complex_usage_test()
+        public void ComplexUsageTest()
         {
-            var pool = new SemaphorePool(2);
+            var pool = new SemaphorePool(2, ExceptionHandlingStrategy.THROW);
 
-            var task11 = pool.Acquire("1");
-            var task21 = pool.Acquire("2");
+            var task11 = pool.AcquireAsync("1");
+            var task21 = pool.AcquireAsync("2");
             Thread.Sleep(5);
-            var task12 = pool.Acquire("1");
-            var task22 = pool.Acquire("2");
-            var task3 = pool.Acquire("3");
-
+            var task12 = pool.AcquireAsync("1");
+            var task22 = pool.AcquireAsync("2");
+            var task3 = pool.AcquireAsync("3");
 
             Thread.Sleep(5);
             var semaphore11 = task11.Result;
@@ -166,7 +191,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
             Thread.Sleep(5);
             Assert.IsTrue(task3.IsCompleted);
 
-            var task4 = pool.Acquire("4");
+            var task4 = pool.AcquireAsync("4");
             Thread.Sleep(5);
             Assert.IsFalse(task4.IsCompleted);
 
@@ -182,19 +207,24 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
             pool.Release("4");
             Thread.Sleep(5);
 
-            var task1 = pool.Acquire("1");
-            var task2 = pool.Acquire("2");
+            var task1 = pool.AcquireAsync("1");
+            var task2 = pool.AcquireAsync("2");
 
             Thread.Sleep(5);
 
             Assert.IsTrue(task1.IsCompleted);
             Assert.IsTrue(task2.IsCompleted);
+            pool.Release("1");
+            pool.Release("2");
+            Assert.AreEqual(2, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(0, pool.AvailableSemaphoreIds.Count);
+            Assert.IsTrue(pool.SemaphoreHolders.All(a => string.IsNullOrEmpty(a.Id) && a.UsageCount == 0));
         }
 
         [TestMethod]
-        public void no_error_when_many_requests_are_made()
+        public void NoErrorWhenManyRequestsAreMade()
         {
-            var pool = new SemaphorePool(15);
+            var pool = new SemaphorePool(10, ExceptionHandlingStrategy.THROW);
             var tasks = new List<Task>();
 
             var id = 0;
@@ -204,13 +234,47 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
                 {
                     var stringId = id.ToString();
                     id++;
-                    var semaphore = pool.Acquire(stringId).Result;
+                    var semaphore = pool.AcquireAsync(stringId).Result;
                     Assert.IsNotNull(semaphore);
                     Thread.Sleep(10);
                     pool.Release(stringId);
                 }));
             }
             Task.WaitAll(tasks.ToArray());
+            Assert.IsTrue(tasks.All(a=>a.IsCompletedSuccessfully));
+            Assert.AreEqual(10, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(0, pool.AvailableSemaphoreIds.Count);
+            Assert.IsNull(pool.SemaphoreHolders[0].Id);
+            Assert.IsTrue(pool.SemaphoreHolders.All(a => string.IsNullOrEmpty(a.Id) && a.UsageCount == 0));
+        }
+
+        [TestMethod]
+        public void NoErrorWhenManySimilarRequestsAreMade()
+        {
+            var pool = new SemaphorePool(10, ExceptionHandlingStrategy.THROW);
+            var tasks = new List<Task>();
+
+            for (var i = 0; i < 300; i++)
+            {
+                tasks.Add(Task.Run(async () =>
+                                   {
+                                       var stringId = StaticRandom.S(10);
+                                       var semaphore = await pool.AcquireAsync(stringId).ConfigureAwait(false);
+                                       Assert.IsNotNull(semaphore);
+                                       await semaphore.WaitAsync().ConfigureAwait(false);
+                                       Assert.IsTrue(pool.AvailableSemaphoreIds.Contains(stringId));
+                                       //Debug.WriteLine($"Id={stringId}, semaphore usage={pool.SemaphoreHolders.First(f=>f.Id.Equals(stringId)).UsageCount}");
+                                       Thread.Sleep(StaticRandom.I100);
+                                       semaphore.ReleaseSafe();
+                                       pool.Release(stringId);
+                                   }));
+            }
+            Task.WaitAll(tasks.ToArray());
+            Assert.IsTrue(tasks.All(a=>a.IsCompletedSuccessfully));
+            Assert.AreEqual(10, pool.SemaphoreHolders.Count);
+            Assert.AreEqual(0, pool.AvailableSemaphoreIds.Count);
+            Assert.IsNull(pool.SemaphoreHolders[0].Id);
+            Assert.IsTrue(pool.SemaphoreHolders.All(a => string.IsNullOrEmpty(a.Id) && a.UsageCount == 0));
         }
     }
 }

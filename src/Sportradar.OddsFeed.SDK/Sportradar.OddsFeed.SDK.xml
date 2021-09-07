@@ -7145,7 +7145,7 @@
             Defines a pool of <see cref="T:System.Threading.SemaphoreSlim"/> instances which can be used to synchronize access to a shared resource
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool.Acquire(System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool.AcquireAsync(System.String)">
             <summary>
             Acquires a <see cref="T:System.Threading.SemaphoreSlim"/> - either one already associated with the specified identifier
             or an unused one.
@@ -7157,7 +7157,7 @@
             <summary>
             Releases the <see cref="T:System.Threading.SemaphoreSlim"/> previously acquired with the same id
             </summary>
-            <param name="id">The Id which was used to acquire the semaphore being released .</param>
+            <param name="id">The Id which was used to acquire the semaphore being released.</param>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator">
@@ -7762,12 +7762,12 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool"/> implementation
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool._semaphoreHolders">
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.SemaphoreHolders">
             <summary>
             A <see cref="T:System.Collections.Generic.List`1"/> containing pool's semaphores
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool._availableSemaphoreIds">
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.AvailableSemaphoreIds">
             <summary>
             A <see cref="T:System.Collections.Generic.List`1"/> containing ids of resources currently available
             </summary>
@@ -7792,11 +7792,17 @@
             A value indicating whether the current instance has already been disposed
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.#ctor(System.Int32)">
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool._exceptionHandlingStrategy">
+            <summary>
+            A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying enum member specifying how instances provided by the current provider will handle exceptions
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.#ctor(System.Int32,Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool"/> class
             </summary>
             <param name="count">The number of <see cref="T:System.Threading.SemaphoreSlim"/> instances to be created in the pool</param>
+            <param name="exceptionHandlingStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying enum member specifying how instances provided by the current provider will handle exceptions</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.Dispose(System.Boolean)">
             <summary>
@@ -7809,7 +7815,7 @@
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.Acquire(System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SemaphorePool.AcquireAsync(System.String)">
             <summary>
             Acquires a <see cref="T:System.Threading.SemaphoreSlim"/> - either one already associated with the specified identifier or an unused one
             </summary>
@@ -16138,12 +16144,6 @@
             <param name="playerCompetitor">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PlayerCompetitorDTO"/> used to merge into instance</param>
             <param name="competitorId">The competitor id this player belongs to</param>
             <param name="culture">The culture of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.PlayerCompetitorDTO"/> used to merge</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI.Merge(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI)">
-            <summary>
-            Merges the specified <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI"/> into instance
-            </summary>
-            <param name="item">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI"/> used to merge into instance</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.PlayerProfileCI.GetName(System.Globalization.CultureInfo)">
             <summary>
