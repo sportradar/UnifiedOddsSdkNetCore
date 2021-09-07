@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             var translations = new Dictionary<CultureInfo, string>();
             var dic = translations.Where(s => cultures.Contains(s.Key)).ToDictionary(t => t.Key, t => t.Value);
             var ms = new LocalizedNamedValue(1, dic, cultures.ToList().First());
-            return null;
+            return Task.FromResult<ILocalizedNamedValue>(null);
         }
 
         public bool IsValueDefined(int id)

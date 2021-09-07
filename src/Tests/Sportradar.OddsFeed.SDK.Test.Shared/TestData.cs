@@ -62,8 +62,6 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             }
 
             var date = new DateTime?();
-            List<TeamCompetitorCI> competitors = null;
-            TeamCompetitorCI comp = null;
             RoundCI round = null;
             SeasonCI season = null;
 
@@ -81,9 +79,6 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 Task.Run(async () =>
                          {
                              date = await ci.GetScheduledAsync();
-                             //competitors = (await ci.GetCompetitorsIdsAsync(checkCulture)).ToList();
-                             // ReSharper disable once AssignNullToNotNullAttribute
-                             //comp = competitors.FirstOrDefault();
                              round = await ci.GetTournamentRoundAsync(checkCulture);
                              season = await ci.GetSeasonAsync(checkCulture);
                          }).GetAwaiter().GetResult();
@@ -91,23 +86,6 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 Debug.Assert(date != null, "date != null");
                 Assert.AreEqual(new DateTime(2016, 08, 10), new DateTime(date.Value.Year, date.Value.Month, date.Value.Day));
 
-                //Assert.AreEqual(2, competitors.Count);
-
-                //TODO - this was removed
-                if (comp != null)
-                {
-                    Assert.AreEqual("sr:competitor:66390", comp.Id.ToString());
-                    Assert.AreEqual(@"Pericos de Puebla", comp.GetName(culture));
-                    if (Equals(culture, Culture))
-                    {
-                        Assert.AreEqual("Mexico", comp.GetCountry(culture));
-                        Assert.AreEqual("Mexican League 2016", season.Names[culture]);
-                    }
-                    if (culture.TwoLetterISOLanguageName != "de")
-                    {
-                        Assert.AreNotEqual(comp.GetCountry(culture), comp.GetCountry(new CultureInfo("de")));
-                    }
-                }
                 Assert.IsTrue(string.IsNullOrEmpty(round.GetName(culture)));
 
                 Assert.IsTrue(Math.Max(ci.LoadedSummaries.Count, ci.LoadedFixtures.Count) >= season.Names.Count);

@@ -21781,6 +21781,9 @@
             </summary>
             <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.DelayedInfoDTO.Equals(System.Object)">
+            <inheritdoc />
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EntityList`1">
             <summary>
             Represents a list or collection of sport related entities

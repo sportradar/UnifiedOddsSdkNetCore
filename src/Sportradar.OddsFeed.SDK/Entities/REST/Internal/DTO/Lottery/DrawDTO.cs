@@ -3,7 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -14,6 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
     /// <summary>
     /// Defines a data-transfer-object for lottery draw
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "DTO is allowed")]
     internal class DrawDTO : SportEventSummaryDTO
     {
         /// <summary>
@@ -102,7 +102,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
         internal DrawDTO(draw_fixtures item)
             : base(new sportEvent
             {
-                id = item == null ? "wns:draw:1" : item?.draw_fixture?.id,
+                id = item == null ? "wns:draw:1" : item.draw_fixture?.id,
                 name = string.Empty,
                 scheduledSpecified = item?.draw_fixture?.draw_dateSpecified ?? false,
                 scheduled = item?.draw_fixture?.draw_date ?? DateTime.MinValue,
@@ -114,10 +114,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                     }
             })
         {
-            Guard.Argument(item?.draw_fixture, nameof(item)).NotNull();
+            if (item == null || item.draw_fixture == null)
+            {
+                return;
+            }
 
             var fixture = item.draw_fixture;
-            Debug.Assert(fixture != null, nameof(fixture) + " != null");
 
             if (fixture.lottery != null)
             {
@@ -141,16 +143,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                 scheduled = item?.scheduled ?? DateTime.MinValue
             })
         {
-            Guard.Argument(item, nameof(item)).NotNull();
-
-            if (item != null)
+            if (item == null)
             {
-                Status = RestMapperHelper.MapDrawStatus(item.status, item.statusSpecified);
-
-                DisplayId = item.display_idSpecified
-                            ? item.display_id
-                            : (int?) null;
+                return;
             }
+            
+            Status = RestMapperHelper.MapDrawStatus(item.status, item.statusSpecified);
+
+            DisplayId = item.display_idSpecified
+                        ? item.display_id
+                        : (int?) null;
         }
     }
 }

@@ -54,12 +54,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously gets a <see cref="SportEventType"/> for the associated sport event.
         /// </summary>
         /// <returns>A <see cref="SportEventType"/> for the associated sport event.</returns>
-        Task<SportEventType?> GetSportEventTypeAsync() => null;
+        Task<SportEventType?> GetSportEventTypeAsync() => Task.FromResult<SportEventType?>(null);
 
         /// <summary>
         /// Asynchronously gets a liveOdds
         /// </summary>
         /// <returns>A liveOdds</returns>
-        Task<string> GetLiveOddsAsync() => null;
+        Task<string> GetLiveOddsAsync() => Task.FromResult<string>(null);
     }
 }

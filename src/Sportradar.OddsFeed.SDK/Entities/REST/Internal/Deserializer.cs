@@ -41,11 +41,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         // ReSharper disable StaticFieldInGenericType
         private static readonly IReadOnlyDictionary<string, SerializerWithInfo> Serializers;
+
+
         // ReSharper restore StaticFieldInGenericType
 
         /// <summary>
         /// Initializes the <code>Serializers</code> static field
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3963:\"static\" fields should be initialized inline", Justification = "Allowed")]
         static Deserializer()
         {
             var serializers = new Dictionary<string, SerializerWithInfo>();
@@ -64,12 +67,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
                     if (string.IsNullOrWhiteSpace(rootElementName))
                     {
-                        throw new InvalidOperationException($"Type {feedMessagesType.FullName} cannot be deserialized with {typeof(Deserializer<>).FullName} because the name of RootXmlElement is not specified");
+                        throw new NotImplementedException($"Type {feedMessagesType.FullName} cannot be deserialized with {typeof(Deserializer<>).FullName} because the name of RootXmlElement is not specified");
                     }
 
                     if (serializers.ContainsKey(rootElementName))
                     {
-                        throw new InvalidOperationException($"Deserializer associated with name {rootElementName} already exists");
+                        throw new NotImplementedException($"Deserializer associated with name {rootElementName} already exists");
                     }
 
                     var ignoreNamespace = ignoreNamespaceAttribute?.IgnoreNamespace ?? false;
@@ -125,8 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 }
 
                 var localName = reader.LocalName;
-                SerializerWithInfo serializerWithInfo;
-                if (!Serializers.TryGetValue(reader.LocalName, out serializerWithInfo))
+                if (!Serializers.TryGetValue(reader.LocalName, out var serializerWithInfo))
                 {
                     throw new DeserializationException("Specified root element is not supported", stream.GetData(), localName, null);
                 }

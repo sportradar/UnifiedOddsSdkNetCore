@@ -273,12 +273,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Guard.Argument(cultures, nameof(cultures)).NotNull();
             Guard.Argument(sportEntityFactory, nameof(sportEntityFactory)).NotNull();
 
-            if (ci == null)
-            {
-                // above contract requirement throws even when ci in fact not null
-                throw new ArgumentNullException(nameof(ci));
-            }
-
             _competitorId = ci.Id;
             _competitorCI = ci;
             _profileCache = profileCache;
@@ -308,12 +302,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
             Guard.Argument(sportEntityFactory, nameof(sportEntityFactory)).NotNull();
-
-            if (ci == null)
-            {
-                // above contract requirement throws even when ci in fact not null
-                throw new ArgumentNullException(nameof(ci));
-            }
 
             _competitorId = ci.Id;
             _competitorCI = ci;

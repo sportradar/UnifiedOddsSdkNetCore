@@ -2,7 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using App.Metrics.ReservoirSampling.Uniform;
 
 namespace Sportradar.OddsFeed.SDK.Messages
 {

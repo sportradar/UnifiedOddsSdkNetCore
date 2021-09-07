@@ -6,6 +6,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// <summary>
     /// Represents a delayed info for sport event
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "DTO is allowed")]
     internal class DelayedInfoDTO
     {
         /// <summary>
@@ -38,6 +39,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (!(obj is DelayedInfoDTO other))
+            {
+                return false;
+            }
+            return Id == other.Id;
         }
     }
 }
