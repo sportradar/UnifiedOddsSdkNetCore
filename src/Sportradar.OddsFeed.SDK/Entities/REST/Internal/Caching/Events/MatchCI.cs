@@ -304,21 +304,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// Merges the specified fixture
         /// </summary>
-        /// <param name="fixture">The fixture</param>
+        /// <param name="fixtureDTO">The fixture</param>
         /// <param name="culture">The culture</param>
         /// <param name="useLock">Should the lock mechanism be used during merge</param>
-        public new void MergeFixture(FixtureDTO fixture, CultureInfo culture, bool useLock)
+        public new void MergeFixture(FixtureDTO fixtureDTO, CultureInfo culture, bool useLock)
         {
             if (useLock)
             {
                 lock (MergeLock)
                 {
-                    ActualMergeFixture(fixture, culture);
+                    ActualMergeFixture(fixtureDTO, culture);
                 }
             }
             else
             {
-                ActualMergeFixture(fixture, culture);
+                ActualMergeFixture(fixtureDTO, culture);
             }
         }
 

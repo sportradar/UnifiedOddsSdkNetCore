@@ -54,41 +54,41 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             throw new NotImplementedException();
         }
 
-        public Task<ISport> BuildSportAsync(URN id, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
+        public Task<ISport> BuildSportAsync(URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IPlayer> BuildPlayerAsync(URN id, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
+        public Task<IPlayer> BuildPlayerAsync(URN playerId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             var playerNames = cultures.ToDictionary(culture => culture, culture => "PlayerName");
-            var player = new Player(id, playerNames);
+            var player = new Player(playerId, playerNames);
             return Task.FromResult((IPlayer)player);
         }
 
-        public Task<IEnumerable<IPlayer>> BuildPlayersAsync(IEnumerable<URN> ids, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
+        public Task<IEnumerable<IPlayer>> BuildPlayersAsync(IEnumerable<URN> playersIds, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             var results = new List<IPlayer>();
             return Task.FromResult(results.AsEnumerable());
         }
 
-        public T BuildSportEvent<T>(URN id, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
+        public T BuildSportEvent<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
         {
             ICompetition competition;
-            switch (id.TypeGroup)
+            switch (eventId.TypeGroup)
             {
                 case ResourceTypeGroup.MATCH:
                 {
-                    competition = new TestMatch(id);
+                    competition = new TestMatch(eventId);
                     break;
                 }
                 case ResourceTypeGroup.STAGE:
                 {
-                    competition = new TestStage(id);
+                    competition = new TestStage(eventId);
                     break;
                 }
                 default:
-                    throw new ArgumentException($"ResourceTypeGroup '{id.TypeGroup}' is not supported.", nameof(id));
+                    throw new ArgumentException($"ResourceTypeGroup '{eventId.TypeGroup}' is not supported.", nameof(eventId));
 
             }
             return (T)competition;
@@ -100,17 +100,17 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return new Competitor(competitorId, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
         }
 
-        public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
+        public ICompetitor BuildCompetitor(CompetitorCI competitorCI, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            return new Competitor(ci, _profileCache, cultures, this, exceptionStrategy, rootCompetitionCI);
+            return new Competitor(competitorCI, _profileCache, cultures, this, exceptionStrategy, rootCompetitionCI);
         }
 
-        public ICompetitor BuildCompetitor(CompetitorCI ci, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
+        public ICompetitor BuildCompetitor(CompetitorCI competitorCI, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
         {
-            return new Competitor(ci, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
+            return new Competitor(competitorCI, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
         }
 
-        public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI ci, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
+        public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI teamCompetitorCI, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
@@ -157,9 +157,9 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// Builds the instance of the <see cref="ICategorySummary"/> class
         /// </summary>
         /// <param name="categoryId">A <see cref="URN"/> of the <see cref="ICategorySummary"/> used to create new instance</param>
-        /// <param name="culture">A culture of the current instance of <see cref="ICategorySummary"/></param>
+        /// <param name="cultures">A culture of the current instance of <see cref="ICategorySummary"/></param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        public async Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IEnumerable<CultureInfo> culture)
+        public async Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IEnumerable<CultureInfo> cultures)
         {
             throw new NotImplementedException();
         }

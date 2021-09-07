@@ -18,9 +18,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// Builds a <see cref="SportEventCI"/> instance from the provided sport event id
         /// </summary>
-        /// <param name="id">A <see cref="URN"/> representing the id of the sport event</param>
+        /// <param name="eventId">A <see cref="URN"/> representing the id of the sport event</param>
         /// <returns>a new instance of <see cref="SportEventCI"/> instance</returns>
-        SportEventCI Build(URN id);
+        SportEventCI Build(URN eventId);
 
         /// <summary>
         /// Builds a <see cref="SportEventCI"/> instance from the provided <see cref="SportEventSummaryDTO"/> instance

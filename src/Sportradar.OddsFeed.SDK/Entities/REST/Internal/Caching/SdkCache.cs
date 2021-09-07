@@ -75,12 +75,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// Registers the cache in <see cref="CacheManager" />
         /// </summary>
-        public virtual void RegisterCache()
+        public void RegisterCache()
         {
             SetDtoTypes();
             if (RegisteredDtoTypes == null)
             {
-                throw new FieldAccessException(nameof(RegisteredDtoTypes));
+                throw new InvalidOperationException($"{CacheName} cache has no registered dto types.");
             }
             _cacheManager.RegisterCache(CacheName, this);
         }

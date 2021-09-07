@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return ToString("I");
+            return ToString("I", null);
         }
 
         /// <summary>
@@ -34,8 +34,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>Formats the value of the current instance using the specified format.</summary>
         /// <returns>The value of the current instance in the specified format.</returns>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation. </param>
+        public string ToString(string format)
+        {
+            // ReSharper disable once IntroduceOptionalParameters.Global
+            return ToString(format, null);
+        }
+
+        /// <summary>Formats the value of the current instance using the specified format.</summary>
+        /// <returns>The value of the current instance in the specified format.</returns>
+        /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation. </param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system. </param>
-        public string ToString(string format, IFormatProvider formatProvider = null)
+        public string ToString(string format, IFormatProvider formatProvider)
         {
             //Supported formats: C - compact, F - full, I - only id, J - json
             if (format == null)

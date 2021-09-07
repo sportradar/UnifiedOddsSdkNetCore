@@ -46,7 +46,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO> mapperFactory)
             : base(bookmakerDetailsUriFormat, fetcher, deserializer, mapperFactory)
         {
-
             Guard.Argument(bookmakerDetailsUriFormat, nameof(bookmakerDetailsUriFormat)).NotNull().NotEmpty();
             Guard.Argument(fetcher, nameof(fetcher)).NotNull();
             Guard.Argument(deserializer, nameof(deserializer)).NotNull();

@@ -35,7 +35,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         [TestMethod]
         public void PublicIpIsRetrieved()
         {
-            _validator.GetPublicIp();
+            var publicIp = _validator.GetPublicIp();
+            Assert.IsNotNull(publicIp);
         }
     }
 }

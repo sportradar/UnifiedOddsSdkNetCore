@@ -439,9 +439,9 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// Disposes the current instance and resources associated with it
         /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
-            InternalDispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -544,14 +544,14 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         public void Close()
         {
-            ((IDisposable) this).Dispose();
+            Dispose();
         }
 
         /// <summary>
         /// Disposes the current instance and resources associated with it
         /// </summary>
         /// <param name="disposing">Value indicating whether the managed resources should also be disposed</param>
-        protected virtual void InternalDispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (_isDisposed)
             {

@@ -894,7 +894,7 @@
             <param name="msgInterest">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> specifying what messages the constructed session will be getting from the broker</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedSession"/> instance with the specified <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/></returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.System#IDisposable#Dispose">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Dispose">
             <summary>
             Disposes the current instance and resources associated with it
             </summary>
@@ -956,7 +956,7 @@
             Closes the current <see cref="T:Sportradar.OddsFeed.SDK.API.Feed"/> instance and disposes resources used by it
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.InternalDispose(System.Boolean)">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Dispose(System.Boolean)">
             <summary>
             Disposes the current instance and resources associated with it
             </summary>

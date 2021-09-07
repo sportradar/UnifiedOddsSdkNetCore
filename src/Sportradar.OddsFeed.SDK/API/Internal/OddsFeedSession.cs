@@ -160,13 +160,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var rawData = eventArgs.RawData as byte[] ?? eventArgs.RawData.ToArray();
             var basicMessageData = _messageDataExtractor.GetBasicMessageData(rawData);
             ExecutionLog.LogInformation($"{WriteMessageInterest()}Extracted the following data from unparsed message data: [{basicMessageData}], raising OnUnparsableMessageReceived event");
-            var dispatchmentEventArgs = new UnparsableMessageEventArgs(basicMessageData.MessageType, basicMessageData.ProducerId, basicMessageData.EventId, rawData);
+            var dispatchEventArgs = new UnparsableMessageEventArgs(basicMessageData.MessageType, basicMessageData.ProducerId, basicMessageData.EventId, rawData);
             var producerId = 0;
             if (!string.IsNullOrEmpty(basicMessageData.ProducerId))
             {
                 int.TryParse(basicMessageData.ProducerId, out producerId);
             }
-            Dispatch(OnUnparsableMessageReceived, dispatchmentEventArgs, "OnUnparsableMessageReceived", producerId);
+            Dispatch(OnUnparsableMessageReceived, dispatchEventArgs, "OnUnparsableMessageReceived", producerId);
         }
 
         /// <summary>

@@ -42,9 +42,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         // ReSharper disable StaticFieldInGenericType
         private static readonly IReadOnlyDictionary<string, SerializerWithInfo> Serializers;
 
-
-        // ReSharper restore StaticFieldInGenericType
-
         /// <summary>
         /// Initializes the <code>Serializers</code> static field
         /// </summary>

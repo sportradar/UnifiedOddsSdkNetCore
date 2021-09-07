@@ -104,10 +104,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             if (response == null)
             {
                 HandleHttpResponseMessage(null);
-                return null;
+                return new List<IReplayEvent>();
             }
 
-            var xml = new XmlDocument();
+            var xml = new XmlDocument {XmlResolver = null};
             xml.Load(response);
 
             var result = new List<IReplayEvent>();
@@ -179,19 +179,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <returns>Returns an <see cref="IReplayResponse"/></returns>
         public IReplayResponse StartReplay(int speed, int maxDelay, int? producerId, bool? rewriteTimestamps, bool? runParallel)
         {
-            //speed = CheckBoundaries(speed, 1, 1000);
-            //maxDelay = CheckBoundaries(maxDelay, 100, 1000000);
-
             var paramProducerId = string.Empty;
             if (producerId != null)
             {
                 paramProducerId = $"&product={producerId}";
             }
             var paramRewriteTimestamps = string.Empty;
-            //if (rewriteTimestamps == null)
-            //{
-            //    rewriteTimestamps = true;
-            //}
+
             if (rewriteTimestamps != null)
             {
                 paramRewriteTimestamps = $"&use_replay_timestamp={rewriteTimestamps}";
@@ -221,19 +215,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <remarks>Start replay the event from replay queue. Events are played in the order they were played in reality, e.g. if there are some events that were played simultaneously in reality, they will be played in parallel as well here on replay server. If not specified, default values speed = 10 and max_delay = 10000 are used. This means that messages will be sent 10x faster than in reality, and that if there was some delay between messages that was longer than 10 seconds it will be reduced to exactly 10 seconds/10 000 ms (this is helpful especially in pre-match odds where delay can be even a few hours or more). If player is already in play, nothing will happen</remarks>
         public IReplayResponse StartReplayScenario(int scenarioId, int speed = 10, int maxDelay = 10000, int? producerId = null, bool? rewriteTimestamps = null)
         {
-            //speed = CheckBoundaries(speed, 1, 1000);
-            //maxDelay = CheckBoundaries(maxDelay, 100, 1000000);
-
             var paramProducerId = string.Empty;
             if (producerId != null)
             {
                 paramProducerId = $"&product={producerId}";
             }
             var paramRewriteTimestamps = string.Empty;
-            //if (rewriteTimestamps == null)
-            //{
-            //    rewriteTimestamps = true;
-            //}
             if (rewriteTimestamps != null)
             {
                 paramRewriteTimestamps = $"&use_replay_timestamp={rewriteTimestamps}";
@@ -322,7 +309,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             if (response == null)
             {
                 HandleHttpResponseMessage(null);
-                return null;
+                return new List<IReplayScenario>();
             }
 
             var xml = new XmlDocument();
