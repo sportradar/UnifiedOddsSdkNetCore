@@ -4186,6 +4186,11 @@
             Indicates if user can still change anything
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerManager._adjustAfterAge">
+            <summary>
+            Gets the indication whether the after age should be adjusted before executing recovery request
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerManager.#ctor(Sportradar.OddsFeed.SDK.API.IProducersProvider,Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ProducerManager"/> class

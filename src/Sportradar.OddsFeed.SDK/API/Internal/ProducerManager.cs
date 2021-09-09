@@ -41,6 +41,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private bool _locked;
 
         /// <summary>
+        /// Gets the indication whether the after age should be adjusted before executing recovery request
+        /// </summary>
+        private bool _adjustAfterAge;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ProducerManager"/> class
         /// </summary>
         /// <param name="producersProvider">The producers provider.</param>
@@ -64,6 +69,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
 
             _locked = false;
+            _adjustAfterAge = config.AdjustAfterAge;
         }
 
         /// <summary>
@@ -164,11 +170,25 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var p = (Producer) Get(id);
             if (timestamp > DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time in the future");
+                if (_adjustAfterAge)
+                {
+                    timestamp = DateTime.Now;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time in the future");
+                }
             }
             if (timestamp < DateTime.Now.Subtract(p.MaxAfterAge()))
             {
-                throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time to far in the past. Timestamp must be greater then {DateTime.Now.Subtract(p.MaxAfterAge())}");
+                if (_adjustAfterAge)
+                {
+                    timestamp = DateTime.Now.Subtract(p.MaxAfterAge());
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time to far in the past. Timestamp must be greater then {DateTime.Now.Subtract(p.MaxAfterAge())}");
+                }
             }
             p.SetLastTimestampBeforeDisconnect(timestamp);
         }
@@ -206,7 +226,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             foreach (var producer in _producers)
             {
-                if (producer.LastTimestampBeforeDisconnect != DateTime.MinValue && producer.LastTimestampBeforeDisconnect < DateTime.Now.Subtract(producer.MaxAfterAge()))
+                if (!_adjustAfterAge && producer.LastTimestampBeforeDisconnect != DateTime.MinValue && producer.LastTimestampBeforeDisconnect < DateTime.Now.Subtract(producer.MaxAfterAge()))
                 {
                     var err = $"Recovery timestamp for producer {producer} is too far in the past. TimeStamp={producer.LastTimestampBeforeDisconnect}";
                     throw new InvalidOperationException(err);

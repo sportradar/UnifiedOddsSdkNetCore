@@ -188,7 +188,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     if (TimeProviderAccessor.Current.Now > after + _producer.MaxAfterAge())
                     {
-                        if (!_adjustedAfterAge)
+                        if (_adjustedAfterAge)
                         {
                             ExecutionLog.LogInformation($"{_producer.Name}: After time {after} is adjusted.");
                             after = TimeProviderAccessor.Current.Now - _producer.MaxAfterAge() + TimeSpan.FromMinutes(1);
