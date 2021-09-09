@@ -16,24 +16,20 @@ namespace Sportradar.OddsFeed.SDK.API.Test
     [TestClass]
     public class RecoveryOperationTests
     {
-        private static FakeTimeProvider _timeProvider;
+        private FakeTimeProvider _timeProvider;
 
-        private static readonly Producer LiveProducer = new Producer(1, "LO", "Live Odds", "https://api.betradar.com/v1/liveodds/", true, 20, 1800, "live", 600);
-        private static readonly Producer PremiumCricketProducer = new Producer(5, "PremiumCricket", "Premium Cricket", "https://api.betradar.com/v1/premium_cricket/", true, 20, 1800, "prematch|live", 4320);
+        private readonly Producer _liveProducer = new Producer(1, "LO", "Live Odds", "https://api.betradar.com/v1/liveodds/", true, 20, 1800, "live", 600);
+        private readonly Producer _premiumCricketProducer = new Producer(5, "PremiumCricket", "Premium Cricket", "https://api.betradar.com/v1/premium_cricket/", true, 20, 1800, "prematch|live", 4320);
 
         private Mock<IRecoveryRequestIssuer> _recoveryRequestIssuerMock;
-
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _timeProvider = new FakeTimeProvider();
-            TimeProviderAccessor.SetTimeProvider(_timeProvider);
-        }
-
+        
         [TestInitialize]
         public void Setup()
         {
+            _timeProvider = new FakeTimeProvider();
+            TimeProviderAccessor.SetTimeProvider(_timeProvider);
             _timeProvider.Now = DateTime.Now;
+
             _recoveryRequestIssuerMock = new Mock<IRecoveryRequestIssuer>();
             _recoveryRequestIssuerMock.SetupSequence(arg => arg.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), It.IsAny<int>()))
                 .ReturnsAsync(1)
@@ -56,10 +52,10 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void starting_already_running_operation_throws()
+        public void StartingAlreadyRunningOperationThrows()
         {
-            LiveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            _liveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             var result = operation.Start();
             Assert.IsTrue(result);
 
@@ -72,11 +68,11 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
         [TestMethod]
         [ExpectedException(typeof(RecoveryInitiationException))]
-        public void starting_recovery_with_after_to_far_in_past_throws()
+        public void StartingRecoveryWithAfterToFarInPastThrows()
         {
-            var producer = LiveProducer;
+            var producer = _liveProducer;
             producer.SetLastTimestampBeforeDisconnect(_timeProvider.Now - (producer.MaxAfterAge() + TimeSpan.FromSeconds(30)));
-            var operation = new RecoveryOperation(producer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, true);
+            var operation = new RecoveryOperation(producer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             try
             {
                 operation.Start();
@@ -91,11 +87,11 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void starting_recovery_with_after_to_far_in_past_dont_throw()
+        public void StartingRecoveryWithAfterToFarInPastDoNotThrow()
         {
-            var producer = LiveProducer;
+            var producer = _liveProducer;
             producer.SetLastTimestampBeforeDisconnect(_timeProvider.Now - (producer.MaxAfterAge() + TimeSpan.FromSeconds(30)));
-            var operation = new RecoveryOperation(producer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(producer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, true);
             operation.Start();
             _recoveryRequestIssuerMock.Verify(x => x.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), 0), Times.Never);
             _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), 0), Times.Once);
@@ -103,19 +99,19 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void properties_have_correct_value_after_start()
+        public void PropertiesHaveCorrectValueAfterStart()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
             Assert.IsTrue(operation.IsRunning);
-            Assert.AreEqual(operation.RequestId, 1);
-            Assert.IsTrue(operation.HasTimedOut() == false);
+            Assert.AreEqual(1, operation.RequestId);
+            Assert.IsFalse(operation.HasTimedOut());
         }
 
         [TestMethod]
-        public void time_out_cannot_be_complete_if_operation_has_not_timed_out()
+        public void TimeOutCannotBeCompleteIfOperationHasNotTimedOut()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
             var result = operation.CompleteTimedOut();
             Assert.IsTrue(operation.IsRunning);
@@ -124,51 +120,50 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void operation_times_out_after_allotted_time()
+        public void OperationTimesOutAfterAllottedTime()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
-            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime * 60 - 1);
-            Assert.IsFalse(operation.HasTimedOut());
+            _timeProvider.AddSeconds(_liveProducer.MaxRecoveryTime - 1);
+            Assert.IsFalse(operation.HasTimedOut(), $"TimeProvider={_timeProvider.Now}, StartTime={operation.LastStartTime}, MaxRecoveryTime={_liveProducer.MaxAfterAge().TotalSeconds}s");
             _timeProvider.AddSeconds(2);
             Assert.IsTrue(operation.HasTimedOut());
         }
 
         [TestMethod]
-        public void values_after_time_out_are_correct()
+        public void ValuesAfterTimeOutAreCorrect()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
             var startTime = _timeProvider.Now;
-            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime * 60 + 1);
+            _timeProvider.AddSeconds(_liveProducer.MaxRecoveryTime + 1);
             Assert.IsTrue(operation.HasTimedOut());
             var result = operation.CompleteTimedOut();
             Assert.IsNotNull(result);
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.RequestId, 1);
-            Assert.AreEqual(result.InterruptedAt, null);
-            Assert.AreEqual(result.StartTime, startTime);
+            Assert.AreEqual(1, result.RequestId);
+            Assert.IsNull(result.InterruptedAt);
+            Assert.AreEqual(startTime, result.StartTime);
             Assert.IsTrue(result.TimedOut);
             Assert.IsFalse(operation.IsRunning);
             Assert.IsNull(operation.RequestId);
         }
 
         [TestMethod]
-        public void values_after_completion_are_correct()
+        public void ValuesAfterCompletionAreCorrect()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
             var startTime = _timeProvider.Now;
             _timeProvider.AddSeconds(60);
 
-            RecoveryResult result;
-            var completed = operation.TryComplete(MessageInterest.AllMessages, out result);
+            var completed = operation.TryComplete(MessageInterest.AllMessages, out var result);
             Assert.IsTrue(completed);
             Assert.IsNotNull(result);
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.RequestId, 1);
-            Assert.AreEqual(result.StartTime, startTime);
+            Assert.AreEqual(1, result.RequestId);
+            Assert.AreEqual(startTime, result.StartTime);
             Assert.IsNull(result.InterruptedAt);
             Assert.IsFalse(result.TimedOut);
 
@@ -177,18 +172,18 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void setting_interrupt_on_not_running_instance_throws()
+        public void SettingInterruptOnNotRunningInstanceThrows()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Interrupt(_timeProvider.Now);
             Assert.IsFalse(operation.IsRunning);
             Assert.IsNull(operation.InterruptionTime);
         }
 
         [TestMethod]
-        public void first_interrupt_time_is_recorded()
+        public void FirstInterruptTimeIsRecorded()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
 
             _timeProvider.AddSeconds(60);
@@ -199,16 +194,15 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             _timeProvider.AddSeconds(60);
             operation.Interrupt(_timeProvider.Now);
 
-            RecoveryResult result;
-            operation.TryComplete(MessageInterest.AllMessages, out result);
+            operation.TryComplete(MessageInterest.AllMessages, out var result);
             Assert.IsNotNull(result);
             Assert.AreEqual(result.InterruptedAt, interruptTime);
         }
 
         [TestMethod]
-        public void resetting_not_running_operation_does_nothing()
+        public void ResettingNotRunningOperationDoesNothing()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Reset();
 
             Assert.IsFalse(operation.IsRunning);
@@ -217,10 +211,10 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void operation_can_be_started_after_reset()
+        public void OperationCanBeStartedAfterReset()
         {
-            LiveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            _liveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             Assert.IsTrue(operation.Start());
             _recoveryRequestIssuerMock.Verify(x => x.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), It.IsAny<int>()), Times.Once);
             Assert.IsTrue(operation.IsRunning);
@@ -231,53 +225,49 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void works_correct_with_only_one_session()
+        public void WorksCorrectWithOnlyOneSession()
         {
-            RecoveryResult result;
-            RecoveryOperation operation;
-
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.AllMessages, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.AllMessages, out _));
 
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
+            operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.PrematchMessagesOnly }, 0, false);
+            operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.PrematchMessagesOnly }, 0, false);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out _));
 
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.VirtualSportMessages }, 0, false);
+            operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.VirtualSportMessages }, 0, false);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.VirtualSportMessages, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.VirtualSportMessages, out _));
 
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.HighPriorityMessages }, 0, false);
+            operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.HighPriorityMessages }, 0, false);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.HighPriorityMessages, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.HighPriorityMessages, out _));
 
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LowPriorityMessages }, 0, false);
+            operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LowPriorityMessages }, 0, false);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LowPriorityMessages, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LowPriorityMessages, out _));
 
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
+            operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.AllMessages }, 0, false);
             operation.Start();
-            Assert.IsFalse(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
-            Assert.IsFalse(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out result));
-            Assert.IsFalse(operation.TryComplete(MessageInterest.VirtualSportMessages, out result));
-            Assert.IsFalse(operation.TryComplete(MessageInterest.HighPriorityMessages, out result));
-            Assert.IsFalse(operation.TryComplete(MessageInterest.LowPriorityMessages, out result));
-            Assert.IsTrue(operation.TryComplete(MessageInterest.AllMessages, out result));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out _));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.VirtualSportMessages, out _));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.HighPriorityMessages, out _));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.LowPriorityMessages, out _));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.AllMessages, out _));
         }
 
         [TestMethod]
-        public void works_ok_with_hi_and_low_interests()
+        public void WorksCorrectWithHiAndLowSession()
         {
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.HighPriorityMessages, MessageInterest.LowPriorityMessages }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.HighPriorityMessages, MessageInterest.LowPriorityMessages }, 0, false);
             operation.Start();
 
-            RecoveryResult result;
-            Assert.IsFalse(operation.TryComplete(MessageInterest.LowPriorityMessages, out result));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.LowPriorityMessages, out var result));
             Assert.IsNull(result);
 
             Assert.IsTrue(operation.TryComplete(MessageInterest.HighPriorityMessages, out result));
@@ -285,112 +275,106 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void works_correct_when_using_scopes()
+        public void WorksCorrectWhenUsingScopes()
         {
-            RecoveryResult result;
-            RecoveryOperation operation;
-
-            operation = new RecoveryOperation(PremiumCricketProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.PrematchMessagesOnly, MessageInterest.LiveMessagesOnly }, 0, false);
+            var operation = new RecoveryOperation(_premiumCricketProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.PrematchMessagesOnly, MessageInterest.LiveMessagesOnly }, 0, false);
             operation.Start();
-            Assert.IsFalse(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
-            Assert.IsTrue(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out result));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out _));
 
-            operation = new RecoveryOperation(PremiumCricketProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.PrematchMessagesOnly, MessageInterest.LiveMessagesOnly, MessageInterest.VirtualSportMessages }, 0, false);
+            operation = new RecoveryOperation(_premiumCricketProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.PrematchMessagesOnly, MessageInterest.LiveMessagesOnly, MessageInterest.VirtualSportMessages }, 0, false);
             operation.Start();
-            Assert.IsFalse(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out result));
-            Assert.IsFalse(operation.TryComplete(MessageInterest.VirtualSportMessages, out result));
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.PrematchMessagesOnly, out _));
+            Assert.IsFalse(operation.TryComplete(MessageInterest.VirtualSportMessages, out _));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
         }
 
         [TestMethod]
-        public void operation_can_be_reused()
+        public void OperationCanBeReused()
         {
-            RecoveryResult result;
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
             operation.Start();
             _timeProvider.AddSeconds(60);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
             _timeProvider.AddSeconds(1800);
             operation.Start();
             _timeProvider.AddSeconds(120);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
             operation.Start();
-            _timeProvider.AddSeconds(LiveProducer.MaxRecoveryTime * 60 + 1);
+            _timeProvider.AddSeconds(_liveProducer.MaxRecoveryTime + 1);
             Assert.IsTrue(operation.HasTimedOut());
             Assert.IsNotNull(operation.CompleteTimedOut());
 
             _timeProvider.AddSeconds(10);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
         }
 
         [TestMethod]
-        public void correct_recovery_operation_is_invoked()
+        public void CorrectRecoveryOperationIsInvoked()
         {
-            RecoveryResult result;
-            LiveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
+            _liveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
             operation.Start();
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
-            LiveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(10));
+            _liveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(10));
 
             operation.Start();
             _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), 0), Times.Once);
             _recoveryRequestIssuerMock.Verify(x => x.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), 0), Times.Once);
 
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
         }
 
         [TestMethod]
-        public void recovery_is_called_with_correct_after()
+        public void RecoveryIsCalledWithCorrectAdjustedAfter()
         {
-            RecoveryResult result;
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, true);
 
-            LiveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(10));
+            _liveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(321));
             operation.Start();
-            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), LiveProducer.LastTimestampBeforeDisconnect, 0), Times.Once);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), _liveProducer.LastTimestampBeforeDisconnect, 0), Times.Once);
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
-            LiveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(90));
+            _liveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(90));
             operation.Start();
-            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), LiveProducer.LastTimestampBeforeDisconnect, 0), Times.Once);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), _liveProducer.LastTimestampBeforeDisconnect, 0), Times.Once);
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
-            LiveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(321));
+            _liveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(10));
             operation.Start();
-            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), LiveProducer.LastTimestampBeforeDisconnect, 0), Times.Once);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), _liveProducer.LastTimestampBeforeDisconnect, 0), Times.Once);
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
         }
 
         [TestMethod]
-        public void recovery_is_called_with_correct_node_id()
+        public void RecoveryIsCalledWithCorrectNodeId()
         {
-            RecoveryResult result;
-            LiveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
-            var operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, false);
+            _liveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
+            var operation = new RecoveryOperation(_liveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 0, true);
             operation.Start();
             _recoveryRequestIssuerMock.Verify(x => x.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), 0), Times.Once);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
-            LiveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromHours(1));
+            _liveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromHours(1));
             operation.Start();
             _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), 0), Times.Once);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
-            LiveProducer.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
-            operation = new RecoveryOperation(LiveProducer, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 7, false);
+            // resetting timestamp
+            var liveProducer2 = new Producer(1, "LO", "Live Odds", "https://api.betradar.com/v1/liveodds/", true, 20, 1800, "live", 600);
+            operation = new RecoveryOperation(liveProducer2, _recoveryRequestIssuerMock.Object, new[] { MessageInterest.LiveMessagesOnly }, 7, false);
             operation.Start();
             _recoveryRequestIssuerMock.Verify(x => x.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), 7), Times.Once);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
 
-            LiveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromHours(1));
+            liveProducer2.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromHours(1));
             operation.Start();
             _recoveryRequestIssuerMock.Verify(x => x.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), 7), Times.Once);
-            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out result));
+            Assert.IsTrue(operation.TryComplete(MessageInterest.LiveMessagesOnly, out _));
         }
     }
 }

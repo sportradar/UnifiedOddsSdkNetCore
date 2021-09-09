@@ -5,8 +5,8 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyVersion>1.18.1.0</AssemblyVersion>
-    <FileVersion>1.18.1.0</FileVersion>
+    <AssemblyVersion>1.19.1.0</AssemblyVersion>
+    <FileVersion>1.19.1.0</FileVersion>
 
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
