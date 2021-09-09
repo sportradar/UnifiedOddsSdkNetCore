@@ -11251,7 +11251,7 @@
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISport"/> representing the sport specified by its id
             </summary>
-            <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> identifying the sport which will be represented by the constructed instance</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> identifying the sport which will be represented by the constructed instance</param>
             <param name="cultures">A list of all supported languages</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
@@ -11260,7 +11260,7 @@
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer"/> representing the player or competitor profile specified by its id
             </summary>
-            <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the player or competitor which will be represented by the constructed instance</param>
+            <param name="playerId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the player or competitor which will be represented by the constructed instance</param>
             <param name="cultures">A list of all supported languages</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>        /// <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
         </member>
@@ -11268,7 +11268,7 @@
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer"/> representing the player and/or competitor profiles specified by ids
             </summary>
-            <param name="ids">A list of <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the ids of the players or competitors which will be represented by the constructed instances</param>
+            <param name="playersIds">A list of <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the ids of the players or competitors which will be represented by the constructed instances</param>
             <param name="cultures">A list of all supported languages</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
@@ -11278,7 +11278,7 @@
             Builds the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent" /> derived class based on specified id
             </summary>
             <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent" /> derived type</typeparam>
-            <param name="id">The identifier</param>
+            <param name="eventId">The identifier</param>
             <param name="sportId">The sport identifier</param>
             <param name="cultures">The cultures used for returned instance</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
@@ -11329,7 +11329,7 @@
             Builds the instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/> class
             </summary>
             <param name="categoryId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/> used to create new instance</param>
-            <param name="culture">A culture of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/></param>
+            <param name="cultures">A culture of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/></param>
             <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ITeamCompetitor"/> instance</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.SportEventStatusMapper">
@@ -18084,7 +18084,7 @@
             <summary>
             Merges the specified fixture
             </summary>
-            <param name="fixture">The fixture</param>
+            <param name="fixtureDTO">The fixture</param>
             <param name="culture">The culture</param>
             <param name="useLock">Should the lock mechanism be used during merge</param>
         </member>
@@ -19149,7 +19149,7 @@
             <summary>
             Builds a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI"/> instance from the provided sport event id
             </summary>
-            <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the id of the sport event</param>
+            <param name="eventId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the id of the sport event</param>
             <returns>a new instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI"/> instance</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISportEventCacheItemFactory.Build(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO,System.Globalization.CultureInfo)">
@@ -20185,7 +20185,7 @@
             <summary>
             Builds a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI" /> instance from the provided sport event id
             </summary>
-            <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> identifying the sport event</param>
+            <param name="eventId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> identifying the sport event</param>
             <returns>A new instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.SportEventCI" /> instance</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCacheItemFactory.Build(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO,System.Globalization.CultureInfo)">
@@ -24492,6 +24492,11 @@
             <param name="formatProvider">A format provider used to format the output string</param>
             <returns>A string that represents the current object.</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EntityPrinter.ToString(System.String)">
+            <summary>Formats the value of the current instance using the specified format.</summary>
+            <returns>The value of the current instance in the specified format.</returns>
+            <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation. </param>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.EntityPrinter.ToString(System.String,System.IFormatProvider)">
             <summary>Formats the value of the current instance using the specified format.</summary>
             <returns>The value of the current instance in the specified format.</returns>
@@ -27832,7 +27837,7 @@
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISport"/> representing the sport specified by its id
             </summary>
-            <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the sport which will be represented by the constructed instance</param>
+            <param name="sportId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the sport which will be represented by the constructed instance</param>
             <param name="cultures">A list of all supported languages</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
@@ -27841,7 +27846,7 @@
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer"/> representing the player or competitor profile specified by its id
             </summary>
-            <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the player or competitor which will be represented by the constructed instance</param>
+            <param name="playerId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the player or competitor which will be represented by the constructed instance</param>
             <param name="cultures">A list of all supported languages</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>        /// <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
         </member>
@@ -27849,7 +27854,7 @@
             <summary>
             Builds and returns a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IPlayer"/> representing the player and/or competitor profiles specified by ids
             </summary>
-            <param name="ids">A list of <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the ids of the players or competitors which will be represented by the constructed instances</param>
+            <param name="playersIds">A list of <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the ids of the players or competitors which will be represented by the constructed instances</param>
             <param name="cultures">A list of all supported languages</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
             /// <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
@@ -27859,7 +27864,7 @@
             Builds the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> derived class based on specified id
             </summary>
             <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/></typeparam>
-            <param name="id">The identifier</param>
+            <param name="eventId">The identifier</param>
             <param name="sportId">The sport identifier</param>
             <param name="cultures">The cultures used for returned instance</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
@@ -27869,7 +27874,7 @@
             <summary>
             Builds the instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor"/> class
             </summary>
-            <param name="ci">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/> used to create new instance</param>
+            <param name="competitorCI">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/> used to create new instance</param>
             <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/></param>
             <param name="rootCompetitionCI">A root <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.CompetitionCI"/> to which this competitor belongs to</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
@@ -27889,7 +27894,7 @@
             <summary>
             Builds the instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor"/> class
             </summary>
-            <param name="ci">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/> used to create new instance</param>
+            <param name="competitorCI">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/> used to create new instance</param>
             <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI"/></param>
             <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
@@ -27899,7 +27904,7 @@
             <summary>
             Builds the instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ITeamCompetitor"/> class
             </summary>
-            <param name="ci">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.TeamCompetitorCI"/> used to create new instance</param>
+            <param name="teamCompetitorCI">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.TeamCompetitorCI"/> used to create new instance</param>
             <param name="cultures">A culture of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.TeamCompetitorCI"/></param>
             <param name="rootCompetitionCI">A root <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.CompetitionCI"/> to which this competitor belongs to</param>
             <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
@@ -27940,7 +27945,7 @@
             Builds the instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/> class
             </summary>
             <param name="categoryId">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/> used to create new instance</param>
-            <param name="culture">A culture of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/></param>
+            <param name="cultures">A culture of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICategorySummary"/></param>
             <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ITeamCompetitor"/> instance</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.LanguageHelper.GetMissingCultures(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">

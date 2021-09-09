@@ -130,8 +130,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(interest, nameof(interest)).NotNull();
             Guard.Argument(message, nameof(message)).NotNull();
 
-            MessageTimingInfo timingInfo;
-            if (dictionary.TryGetValue(interest, out timingInfo))
+            if (dictionary.TryGetValue(interest, out var timingInfo))
             {
                 timingInfo.Update(message.GeneratedAt);
             }
@@ -141,10 +140,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     ExecutionLog.LogError($"Message timing info for message type:{message.GetType().Name} and interest:{interest.Name} does not exist in this scope:{string.Join(",", dictionary.Keys)}.");
                 }
-                //else
-                //{
-                //    ExecutionLog.LogDebug($"Message timing info for message type:{message.GetType().Name} and interest:{interest.Name} does not exist in this scope:{string.Join(",", dictionary.Keys)}.");
-                //}
             }
         }
 

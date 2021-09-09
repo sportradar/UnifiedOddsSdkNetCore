@@ -848,7 +848,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                        new ContainerControlledLifetimeManager());
 
             container.RegisterType<ISportEventStatusCache, SportEventStatusCache>(
-                new HierarchicalLifetimeManager(),
+                new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     new ResolvedParameter<MemoryCache>("EventStatusCache_Cache"),
                     new ResolvedParameter<ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO>>(),
