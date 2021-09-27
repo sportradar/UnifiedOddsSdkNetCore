@@ -207,7 +207,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 ApiHost = apiHost;
                 UseApiSsl = true;
             }
-            Port = useSsl ? SdkInfo.DefaultHostPort : 5672;
+            Port = useSsl ? EnvironmentManager.DefaultMqHostPort : 5672;
             Username = accessToken;
             Password = null;
             AdjustAfterAge = adjustAfterAge;

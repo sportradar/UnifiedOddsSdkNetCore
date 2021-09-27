@@ -156,7 +156,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             5671,
             "myTokenAkaUsername",
             string.Empty,
-            "stgapi.localhost.com",
+            EnvironmentManager.GetApiHost(SdkEnvironment.Integration),
             true,
             true,
             "en,de,hu",
@@ -210,7 +210,10 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// </summary>
         public int RecoveryHttpClientTimeout { get; set; }
 
-        public TestSection(string accessToken, int inactivitySeconds, string host, string virtualHost, int port, string username, string password, string apiHost, bool useSSL, bool useApiSSL, string supportedLanguages, string defaultLanguage, bool statisticsEnabled, int statisticsTimeout, int statisticsRecordLimit, string sdkLogConfigPath, bool useIntegrationEnvironment, ExceptionHandlingStrategy exceptionHandlingStrategy, string disabledProducers, int maxRecoveryTime, int minIntervalBetweenRecoveryRequests, int nodeId, bool adjustAfterAge, int httpClientTimeout, int recoveryHttpClientTimeout)
+        /// <inheritdoc />
+        public SdkEnvironment? UfEnvironment { get; }
+
+        public TestSection(string accessToken, int inactivitySeconds, string host, string virtualHost, int port, string username, string password, string apiHost, bool useSSL, bool useApiSSL, string supportedLanguages, string defaultLanguage, bool statisticsEnabled, int statisticsTimeout, int statisticsRecordLimit, string sdkLogConfigPath, bool useIntegrationEnvironment, ExceptionHandlingStrategy exceptionHandlingStrategy, string disabledProducers, int maxRecoveryTime, int minIntervalBetweenRecoveryRequests, int nodeId, bool adjustAfterAge, int httpClientTimeout, int recoveryHttpClientTimeout, SdkEnvironment? ufEnvironment = null)
         {
             AccessToken = accessToken;
             InactivitySeconds = inactivitySeconds;
@@ -237,6 +240,14 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             AdjustAfterAge = adjustAfterAge;
             HttpClientTimeout = httpClientTimeout;
             RecoveryHttpClientTimeout = recoveryHttpClientTimeout;
+            if (ufEnvironment != null)
+            {
+                UfEnvironment = ufEnvironment;
+            }
+            else
+            {
+                UfEnvironment = useIntegrationEnvironment ? SdkEnvironment.Integration : SdkEnvironment.Production;
+            }
         }
     }
 

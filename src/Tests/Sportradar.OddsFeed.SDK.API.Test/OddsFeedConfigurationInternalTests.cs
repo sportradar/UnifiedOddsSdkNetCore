@@ -167,7 +167,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.AreEqual(publicConfig.Host, internalConfig.Host);
             internalConfig.EnableReplayServer();
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.ReplayHost, internalConfig.Host);
+            Assert.AreEqual(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), internalConfig.Host);
 
             publicConfig = builder.SelectProduction().SetDefaultLanguage(TestData.Culture).Build();
             internalConfig = new OddsFeedConfigurationInternal(publicConfig, _defaultBookmakerDetailsProvider);
@@ -177,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             publicConfig = builder.SelectReplay().SetDefaultLanguage(TestData.Culture).Build();
             internalConfig = new OddsFeedConfigurationInternal(publicConfig, _defaultBookmakerDetailsProvider);
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.ReplayHost, internalConfig.Host);
+            Assert.AreEqual(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), internalConfig.Host);
 
             publicConfig = builder.SelectIntegration().SetDefaultLanguage(TestData.Culture).Build();
             internalConfig = new OddsFeedConfigurationInternal(publicConfig, _defaultBookmakerDetailsProvider);
@@ -222,7 +222,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             var internalConfig = new OddsFeedConfigurationInternal(publicConfig, _defaultBookmakerDetailsProvider);
             internalConfig.EnableReplayServer();
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, internalConfig.ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), internalConfig.ApiHost);
 
             publicConfig = new TokenSetter(new TestSectionProvider(null))
                           .SetAccessToken(TestData.AccessToken)
@@ -232,7 +232,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             internalConfig = new OddsFeedConfigurationInternal(publicConfig, _defaultBookmakerDetailsProvider);
             internalConfig.EnableReplayServer();
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, internalConfig.ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), internalConfig.ApiHost);
 
             publicConfig = new TokenSetter(new TestSectionProvider(null))
                           .SetAccessToken(TestData.AccessToken)
@@ -244,7 +244,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             internalConfig = new OddsFeedConfigurationInternal(publicConfig, _defaultBookmakerDetailsProvider);
             internalConfig.EnableReplayServer();
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, internalConfig.ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), internalConfig.ApiHost);
 
             publicConfig = new TokenSetter(new TestSectionProvider(null))
                           .SetAccessToken(TestData.AccessToken)
@@ -254,7 +254,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             internalConfig = new OddsFeedConfigurationInternal(publicConfig, _defaultBookmakerDetailsProvider);
             internalConfig.EnableReplayServer();
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, internalConfig.ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), internalConfig.ApiHost);
 
         }
 
@@ -272,18 +272,18 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                                                                             new Deserializer<bookmaker_details>(),
                                                                             new BookmakerDetailsMapperFactory());
             var integrationUrl = publicConfig.UseApiSsl
-                ? "https://" + SdkInfo.IntegrationApiHost
-                : "http://" + SdkInfo.IntegrationApiHost;
+                ? "https://" + EnvironmentManager.GetApiHost(SdkEnvironment.Integration)
+                : "http://" + EnvironmentManager.GetApiHost(SdkEnvironment.Integration);
             bookmakerProviderMock.Setup(x => x.GetData(integrationUrl)).Throws(new CommunicationException("Exception message", integrationUrl, null));
 
             var prodUrl = publicConfig.UseApiSsl
-                ? "https://" + SdkInfo.ProductionApiHost
-                : "http://" + SdkInfo.ProductionApiHost;
+                ? "https://" + EnvironmentManager.GetApiHost(SdkEnvironment.Production)
+                : "http://" + EnvironmentManager.GetApiHost(SdkEnvironment.Production);
             bookmakerProviderMock.Setup(x => x.GetData(prodUrl)).Returns(TestConfigurationInternal.GetBookmakerDetails());
 
             var internalConfig = new OddsFeedConfigurationInternal(publicConfig, bookmakerProviderMock.Object);
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.ProductionApiHost, internalConfig.ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Production), internalConfig.ApiHost);
         }
 
         [TestMethod]
@@ -300,19 +300,19 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                                                                             new Deserializer<bookmaker_details>(),
                                                                             new BookmakerDetailsMapperFactory());
             var integrationUrl = publicConfig.UseApiSsl
-                ? "https://" + SdkInfo.IntegrationApiHost
-                : "http://" + SdkInfo.IntegrationApiHost;
+                ? "https://" + EnvironmentManager.GetApiHost(SdkEnvironment.Integration)
+                : "http://" + EnvironmentManager.GetApiHost(SdkEnvironment.Integration);
             bookmakerProviderMock.Setup(x => x.GetData(integrationUrl)).Throws(new CommunicationException("Exception message", integrationUrl, null));
 
             var prodUrl = publicConfig.UseApiSsl
-                ? "https://" + SdkInfo.ProductionApiHost
-                : "http://" + SdkInfo.ProductionApiHost;
+                ? "https://" + EnvironmentManager.GetApiHost(SdkEnvironment.Production)
+                : "http://" + EnvironmentManager.GetApiHost(SdkEnvironment.Production);
             bookmakerProviderMock.Setup(x => x.GetData(prodUrl)).Returns(TestConfigurationInternal.GetBookmakerDetails());
 
             var internalConfig = new OddsFeedConfigurationInternal(publicConfig, bookmakerProviderMock.Object);
             internalConfig.EnableReplayServer();
             internalConfig.Load();
-            Assert.AreEqual(SdkInfo.ProductionApiHost, internalConfig.ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Production), internalConfig.ApiHost);
         }
     }
 }

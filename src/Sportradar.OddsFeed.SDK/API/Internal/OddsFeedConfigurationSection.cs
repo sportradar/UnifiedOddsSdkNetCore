@@ -82,18 +82,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public bool UseApiSSL => (bool) base["useApiSSL"];
 
         /// <summary>
-        /// Gets the comma delimited string of all wanted languages
-        /// </summary>
-        /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
-        [ConfigurationProperty("supportedLanguages", IsRequired = false, DefaultValue = null)]
-        public string SupportedLanguages => (string) base["supportedLanguages"];
-
-        /// <summary>
         /// Gets the 2-letter ISO string of default language
         /// </summary>
         /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
         [ConfigurationProperty("defaultLanguage", IsRequired = false, DefaultValue = null)]
         public string DefaultLanguage => (string) base["defaultLanguage"];
+
+        /// <summary>
+        /// Gets the comma delimited string of all wanted languages
+        /// </summary>
+        /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
+        [ConfigurationProperty("supportedLanguages", IsRequired = false, DefaultValue = null)]
+        public string SupportedLanguages => (string) base["supportedLanguages"];
 
         /// <summary>
         /// Is statistics collecting enabled
@@ -122,6 +122,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets a value indicating whether the unified feed integration environment should be used
         /// </summary>
+        /// <!-- September 2021 -->
+        [Obsolete("Deprecated in favor of ufEnvironment attribute - it provides more options then just Integration or Production")]
         [ConfigurationProperty("useIntegrationEnvironment", IsRequired = false, DefaultValue = false)]
         public bool UseIntegrationEnvironment => (bool) base["useIntegrationEnvironment"];
 
@@ -176,6 +178,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         [ConfigurationProperty("recoveryHttpClientTimeout", IsRequired = false, DefaultValue = SdkInfo.DefaultHttpClientTimeout)]
         [IntegerValidator(MinValue = SdkInfo.MinHttpClientTimeout, MaxValue = SdkInfo.MaxHttpClientTimeout, ExcludeRange = false)]
         public int RecoveryHttpClientTimeout => (int)base["recoveryHttpClientTimeout"];
+
+        /// <summary>
+        /// Gets a value indicating to which unified feed environment sdk should connect
+        /// </summary>
+        /// <remarks>Dependent on the other configuration, it may set MQ and API host address and port</remarks>
+        [ConfigurationProperty("ufEnvironment", IsRequired = false, DefaultValue = null)]
+        public SdkEnvironment? UfEnvironment => (SdkEnvironment?) base["ufEnvironment"];
 
         /// <summary>
         /// Retrieves the <see cref="OddsFeedConfigurationSection"/> from the app.config file

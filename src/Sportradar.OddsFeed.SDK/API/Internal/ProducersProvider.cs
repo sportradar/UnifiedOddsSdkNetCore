@@ -80,11 +80,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         private string ReplaceProducerApiUrl(string url)
         {
-            if (url.Contains(SdkInfo.IntegrationApiHost))
+            if (url.Contains(EnvironmentManager.GetApiHost(SdkEnvironment.Integration)))
             {
-                return url.Replace(SdkInfo.IntegrationApiHost, _config.ApiHost);
+                return url.Replace(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), _config.ApiHost);
             }
-            return url.Replace(SdkInfo.ProductionApiHost, _config.ApiHost);
+            return url.Replace(EnvironmentManager.GetApiHost(SdkEnvironment.Production), _config.ApiHost);
         }
     }
 }

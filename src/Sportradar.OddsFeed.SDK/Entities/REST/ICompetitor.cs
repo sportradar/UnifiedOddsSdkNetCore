@@ -26,8 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         IReadOnlyDictionary<CultureInfo, string> Abbreviations { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the current <see cref="ICompetitor"/> is virtual - i.e.
-        /// competes in a virtual sport
+        /// Gets a value indicating whether the current instance represents a placeholder team
         /// </summary>
         [DataMember]
         bool IsVirtual { get; }

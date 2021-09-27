@@ -22,16 +22,23 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         {
             PreBuildCheck();
 
+            var mqHost = string.IsNullOrEmpty(Section?.Host)
+                             ? EnvironmentManager.GetMqHost(SdkEnvironment.Replay)
+                             : Section.Host;
+            var apiHost = string.IsNullOrEmpty(Section?.ApiHost)
+                              ? EnvironmentManager.GetApiHost(SdkEnvironment.Replay)
+                              : Section.ApiHost;
+
             var config = new OddsFeedConfiguration(AccessToken,
                                                    SdkEnvironment.Replay,
                                                    DefaultLocale,
                                                    SupportedLocales,
-                                                   SdkInfo.ReplayHost,
+                                                   mqHost,
                                                    null,
-                                                   SdkInfo.DefaultHostPort,
+                                                   EnvironmentManager.DefaultMqHostPort,
                                                    null,
                                                    null,
-                                                   null,
+                                                   apiHost,
                                                    true,
                                                    true,
                                                    SdkInfo.MaxInactivitySeconds,

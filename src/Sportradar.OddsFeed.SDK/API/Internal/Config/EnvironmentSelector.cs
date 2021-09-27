@@ -71,5 +71,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         {
             return new CustomConfigurationBuilder(_accessToken, _sectionProvider);
         }
+
+        /// <inheritdoc />
+        public IConfigurationBuilder SelectEnvironment(SdkEnvironment ufEnvironment)
+        {
+            return new ConfigurationBuilder(_accessToken, _sectionProvider, ufEnvironment);
+        }
     }
 }

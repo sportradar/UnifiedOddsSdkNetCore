@@ -12,17 +12,35 @@ namespace Sportradar.OddsFeed.SDK.Common
         /// The production
         /// </summary>
         Production,
+
         /// <summary>
         /// The custom
         /// </summary>
         Custom,
+
         /// <summary>
         /// The replay
         /// </summary>
         Replay,
+
         /// <summary>
         /// The integration
         /// </summary>
-        Integration
+        Integration,
+
+        /// <summary>
+        /// The global production
+        /// </summary>
+        GlobalProduction,
+
+        /// <summary>
+        /// The Singapore proxy
+        /// </summary>
+        ProxySingapore,
+
+        /// <summary>
+        /// The Tokyo proxy
+        /// </summary>
+        ProxyTokyo
     }
 }

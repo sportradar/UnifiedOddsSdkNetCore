@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using Sportradar.OddsFeed.SDK.Common;
 // ReSharper disable InconsistentNaming
 
@@ -59,16 +61,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         bool UseApiSSL { get; }
 
         /// <summary>
-        /// Gets the comma delimited string of all wanted languages
-        /// </summary>
-        /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
-        string SupportedLanguages { get; }
-
-        /// <summary>
         /// Gets the 2-letter ISO string of default language
         /// </summary>
         /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
         string DefaultLanguage { get; }
+
+        /// <summary>
+        /// Gets the comma delimited string of all wanted languages
+        /// </summary>
+        /// <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
+        string SupportedLanguages { get; }
 
         /// <summary>
         /// Is statistics collecting enabled
@@ -93,6 +95,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets a value indicating whether the unified feed integration environment should be used
         /// </summary>
+        [Obsolete("Deprecated in favor of UfEnvironment property - it provides more options then just Integration or Production")]
         bool UseIntegrationEnvironment { get; }
 
         /// <summary>
@@ -136,5 +139,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets a value specifying timeout set for recovery HTTP responses
         /// </summary>
         int RecoveryHttpClientTimeout { get; }
+
+        /// <summary>
+        /// Gets a value indicating to which unified feed environment sdk should connect
+        /// </summary>
+        /// <remarks>Dependent on the other configuration, it may set MQ and API host address and port</remarks>
+        SdkEnvironment? UfEnvironment { get; }
     }
 }

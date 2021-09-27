@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void access_token_has_correct_value()
+        public void AccessTokenHasCorrectValue()
         {
             _testSection.AccessToken = "my_token";
             Assert.AreEqual(_testSection.AccessToken, IntegrationBuilder(_testSection).Build().AccessToken);
@@ -113,7 +113,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void inactivity_seconds_has_correct_value()
+        public void InactivitySecondsHasCorrectValue()
         {
             _testSection.InactivitySeconds = 100;
             Assert.AreEqual(_testSection.InactivitySeconds, IntegrationBuilder(_testSection).Build().InactivitySeconds);
@@ -135,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void default_locale_has_correct_value()
+        public void DefaultLocaleHasCorrectValue()
         {
             _testSection.DefaultLanguage = "de";
             var cultureEn = new CultureInfo("en");
@@ -167,7 +167,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void locales_have_correct_value()
+        public void LocalesHasCorrectValue()
         {
             _testSection.DefaultLanguage = "it";
             _testSection.SupportedLanguages = "it,de,en";
@@ -208,7 +208,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void disabled_producers_have_correct_value()
+        public void DisabledProducersHasCorrectValue()
         {
             _testSection.DisabledProducers = "1,3";
             Assert.IsTrue(GetIntList(_testSection.DisabledProducers).SequenceEqual(IntegrationBuilder(_testSection).Build().DisabledProducers));
@@ -237,7 +237,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void max_recovery_time_has_correct_value()
+        public void MaxRecoveryTimeHasCorrectValue()
         {
             _testSection.MaxRecoveryTime = 1000;
 
@@ -265,7 +265,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void node_id_has_correct_value()
+        public void NodeIdHasCorrectValue()
         {
             _testSection.NodeId = 15;
 
@@ -295,7 +295,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void environment_has_correct_value()
+        public void EnvironmentHasCorrectValue()
         {
             _testSection.UseIntegrationEnvironment = true;
 
@@ -313,7 +313,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void exception_handling_strategy_has_correct_value()
+        public void ExceptionHandlingStrategyHasCorrectValue()
         {
             _testSection.ExceptionHandlingStrategy = ExceptionHandlingStrategy.THROW;
 
@@ -343,20 +343,20 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void messaging_host_has_correct_value()
+        public void MessagingHostHasCorrectValue()
         {
             _testSection.Host = "mq.localhost.local";
 
-            Assert.AreEqual(SdkInfo.IntegrationHost, IntegrationBuilder(_testSection).Build().Host);
-            Assert.AreEqual(SdkInfo.IntegrationHost, IntegrationBuilder(_testSection).Build().Host);
-            Assert.AreEqual(SdkInfo.ProductionHost, ProductionBuilder(_testSection).Build().Host);
-            Assert.AreEqual(SdkInfo.ReplayHost, ReplayBuilder(_testSection).Build().Host);
+            Assert.AreEqual(_testSection.Host, IntegrationBuilder(_testSection).Build().Host);
+            Assert.AreEqual(_testSection.Host, IntegrationBuilder(_testSection).Build().Host);
+            Assert.AreEqual(_testSection.Host, ProductionBuilder(_testSection).Build().Host);
+            Assert.AreEqual(_testSection.Host, ReplayBuilder(_testSection).Build().Host);
             Assert.AreEqual(_testSection.Host, CustomBuilder(_testSection).Build().Host);
 
-            Assert.AreEqual(SdkInfo.IntegrationHost, IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
-            Assert.AreEqual(SdkInfo.IntegrationHost, IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
-            Assert.AreEqual(SdkInfo.ProductionHost, ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
-            Assert.AreEqual(SdkInfo.ReplayHost, ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
+            Assert.AreEqual(EnvironmentManager.GetMqHost(SdkEnvironment.Integration), IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
+            Assert.AreEqual(EnvironmentManager.GetMqHost(SdkEnvironment.Integration), IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
+            Assert.AreEqual(EnvironmentManager.GetMqHost(SdkEnvironment.Production), ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
+            Assert.AreEqual(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Host);
             Assert.AreEqual(_testSection.Host, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost(_testSection.Host).SetApiHost(_testSection.ApiHost).Build().Host);
 
             Assert.AreEqual("mq1.localhost.local", CustomBuilder(_testSection).SetMessagingHost("mq1.localhost.local").Build().Host);
@@ -364,34 +364,34 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void port_has_correct_value()
+        public void PortHasCorrectValue()
         {
             _testSection.Port = 2250;
             _testSection.UseSSL = true;
 
-            Assert.AreEqual(SdkInfo.DefaultHostPort, IntegrationBuilder(_testSection).Build().Port);
-            Assert.AreEqual(SdkInfo.DefaultHostPort, IntegrationBuilder(_testSection).Build().Port);
-            Assert.AreEqual(SdkInfo.DefaultHostPort, ProductionBuilder(_testSection).Build().Port);
-            Assert.AreEqual(SdkInfo.DefaultHostPort, ReplayBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, ProductionBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, ReplayBuilder(_testSection).Build().Port);
             Assert.AreEqual(_testSection.Port, CustomBuilder(_testSection).Build().Port);
 
             _testSection.UseSSL = false;
-            Assert.AreEqual(SdkInfo.DefaultHostPort, IntegrationBuilder(_testSection).Build().Port);
-            Assert.AreEqual(SdkInfo.DefaultHostPort, IntegrationBuilder(_testSection).Build().Port);
-            Assert.AreEqual(SdkInfo.DefaultHostPort, ProductionBuilder(_testSection).Build().Port);
-            Assert.AreEqual(SdkInfo.DefaultHostPort, ReplayBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, ProductionBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, ReplayBuilder(_testSection).Build().Port);
             Assert.AreEqual(_testSection.Port, CustomBuilder(_testSection).Build().Port);
 
             _testSection.Port = 0;
-            Assert.AreEqual(SdkInfo.DefaultHostPort + 1, CustomBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort + 1, CustomBuilder(_testSection).Build().Port);
             _testSection.UseSSL = true;
-            Assert.AreEqual(SdkInfo.DefaultHostPort, CustomBuilder(_testSection).Build().Port);
+            Assert.AreEqual(EnvironmentManager.DefaultMqHostPort, CustomBuilder(_testSection).Build().Port);
             _testSection.Port = 2250;
             Assert.AreEqual(_testSection.Port, CustomBuilder(_testSection).LoadFromConfigFile().Build().Port);
         }
 
         [TestMethod]
-        public void username_has_correct_value()
+        public void UsernameHasCorrectValue()
         {
             _testSection.Username = "username";
             _testSection.AccessToken = "token";
@@ -413,7 +413,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void password_has_correct_value()
+        public void PasswordHasCorrectValue()
         {
             Assert.AreEqual(_testSection.Password, CustomBuilder(_testSection).LoadFromConfigFile().Build().Password);
             Assert.AreEqual(_testSection.Password, CustomBuilder(_testSection).Build().Password);
@@ -430,7 +430,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void virtual_host_has_correct_value()
+        public void VirtualHostHasCorrectValue()
         {
             _testSection.VirtualHost = null;
 
@@ -456,7 +456,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void host_with_protocol_causes_an_exception()
+        public void HostWithProtocolCausesAnException()
         {
             var exceptionThrown = false;
             try
@@ -489,7 +489,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void use_messaging_ssl_has_correct_value()
+        public void UseMessagingSslHasCorrectValue()
         {
             _testSection.UseSSL = false;
 
@@ -512,42 +512,42 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void missing_messaging_host_throw_exception()
+        public void MissingMessagingHostThrowException()
         {
             Assert.IsNull(CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetApiHost(_testSection.ApiHost).Build().ApiHost);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void missing_api_host_throw_exception()
+        public void MissingApiHostThrowException()
         {
             Assert.IsNull(CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost(_testSection.Host).Build().ApiHost);
         }
 
         [TestMethod]
-        public void api_host_has_correct_value()
+        public void ApiHostHasCorrectValue()
         {
             _testSection.ApiHost = "api.localhost.local";
 
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, IntegrationBuilder(_testSection).Build().ApiHost);
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, IntegrationBuilder(_testSection).Build().ApiHost);
-            Assert.AreEqual(SdkInfo.ProductionApiHost, ProductionBuilder(_testSection).Build().ApiHost);
-            Assert.IsNull(ReplayBuilder(_testSection).Build().ApiHost);
+            Assert.AreEqual(_testSection.ApiHost, IntegrationBuilder(_testSection).Build().ApiHost);
+            Assert.AreEqual(_testSection.ApiHost, IntegrationBuilder(_testSection).Build().ApiHost);
+            Assert.AreEqual(_testSection.ApiHost, ProductionBuilder(_testSection).Build().ApiHost);
+            Assert.AreEqual(_testSection.ApiHost, ReplayBuilder(_testSection).Build().ApiHost);
             Assert.AreEqual(_testSection.ApiHost, CustomBuilder(_testSection).Build().ApiHost);
 
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
-            Assert.AreEqual(SdkInfo.IntegrationApiHost, IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
-            Assert.AreEqual(SdkInfo.ProductionApiHost, ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
-            Assert.IsNull(ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
-            //Assert.IsNull(CustomBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Production), ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
+            Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Replay), ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
+            //Assert.AreEqual(_testSection.ApiHost, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost("mq.domain.com").Build().ApiHost);
 
             Assert.AreEqual(_testSection.ApiHost, CustomBuilder(_testSection).Build().ApiHost);
             Assert.AreEqual(_testSection.ApiHost, CustomBuilder(_testSection).LoadFromConfigFile().Build().ApiHost);
-            Assert.AreEqual("api.localhost.local", CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetApiHost("api.localhost.local").SetMessagingHost(_testSection.Host).Build().ApiHost);
+            Assert.AreEqual(_testSection.ApiHost, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetApiHost(_testSection.ApiHost).SetMessagingHost(_testSection.Host).Build().ApiHost);
         }
 
         [TestMethod]
-        public void api_host_with_protocol_causes_an_exception()
+        public void ApiHostWithProtocolCausesException()
         {
             var exceptionThrown = false;
             try
@@ -580,7 +580,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void use_api_ssl_has_correct_value()
+        public void UseApiSslHasCorrectValue()
         {
             _testSection.UseApiSSL = false;
 
@@ -602,7 +602,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void enforce_max_after_age_has_correct_value()
+        public void EnforceMaxAfterAgeHasCorrectValue()
         {
             _testSection.AdjustAfterAge = false;
 
@@ -627,7 +627,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
 
         [TestMethod]
-        public void httpClientTimeout_has_correct_value()
+        public void HttpClientTimeoutHasCorrectValue()
         {
             _testSection.HttpClientTimeout = 50;
             Assert.AreEqual(_testSection.HttpClientTimeout, IntegrationBuilder(_testSection).Build().HttpClientTimeout);
@@ -647,7 +647,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void recoveryHttpClientTimeout_has_correct_value()
+        public void RecoveryHttpClientTimeoutHasCorrectValue()
         {
             _testSection.RecoveryHttpClientTimeout = 50;
             Assert.AreEqual(_testSection.RecoveryHttpClientTimeout, IntegrationBuilder(_testSection).Build().RecoveryHttpClientTimeout);
@@ -667,7 +667,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
 
         [TestMethod]
-        public void min_interval_between_recovery_requests_has_correct_value()
+        public void MinIntervalBetweenRecoveryRequestsHasCorrectValue()
         {
             _testSection.MinIntervalBetweenRecoveryRequests = 100;
 
@@ -688,6 +688,190 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, IntegrationBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).LoadFromConfigFile().Build().MinIntervalBetweenRecoveryRequests);
             Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, ProductionBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).LoadFromConfigFile().Build().MinIntervalBetweenRecoveryRequests);
             Assert.AreEqual(_testSection.MinIntervalBetweenRecoveryRequests, CustomBuilder(_testSection).SetMinIntervalBetweenRecoveryRequests(140).LoadFromConfigFile().Build().MinIntervalBetweenRecoveryRequests);
+        }
+
+        [TestMethod]
+        public void LoadBasicAppConfig()
+        {
+            var accessToken = "AccessToken";
+            var config = $"<oddsFeedSection accessToken='{accessToken}' supportedLanguages='en' />".ToSdkConfiguration();
+            ValidateConfiguration(config,
+                                  accessToken,
+                                  SdkEnvironment.Production,
+                                  "en",
+                                  1,
+                                  EnvironmentManager.GetMqHost(SdkEnvironment.Production),
+                                  EnvironmentManager.GetApiHost(SdkEnvironment.Production),
+                                  0,
+                                  accessToken,
+                                  string.Empty,
+                                  string.Empty);
+        }
+
+        [TestMethod]
+        public void LoadEnvironmentProxyTokyoAppConfig()
+        {
+            var accessToken = "AccessToken";
+            var config = $"<oddsFeedSection accessToken='{accessToken}' supportedLanguages='en' ufEnvironment='ProxyTokyo' />".ToSdkConfiguration();
+            ValidateConfiguration(config,
+                                  accessToken,
+                                  SdkEnvironment.ProxyTokyo,
+                                  "en",
+                                  1,
+                                  EnvironmentManager.GetMqHost(SdkEnvironment.ProxyTokyo),
+                                  EnvironmentManager.GetApiHost(SdkEnvironment.ProxyTokyo),
+                                  0,
+                                  accessToken,
+                                  string.Empty,
+                                  string.Empty);
+        }
+
+        
+        [TestMethod]
+        public void BuilderEnvironmentProxyTokyo()
+        {
+            var accessToken = "AccessToken";
+            var section = $"<oddsFeedSection accessToken='{accessToken}' supportedLanguages='en' ufEnvironment='ProxyTokyo' />".ToSection();
+            var config = new TokenSetter(new TestSectionProvider(section)).BuildFromConfigFile();
+            ValidateConfiguration(config,
+                                  accessToken,
+                                  SdkEnvironment.ProxyTokyo,
+                                  "en",
+                                  1,
+                                  EnvironmentManager.GetMqHost(SdkEnvironment.ProxyTokyo),
+                                  EnvironmentManager.GetApiHost(SdkEnvironment.ProxyTokyo),
+                                  EnvironmentManager.DefaultMqHostPort,
+                                  accessToken,
+                                  string.Empty,
+                                  string.Empty);
+        }
+
+        [TestMethod]
+        public void BuilderEnvironmentGlobalProduction()
+        {
+            var accessToken = "AccessToken";
+            var section = $"<oddsFeedSection accessToken='{accessToken}' supportedLanguages='en,de' nodeId='11' />".ToSection();
+            var config = new TokenSetter(new TestSectionProvider(section))
+                         .SetAccessTokenFromConfigFile()
+                         .SelectEnvironment(SdkEnvironment.GlobalProduction)
+                         .LoadFromConfigFile()
+                         .SetAdjustAfterAge(true)
+                         .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.THROW)
+                         .SetHttpClientTimeout(45)
+                         .SetInactivitySeconds(45)
+                         .SetMaxRecoveryTime(750)
+                         .SetMinIntervalBetweenRecoveryRequests(45)
+                         .SetRecoveryHttpClientTimeout(65)
+                         .Build();
+            ValidateConfiguration(config,
+                                  accessToken,
+                                  SdkEnvironment.GlobalProduction,
+                                  "en",
+                                  2,
+                                  EnvironmentManager.GetMqHost(SdkEnvironment.GlobalProduction),
+                                  EnvironmentManager.GetApiHost(SdkEnvironment.GlobalProduction),
+                                  EnvironmentManager.DefaultMqHostPort,
+                                  accessToken,
+                                  null,
+                                  null,
+                                  true,
+                                  true,
+                                  45,
+                                  750, 
+                                  45, 
+                                  11,
+                                  0,
+                                  ExceptionHandlingStrategy.THROW,
+                                  true,
+                                  45,
+                                  65);
+        }
+
+        [TestMethod]
+        public void BuilderEnvironmentCustom()
+        {
+            var accessToken = "AccessToken";
+            var section = $"<oddsFeedSection accessToken='{accessToken}' supportedLanguages='en,de' />".ToSection();
+            var config = new TokenSetter(new TestSectionProvider(section))
+                         .SetAccessTokenFromConfigFile()
+                         .SelectCustom()
+                         .LoadFromConfigFile()
+                         .SetMessagingHost("mq.local.com")
+                         .SetApiHost("api.local.com")
+                         .Build();
+            ValidateConfiguration(config,
+                                  accessToken,
+                                  SdkEnvironment.Custom,
+                                  "en",
+                                  2,
+                                  "mq.local.com",
+                                  "api.local.com",
+                                  EnvironmentManager.DefaultMqHostPort,
+                                  accessToken);
+
+            config = new TokenSetter(new TestSectionProvider(section))
+                     .SetAccessTokenFromConfigFile()
+                     .SelectCustom()
+                     .SetMessagingHost("mq.local.com")
+                     .SetApiHost("api.local.com")
+                     .LoadFromConfigFile()
+                     .Build();
+            ValidateConfiguration(config,
+                                  accessToken,
+                                  SdkEnvironment.Custom,
+                                  "en",
+                                  2,
+                                  "mq.local.com",
+                                  "api.local.com",
+                                  EnvironmentManager.DefaultMqHostPort,
+                                  accessToken);
+        }
+
+        private void ValidateConfiguration(IOddsFeedConfiguration config,
+                                           string accessToken,
+                                           SdkEnvironment environment,
+                                           string defaultCulture,
+                                           int wantedCultures,
+                                           string mqHost,
+                                           string apiHost,
+                                           int port,
+                                           string username,
+                                           string password = null,
+                                           string virtualHost = null,
+                                           bool useMqSsl = true,
+                                           bool useApiSsl = true,
+                                           int inactivitySeconds = SdkInfo.MinInactivitySeconds,
+                                           int maxRecoveryExecutionInSeconds=SdkInfo.MaxRecoveryExecutionInSeconds,
+                                           int minIntervalBetweenRecoveryRequests = SdkInfo.DefaultIntervalBetweenRecoveryRequests,
+                                           int nodeId = 0,
+                                           int disabledProducers = 0,
+                                           ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.CATCH,
+                                           bool adjustAfterAge = false,
+                                           int httpClientTimeout = SdkInfo.DefaultHttpClientTimeout,
+                                           int recoveryHttpClientTimeout = SdkInfo.DefaultHttpClientTimeout)
+        {
+            Assert.IsNotNull(config);
+            Assert.AreEqual(accessToken, config.AccessToken);
+            Assert.AreEqual(environment, config.Environment);
+            Assert.AreEqual(defaultCulture, config.DefaultLocale.TwoLetterISOLanguageName);
+            Assert.AreEqual(wantedCultures, config.Locales.Count());
+            Assert.AreEqual(mqHost, config.Host);
+            Assert.AreEqual(apiHost, config.ApiHost);
+            Assert.AreEqual(port, config.Port);
+            Assert.AreEqual(username, config.Username);
+            Assert.AreEqual(password, config.Password);
+            Assert.AreEqual(virtualHost, config.VirtualHost);
+            Assert.AreEqual(useMqSsl, config.UseSsl);
+            Assert.AreEqual(useApiSsl, config.UseApiSsl);
+            Assert.AreEqual(inactivitySeconds, config.InactivitySeconds);
+            Assert.AreEqual(maxRecoveryExecutionInSeconds, config.MaxRecoveryTime);
+            Assert.AreEqual(minIntervalBetweenRecoveryRequests, config.MinIntervalBetweenRecoveryRequests);
+            Assert.AreEqual(nodeId, config.NodeId);
+            Assert.AreEqual(disabledProducers, config.DisabledProducers?.Count() ?? 0);
+            Assert.AreEqual(exceptionHandlingStrategy, config.ExceptionHandlingStrategy);
+            Assert.AreEqual(adjustAfterAge, config.AdjustAfterAge);
+            Assert.AreEqual(httpClientTimeout, config.HttpClientTimeout);
+            Assert.AreEqual(recoveryHttpClientTimeout, config.RecoveryHttpClientTimeout);
         }
     }
 }

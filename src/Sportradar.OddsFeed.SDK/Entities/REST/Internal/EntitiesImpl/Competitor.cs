@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             _cultures.Where(c => GetOrLoadCompetitor().GetAbbreviation(c) != null).ToDictionary(c => c, GetOrLoadCompetitor().GetAbbreviation));
 
         /// <summary>
-        /// Gets a value indicating whether the current <see cref="ICompetitor" /> is virtual - i.e. competes in a virtual sport
+        /// Gets a value indicating whether the current instance represents a placeholder team
         /// </summary>
         public bool IsVirtual => GetOrLoadCompetitor().IsVirtual;
 

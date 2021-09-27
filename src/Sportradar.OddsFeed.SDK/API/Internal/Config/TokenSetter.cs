@@ -2,7 +2,13 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.Linq;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal.Config
 {
@@ -50,6 +56,87 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         public IEnvironmentSelector SetAccessTokenFromConfigFile()
         {
             return new EnvironmentSelector(_configurationSectionProvider.GetSection().AccessToken, _configurationSectionProvider);
+        }
+
+        /// <inheritdoc />
+        public IOddsFeedConfiguration BuildFromConfigFile()
+        {
+            var section = _configurationSectionProvider.GetSection();
+            if (string.IsNullOrEmpty(section.AccessToken))
+            {
+                throw new ConfigurationErrorsException("Missing access token");
+            }
+
+            var sdkEnvironment = SdkEnvironment.Integration;
+            if (section.UfEnvironment != null)
+            {
+                sdkEnvironment = section.UfEnvironment.Value;
+            }
+            else if (!section.UseIntegrationEnvironment)
+            {
+                sdkEnvironment = SdkEnvironment.Production;
+            }
+                
+            var supportedLanguages = new List<CultureInfo>();
+            if (!string.IsNullOrEmpty(section.SupportedLanguages))
+            {
+                var langCodes = section.SupportedLanguages.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                supportedLanguages = langCodes.Select(langCode => new CultureInfo(langCode.Trim())).ToList();
+            }
+
+            var defaultLanguage = supportedLanguages.Any() ? supportedLanguages.First() : null;
+            if (!string.IsNullOrEmpty(section.DefaultLanguage))
+            {
+                defaultLanguage = new CultureInfo(section.DefaultLanguage);
+                if (!supportedLanguages.Contains(defaultLanguage))
+                {
+                    supportedLanguages.Insert(0, defaultLanguage);
+                }
+            }
+
+            if (supportedLanguages == null || !supportedLanguages.Any())
+            {
+                throw new InvalidOperationException("Missing supported languages");
+            }
+
+            var disabledProducers = new List<int>();
+            if (!string.IsNullOrEmpty(section.DisabledProducers))
+            {
+                var producerIds = section.DisabledProducers.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                disabledProducers = producerIds.Select(producerId => int.Parse(producerId.Trim())).ToList();
+            }
+
+             var mqHost = string.IsNullOrEmpty(section.Host)
+                             ? EnvironmentManager.GetMqHost(sdkEnvironment)
+                             : section.Host;
+            var apiHost = string.IsNullOrEmpty(section.ApiHost)
+                             ? EnvironmentManager.GetApiHost(sdkEnvironment)
+                             : section.ApiHost;
+
+            var config = new OddsFeedConfiguration(section.AccessToken,
+                                                   sdkEnvironment,
+                                                   defaultLanguage,
+                                                   supportedLanguages,
+                                                   mqHost,
+                                                   section.VirtualHost,
+                                                   EnvironmentManager.DefaultMqHostPort,
+                                                   section.Username,
+                                                   section.Password,
+                                                   apiHost,
+                                                   section.UseSSL,
+                                                   section.UseApiSSL,
+                                                   section.InactivitySeconds > 0 ? section.InactivitySeconds : SdkInfo.MinInactivitySeconds,
+                                                   section.MaxRecoveryTime > 0 ? section.MaxRecoveryTime : SdkInfo.MaxRecoveryExecutionInSeconds,
+                                                   section.MinIntervalBetweenRecoveryRequests > 0 ? section.MinIntervalBetweenRecoveryRequests : SdkInfo.DefaultIntervalBetweenRecoveryRequests,
+                                                   section.NodeId,
+                                                   disabledProducers,
+                                                   section.ExceptionHandlingStrategy,
+                                                   section.AdjustAfterAge,
+                                                   section.HttpClientTimeout != SdkInfo.DefaultHttpClientTimeout ? section.HttpClientTimeout : SdkInfo.DefaultHttpClientTimeout,
+                                                   section.RecoveryHttpClientTimeout != SdkInfo.DefaultHttpClientTimeout ? section.RecoveryHttpClientTimeout : SdkInfo.DefaultHttpClientTimeout,
+                                                   section);
+
+            return config;
         }
     }
 }

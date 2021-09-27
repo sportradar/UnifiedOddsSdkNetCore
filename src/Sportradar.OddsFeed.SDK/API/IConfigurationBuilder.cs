@@ -24,6 +24,12 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <returns>The <see cref="IEnvironmentSelector"/> instance allowing the selection of target environment</returns>
         IEnvironmentSelector SetAccessTokenFromConfigFile();
+
+        /// <summary>
+        /// Gets the configuration properties from configuration file. Any values already set by methods on the current instance are overridden. Builds and returns a <see cref="IOddsFeedConfiguration"/> instance.
+        /// </summary>
+        /// <returns>The constructed <see cref="IOddsFeedConfiguration"/> instance</returns>
+        IOddsFeedConfiguration BuildFromConfigFile();
     }
 
     /// <summary>
@@ -54,6 +60,14 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <returns>A <see cref="ICustomConfigurationBuilder"/> with properties set to values needed to access replay server</returns>
         ICustomConfigurationBuilder SelectCustom();
+
+        /// <summary>
+        /// Returns a <see cref="IConfigurationBuilder"/> with properties set to values needed to access specified environment
+        /// </summary>
+        /// <remarks>For accessing replay or custom server use SelectReplay or SelectCustom</remarks>
+        /// <param name="ufEnvironment">A <see cref="SdkEnvironment"/> specifying to which environment to connect</param>
+        /// <returns>A <see cref="IConfigurationBuilder"/> with properties set to values needed to access production environment</returns>
+        IConfigurationBuilder SelectEnvironment(SdkEnvironment ufEnvironment);
     }
 
     /// <summary>
