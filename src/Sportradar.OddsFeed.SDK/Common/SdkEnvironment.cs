@@ -34,6 +34,11 @@ namespace Sportradar.OddsFeed.SDK.Common
         GlobalProduction,
 
         /// <summary>
+        /// The global integration
+        /// </summary>
+        GlobalIntegration,
+
+        /// <summary>
         /// The Singapore proxy
         /// </summary>
         ProxySingapore,

@@ -1034,15 +1034,9 @@
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.API.IEnvironmentSelector"/> instance allowing the selection of target environment</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.ITokenSetter.LoadFromConfigFile">
+        <member name="M:Sportradar.OddsFeed.SDK.API.ITokenSetter.BuildFromConfigFile">
             <summary>
-            Sets the configuration properties to values read from configuration file. Any values already set by methods on the current instance are overridden.
-            </summary>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.ITokenSetter"/> derived instance used to set general configuration properties</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.ITokenSetter.Build">
-            <summary>
-            Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration"/> instance
+            Gets the configuration properties from configuration file. Any values already set by methods on the current instance are overridden. Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration"/> instance.
             </summary>
             <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration"/> instance</returns>
         </member>
@@ -2191,10 +2185,7 @@
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.API.IEnvironmentSelector" /> instance allowing the selection of target environment</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.TokenSetter.LoadFromConfigFile">
-            <inheritdoc />
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.TokenSetter.Build">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.Config.TokenSetter.BuildFromConfigFile">
             <inheritdoc />
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.ConnectionValidationResult">
@@ -3776,15 +3767,15 @@
             Gets a value indicating whether a secure connection to the Sports API should be used
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.SupportedLanguages">
-            <summary>
-            Gets the comma delimited string of all wanted languages
-            </summary>
-            <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
-        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.DefaultLanguage">
             <summary>
             Gets the 2-letter ISO string of default language
+            </summary>
+            <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection.SupportedLanguages">
+            <summary>
+            Gets the comma delimited string of all wanted languages
             </summary>
             <example>https://msdn.microsoft.com/en-us/goglobal/bb896001.aspx</example>
         </member>
@@ -7122,33 +7113,38 @@
             <param name="environment">The environment</param>
             <returns>The API host for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.SdkEnvironment"/></returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentSetting">
+            <summary>
+            Class EnvironmentSetting
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentSetting.Environment">
             <summary>
-            Gets the environment.
+            Get the environment.
             </summary>
             <value>The environment</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentSetting.MqHost">
             <summary>
-            Gets the rabbit host address
+            Get the rabbit host address
             </summary>
             <value>The rabbit host address</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentSetting.ApiHost">
             <summary>
-            Gets the API host.
+            Get the API host.
             </summary>
             <value>The API host.</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentSetting.OnlySsl">
             <summary>
-            Gets a value indicating whether only SSL is supported on the endpoint or also non-ssl
+            Get a value indicating whether only SSL is supported on the endpoint or also non-ssl
             </summary>
             <value><c>true</c> if [only SSL]; otherwise, <c>false</c>.</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentSetting.EnvironmentRetryList">
             <summary>
-            Gets the environment retry list.
+            Get the environment retry list.
             </summary>
             <value>The environment retry list.</value>
         </member>
@@ -8150,14 +8146,19 @@
             The global production
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.SdkEnvironment.GlobalIntegration">
+            <summary>
+            The global integration
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.SdkEnvironment.ProxySingapore">
             <summary>
-            The proxy Singapore
+            The Singapore proxy
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.SdkEnvironment.ProxyTokyo">
             <summary>
-            The proxy Tokyo
+            The Tokyo proxy
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.SdkLoggerFactory">
