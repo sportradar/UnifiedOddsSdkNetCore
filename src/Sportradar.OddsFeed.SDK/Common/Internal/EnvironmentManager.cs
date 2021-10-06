@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                       new EnvironmentSetting(SdkEnvironment.Production, "mq.betradar.com", "api.betradar.com", true, new List<SdkEnvironment> {SdkEnvironment.Integration}),
                       new EnvironmentSetting(SdkEnvironment.Integration, "stgmq.betradar.com", "stgapi.betradar.com", true, new List<SdkEnvironment> {SdkEnvironment.Production}),
                       new EnvironmentSetting(SdkEnvironment.Replay, "replaymq.betradar.com", "stgapi.betradar.com", true, basicRetryList),
-                      new EnvironmentSetting(SdkEnvironment.GlobalProduction, "mq.betradar.com", "global.api.betradar.com", true, basicRetryList),
+                      new EnvironmentSetting(SdkEnvironment.GlobalProduction, "global.mq.betradar.com", "global.api.betradar.com", true, basicRetryList),
                       new EnvironmentSetting(SdkEnvironment.GlobalIntegration, "global.stgmq.betradar.com", "global.stgapi.betradar.com", true, basicRetryList),
                       new EnvironmentSetting(SdkEnvironment.ProxySingapore, "mq.ap-southeast-1.betradar.com", "api.ap-southeast-1.betradar.com", true, basicRetryList),
                       new EnvironmentSetting(SdkEnvironment.ProxyTokyo, "mq.ap-northeast-1.betradar.com", "api.ap-northeast-1.betradar.com", true, basicRetryList)

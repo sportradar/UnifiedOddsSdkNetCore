@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             Console.WriteLine(string.Empty);
             _log.LogInformation("Running the OddsFeed SDK Specific Dispatchers example");
 
-            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
+            var configuration = Feed.GetConfigurationBuilder().BuildFromConfigFile();
             var oddsFeed = new Feed(configuration, _loggerFactory);
             AttachToFeedEvents(oddsFeed);
 

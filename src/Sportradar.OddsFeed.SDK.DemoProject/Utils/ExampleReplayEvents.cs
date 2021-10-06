@@ -76,10 +76,10 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 
         public class SampleEvent
         {
-            public SampleEvent(string Description, string EventId)
+            public SampleEvent(string description, string eventId)
             {
-                this.Description = Description;
-                this.EventId = URN.Parse(EventId);
+                this.Description = description;
+                this.EventId = URN.Parse(eventId);
             }
 
             public string Description { get; }

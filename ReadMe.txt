@@ -25,6 +25,11 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-10-06  1.21.0
+Extended configuration with ufEnvironment attribute
+Extended ITokenSetter and IEnvironmentSelector 
+New values added to SdkEnvironment enum (GlobalIntegration, GlobalProduction, ProxySingapore, ProxyTokyo)
+
 2021-09-09  1.20.0
 Improved exporting/importing and merging of player profile data
 Improved SemaphorePool handling

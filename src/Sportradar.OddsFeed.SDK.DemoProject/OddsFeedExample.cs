@@ -15,11 +15,6 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
     /// </summary>
     internal class OddsFeedExample
     {
-        /// <summary>
-        /// A <see cref="ILogger"/> instance used for execution logging
-        /// </summary>
-        private static ILogger _log;
-
         private static ILoggerFactory _loggerFactory;
 
         /// <summary>
@@ -31,8 +26,8 @@ namespace Sportradar.OddsFeed.SDK.DemoProject
             services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddLog4Net("log4net.config"));
             var serviceProvider = services.BuildServiceProvider();
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            _log = _loggerFactory.CreateLogger(typeof(OddsFeedExample));
-            _log.LogInformation("OddsFeed example");
+            var log = _loggerFactory.CreateLogger(typeof(OddsFeedExample));
+            log.LogInformation("OddsFeed example");
 
             var key = 'y';
             while (key.Equals('y'))

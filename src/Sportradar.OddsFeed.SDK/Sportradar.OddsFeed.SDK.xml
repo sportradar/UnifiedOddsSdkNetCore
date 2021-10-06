@@ -7092,6 +7092,12 @@
             The default MQ host port
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentManager.EnvironmentSettings">
+            <summary>
+            Gets the list of all possible environment settings (Custom is not listed, as user should manually put MQ and API host)
+            </summary>
+            <value>The list of environment settings.</value>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.EnvironmentManager.GetSetting(Sportradar.OddsFeed.SDK.Common.SdkEnvironment)">
             <summary>
             Gets the MQ and API settings for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.SdkEnvironment"/>

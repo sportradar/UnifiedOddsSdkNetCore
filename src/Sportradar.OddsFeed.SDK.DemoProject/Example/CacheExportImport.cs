@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _log.LogInformation("Running the OddsFeed SDK Export/import example");
 
             _log.LogInformation("Retrieving configuration from application configuration file");
-            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
+            var configuration = Feed.GetConfigurationBuilder().BuildFromConfigFile();
             //you can also create the IOddsFeedConfiguration instance by providing required values
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 

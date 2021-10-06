@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             _log.LogInformation("Running the OddsFeed SDK Display Markets Names example");
 
             _log.LogInformation("Retrieving configuration from application configuration file");
-            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
+            var configuration = Feed.GetConfigurationBuilder().BuildFromConfigFile();
 
             _log.LogInformation("Creating Feed instance");
             var oddsFeed = new Feed(configuration, _loggerFactory);
