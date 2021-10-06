@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                 throw new ConfigurationErrorsException("Missing access token");
             }
 
-            var sdkEnvironment = SdkEnvironment.Integration;
+            var sdkEnvironment = SdkEnvironment.GlobalIntegration;
             if (section.UfEnvironment != null)
             {
                 sdkEnvironment = section.UfEnvironment.Value;
