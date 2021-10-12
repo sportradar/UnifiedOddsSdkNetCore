@@ -74,6 +74,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             ClientProperties.Add("SrUfSdkBId", $"{_config.BookmakerDetails?.BookmakerId}");
         }
 
+        public bool IsConnected()
+        {
+            lock (_syncLock)
+            {
+                return _connectionSingleton != null && _connectionSingleton.IsOpen;
+            }
+        }
+
         /// <summary>
         /// Create a connection to the specified endpoint or return existing one
         /// </summary>
@@ -92,14 +100,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     ConnectionCreated = DateTime.Now;
                 }
                 return _connectionSingleton;
-            }
-        }
-
-        public bool IsConnected()
-        {
-            lock (_syncLock)
-            {
-                return _connectionSingleton != null && _connectionSingleton.IsOpen;
             }
         }
 

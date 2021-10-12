@@ -3926,7 +3926,7 @@
             <param name="dispatcherStore">A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IDispatcherStore"/> implementation used to store and access user registered dispatchers</param>
             <param name="messageInterest">Specifies the type of messages handled by this <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedSession"/></param>
             <param name="defaultCultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the default languages as specified in the configuration</param>
-            <param name="getRoutingKeys">Func to get appropriate routing keys based on the message interest</param>
+            <param name="getRoutingKeys">Function to get appropriate routing keys based on the message interest</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.OddsFeedSession.OnMessageReceived(System.Object,Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments.FeedMessageReceivedEventArgs)">
             <summary>

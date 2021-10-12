@@ -3,7 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -43,14 +42,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the indication whether the after age should be adjusted before executing recovery request
         /// </summary>
-        private bool _adjustAfterAge;
+        private readonly bool _adjustAfterAge;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProducerManager"/> class
         /// </summary>
         /// <param name="producersProvider">The producers provider.</param>
         /// <param name="config">The <see cref="IOddsFeedConfiguration"/> used for retrieve disabled producers</param>
-        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public ProducerManager(IProducersProvider producersProvider, IOddsFeedConfiguration config)
         {
             Guard.Argument(producersProvider, nameof(producersProvider)).NotNull();
@@ -251,9 +249,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             else
             {
-                var p = (Producer)Get(id);
-                p.IgnoreRecovery = true;
-                p.SetProducerDown(false);
+                var p = (Producer) Get(id);
+                if (p != null)
+                {
+                    p.IgnoreRecovery = true;
+                    p.SetProducerDown(false);
+                }
             }
         }
 

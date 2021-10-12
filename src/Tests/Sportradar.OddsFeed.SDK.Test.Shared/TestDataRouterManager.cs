@@ -494,7 +494,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
         /// <param name="culture">The culture to be fetched</param>
         /// <returns>The list of all fixtures that have changed in the last 24 hours</returns>
-        public async Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
+        public Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -529,7 +529,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
         /// <param name="culture">The culture to be fetched</param>
         /// <returns>The list of all results that have changed in the last 24 hours</returns>
-        public async Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
+        public Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

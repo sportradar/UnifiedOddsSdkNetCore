@@ -166,11 +166,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 _channel.QueueBind(declareResult.QueueName, "unifiedfeed", routingKey);
             }
 
-            _channel.ModelShutdown += ChannelOnModelShutdown;
             _consumer = new EventingBasicConsumer(_channel);
             _consumer.Received += ConsumerOnDataReceived;
             _consumer.Shutdown += ConsumerOnShutdown;
             _channel.BasicConsume(declareResult.QueueName, true, _consumer);
+            _channel.ModelShutdown += ChannelOnModelShutdown;
 
             _lastMessageReceived = DateTime.Now;
         }

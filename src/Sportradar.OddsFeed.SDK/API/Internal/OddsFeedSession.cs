@@ -85,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="dispatcherStore">A <see cref="IDispatcherStore"/> implementation used to store and access user registered dispatchers</param>
         /// <param name="messageInterest">Specifies the type of messages handled by this <see cref="OddsFeedSession"/></param>
         /// <param name="defaultCultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the default languages as specified in the configuration</param>
-        /// <param name="getRoutingKeys">Func to get appropriate routing keys based on the message interest</param>
+        /// <param name="getRoutingKeys">Function to get appropriate routing keys based on the message interest</param>
         public OddsFeedSession(
             IMessageReceiver messageReceiver,
             IFeedMessageProcessor messageProcessor,
@@ -132,7 +132,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 case ValidationResult.FAILURE:
                     ExecutionLog.LogWarning($"{WriteMessageInterest()}Validation of message=[{message}] failed. Raising OnUnparsableMessageReceived event");
                     var messageType = _messageDataExtractor.GetMessageTypeFromMessage(message);
-
                     var eventArgs = new UnparsableMessageEventArgs(messageType, message.ProducerId.ToString(), message.EventId, e.RawMessage);
                     Dispatch(OnUnparsableMessageReceived, eventArgs, "OnUnparsableMessageReceived", message.ProducerId);
                     return;

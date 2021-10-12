@@ -24,6 +24,8 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sportradar.OddsFeed.SDK.Doc
 		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E} = {FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportradar.OddsFeed.SDK.Test", "Tests\Sportradar.OddsFeed.SDK.Test\Sportradar.OddsFeed.SDK.Test.csproj", "{3632F835-2646-4019-9021-609151A7DD9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3632F835-2646-4019-9021-609151A7DD9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3632F835-2646-4019-9021-609151A7DD9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3632F835-2646-4019-9021-609151A7DD9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3632F835-2646-4019-9021-609151A7DD9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{AC16CE70-394B-4A4B-8AD9-3D1732AB8C11} = {80D2ACC0-BA2E-4BD3-87AF-20EB57F6A8A2}
 		{39E83C93-3D5E-4174-AE23-EACBCB9BF970} = {80D2ACC0-BA2E-4BD3-87AF-20EB57F6A8A2}
 		{6DD7FBA4-D758-4634-B922-FF75372AA476} = {80D2ACC0-BA2E-4BD3-87AF-20EB57F6A8A2}
+		{3632F835-2646-4019-9021-609151A7DD9D} = {80D2ACC0-BA2E-4BD3-87AF-20EB57F6A8A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F3F89D5-51AC-4260-A838-8667693E7E25}
