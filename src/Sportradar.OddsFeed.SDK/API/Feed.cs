@@ -72,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// The <see cref="IOddsFeedConfigurationInternal"/> representing internal sdk configuration
         /// </summary>
-        internal readonly IOddsFeedConfigurationInternal InternalConfig;
+        internal IOddsFeedConfigurationInternal InternalConfig;
 
         /// <summary>
         /// Raised when the current instance of <see cref="IOddsFeed"/> loses connection to the feed
@@ -316,12 +316,19 @@ namespace Sportradar.OddsFeed.SDK.API
                 UnityContainer.RegisterTypes(this, InternalConfig);
                 UnityContainer.RegisterAdditionalTypes();
 
+                UpdateDependency();
+
                 _feedRecoveryManager = UnityContainer.Resolve<IFeedRecoveryManager>();
                 _connectionValidator = UnityContainer.Resolve<ConnectionValidator>();
 
                 FeedInitialized = true;
             }
         }
+    
+        /// <summary>
+        /// Option to change/update dependency injection before resolving resources     
+        /// </summary>
+        protected virtual void UpdateDependency() {}
 
         /// <summary>
         /// Constructs a new instance of the <see cref="Feed"/> class
@@ -332,18 +339,6 @@ namespace Sportradar.OddsFeed.SDK.API
         public Feed(IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null, IMetricsRoot metricsRoot = null)
             : this(config, false, loggerFactory, metricsRoot)
         {
-        }
-
-        /// <summary>
-        /// Invoked when the connection to the message broken was shutdown
-        /// </summary>
-        /// <param name="sender">The connection that was shutdown</param>
-        /// <param name="shutdownEventArgs">A <see cref="ShutdownEventArgs"/> containing additional event information</param>
-        private void OnConnectionShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
-        {
-            _log.LogError($"The connection is shutdown. Cause: {shutdownEventArgs.Cause}");
-            _feedRecoveryManager.ConnectionShutdown();
-            ((IGlobalEventDispatcher) this).DispatchDisconnected();
         }
 
         /// <summary>
@@ -721,6 +716,18 @@ namespace Sportradar.OddsFeed.SDK.API
             _connectionFactory.CreateConnection().ConnectionShutdown -= OnConnectionShutdown;
             _connectionFactory.CreateConnection().CallbackException -= OnCallbackException;
             _connectionFactory.Dispose();
+        }
+
+        /// <summary>
+        /// Invoked when the connection to the message broken was shutdown
+        /// </summary>
+        /// <param name="sender">The connection that was shutdown</param>
+        /// <param name="shutdownEventArgs">A <see cref="ShutdownEventArgs"/> containing additional event information</param>
+        private void OnConnectionShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
+        {
+            _log.LogError($"The connection is shutdown. Cause: {shutdownEventArgs.Cause}");
+            _feedRecoveryManager.ConnectionShutdown();
+            ((IGlobalEventDispatcher) this).DispatchDisconnected();
         }
 
         private void OnCallbackException(object sender, CallbackExceptionEventArgs e)

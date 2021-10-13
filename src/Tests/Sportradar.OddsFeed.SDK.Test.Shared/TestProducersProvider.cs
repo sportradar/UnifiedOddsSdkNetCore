@@ -27,7 +27,9 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 new Producer(3, "Ctrl", "Betradar Ctrl", "pre", true, maxInactivitySeconds, maxRecoveryTime, "prematch", 4320),
                 new Producer(4, "BetPal", "BetPal", "betpal", true, maxInactivitySeconds, maxRecoveryTime, "live", 4320),
                 new Producer(5, "PremiumCricket", "Premium Cricket", "premium_cricket", true, maxInactivitySeconds, maxRecoveryTime, "live|prematch", 4320),
-                new Producer(6, "VF", "Virtual football", "vf", false, maxInactivitySeconds, maxRecoveryTime, "virtual", 180)
+                new Producer(6, "VF", "Virtual football", "vf", true, maxInactivitySeconds, maxRecoveryTime, "virtual", 180),
+                new Producer(7, "WNS", "Numbers Betting", "wns", true, maxInactivitySeconds, maxRecoveryTime, "prematch", 4320),
+                new Producer(8, "VBL", "Virtual Basketball League", "vbl", false, maxInactivitySeconds, maxRecoveryTime, "virtual", 180)
             };
 
             return producers;

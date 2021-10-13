@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public static readonly int BookmakerId = 1;
         public static readonly string AccessToken = "token";
-        public static readonly string VirtualHost = "/virtualhost/1";
+        public static readonly string VirtualHost = "/virtualhost";
 
         public static readonly URN SportId = URN.Parse("sr:sport:1");
         public static readonly URN CategoryId = URN.Parse("sr:category:1");

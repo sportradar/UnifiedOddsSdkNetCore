@@ -850,6 +850,11 @@
             Initializes the feed (unity)
             </summary>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.UpdateDependency">
+            <summary>
+            Option to change/update dependency injection before resolving resources     
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Feed.#ctor(Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration,Microsoft.Extensions.Logging.ILoggerFactory,App.Metrics.IMetricsRoot)">
             <summary>
             Constructs a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Feed"/> class
@@ -857,13 +862,6 @@
             <param name="config">A <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration"/> instance representing feed configuration</param>
             <param name="loggerFactory">A <see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> used to create <see cref="T:Microsoft.Extensions.Logging.ILogger"/> used within sdk</param>
             <param name="metricsRoot">A <see cref="T:App.Metrics.IMetricsRoot"/> used to provide metrics within sdk</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.OnConnectionShutdown(System.Object,RabbitMQ.Client.ShutdownEventArgs)">
-            <summary>
-            Invoked when the connection to the message broken was shutdown
-            </summary>
-            <param name="sender">The connection that was shutdown</param>
-            <param name="shutdownEventArgs">A <see cref="T:RabbitMQ.Client.ShutdownEventArgs"/> containing additional event information</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Feed.MarkProducerAsDown(System.Object,Sportradar.OddsFeed.SDK.API.EventArguments.ProducerStatusChangeEventArgs)">
             <summary>
@@ -978,6 +976,13 @@
             Connection to the message broker failed, Probable Reason={Invalid or expired token}
             or
             </exception>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.OnConnectionShutdown(System.Object,RabbitMQ.Client.ShutdownEventArgs)">
+            <summary>
+            Invoked when the connection to the message broken was shutdown
+            </summary>
+            <param name="sender">The connection that was shutdown</param>
+            <param name="shutdownEventArgs">A <see cref="T:RabbitMQ.Client.ShutdownEventArgs"/> containing additional event information</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.IBookingManager">
             <summary>

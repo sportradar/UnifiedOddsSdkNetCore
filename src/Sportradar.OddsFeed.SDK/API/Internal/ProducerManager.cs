@@ -166,6 +166,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(timestamp, nameof(timestamp)).Require(timestamp > DateTime.MinValue);
 
             var p = (Producer) Get(id);
+            if (p.Id.Equals(SdkInfo.UnknownProducerId))
+            {
+                return;
+            }
             if (timestamp > DateTime.Now)
             {
                 if (_adjustAfterAge)
