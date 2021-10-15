@@ -183,7 +183,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             container.RegisterInstance(dispatcher, new ExternallyControlledLifetimeManager());
 
-            container.RegisterType<IConnectionFactory, ConfiguredConnectionFactory>(new ContainerControlledLifetimeManager());
+            var connectionFactory = new ConfiguredConnectionFactory(config);
+            container.RegisterInstance<IConnectionFactory>(connectionFactory, new PerResolveLifetimeManager());
+
+            //container.RegisterType<IConnectionFactory, ConfiguredConnectionFactory>(new PerResolveLifetimeManager());
             container.RegisterType<IChannelFactory, ChannelFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<ConnectionValidator, ConnectionValidator>(new ContainerControlledLifetimeManager());
 

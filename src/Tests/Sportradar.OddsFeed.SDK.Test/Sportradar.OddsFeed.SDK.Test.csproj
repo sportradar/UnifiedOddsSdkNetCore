@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyNetQ.Management.Client" Version="1.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
@@ -23,6 +24,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj" />
     <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Test.Shared\Sportradar.OddsFeed.SDK.Test.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="log4net.sdk.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

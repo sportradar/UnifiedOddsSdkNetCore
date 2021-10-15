@@ -20,8 +20,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// Opens the current channel and binds the created queue to provided routing keys
         /// </summary>
+        /// <param name="interest">The <see cref="MessageInterest"/> of the session using this instance</param>
         /// <param name="routingKeys">A <see cref="IEnumerable{String}"/> specifying the routing keys of the constructed queue.</param>
-        void Open(IEnumerable<string> routingKeys);
+        void Open(MessageInterest interest, IEnumerable<string> routingKeys);
 
         /// <summary>
         /// Closes the current channel

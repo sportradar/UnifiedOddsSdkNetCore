@@ -269,7 +269,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         public void Open(MessageInterest interest, IEnumerable<string> routingKeys)
         {
             _interest = interest;
-            _channel.Open(routingKeys);
+            _channel.Open(interest, routingKeys);
             _channel.Received += consumer_OnReceived;
         }
 

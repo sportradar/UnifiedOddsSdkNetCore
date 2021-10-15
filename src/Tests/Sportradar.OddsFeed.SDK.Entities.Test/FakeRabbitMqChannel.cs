@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
 
         public bool IsOpened { get; }
 
-        public void Open(IEnumerable<string> routingKeys)
+        public void Open(MessageInterest interest, IEnumerable<string> routingKeys)
         {
 
         }

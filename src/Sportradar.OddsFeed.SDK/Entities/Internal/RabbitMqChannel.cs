@@ -57,6 +57,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         public event EventHandler<BasicDeliverEventArgs> Received;
 
+        /// <summary>
+        /// The message interest associated by the channel using this instance
+        /// </summary>
+        private MessageInterest _interest;
+
         private List<string> _routingKeys;
 
         private DateTime _lastMessageReceived;
@@ -95,8 +100,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// Opens the current channel and binds the created queue to provided routing keys
         /// </summary>
+        /// <param name="interest">The <see cref="MessageInterest"/> of the session using this instance</param>
         /// <param name="routingKeys">A <see cref="IEnumerable{String}"/> specifying the routing keys of the constructed queue.</param>
-        public void Open(IEnumerable<string> routingKeys)
+        public void Open(MessageInterest interest, IEnumerable<string> routingKeys)
         {
             if (Interlocked.CompareExchange(ref _isOpened, 1, 0) != 0)
             {
@@ -104,6 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 throw new InvalidOperationException("The instance is already opened");
             }
 
+            _interest = interest;
             _routingKeys = routingKeys.ToList();
             if (_routingKeys.IsNullOrEmpty())
             {
@@ -165,11 +172,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 ExecutionLog.LogInformation($"Binding queue={declareResult.QueueName} with routingKey={routingKey}");
                 _channel.QueueBind(declareResult.QueueName, "unifiedfeed", routingKey);
             }
-
+            var interestName = _interest == null ? "system" : _interest.Name;
             _consumer = new EventingBasicConsumer(_channel);
+            _consumer.ConsumerTag = $"UfSdk-NetStd|{SdkInfo.GetVersion()}|{interestName}|{_channel.ChannelNumber}|{DateTime.Now}";
             _consumer.Received += ConsumerOnDataReceived;
             _consumer.Shutdown += ConsumerOnShutdown;
-            _channel.BasicConsume(declareResult.QueueName, true, _consumer);
+            _channel.BasicConsume(declareResult.QueueName, true, _consumer.ConsumerTag, _consumer);
             _channel.ModelShutdown += ChannelOnModelShutdown;
 
             _lastMessageReceived = DateTime.Now;

@@ -1,4 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
+using DateTime = System.DateTime;
 
 namespace Sportradar.OddsFeed.SDK.Test
 {
@@ -51,6 +56,57 @@ namespace Sportradar.OddsFeed.SDK.Test
             return postfix
                 ? result + space
                 : space + result;
+        }
+
+        public static string Serialize<T>(T dataToSerialize)
+        {
+            try
+            {
+                //var stringWriter = new Utf8StringWriter();
+                ////XmlWriterSettings settings = new XmlWriterSettings
+                ////                             {
+                ////                                 Indent = false,
+                ////                                 OmitXmlDeclaration = true
+                ////                             };
+                //XmlSerializerNamespaces emptyNamespaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
+                //var serializer = new XmlSerializer(typeof(T));
+                //serializer.Serialize(stringWriter, dataToSerialize, emptyNamespaces);
+                //return stringWriter.ToString();
+
+                var emptyNamespaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
+                var serializer = new XmlSerializer(typeof(T));
+                var settings = new XmlWriterSettings
+                               {
+                                   Indent = false,
+                                   OmitXmlDeclaration = false
+                               };
+
+                using (var stream = new Utf8StringWriter())
+                {
+                    using (var writer = XmlWriter.Create(stream, settings))
+                    {
+                        serializer.Serialize(writer, dataToSerialize, emptyNamespaces);
+                        return stream.ToString();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteToOutput(ex.Message);
+            }
+
+            return null;
+        }
+
+        public class Utf8StringWriter : StringWriter
+        {
+            public override Encoding Encoding => Encoding.UTF8;
+        }
+
+        public static void WriteToOutput(string message)
+        {
+            Console.WriteLine($"{DateTime.Now}\t{message}");
         }
     }
 }

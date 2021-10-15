@@ -50,12 +50,13 @@ namespace Sportradar.OddsFeed.SDK.Test
 
             _rabbitProducer = new RabbitProducer(RabbitIp);
             _rabbitProducer.Start();
-            _rabbitProducer.Send("Hello world", "hi.-.live.odds_change.21.sr:match.29661288.-");
+            _rabbitProducer.Send("Hello world", "what.-.88.-");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
+            _rabbitProducer.ProducersAlive.Clear();
             DetachFromFeedEvents(_feed);
             _feed.Close();
             _rabbitProducer.Stop();
@@ -64,6 +65,9 @@ namespace Sportradar.OddsFeed.SDK.Test
         [TestMethod]
         public void SdkNormalRunTest()
         {
+            _rabbitProducer.AddProducersAlive(1);
+            _rabbitProducer.AddProducersAlive(3);
+
             _feed.ProducerManager.AddTimestampBeforeDisconnect(1, DateTime.Now.AddMinutes(-10));
             _feed.ProducerManager.AddTimestampBeforeDisconnect(3, DateTime.Now.AddMinutes(-100));
             _feed.ProducerManager.AddTimestampBeforeDisconnect(4, DateTime.Now.AddMinutes(-100));
@@ -100,12 +104,20 @@ namespace Sportradar.OddsFeed.SDK.Test
 
             AttachToFeedEvents(_feed);
 
-            var allSession = _feed.CreateBuilder().SetMessageInterest(MessageInterest.AllMessages).Build();
+            var allSession = _feed.CreateBuilder().SetMessageInterest(MessageInterest.LiveMessagesOnly).Build();
             var simpleMessageProcessor = new SimpleMessageProcessor(allSession);
             simpleMessageProcessor.Open();
+            var allSession2 = _feed.CreateBuilder().SetMessageInterest(MessageInterest.PrematchMessagesOnly).Build();
+            var simpleMessageProcessor2 = new SimpleMessageProcessor(allSession2);
+            simpleMessageProcessor2.Open();
+            var allSession3 = _feed.CreateBuilder().SetMessageInterest(MessageInterest.VirtualSportMessages).Build();
+            var simpleMessageProcessor3 = new SimpleMessageProcessor(allSession3);
+            simpleMessageProcessor3.Open();
             _feed.Open();
-            Thread.Sleep(20000);
+            Thread.Sleep(120000);
             simpleMessageProcessor.Close();
+            simpleMessageProcessor2.Close();
+            simpleMessageProcessor3.Close();
         }
         
         private void AttachToFeedEvents(IOddsFeed oddsFeed)

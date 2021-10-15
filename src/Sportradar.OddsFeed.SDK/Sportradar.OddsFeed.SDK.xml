@@ -11002,10 +11002,11 @@
             Gets a value indicating whether the current channel is opened
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.IRabbitMqChannel.Open(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.IRabbitMqChannel.Open(Sportradar.OddsFeed.SDK.Entities.MessageInterest,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Opens the current channel and binds the created queue to provided routing keys
             </summary>
+            <param name="interest">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> of the session using this instance</param>
             <param name="routingKeys">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the routing keys of the constructed queue.</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.IRabbitMqChannel.Close">
@@ -11098,6 +11099,11 @@
             Occurs when the current channel received the data
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel._interest">
+            <summary>
+            The message interest associated by the channel using this instance
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel._timer">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ITimer"/> instance used to trigger periodic connection test
@@ -11116,10 +11122,11 @@
             <param name="timer">Timer used to check if there is connection</param>
             <param name="maxTimeBetweenMessages">Max timeout between messages to check if connection is ok</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.Open(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.Open(Sportradar.OddsFeed.SDK.Entities.MessageInterest,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Opens the current channel and binds the created queue to provided routing keys
             </summary>
+            <param name="interest">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.MessageInterest"/> of the session using this instance</param>
             <param name="routingKeys">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the routing keys of the constructed queue.</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.Close">
