@@ -16,8 +16,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// Asynchronously gets <see cref="URN"/> specifying the id of the category to which the sport event belongs to
         /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{URN}"/> representing the asynchronous operation</returns>
-        Task<URN> GetCategoryIdAsync();
+        Task<URN> GetCategoryIdAsync(IEnumerable<CultureInfo> cultures);
 
         /// <summary>
         /// Asynchronously gets an id of the parent stage of the current instance or a null reference if the represented stage does not have the parent stage

@@ -34,8 +34,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// Asynchronously gets <see cref="URN"/> specifying the id of the tournament to which the sport event belongs to
         /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{URN}"/> representing the asynchronous operation</returns>
-        Task<URN> GetTournamentIdAsync();
+        Task<URN> GetTournamentIdAsync(IEnumerable<CultureInfo> cultures);
 
         /// <summary>
         /// Asynchronously gets a <see cref="IFixture"/> instance containing information about the arranged sport event

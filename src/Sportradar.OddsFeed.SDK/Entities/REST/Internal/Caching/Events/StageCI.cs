@@ -148,14 +148,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// get category identifier as an asynchronous operation.
         /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{URN}" /> representing the asynchronous operation</returns>
-        public async Task<URN> GetCategoryIdAsync()
+        public async Task<URN> GetCategoryIdAsync(IEnumerable<CultureInfo> cultures)
         {
             if (_categoryId != null)
             {
                 return _categoryId;
             }
-            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
+            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
             return _categoryId;
         }
 
@@ -170,7 +171,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _parentStageId;
             }
-            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
+            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
             return _parentStageId;
         }
 
@@ -185,7 +186,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _additionalParentIds;
             }
-            await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
+            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
             return _additionalParentIds;
         }
 

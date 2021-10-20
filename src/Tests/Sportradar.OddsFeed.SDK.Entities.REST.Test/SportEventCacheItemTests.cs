@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 await cacheItem.GetCompetitorsIdsAsync(TestData.Cultures);
                 await cacheItem.GetTournamentRoundAsync(TestData.Cultures);
                 await cacheItem.GetSeasonAsync(TestData.Cultures);
-                await cacheItem.GetTournamentIdAsync();
+                await cacheItem.GetTournamentIdAsync(TestData.Cultures);
                 await cacheItem.GetVenueAsync(TestData.Cultures);
                 await cacheItem.GetFixtureAsync(TestData.Cultures);
                 await cacheItem.GetReferenceIdsAsync();
@@ -158,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 
             var task = Task.Run(async () =>
             {
-                await cacheItem.GetTournamentIdAsync();
+                await cacheItem.GetTournamentIdAsync(TestData.Cultures);
                 await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
             });
 

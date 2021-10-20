@@ -75,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
-            var categoryId = await stageCI.GetCategoryIdAsync().ConfigureAwait(false);
+            var categoryId = await stageCI.GetCategoryIdAsync(Cultures).ConfigureAwait(false);
             if (categoryId == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No categoryId for stage cache item with id={Id}.");

@@ -82,7 +82,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             var item = (IMatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
             Assert.IsNotNull(item); // empty with providers
 
-            var tourId = item.GetTournamentIdAsync().Result;
+            var tourId = item.GetTournamentIdAsync(TestData.Cultures).Result;
             var fixture = item.GetFixtureAsync(TestData.Cultures).Result;
 
             Assert.AreEqual("sr:tournament:1030", tourId.ToString());
@@ -133,7 +133,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             SeasonCI seasonCI = null;
             Task.Run(async () =>
             {
-                await item.GetTournamentIdAsync();
+                await item.GetTournamentIdAsync(TestData.Cultures);
                 seasonCI = await item.GetSeasonAsync(TestData.Cultures);
                 await item.GetCompetitorsIdsAsync(TestData.Cultures);
             }).GetAwaiter().GetResult();
@@ -150,7 +150,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             IFixture fixture = null;
             Task.Run(async () =>
             {
-                tourId = await item.GetTournamentIdAsync();
+                tourId = await item.GetTournamentIdAsync(TestData.Cultures);
                 fixture = await item.GetFixtureAsync(TestData.Cultures);
             }).GetAwaiter().GetResult();
 
@@ -268,7 +268,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} name");
                 var fixture = await ci.GetFixtureAsync(new[] { culture });
                 Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} fixture");
-                var tour = await ci.GetTournamentIdAsync();
+                var tour = await ci.GetTournamentIdAsync(TestData.Cultures);
                 Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} tournament");
                 var booking  = await ci.GetBookingStatusAsync();
                 Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} booking status");
@@ -330,7 +330,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                     Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} name");
                     tasks.Add(ci.GetFixtureAsync(new[] { culture }));
                     Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} fixture");
-                    tasks.Add(ci.GetTournamentIdAsync());
+                    tasks.Add(ci.GetTournamentIdAsync(TestData.Cultures));
                     Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} tournament");
                     tasks.Add(ci.GetBookingStatusAsync());
                     Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} booking status");

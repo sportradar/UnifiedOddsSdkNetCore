@@ -180,8 +180,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var tournamentId = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await matchCI.GetTournamentIdAsync().ConfigureAwait(false)
-                : await new Func<Task<URN>>(matchCI.GetTournamentIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ILongTermEvent")).ConfigureAwait(false);
+                ? await matchCI.GetTournamentIdAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<URN>>(matchCI.GetTournamentIdAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ILongTermEvent")).ConfigureAwait(false);
 
             return tournamentId == null
                 ? null

@@ -168,14 +168,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// Get tournament identifier as an asynchronous operation
         /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages to which the returned instance should be translated</param>
         /// <returns>A <see cref="Task{URN}" /> representing the asynchronous operation</returns>
-        public async Task<URN> GetTournamentIdAsync()
+        public async Task<URN> GetTournamentIdAsync(IEnumerable<CultureInfo> cultures)
         {
             if (_tournamentId != null)
             {
                 return _tournamentId;
             }
-            await FetchMissingSummary(new List<CultureInfo> { DefaultCulture }, false).ConfigureAwait(false);
+            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
             return _tournamentId;
         }
 
