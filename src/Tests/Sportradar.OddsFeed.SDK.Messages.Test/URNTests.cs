@@ -156,5 +156,18 @@ namespace Sportradar.OddsFeed.SDK.Messages.Test
             Assert.IsNotNull(urn, "urn should not be null");
             Assert.AreEqual(ResourceTypeGroup.DRAW, urn.TypeGroup, "Value of TypeGroup is not correct");
         }
+
+        [TestMethod]
+        public void CustomEventUrn()
+        {
+            var urnString = "ccc:match:1234";
+            var urn = URN.Parse(urnString);
+
+            Assert.IsNotNull(urn, "urn cannot be a null reference");
+            Assert.AreEqual("ccc", urn.Prefix, "Value of the prefix is not correct");
+            Assert.AreEqual("match", urn.Type, "Value of type is not correct");
+            Assert.AreEqual(ResourceTypeGroup.MATCH, urn.TypeGroup, "Value of the typeGroup ils not correct");
+            Assert.AreEqual(1234, urn.Id, "Value of the Id is not correct");
+        }
     }
 }
