@@ -379,6 +379,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 case "prologue":
                     result = StageType.Prologue;
                     return true;
+                case "run":
+                    result = StageType.Run;
+                    return true;
                 default:
                     result = null;
                     return false;

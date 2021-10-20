@@ -76,6 +76,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         /// <summary>
         /// The prologue
         /// </summary>
-        Prologue
+        Prologue,
+
+        /// <summary>
+        /// The run
+        /// </summary>
+        Run
     }
 }
