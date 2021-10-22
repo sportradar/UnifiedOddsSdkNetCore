@@ -130,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Asynchronous export item's properties
         /// </summary>
         /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
-        public async Task<ExportableGroupCI> ExportAsync()
+        public Task<ExportableGroupCI> ExportAsync()
         {
             var cr = new Dictionary<string, Dictionary<string, string>>();
             if (!CompetitorsReferences.IsNullOrEmpty())
@@ -149,13 +149,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 }
             }
 
-            return new ExportableGroupCI
+            return Task.FromResult(new ExportableGroupCI
             {
                 Id = Id,
                 Name = Name,
                 Competitors = CompetitorsIds?.Select(s=>s.ToString()),
                 CompetitorsReferences = cr.IsNullOrEmpty() ? null : cr
-            };
+            });
         }
     }
 }

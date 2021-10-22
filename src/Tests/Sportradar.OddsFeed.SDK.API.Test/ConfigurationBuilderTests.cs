@@ -539,7 +539,6 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
             Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Production), ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
             Assert.AreEqual(EnvironmentManager.GetApiHost(SdkEnvironment.Replay), ReplayBuilder("token").SetDefaultLanguage(TestData.Culture).Build().ApiHost);
-            //Assert.AreEqual(_testSection.ApiHost, CustomBuilder("token").SetDefaultLanguage(TestData.Culture).SetMessagingHost("mq.domain.com").Build().ApiHost);
 
             Assert.AreEqual(_testSection.ApiHost, CustomBuilder(_testSection).Build().ApiHost);
             Assert.AreEqual(_testSection.ApiHost, CustomBuilder(_testSection).LoadFromConfigFile().Build().ApiHost);

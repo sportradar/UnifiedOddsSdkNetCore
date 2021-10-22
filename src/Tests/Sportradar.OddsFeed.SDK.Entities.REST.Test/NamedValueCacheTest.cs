@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -35,6 +36,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Allowed in this test")]
         public void data_is_fetched_only_once()
         {
             Setup(ExceptionHandlingStrategy.CATCH);
@@ -73,6 +76,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
+        [SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "Allowed in test")]
         public void throwing_exception_strategy_is_respected()
         {
             Setup(ExceptionHandlingStrategy.THROW);
@@ -83,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             }
             catch (ArgumentOutOfRangeException)
             {
-
+                // ignored
             }
         }
 

@@ -185,8 +185,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             var connectionFactory = new ConfiguredConnectionFactory(config);
             container.RegisterInstance<IConnectionFactory>(connectionFactory, new PerResolveLifetimeManager());
-
-            //container.RegisterType<IConnectionFactory, ConfiguredConnectionFactory>(new PerResolveLifetimeManager());
+            
             container.RegisterType<IChannelFactory, ChannelFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<ConnectionValidator, ConnectionValidator>(new ContainerControlledLifetimeManager());
 
@@ -199,8 +198,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IProfileCache>(),
                     SdkInfo.SoccerSportUrns
                     ));
-
-            //var config = container.Resolve<IOddsFeedConfigurationInternal>();
+            
             container.RegisterType<IEventRecoveryRequestIssuer, RecoveryRequestIssuer>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
@@ -625,7 +623,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ISingleTypeMapperFactory<market_descriptions, EntityList<MarketDescriptionDTO>>>()));
 
             // variant market description provider
-            //container.RegisterType<IDeserializer<market_descriptions>, Deserializer<market_descriptions>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<market_descriptions, MarketDescriptionDTO>, MarketDescriptionMapperFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<IDataProvider<MarketDescriptionDTO>, DataProvider<market_descriptions, MarketDescriptionDTO>>(
                     new ContainerControlledLifetimeManager(),

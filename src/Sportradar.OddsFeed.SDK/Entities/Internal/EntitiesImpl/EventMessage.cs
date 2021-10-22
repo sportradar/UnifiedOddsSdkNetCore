@@ -18,15 +18,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         /// <param name="timestamp">The value specifying timestamps related to the message (in the milliseconds since EPOCH UTC)</param>
         /// <param name="producer">The <see cref="IProducer" /> specifying the producer / service which dispatched the current <see cref="Message" /> message</param>
-        /// <param name="event">An <see cref="ICompetition" /> derived instance representing the sport event associated with the current <see cref="EventMessage{T}" /></param>
+        /// <param name="competition">An <see cref="ICompetition" /> derived instance representing the sport event associated with the current <see cref="EventMessage{T}" /></param>
         /// <param name="requestId">The id of the request which triggered the current <see cref="EventMessage{T}" /> message or a null reference</param>
         /// <param name="rawMessage">The raw message </param>
-        protected EventMessage(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, byte[] rawMessage)
+        protected EventMessage(IMessageTimestamp timestamp, IProducer producer, T competition, long? requestId, byte[] rawMessage)
             : base(timestamp, producer)
         {
-            Guard.Argument(@event, nameof(@event)).Require(@event != null);
+            Guard.Argument(competition, nameof(competition)).Require(competition != null);
 
-            Event = @event;
+            Event = competition;
             RequestId = requestId;
             RawMessage = rawMessage;
         }

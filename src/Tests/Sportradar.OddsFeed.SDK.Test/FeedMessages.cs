@@ -13,8 +13,7 @@
 // 
 namespace Sportradar.OddsFeed.SDK.Test {
     using System.Xml.Serialization;
-    
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.SerializableAttribute()]

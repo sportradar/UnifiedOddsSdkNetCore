@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Configuration;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {

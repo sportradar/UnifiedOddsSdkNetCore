@@ -189,9 +189,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 responseMessage = await _dataPoster.PostDataAsync(new Uri(url)).ConfigureAwait(false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // ignored
+                var _ = ex.Message;
             }
             finally
             {

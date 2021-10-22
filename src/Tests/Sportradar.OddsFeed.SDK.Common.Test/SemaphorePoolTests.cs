@@ -262,7 +262,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Test
                                        Assert.IsNotNull(semaphore);
                                        await semaphore.WaitAsync().ConfigureAwait(false);
                                        Assert.IsTrue(pool.AvailableSemaphoreIds.Contains(stringId));
-                                       //Debug.WriteLine($"Id={stringId}, semaphore usage={pool.SemaphoreHolders.First(f=>f.Id.Equals(stringId)).UsageCount}");
                                        Thread.Sleep(StaticRandom.I100);
                                        semaphore.ReleaseSafe();
                                        pool.Release(stringId);

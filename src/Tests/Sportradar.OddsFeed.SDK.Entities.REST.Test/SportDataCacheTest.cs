@@ -128,8 +128,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 
                 var tournamentSport = await _sportDataCache.GetSportForTournamentAsync(URN.Parse("sr:tournament:146"), TestData.Cultures);
                 Assert.IsNotNull(tournamentSport, "tournamentSport cannot be a null reference");
-                Assert.AreEqual(tournamentSport.Categories.Count(), 1, "The number of categories must be 1");
-                Assert.AreEqual(tournamentSport.Categories.First().Tournaments.Count(), 1, "the number of tournaments must be 1");
+                Assert.AreEqual(1, tournamentSport.Categories.Count(), "The number of categories must be 1");
+                Assert.AreEqual(1, tournamentSport.Categories.First().Tournaments.Count(), "the number of tournaments must be 1");
             }).GetAwaiter().GetResult();
             Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count} times.");
         }
@@ -168,8 +168,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                 Assert.IsNotNull(tournament, "tournament cannot be a null reference");
                 Assert.IsNotNull(tournamentEvents, "tournamentEvents cannot be a null reference");
                 Assert.IsNotNull(dateEvents, "dateEvents cannot be a null reference");
-                Assert.AreEqual(tournamentSport.Categories.Count(), 1, "The number of categories must be 1");
-                Assert.AreEqual(tournamentSport.Categories.First().Tournaments.Count(), 1, "the number of tournaments must be 1");
+                Assert.AreEqual(1, tournamentSport.Categories.Count(), "The number of categories must be 1");
+                Assert.AreEqual(1, tournamentSport.Categories.First().Tournaments.Count(), "the number of tournaments must be 1");
             }
         }
 
@@ -397,7 +397,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                     foreach (var j in i.Tournaments)
                     {
                         Assert.IsNotNull(j.Id);
-                        //Assert.AreEqual(cultureNbr, j.Names.Count);
                     }
                 }
             }

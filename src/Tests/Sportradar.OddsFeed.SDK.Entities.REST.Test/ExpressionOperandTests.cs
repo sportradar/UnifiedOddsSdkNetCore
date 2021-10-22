@@ -54,10 +54,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             var operand = new ExpressionOperand(
                 GetSpecifiers(SpecifierName, "1.5"),
                 SpecifierName,
-                SimpleMathOperation.SUBTRACT,
+                SimpleMathOperation.ADD,
                 1);
 
-            Assert.AreEqual((decimal)0.5, operand.GetDecimalValue().Result, "Decimal value returned by operand is not correct");
+            Assert.AreEqual((decimal)2.5, operand.GetDecimalValue().Result, "Decimal value returned by operand is not correct");
         }
 
         [TestMethod]

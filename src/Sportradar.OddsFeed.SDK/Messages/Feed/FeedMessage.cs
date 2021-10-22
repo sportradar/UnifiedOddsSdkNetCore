@@ -4,6 +4,7 @@
 using System.Text;
 using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
+#pragma warning disable 1591
 
 // ReSharper disable InconsistentNaming
 

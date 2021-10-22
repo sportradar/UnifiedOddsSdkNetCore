@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
@@ -57,6 +58,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Allowed in this test")]
         public void data_is_fetched_once_per_locale()
         {
             Setup(ExceptionHandlingStrategy.THROW);
@@ -76,6 +79,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Allowed in this test")]
         public void only_requested_locales_are_fetched()
         {
             Setup(ExceptionHandlingStrategy.THROW);
@@ -116,12 +121,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
+        [SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "<Pending>")]
         public void throwing_exception_strategy_is_respected()
         {
             Setup(ExceptionHandlingStrategy.THROW);
             try
             {
-                var value = _cache.GetAsync(1000).Result;
+                // ReSharper disable once UnusedVariable
+                var localizedNamedValue = _cache.GetAsync(1000).Result;
                 Assert.Fail("The operation should throw an exception");
             }
             catch (AggregateException ex)

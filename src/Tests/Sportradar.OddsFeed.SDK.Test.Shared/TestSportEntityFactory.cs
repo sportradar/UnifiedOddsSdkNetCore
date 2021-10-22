@@ -23,13 +23,13 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
     internal class TestSportEntityFactory : ISportEntityFactory
     {
-        private ISportDataCache _sportDataCache;
-        private ISportEventCache _sportEventCache;
-        private ISportEventStatusCache _eventStatusCache;
-        private ILocalizedNamedValueCache _matchStatusCache;
-        private IProfileCache _profileCache;
-        private IReadOnlyCollection<URN> _soccerSportUrns;
-        private ICacheManager _cacheManager;
+        private readonly ISportDataCache _sportDataCache;
+        private readonly ISportEventCache _sportEventCache;
+        private readonly ISportEventStatusCache _eventStatusCache;
+        private readonly ILocalizedNamedValueCache _matchStatusCache;
+        private readonly IProfileCache _profileCache;
+        private readonly IReadOnlyCollection<URN> _soccerSportUrns;
+        private readonly ICacheManager _cacheManager;
 
         public TestSportEntityFactory(ISportDataCache sportDataCache = null,
             ISportEventCache sportEventCache = null,
@@ -110,7 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return new Competitor(competitorCI, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
         }
 
-        public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI teamCompetitorCI, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
+        public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI teamCompetitorCI, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
@@ -148,7 +148,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        public Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> culture, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
+        public Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
             throw new NotImplementedException();
         }
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         /// <param name="categoryId">A <see cref="URN"/> of the <see cref="ICategorySummary"/> used to create new instance</param>
         /// <param name="cultures">A culture of the current instance of <see cref="ICategorySummary"/></param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        public async Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IEnumerable<CultureInfo> cultures)
+        public Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IEnumerable<CultureInfo> cultures)
         {
             throw new NotImplementedException();
         }

@@ -152,7 +152,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void get_tournament_id_async_calls_provider_with_default_locale()
+        public void get_tournament_id_async_calls_provider_with_all_locales()
         {
             var cacheItem = (IMatchCI)_sportEventCache.GetEventCacheItem(TestData.EventId);
 
@@ -164,7 +164,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 
             Task.WaitAll(task);
 
-            Assert.AreEqual(2, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly 2 times.");
+            Assert.AreEqual(3, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly 3 times.");
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventFixture), $"{SportEventFixture} should be called exactly 0 times.");
         }
 

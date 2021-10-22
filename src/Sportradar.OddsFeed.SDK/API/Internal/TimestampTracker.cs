@@ -15,7 +15,7 @@ using Sportradar.OddsFeed.SDK.Messages.Feed;
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     /// <summary>
-    /// Class used to track the timestamp & times of incoming messages in order to determine
+    /// Class used to track the timestamp and times of incoming messages in order to determine
     /// whether the feed is producing alive messages in a specified interval and if the user is
     /// processing messages in a timely matter.
     /// </summary>

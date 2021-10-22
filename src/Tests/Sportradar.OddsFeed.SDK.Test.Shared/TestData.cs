@@ -37,9 +37,9 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public static readonly URN SimpleTournamentId11111 = URN.Parse("sr:simple_tournament:11111");
 
         public static readonly CultureInfo Culture = new CultureInfo("en");
-        public static List<CultureInfo> Cultures => Cultures3;
-        public static readonly List<CultureInfo> Cultures3 = new List<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") });
-        public static readonly List<CultureInfo> Cultures4 = new List<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") , new CultureInfo("nl") });
+        public static IReadOnlyList<CultureInfo> Cultures => Cultures3;
+        public static readonly IReadOnlyList<CultureInfo> Cultures3 = new List<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") });
+        public static readonly IReadOnlyList<CultureInfo> Cultures4 = new List<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") , new CultureInfo("nl") });
 
 
         public static readonly CultureInfo CultureNl = new CultureInfo("nl");

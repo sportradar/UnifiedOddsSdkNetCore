@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
         {
             const string key = @"lo.-.live.bet_settlement.5.sr:match.9583179";
             var sportId = Parser.GetSportId(key, "bet_settlement");
-            Assert.AreEqual(sportId.Id, 5, "The parsed sportId is not correct");
+            Assert.AreEqual(5, sportId.Id, "The parsed sportId is not correct");
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Test
         {
             const string key = @"hi.-.live.odds_change.6.sr:match.9536715";
             var sportId = Parser.GetSportId(key, "odds_change");
-            Assert.AreEqual(sportId.Id, 6, "The parsed sportId is not correct");
+            Assert.AreEqual(6, sportId.Id, "The parsed sportId is not correct");
         }
 
         [TestMethod]
