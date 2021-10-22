@@ -25,11 +25,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
         private Dictionary<string, ISdkCache> _caches;
 
+
         /// <summary>
         /// Registers the cache in the CacheManager
         /// </summary>
         /// <param name="name">The name of the instance</param>
         /// <param name="cache">The cache to be registered</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3928:Parameter names used into ArgumentException constructors should match an existing one ", Justification = "Invalid argument")]
         public void RegisterCache(string name, ISdkCache cache)
         {
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
@@ -45,10 +47,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             if (_caches.ContainsKey(name))
             {
-                //throw new ArgumentException("Cache with this name already added.", nameof(name));
                 ExecLog.LogWarning($"Cache with the name={name} already added. Removing it.");
                 _caches.Remove(name);
-                //return;
             }
             ExecLog.LogDebug($"Registering cache with the name={name} to the CacheManager.");
             _caches.Add(name, cache);
@@ -87,11 +87,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 return;
             }
-
-            //ExecLog.LogDebug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}].");
-
+            
             var appropriateCaches = _caches.Where(s => s.Value.RegisteredDtoTypes.Contains(dtoType)).ToList();
-            //ExecLog.LogDebug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] to {appropriateCaches.Count}/{_caches.Count} caches.");
 
             if (!appropriateCaches.Any())
             {
@@ -115,7 +112,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 ExecLog.LogWarning("Cannot save data. There is no registered cache.");
             }
-            //ExecLog.LogDebug($"Dispatching {id} of type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] COMPLETED.");
         }
 
         /// <summary>

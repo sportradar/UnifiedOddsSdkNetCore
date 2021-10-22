@@ -25,12 +25,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         Task<DrawStatus> GetStatusAsync();
 
-        ///// <summary>
-        ///// Asynchronously gets a bool value indicating if the results are in chronological order
-        ///// </summary>
-        ///// <returns>The value indicating if the results are in chronological order</returns>
-        //Task<bool> AreResultsChronologicalAsync();
-
         /// <summary>
         /// Asynchronously gets <see cref="IEnumerable{T}"/> list of associated <see cref="IDrawResult"/>
         /// </summary>

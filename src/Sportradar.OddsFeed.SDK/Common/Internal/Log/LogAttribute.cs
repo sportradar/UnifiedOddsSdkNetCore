@@ -24,10 +24,5 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         {
             LoggerType = loggerType;
         }
-
-        //public bool Verify()
-        //{
-        //    return LoggerType.ToString().StartsWith("D");
-        //}
     }
 }

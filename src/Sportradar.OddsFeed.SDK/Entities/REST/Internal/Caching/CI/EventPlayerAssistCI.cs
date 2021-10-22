@@ -16,8 +16,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     /// <seealso cref="CacheItem" />
     internal class EventPlayerAssistCI : CacheItem
     {
+        /// <summary>
+        /// Gets the type.
+        /// </summary>
+        /// <value>The type.</value>
         public string Type { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventPlayerAssistCI"/> class.
+        /// </summary>
+        /// <param name="dto">The dto containing data</param>
+        /// <param name="culture">The culture of the data</param>
         public EventPlayerAssistCI(EventPlayerAssistDTO dto, CultureInfo culture)
             : base(dto.Id, dto.Name, culture)
         {
@@ -26,6 +35,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Type = dto.Type;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventPlayerAssistCI"/> class.
+        /// </summary>
+        /// <param name="exportable">The <see cref="ExportableEventPlayerAssistCI"/></param>
         public EventPlayerAssistCI(ExportableEventPlayerAssistCI exportable)
             : base(exportable)
         {

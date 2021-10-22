@@ -173,6 +173,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

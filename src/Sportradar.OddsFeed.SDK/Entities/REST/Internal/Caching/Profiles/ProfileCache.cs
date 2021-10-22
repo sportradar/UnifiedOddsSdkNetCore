@@ -1049,7 +1049,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// Imports provided items into the cache
         /// </summary>
         /// <param name="items">Collection of <see cref="ExportableCI"/> to be inserted into the cache</param>
-        public async Task ImportAsync(IEnumerable<ExportableCI> items)
+        public Task ImportAsync(IEnumerable<ExportableCI> items)
         {
             foreach (var exportable in items)
             {
@@ -1068,6 +1068,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     AddPlayerProfile(exportablePlayerProfile);
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

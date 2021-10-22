@@ -56,19 +56,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         void CacheDeleteItem(URN id, CacheItemType cacheItemType);
 
         /// <summary>
+        /// Deletes the item from cache
+        /// </summary>
+        /// <param name="id">A string representing the id of the item in the cache to be deleted</param>
+        /// <param name="cacheItemType">A cache item type</param>
+        void CacheDeleteItem(string id, CacheItemType cacheItemType);
+
+        /// <summary>
         /// Does item exists in the cache
         /// </summary>
         /// <param name="id">A <see cref="URN"/> representing the id of the item to be checked</param>
         /// <param name="cacheItemType">A cache item type</param>
         /// <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         bool CacheHasItem(URN id, CacheItemType cacheItemType);
-
-        /// <summary>
-        /// Deletes the item from cache
-        /// </summary>
-        /// <param name="id">A string representing the id of the item in the cache to be deleted</param>
-        /// <param name="cacheItemType">A cache item type</param>
-        void CacheDeleteItem(string id, CacheItemType cacheItemType);
 
         /// <summary>
         /// Does item exists in the cache

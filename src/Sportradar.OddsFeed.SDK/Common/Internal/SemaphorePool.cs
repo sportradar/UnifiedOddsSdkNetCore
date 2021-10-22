@@ -101,6 +101,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

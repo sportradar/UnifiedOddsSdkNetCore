@@ -958,7 +958,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             if (cacheItemType == CacheItemType.Sport || cacheItemType == CacheItemType.All)
             {
-                return Sports.ContainsKey(id);
+                return Sports.ContainsKey(id) || Categories.ContainsKey(id);
             }
 
             if (cacheItemType == CacheItemType.Category)
@@ -1171,16 +1171,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <summary>
-        /// Writes the log message
-        /// </summary>
-        /// <param name="text">The text to me logged</param>
-        /// <param name="useDebug">if set to <c>true</c> [use debug].</param>
-        protected override void WriteLog(string text, bool useDebug = false)
-        {
-            base.WriteLog(text, useDebug);
-        }
-
-        /// <summary>
         /// Exports current items in the cache
         /// </summary>
         /// <returns>Collection of <see cref="ExportableCI"/> containing all the items currently in the cache</returns>
@@ -1206,7 +1196,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// Imports provided items into the cache
         /// </summary>
         /// <param name="items">Collection of <see cref="ExportableCI"/> to be inserted into the cache</param>
-        public async Task ImportAsync(IEnumerable<ExportableCI> items)
+        public Task ImportAsync(IEnumerable<ExportableCI> items)
         {
             foreach (var exportable in items)
             {
@@ -1221,6 +1211,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     AddCategory(exportableCategory);
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

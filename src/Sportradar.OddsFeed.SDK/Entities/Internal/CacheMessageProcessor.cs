@@ -139,8 +139,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     return;
                 }
             }
-            
-            //RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(message, interest, rawMessage)); // no need to call it
         }
 
         /// <summary>

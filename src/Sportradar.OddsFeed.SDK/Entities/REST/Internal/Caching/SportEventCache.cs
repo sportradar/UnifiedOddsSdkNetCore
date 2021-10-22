@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
-        private static readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(SportEventCache));
+        private new static readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(SportEventCache));
 
         /// <summary>
         /// The list of dates already automatically loaded by the timer

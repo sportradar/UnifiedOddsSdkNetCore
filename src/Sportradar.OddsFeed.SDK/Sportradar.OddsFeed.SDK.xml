@@ -2650,7 +2650,7 @@
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection"/></returns>
             <exception cref="T:System.InvalidOperationException">The configuration could not be loaded or the configuration does not contain the requested section</exception>
-            <exception cref="!:ConfigurationErrorsException">The section in the configuration file is not valid</exception>
+            <exception cref="T:System.Configuration.ConfigurationErrorsException">The section in the configuration file is not valid</exception>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.IDispatcherStore">
             <summary>
@@ -5714,7 +5714,13 @@
             </summary>
             <exception cref="T:System.InvalidOperationException">Current FeedSystemSession is already closed</exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Sportradar.OddsFeed.SDK.API.Internal.TimestampTracker" -->
+        <member name="T:Sportradar.OddsFeed.SDK.API.Internal.TimestampTracker">
+            <summary>
+            Class used to track the timestamp and times of incoming messages in order to determine
+            whether the feed is producing alive messages in a specified interval and if the user is
+            processing messages in a timely matter.
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.TimestampTracker.ExecutionLog">
             <summary>
             A <see cref="T:Microsoft.Extensions.Logging.ILogger"/>
@@ -9252,7 +9258,7 @@
             </summary>
             <param name="timestamp">The value specifying timestamps related to the message (in the milliseconds since EPOCH UTC)</param>
             <param name="producer">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer" /> specifying the producer / service which dispatched the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Message" /> message</param>
-            <param name="event">An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition" /> derived instance representing the sport event associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /></param>
+            <param name="competition">An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition" /> derived instance representing the sport event associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /></param>
             <param name="requestId">The id of the request which triggered the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /> message or a null reference</param>
             <param name="rawMessage">The raw message </param>
         </member>
@@ -9579,7 +9585,7 @@
             </summary>
             <param name="timestamp">The value specifying timestamps related to the message (in the milliseconds since EPOCH UTC)</param>
             <param name="producer">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer" /> specifying the producer / service which dispatched the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Message" /> message</param>
-            <param name="event">An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition" /> derived instance representing the sport event associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /></param>
+            <param name="competition">An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition" /> derived instance representing the sport event associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /></param>
             <param name="requestId">The id of the request which triggered the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /> message or a null reference</param>
             <param name="markets">An <see cref="T:System.Collections.Generic.IEnumerable`1" /> describing markets associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketMessage`2" /></param>
             <param name="rawMessage">The raw message</param>
@@ -10266,7 +10272,17 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1.#ctor(Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp,Sportradar.OddsFeed.SDK.Messages.IProducer,`0,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IMarketCancel},System.Byte[])" -->
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1.#ctor(Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp,Sportradar.OddsFeed.SDK.Messages.IProducer,`0,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IMarketCancel},System.Byte[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1" /> message
+            </summary>
+            <param name="timestamp">The value specifying timestamps related to the message (in the milliseconds since EPOCH UTC)</param>
+            <param name="producer">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer" /> specifying the producer / service which dispatched the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Message" /> message</param>
+            <param name="competition">An <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition" /> derived instance representing the sport event associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /></param>
+            <param name="requestId">The id of the request which triggered the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /> message or a null reference</param>
+            <param name="markets">An <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMarketMessage`2" /> describing markets associated with the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.EventMessage`1" /></param>
+            <param name="rawMessage">The raw message</param>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.SnapshotCompleted">
             <summary>
             Represents a message dispatched by the feed after all the messages associated with snapshot request were dispatched
@@ -13798,6 +13814,11 @@
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Prologue">
             <summary>
             The prologue
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType.Run">
+            <summary>
+            The run
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.TimeType">
@@ -17674,9 +17695,9 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI.GetStartTimeTbdAsync">
             <summary>
-            Asynchronously gets a <see cref="!:bool?"/> specifying if the start time to be determined is set for the associated sport event.
+            Asynchronously gets a <see cref="T:System.Boolean"/> specifying if the start time to be determined is set for the associated sport event.
             </summary>
-            <returns>A <see cref="!:bool?"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+            <returns>A <see cref="T:System.Boolean"/> specifying if the start time to be determined is set for the associated sport event.</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI.GetReplacedByAsync">
             <summary>
@@ -17811,10 +17832,11 @@
             Defines a contract implemented by classes, which represent cached information about a stage
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetCategoryIdAsync">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetCategoryIdAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
             Asynchronously gets <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the id of the category to which the sport event belongs to
             </summary>
+            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IStageCI.GetParentStageAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
@@ -18639,10 +18661,11 @@
             <param name="defaultCulture">The default culture</param>
             <param name="fixtureTimestampCache">A <see cref="T:System.Runtime.Caching.MemoryCache"/> used to cache the sport events fixtureDTO timestamps</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.GetCategoryIdAsync">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.GetCategoryIdAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
             get category identifier as an asynchronous operation.
             </summary>
+            <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages to which the returned instance should be translated</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the asynchronous operation</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.StageCI.GetParentStageAsync(System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
@@ -26438,9 +26461,9 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SportEvent.GetStartTimeTbdAsync">
             <summary>
-            Asynchronously gets a <see cref="!:bool?"/> specifying if the start time to be determined is set for the associated sport event.
+            Asynchronously gets a <see cref="T:System.Boolean"/> specifying if the start time to be determined is set for the associated sport event.
             </summary>
-            <returns>A <see cref="!:bool?"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+            <returns>A <see cref="T:System.Boolean"/> specifying if the start time to be determined is set for the associated sport event.</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.SportEvent.GetReplacedByAsync">
             <summary>
