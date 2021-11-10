@@ -64,6 +64,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private List<string> _routingKeys;
 
+        private DateTime _channelStarted;
+
         private DateTime _lastMessageReceived;
 
         /// <summary>
@@ -90,6 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             _channelFactory = channelFactory;
             _routingKeys = new List<string>();
+            _channelStarted = DateTime.MinValue;
             _lastMessageReceived = DateTime.MinValue;
 
             _timer = timer;
@@ -152,12 +155,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private void ConsumerOnShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
-            ExecutionLog.LogInformation($"The consumer {_consumer.ConsumerTag} is shutdown.");
+            ExecutionLog.LogInformation($"The consumer {_consumer.ConsumerTag} is shutdown. Reason={_consumer.ShutdownReason}");
         }
 
         private void ChannelOnModelShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
-            ExecutionLog.LogInformation($"The channel with channelNumber {_channel.ChannelNumber} is shutdown.");
+            ExecutionLog.LogInformation($"The channel with channelNumber {_channel.ChannelNumber} is shutdown. Reason={_channel.CloseReason}");
         }
 
         private void CreateAndAttachEvents()
@@ -180,7 +183,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             _channel.BasicConsume(declareResult.QueueName, true, _consumer.ConsumerTag, _consumer);
             _channel.ModelShutdown += ChannelOnModelShutdown;
 
-            _lastMessageReceived = DateTime.Now;
+            _lastMessageReceived = DateTime.MinValue;
+            _channelStarted = DateTime.Now;
         }
 
         private void DetachEvents()
@@ -198,6 +202,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 _channel.Dispose();
                 _channel = null;
             }
+            
+            _channelStarted = DateTime.MinValue;
         }
 
         private void OnTimerElapsed(object sender, EventArgs e)
@@ -224,14 +230,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                         CreateAndAttachEvents();
                     }
 
-                    if(_channelFactory.ConnectionCreated > _lastMessageReceived)
+                    // it means, the connection was reset in between
+                    if(_channelFactory.ConnectionCreated > _channelStarted)
                     {
                         ExecutionLog.LogInformation("Recreating connection channel and attaching events ...");
-                        // it means, the connection was reset in between
                         DetachEvents();
                         CreateAndAttachEvents();
                     }
 
+                    // no messages arrived in last _maxTimeBetweenMessages seconds, from the start of the channel
+                    var channelStartedDiff = DateTime.Now - _channelStarted;
+                    if (_lastMessageReceived == DateTime.MinValue && _channelStarted > DateTime.MinValue && channelStartedDiff > _maxTimeBetweenMessages)
+                    {
+                        var isOpen = _channelFactory.IsConnectionOpen() ? "s" : string.Empty;
+                        ExecutionLog.LogWarning($"There were no message{isOpen} in more then {_maxTimeBetweenMessages.TotalSeconds}s for the channel with channelNumber: {_channel?.ChannelNumber}. Last message arrived: {_lastMessageReceived}. Recreating channel.");
+                        DetachEvents();
+                        CreateAndAttachEvents();
+                    }
+
+                    // we have received messages in the past, but not in last _maxTimeBetweenMessages seconds
                     var lastMessageDiff = DateTime.Now - _lastMessageReceived;
                     if (_lastMessageReceived > DateTime.MinValue && lastMessageDiff > _maxTimeBetweenMessages)
                     {
@@ -246,7 +263,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogWarning("Error checking connection for channelNumber {_channel?.ChannelNumber}: " + e.Message);
+                    ExecutionLog.LogWarning($"Error checking connection for channelNumber {_channel?.ChannelNumber}: " + e.Message);
                 }
             }
             

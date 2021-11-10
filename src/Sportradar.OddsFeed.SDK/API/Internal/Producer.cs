@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets the scope of the producer
         /// </summary>
         /// <value>The scope</value>
-        internal IEnumerable<string> Scope { get; }
+        public IEnumerable<string> Scope { get; }
 
         /// <summary>
         /// Gets the recovery info about last recovery attempt

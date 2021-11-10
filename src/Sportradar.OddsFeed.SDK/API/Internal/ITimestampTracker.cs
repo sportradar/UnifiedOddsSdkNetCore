@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
@@ -43,5 +45,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="alive">The <see cref="alive"/> message received on a system session.</param>
         void ProcessSystemAlive(alive alive);
+
+        /// <summary>
+        /// Sdk start time
+        /// </summary>
+        DateTime SdkStartTime { get; }
     }
 }

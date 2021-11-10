@@ -50,6 +50,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// A <see cref="MessageTimingInfo"/> used to track alive messages from the system session
         /// </summary>
         private readonly MessageTimingInfo _systemAliveTimingInfo;
+        
+        /// <summary>
+        /// Sdk start time (used for recovery initiation)
+        /// </summary>
+        public DateTime SdkStartTime { get; }
 
         /// <summary>
         /// Gets a value indicating whether the feed messages are processed in a timely manner
@@ -116,6 +121,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             _aliveMessagesTimingInfo = new ReadOnlyDictionary<MessageInterest, MessageTimingInfo>(aliveMessagesTimingInfo);
             _nonAliveMessagesTimingInfo = new ReadOnlyDictionary<MessageInterest, MessageTimingInfo>(nonAliveMessagesTimingInfo);
+            SdkStartTime = DateTime.Now;
         }
 
         /// <summary>

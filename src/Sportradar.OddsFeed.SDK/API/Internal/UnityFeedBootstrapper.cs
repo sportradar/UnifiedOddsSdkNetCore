@@ -184,8 +184,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterInstance(dispatcher, new ExternallyControlledLifetimeManager());
 
             var connectionFactory = new ConfiguredConnectionFactory(config);
-            container.RegisterInstance<IConnectionFactory>(connectionFactory, new PerResolveLifetimeManager());
-            
+            container.RegisterInstance<IConnectionFactory>(connectionFactory, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<ConfiguredConnectionFactory>(connectionFactory, new ContainerControlledLifetimeManager());
+
             container.RegisterType<IChannelFactory, ChannelFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<ConnectionValidator, ConnectionValidator>(new ContainerControlledLifetimeManager());
 
@@ -204,14 +205,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 new InjectionConstructor(
                     new ResolvedParameter<IDataPoster>("RecoveryDataPoster"),
                     new ResolvedParameter<ISequenceGenerator>(),
-                    config));
+                    config,
+                    new ResolvedParameter<IProducerManager>()));
 
             container.RegisterType<IRecoveryRequestIssuer, RecoveryRequestIssuer>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     new ResolvedParameter<IDataPoster>(),
                     new ResolvedParameter<ISequenceGenerator>(),
-                    config));
+                    config,
+                    new ResolvedParameter<IProducerManager>()));
 
             container.RegisterFactory<RecoveryRequestIssuer>(c => c.Resolve<IEventRecoveryRequestIssuer>(), new ContainerControlledLifetimeManager());
 

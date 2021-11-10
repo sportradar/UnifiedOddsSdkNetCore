@@ -1,28 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using App.Metrics;
+﻿using App.Metrics;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Sportradar.OddsFeed.SDK.API;
+using Sportradar.OddsFeed.SDK.API.Extended;
 using Sportradar.OddsFeed.SDK.API.Internal;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
 using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace Sportradar.OddsFeed.SDK.Test
 {
-    internal class TestFeed : Feed
+    /// <summary>
+    /// Class TestFeed through which we can also control what is received from API
+    /// Implements the <see cref="FeedExt" />
+    /// </summary>
+    /// <remarks>Override default classes for accessing API endpoints (DataRouterManager, ProducersProvider, RecoveryDataPoster)</remarks>
+    /// <seealso cref="FeedExt" />
+    internal class TestFeed : FeedExt
     {
-        private readonly IDataRouterManager _dataRouterManager;
-        private readonly IProducersProvider _producersProvider;
+        public readonly IDataRouterManager DataRouterManager;
+        public readonly IProducersProvider ProducersProvider;
+        public readonly TestDataFetcher RecoveryDataPoster;
 
         /// <inheritdoc />
-        protected TestFeed(IDataRouterManager dataRouterManager, IProducersProvider producersProvider, IOddsFeedConfiguration config, bool isReplay, ILoggerFactory loggerFactory = null, IMetricsRoot metricsRoot = null)
-            : base(config, isReplay, loggerFactory, metricsRoot)
+        public TestFeed(IDataRouterManager dataRouterManager, IProducersProvider producersProvider, IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null, IMetricsRoot metricsRoot = null)
+            : base(config, loggerFactory, metricsRoot)
         {
             var bookmakerDetailsProviderMock = new Mock<BookmakerDetailsProvider>("bookmakerDetailsUriFormat",
                                                                                   new TestDataFetcher(),
@@ -33,51 +41,25 @@ namespace Sportradar.OddsFeed.SDK.Test
 
             InternalConfig = new OddsFeedConfigurationInternal(config, defaultBookmakerDetailsProvider);
 
-            _dataRouterManager = dataRouterManager;
-            _producersProvider = producersProvider;
+            DataRouterManager = dataRouterManager;
+            ProducersProvider = producersProvider;
 
-            //InitFeed(dataRouterManager, producersProvider);
-        }
-
-        /// <inheritdoc />
-        public TestFeed(IDataRouterManager dataRouterManager, IProducersProvider producersProvider, IOddsFeedConfiguration config, ILoggerFactory loggerFactory = null, IMetricsRoot metricsRoot = null)
-            : this(dataRouterManager, producersProvider, config, false, loggerFactory, metricsRoot)
-        {
+            RecoveryDataPoster = new TestDataFetcher();
         }
 
         /// <inheritdoc />
         protected override void UpdateDependency()
         {
             base.UpdateDependency();
-            UnityContainer.RegisterInstance<IDataRouterManager>(_dataRouterManager);
-            UnityContainer.RegisterInstance<IProducersProvider>(_producersProvider);
+            UnityContainer.RegisterInstance(DataRouterManager);
+            UnityContainer.RegisterInstance(ProducersProvider);
+            UnityContainer.RegisterType<IRecoveryRequestIssuer, RecoveryRequestIssuer>(
+                                                                                  new ContainerControlledLifetimeManager(),
+                                                                                  new InjectionConstructor(
+                                                                                                           RecoveryDataPoster,
+                                                                                                           new ResolvedParameter<ISequenceGenerator>(),
+                                                                                                           InternalConfig,
+                                                                                                           new ResolvedParameter<IProducerManager>()));
         }
-
-        //protected void InitFeed(IDataRouterManager dataRouterManager, IProducersProvider producersProvider)
-        //{
-        //    base.InitFeed();
-
-        //    if (FeedInitialized)
-        //    {
-        //        return;
-        //    }
-
-        //    InternalConfig.Load(); // loads bookmaker_details
-        //    if (InternalConfig.BookmakerDetails == null)
-        //    {
-        //        _log.LogError("Token not accepted.");
-        //        return;
-        //    }
-        //    UnityContainer.RegisterTypes(this, InternalConfig);
-        //    UnityContainer.RegisterAdditionalTypes();
-
-        //    _feedRecoveryManager = UnityContainer.Resolve<IFeedRecoveryManager>();
-        //    _connectionValidator = UnityContainer.Resolve<ConnectionValidator>();
-
-        //    FeedInitialized = true;
-
-        //    UnityContainer.RegisterInstance<IDataRouterManager>(dataRouterManager);
-        //    UnityContainer.RegisterInstance<IProducersProvider>(producersProvider);
-        //}
     }
 }

@@ -22,6 +22,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         long? RequestId { get; }
 
         /// <summary>
+        /// Gets the time of the last issued recovery request attempt
+        /// </summary>
+        DateTime LastAttemptTime { get; }
+
+        /// <summary>
         /// Gets the start time of the last issued recovery request.
         /// </summary>
         DateTime LastStartTime { get; }

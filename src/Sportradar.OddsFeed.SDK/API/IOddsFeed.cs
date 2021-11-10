@@ -34,6 +34,11 @@ namespace Sportradar.OddsFeed.SDK.API
         event EventHandler<ProducerStatusChangeEventArgs> ProducerUp;
 
         /// <summary>
+        /// Occurs when a recovery initiation completes
+        /// </summary>
+        event EventHandler<RecoveryInitiatedEventArgs> RecoveryInitiated;
+
+        /// <summary>
         /// Gets a <see cref="IEventRecoveryRequestIssuer"/> instance used to issue recovery requests to the feed
         /// </summary>
         IEventRecoveryRequestIssuer EventRecoveryRequestIssuer { get; }

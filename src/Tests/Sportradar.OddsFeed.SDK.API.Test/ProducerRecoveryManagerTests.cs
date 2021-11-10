@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         private void CreateTestInstances()
         {
             _producer = new Producer(3, "Ctrl", "Betradar Ctrl", "https://api.betradar.com/v1/pre/", true, 20, 1800, "live", 4320);
-            _messageBuilder = new FeedMessageBuilder(_producer);
+            _messageBuilder = new FeedMessageBuilder(_producer.Id);
             _timestampTracker = new TimestampTracker(_producer, new [] {DefaultInterest}, 20, 20);
             _recoveryOperation = new RecoveryOperation(_producer, _recoveryRequestIssuerMock.Object, new[] {DefaultInterest}, 0, false);
             _producerRecoveryManager = new ProducerRecoveryManager(_producer, _recoveryOperation, _timestampTracker, 30);
@@ -158,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             CreateTestInstances();
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
             _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildSnapshotComplete(1), DefaultInterest);
-            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
+            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
             Assert.AreEqual(ProducerRecoveryStatus.Completed, _producerRecoveryManager.Status);
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Delayed, _producerRecoveryManager.Status);
@@ -167,7 +167,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             CreateTestInstances();
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
             _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildSnapshotComplete(1), DefaultInterest);
-            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildBetStop(null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
+            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildBetStop(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
             Assert.AreEqual(ProducerRecoveryStatus.Completed, _producerRecoveryManager.Status);
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Delayed, _producerRecoveryManager.Status);
@@ -218,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             _timeProvider.AddSeconds(30);
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Error, _producerRecoveryManager.Status);
-            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
+            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Error, _producerRecoveryManager.Status);
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
@@ -230,7 +230,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         {
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
             _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildSnapshotComplete(1), DefaultInterest);
-            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
+            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Delayed, _producerRecoveryManager.Status);
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
@@ -238,7 +238,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             _producerRecoveryManager.CheckStatus();
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Completed, _producerRecoveryManager.Status);
-            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
+            _producerRecoveryManager.ProcessUserMessage(_messageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(30)), DefaultInterest);
             _producerRecoveryManager.CheckStatus();
             Assert.AreEqual(ProducerRecoveryStatus.Delayed, _producerRecoveryManager.Status);
             // try alive violation

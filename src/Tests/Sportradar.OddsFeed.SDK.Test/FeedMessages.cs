@@ -19,8 +19,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class odds_change {
         
         private sportEventStatus sport_event_statusField;
@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -85,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string event_id {
             get {
                 return this.event_idField;
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -107,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -118,7 +118,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool request_idSpecified {
             get {
                 return this.request_idFieldSpecified;
@@ -129,7 +129,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int odds_change_reason {
             get {
                 return this.odds_change_reasonField;
@@ -140,7 +140,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool odds_change_reasonSpecified {
             get {
                 return this.odds_change_reasonFieldSpecified;
@@ -371,7 +371,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("period_score", IsNullable=false)]
+        [XmlArrayItemAttribute("period_score", IsNullable=false)]
         public periodScoreType[] period_scores {
             get {
                 return this.period_scoresField;
@@ -382,7 +382,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("result", IsNullable=false)]
+        [XmlArrayItemAttribute("result", IsNullable=false)]
         public resultType[] results {
             get {
                 return this.resultsField;
@@ -403,7 +403,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int status {
             get {
                 return this.statusField;
@@ -414,7 +414,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int reporting {
             get {
                 return this.reportingField;
@@ -425,7 +425,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool reportingSpecified {
             get {
                 return this.reportingFieldSpecified;
@@ -436,7 +436,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int match_status {
             get {
                 return this.match_statusField;
@@ -447,7 +447,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public decimal home_score {
             get {
                 return this.home_scoreField;
@@ -458,7 +458,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_scoreSpecified {
             get {
                 return this.home_scoreFieldSpecified;
@@ -469,7 +469,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public decimal away_score {
             get {
                 return this.away_scoreField;
@@ -480,7 +480,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_scoreSpecified {
             get {
                 return this.away_scoreFieldSpecified;
@@ -491,7 +491,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_penalty_score {
             get {
                 return this.home_penalty_scoreField;
@@ -502,7 +502,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_penalty_scoreSpecified {
             get {
                 return this.home_penalty_scoreFieldSpecified;
@@ -513,7 +513,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_penalty_score {
             get {
                 return this.away_penalty_scoreField;
@@ -524,7 +524,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_penalty_scoreSpecified {
             get {
                 return this.away_penalty_scoreFieldSpecified;
@@ -535,7 +535,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_gamescore {
             get {
                 return this.home_gamescoreField;
@@ -546,7 +546,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_gamescoreSpecified {
             get {
                 return this.home_gamescoreFieldSpecified;
@@ -557,7 +557,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_gamescore {
             get {
                 return this.away_gamescoreField;
@@ -568,7 +568,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_gamescoreSpecified {
             get {
                 return this.away_gamescoreFieldSpecified;
@@ -579,7 +579,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_legscore {
             get {
                 return this.home_legscoreField;
@@ -590,7 +590,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_legscoreSpecified {
             get {
                 return this.home_legscoreFieldSpecified;
@@ -601,7 +601,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_legscore {
             get {
                 return this.away_legscoreField;
@@ -612,7 +612,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_legscoreSpecified {
             get {
                 return this.away_legscoreFieldSpecified;
@@ -623,7 +623,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int current_server {
             get {
                 return this.current_serverField;
@@ -634,7 +634,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool current_serverSpecified {
             get {
                 return this.current_serverFieldSpecified;
@@ -645,7 +645,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public bool expedite_mode {
             get {
                 return this.expedite_modeField;
@@ -656,7 +656,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool expedite_modeSpecified {
             get {
                 return this.expedite_modeFieldSpecified;
@@ -667,7 +667,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public bool tiebreak {
             get {
                 return this.tiebreakField;
@@ -678,7 +678,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool tiebreakSpecified {
             get {
                 return this.tiebreakFieldSpecified;
@@ -689,7 +689,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_suspend {
             get {
                 return this.home_suspendField;
@@ -700,7 +700,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_suspendSpecified {
             get {
                 return this.home_suspendFieldSpecified;
@@ -711,7 +711,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_suspend {
             get {
                 return this.away_suspendField;
@@ -722,7 +722,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_suspendSpecified {
             get {
                 return this.away_suspendFieldSpecified;
@@ -733,7 +733,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int balls {
             get {
                 return this.ballsField;
@@ -744,7 +744,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool ballsSpecified {
             get {
                 return this.ballsFieldSpecified;
@@ -755,7 +755,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int strikes {
             get {
                 return this.strikesField;
@@ -766,7 +766,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool strikesSpecified {
             get {
                 return this.strikesFieldSpecified;
@@ -777,7 +777,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int outs {
             get {
                 return this.outsField;
@@ -788,7 +788,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool outsSpecified {
             get {
                 return this.outsFieldSpecified;
@@ -799,7 +799,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string bases {
             get {
                 return this.basesField;
@@ -810,7 +810,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_batter {
             get {
                 return this.home_batterField;
@@ -821,7 +821,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_batterSpecified {
             get {
                 return this.home_batterFieldSpecified;
@@ -832,7 +832,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_batter {
             get {
                 return this.away_batterField;
@@ -843,7 +843,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_batterSpecified {
             get {
                 return this.away_batterFieldSpecified;
@@ -854,7 +854,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string pitcher {
             get {
                 return this.pitcherField;
@@ -865,7 +865,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string batter {
             get {
                 return this.batterField;
@@ -876,7 +876,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int pitch_count {
             get {
                 return this.pitch_countField;
@@ -887,7 +887,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool pitch_countSpecified {
             get {
                 return this.pitch_countFieldSpecified;
@@ -898,7 +898,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int pitches_seen {
             get {
                 return this.pitches_seenField;
@@ -909,7 +909,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool pitches_seenSpecified {
             get {
                 return this.pitches_seenFieldSpecified;
@@ -920,7 +920,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int total_hits {
             get {
                 return this.total_hitsField;
@@ -931,7 +931,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool total_hitsSpecified {
             get {
                 return this.total_hitsFieldSpecified;
@@ -942,7 +942,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int total_pitches {
             get {
                 return this.total_pitchesField;
@@ -953,7 +953,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool total_pitchesSpecified {
             get {
                 return this.total_pitchesFieldSpecified;
@@ -964,7 +964,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int possession {
             get {
                 return this.possessionField;
@@ -975,7 +975,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool possessionSpecified {
             get {
                 return this.possessionFieldSpecified;
@@ -986,7 +986,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int position {
             get {
                 return this.positionField;
@@ -997,7 +997,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool positionSpecified {
             get {
                 return this.positionFieldSpecified;
@@ -1008,7 +1008,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int @try {
             get {
                 return this.tryField;
@@ -1019,7 +1019,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool trySpecified {
             get {
                 return this.tryFieldSpecified;
@@ -1030,7 +1030,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int yards {
             get {
                 return this.yardsField;
@@ -1041,7 +1041,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool yardsSpecified {
             get {
                 return this.yardsFieldSpecified;
@@ -1052,7 +1052,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int @throw {
             get {
                 return this.throwField;
@@ -1063,7 +1063,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool throwSpecified {
             get {
                 return this.throwFieldSpecified;
@@ -1074,7 +1074,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int visit {
             get {
                 return this.visitField;
@@ -1085,7 +1085,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool visitSpecified {
             get {
                 return this.visitFieldSpecified;
@@ -1096,7 +1096,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int remaining_reds {
             get {
                 return this.remaining_redsField;
@@ -1107,7 +1107,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool remaining_redsSpecified {
             get {
                 return this.remaining_redsFieldSpecified;
@@ -1118,7 +1118,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int delivery {
             get {
                 return this.deliveryField;
@@ -1129,7 +1129,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool deliverySpecified {
             get {
                 return this.deliveryFieldSpecified;
@@ -1140,7 +1140,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_remaining_bowls {
             get {
                 return this.home_remaining_bowlsField;
@@ -1151,7 +1151,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_remaining_bowlsSpecified {
             get {
                 return this.home_remaining_bowlsFieldSpecified;
@@ -1162,7 +1162,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_remaining_bowls {
             get {
                 return this.away_remaining_bowlsField;
@@ -1173,7 +1173,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_remaining_bowlsSpecified {
             get {
                 return this.away_remaining_bowlsFieldSpecified;
@@ -1184,7 +1184,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int current_end {
             get {
                 return this.current_endField;
@@ -1195,7 +1195,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool current_endSpecified {
             get {
                 return this.current_endFieldSpecified;
@@ -1206,7 +1206,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int innings {
             get {
                 return this.inningsField;
@@ -1217,7 +1217,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool inningsSpecified {
             get {
                 return this.inningsFieldSpecified;
@@ -1228,7 +1228,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int over {
             get {
                 return this.overField;
@@ -1239,7 +1239,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool overSpecified {
             get {
                 return this.overFieldSpecified;
@@ -1250,7 +1250,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_penalty_runs {
             get {
                 return this.home_penalty_runsField;
@@ -1261,7 +1261,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_penalty_runsSpecified {
             get {
                 return this.home_penalty_runsFieldSpecified;
@@ -1272,7 +1272,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_penalty_runs {
             get {
                 return this.away_penalty_runsField;
@@ -1283,7 +1283,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_penalty_runsSpecified {
             get {
                 return this.away_penalty_runsFieldSpecified;
@@ -1294,7 +1294,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_dismissals {
             get {
                 return this.home_dismissalsField;
@@ -1305,7 +1305,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_dismissalsSpecified {
             get {
                 return this.home_dismissalsFieldSpecified;
@@ -1316,7 +1316,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_dismissals {
             get {
                 return this.away_dismissalsField;
@@ -1327,7 +1327,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_dismissalsSpecified {
             get {
                 return this.away_dismissalsFieldSpecified;
@@ -1338,7 +1338,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int current_ct_team {
             get {
                 return this.current_ct_teamField;
@@ -1349,7 +1349,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool current_ct_teamSpecified {
             get {
                 return this.current_ct_teamFieldSpecified;
@@ -1360,7 +1360,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int period_of_leader {
             get {
                 return this.period_of_leaderField;
@@ -1371,7 +1371,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool period_of_leaderSpecified {
             get {
                 return this.period_of_leaderFieldSpecified;
@@ -1382,7 +1382,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_drive_count {
             get {
                 return this.home_drive_countField;
@@ -1393,7 +1393,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_drive_countSpecified {
             get {
                 return this.home_drive_countFieldSpecified;
@@ -1404,7 +1404,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_drive_count {
             get {
                 return this.away_drive_countField;
@@ -1415,7 +1415,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_drive_countSpecified {
             get {
                 return this.away_drive_countFieldSpecified;
@@ -1426,7 +1426,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home_play_count {
             get {
                 return this.home_play_countField;
@@ -1437,7 +1437,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool home_play_countSpecified {
             get {
                 return this.home_play_countFieldSpecified;
@@ -1448,7 +1448,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away_play_count {
             get {
                 return this.away_play_countField;
@@ -1459,7 +1459,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool away_play_countSpecified {
             get {
                 return this.away_play_countFieldSpecified;
@@ -1492,7 +1492,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool stoppedFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string match_time {
             get {
                 return this.match_timeField;
@@ -1503,7 +1503,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string stoppage_time {
             get {
                 return this.stoppage_timeField;
@@ -1514,7 +1514,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string stoppage_time_announced {
             get {
                 return this.stoppage_time_announcedField;
@@ -1525,7 +1525,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string remaining_time {
             get {
                 return this.remaining_timeField;
@@ -1536,7 +1536,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string remaining_time_in_period {
             get {
                 return this.remaining_time_in_periodField;
@@ -1547,7 +1547,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public bool stopped {
             get {
                 return this.stoppedField;
@@ -1558,7 +1558,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool stoppedSpecified {
             get {
                 return this.stoppedFieldSpecified;
@@ -1587,7 +1587,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool void_reasonFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int id {
             get {
                 return this.idField;
@@ -1598,7 +1598,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string specifiers {
             get {
                 return this.specifiersField;
@@ -1609,7 +1609,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string extended_specifiers {
             get {
                 return this.extended_specifiersField;
@@ -1620,7 +1620,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int void_reason {
             get {
                 return this.void_reasonField;
@@ -1631,7 +1631,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool void_reasonSpecified {
             get {
                 return this.void_reasonFieldSpecified;
@@ -1664,7 +1664,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private string resultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("outcome")]
+        [XmlElementAttribute("outcome")]
         public betSettlementMarketOutcome[] Items {
             get {
                 return this.itemsField;
@@ -1675,7 +1675,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int id {
             get {
                 return this.idField;
@@ -1686,7 +1686,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string specifiers {
             get {
                 return this.specifiersField;
@@ -1697,7 +1697,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string extended_specifiers {
             get {
                 return this.extended_specifiersField;
@@ -1708,7 +1708,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int void_reason {
             get {
                 return this.void_reasonField;
@@ -1719,7 +1719,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool void_reasonSpecified {
             get {
                 return this.void_reasonFieldSpecified;
@@ -1730,7 +1730,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string result {
             get {
                 return this.resultField;
@@ -1746,7 +1746,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [XmlTypeAttribute(AnonymousType=true)]
     public partial class betSettlementMarketOutcome {
         
         private string idField;
@@ -1762,7 +1762,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool dead_heat_factorFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string id {
             get {
                 return this.idField;
@@ -1773,7 +1773,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int result {
             get {
                 return this.resultField;
@@ -1784,7 +1784,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double void_factor {
             get {
                 return this.void_factorField;
@@ -1795,7 +1795,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool void_factorSpecified {
             get {
                 return this.void_factorFieldSpecified;
@@ -1806,7 +1806,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double dead_heat_factor {
             get {
                 return this.dead_heat_factorField;
@@ -1817,7 +1817,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool dead_heat_factorSpecified {
             get {
                 return this.dead_heat_factorFieldSpecified;
@@ -1852,7 +1852,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool aams_idFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long next_betstop {
             get {
                 return this.next_betstopField;
@@ -1863,7 +1863,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool next_betstopSpecified {
             get {
                 return this.next_betstopFieldSpecified;
@@ -1874,7 +1874,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long start_time {
             get {
                 return this.start_timeField;
@@ -1885,7 +1885,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool start_timeSpecified {
             get {
                 return this.start_timeFieldSpecified;
@@ -1896,7 +1896,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long end_time {
             get {
                 return this.end_timeField;
@@ -1907,7 +1907,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool end_timeSpecified {
             get {
                 return this.end_timeFieldSpecified;
@@ -1918,7 +1918,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long aams_id {
             get {
                 return this.aams_idField;
@@ -1929,7 +1929,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool aams_idSpecified {
             get {
                 return this.aams_idFieldSpecified;
@@ -1980,7 +1980,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("outcome")]
+        [XmlElementAttribute("outcome")]
         public oddsChangeMarketOutcome[] outcome {
             get {
                 return this.outcomeField;
@@ -1991,7 +1991,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int id {
             get {
                 return this.idField;
@@ -2002,7 +2002,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string specifiers {
             get {
                 return this.specifiersField;
@@ -2013,7 +2013,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string extended_specifiers {
             get {
                 return this.extended_specifiersField;
@@ -2024,7 +2024,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int favourite {
             get {
                 return this.favouriteField;
@@ -2035,7 +2035,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool favouriteSpecified {
             get {
                 return this.favouriteFieldSpecified;
@@ -2046,7 +2046,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int status {
             get {
                 return this.statusField;
@@ -2057,7 +2057,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool statusSpecified {
             get {
                 return this.statusFieldSpecified;
@@ -2068,7 +2068,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int cashout_status {
             get {
                 return this.cashout_statusField;
@@ -2079,7 +2079,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool cashout_statusSpecified {
             get {
                 return this.cashout_statusFieldSpecified;
@@ -2095,7 +2095,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [XmlTypeAttribute(AnonymousType=true)]
     public partial class oddsChangeMarketOutcome {
         
         private string idField;
@@ -2137,7 +2137,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool teamFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string id {
             get {
                 return this.idField;
@@ -2148,7 +2148,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double odds {
             get {
                 return this.oddsField;
@@ -2159,7 +2159,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool oddsSpecified {
             get {
                 return this.oddsFieldSpecified;
@@ -2170,7 +2170,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double probabilities {
             get {
                 return this.probabilitiesField;
@@ -2181,7 +2181,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool probabilitiesSpecified {
             get {
                 return this.probabilitiesFieldSpecified;
@@ -2192,7 +2192,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double win_probabilities {
             get {
                 return this.win_probabilitiesField;
@@ -2203,7 +2203,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool win_probabilitiesSpecified {
             get {
                 return this.win_probabilitiesFieldSpecified;
@@ -2214,7 +2214,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double lose_probabilities {
             get {
                 return this.lose_probabilitiesField;
@@ -2225,7 +2225,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool lose_probabilitiesSpecified {
             get {
                 return this.lose_probabilitiesFieldSpecified;
@@ -2236,7 +2236,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double refund_probabilities {
             get {
                 return this.refund_probabilitiesField;
@@ -2247,7 +2247,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool refund_probabilitiesSpecified {
             get {
                 return this.refund_probabilitiesFieldSpecified;
@@ -2258,7 +2258,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double half_win_probabilities {
             get {
                 return this.half_win_probabilitiesField;
@@ -2269,7 +2269,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool half_win_probabilitiesSpecified {
             get {
                 return this.half_win_probabilitiesFieldSpecified;
@@ -2280,7 +2280,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double half_lose_probabilities {
             get {
                 return this.half_lose_probabilitiesField;
@@ -2291,7 +2291,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool half_lose_probabilitiesSpecified {
             get {
                 return this.half_lose_probabilitiesFieldSpecified;
@@ -2302,7 +2302,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int active {
             get {
                 return this.activeField;
@@ -2313,7 +2313,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool activeSpecified {
             get {
                 return this.activeFieldSpecified;
@@ -2324,7 +2324,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int team {
             get {
                 return this.teamField;
@@ -2335,7 +2335,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool teamSpecified {
             get {
                 return this.teamFieldSpecified;
@@ -2362,7 +2362,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool expected_supremacyFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double expected_totals {
             get {
                 return this.expected_totalsField;
@@ -2373,7 +2373,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool expected_totalsSpecified {
             get {
                 return this.expected_totalsFieldSpecified;
@@ -2384,7 +2384,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public double expected_supremacy {
             get {
                 return this.expected_supremacyField;
@@ -2395,7 +2395,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool expected_supremacySpecified {
             get {
                 return this.expected_supremacyFieldSpecified;
@@ -2418,7 +2418,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private int awayField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int home {
             get {
                 return this.homeField;
@@ -2429,7 +2429,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int away {
             get {
                 return this.awayField;
@@ -2522,7 +2522,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private decimal away_scoreField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int match_status_code {
             get {
                 return this.match_status_codeField;
@@ -2533,7 +2533,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public decimal home_score {
             get {
                 return this.home_scoreField;
@@ -2544,7 +2544,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public decimal away_score {
             get {
                 return this.away_scoreField;
@@ -2571,7 +2571,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private decimal away_scoreField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int match_status_code {
             get {
                 return this.match_status_codeField;
@@ -2582,7 +2582,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int number {
             get {
                 return this.numberField;
@@ -2593,7 +2593,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public decimal home_score {
             get {
                 return this.home_scoreField;
@@ -2604,7 +2604,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public decimal away_score {
             get {
                 return this.away_scoreField;
@@ -2620,7 +2620,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [XmlTypeAttribute(AnonymousType=true)]
     public partial class odds_changeOdds {
         
         private oddsChangeMarket[] marketField;
@@ -2634,7 +2634,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool betstop_reasonFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("market")]
+        [XmlElementAttribute("market")]
         public oddsChangeMarket[] market {
             get {
                 return this.marketField;
@@ -2645,7 +2645,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int betting_status {
             get {
                 return this.betting_statusField;
@@ -2656,7 +2656,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool betting_statusSpecified {
             get {
                 return this.betting_statusFieldSpecified;
@@ -2667,7 +2667,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int betstop_reason {
             get {
                 return this.betstop_reasonField;
@@ -2678,7 +2678,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool betstop_reasonSpecified {
             get {
                 return this.betstop_reasonFieldSpecified;
@@ -2694,8 +2694,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class bet_settlement {
         
         private betSettlementMarket[] outcomesField;
@@ -2713,7 +2713,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private int certaintyField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("market", IsNullable=false)]
+        [XmlArrayItemAttribute("market", IsNullable=false)]
         public betSettlementMarket[] outcomes {
             get {
                 return this.outcomesField;
@@ -2724,7 +2724,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -2735,7 +2735,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string event_id {
             get {
                 return this.event_idField;
@@ -2746,7 +2746,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -2757,7 +2757,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -2768,7 +2768,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool request_idSpecified {
             get {
                 return this.request_idFieldSpecified;
@@ -2779,7 +2779,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int certainty {
             get {
                 return this.certaintyField;
@@ -2795,8 +2795,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class rollback_bet_settlement {
         
         private market[] marketField;
@@ -2812,7 +2812,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool request_idFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("market")]
+        [XmlElementAttribute("market")]
         public market[] market {
             get {
                 return this.marketField;
@@ -2823,7 +2823,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -2834,7 +2834,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string event_id {
             get {
                 return this.event_idField;
@@ -2845,7 +2845,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -2856,7 +2856,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -2867,7 +2867,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool request_idSpecified {
             get {
                 return this.request_idFieldSpecified;
@@ -2883,8 +2883,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class bet_cancel {
         
         private market[] marketField;
@@ -2910,7 +2910,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private string superceded_byField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("market")]
+        [XmlElementAttribute("market")]
         public market[] market {
             get {
                 return this.marketField;
@@ -2921,7 +2921,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -2932,7 +2932,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string event_id {
             get {
                 return this.event_idField;
@@ -2943,7 +2943,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -2954,7 +2954,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -2965,7 +2965,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool request_idSpecified {
             get {
                 return this.request_idFieldSpecified;
@@ -2976,7 +2976,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long start_time {
             get {
                 return this.start_timeField;
@@ -2987,7 +2987,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool start_timeSpecified {
             get {
                 return this.start_timeFieldSpecified;
@@ -2998,7 +2998,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long end_time {
             get {
                 return this.end_timeField;
@@ -3009,7 +3009,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool end_timeSpecified {
             get {
                 return this.end_timeFieldSpecified;
@@ -3020,7 +3020,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string superceded_by {
             get {
                 return this.superceded_byField;
@@ -3036,8 +3036,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class rollback_bet_cancel {
         
         private market[] marketField;
@@ -3061,7 +3061,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool end_timeFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("market")]
+        [XmlElementAttribute("market")]
         public market[] market {
             get {
                 return this.marketField;
@@ -3072,7 +3072,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -3083,7 +3083,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string event_id {
             get {
                 return this.event_idField;
@@ -3094,7 +3094,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -3105,7 +3105,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -3116,7 +3116,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool request_idSpecified {
             get {
                 return this.request_idFieldSpecified;
@@ -3127,7 +3127,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long start_time {
             get {
                 return this.start_timeField;
@@ -3138,7 +3138,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool start_timeSpecified {
             get {
                 return this.start_timeFieldSpecified;
@@ -3149,7 +3149,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long end_time {
             get {
                 return this.end_timeField;
@@ -3160,7 +3160,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool end_timeSpecified {
             get {
                 return this.end_timeFieldSpecified;
@@ -3176,8 +3176,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class alive {
         
         private int productField;
@@ -3187,7 +3187,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private int subscribedField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -3198,7 +3198,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -3209,7 +3209,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int subscribed {
             get {
                 return this.subscribedField;
@@ -3225,8 +3225,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class snapshot_complete {
         
         private long request_idField;
@@ -3236,7 +3236,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private long timestampField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -3247,7 +3247,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -3258,7 +3258,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -3274,8 +3274,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class fixture_change {
         
         private int productField;
@@ -3299,7 +3299,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool next_live_timeFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -3310,7 +3310,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string event_id {
             get {
                 return this.event_idField;
@@ -3321,7 +3321,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -3332,7 +3332,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -3343,7 +3343,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool request_idSpecified {
             get {
                 return this.request_idFieldSpecified;
@@ -3354,7 +3354,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int change_type {
             get {
                 return this.change_typeField;
@@ -3365,7 +3365,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool change_typeSpecified {
             get {
                 return this.change_typeFieldSpecified;
@@ -3376,7 +3376,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long start_time {
             get {
                 return this.start_timeField;
@@ -3387,7 +3387,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long next_live_time {
             get {
                 return this.next_live_timeField;
@@ -3398,7 +3398,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool next_live_timeSpecified {
             get {
                 return this.next_live_timeFieldSpecified;
@@ -3414,8 +3414,8 @@ namespace Sportradar.OddsFeed.SDK.Test {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    [XmlTypeAttribute(AnonymousType=true)]
+    [XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class bet_stop {
         
         private int productField;
@@ -3435,7 +3435,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         private bool market_statusFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int product {
             get {
                 return this.productField;
@@ -3446,7 +3446,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string event_id {
             get {
                 return this.event_idField;
@@ -3457,7 +3457,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long timestamp {
             get {
                 return this.timestampField;
@@ -3468,7 +3468,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public long request_id {
             get {
                 return this.request_idField;
@@ -3479,7 +3479,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool request_idSpecified {
             get {
                 return this.request_idFieldSpecified;
@@ -3490,7 +3490,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public string groups {
             get {
                 return this.groupsField;
@@ -3501,7 +3501,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [XmlAttributeAttribute()]
         public int market_status {
             get {
                 return this.market_statusField;
@@ -3512,7 +3512,7 @@ namespace Sportradar.OddsFeed.SDK.Test {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnoreAttribute()]
         public bool market_statusSpecified {
             get {
                 return this.market_statusFieldSpecified;

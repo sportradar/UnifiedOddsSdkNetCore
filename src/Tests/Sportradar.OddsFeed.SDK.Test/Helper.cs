@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using DateTime = System.DateTime;
 
 namespace Sportradar.OddsFeed.SDK.Test
 {
@@ -106,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Test
 
         public static void WriteToOutput(string message)
         {
-            Console.WriteLine($"{DateTime.Now}\t{message}");
+            Console.WriteLine($"{DateTime.Now.ToLongTimeString()}\t{message}");
         }
     }
 }

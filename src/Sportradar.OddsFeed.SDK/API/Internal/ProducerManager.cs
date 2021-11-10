@@ -3,8 +3,12 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Dawn;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.API.EventArguments;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -18,6 +22,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <seealso cref="IProducerManager" />
     internal class ProducerManager : IProducerManager
     {
+        /// <summary>
+        /// A <see cref="ILogger"/> instance used for logging
+        /// </summary>
+        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForExecution(typeof(ProducerManager));
+
+        /// <summary>
+        /// Occurs when a recovery initiation completes
+        /// </summary>
+        public event EventHandler<RecoveryInitiatedEventArgs> RecoveryInitiated;
+
         /// <summary>
         /// The producers
         /// </summary>
@@ -269,6 +283,32 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public static IProducer GetUnknownProducer()
         {
             return new Producer(id: SdkInfo.UnknownProducerId, name: "Unknown", description: "Unknown producer", apiUrl: "unknown", active: true, maxInactivitySeconds: 20, maxRecoveryTime: 3600, scope: "live|prematch|virtual", statefulRecoveryWindowInMinutes: 100);
+        }
+
+        /// <summary>
+        /// Dispatches the <code>RecoveryInitiated</code>
+        /// </summary>
+        /// <param name="eventArgs">Event arguments</param>
+        public void InvokeRecoveryInitiated(RecoveryInitiatedEventArgs eventArgs)
+        {
+            if (RecoveryInitiated == null)
+            {
+                Log.LogDebug("Cannot invoke RecoveryInitiated because no event listeners are attached to associated event handler.");
+                return;
+            }
+
+            var stopwatch = Stopwatch.StartNew();
+            try
+            {
+                RecoveryInitiated(this, eventArgs);
+                stopwatch.Stop();
+                Log.LogInformation($"Successfully called RecoveryInitiated event. Duration: {stopwatch.ElapsedMilliseconds} ms.");
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+                Log.LogWarning($"Event handler throw an exception while invoking RecoveryInitiated. Exception: {ex.Message}", ex);
+            }
         }
     }
 }

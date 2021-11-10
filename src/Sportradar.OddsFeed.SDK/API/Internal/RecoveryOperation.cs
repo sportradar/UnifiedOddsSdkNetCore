@@ -63,6 +63,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private DateTime _startTime;
 
         /// <summary>
+        /// The time of the last issued recovery request attempt
+        /// </summary>
+        private DateTime _lastAttempt;
+
+        /// <summary>
         /// The <see cref="DateTime"/> specifying the first time the recovery was interrupted
         /// </summary>
         internal DateTime? InterruptionTime;
@@ -76,6 +81,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets a request Id of the current recovery operation or a null reference if recovery is not running
         /// </summary>
         public long? RequestId => IsRunning ? (long?)_requestId : null;
+
+        /// <summary>
+        /// Gets the time of the last issued recovery request attempt
+        /// </summary>
+        public DateTime LastAttemptTime => _lastAttempt;
 
         /// <summary>
         /// Gets the start time of the last issued recovery request.
@@ -182,6 +192,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (after == DateTime.MinValue)
                 {
+                    _lastAttempt = TimeProviderAccessor.Current.Now;
                     _requestId = _recoveryRequestIssuer.RequestFullOddsRecoveryAsync(_producer, _nodeId).Result;
                 }
                 else
@@ -199,6 +210,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         }
                     }
 
+                    _lastAttempt = TimeProviderAccessor.Current.Now;
                     _requestId = _recoveryRequestIssuer.RequestRecoveryAfterTimestampAsync(_producer, after, _nodeId).Result;
                 }
             }

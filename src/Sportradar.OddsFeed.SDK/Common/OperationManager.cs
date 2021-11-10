@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 
 namespace Sportradar.OddsFeed.SDK.Common
 {
@@ -46,6 +47,20 @@ namespace Sportradar.OddsFeed.SDK.Common
         public static bool IgnoreBetPalTimelineSportEventStatus { get; private set; }
 
         /// <summary>
+        /// Gets a rabbit timeout setting for connection attempts (in seconds).
+        /// </summary>
+        /// <value>A rabbit timeout setting for connection attempts (in seconds).</value>
+        /// <remarks>Between 10 and 120 (default 30s)</remarks>
+        public static int RabbitConnectionTimeout { get; private set; }
+
+        /// <summary>
+        /// Gets a heartbeat timeout to use when negotiating with the server (in seconds).
+        /// </summary>
+        /// <value>A heartbeat timeout to use when negotiating with the server (in seconds).</value>
+        /// <remarks>Between 10 and 180 (default 60s)</remarks>
+        public static int RabbitHeartbeat { get; private set; }
+
+        /// <summary>
         /// Initialization of default values of the <see cref="OperationManager"/>
         /// </summary>
         static OperationManager()
@@ -55,6 +70,8 @@ namespace Sportradar.OddsFeed.SDK.Common
             VariantMarketDescriptionCacheTimeout = TimeSpan.FromHours(3);
             IgnoreBetPalTimelineSportEventStatusCacheTimeout = TimeSpan.FromHours(3);
             IgnoreBetPalTimelineSportEventStatus = false;
+            RabbitConnectionTimeout = ConnectionFactory.DefaultConnectionTimeout / 1000;
+            RabbitHeartbeat = ConnectionFactory.DefaultHeartbeat;
         }
 
         /// <summary>
@@ -129,6 +146,34 @@ namespace Sportradar.OddsFeed.SDK.Common
         {
             IgnoreBetPalTimelineSportEventStatus = ignore;
             InteractionLog.LogInformation($"Set IgnoreBetPalTimelineSportEventStatus to {ignore}.");
+        }
+
+        /// <summary>
+        /// Sets the rabbit timeout setting for connection attempts (in seconds).
+        /// </summary>
+        /// <param name="rabbitConnectionTimeout">The rabbit timeout setting for connection attempts (in seconds)</param>
+        /// <remarks>Between 10 and 120 (default 30s) - set before connection is made</remarks>
+        public static void SetRabbitConnectionTimeout(int rabbitConnectionTimeout)
+        {
+            if (rabbitConnectionTimeout >= 10 && rabbitConnectionTimeout <= 120)
+            {
+                RabbitConnectionTimeout = rabbitConnectionTimeout;
+                InteractionLog.LogInformation($"Set RabbitConnectionTimeout to {rabbitConnectionTimeout}s.");
+            }
+        }
+
+        /// <summary>
+        /// Sets a heartbeat timeout to use when negotiating with the rabbit server (in seconds).
+        /// </summary>
+        /// <param name="rabbitHeartbeat">The heartbeat timeout to use when negotiating with the rabbit server (in seconds).</param>
+        /// <remarks>Between 10 and 180 (default 60s) - set before connection is made</remarks>
+        public static void SetRabbitHeartbeat(int rabbitHeartbeat)
+        {
+            if (rabbitHeartbeat >= 10 && rabbitHeartbeat <= 120)
+            {
+                RabbitHeartbeat = rabbitHeartbeat;
+                InteractionLog.LogInformation($"Set RabbitHeartbeat to {rabbitHeartbeat}s.");
+            }
         }
     }
 }

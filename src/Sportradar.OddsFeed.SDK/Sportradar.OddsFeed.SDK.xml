@@ -437,6 +437,76 @@
             </summary>
             <returns>Returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.IProducerStatusChange"/> implementation containing information about the producer status change</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs">
+            <summary>
+            Event arguments for the RecoveryInitiated events
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs._requestId">
+            <summary>
+            The identifier of the recovery request
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs._after">
+            <summary>
+            The after timestamp if applied
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs._producerId">
+            <summary>
+            The associated producer identifier
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs._eventId">
+            <summary>
+            The associated event identifier
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs._message">
+            <summary>
+            The message
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs.#ctor(System.Int64,System.Int32,System.Int64,Sportradar.OddsFeed.SDK.Messages.URN,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.EventArguments.EventRecoveryCompletedEventArgs"/> class
+            </summary>
+            <param name="requestId">The identifier of the recovery request</param>
+            <param name="producerId">The associated producer identifier</param>
+            <param name="after">The after attribute if applies</param>
+            <param name="eventId">The associated event identifier</param>
+            <param name="message">The message</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs.GetRequestId">
+            <summary>
+            Gets the identifier of the recovery request
+            </summary>
+            <returns>Returns the identifier of the recovery request</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs.GetProducerId">
+            <summary>
+            Gets the associated producer identifier
+            </summary>
+            <returns>Returns the associated producer identifier</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs.GetAfterTimestamp">
+            <summary>
+            Gets the after timestamp if applied
+            </summary>
+            <returns>Returns the after timestamp if applied</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs.GetEventId">
+            <summary>
+            Gets the associated event identifier
+            </summary>
+            <returns>Returns the associated event identifier</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs.GetMessage">
+            <summary>
+            Gets the message associated with the recovery request
+            </summary>
+            <returns>Returns the message associated with the recovery request</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.EventArguments.RollbackBetCancelEventArgs`1">
             <summary>
             Event arguments for the <see cref="E:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1.OnRollbackBetCancel"/> event
@@ -738,6 +808,11 @@
         <member name="E:Sportradar.OddsFeed.SDK.API.Feed.EventRecoveryCompleted">
             <summary>
             Occurs when a requested event recovery completes
+            </summary>
+        </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.Feed.RecoveryInitiated">
+            <summary>
+            Occurs when a recovery initiation completes
             </summary>
         </member>
         <member name="E:Sportradar.OddsFeed.SDK.API.Feed.ProducerDown">
@@ -1709,6 +1784,22 @@
             A <see cref="T:RabbitMQ.Client.IConnectionFactory"/> implementations which properly configures it self before first <see cref="T:RabbitMQ.Client.IConnection"/> is created
             </summary>
         </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.CallbackException">
+            <summary>
+            Signaled when an exception occurs in a callback invoked by the connection.
+            </summary>
+            <remarks>
+            This event is signaled when a ConnectionShutdown handler throws an exception. If, in future, more events appear on <see cref="T:RabbitMQ.Client.IConnection" />, then this event will be signaled whenever one of those event handlers throws an exception, as well.
+            </remarks>
+        </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.ConnectionShutdown">
+            <summary>Raised when the connection is destroyed.</summary>
+            <remarks>
+            If the connection is already destroyed at the time an
+            event handler is added to this event, the event handler
+            will be fired immediately.
+            </remarks>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory._config">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationInternal"/> instance containing configuration information
@@ -1749,6 +1840,13 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.Dispose">
             <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ConfiguredConnectionFactory.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
+            <c>false</c> to release only unmanaged resources.</param>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.Config.ConfigurationBuilder._environment">
             <summary>
@@ -3095,6 +3193,11 @@
             Gets a request Id of the current recovery operation or a null reference if recovery is not running
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation.LastAttemptTime">
+            <summary>
+            Gets the time of the last issued recovery request attempt
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation.LastStartTime">
             <summary>
             Gets the start time of the last issued recovery request.
@@ -3259,6 +3362,11 @@
             Records the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive"/> message timing info received on the system session
             </summary>
             <param name="alive">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive"/> message received on a system session.</param>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.ITimestampTracker.SdkStartTime">
+            <summary>
+            Sdk start time
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.MarketDescriptionManager">
             <summary>
@@ -4204,6 +4312,16 @@
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Messages.IProducerManager" />
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerManager.Log">
+            <summary>
+            A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance used for logging
+            </summary>
+        </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.Internal.ProducerManager.RecoveryInitiated">
+            <summary>
+            Occurs when a recovery initiation completes
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerManager._producers">
             <summary>
             The producers
@@ -4310,6 +4428,12 @@
             </summary>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> instance</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerManager.InvokeRecoveryInitiated(Sportradar.OddsFeed.SDK.API.EventArguments.RecoveryInitiatedEventArgs)">
+            <summary>
+            Dispatches the <code>RecoveryInitiated</code>
+            </summary>
+            <param name="eventArgs">Event arguments</param>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.ExecutionLog">
             <summary>
             A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> used for execution logging
@@ -4364,6 +4488,11 @@
         <member name="E:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.EventRecoveryCompleted">
             <summary>
             Occurs when a requested event recovery completes
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager._lastRecoveryMessage">
+            <summary>
+            The time of last feed message associated with recovery
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.#ctor(Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation,Sportradar.OddsFeed.SDK.API.Internal.ITimestampTracker,System.Int32)">
@@ -4707,6 +4836,11 @@
             The <see cref="T:System.DateTime"/> specifying when the current operation started
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation._lastAttempt">
+            <summary>
+            The time of the last issued recovery request attempt
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation.InterruptionTime">
             <summary>
             The <see cref="T:System.DateTime"/> specifying the first time the recovery was interrupted
@@ -4720,6 +4854,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation.RequestId">
             <summary>
             Gets a request Id of the current recovery operation or a null reference if recovery is not running
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation.LastAttemptTime">
+            <summary>
+            Gets the time of the last issued recovery request attempt
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.RecoveryOperation.LastStartTime">
@@ -4835,18 +4974,24 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator"/> used to generate the sequence numbers
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer._producerManager">
+            <summary>
+            Used to invoke RequestInitiated event
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer._nodeId">
             <summary>
             The node identifier
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataPoster,Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator,Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration)">
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataPoster,Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator,Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration,Sportradar.OddsFeed.SDK.Messages.IProducerManager)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer"/> class
             </summary>
             <param name="dataPoster">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataPoster"/> instance used to issue the request to the feed API</param>
             <param name="sequenceGenerator">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator"/> used to generate the sequence numbers</param>
             <param name="config">The <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedConfiguration"/> used to get nodeId</param>
+            <param name="producerManager">The <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducerManager"/> used to invoke RequestInitiated event</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer.RecoverEventMessagesAsync(Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.Messages.URN)">
             <summary>
@@ -5751,6 +5896,11 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.TimestampTracker.MessageTimingInfo"/> used to track alive messages from the system session
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.API.Internal.TimestampTracker.SdkStartTime">
+            <summary>
+            Sdk start time (used for recovery initiation)
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.Internal.TimestampTracker.IsBehind">
             <summary>
             Gets a value indicating whether the feed messages are processed in a timely manner
@@ -5947,6 +6097,11 @@
         <member name="E:Sportradar.OddsFeed.SDK.API.IOddsFeed.ProducerUp">
             <summary>
             Raised when the current <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeed"/> instance determines that the <see cref="T:Sportradar.OddsFeed.SDK.Messages.IProducer"/> associated with the odds feed went up (back online)
+            </summary>
+        </member>
+        <member name="E:Sportradar.OddsFeed.SDK.API.IOddsFeed.RecoveryInitiated">
+            <summary>
+            Occurs when a recovery initiation completes
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.API.IOddsFeed.EventRecoveryRequestIssuer">
@@ -8098,6 +8253,20 @@
             <value><c>true</c> if sport event status from timeline endpoint should be ignored, otherwise <c>false</c>.</value>
             <remarks>Default <c>false</c></remarks>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.OperationManager.RabbitConnectionTimeout">
+            <summary>
+            Gets a rabbit timeout setting for connection attempts (in seconds).
+            </summary>
+            <value>A rabbit timeout setting for connection attempts (in seconds).</value>
+            <remarks>Between 10 and 120 (default 30s)</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Common.OperationManager.RabbitHeartbeat">
+            <summary>
+            Gets a heartbeat timeout to use when negotiating with the server (in seconds).
+            </summary>
+            <value>A heartbeat timeout to use when negotiating with the server (in seconds).</value>
+            <remarks>Between 10 and 180 (default 60s)</remarks>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.#cctor">
             <summary>
             Initialization of default values of the <see cref="T:Sportradar.OddsFeed.SDK.Common.OperationManager"/>
@@ -8132,6 +8301,20 @@
             Sets the value indicating whether to ignore sport event status from timeline endpoint for sport events on BetPal producer
             </summary>
             <param name="ignore">if set to <c>true</c> ignore</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetRabbitConnectionTimeout(System.Int32)">
+            <summary>
+            Sets the rabbit timeout setting for connection attempts (in seconds).
+            </summary>
+            <param name="rabbitConnectionTimeout">The rabbit timeout setting for connection attempts (in seconds)</param>
+            <remarks>Between 10 and 120 (default 30s) - set before connection is made</remarks>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.OperationManager.SetRabbitHeartbeat(System.Int32)">
+            <summary>
+            Sets a heartbeat timeout to use when negotiating with the rabbit server (in seconds).
+            </summary>
+            <param name="rabbitHeartbeat">The heartbeat timeout to use when negotiating with the rabbit server (in seconds).</param>
+            <remarks>Between 10 and 180 (default 60s) - set before connection is made</remarks>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.SdkEnvironment">
             <summary>
@@ -8897,7 +9080,7 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory" />
             <seealso cref="T:System.IDisposable" />
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory._connectionFactory">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.ChannelFactory.ConnectionFactory">
             <summary>
             The <see cref="T:RabbitMQ.Client.IConnectionFactory"/> used to construct connections to the broker
             </summary>
@@ -10810,6 +10993,11 @@
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory">
             <summary>
             Represents a factory used to construct Rabbit MQ channels / models
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory.ConnectionFactory">
+            <summary>
+            The <see cref="T:RabbitMQ.Client.IConnectionFactory"/> used to construct connections to the broker
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory.CreateChannel">
@@ -14829,8 +15017,9 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IGroup.Name">
             <summary>
-            Gets the name of the group represented by the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.IGroup"/> instance
+            Gets the name.
             </summary>
+            <value>The name.</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IGroup.Competitors">
             <summary>
@@ -15886,6 +16075,25 @@
             A cache item for event player assist
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CacheItem" />
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerAssistCI.Type">
+            <summary>
+            Gets the type.
+            </summary>
+            <value>The type.</value>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerAssistCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventPlayerAssistDTO,System.Globalization.CultureInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerAssistCI"/> class.
+            </summary>
+            <param name="dto">The dto containing data</param>
+            <param name="culture">The culture of the data</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerAssistCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerAssistCI)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerAssistCI"/> class.
+            </summary>
+            <param name="exportable">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableEventPlayerAssistCI"/></param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.EventPlayerAssistCI.ExportAsync">
             <summary>
@@ -19150,6 +19358,13 @@
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the id of the item in the cache to be deleted</param>
             <param name="cacheItemType">A cache item type</param>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISdkCache.CacheDeleteItem(System.String,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.CacheItemType)">
+            <summary>
+            Deletes the item from cache
+            </summary>
+            <param name="id">A string representing the id of the item in the cache to be deleted</param>
+            <param name="cacheItemType">A cache item type</param>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISdkCache.CacheHasItem(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.CacheItemType)">
             <summary>
             Does item exists in the cache
@@ -19157,13 +19372,6 @@
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the id of the item to be checked</param>
             <param name="cacheItemType">A cache item type</param>
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISdkCache.CacheDeleteItem(System.String,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.CacheItemType)">
-            <summary>
-            Deletes the item from cache
-            </summary>
-            <param name="id">A string representing the id of the item in the cache to be deleted</param>
-            <param name="cacheItemType">A cache item type</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.ISdkCache.CacheHasItem(System.String,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.CacheItemType)">
             <summary>
@@ -20036,13 +20244,6 @@
             <param name="id">The identifier of the CategoryId or SportId !!!</param>
             <param name="item">The category dto item</param>
             <param name="culture">The culture</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportDataCache.WriteLog(System.String,System.Boolean)">
-            <summary>
-            Writes the log message
-            </summary>
-            <param name="text">The text to me logged</param>
-            <param name="useDebug">if set to <c>true</c> [use debug].</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportDataCache.ExportAsync">
             <summary>

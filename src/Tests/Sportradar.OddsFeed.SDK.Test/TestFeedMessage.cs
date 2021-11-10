@@ -2,10 +2,6 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
-using System.Text;
-using System.Xml.Serialization;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
 
 // ReSharper disable InconsistentNaming

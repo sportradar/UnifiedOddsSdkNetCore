@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
         private static readonly Producer PremiumCricketProducer = new Producer(5, "PremiumCricket", "Premium Cricket", "https://api.betradar.com/v1/premium_cricket/", true, 20, 1800, "prematch|live", 4320);
 
-        private static readonly FeedMessageBuilder MessageBuilder = new FeedMessageBuilder(PremiumCricketProducer);
+        private static readonly FeedMessageBuilder MessageBuilder = new FeedMessageBuilder(PremiumCricketProducer.Id);
 
         private static readonly MessageInterest[] Interests = {MessageInterest.AllMessages};
 
@@ -148,7 +148,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         [TestMethod]
         public void delayed_message_sets_is_behind()
         {
-            var oddsChange = MessageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromSeconds(25));
+            var oddsChange = MessageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(25));
             var tracker = new TimestampTracker(PremiumCricketProducer, Interests, 20, 20);
             tracker.ProcessUserMessage(MessageInterest.AllMessages, oddsChange);
             Assert.IsTrue(tracker.IsBehind);
@@ -158,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         public void not_delayed_message_resets_is_behind()
         {
             var tracker = new TimestampTracker(PremiumCricketProducer, Interests, 20, 20);
-            var oddsChange = MessageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromSeconds(25));
+            var oddsChange = MessageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(25));
             tracker.ProcessUserMessage(MessageInterest.AllMessages, oddsChange);
             Assert.IsTrue(tracker.IsBehind);
             tracker.ProcessUserMessage(MessageInterest.AllMessages, MessageBuilder.BuildBetStop());
@@ -182,7 +182,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         public void user_alive_resets_behind_caused_by_non_alive()
         {
             var tracker = new TimestampTracker(PremiumCricketProducer, Interests, 20, 20);
-            var oddsChange = MessageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromSeconds(25));
+            var oddsChange = MessageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromSeconds(25));
             tracker.ProcessUserMessage(MessageInterest.AllMessages, oddsChange);
             Assert.IsTrue(tracker.IsBehind);
             tracker.ProcessUserMessage(MessageInterest.AllMessages, MessageBuilder.BuildAlive());
@@ -256,8 +256,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             tracker.ProcessUserMessage(MessageInterest.PrematchMessagesOnly, MessageBuilder.BuildAlive());
             _timeProvider.AddMilliSeconds(1500);
 
-            tracker.ProcessUserMessage(MessageInterest.LiveMessagesOnly, MessageBuilder.BuildBetStop(null, _timeProvider.Now - TimeSpan.FromMilliseconds(6500)));
-            tracker.ProcessUserMessage(MessageInterest.PrematchMessagesOnly, MessageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromMilliseconds(4300)));
+            tracker.ProcessUserMessage(MessageInterest.LiveMessagesOnly, MessageBuilder.BuildBetStop(null, null, null, _timeProvider.Now - TimeSpan.FromMilliseconds(6500)));
+            tracker.ProcessUserMessage(MessageInterest.PrematchMessagesOnly, MessageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromMilliseconds(4300)));
 
             var trackerState = ParseLogEntry(tracker.ToString());
             Assert.IsFalse(trackerState.IsAliveViolated);
@@ -276,8 +276,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             _timeProvider.Now = new DateTime(2000, 1, 1, 1, 1, 1, 0);
             var tracker = new TimestampTracker(PremiumCricketProducer, new[] { MessageInterest.PrematchMessagesOnly, MessageInterest.LiveMessagesOnly }, 20, 20);
 
-            tracker.ProcessUserMessage(MessageInterest.LiveMessagesOnly, MessageBuilder.BuildBetStop(null, _timeProvider.Now - TimeSpan.FromMilliseconds(5000)));
-            tracker.ProcessUserMessage(MessageInterest.PrematchMessagesOnly, MessageBuilder.BuildOddsChange(null, _timeProvider.Now - TimeSpan.FromMilliseconds(7000)));
+            tracker.ProcessUserMessage(MessageInterest.LiveMessagesOnly, MessageBuilder.BuildBetStop(null, null, null, _timeProvider.Now - TimeSpan.FromMilliseconds(5000)));
+            tracker.ProcessUserMessage(MessageInterest.PrematchMessagesOnly, MessageBuilder.BuildOddsChange(null, null, null, _timeProvider.Now - TimeSpan.FromMilliseconds(7000)));
 
             tracker.ProcessUserMessage(MessageInterest.LiveMessagesOnly, MessageBuilder.BuildAlive(null, _timeProvider.Now - TimeSpan.FromSeconds(4)));
             tracker.ProcessUserMessage(MessageInterest.PrematchMessagesOnly, MessageBuilder.BuildAlive(null, _timeProvider.Now - TimeSpan.FromSeconds(8)));

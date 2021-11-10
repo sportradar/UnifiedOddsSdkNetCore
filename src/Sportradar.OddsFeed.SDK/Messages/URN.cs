@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Dawn;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,8 +13,8 @@ namespace Sportradar.OddsFeed.SDK.Messages
     /// <summary>
     /// Represents a Uniform Resource Name
     /// </summary>
-    // ReSharper disable once InconsistentNaming
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Allowed in this case")]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Allowed in this case")]
     public class URN
     {
         /// <summary>

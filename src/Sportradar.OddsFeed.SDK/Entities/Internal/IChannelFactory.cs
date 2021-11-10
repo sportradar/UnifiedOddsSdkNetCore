@@ -3,6 +3,7 @@
 */
 using System;
 using RabbitMQ.Client;
+using Sportradar.OddsFeed.SDK.API.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
@@ -11,6 +12,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// </summary>
     internal interface IChannelFactory
     {
+        /// <summary>
+        /// The <see cref="IConnectionFactory"/> used to construct connections to the broker
+        /// </summary>
+        ConfiguredConnectionFactory ConnectionFactory { get; }
+
         /// <summary>
         /// Constructs and returns a <see cref="IModel"/> representing a channel used to communicate with the broker
         /// </summary>
