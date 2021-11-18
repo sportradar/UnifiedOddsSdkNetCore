@@ -549,7 +549,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return _recoveryOperation.Start();
             }
 
-            ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation skipped.");
+            ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation skipped. Last done at {_recoveryOperation.LastAttemptTime}");
             return null;
         }
     }

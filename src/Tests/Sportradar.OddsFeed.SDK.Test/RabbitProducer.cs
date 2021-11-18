@@ -90,6 +90,13 @@ namespace Sportradar.OddsFeed.SDK.Test
         // start the connection for sending messages
         public void Start()
         {
+            // clean connections
+            var activeConnections = ManagementClient.GetConnections();
+            foreach (var connection in activeConnections)
+            {
+                ManagementClient.CloseConnection(connection);
+            }
+
             // factory uses default user: guest/guest
             var factory = new ConnectionFactory
                           {

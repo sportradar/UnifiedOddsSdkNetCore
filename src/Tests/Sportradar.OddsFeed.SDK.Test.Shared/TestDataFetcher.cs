@@ -22,24 +22,24 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
     public class TestDataFetcher : IDataRestful
     {
         /// <summary>
-        /// The list of URI replacements (to get wanted response when specific url is  called)
+        /// The list of URI replacements (to get wanted response when specific url is called)
         /// </summary>
         public List<Tuple<string, string>> UriReplacements;
 
         /// <summary>
-        /// The list of possible post responses (to get wanted response when specific url is  called)
+        /// The list of possible post responses (to get wanted response when specific url is called)
         /// </summary>
         /// <remarks>string: url (or part of it) to be searched, int: 0-wanted response or <see cref="HttpStatusCode.BadRequest"/>; 1-wanted response; 2-wanted response or <see cref="HttpStatusCode.NotFound"/></remarks>
         public List<Tuple<string, int, HttpResponseMessage>> PostResponses;
 
         /// <summary>
-        /// The list of possible put responses (to get wanted response when specific url is  called)
+        /// The list of possible put responses (to get wanted response when specific url is called)
         /// </summary>
         /// <remarks>string: url (or part of it) to be searched, int: 0-wanted response or <see cref="HttpStatusCode.BadRequest"/>; 1-wanted response; 2-wanted response or <see cref="HttpStatusCode.NotFound"/></remarks>
         public  List<Tuple<string, int, HttpResponseMessage>> PutResponses;
 
         /// <summary>
-        /// The list of possible delete responses (to get wanted response when specific url is  called)
+        /// The list of possible delete responses (to get wanted response when specific url is called)
         /// </summary>
         /// <remarks>string: url (or part of it) to be searched, int: 0-wanted response or <see cref="HttpStatusCode.BadRequest"/>; 1-wanted response; 2-wanted response or <see cref="HttpStatusCode.NotFound"/></remarks>
         public List<Tuple<string, int, HttpResponseMessage>> DeleteResponses;

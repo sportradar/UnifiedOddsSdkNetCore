@@ -254,10 +254,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     {
                         var isOpen = _channelFactory.IsConnectionOpen() ? "s" : string.Empty;
                         ExecutionLog.LogWarning($"There were no message{isOpen} in more then {_maxTimeBetweenMessages.TotalSeconds}s for the channel with channelNumber: {_channel?.ChannelNumber}. Last message arrived: {_lastMessageReceived}");
+
                         DetachEvents();
-                        ExecutionLog.LogInformation($"Resetting connection for the channel with channelNumber: {_channel?.ChannelNumber}");
-                        _channelFactory.ResetConnection();
-                        ExecutionLog.LogInformation($"Resetting connection finished for the channel with channelNumber: {_channel?.ChannelNumber}");
+                        if (_channelFactory.ConnectionCreated < _channelStarted)
+                        {
+                            ExecutionLog.LogInformation($"Resetting connection for the channel with channelNumber: {_channel?.ChannelNumber}");
+                            _channelFactory.ResetConnection();
+                            ExecutionLog.LogInformation($"Resetting connection finished for the channel with channelNumber: {_channel?.ChannelNumber}");
+                        }
                         CreateAndAttachEvents();
                     }
                 }

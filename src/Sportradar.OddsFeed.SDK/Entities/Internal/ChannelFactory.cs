@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Threading;
 using Dawn;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.API.Internal;
@@ -58,6 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             lock (_lock)
             {
                 ConnectionFactory.CloseConnection();
+                Thread.Sleep(5000);
                 ConnectionFactory.CreateConnection();
             }
         }
