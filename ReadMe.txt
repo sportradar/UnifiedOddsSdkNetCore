@@ -25,6 +25,17 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-11-18  1.22.0
+Improvements for connection resilience
+Added event RecoveryInitiated to IOddsFeed
+Added RabitConnectionTimeout and RabbitHeartbeat to OperationManager
+Improved logging regarding connection and recovery process
+Changed default UF environment from Integration to GlobalIntegration
+Extended StageType with Run enum value
+Fix: how connection is made
+Fix: case when 2 rabbit connections are made
+Fix: getting the names of category for simple_tournaments
+
 2021-10-06  1.21.0
 Extended configuration with ufEnvironment attribute
 Extended ITokenSetter and IEnvironmentSelector 

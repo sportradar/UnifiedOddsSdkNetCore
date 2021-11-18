@@ -100,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Test
 
             _feed.Open();
             _rabbitProducer.Send(_fMessageBuilder.BuildAlive(1));
-            WaitAndCheckTillTimeout(() => producer.RecoveryInfo != null, "Producer recovery info is not null", 500);
+            WaitAndCheckTillTimeout(() => producer.RecoveryInfo != null, "Producer recovery info is not null");
 
             Assert.IsNotNull(producer.RecoveryInfo);
             Assert.IsTrue(producer.IsProducerDown);
@@ -1201,7 +1201,7 @@ namespace Sportradar.OddsFeed.SDK.Test
             snapshotComplete = _fMessageBuilder.BuildSnapshotComplete(producer.RecoveryInfo.RequestId, 1);
             _rabbitProducer.Send(snapshotComplete);
 
-            WaitAndCheckTillTimeout(() => !producer.IsProducerDown, $"Producer 1 is not down ({producer.IsProducerDown})", 2000, 30000);
+            WaitAndCheckTillTimeout(() => !producer.IsProducerDown, $"Producer is not down ({producer.IsProducerDown})", 2000, 30000);
             Assert.IsFalse(producer.IsProducerDown);
 
             Assert.IsFalse(_calledEvents.IsNullOrEmpty());
