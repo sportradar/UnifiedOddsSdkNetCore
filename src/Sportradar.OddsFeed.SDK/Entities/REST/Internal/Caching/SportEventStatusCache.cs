@@ -109,15 +109,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     // fetch from api
                     await _fetchSemaphore.WaitAsync().ConfigureAwait(false);
 
-                    // get from cache
-                    lock (_lock) // lock needed because of adding to cache in other methods
-                    {
-                        var item = _sportEventStatusCache.Get(eventId.ToString());
+                    var item = _sportEventStatusCache.Get(eventId.ToString());
 
-                        if (item != null)
-                        {
-                            return (SportEventStatusCI) item;
-                        }
+                    if (item != null)
+                    {
+                        return (SportEventStatusCI) item;
                     }
 
                     var cachedEvent = _sportEventCache.GetEventCacheItem(eventId) as ICompetitionCI;
@@ -126,23 +122,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                         await cachedEvent.FetchSportEventStatusAsync().ConfigureAwait(false);
                     }
 
-                    // get from cache
-                    lock (_lock) // lock needed because of adding to cache in other methods
-                    {
-                        var item = _sportEventStatusCache.Get(eventId.ToString());
+                    item = _sportEventStatusCache.Get(eventId.ToString());
 
-                        if (item != null)
-                        {
-                            return (SportEventStatusCI) item;
-                        }
+                    if (item != null)
+                    {
+                        return (SportEventStatusCI) item;
                     }
                 }
                 finally
                 {
-                    if (!_isDisposed)
-                    {
-                        _fetchSemaphore.ReleaseSafe();
-                    }
+                    _fetchSemaphore.ReleaseSafe();
                 }
             }
 
@@ -189,39 +178,44 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             Guard.Argument(eventId, nameof(eventId)).NotNull();
 
-            lock (_lock)
+            if (string.IsNullOrEmpty(source) ||
+                source.Equals("OddsChange", StringComparison.InvariantCultureIgnoreCase) ||
+                source.Equals("SportEventSummary", StringComparison.InvariantCultureIgnoreCase) ||
+                !_sportEventStatusCache.Contains(eventId.ToString()))
             {
-                if (string.IsNullOrEmpty(source)
-                 || source.Equals("OddsChange", StringComparison.InvariantCultureIgnoreCase)
-                 || source.Equals("SportEventSummary", StringComparison.InvariantCultureIgnoreCase)
-                 || !_sportEventStatusCache.Contains(eventId.ToString()))
+                lock (_lock)
                 {
                     if (!string.IsNullOrEmpty(source))
                     {
                         if (OperationManager.IgnoreBetPalTimelineSportEventStatus && source.Contains("Timeline") && _ignoreEventsTimelineCache.Contains(eventId.ToString()))
                         {
-                            ExecutionLog.LogDebug($"Received SES for {eventId} from {source} with EventStatus:{sportEventStatus.Status} (timeline ignored)");
+                            ExecutionLog.LogDebug($"Received SES for {eventId} from {source} with EventStatus:{sportEventStatus.Status} (timeline ignored) {statusOnEvent}");
                             return;
                         }
 
                         source = $" from {source}";
                     }
+
                     ExecutionLog.LogDebug($"Received SES for {eventId}{source} with EventStatus:{sportEventStatus.Status}");
                     var cacheItem = _sportEventStatusCache.AddOrGetExisting(
-                                                   eventId.ToString(),
-                                                   sportEventStatus,
-                                                   new CacheItemPolicy {AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(OperationManager.SportEventStatusCacheTimeout.TotalSeconds)}) 
-                                                   as SportEventStatusCI;
+                                                                            eventId.ToString(),
+                                                                            sportEventStatus,
+                                                                            new CacheItemPolicy
+                                                                            {
+                                                                                AbsoluteExpiration =
+                                                                                    DateTimeOffset.Now.AddSeconds(OperationManager.SportEventStatusCacheTimeout.TotalSeconds)
+                                                                            })
+                                        as SportEventStatusCI;
                     if (cacheItem != null)
                     {
                         cacheItem.SetFeedStatus(sportEventStatus.FeedStatusDTO);
                         cacheItem.SetSapiStatus(sportEventStatus.SapiStatusDTO);
                     }
                 }
-                else
-                {
-                    ExecutionLog.LogDebug($"Received SES for {eventId} from {source} with EventStatus:{sportEventStatus.Status} (ignored)");
-                }
+            }
+            else
+            {
+                ExecutionLog.LogDebug($"Received SES for {eventId} from {source} with EventStatus:{sportEventStatus.Status} (ignored)");
             }
         }
 
@@ -276,10 +270,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             if (cacheItemType == CacheItemType.All || cacheItemType == CacheItemType.SportEventStatus)
             {
-                lock (_lock)
-                {
-                    _sportEventStatusCache.Remove(id.ToString());
-                }
+                _sportEventStatusCache.Remove(id.ToString());
             }
         }
 
@@ -300,10 +291,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             var result = false;
             if (cacheItemType == CacheItemType.All || cacheItemType == CacheItemType.SportEventStatus)
             {
-                lock (_lock)
-                {
-                    result = _sportEventStatusCache.Contains(id.ToString());
-                }
+                result = _sportEventStatusCache.Contains(id.ToString());
             }
             return result;
         }
