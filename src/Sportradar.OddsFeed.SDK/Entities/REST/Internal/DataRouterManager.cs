@@ -1132,7 +1132,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         {
             if (!_isWnsAvailable)
             {
-                //WriteLog("Calling GetDrawSummaryAsync is ignored since producer WNS is not available.", true);
                 return;
             }
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetDrawSummaryAsync", MeasurementUnit = Unit.Requests };
@@ -1177,7 +1176,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         {
             if (!_isWnsAvailable)
             {
-                //WriteLog("Calling GetDrawFixtureAsync is ignored since producer WNS is not available.", true);
                 return;
             }
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetDrawFixtureAsync", MeasurementUnit = Unit.Requests };
