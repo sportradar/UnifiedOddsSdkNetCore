@@ -140,10 +140,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
                     producer = _producerManager.Get(feedMessage.ProducerId);
                     messageName = feedMessage.GetType().Name;
+                    if (!string.IsNullOrEmpty(feedMessage.EventId) && URN.TryParse(feedMessage.EventId, out URN eventUrn))
+                    {
+                        feedMessage.EventURN = eventUrn;
+                    }
+                    if (_keyParser.TryGetSportId(eventArgs.RoutingKey, messageName, out var sportId))
+                    {
+                        feedMessage.SportId = sportId;
+                    }
 
                     if (t.Elapsed.TotalMilliseconds > 300)
                     {
-                        _keyParser.TryGetSportId(eventArgs.RoutingKey, messageName, out var sportId);
                         var marketCounts = 0;
                         var outcomeCounts = 0;
                         if (feedMessage is odds_change oddsChange)
