@@ -511,10 +511,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 _state = competitor.State;
             }
-            if (!competitor.Players.IsNullOrEmpty())
+            if (competitor.Players != null && !competitor.Players.IsNullOrEmpty())
             {
-                ResetAssociatedPlayers();
-                _associatedPlayerIds.AddRange(competitor.Players.Select(s => s.Id));
+                _associatedPlayerIds = competitor.Players.Select(s => s.Id).ToList();
             }
             if (!string.IsNullOrEmpty(competitor.Gender))
             {
@@ -565,13 +564,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             }
             if (!competitorProfile.Players.IsNullOrEmpty())
             {
-                ResetAssociatedPlayers();
-                _associatedPlayerIds.AddRange(competitorProfile.Players.Select(s => s.Id));
+                _associatedPlayerIds = competitorProfile.Players.Select(s => s.Id).ToList();
             }
             if (!competitorProfile.Jerseys.IsNullOrEmpty())
             {
-                ResetJerseys();
-                _jerseys.AddRange(competitorProfile.Jerseys.Select(s => new JerseyCI(s)));
+                _jerseys = competitorProfile.Jerseys.Select(s => new JerseyCI(s)).ToList();
             }
             if (competitorProfile.Manager != null)
             {
@@ -722,15 +719,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             
             if (!item._associatedPlayerIds.IsNullOrEmpty())
             {
-                ResetAssociatedPlayers();
-                _associatedPlayerIds.AddRange(item._associatedPlayerIds);
+                _associatedPlayerIds = item._associatedPlayerIds.ToList();
             }
             _isVirtual = item.IsVirtual;
             _referenceId = item._referenceId ?? _referenceId;
-            if (!item._jerseys.IsNullOrEmpty())
+            if (item._jerseys != null && !item._jerseys.IsNullOrEmpty())
             {
-                ResetJerseys();
-                _jerseys.AddRange(item._jerseys);
+                _jerseys = item._jerseys.ToList();
             }
             _countryCode = item._countryCode ?? _countryCode;
             _state = item._state ?? _state;
@@ -748,30 +743,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             if(!string.IsNullOrEmpty(item.ShortName))
             {
                 _shortName = item.ShortName;
-            }
-        }
-
-        private void ResetAssociatedPlayers()
-        {
-            if (_associatedPlayerIds == null)
-            {
-                _associatedPlayerIds = new List<URN>();
-            }
-            else
-            {
-                _associatedPlayerIds.Clear();
-            }
-        }
-
-        private void ResetJerseys()
-        {
-            if (_jerseys == null)
-            {
-                _jerseys = new List<JerseyCI>();
-            }
-            else
-            {
-                _jerseys.Clear();
             }
         }
 
