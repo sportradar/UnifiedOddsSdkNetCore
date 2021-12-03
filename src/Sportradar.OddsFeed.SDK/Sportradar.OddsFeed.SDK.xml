@@ -2737,6 +2737,11 @@
             Executes the steps required when the connection to the message broker is shutdown.
             </summary>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.FeedRecoveryManager.ConnectionRecovered">
+            <summary>
+            Executes the steps required when the connection to the message broker is recovered.
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.IConfigurationSectionProvider">
             <summary>
             Represents a contract implemented by classes used to provide access to <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.IOddsFeedConfigurationSection"/> instance
@@ -2847,6 +2852,11 @@
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.IFeedRecoveryManager.ConnectionShutdown">
             <summary>
             Executes the steps required when the connection to the message broker is shutdown.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.IFeedRecoveryManager.ConnectionRecovered">
+            <summary>
+            Executes the steps required when the connection to the message broker is recovered.
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.IFeedSystemSession">
@@ -3176,6 +3186,11 @@
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.IProducerRecoveryManager.ConnectionShutdown">
             <summary>
             Executes the steps required when the connection to the message broker is shutdown.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.IProducerRecoveryManager.ConnectionRecovered">
+            <summary>
+            Executes the steps required when the connection to the message broker is recovered after shutdown.
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation">
@@ -4525,6 +4540,11 @@
             Executes the steps required when the connection to the message broker is shutdown.
             </summary>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.ConnectionRecovered">
+            <summary>
+            Executes the steps required when the connection to the message broker is recovered after shutdown.
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.ProcessUserMessage(Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage,Sportradar.OddsFeed.SDK.Entities.MessageInterest)">
             <summary>
             Processes <see cref="T:Sportradar.OddsFeed.SDK.Entities.IMessage" /> received on the user's session(s)
@@ -4942,6 +4962,11 @@
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer">
             <summary>
             Used to issue recovery requests to the feed
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer.ExecutionLog">
+            <summary>
+            A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> used for execution logging
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.API.Internal.RecoveryRequestIssuer.AfterTimestampRecoveryUrlFormat">
@@ -7909,6 +7934,21 @@
             </summary>
             <param name="length">The length of the returned string</param>
             <param name="containDash">if set to <c>true</c> [contain dash].</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ClearSensitiveData(System.String)">
+            <summary>
+            Clear sensitive data (removes part of it)
+            </summary>
+            <param name="input">Data to clear</param>
+            <returns>Cleared input string</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ClearSensitiveData(System.String,System.String)">
+            <summary>
+            Clear sensitive data (removes part of it) from then input text
+            </summary>
+            <param name="input">Data to clear</param>
+            <param name="sensitiveData">Search for this data and replace with cleared input string</param>
+            <returns>Cleared input string</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.SdkTimer">
             <summary>
@@ -11318,13 +11358,14 @@
             The timer semaphore slim used reduce concurrency within timer calls
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.#ctor(Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory,Sportradar.OddsFeed.SDK.Common.Internal.ITimer,System.TimeSpan)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.#ctor(Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory,Sportradar.OddsFeed.SDK.Common.Internal.ITimer,System.TimeSpan,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel"/> class.
             </summary>
             <param name="channelFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IChannelFactory"/> used to construct the <see cref="T:RabbitMQ.Client.IModel"/> representing Rabbit MQ channel.</param>
             <param name="timer">Timer used to check if there is connection</param>
             <param name="maxTimeBetweenMessages">Max timeout between messages to check if connection is ok</param>
+            <param name="accessToken">The access token to filter from logs</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.RabbitMqChannel.Open(Sportradar.OddsFeed.SDK.Entities.MessageInterest,System.Collections.Generic.IEnumerable{System.String})">
             <summary>

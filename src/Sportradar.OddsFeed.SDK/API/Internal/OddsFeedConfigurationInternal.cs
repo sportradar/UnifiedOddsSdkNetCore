@@ -367,9 +367,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var disabledProducers = DisabledProducers != null && DisabledProducers.Any()
                 ? string.Join(",", DisabledProducers)
                 : string.Empty;
-            var token = !string.IsNullOrEmpty(AccessToken) && AccessToken.Length > 3
-                            ? AccessToken.Substring(0, 3) + "***" + AccessToken.Substring(AccessToken.Length - 3)
-                            : AccessToken;
+            var token = SdkInfo.ClearSensitiveData(AccessToken);
 
             var sb = new StringBuilder();
             sb.Append("AccessToken=").Append(token)

@@ -87,5 +87,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Executes the steps required when the connection to the message broker is shutdown.
         /// </summary>
         void ConnectionShutdown();
+
+        /// <summary>
+        /// Executes the steps required when the connection to the message broker is recovered after shutdown.
+        /// </summary>
+        void ConnectionRecovered();
     }
 }

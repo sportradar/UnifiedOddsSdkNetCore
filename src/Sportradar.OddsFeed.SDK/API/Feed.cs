@@ -779,6 +779,7 @@ namespace Sportradar.OddsFeed.SDK.API
         {
             var cause = e == null || e == EventArgs.Empty ? string.Empty : $" Cause: {e}";
             _log.LogInformation($"The connection recovery succeeded.{cause}");
+            _feedRecoveryManager.ConnectionRecovered();
         }
 
         private void OnEventRecoveryCompleted(object sender, EventRecoveryCompletedEventArgs e)

@@ -800,7 +800,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 new InjectionConstructor(
                     new ResolvedParameter<IChannelFactory>(),
                     connectionTimer,
-                    maxTimeBetweenMessages
+                    maxTimeBetweenMessages,
+                    config.AccessToken
                     ));
             container.RegisterType<IMessageReceiver, RabbitMqMessageReceiver>(
                 new HierarchicalLifetimeManager(),

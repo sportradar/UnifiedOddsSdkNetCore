@@ -75,6 +75,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private readonly TimeSpan _maxTimeBetweenMessages;
 
+        private readonly string _accessToken;
+
         /// <summary>
         /// The timer semaphore slim used reduce concurrency within timer calls
         /// </summary>
@@ -86,7 +88,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="channelFactory">A <see cref="IChannelFactory"/> used to construct the <see cref="IModel"/> representing Rabbit MQ channel.</param>
         /// <param name="timer">Timer used to check if there is connection</param>
         /// <param name="maxTimeBetweenMessages">Max timeout between messages to check if connection is ok</param>
-        public RabbitMqChannel(IChannelFactory channelFactory, ITimer timer, TimeSpan maxTimeBetweenMessages)
+        /// <param name="accessToken">The access token to filter from logs</param>
+        public RabbitMqChannel(IChannelFactory channelFactory, ITimer timer, TimeSpan maxTimeBetweenMessages, string accessToken)
         {
             Guard.Argument(channelFactory, nameof(channelFactory)).NotNull();
 
@@ -97,6 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             _timer = timer;
             _maxTimeBetweenMessages = maxTimeBetweenMessages;
+            _accessToken = accessToken;
             _timer.Elapsed += OnTimerElapsed;
         }
 
@@ -155,12 +159,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         private void ConsumerOnShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
-            ExecutionLog.LogInformation($"The consumer {_consumer.ConsumerTag} is shutdown. Reason={_consumer.ShutdownReason}");
+            var reason = _consumer.ShutdownReason == null ? string.Empty : SdkInfo.ClearSensitiveData(_consumer.ShutdownReason.ToString(), _accessToken);
+            ExecutionLog.LogInformation($"The consumer {_consumer.ConsumerTag} is shutdown. Reason={reason}");
         }
 
         private void ChannelOnModelShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
-            ExecutionLog.LogInformation($"The channel with channelNumber {_channel.ChannelNumber} is shutdown. Reason={_channel.CloseReason}");
+            var reason = _channel.CloseReason == null ? string.Empty : SdkInfo.ClearSensitiveData(_channel.CloseReason.ToString(), _accessToken);
+            ExecutionLog.LogInformation($"The channel with channelNumber {_channel.ChannelNumber} is shutdown. Reason={reason}");
         }
 
         private void CreateAndAttachEvents()
@@ -177,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             var interestName = _interest == null ? "system" : _interest.Name;
             _consumer = new EventingBasicConsumer(_channel);
-            _consumer.ConsumerTag = $"UfSdk-NetStd|{SdkInfo.GetVersion()}|{interestName}|{_channel.ChannelNumber}|{DateTime.Now}";
+            _consumer.ConsumerTag = $"UfSdk-NetStd|{SdkInfo.GetVersion()}|{interestName}|{_channel.ChannelNumber}|{DateTime.Now:yyyyMMdd-HHmmss}";
             _consumer.Received += ConsumerOnDataReceived;
             _consumer.Shutdown += ConsumerOnShutdown;
             _channel.BasicConsume(declareResult.QueueName, true, _consumer.ConsumerTag, _consumer);

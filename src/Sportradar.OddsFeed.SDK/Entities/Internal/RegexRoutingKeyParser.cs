@@ -3,6 +3,7 @@
 */
 using System;
 using System.Text.RegularExpressions;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
@@ -56,9 +57,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             sportId = null;
             try
             {
+                if (routingKey.IsNullOrEmpty())
+                {
+                    return false;
+                }
                 sportId = GetSportId(routingKey, messageTypeName);
             }
-            catch (FormatException)
+            catch (Exception)
             {
                 return false;
             }

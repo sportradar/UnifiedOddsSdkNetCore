@@ -343,5 +343,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 producerRecoveryManager.ConnectionShutdown();
             }
         }
+
+        /// <summary>
+        /// Executes the steps required when the connection to the message broker is recovered.
+        /// </summary>
+        public void ConnectionRecovered()
+        {
+            foreach (var producerRecoveryManager in _producerRecoveryManagers.Values)
+            {
+                producerRecoveryManager.ConnectionRecovered();
+            }
+        }
     }
 }
