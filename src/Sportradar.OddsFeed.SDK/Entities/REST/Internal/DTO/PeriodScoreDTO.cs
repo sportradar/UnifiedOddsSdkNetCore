@@ -2,6 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -62,8 +64,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="periodScore">The period score</param>
         public PeriodScoreDTO(periodScore periodScore)
         {
-            HomeScore = (decimal) periodScore.home_score;
-            AwayScore = (decimal) periodScore.away_score;
+            if (decimal.TryParse(periodScore.home_score, out var homeScore))
+            {
+                HomeScore = homeScore;
+            }
+            else if (!string.IsNullOrEmpty(periodScore.home_score))
+            {
+                SdkInfo.ExecutionLog.LogWarning($"PeriodScore - can not parse home score: {periodScore.home_score}");
+            }
+            if (decimal.TryParse(periodScore.away_score, out var awayScore))
+            {
+                AwayScore = awayScore;
+            }
+            else if (!string.IsNullOrEmpty(periodScore.away_score))
+            {
+                SdkInfo.ExecutionLog.LogWarning($"PeriodScore - can not parse away score: {periodScore.away_score}");
+            }
             PeriodNumber = periodScore.numberSpecified ? periodScore.number : (int?) null;
             MatchStatusCode = periodScore.match_status_code;
             Type = GetPeriodType(periodScore.type);

@@ -95,8 +95,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             return new PeriodScore(new PeriodScoreDTO(new periodScore
             {
-                                    home_score = SR.I100,
-                                    away_score = SR.I100,
+                                    home_score = SR.S100,
+                                    away_score = SR.S100,
                                     type = "regular_period",
                                     numberSpecified = true,
                                     number = 1

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:include schemaLocation="urn.xsd" />
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="urn.xsd"/>
     <xs:complexType name="sportEventStatusBase">
         <xs:sequence>
-            <xs:element type="clock" name="clock" maxOccurs="unbounded" minOccurs="0" />
-            <xs:element type="periodScores" name="period_scores"  minOccurs="0" />
+            <xs:element type="clock" name="clock" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="periodScores" name="period_scores" minOccurs="0"/>
+            <xs:element type="resultScores" name="results" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="status" use="required"/>
         <xs:attribute type="xs:string" name="match_status" use="optional"/>
@@ -24,11 +26,11 @@
     </xs:complexType>
     <xs:complexType name="sportEventStatus">
         <xs:complexContent>
-            <xs:extension base="sportEventStatusBase" >
-                <xs:attribute type="xs:double" name="home_score" use="optional"/>
-                <xs:attribute type="xs:double" name="away_score" use="optional"/>
-                <xs:attribute type="xs:double" name="aggregate_home_score" use="optional"/>
-                <xs:attribute type="xs:double" name="aggregate_away_score" use="optional"/>
+            <xs:extension base="sportEventStatusBase">
+                <xs:attribute type="xs:string" name="home_score" use="optional"/>
+                <xs:attribute type="xs:string" name="away_score" use="optional"/>
+                <xs:attribute type="xs:string" name="aggregate_home_score" use="optional"/>
+                <xs:attribute type="xs:string" name="aggregate_away_score" use="optional"/>
                 <xs:attribute type="competitorUrn" name="aggregate_winner_id" use="optional"/>
                 <xs:attribute type="xs:int" name="status_code" use="optional"/>
                 <xs:attribute type="xs:int" name="match_status_code" use="optional"/>
@@ -37,16 +39,26 @@
     </xs:complexType>
     <xs:complexType name="periodScore">
         <xs:complexContent>
-            <xs:extension base="periodScoreBase" >
-                <xs:attribute type="xs:double" name="home_score" use="required"/>
-                <xs:attribute type="xs:double" name="away_score" use="required"/>
+            <xs:extension base="periodScoreBase">
+                <xs:attribute type="xs:string" name="home_score" use="required"/>
+                <xs:attribute type="xs:string" name="away_score" use="required"/>
                 <xs:attribute type="xs:int" name="match_status_code" use="required"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="periodScores">
         <xs:sequence>
-            <xs:element type="periodScore" name="period_score" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="periodScore" name="period_score" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="resultScore">
+        <xs:attribute type="xs:string" name="home_score" use="required"/>
+        <xs:attribute type="xs:string" name="away_score" use="required"/>
+        <xs:attribute type="xs:int" name="match_status_code" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="resultScores">
+        <xs:sequence>
+            <xs:element type="resultScore" name="result" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

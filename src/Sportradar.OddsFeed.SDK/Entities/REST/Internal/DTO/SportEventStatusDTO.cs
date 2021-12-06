@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using Dawn;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -356,13 +357,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 }
                 PeriodScores = periodScores;
             }
-            ApplyPropertyValue(true, "WinnerId", restSES.winner_id, tempProperties);
-            ApplyPropertyValue(true, "WinningReason", restSES.winning_reason, tempProperties);
-            ApplyPropertyValue(restSES.aggregate_away_scoreSpecified, "AggregateAwayScore", restSES.aggregate_away_score, tempProperties);
-            ApplyPropertyValue(restSES.aggregate_home_scoreSpecified, "AggregateHomeScore", restSES.aggregate_home_score, tempProperties);
-            ApplyPropertyValue(true, "AggregateWinnerId", restSES.aggregate_winner_id, tempProperties);
-            ApplyPropertyValue(restSES.away_scoreSpecified, "AwayScore", restSES.away_score, tempProperties); // BELOW
-            ApplyPropertyValue(restSES.home_scoreSpecified, "HomeScore", restSES.home_score, tempProperties); // BELOW
+            ApplyPropertyValue(!string.IsNullOrEmpty(restSES.winner_id), "WinnerId", restSES.winner_id, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(restSES.winning_reason), "WinningReason", restSES.winning_reason, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(restSES.aggregate_home_score), "AggregateHomeScore", restSES.aggregate_home_score, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(restSES.aggregate_away_score), "AggregateAwayScore", restSES.aggregate_away_score, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(restSES.aggregate_winner_id), "AggregateWinnerId", restSES.aggregate_winner_id, tempProperties);
+            ApplyPropertyValue(!string.IsNullOrEmpty(restSES.home_score), "HomeScore", restSES.home_score, tempProperties); // BELOW
+            ApplyPropertyValue(!string.IsNullOrEmpty(restSES.away_score), "AwayScore", restSES.away_score, tempProperties); // BELOW
 
             Properties = new ReadOnlyDictionary<string, object>(tempProperties);
 
@@ -374,13 +375,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                              : MessageMapperHelper.GetEnumValue(restSES.status, EventStatus.Unknown);
             ApplyPropertyValue(true, "Status", (int) Status, tempProperties);    //BELOW
 
-            HomeScore = restSES.home_scoreSpecified
-                ? (decimal?)restSES.home_score
-                : null;
+            HomeScore = decimal.TryParse(restSES.home_score, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out var homeScore)
+                            ? (decimal?)homeScore
+                            : null;
 
-            AwayScore = restSES.away_scoreSpecified
-                ? (decimal?)restSES.away_score
-                : null;
+            AwayScore = decimal.TryParse(restSES.away_score, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out var awayScore)
+                            ? (decimal?)awayScore
+                            : null;
 
             var matchStatusId = -1;
             if (restSES.match_status_codeSpecified)
@@ -419,6 +420,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             EventClock = null;
 
             EventResults = null;
+            if (restSES.results != null)
+            {
+                var eventResults = new List<EventResultDTO>();
+                foreach (var result in restSES.results)
+                {
+                    eventResults.Add(new EventResultDTO(result));
+                }
+                EventResults = eventResults;
+            }
 
             if (statistics != null)
             {

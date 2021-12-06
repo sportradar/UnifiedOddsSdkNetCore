@@ -3996,21 +3996,13 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
     public partial class restSportEventStatus : restSportEventStatusBase {
         
-        private double home_scoreField;
+        private string home_scoreField;
         
-        private bool home_scoreFieldSpecified;
+        private string away_scoreField;
         
-        private double away_scoreField;
+        private string aggregate_home_scoreField;
         
-        private bool away_scoreFieldSpecified;
-        
-        private double aggregate_home_scoreField;
-        
-        private bool aggregate_home_scoreFieldSpecified;
-        
-        private double aggregate_away_scoreField;
-        
-        private bool aggregate_away_scoreFieldSpecified;
+        private string aggregate_away_scoreField;
         
         private string aggregate_winner_idField;
         
@@ -4024,7 +4016,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double home_score {
+        public string home_score {
             get {
                 return this.home_scoreField;
             }
@@ -4034,19 +4026,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool home_scoreSpecified {
-            get {
-                return this.home_scoreFieldSpecified;
-            }
-            set {
-                this.home_scoreFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double away_score {
+        public string away_score {
             get {
                 return this.away_scoreField;
             }
@@ -4056,19 +4037,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool away_scoreSpecified {
-            get {
-                return this.away_scoreFieldSpecified;
-            }
-            set {
-                this.away_scoreFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double aggregate_home_score {
+        public string aggregate_home_score {
             get {
                 return this.aggregate_home_scoreField;
             }
@@ -4078,35 +4048,13 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool aggregate_home_scoreSpecified {
-            get {
-                return this.aggregate_home_scoreFieldSpecified;
-            }
-            set {
-                this.aggregate_home_scoreFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double aggregate_away_score {
+        public string aggregate_away_score {
             get {
                 return this.aggregate_away_scoreField;
             }
             set {
                 this.aggregate_away_scoreField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool aggregate_away_scoreSpecified {
-            get {
-                return this.aggregate_away_scoreFieldSpecified;
-            }
-            set {
-                this.aggregate_away_scoreFieldSpecified = value;
             }
         }
         
@@ -4179,6 +4127,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         private periodScore[] period_scoresField;
         
+        private resultScore[] resultsField;
+        
         private string statusField;
         
         private string match_statusField;
@@ -4214,6 +4164,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
             }
             set {
                 this.period_scoresField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("result", IsNullable=false)]
+        public resultScore[] results {
+            get {
+                return this.resultsField;
+            }
+            set {
+                this.resultsField = value;
             }
         }
         
@@ -4362,15 +4323,15 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
     public partial class periodScore : periodScoreBase {
         
-        private double home_scoreField;
+        private string home_scoreField;
         
-        private double away_scoreField;
+        private string away_scoreField;
         
         private int match_status_codeField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double home_score {
+        public string home_score {
             get {
                 return this.home_scoreField;
             }
@@ -4381,7 +4342,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double away_score {
+        public string away_score {
             get {
                 return this.away_scoreField;
             }
@@ -4447,6 +4408,54 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
             }
             set {
                 this.numberFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/sportsapi/v1/unified")]
+    public partial class resultScore {
+        
+        private string home_scoreField;
+        
+        private string away_scoreField;
+        
+        private int match_status_codeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string home_score {
+            get {
+                return this.home_scoreField;
+            }
+            set {
+                this.home_scoreField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string away_score {
+            get {
+                return this.away_scoreField;
+            }
+            set {
+                this.away_scoreField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int match_status_code {
+            get {
+                return this.match_status_codeField;
+            }
+            set {
+                this.match_status_codeField = value;
             }
         }
     }

@@ -19,6 +19,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     internal static class SdkInfo
     {
         /// <summary>
+        /// Internal sdk logger to be used within base classes - so no need in every class
+        /// </summary>
+        public static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(SdkInfo));
+
+        /// <summary>
         /// The unknown producer identifier
         /// </summary>
         public const int UnknownProducerId = 99;

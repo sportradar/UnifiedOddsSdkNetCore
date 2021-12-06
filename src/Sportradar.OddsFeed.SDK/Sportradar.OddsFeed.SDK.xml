@@ -4510,6 +4510,11 @@
             The time of last feed message associated with recovery
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager._connectionDownTimestamp">
+            <summary>
+            The timestamp when the connection went down (if down)
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager.#ctor(Sportradar.OddsFeed.SDK.Messages.IProducer,Sportradar.OddsFeed.SDK.API.Internal.IRecoveryOperation,Sportradar.OddsFeed.SDK.API.Internal.ITimestampTracker,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.Internal.ProducerRecoveryManager"/> class
@@ -7675,6 +7680,11 @@
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo">
             <summary>
             Class provides information about current executing assembly
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ExecutionLog">
+            <summary>
+            Internal sdk logger to be used within base classes - so no need in every class
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.UnknownProducerId">
@@ -22321,6 +22331,12 @@
             </summary>
             <param name="result">The result</param>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.resultScore)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO"/> class
+            </summary>
+            <param name="result">The result</param>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO.#ctor(Sportradar.OddsFeed.SDK.Messages.REST.stageResultCompetitor)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.EventResultDTO"/> class
@@ -35434,25 +35450,13 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.home_score">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.home_scoreSpecified">
-            <remarks/>
-        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.away_score">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.away_scoreSpecified">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.aggregate_home_score">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.aggregate_home_scoreSpecified">
-            <remarks/>
-        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.aggregate_away_score">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.aggregate_away_scoreSpecified">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus.aggregate_winner_id">
@@ -36460,6 +36464,9 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatusBase.period_scores">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatusBase.results">
+            <remarks/>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatusBase.status">
             <remarks/>
         </member>
@@ -36518,6 +36525,18 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.periodScoreBase.numberSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.resultScore">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.resultScore.home_score">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.resultScore.away_score">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.resultScore.match_status_code">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.REST.matchStatistics">

@@ -2,9 +2,12 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Castle.Core.Internal;
 using Dawn;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -132,6 +135,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             HomeScore = result.home_score;
             AwayScore = result.away_score;
+            MatchStatus = result.match_status_code;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventResultDTO"/> class
+        /// </summary>
+        /// <param name="result">The result</param>
+        public EventResultDTO(resultScore result)
+        {
+            if (decimal.TryParse(result.home_score, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out var homeScore))
+            {
+                HomeScore = homeScore;
+            }
+            else if (!string.IsNullOrEmpty(result.home_score))
+            {
+                SdkInfo.ExecutionLog.LogWarning($"EventResult - can not parse home score: {result.home_score}");
+            }
+            if (decimal.TryParse(result.away_score, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out var awayScore))
+            {
+                AwayScore = awayScore;
+            }
+            else if (!string.IsNullOrEmpty(result.away_score))
+            {
+                SdkInfo.ExecutionLog.LogWarning($"EventResult - can not parse away score: {result.away_score}");
+            }
             MatchStatus = result.match_status_code;
         }
 
