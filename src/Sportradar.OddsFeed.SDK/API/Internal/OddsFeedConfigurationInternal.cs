@@ -175,7 +175,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the URL of the feed's xReplay Server REST interface
         /// </summary>
-        public string ReplayApiHost => EnvironmentManager.GetApiHost(SdkEnvironment.Replay) + "/v1/replay";
+        public string ReplayApiHost => ApiHost + "/v1/replay";
 
         /// <summary>
         /// Gets a <see cref="string"/> representation of Replay API base url
@@ -378,8 +378,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
               .Append(" VirtualHost=").Append(_bookmakerDetails?.VirtualHost)
               .Append(" TokenExpires=").Append(_bookmakerDetails?.ExpireAt.ToShortDateString())
               .Append(" InactivitySeconds=").Append(InactivitySeconds)
-              .Append(" DefaultLocale=").Append(DefaultLocale)
-              .Append(" Locales=[").Append(locales).Append("]")
+              .Append(" DefaultCulture=").Append(DefaultLocale)
+              .Append(" Cultures=[").Append(locales).Append("]")
               .Append(" DisabledProducers=").Append(disabledProducers)
               .Append(" MaxRecoveryTime=").Append(MaxRecoveryTime)
               .Append(" Environment=").Append(Environment)
