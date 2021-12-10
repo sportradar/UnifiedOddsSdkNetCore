@@ -9,6 +9,7 @@ using Dawn;
 using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -49,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Console.WriteLine(string.Empty);
             _log.LogInformation("Running the OddsFeed SDK Complete example");
-
+            
             var configuration = Feed.GetConfigurationBuilder().BuildFromConfigFile();
             var oddsFeed = new Feed(configuration, _loggerFactory, _metricsRoot);
             AttachToFeedEvents(oddsFeed);

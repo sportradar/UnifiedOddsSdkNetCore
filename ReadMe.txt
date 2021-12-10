@@ -25,6 +25,16 @@ The package contains:
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2021-12-10  1.23.0
+Added support for results in sportEventStatus received from api
+Added new log messages during recovery requests
+Improved how merging is done within Competitor
+Improved connection recovery after long disconnect
+Removed unneccessery locks in SportEventStatusCache
+Fix: connecting to replay server with production token
+Fix: some fields in raw feed message was not filled
+Fix: throws exception if match, stage or draw not found exception happens
+
 2021-11-18  1.22.0
 Improvements for connection resilience
 Added event RecoveryInitiated to IOddsFeed
