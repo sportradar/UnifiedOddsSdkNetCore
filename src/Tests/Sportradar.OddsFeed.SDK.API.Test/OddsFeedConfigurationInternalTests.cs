@@ -1,8 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Sportradar.OddsFeed.SDK.API.Internal;
@@ -14,6 +12,8 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
+using System;
+using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.API.Test
 {
@@ -99,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             // ApiHost is tested separately
             Assert.AreEqual(publicConfig.UseApiSsl, internalConfig.UseApiSsl);
             Assert.AreEqual(internalConfig.UseApiSsl ? "https://" + internalConfig.ApiHost : "http://" + internalConfig.ApiHost, internalConfig.ApiBaseUri);
-            Assert.AreEqual("stgapi.betradar.com/v1/replay", internalConfig.ReplayApiHost);
+            Assert.AreEqual("api.localhost.com/v1/replay", internalConfig.ReplayApiHost);
         }
 
         [TestMethod]
