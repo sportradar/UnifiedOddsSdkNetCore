@@ -1,13 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
@@ -94,5 +94,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// </summary>
         /// <returns>A <see cref="StageType"/> for the associated sport event.</returns>
         Task<StageType?> GetStageTypeAsync();
+
+        /// <summary>
+        /// Asynchronously get the list of competitors marked as virtual
+        /// </summary>
+        /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
+        Task<IList<URN>> GetCompetitorsVirtualAsync();
     }
 }

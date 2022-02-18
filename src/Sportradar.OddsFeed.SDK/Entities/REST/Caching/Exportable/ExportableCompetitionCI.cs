@@ -1,9 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using System;
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
 {
@@ -47,6 +47,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// Gets the <see cref="IDictionary{K, V}"/> specifying the competitors qualifiers
         /// </summary>
         public IDictionary<string, IDictionary<string, string>> CompetitorsReferences { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="IList{T}"/> specifying the competitors which are market virtual
+        /// </summary>
+        public IList<string> CompetitorsVirtual { get; set; }
 
         /// <summary>
         /// Gets a liveOdds

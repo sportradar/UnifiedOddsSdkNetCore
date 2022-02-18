@@ -11863,12 +11863,12 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.Active">
             <summary>
-            Gets a value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds"/> is active - i.e. should bets on it be accepted
+            Gets a value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcome"/> is active - i.e. should bets on it be accepted
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.Probabilities">
             <summary>
-            Gets the probabilities for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds"/> instance
+            Gets the probabilities for the current <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOutcome"/> instance
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.AdditionalProbabilities">
@@ -12263,6 +12263,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitionCI.CompetitorsReferences">
             <summary>
             Gets the <see cref="T:System.Collections.Generic.IDictionary`2"/> specifying the competitors qualifiers
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitionCI.CompetitorsVirtual">
+            <summary>
+            Gets the <see cref="T:System.Collections.Generic.IList`1"/> specifying the competitors which are market virtual
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitionCI.LiveOdds">
@@ -15771,7 +15776,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.CompetitorCI._fetchedCultures">
             <summary>
-            Gets the <see cref="T:System.Collections.Generic.IEnumerable`1"/> specifying the languages for which the current instance has translations
+            Gets the <see cref="T:System.Collections.Generic.IList`1"/> specifying the languages for which the current instance has translations
             </summary>
             <value>The fetched cultures</value>
         </member>
@@ -17385,6 +17390,11 @@
             The competitors references
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.CompetitionCI._competitorsVirtual">
+            <summary>
+            The competitors isVirtual attribute
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.CompetitionCI.#ctor(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager,Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool,System.Globalization.CultureInfo,System.Runtime.Caching.MemoryCache)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.CompetitionCI"/> class
@@ -17475,6 +17485,12 @@
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.CompetitionCI.GetCompetitorsQualifiersAsync">
             <summary>
             Asynchronously get the list of available team qualifiers
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.CompetitionCI.GetCompetitorsVirtualAsync">
+            <summary>
+            Asynchronously get the list of competitors marked as virtual
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
         </member>
@@ -17737,6 +17753,12 @@
             Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType"/> for the associated sport event.
             </summary>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Enums.StageType"/> for the associated sport event.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ICompetitionCI.GetCompetitorsVirtualAsync">
+            <summary>
+            Asynchronously get the list of competitors marked as virtual
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.IDrawCI">
             <summary>
@@ -27326,7 +27348,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.WeatherInfo.Temperature">
             <summary>
-            Gets the temperature in degrees celsius or a null reference if the expected temperature is not known
+            Gets the temperature in degrees Celsius or a null reference if the expected temperature is not known
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.WeatherInfo.WeatherConditions">
