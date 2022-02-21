@@ -1,14 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using Dawn;
-using System.Net.Security;
-using System.Security.Authentication;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using System;
+using System.Net.Security;
+using System.Security.Authentication;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -143,20 +144,27 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 if (_connectionSingleton != null)
                 {
-                    _connectionSingleton.ConnectionBlocked -= OnConnectionBlocked;
-                    _connectionSingleton.ConnectionUnblocked -= OnConnectionUnblocked;
-                    _connectionSingleton.RecoverySucceeded -= OnRecoverySucceeded;
-                    _connectionSingleton.ConnectionRecoveryError -= OnConnectionRecoveryError;
-                    _connectionSingleton.CallbackException -= OnCallbackException;
-                    _connectionSingleton.ConnectionShutdown -= OnConnectionShutdown;
-
-                    if (_connectionSingleton.IsOpen)
+                    try
                     {
+                        _connectionSingleton.ConnectionBlocked -= OnConnectionBlocked;
+                        _connectionSingleton.ConnectionUnblocked -= OnConnectionUnblocked;
+                        _connectionSingleton.RecoverySucceeded -= OnRecoverySucceeded;
+                        _connectionSingleton.ConnectionRecoveryError -= OnConnectionRecoveryError;
+                        _connectionSingleton.CallbackException -= OnCallbackException;
+                        _connectionSingleton.ConnectionShutdown -= OnConnectionShutdown;
+
                         _connectionSingleton.Close();
                     }
-                    _connectionSingleton.Dispose();
-                    _connectionSingleton = null;
-                    ConnectionCreated = DateTime.MinValue;
+                    catch (Exception e)
+                    {
+                        SdkLoggerFactory.LoggerFactory.CreateLogger("ConnectionFactory").LogWarning(e, "Error closing connection");
+                    }
+                    finally
+                    {
+                        _connectionSingleton.Dispose();
+                        _connectionSingleton = null;
+                        ConnectionCreated = DateTime.MinValue;
+                    }
                 }
             }
         }
