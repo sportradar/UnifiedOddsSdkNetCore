@@ -1,14 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Globalization;
 using Sportradar.OddsFeed.SDK.Messages;
+using System.Globalization;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
     /// Defines a contract for classes implementing manager info
     /// </summary>
+    //TODO: manager missing Names as Venue for example
     public interface IManager
     {
         /// <summary>

@@ -20,6 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously get the <see cref="ITournamentCoverage"/> instance representing the tournament coverage associated with the current instance
         /// </summary>
         /// <returns>The <see cref="ITournamentCoverage"/> instance representing the tournament coverage associated with the current instance</returns>
+        // TODO: method name should have Async
         Task<ITournamentCoverage> GetTournamentCoverage();
     }
 }

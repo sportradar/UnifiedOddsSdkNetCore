@@ -7,6 +7,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     /// Defines a contract for classes representing soccer status
     /// </summary>
     /// <seealso cref="IMatchStatus" />
+    // TODO: should implement IMatchStatusV1
     public interface ISoccerStatus : IMatchStatus
     {
         /// <summary>
