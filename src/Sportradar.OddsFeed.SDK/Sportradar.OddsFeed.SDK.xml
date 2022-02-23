@@ -16019,8 +16019,8 @@
             <summary>
             Merges the specified <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI"/> into instance
             </summary>
-            <param name="dto">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI"/> used fro merging</param>
-            <param name="culture">The culture of the input <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI"/></param>
+            <param name="dto">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.DelayedInfoDTO"/> used for merging</param>
+            <param name="culture">The culture of the input <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.DelayedInfoDTO"/></param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI.GetDescription(System.Globalization.CultureInfo)">
             <summary>
@@ -32996,12 +32996,12 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IWeatherInfo.Pitch">
             <summary>
-            TODO: add comments
+            Get the pitch
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IWeatherInfo.Temperature">
             <summary>
-            Gets the temperature in degrees celsius or a null reference if the expected temperature is not known
+            Gets the temperature in degrees Celsius or a null reference if the expected temperature is not known
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IWeatherInfo.WeatherConditions">
@@ -33016,7 +33016,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IWeatherInfo.WindAdvantage">
             <summary>
-            TOOD: add comments
+            Get the wind advantage
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping.IMarketMapping">
