@@ -1,14 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Dawn;
+using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
@@ -30,8 +30,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Initializes a new instance of the <see cref="DelayedInfoCI"/> class
         /// </summary>
-        /// <param name="dto">The <see cref="DelayedInfoCI"/> used to create new instance</param>
-        /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
+        /// <param name="dto">The <see cref="DelayedInfoDTO"/> used to create new instance</param>
+        /// <param name="culture">The culture of the input <see cref="DelayedInfoDTO"/></param>
         internal DelayedInfoCI(DelayedInfoDTO dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
@@ -57,8 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Merges the specified <see cref="DelayedInfoCI"/> into instance
         /// </summary>
-        /// <param name="dto">The <see cref="DelayedInfoCI"/> used fro merging</param>
-        /// <param name="culture">The culture of the input <see cref="DelayedInfoCI"/></param>
+        /// <param name="dto">The <see cref="DelayedInfoDTO"/> used for merging</param>
+        /// <param name="culture">The culture of the input <see cref="DelayedInfoDTO"/></param>
         internal void Merge(DelayedInfoDTO dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();

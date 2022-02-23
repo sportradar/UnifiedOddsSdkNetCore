@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public string Pitch { get; }
 
         /// <summary>
-        /// Gets the temperature in degrees celsius or a null reference if the expected temperature is not known
+        /// Gets the temperature in degrees Celsius or a null reference if the expected temperature is not known
         /// </summary>
         public int? Temperature { get; }
 

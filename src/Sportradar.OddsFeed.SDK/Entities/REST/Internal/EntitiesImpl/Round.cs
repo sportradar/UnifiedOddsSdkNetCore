@@ -1,12 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Collections.Generic;
 using Dawn;
-using System.Globalization;
-using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Messages;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
@@ -79,6 +79,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public string Phase { get; }
 
         /// <summary>
+        /// A betradar name
+        /// </summary>
+        public string BetradarName { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Round"/> class
         /// </summary>
         /// <param name="ci">A <see cref="RoundCI"/> used to create new instance</param>
@@ -105,6 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             }
             BetradarId = ci.BetradarId ?? 0;
             Phase = ci.Phase;
+            BetradarName = ci.BetradarName;
         }
 
         /// <summary>
@@ -155,7 +161,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var names = string.Join(", ", Name.Keys.Select(k => $"{k}={GetName(k)}"));
             var groupNames = string.Join(", ", GroupName.Keys.Select(k => $"{k}={GetGroupName(k)}"));
             var phase = string.Join(", ", PhaseOrGroupLongName.Keys.Select(k => $"{k}={GetPhaseOrGroupLongName(k)}"));
-            return $"Name=[{names}], GroupName=[{groupNames}], PhaseOrGroupLongName={phase}, Type={Type}, Number={Number}, CupRoundMatches={CupRoundMatches}, CupRoundMatchNumber={CupRoundMatchNumber}, BetradarId={BetradarId}, Phase={Phase}";
+            return $"Name=[{names}], GroupName=[{groupNames}], PhaseOrGroupLongName={phase}, Type={Type}, Number={Number}, CupRoundMatches={CupRoundMatches}, CupRoundMatchNumber={CupRoundMatchNumber}, BetradarId={BetradarId}, BetradarName={BetradarName}, Phase={Phase}";
         }
 
         /// <summary>

@@ -72,5 +72,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// A <see cref="string"/> representation of the phase
         /// </summary>
         public string Phase { get; set; }
+
+        /// <summary>
+        /// A <see cref="string"/> representation of the betradar name
+        /// </summary>
+        public string BetradarName { get; set; }
     }
 }

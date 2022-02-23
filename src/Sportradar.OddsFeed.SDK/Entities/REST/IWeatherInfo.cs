@@ -9,12 +9,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IWeatherInfo : IEntityPrinter
     {
         /// <summary>
-        /// TODO: add comments
+        /// Get the pitch
         /// </summary>
         string Pitch { get; }
 
         /// <summary>
-        /// Gets the temperature in degrees celsius or a null reference if the expected temperature is not known
+        /// Gets the temperature in degrees Celsius or a null reference if the expected temperature is not known
         /// </summary>
         int? Temperature { get; }
 
@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string Wind { get; }
 
         /// <summary>
-        /// TOOD: add comments
+        /// Get the wind advantage
         /// </summary>
         string WindAdvantage { get; }
     }

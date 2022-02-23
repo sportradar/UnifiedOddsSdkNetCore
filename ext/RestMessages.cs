@@ -2600,6 +2600,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
         
         private bool betradar_idFieldSpecified;
         
+        private string betradar_nameField;
+        
         private string phaseField;
         
         /// <remarks/>
@@ -2764,6 +2766,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST {
             }
             set {
                 this.betradar_idFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string betradar_name {
+            get {
+                return this.betradar_nameField;
+            }
+            set {
+                this.betradar_nameField = value;
             }
         }
         

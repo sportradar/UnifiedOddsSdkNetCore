@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Dawn;
+using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Messages;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
@@ -82,6 +82,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public string Phase { get; private set; }
 
         /// <summary>
+        /// Gets the betradar name
+        /// </summary>
+        /// <value>The betradar name</value>
+        public string BetradarName { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RoundCI"/> class
         /// </summary>
         /// <param name="dto">The <see cref="RoundDTO"/> used to create new instance</param>
@@ -120,6 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             CupRoundMatchNumber = exportable.CupRoundMatchNumber;
             BetradarId = exportable.BetradarId;
             Phase = exportable.Phase;
+            BetradarName = exportable.BetradarName;
         }
 
         /// <summary>
@@ -143,6 +150,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _groupNames[culture] = dto.GroupName;
             _phaseOrGroupLongName[culture] = dto.PhaseOrGroupLongName;
             Phase = dto.Phase;
+            BetradarName = dto.BetradarName;
         }
 
         /// <summary>
@@ -216,7 +224,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 BetradarId = BetradarId,
                 Phase = Phase,
                 CupRoundMatchNumber = CupRoundMatchNumber,
-                CupRoundMatches = CupRoundMatches
+                CupRoundMatches = CupRoundMatches,
+                BetradarName = BetradarName
             });
         }
     }

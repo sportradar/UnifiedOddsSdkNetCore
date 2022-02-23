@@ -10,12 +10,12 @@ namespace Sportradar.OddsFeed.SDK.Entities
     public interface IOutcomeProbabilities : IOutcome
     {
         /// <summary>
-        /// Gets a value indicating whether the current <see cref="IOutcomeOdds"/> is active - i.e. should bets on it be accepted
+        /// Gets a value indicating whether the current <see cref="IOutcome"/> is active - i.e. should bets on it be accepted
         /// </summary>
         bool? Active { get; }
 
         /// <summary>
-        /// Gets the probabilities for the current <see cref="IOutcomeOdds"/> instance
+        /// Gets the probabilities for the current <see cref="IOutcome"/> instance
         /// </summary>
         double? Probabilities { get; }
 

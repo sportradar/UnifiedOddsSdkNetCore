@@ -13090,6 +13090,11 @@
             A <see cref="T:System.String"/> representation of the phase
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableRoundCI.BetradarName">
+            <summary>
+            A <see cref="T:System.String"/> representation of the betradar name
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableScheduledStartTimeChangeCI">
             <summary>
             Class used to export/import scheduled start time change cache item properties
@@ -16001,8 +16006,8 @@
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI"/> class
             </summary>
-            <param name="dto">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI"/> used to create new instance</param>
-            <param name="culture">The culture of the input <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.RoundDTO"/></param>
+            <param name="dto">The <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.DelayedInfoDTO"/> used to create new instance</param>
+            <param name="culture">The culture of the input <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.DelayedInfoDTO"/></param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.DelayedInfoCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableDelayedInfoCI)">
             <summary>
@@ -16758,6 +16763,12 @@
             Gets the phase
             </summary>
             <value>The phase</value>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI.BetradarName">
+            <summary>
+            Gets the betradar name
+            </summary>
+            <value>The betradar name</value>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.RoundDTO,System.Globalization.CultureInfo)">
             <summary>
@@ -26329,6 +26340,11 @@
             Gets the phase of the associated round
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.BetradarName">
+            <summary>
+            A betradar name
+            </summary>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round.#ctor(Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.RoundCI,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.Round"/> class
@@ -32105,6 +32121,11 @@
             Gets the phase of the associated round
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.IRound.BetradarName">
+            <summary>
+            A betradar name
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.IScheduledStartTimeChange">
             <summary>
             Defines a contract implemented by classes providing schedule start time change
@@ -36205,6 +36226,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.matchRound.betradar_idSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.matchRound.betradar_name">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.REST.matchRound.phase">
