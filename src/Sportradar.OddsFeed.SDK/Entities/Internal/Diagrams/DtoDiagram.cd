@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MatchDTO">
+    <Position X="2" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAQAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\MatchDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CompetitionDTO">
+    <Position X="3.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIIAAAAAAADAAAAAAAAAAAQAAAQAAoQAAABA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\CompetitionDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.SportEventSummaryDTO">
+    <Position X="6" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAACAAAAAAAAACAQAAEABAAAAQAAgAAAAAAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\SportEventSummaryDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.StageDTO">
+    <Position X="4.5" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAggAAAAAAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\StageDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.FixtureDTO">
+    <Position X="2" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAQAAAAAgBAAAAAAAgAIAIEAABAAAAgAAACAAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\FixtureDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACEAAAAAAAAAAAAAAAAiAAACAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\Lottery\DrawDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.LotteryDTO">
+    <Position X="7" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAACAgAAACAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\Lottery\LotteryDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.BasicTournamentDTO">
+    <Position X="8.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\BasicTournamentDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.TournamentInfoDTO">
+    <Position X="10.75" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAJQAEBgAAAAAAgSAAAEAAACAAAACAgAAACAA=</HashCode>
+      <FileName>Entities\REST\Internal\DTO\TournamentInfoDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

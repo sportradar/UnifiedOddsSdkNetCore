@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IPlayer">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Entities\REST\IPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IPlayerProfile">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIBAAAABAAAAICAAAAAAAAAACAQAAAAAQBAAAAAAAA=</HashCode>
+      <FileName>Entities\REST\IPlayerProfile.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ITeamCompetitor">
+    <Position X="2.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\REST\ITeamCompetitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IAssist">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Entities\REST\IAssist.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECQAAAAAAIAIAACQEAEAAQwAAAASBIAAAAIABAAAAAA=</HashCode>
+      <FileName>Entities\REST\ICompetitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

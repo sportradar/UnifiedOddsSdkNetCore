@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.odds_change">
+    <Position X="5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAICAgDgBRAQQAQBBAAAQAAmLAAAgQgEUAgAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.odds_changeOdds">
+    <Position X="5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQgAAAAAAoBBAgAACAAAAAAAAQAAEAAAAAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement">
+    <Position X="8.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEACAgAgBRQQQAQBBAAAQAAgDAAAAQIAUAgAAAAAE=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement">
+    <Position X="13.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAgAgBRAQQBQBBACAQAAgDAAAAQAAUAgAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel">
+    <Position X="6.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEACAoAgBRAQQJQhBCCAQlEgTAAAAQAAUAgAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel">
+    <Position X="12" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEACAoAgBRAQQJQhBCCAQEEgTAAAAQAAUAgAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.alive">
+    <Position X="8.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAwAgBRAAQASAAAAAQAAgDAAAAAAAEAgAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete">
+    <Position X="13.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAgAgBRAAQAQBAAAAQAAgDAAAAAAAEAgAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change">
+    <Position X="15.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEACAgAgBRIQQAQRBCAAQAAgDEAAAQAAUAggAABQA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.Feed.bet_stop">
+    <Position X="10.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAAACAgAgBRAQYCUBBAAAQQAgDAAAAQAAUAgAAAAAA=</HashCode>
+      <FileName>Messages\Feed\FeedMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

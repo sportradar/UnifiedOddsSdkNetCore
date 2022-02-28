@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.teamExtended">
+    <Position X="2" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAIAAAACIAAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.raceDriver">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AkAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.team">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEAAghAQiAAQIAAREIAAgAABAAAEACAHJIACAAAAEgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.raceTeam">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.teamCompetitor">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAEEAgAAAAAAAQAAACAAAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.player">
+    <Position X="3.75" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAEACAAAAAAAAAAAgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.playerSubstitute">
+    <Position X="2" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAECAIAAAAAAAAAAAAABAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.playerLineup">
+    <Position X="2" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Messages.REST.player" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="4.555" />
+        <Point X="4.5" Y="4.898" />
+        <Point X="3.648" Y="4.898" />
+        <Point X="3.648" Y="5.596" />
+        <Point X="2.75" Y="5.596" />
+        <Point X="2.75" Y="5.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAIAECAIAAAAAAIAAAAAABAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.playerExtended">
+    <Position X="3.75" Y="5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AkAAARAgoAUCgIQDAIBBgAAAAAABAAAgAAAICAAAkQA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.fixture">
+    <Position X="5.75" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgAOAAAIAAgAQEQJAAICwEAQAAAAAACAAIAAABCABAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.sportEvent">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EEYFA4BBcCBCGCDIAICACAIFSIAVACBCAAQAAgIBYgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.seasonExtended">
+    <Position X="7.75" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAIAAIAAAAIAgACAAAEEAQAEAAACAAAAAoAAAQ=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.season">
+    <Position X="7.75" Y="8.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAEACAAAAAAAAAAAgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.currentSeason">
+    <Position X="7.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.tournament">
+    <Position X="3.75" Y="9" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACgAghCQAAAAAAACICAAAAECAAUBKBAAACIAAAAAgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.tournamentExtended">
+    <Position X="3.75" Y="12.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAIAABCAAAAACAAAAEAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatus">
+    <Position X="7.75" Y="14" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAgQAAAIAAAAIBAAEAAAoAAABAICAEFkgAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.restSportEventStatusBase">
+    <Position X="7.75" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQQgAEAAAAAAIAEAAAAQAECAAABQBEgoCAACAgBAIAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.eventPlayer">
+    <Position X="2" Y="8" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAACAAAIBAAAAAAAAEECAAAAAAAAAAAgA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.eventPlayerAssist">
+    <Position X="2" Y="10.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.tournamentInfoEndpoint">
+    <Position X="2" Y="12" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAABAoAAAAAAACYAABAgAEIAQBAAAACAAgAIAFIAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sportradar.OddsFeed.SDK.Messages.REST.simpleTournamentInfoEndpoint">
+    <Position X="3.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\REST\RestMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

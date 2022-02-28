@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IMatchStatus">
+    <Position X="1.75" Y="3.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAIAAAACAAAIAACAAAAAAAAAQAAEQAA=</HashCode>
+      <FileName>Entities\REST\IMatchStatus.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ICompetitionStatus">
+    <Position X="3.75" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAEABAAAEAAAAAAAABAAAAAAAAAAAAAAAACAAI=</HashCode>
+      <FileName>Entities\REST\ICompetitionStatus.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IStageStatus">
+    <Position X="5.75" Y="3.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\REST\IStageStatus.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IMatchStatusV1">
+    <Position X="6.5" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Entities\REST\IMatchStatusV1.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ISoccerStatus">
+    <Position X="7" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\REST\ISoccerStatus.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Statistics" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ISoccerStatistics">
+    <Position X="4.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Entities\REST\ISoccerStatistics.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PeriodStatistics" />
+      <Property Name="TotalStatistics" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IPeriodStatistics">
+    <Position X="1.75" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Entities\REST\IPeriodStatistics.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="TeamStatistics" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ITeamStatistics">
+    <Position X="3.5" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIEAAAAAAAAAQKACAAhAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Entities\REST\ITeamStatistics.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

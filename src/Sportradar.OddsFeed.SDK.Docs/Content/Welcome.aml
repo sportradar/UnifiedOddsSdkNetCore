@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="57c763f7-d815-483e-be76-45c4ea172117" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>
-        UnifiedFeed SDK is a client library that enables easier integration with the Betradar XML feeds. SDK exposes XML feed service interface in a more user-friendly way and isolates the client from having to do XML feed parsing, proper connection handling, error recovery, event queuing, data caching and dispatching. It also makes a client solution more stable and robust when it comes to feed handling, especially with the release of new and updated XML feed versions.
-      </para>
-      <para>
-        For a quick start consider consulting the Example project also found in Downloads.
-      </para>
-    </introduction>
+	<introduction>
+	  <para>
+		UnifiedFeed SDK is a client library that enables easier integration with the Betradar XML feeds. SDK exposes XML feed service interface in a more user-friendly way and isolates the client from having to do XML feed parsing, proper connection handling, error recovery, event queuing, data caching and dispatching. It also makes a client solution more stable and robust when it comes to feed handling, especially with the release of new and updated XML feed versions.
+	  </para>
+	  <para>
+		For a quick start consider consulting the Example project also found in Downloads.
+	  </para>
+	</introduction>
 
-    <section>
-      <title>Getting Started</title>
-      <content>
-        <para>
-          For a quick start consider consulting the Example project also found in Downloads.
-        </para>
-      </content>
-      <sections>
-        <section>
-          <title>Obtaining the SDK</title>
-          <content>
-            <para>
-              The SDK is provided as a code library (Sportradar.OddsFeed.SDK.dll), which is available on the SDK
-              site and via the NuGet package manager. The usage of NuGet package manager is
-              recommended, since it supports update notifications and makes it easier to obtain new
-              releases of the SDK.
-            </para>
-          </content>
-        </section>
-      </sections>
-    </section>
+	<section>
+	  <title>Getting Started</title>
+	  <content>
+		<para>
+		  For a quick start consider consulting the Example project also found in Downloads.
+		</para>
+	  </content>
+	  <sections>
+		<section>
+		  <title>Obtaining the SDK</title>
+		  <content>
+			<para>
+			  The SDK is provided as a code library (Sportradar.OddsFeed.SDK.dll), which is available on the SDK
+			  site and via the NuGet package manager. The usage of NuGet package manager is
+			  recommended, since it supports update notifications and makes it easier to obtain new
+			  releases of the SDK.
+			</para>
+		  </content>
+		</section>
+	  </sections>
+	</section>
 
 		<relatedTopics>
 			<!--<link xlink:href="6b70bd0c-cd8a-492f-9da5-d23d12c8deec" />-->
