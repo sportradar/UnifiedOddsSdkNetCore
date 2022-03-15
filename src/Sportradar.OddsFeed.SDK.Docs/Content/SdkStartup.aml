@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="423687fa-1849-4fb4-90d2-ad6c16b8a886" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!--<summary>
+	  <para>Optional summary abstract</para>
+	</summary>-->
+
+	<introduction>
+	  <!-- Uncomment this to generate an outline of the section and sub-section
+		   titles.  Specify a numeric value as the inner text to limit it to
+		   a specific number of sub-topics when creating the outline.  Specify
+		   zero (0) to limit it to top-level sections only.  -->
+	  <!-- <autoOutline /> -->
+
+		<para>Below are basic examples that can help you start using sdk. For more advance topics refer to <token>SdkExample</token>.
+		</para>
+	</introduction>
+
+	<!-- Add one or more top-level section elements. These are collapsible.
+		 If using <autoOutline />, add an address attribute to identify it
+		 and specify a title so that it can be jumped to with a hyperlink. -->
+	<section address="BasicSetup">
+	  <title>A basic way to use the OddsFeed</title>
+	  <content>
+		<!-- Uncomment this to create a sub-section outline-->
+		<!--<autoOutline />--> 
+		<para>To receive sdk events/messages subscribe to all <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference> and <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IEntityDispatcher{T}</codeEntityReference> events.
+		</para>
+		<para>
+			  Note that there is one thread handling message reception and calling your event handler per session, so the processing within that method should be as quick as possible to not prevent following messages from being processed. <lineBreak/>
+			  It is recommended that all <codeEntityReference>T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent</codeEntityReference> processing is done in separate thread.
+		</para>
+		<para>
+			  Below example is the minimum setup to start receiving messages. Note that you open only once, process messages for as long as you want, and then close the feed.
+		</para>
+		<codeReference>Startup#Basic</codeReference>
+	  </content>
+	  <!-- If a section contains a sections element, its content creates
+		   sub-sections.  These are not collapsible.
+	  <sections>
+		  <section address="SubSection1">
+			  <title>Sub-section 1</title>
+			  <content>
+				  <para>Sub-section content.</para>
+			  </content>
+		  </section>
+		  <section address="SubSection2">
+			  <title>Sub-section 2</title>
+			  <content>
+				  <para>Sub-section content.</para>
+			  </content>
+		  </section>
+	  </sections> -->
+	</section>
+
+	<section address="AdvancedSetup">
+		<title>Advanced way to use the OddsFeed</title>
+		<content>
+			<para>
+				Another more scalable way of handling feed messages is to have different sessions for different <codeEntityReference>T:Sportradar.OddsFeed.SDK.Entities.MessageInterest</codeEntityReference>.<lineBreak/>
+				If you wish to only process live events in one system and maybe process prematch events in a completely different system, you can do this in a similar manner.
+			</para>
+			<para>
+				Note that only some of the combination are allowed (i.e. LiveMessagesOnly and PrematchMessagesOnly or HighPriorityMessages and LowPriorityMessages and so on).<lineBreak/>
+				To create two different sessions for the LiveMessagesOnly and PrematchMessagesOnly messages you do the following:
+			</para>
+			<codeReference>Startup#Advanced</codeReference>
+		</content>
+	</section>
+
+	<section address="DisablingProducers">
+		<title>Disabling producers</title>
+		<content>
+			<para>
+				Before opening the <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference> instance, you can setup to receive feed messages only for specific producer by disabling all others.
+			</para>
+			<codeReference>Startup#DisableProducer</codeReference>
+		</content>
+	</section>
+
+	<section address="RecoveryTimestamp">
+		<title>System Failures</title>
+		<content>
+			<para>
+				The Unified Odds SDK is designed to help you to detect and handle various networking outages and Sportradar subsystem failures.
+			</para>
+			<para>
+				If some malfunction of the system is detected (Sportradar subsystem stops working, alive interval violations,...), the SDK will dispatch a ProducerDown event. When this happens it is advised that you disable all the markets related to this producer.
+			</para>
+			<para>
+				When the SDK detects that the malfunction is corrected it will automatically reconnect and request the most recent odds information and any other missed feed messages (a recovery request will be executed), after the recovery is completed the ProducerUp event is dispatched. After that the producer is up again and you can safely re-enable all the markets.
+			</para>
+			<para>
+				If your system crashes or if you take down/restart your system you need to provide the timestamp of the last processed message per producer, so the SDK performs the recovery for the missed messages (the max time from the last processed message varies per producer; i.e. for prematch producer can not be more than 3 days).
+			</para>
+			<para>
+				You can do this through the ProducerManager available on the <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference> instance. 
+				If the last processed message timestamp is not provided, the SDK will perform a full recovery.<lineBreak/>
+				<ui>Beware:</ui> with a full recovery you do not recover any lost BetSettlement messages.
+			</para>
+			<codeReference>Startup#AddTimestampBeforeDisconnect</codeReference>
+		</content>
+	</section>
+
+	<relatedTopics>
+		<codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference>
+		<codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeedSession</codeEntityReference>
+		<codeEntityReference>T:Sportradar.OddsFeed.SDK.Entities.MessageInterest</codeEntityReference>
+	</relatedTopics>
+  </developerConceptualDocument>
+</topic>

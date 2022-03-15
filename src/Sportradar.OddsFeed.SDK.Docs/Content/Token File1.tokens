@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <item id="Example">Token content</item>
+  <item id="SHFB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
+    <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>
+    </ddue:externalLink></item>
+  <item id="SdkWebsite"><ddue:externalLink>
+    <ddue:linkText>sdk website</ddue:linkText>
+    <ddue:linkUri>http://sdk.sportradar.com/unifiedfeed/netcore</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="SdkExample"><ddue:externalLink>
+    <ddue:linkText>sdk example</ddue:linkText>
+    <ddue:linkUri>http://sdk.sportradar.com/unifiedfeed/netcore/file?g=dc9b45e4-8968-45eb-b7d6-bef880261ea9</ddue:linkUri>
+</ddue:externalLink></item>
+</content>

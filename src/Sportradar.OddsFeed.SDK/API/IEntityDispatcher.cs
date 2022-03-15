@@ -1,16 +1,16 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.REST;
+using System;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
     /// <summary>
     /// Specifies a contract defining events used for user notification
     /// </summary>
-    /// <typeparam name="T">A <see cref="ICompetition"/> derived type specifying the type of sport associated with <see cref="IEntityDispatcher{T}"/></typeparam>
+    /// <typeparam name="T">A <see cref="ISportEvent"/> derived type specifying the type of sport associated with <see cref="IEntityDispatcher{T}"/></typeparam>
     public interface IEntityDispatcher<T> where T : ISportEvent
     {
         /// <summary>

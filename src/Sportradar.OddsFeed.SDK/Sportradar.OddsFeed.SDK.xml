@@ -1410,7 +1410,7 @@
             <summary>
             Specifies a contract defining events used for user notification
             </summary>
-            <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> derived type specifying the type of sport associated with <see cref="T:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1"/></typeparam>
+            <typeparam name="T">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent"/> derived type specifying the type of sport associated with <see cref="T:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1"/></typeparam>
         </member>
         <member name="E:Sportradar.OddsFeed.SDK.API.IEntityDispatcher`1.OnOddsChange">
             <summary>

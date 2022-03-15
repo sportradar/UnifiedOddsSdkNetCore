@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- This is an example code snippets file -->
+<examples>
+	<item id="Startup#Basic">
+		<sampleCode language="CSharp">
+var config = Feed.GetConfigurationBuilder().BuildFromConfigFile();
+
+var oddsFeed = new Feed(config);
+
+var session = oddsFeed.CreateBuilder().SetMessageInterest(MessageInterest.AllMessages).Build();
+
+oddsFeed.ProducerUp += OnProducerUp;
+oddsFeed.ProducerDown += OnProducerDown;
+oddsFeed.Disconnected += OnDisconnected;
+oddsFeed.Closed += OnClosed;
+
+session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
+session.OnBetCancel += SessionOnBetCancel;
+session.OnBetSettlement += SessionOnBetSettlement;
+session.OnBetStop += SessionOnBetStop;
+session.OnFixtureChange += SessionOnFixtureChange;
+session.OnOddsChange += SessionOnOddsChange;
+session.OnRollbackBetCancel += SessionOnRollbackBetCancel;
+session.OnRollbackBetSettlement += SessionOnRollbackBetSettlement;
+
+oddsFeed.Open();
+		</sampleCode>
+	</item>
+
+	<item id="Startup#Advanced">
+		<sampleCode language="CSharp">
+var config = Feed.GetConfigurationBuilder().BuildFromConfigFile();
+
+var oddsFeed = new Feed(config);
+
+AttachToFeedEvents(oddsFeed);
+
+var sessionLive = oddsFeed.CreateBuilder().SetMessageInterest(MessageInterest.LiveMessagesOnly).Build();
+var sessionPre = oddsFeed.CreateBuilder().SetMessageInterest(MessageInterest.PrematchMessagesOnly).Build();
+
+AttachToSessionEvents(sessionLive);
+AttachToSessionEvents(sessionPre);
+
+oddsFeed.Open();
+		</sampleCode>
+	</item>
+
+	<item id="Startup#AddTimestampBeforeDisconnect">
+		<sampleCode language="CSharp">
+oddsFeed.ProducerManager.AddTimestampBeforeDisconnect(1, DateTime.Now.AddMinutes(-10));
+oddsFeed.ProducerManager.AddTimestampBeforeDisconnect(3, DateTime.Now.AddMinutes(-10));
+		</sampleCode>
+	</item>
+
+	<item id="Startup#DisableProducer">
+		<sampleCode language="CSharp">
+oddsFeed.ProducerManager.DisableProducer(1);
+		</sampleCode>
+	</item>
+
+	<item id="SportDataProvider#GetSportEvent">
+		<sampleCode language="CSharp">
+var sportEvent = oddsFeed.SportDataProvider.GetSportEvent(URN.Parse("sr:match:123456"));
+if (sportEvent is IMatch match)
+{
+
+}
+		</sampleCode>
+	</item>
+
+	<item id="SportDataProvider#GetTournament">
+		<sampleCode language="CSharp">
+var longTermEvent = oddsFeed.SportDataProvider.GetTournament(URN.Parse("sr:tournament:1234"));
+if (longTermEvent is ITournament tournament)
+{
+
+}
+		</sampleCode>
+	</item>
+
+	<item id="SportDataProvider#GetLiveSportEvents">
+		<sampleCode language="CSharp">
+var competitions = await oddsFeed.SportDataProvider.GetLiveSportEventsAsync().ConfigureAwait(false);
+foreach (var competition in competitions)
+{
+	if (competition is IMatch match)
+	{
+
+	}
+}
+		</sampleCode>
+	</item>
+
+	<item id="SportDataProvider#GetSportEventsByDate">
+		<sampleCode language="CSharp">
+var competitions = await oddsFeed.SportDataProvider.GetSportEventsByDateAsync(DateTime.Now.AddDays(1)).ConfigureAwait(false);
+foreach (var competition in competitions)
+{
+	if (competition is IMatch match)
+	{
+
+	}
+}
+		</sampleCode>
+	</item>
+</examples>
+
