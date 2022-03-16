@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using App.Metrics;
+using App.Metrics.Meter;
 using App.Metrics.Timer;
 using Castle.Core.Internal;
 using Dawn;
@@ -1020,7 +1021,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Gets the variant market description (dynamic)
+        /// Gets the variant market description (dynamic, single)
         /// </summary>
         /// <param name="id">The id of the market</param>
         /// <param name="variant">The variant URN</param>
@@ -1029,8 +1030,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <exception cref="NotImplementedException"></exception>
         public async Task GetVariantMarketDescriptionAsync(int id, string variant, CultureInfo culture)
         {
-            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetVariantMarketDescriptionAsync", MeasurementUnit = Unit.Requests };
-            using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id}-{variant} [{culture.TwoLetterISOLanguageName}]");
+            var timerOptionsGetVariantMarketDescriptionAsync = new TimerOptions { Context = MetricsContext, Name = "GetVariantMarketDescriptionAsync", MeasurementUnit = Unit.Requests };
+            using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetVariantMarketDescriptionAsync, $"{id}-{variant} [{culture.TwoLetterISOLanguageName}]");
+            var meterOptionsGetVariantMarketDescriptionAsync = new MeterOptions { Context = MetricsContext, Name = "GetVariantMarketDescriptionAsync-Diff", MeasurementUnit = Unit.Requests };
             WriteLog($"Executing GetVariantMarketDescriptionAsync for id={id}, variant={variant} and culture={culture.TwoLetterISOLanguageName}.", true);
 
             MarketDescriptionDTO result = null;
@@ -1039,6 +1041,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 result = await _variantMarketDescriptionProvider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName, variant).ConfigureAwait(false);
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
+
+                if (!result.Id.Equals(id) || !result.Variant.Equals(variant))
+                {
+                    _metricsRoot.Measure.Meter.Mark(meterOptionsGetVariantMarketDescriptionAsync, MetricTags.Empty, $"{id}?{variant} vs {result.Id}?{result.Variant}");
+                }
             }
             catch (Exception e)
             {

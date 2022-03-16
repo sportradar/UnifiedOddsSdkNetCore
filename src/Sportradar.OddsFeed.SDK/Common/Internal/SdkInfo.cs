@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Castle.Core.Internal;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Entities.REST.Market;
+using Sportradar.OddsFeed.SDK.Messages;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Castle.Core.Internal;
-using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -152,7 +152,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// The soccer sport urns
         /// </summary>
-        public static readonly IReadOnlyCollection<URN> SoccerSportUrns = new[] {URN.Parse("sr:sport:1"), URN.Parse("sr:sport:137")};
+        public static readonly IReadOnlyCollection<URN> SoccerSportUrns = new[] { URN.Parse("sr:sport:1"), URN.Parse("sr:sport:137") };
 
         /// <summary>
         /// Gets the assembly version number
@@ -404,6 +404,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             var clearedData = ClearSensitiveData(sensitiveData);
 
             return input.Replace(sensitiveData, clearedData);
+        }
+
+        public static bool IsNumeric(object expression)
+        {
+            var isNum = double.TryParse(Convert.ToString(expression), NumberStyles.Any, NumberFormatInfo.InvariantInfo, out _);
+            return isNum;
         }
     }
 }

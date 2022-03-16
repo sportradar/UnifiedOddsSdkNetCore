@@ -21063,18 +21063,22 @@
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
             <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /></param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataProvider`2.GetDataAsyncInternal(System.Uri)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataProvider`2.GetDataAsyncInternal(System.Uri,System.String,System.String)">
             <summary>
             Fetches and deserializes the data from the provided <see cref="T:System.Uri"/>.
             </summary>
             <param name="uri">A <see cref="T:System.Uri"/> specifying the data location</param>
+            <param name="requestedId">The id for which request was called</param>
+            <param name="culture">The language associated with the request</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the ongoing operation</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataProvider`2.GetDataInternal(System.Uri)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataProvider`2.GetDataInternal(System.Uri,System.String,System.String)">
             <summary>
             Fetches and deserializes the data from the provided <see cref="T:System.Uri"/>.
             </summary>
             <param name="uri">A <see cref="T:System.Uri"/> specifying the data location</param>
+            <param name="requestedId">The id for which request was called</param>
+            <param name="culture">The language associated with the request</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the ongoing operation</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataProvider`2.GetRequestUri(System.Object[])">
@@ -21463,7 +21467,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetVariantMarketDescriptionAsync(System.Int32,System.String,System.Globalization.CultureInfo)">
             <summary>
-            Gets the variant market description (dynamic)
+            Gets the variant market description (dynamic, single)
             </summary>
             <param name="id">The id of the market</param>
             <param name="variant">The variant URN</param>
@@ -33307,12 +33311,30 @@
             The rest message
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.#ctor(System.Uri,Sportradar.OddsFeed.SDK.Messages.REST.RestMessage)">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.RequestedId">
+            <summary>
+            The requested id (if present)
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.RequestTime">
+             <summary>
+            The time it took for the request to execute
+             </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.Language">
+            <summary>
+            The language associated with the request
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.#ctor(System.Uri,Sportradar.OddsFeed.SDK.Messages.REST.RestMessage,System.String,System.TimeSpan,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs" /> class
             </summary>
             <param name="uri">The <see cref="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.Uri"/> used to get the api data</param>
             <param name="restMessage">The rest message</param>
+            <param name="requestedId">The id for which request is made</param>
+            <param name="requestTime">The time needed to execute request</param>
+            <param name="language">The language associated with the request</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawFeedMessageEventArgs">
             <summary>

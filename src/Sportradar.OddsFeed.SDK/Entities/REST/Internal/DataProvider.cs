@@ -1,16 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using Dawn;
-using System.Globalization;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -77,14 +78,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Fetches and deserializes the data from the provided <see cref="Uri"/>.
         /// </summary>
         /// <param name="uri">A <see cref="Uri"/> specifying the data location</param>
+        /// <param name="requestParams">The parameters associated with the request (if present)</param>
+        /// <param name="culture">The language associated with the request</param>
         /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
-        protected async Task<TOut> GetDataAsyncInternal(Uri uri)
+        protected async Task<TOut> GetDataAsyncInternal(Uri uri, string requestParams, string culture)
         {
             Guard.Argument(uri, nameof(uri)).NotNull();
 
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             var stream = await _fetcher.GetDataAsync(uri).ConfigureAwait(false);
             var item = _deserializer.Deserialize(stream);
-            DispatchReceivedRawApiData(uri, item);
+            stopWatch.Stop();
+            DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
             return _mapperFactory.CreateMapper(item).Map();
         }
 
@@ -92,14 +98,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Fetches and deserializes the data from the provided <see cref="Uri"/>.
         /// </summary>
         /// <param name="uri">A <see cref="Uri"/> specifying the data location</param>
+        /// <param name="requestParams">The parameters associated with the request (if present)</param>
+        /// <param name="culture">The language associated with the request</param>
         /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
-        protected TOut GetDataInternal(Uri uri)
+        protected TOut GetDataInternal(Uri uri, string requestParams, string culture)
         {
             Guard.Argument(uri, nameof(uri)).NotNull();
 
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             var stream = _fetcher.GetData(uri);
             var item = _deserializer.Deserialize(stream);
-            DispatchReceivedRawApiData(uri, item);
+            stopWatch.Stop();
+            DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
             return _mapperFactory.CreateMapper(item).Map();
         }
 
@@ -130,7 +141,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public async Task<TOut> GetDataAsync(string languageCode)
         {
             var uri = GetRequestUri(languageCode);
-            return await GetDataAsyncInternal(uri).ConfigureAwait(false);
+            return await GetDataAsyncInternal(uri, null, languageCode).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -144,7 +155,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public async Task<TOut> GetDataAsync(params string[] identifiers)
         {
             var uri = GetRequestUri(identifiers);
-            return await GetDataAsyncInternal(uri).ConfigureAwait(false);
+            var requestedId = GetRequestedId(identifiers);
+            var requestedLang = GetRequestedLanguage(identifiers);
+            return await GetDataAsyncInternal(uri, requestedId, requestedLang).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -155,7 +168,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public TOut GetData(string languageCode)
         {
             var uri = GetRequestUri(languageCode);
-            return GetDataInternal(uri);
+            return GetDataInternal(uri, null, languageCode);
         }
 
         /// <summary>
@@ -166,15 +179,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public TOut GetData(params string[] identifiers)
         {
             var uri = GetRequestUri(identifiers);
-            return GetDataInternal(uri);
+            var requestedId = GetRequestedId(identifiers);
+            var requestedLang = GetRequestedLanguage(identifiers);
+            return GetDataInternal(uri, requestedId, requestedLang);
         }
 
-        private void DispatchReceivedRawApiData(Uri uri, RestMessage restMessage)
+        private void DispatchReceivedRawApiData(Uri uri, RestMessage restMessage, string requestParams, TimeSpan requestTime, string culture)
         {
             // send RawFeedMessage if needed
             try
             {
-                var args = new RawApiDataEventArgs(uri, restMessage);
+                var args = new RawApiDataEventArgs(uri, restMessage, requestParams, requestTime, culture);
                 RawApiDataReceived?.Invoke(this, args);
             }
             catch (Exception e)
@@ -182,6 +197,50 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 ExecutionLog.LogError($"Error dispatching raw message for {uri}", e);
             }
             // continue normal processing
+        }
+
+        private string GetRequestedId(params string[] identifiers)
+        {
+            if (identifiers?.Length > 0)
+            {
+                if (identifiers.Length > 2)
+                {
+                    return string.Join("-", identifiers);
+                }
+                foreach (var identifier in identifiers)
+                {
+                    if (SdkInfo.IsNumeric(identifier) || identifier.Contains(":"))
+                    {
+                        return identifier;
+                    }
+                }
+
+                return identifiers[0];
+            }
+            return null;
+        }
+
+        private string GetRequestedLanguage(params string[] identifiers)
+        {
+            if (identifiers?.Length > 0)
+            {
+                foreach (var identifier in identifiers)
+                {
+                    try
+                    {
+                        var c = CultureInfo.GetCultureInfo(identifier);
+                        if (c.TwoLetterISOLanguageName == identifier)
+                        {
+                            return identifier;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
+                }
+            }
+            return null;
         }
     }
 }
