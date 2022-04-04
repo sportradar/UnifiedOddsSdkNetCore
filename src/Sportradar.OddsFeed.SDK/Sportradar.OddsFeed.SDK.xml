@@ -21068,7 +21068,7 @@
             Fetches and deserializes the data from the provided <see cref="T:System.Uri"/>.
             </summary>
             <param name="uri">A <see cref="T:System.Uri"/> specifying the data location</param>
-            <param name="requestedId">The id for which request was called</param>
+            <param name="requestParams">The parameters associated with the request (if present)</param>
             <param name="culture">The language associated with the request</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the ongoing operation</returns>
         </member>
@@ -21077,7 +21077,7 @@
             Fetches and deserializes the data from the provided <see cref="T:System.Uri"/>.
             </summary>
             <param name="uri">A <see cref="T:System.Uri"/> specifying the data location</param>
-            <param name="requestedId">The id for which request was called</param>
+            <param name="requestParams">The parameters associated with the request (if present)</param>
             <param name="culture">The language associated with the request</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the ongoing operation</returns>
         </member>
@@ -33311,9 +33311,9 @@
             The rest message
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.RequestedId">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.RequestParams">
             <summary>
-            The requested id (if present)
+            The parameters associated with the request (if present)
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.RequestTime">
@@ -33332,7 +33332,7 @@
             </summary>
             <param name="uri">The <see cref="P:Sportradar.OddsFeed.SDK.Messages.EventArguments.RawApiDataEventArgs.Uri"/> used to get the api data</param>
             <param name="restMessage">The rest message</param>
-            <param name="requestedId">The id for which request is made</param>
+            <param name="requestParams">The parameters associated with the request</param>
             <param name="requestTime">The time needed to execute request</param>
             <param name="language">The language associated with the request</param>
         </member>
