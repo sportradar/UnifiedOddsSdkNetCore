@@ -896,7 +896,7 @@
             The feed initialized
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.API.Feed._metricsRoot">
+        <member name="F:Sportradar.OddsFeed.SDK.API.Feed.MetricsRoot">
             <summary>
             A <see cref="T:App.Metrics.IMetricsRoot"/> used to provide metrics within sdk
             </summary>

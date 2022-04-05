@@ -194,7 +194,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             }
             catch (Exception e)
             {
-                ExecutionLog.LogError($"Error dispatching raw message for {uri}", e);
+                ExecutionLog.LogError(e, $"Error dispatching raw message for {uri}");
             }
             // continue normal processing
         }

@@ -1,15 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using Dawn;
-using System.IO;
-using System.Linq;
-using System.Text;
 using App.Metrics;
 using App.Metrics.Meter;
 using App.Metrics.Timer;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
@@ -19,6 +14,11 @@ using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
@@ -123,7 +123,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 return;
             }
 
-            var receivedAt =  SdkInfo.ToEpochTime(DateTime.Now);
+            var receivedAt = SdkInfo.ToEpochTime(DateTime.Now);
 
             // NOT used for GetRawMessage()
             var sessionName = _interest == null ? "system" : _interest.Name;
@@ -133,7 +133,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             string messageName;
             try
             {
-                using (var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(new TimerOptions {Context = "FEED", Name = "Message deserialization time", MeasurementUnit = Unit.Items}))
+                using (var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(new TimerOptions { Context = "FEED", Name = "Message deserialization time", MeasurementUnit = Unit.Items }))
                 {
                     t.TrackUserValue(eventArgs.RoutingKey);
                     messageBody = Encoding.UTF8.GetString(eventArgs.Body);
@@ -156,12 +156,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                         if (feedMessage is odds_change oddsChange)
                         {
                             marketCounts = oddsChange.odds?.market?.Length ?? 0;
-                            outcomeCounts = oddsChange.odds?.market?.Where(w=> w.outcome!=null).SelectMany(list => list.outcome).Count() ?? 0;
+                            outcomeCounts = oddsChange.odds?.market?.Where(w => w.outcome != null).SelectMany(list => list.outcome).Count() ?? 0;
                         }
                         if (feedMessage is bet_settlement betSettlement)
                         {
                             marketCounts = betSettlement.outcomes?.Length ?? 0;
-                            outcomeCounts = betSettlement.outcomes?.Where(w=> w.Items!=null).SelectMany(list => list.Items).Count() ?? 0;
+                            outcomeCounts = betSettlement.outcomes?.Where(w => w.Items != null).SelectMany(list => list.Items).Count() ?? 0;
                         }
                         ExecutionLog.LogDebug($"Deserialization of {feedMessage.GetType().Name} for {feedMessage.EventId} ({feedMessage.GeneratedAt}) and sport {sportId} took {t.Elapsed.TotalMilliseconds}ms. Markets={marketCounts}, Outcomes={outcomeCounts}");
                     }
@@ -186,18 +186,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                              : feedMessage.GeneratedAt;
                 }
                 feedMessage.ReceivedAt = receivedAt;
-                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions{Context = "FEED", Name = "Message received"}, MetricTags.Empty, messageName);
+                SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "FEED", Name = "Message received" }, MetricTags.Empty, messageName);
             }
             catch (DeserializationException ex)
             {
-                ExecutionLog.LogError($"Failed to parse message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}", ex);
+                ExecutionLog.LogError(ex, $"Failed to parse message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}");
                 SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "FEED", Name = "Message deserialization exception" }, MetricTags.Empty, eventArgs.RoutingKey);
                 RaiseDeserializationFailed(eventArgs.Body);
                 return;
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogError($"Error consuming feed message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}", ex);
+                ExecutionLog.LogError(ex, $"Error consuming feed message. RoutingKey={eventArgs.RoutingKey} Message: {messageBody}");
                 SdkMetricsFactory.MetricsRoot.Measure.Meter.Mark(new MeterOptions { Context = "FEED", Name = "Exception consuming feed message" }, MetricTags.Empty, eventArgs.RoutingKey);
                 RaiseDeserializationFailed(eventArgs.Body);
                 return;
@@ -215,7 +215,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             catch (Exception e)
             {
-                ExecutionLog.LogError($"Error dispatching raw message for {feedMessage.EventId}", e);
+                ExecutionLog.LogError(e, $"Error dispatching raw message for {feedMessage.EventId}");
             }
             // continue normal processing
 

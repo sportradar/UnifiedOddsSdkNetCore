@@ -1,11 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using System;
+using System.Diagnostics;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
@@ -79,13 +79,13 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 handler(this, eventArgs);
                 stopwatch.Stop();
-                var prod = producerId==0 ? string.Empty : $" for producer {producerId}";
+                var prod = producerId == 0 ? string.Empty : $" for producer {producerId}";
                 Log.LogInformation($"Successfully dispatched message {messageName}{prod}. Duration: {stopwatch.ElapsedMilliseconds} ms.");
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                Log.LogWarning($"Event handler throw an exception while processing message {messageName}. Exception: {ex.Message}", ex);
+                Log.LogWarning(ex, $"Event handler throw an exception while processing message {messageName}. Exception: {ex.Message}");
             }
         }
     }

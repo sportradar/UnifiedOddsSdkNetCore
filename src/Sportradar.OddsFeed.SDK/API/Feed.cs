@@ -1,20 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using Dawn;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Json.Extensions;
 using App.Metrics.Scheduling;
 using Castle.Core.Internal;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -29,6 +21,14 @@ using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Unity;
 using Unity.Resolution;
 
@@ -115,7 +115,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// Gets a <see cref="IEventRecoveryRequestIssuer"/> instance used to issue recovery requests to the feed
         /// </summary>
-        public IEventRecoveryRequestIssuer EventRecoveryRequestIssuer {
+        public IEventRecoveryRequestIssuer EventRecoveryRequestIssuer
+        {
             get
             {
                 InitFeed();
@@ -127,7 +128,8 @@ namespace Sportradar.OddsFeed.SDK.API
         /// Gets a <see cref="ISportDataProvider" /> instance used to retrieve sport related data from the feed
         /// </summary>
         /// <value>The sport data provider</value>
-        public ISportDataProvider SportDataProvider {
+        public ISportDataProvider SportDataProvider
+        {
             get
             {
                 InitFeed();
@@ -149,7 +151,7 @@ namespace Sportradar.OddsFeed.SDK.API
                     var producerManager = UnityContainer.Resolve<IProducerManager>();
                     if (InternalConfig.Environment == SdkEnvironment.Replay)
                     {
-                        ((ProducerManager) producerManager).SetIgnoreRecovery(0);
+                        ((ProducerManager)producerManager).SetIgnoreRecovery(0);
                     }
                     return producerManager;
                 }
@@ -254,7 +256,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// A <see cref="IMetricsRoot"/> used to provide metrics within sdk
         /// </summary>
-        private readonly IMetricsRoot _metricsRoot;
+        protected readonly IMetricsRoot MetricsRoot;
         /// <summary>
         /// A <see cref="AppMetricsTaskScheduler"/> used to schedule task to log sdk metrics
         /// </summary>
@@ -289,7 +291,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
             LogInit();
 
-            _metricsRoot = UnityContainer.Resolve<IMetricsRoot>();
+            MetricsRoot = UnityContainer.Resolve<IMetricsRoot>();
             _metricsLogger = SdkLoggerFactory.GetLoggerForStats(typeof(Feed));
             _metricsTaskScheduler = new AppMetricsTaskScheduler(
                 TimeSpan.FromSeconds(InternalConfig.StatisticsTimeout),
@@ -331,11 +333,11 @@ namespace Sportradar.OddsFeed.SDK.API
                 FeedInitialized = true;
             }
         }
-    
+
         /// <summary>
         /// Option to change/update dependency injection before resolving resources     
         /// </summary>
-        protected virtual void UpdateDependency() {}
+        protected virtual void UpdateDependency() { }
 
         /// <summary>
         /// Constructs a new instance of the <see cref="Feed"/> class
@@ -356,7 +358,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="e">The <see cref="ProducerStatusChangeEventArgs"/> instance containing the event data</param>
         private void MarkProducerAsDown(object sender, ProducerStatusChangeEventArgs e)
         {
-            ((IGlobalEventDispatcher) this).DispatchProducerDown(e.GetProducerStatusChange());
+            ((IGlobalEventDispatcher)this).DispatchProducerDown(e.GetProducerStatusChange());
         }
 
         /// <summary>
@@ -366,7 +368,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="e">The <see cref="ProducerStatusChangeEventArgs"/> instance containing the event data</param>
         private void MarkProducerAsUp(object sender, ProducerStatusChangeEventArgs e)
         {
-            ((IGlobalEventDispatcher) this).DispatchProducerUp(e.GetProducerStatusChange());
+            ((IGlobalEventDispatcher)this).DispatchProducerUp(e.GetProducerStatusChange());
         }
 
         private void OnCloseFeed(object sender, FeedCloseEventArgs e)
@@ -419,7 +421,7 @@ namespace Sportradar.OddsFeed.SDK.API
         internal IOddsFeedSession CreateSession(MessageInterest msgInterest)
         {
             Guard.Argument(msgInterest, nameof(msgInterest)).NotNull();
-           
+
             if (_isDisposed)
             {
                 throw new ObjectDisposedException(ToString());
@@ -433,7 +435,7 @@ namespace Sportradar.OddsFeed.SDK.API
             InitFeed();
             var childContainer = UnityContainer.CreateChildContainer();
             Func<OddsFeedSession, IEnumerable<string>> func = GetSessionRoutingKeys;
-            var session = (OddsFeedSession) childContainer.Resolve<IOddsFeedSession>(new ParameterOverride("messageInterest", msgInterest), new ParameterOverride("getRoutingKeys", func));
+            var session = (OddsFeedSession)childContainer.Resolve<IOddsFeedSession>(new ParameterOverride("messageInterest", msgInterest), new ParameterOverride("getRoutingKeys", func));
             Sessions.Add(session);
             return session;
         }
@@ -509,7 +511,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         /// <returns>A <see cref="IOddsFeedConfiguration"/> instance created from provided information</returns>
         public static ITokenSetter GetConfigurationBuilder()
-        { 
+        {
             return new TokenSetter(new ConfigurationSectionProvider());
         }
 
@@ -631,12 +633,12 @@ namespace Sportradar.OddsFeed.SDK.API
 
                 _log.LogInformation($"Feed configuration: [{InternalConfig}]");
 
-                _connectionFactory = (ConfiguredConnectionFactory) UnityContainer.Resolve<IConnectionFactory>();
+                _connectionFactory = (ConfiguredConnectionFactory)UnityContainer.Resolve<IConnectionFactory>();
                 if (_connectionFactory == null)
                 {
                     throw new MissingFieldException("ConnectionFactory missing.");
                 }
-                
+
                 AttachToConnectionEvents();
 
                 _feedRecoveryManager.ProducerUp += MarkProducerAsUp;
@@ -644,7 +646,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 _feedRecoveryManager.CloseFeed += OnCloseFeed;
                 _feedRecoveryManager.EventRecoveryCompleted += OnEventRecoveryCompleted;
 
-                ((ProducerManager) ProducerManager).Lock();
+                ((ProducerManager)ProducerManager).Lock();
 
                 ((ProducerManager)ProducerManager).RecoveryInitiated += OnRecoveryInitiated;
 
@@ -653,7 +655,7 @@ namespace Sportradar.OddsFeed.SDK.API
                     session.Open();
                 }
 
-                var interests = Sessions.Select(s => ((OddsFeedSession) s).MessageInterest).ToList();
+                var interests = Sessions.Select(s => ((OddsFeedSession)s).MessageInterest).ToList();
                 _feedRecoveryManager.Open(interests);
 
                 if (InternalConfig.StatisticsEnabled)
@@ -749,7 +751,7 @@ namespace Sportradar.OddsFeed.SDK.API
             var cause = shutdownEventArgs?.Cause == null ? string.Empty : $" Cause: {shutdownEventArgs.Cause}";
             _log.LogError($"The connection is shutdown.{cause}");
             _feedRecoveryManager.ConnectionShutdown();
-            ((IGlobalEventDispatcher) this).DispatchDisconnected();
+            ((IGlobalEventDispatcher)this).DispatchDisconnected();
         }
 
         private void OnCallbackException(object sender, CallbackExceptionEventArgs e)
@@ -819,12 +821,12 @@ namespace Sportradar.OddsFeed.SDK.API
                 _log.LogDebug("Metrics logging is not enabled.");
                 return Task.FromResult(false);
             }
-            if (_metricsRoot == null)
+            if (MetricsRoot == null)
             {
                 return Task.FromResult(true);
             }
 
-            var snapshot = _metricsRoot.Snapshot.Get();
+            var snapshot = MetricsRoot.Snapshot.Get();
             snapshot.ToMetric();
 
             // write to statistics log
@@ -836,7 +838,7 @@ namespace Sportradar.OddsFeed.SDK.API
             _metricsLogger.LogInformation(result);
 
             // call all report runners defined by user
-            var tasks = _metricsRoot.ReportRunner.RunAllAsync();
+            var tasks = MetricsRoot.ReportRunner.RunAllAsync();
             Task.WhenAll(tasks);
 
             return Task.FromResult(true);
