@@ -8526,6 +8526,11 @@
             </summary>
             <returns>Returns <see cref="T:App.Metrics.IMetricsRoot"/> </returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.SdkMetricsFactory.SystemMeasures">
+            <summary>
+            Record system/app metrics
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.BetSettlementCertainty">
             <summary>
             Enum BetSettlementCertainty
