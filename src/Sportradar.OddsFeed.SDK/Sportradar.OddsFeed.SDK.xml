@@ -7602,6 +7602,11 @@
             Starts the health check and returns <see cref="T:App.Metrics.Health.HealthCheckResult"/>
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.Metrics.MetricsSettings.McUfSemaphorePool">
+            <summary>
+            Default context for metrics - UFGlobalEventProcessor
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.RealTimeProvider">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ITimeProvider"/> giving access to the current time

@@ -1,14 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Castle.Core.Internal;
+using Dawn;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dawn;
 using System.Threading;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
-using Microsoft.Extensions.Logging;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -113,6 +114,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
 
+            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(MetricsSettings.TimerSemaphorePool, id);
+
             var idFound = false;
             lock (_syncObject)
             {
@@ -131,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return Task.Run(() => AcquireInternal(id));
             }
 
-            while(true)
+            while (true)
             {
                 lock (_syncObject)
                 {
@@ -147,6 +150,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     if (!AvailableSemaphoreIds.Contains(id))
                     {
                         AvailableSemaphoreIds.Add(id);
+                        SdkMetricsFactory.MetricsRoot.Measure.Gauge.SetValue(MetricsSettings.GaugeSemaphorePool, AvailableSemaphoreIds.Count);
                         return Task.Run(() => AcquireInternal(id));
                     }
                 }
@@ -176,6 +180,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     {
                         holder.Acquire();
                         holder.Id = id;
+                        SdkMetricsFactory.MetricsRoot.Measure.Gauge.SetValue(MetricsSettings.GaugeSemaphorePool, AvailableSemaphoreIds.Count);
                         return holder.Semaphore;
                     }
                 }
@@ -209,7 +214,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     }
                     return;
                 }
-                _executionLog.LogWarning($"No semaphores are acquired with Id:{id} (used: {SemaphoreHolders.Where(c=>!c.Id.IsNullOrEmpty())}/{SemaphoreHolders.Count})");
+                _executionLog.LogWarning($"No semaphores are acquired with Id:{id} (used: {SemaphoreHolders.Where(c => !c.Id.IsNullOrEmpty())}/{SemaphoreHolders.Count})");
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw new ArgumentException($"No semaphores are acquired with Id:{id}", nameof(id));
