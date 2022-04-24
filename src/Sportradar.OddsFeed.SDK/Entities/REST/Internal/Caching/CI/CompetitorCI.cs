@@ -781,10 +781,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 if (!_fetchedCultures.Contains(culture) && _dataRouterManager != null)
                 {
-                    var task = Task.Run(async () =>
-                    {
-                        await _dataRouterManager.GetCompetitorAsync(Id, culture, null).ConfigureAwait(false);
-                    });
+                    var task = Task.Run(async () => await _dataRouterManager.GetCompetitorAsync(Id, culture, null).ConfigureAwait(false));
                     task.Wait();
                 }
             }

@@ -1,18 +1,18 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using Dawn;
-using System.Globalization;
-using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Timer;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 {
@@ -106,9 +106,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             var timerOptionsCache = new TimerOptions { Context = "SdkCache", Name = $"SaveTo_{CacheName}", MeasurementUnit = Unit.Calls };
             var timerOptionsDtType = new TimerOptions { Context = "SdkCache", Name = $"{dtoType}", MeasurementUnit = Unit.Calls };
-            using (_metrics.Measure.Timer.Time(timerOptionsCache))
+            using (_metrics.Measure.Timer.Time(timerOptionsCache, MetricTags.Empty, $"{id} [{culture.TwoLetterISOLanguageName}]"))
             {
-                using (_metrics.Measure.Timer.Time(timerOptionsDtType))
+                using (_metrics.Measure.Timer.Time(timerOptionsDtType, MetricTags.Empty, $"{id} [{culture.TwoLetterISOLanguageName}]"))
                 {
                     var syncTask = new Task<bool>(() =>
                     {
