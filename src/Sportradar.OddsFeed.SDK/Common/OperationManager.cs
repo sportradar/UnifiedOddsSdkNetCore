@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
+using System;
 
 namespace Sportradar.OddsFeed.SDK.Common
 {
@@ -61,6 +61,13 @@ namespace Sportradar.OddsFeed.SDK.Common
         public static int RabbitHeartbeat { get; private set; }
 
         /// <summary>
+        /// Gets a timeout for HttpClient for fast api request (in seconds).
+        /// </summary>
+        /// <value>A timeout for HttpClient for fast api request (in seconds).</value>
+        /// <remarks>Between 1 and 30 (default 5s). Used for summary, competitor profile, player profile and variant description endpoint. Must be set before feed instance is created.</remarks>
+        public static TimeSpan FastHttpClientTimeout { get; private set; }
+
+        /// <summary>
         /// Initialization of default values of the <see cref="OperationManager"/>
         /// </summary>
         static OperationManager()
@@ -72,6 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Common
             IgnoreBetPalTimelineSportEventStatus = false;
             RabbitConnectionTimeout = ConnectionFactory.DefaultConnectionTimeout / 1000;
             RabbitHeartbeat = ConnectionFactory.DefaultHeartbeat;
+            FastHttpClientTimeout = TimeSpan.FromSeconds(5);
         }
 
         /// <summary>
@@ -113,7 +121,7 @@ namespace Sportradar.OddsFeed.SDK.Common
         public static void SetVariantMarketDescriptionCacheTimeout(TimeSpan timeout)
         {
             if (timeout >= TimeSpan.FromHours(1) && timeout <= TimeSpan.FromHours(24))
-            { 
+            {
                 VariantMarketDescriptionCacheTimeout = timeout;
                 InteractionLog.LogInformation($"Set VariantMarketDescriptionCacheTimeout to {timeout.TotalHours} hours.");
                 return;
@@ -129,7 +137,7 @@ namespace Sportradar.OddsFeed.SDK.Common
         public static void SetIgnoreBetPalTimelineSportEventStatusCacheTimeout(TimeSpan timeout)
         {
             if (timeout >= TimeSpan.FromHours(1) && timeout <= TimeSpan.FromHours(24))
-            { 
+            {
                 IgnoreBetPalTimelineSportEventStatusCacheTimeout = timeout;
                 InteractionLog.LogInformation($"Set IgnoreBetPalTimelineSportEventStatusCacheTimeout to {timeout.TotalHours} hours.");
                 return;
@@ -174,6 +182,23 @@ namespace Sportradar.OddsFeed.SDK.Common
                 RabbitHeartbeat = rabbitHeartbeat;
                 InteractionLog.LogInformation($"Set RabbitHeartbeat to {rabbitHeartbeat}s.");
             }
+        }
+
+        /// <summary>
+        /// Sets a timeout for HttpClient for fast api request (in seconds).
+        /// </summary>
+        /// <param name="timeout">The timeout to be set</param>
+        /// /// <remarks>Between 1 and 30 (default 5s) - set before connection is made.</remarks>
+        public static void SetFastHttpClientTimeout(TimeSpan timeout)
+        {
+            if (timeout >= TimeSpan.FromSeconds(1) && timeout <= TimeSpan.FromSeconds(30))
+            {
+                FastHttpClientTimeout = timeout;
+                InteractionLog.LogInformation($"Set FastHttpClientTimeout to {timeout.TotalSeconds} seconds.");
+                return;
+            }
+
+            throw new InvalidOperationException($"Invalid timeout value for FastHttpClientTimeout: {timeout.TotalSeconds} seconds.");
         }
     }
 }
