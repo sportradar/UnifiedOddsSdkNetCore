@@ -1,20 +1,20 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Dawn;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Threading.Tasks;
 using Castle.Core.Internal;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
@@ -194,10 +194,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
-    /// Get category identifier as an asynchronous operation
-    /// </summary>
-    /// <returns>A <see cref="Task{URN}" /> representing the asynchronous operation</returns>
-    public async Task<URN> GetCategoryIdAsync()
+        /// Get category identifier as an asynchronous operation
+        /// </summary>
+        /// <returns>A <see cref="Task{URN}" /> representing the asynchronous operation</returns>
+        public async Task<URN> GetCategoryIdAsync()
         {
             if (_categoryId != null)
             {
@@ -232,10 +232,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, LoadedSummaries).ToList();
             if (_competitors != null && !wantedCultures.Any())
             {
-                return await PrepareCompetitorList(_competitors, wantedCultures);
+                return await PrepareCompetitorList(_competitors, wantedCultures).ConfigureAwait(false);
             }
             await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
-            return await PrepareCompetitorList(_competitors, wantedCultures);
+            return await PrepareCompetitorList(_competitors, wantedCultures).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<URN>> PrepareCompetitorList(IEnumerable<URN> competitors, IEnumerable<CultureInfo> cultures)
@@ -245,7 +245,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 return competitors;
             }
 
-            var groups = await GetGroupsAsync(cultures);
+            var groups = await GetGroupsAsync(cultures).ConfigureAwait(false);
             return groups?.SelectMany(g => g.CompetitorsIds).Distinct();
         }
 
@@ -690,7 +690,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     {
                         tmpGroups.Clear();
                     }
-                    else if(tmpGroups.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)) && !groupDTOs.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)))
+                    else if (tmpGroups.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)) && !groupDTOs.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)))
                     {
                         tmpGroups.Clear();
                     }
@@ -733,7 +733,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
                             // if no group with matching competitors
                             var groupExists = MergerHelper.FindExistingGroup(groupDTOs, tmpGroup);
-                            if(groupExists == null)
+                            if (groupExists == null)
                             {
                                 tmpGroups.Remove(tmpGroup);
                                 continue;
@@ -803,7 +803,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
             info.CategoryId = _categoryId?.ToString();
             info.TournamentCoverage = _tournamentCoverage != null ? await _tournamentCoverage.ExportAsync().ConfigureAwait(false) : null;
-            info.Competitors = _competitors?.Select(s=>s.ToString());
+            info.Competitors = _competitors?.Select(s => s.ToString());
             info.CurrentSeasonInfo = _currentSeasonInfo != null ? await _currentSeasonInfo.ExportAsync().ConfigureAwait(false) : null;
             var groupsTasks = _groups?.Select(async g => await g.ExportAsync().ConfigureAwait(false));
             info.Groups = groupsTasks != null ? await Task.WhenAll(groupsTasks) : null;

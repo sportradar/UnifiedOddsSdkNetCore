@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
 using Dawn;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
@@ -163,11 +163,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                         Id = GoalScorer.Id.ToString(),
                         Name = new Dictionary<CultureInfo, string>(GoalScorer.Name ?? new Dictionary<CultureInfo, string>()),
                         Bench = GoalScorer.Bench,
-                        Method =  GoalScorer.Method
+                        Method = GoalScorer.Method
                     }
                     : null,
                 MatchStatusCode = MatchStatusCode,
-                Assists = assistsTasks != null ? await Task.WhenAll(assistsTasks) : null,
+                Assists = assistsTasks != null ? await Task.WhenAll(assistsTasks).ConfigureAwait(false) : null,
                 HomeScore = HomeScore,
                 Time = Time,
                 StoppageTime = StoppageTime,
@@ -186,7 +186,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                         Id = Player.Id.ToString(),
                         Name = new Dictionary<CultureInfo, string>(Player.Name ?? new Dictionary<CultureInfo, string>()),
                         Bench = Player.Bench,
-                        Method =  Player.Method
+                        Method = Player.Method
                     }
                     : null
             };

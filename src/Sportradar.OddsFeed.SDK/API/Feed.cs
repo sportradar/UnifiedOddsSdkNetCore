@@ -293,7 +293,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
             MetricsRoot = UnityContainer.Resolve<IMetricsRoot>();
             _metricsLogger = SdkLoggerFactory.GetLoggerForStats(typeof(Feed));
-            _metricsTaskScheduler = new AppMetricsTaskScheduler(TimeSpan.FromSeconds(InternalConfig.StatisticsTimeout), async () => await LogMetricsAsync());
+            _metricsTaskScheduler = new AppMetricsTaskScheduler(TimeSpan.FromSeconds(InternalConfig.StatisticsTimeout), async () => await LogMetricsAsync().ConfigureAwait(false));
         }
 
         /// <summary>

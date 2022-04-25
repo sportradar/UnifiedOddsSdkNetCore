@@ -639,7 +639,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 tasks.Add(_profileCache.ExportAsync());
             }
             tasks.ForEach(t => t.ConfigureAwait(false));
-            return (await Task.WhenAll(tasks)).SelectMany(e => e);
+            return (await Task.WhenAll(tasks).ConfigureAwait(false)).SelectMany(e => e);
         }
 
         /// <summary>
