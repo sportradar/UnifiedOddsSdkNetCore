@@ -1,17 +1,10 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using Dawn;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Threading;
-using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Timer;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -21,6 +14,13 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 {
@@ -113,7 +113,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
                     if (item != null)
                     {
-                        return (SportEventStatusCI) item;
+                        return (SportEventStatusCI)item;
                     }
 
                     var cachedEvent = _sportEventCache.GetEventCacheItem(eventId) as ICompetitionCI;
@@ -126,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
                     if (item != null)
                     {
-                        return (SportEventStatusCI) item;
+                        return (SportEventStatusCI)item;
                     }
                 }
                 finally
@@ -135,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
             }
 
-            return ((SportEventStatusMapperBase) _mapperFactory).CreateNotStarted();
+            return ((SportEventStatusMapperBase)_mapperFactory).CreateNotStarted();
         }
 
         /// <inheritdoc />
@@ -152,7 +152,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     CacheLog.LogDebug($"Received {messageType.Name} - added {eventId} to the ignore timeline list");
                     _ignoreEventsTimelineCache.Add(eventId.ToString(),
                                                    DateTime.Now,
-                                                   new CacheItemPolicy {SlidingExpiration = OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout});
+                                                   new CacheItemPolicy { SlidingExpiration = SdkInfo.AddVariableNumber(OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout, 20) });
                 }
             }
         }
@@ -202,8 +202,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                                                                             sportEventStatus,
                                                                             new CacheItemPolicy
                                                                             {
-                                                                                AbsoluteExpiration =
-                                                                                    DateTimeOffset.Now.AddSeconds(OperationManager.SportEventStatusCacheTimeout.TotalSeconds)
+                                                                                AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(OperationManager.SportEventStatusCacheTimeout.TotalSeconds)
                                                                             })
                                         as SportEventStatusCI;
                     if (cacheItem != null)

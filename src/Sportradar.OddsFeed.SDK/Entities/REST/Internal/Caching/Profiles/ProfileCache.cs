@@ -1017,7 +1017,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         {
             return id.IsSimpleTeam()
                        ? _simpleTeamCacheItemPolicy
-                       : new CacheItemPolicy { SlidingExpiration = OperationManager.ProfileCacheTimeout, RemovedCallback = OnCacheItemRemoval };
+                       : new CacheItemPolicy { SlidingExpiration = SdkInfo.AddVariableNumber(OperationManager.ProfileCacheTimeout, 20), RemovedCallback = OnCacheItemRemoval };
         }
 
         /// <summary>

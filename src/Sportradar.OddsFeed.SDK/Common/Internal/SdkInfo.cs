@@ -406,10 +406,89 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             return input.Replace(sensitiveData, clearedData);
         }
 
+        /// <summary>
+        /// Check if object is numeric value
+        /// </summary>
+        /// <param name="expression">The object to check</param>
+        /// <returns>Returns <c>true</c> if object represents numeric value</returns>
         public static bool IsNumeric(object expression)
         {
             var isNum = double.TryParse(Convert.ToString(expression), NumberStyles.Any, NumberFormatInfo.InvariantInfo, out _);
             return isNum;
+        }
+
+        /// <summary>
+        /// Get new value based on input and variable percent (up or down)
+        /// </summary>
+        /// <param name="baseValue">The base value</param>
+        /// <param name="variablePercent">The max percent to deviate from base value</param>
+        /// <returns>The new value within min-max</returns>
+        public static int GetVariableNumber(int baseValue, int variablePercent = 5)
+        {
+            if (baseValue < 1 || variablePercent == 0)
+            {
+                return baseValue;
+            }
+
+            if (variablePercent < 0 || variablePercent > 100)
+            {
+                variablePercent = 10;
+            }
+
+            var start = (100 - variablePercent) / (double)100 * baseValue;
+            var end = (100 + variablePercent) / (double)100 * baseValue;
+
+            var r = new Random(Environment.TickCount);
+
+            return r.Next((int)start, (int)end);
+        }
+
+        /// <summary>
+        /// Get new value based on input and variable percent (up or down)
+        /// </summary>
+        /// <param name="baseValue">The base value</param>
+        /// <param name="variablePercent">The max percent to deviate from base value</param>
+        /// <returns>The new value within min-max</returns>
+        public static TimeSpan GetVariableNumber(TimeSpan baseValue, int variablePercent = 5)
+        {
+            var newValue = GetVariableNumber(Convert.ToInt32(baseValue.TotalSeconds), variablePercent);
+            return TimeSpan.FromSeconds(newValue);
+        }
+
+        /// <summary>
+        /// Get new value based on input and variable percent (up only)
+        /// </summary>
+        /// <param name="baseValue">The base value</param>
+        /// <param name="variablePercent">The max percent to deviate from base value</param>
+        /// <returns>The new value within base-max</returns>
+        public static int AddVariableNumber(int baseValue, int variablePercent = 5)
+        {
+            if (baseValue < 1 || variablePercent == 0)
+            {
+                return baseValue;
+            }
+
+            if (variablePercent < 0 || variablePercent > 100)
+            {
+                variablePercent = 10;
+            }
+
+            var end = (100 + variablePercent) / (double)100 * baseValue;
+
+            var r = new Random(Environment.TickCount);
+            return r.Next(baseValue, (int)end);
+        }
+
+        /// <summary>
+        /// Get new value based on input and variable percent (up only)
+        /// </summary>
+        /// <param name="baseValue">The base value</param>
+        /// <param name="variablePercent">The max percent to deviate from base value</param>
+        /// <returns>The new value within base-max</returns>
+        public static TimeSpan AddVariableNumber(TimeSpan baseValue, int variablePercent = 5)
+        {
+            var newValue = AddVariableNumber(Convert.ToInt32(baseValue.TotalSeconds), variablePercent);
+            return TimeSpan.FromSeconds(newValue);
         }
     }
 }

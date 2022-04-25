@@ -7981,6 +7981,45 @@
             <param name="sensitiveData">Search for this data and replace with cleared input string</param>
             <returns>Cleared input string</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.IsNumeric(System.Object)">
+            <summary>
+            Check if object is numeric value
+            </summary>
+            <param name="expression">The object to check</param>
+            <returns>Returns <c>true</c> if object represents numeric value</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetVariableNumber(System.Int32,System.Int32)">
+            <summary>
+            Get new value based on input and variable percent (up or down)
+            </summary>
+            <param name="baseValue">The base value</param>
+            <param name="variablePercent">The max percent to deviate from base value</param>
+            <returns>The new value within min-max</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetVariableNumber(System.TimeSpan,System.Int32)">
+            <summary>
+            Get new value based on input and variable percent (up or down)
+            </summary>
+            <param name="baseValue">The base value</param>
+            <param name="variablePercent">The max percent to deviate from base value</param>
+            <returns>The new value within min-max</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.AddVariableNumber(System.Int32,System.Int32)">
+            <summary>
+            Get new value based on input and variable percent (up only)
+            </summary>
+            <param name="baseValue">The base value</param>
+            <param name="variablePercent">The max percent to deviate from base value</param>
+            <returns>The new value within base-max</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.AddVariableNumber(System.TimeSpan,System.Int32)">
+            <summary>
+            Get new value based on input and variable percent (up only)
+            </summary>
+            <param name="baseValue">The base value</param>
+            <param name="variablePercent">The max percent to deviate from base value</param>
+            <returns>The new value within base-max</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.SdkTimer">
             <summary>
             A timer used for invocation of period tasks
