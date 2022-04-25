@@ -1,16 +1,16 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -115,7 +115,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="id">The id of the sport event</param>
         /// <param name="culture">The culture to be fetched</param>
         /// <param name="requester">The cache item which invoked request</param>
-        Task GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester);
+        /// <returns>The match timeline data object</returns>
+        Task<MatchTimelineDTO> GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
         /// Gets the market descriptions (static list of market descriptions)

@@ -1,13 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Messages;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
@@ -227,5 +227,13 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="periods">The list of period ids to fetch the results for</param>
         /// <returns>The period statuses or empty if not found</returns>
         Task<IEnumerable<IPeriodStatus>> GetPeriodStatusesAsync(URN id, CultureInfo culture = null, IEnumerable<URN> competitorIds = null, IEnumerable<int> periods = null) => Task.FromResult<IEnumerable<IPeriodStatus>>(null);
+
+        /// <summary>
+        /// Get the associated event timeline for single culture
+        /// </summary>
+        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="culture">The language to be fetched</param>
+        /// <returns>The event timeline or empty if not found</returns>
+        Task<IEnumerable<ITimelineEvent>> GetTimelineEventsAsync(URN id, CultureInfo culture = null) => Task.FromResult<IEnumerable<ITimelineEvent>>(null);
     }
 }

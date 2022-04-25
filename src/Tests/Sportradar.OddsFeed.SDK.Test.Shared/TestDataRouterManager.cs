@@ -1,13 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
 using Dawn;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
@@ -21,6 +15,12 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 // ReSharper disable UnusedMember.Local
 
@@ -289,7 +289,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             RecordCall("GetCompetitorAsync");
             return id.IsSimpleTeam()
-                ? GetSimpleTeamProfileAsync(id, culture, requester) 
+                ? GetSimpleTeamProfileAsync(id, culture, requester)
                 : GetCompetitorProfileAsync(id, culture, requester);
         }
 
@@ -350,7 +350,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return null;
         }
 
-        public async Task GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester)
+        public async Task<MatchTimelineDTO> GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
             RecordCall("GetInformationAboutOngoingEventAsync");
             var filePath = GetFile("match_timeline.{culture}.xml", culture);
@@ -362,6 +362,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             {
                 await _cacheManager.SaveDtoAsync(id, result, culture, DtoType.MatchTimeline, requester).ConfigureAwait(false);
             }
+
+            return result;
         }
 
         public async Task GetMarketDescriptionsAsync(CultureInfo culture)

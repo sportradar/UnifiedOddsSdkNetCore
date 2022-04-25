@@ -5763,6 +5763,14 @@
             <param name="periods">The list of period ids to fetch the results for</param>
             <returns>The period statuses or empty if not found</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.GetTimelineEventsAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
+            <summary>
+            Get the associated event timeline for single culture
+            </summary>
+            <param name="id">The id of the sport event to be fetched</param>
+            <param name="culture">The language to be fetched</param>
+            <returns>The event timeline or empty if not found</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.Internal.FeedSystemSession">
             <summary>
             System session handles system feed messages
@@ -6774,6 +6782,14 @@
             <param name="competitorIds">The list of competitor ids to fetch the results for</param>
             <param name="periods">The list of period ids to fetch the results for</param>
             <returns>The period statuses or empty if not found</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.ISportDataProvider.GetTimelineEventsAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
+            <summary>
+            Get the associated event timeline for single culture
+            </summary>
+            <param name="id">The id of the sport event to be fetched</param>
+            <param name="culture">The language to be fetched</param>
+            <returns>The event timeline or empty if not found</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.API.MessageType">
             <summary>
@@ -21480,7 +21496,7 @@
             <param name="id">The id of the sport event</param>
             <param name="culture">The culture to be fetched</param>
             <param name="requester">The cache item which invoked request</param>
-            <returns>Task</returns>
+            <returns>The match timeline data object</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DataRouterManager.GetMarketDescriptionsAsync(System.Globalization.CultureInfo)">
             <summary>
@@ -27975,6 +27991,7 @@
             <param name="id">The id of the sport event</param>
             <param name="culture">The culture to be fetched</param>
             <param name="requester">The cache item which invoked request</param>
+            <returns>The match timeline data object</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.GetMarketDescriptionsAsync(System.Globalization.CultureInfo)">
             <summary>

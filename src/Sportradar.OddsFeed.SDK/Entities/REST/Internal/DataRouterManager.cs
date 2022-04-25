@@ -940,8 +940,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="id">The id of the sport event</param>
         /// <param name="culture">The culture to be fetched</param>
         /// <param name="requester">The cache item which invoked request</param>
-        /// <returns>Task</returns>
-        public async Task GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester)
+        /// <returns>The match timeline data object</returns>
+        public async Task<MatchTimelineDTO> GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetInformationAboutOngoingEventAsync", MeasurementUnit = Unit.Requests };
             using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id} [{culture.TwoLetterISOLanguageName}]");
@@ -981,6 +981,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 await _cacheManager.SaveDtoAsync(result.SportEvent.Id, result, culture, DtoType.MatchTimeline, requester).ConfigureAwait(false);
             }
             WriteLog($"Executing GetInformationAboutOngoingEventAsync for id={id} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
+
+            return result;
         }
 
         /// <summary>
