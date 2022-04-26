@@ -3,6 +3,20 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2022-04-26  1.25.0
+Separate HttpClient for critical (summary, player profile, competitor profile and variant market description) and other requests
+Added configuration option for fast HttpClient in OperationManager (default timeout 5s)
+Extended ISportDataProvider with GetTimelineEventsAsync
+Improved merging of competitor profile
+Modified sliding expiration of profile cache items to avoid GC congestion
+Improved how SportDataProvider is handling exceptions
+Improved metrics and logging for raw data events
+Improved metrics with app and system metrics
+Added metrics for SemaphorePool
+Fixed exception handling in DataRouterManager
+Extended RawApiDataEventArgs with RequestParams, RequestTime and Language
+Other minor improvements for observability
+
 2022-02-23  1.24.0
 Added BetradarName to IRound
 Fix: ICompetition competitors did not expose IsVirtual correctly

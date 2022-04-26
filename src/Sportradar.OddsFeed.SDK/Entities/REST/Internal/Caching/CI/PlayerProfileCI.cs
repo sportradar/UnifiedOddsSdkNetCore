@@ -251,7 +251,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 _competitorId = competitorId;
             }
 
-            if (_fetchedCultures.IsNullOrEmpty())
+            if (_fetchedCultures == null)
             {
                 _fetchedCultures = new List<CultureInfo>();
             }

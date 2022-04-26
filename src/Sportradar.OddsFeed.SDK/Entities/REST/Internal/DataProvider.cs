@@ -209,6 +209,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 }
                 foreach (var identifier in identifiers)
                 {
+                    if (identifier == null)
+                    {
+                        continue;
+                    }
                     if (SdkInfo.IsNumeric(identifier) || identifier.Contains(":"))
                     {
                         return identifier;
@@ -226,6 +230,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 foreach (var identifier in identifiers)
                 {
+                    if (identifier == null)
+                    {
+                        continue;
+                    }
                     try
                     {
                         var c = CultureInfo.GetCultureInfo(identifier);
