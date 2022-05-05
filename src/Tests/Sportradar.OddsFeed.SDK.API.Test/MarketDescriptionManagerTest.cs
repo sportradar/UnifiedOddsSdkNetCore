@@ -24,7 +24,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         private IMarketCacheProvider _marketCacheProvider;
         private IMappingValidatorFactory _mappingValidatorFactory;
 
-        private TestTimer _timer;
+        private TestTimer _timerVDL; 
+        private TestTimer _timerIDL;
         private CacheManager _cacheManager;
         private TestDataRouterManager _dataRouterManager;
         private TestProducersProvider _producersProvider;
@@ -42,10 +43,11 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
             _mappingValidatorFactory = new MappingValidatorFactory();
 
-            _timer = new TestTimer(true);
+            _timerVDL = new TestTimer(true);
+            _timerIDL = new TestTimer(true);
             _variantMarketDescriptionCache = new VariantMarketDescriptionCache(_variantMarketDescriptionMemoryCache, _dataRouterManager, _mappingValidatorFactory, _cacheManager);
-            _variantDescriptionListCache = new VariantDescriptionListCache(_variantDescriptionMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timer, TestData.Cultures, _cacheManager);
-            _invariantMarketDescriptionCache = new InvariantMarketDescriptionCache(_invariantMarketDescriptionMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timer, TestData.Cultures, _cacheManager);
+            _variantDescriptionListCache = new VariantDescriptionListCache(_variantDescriptionMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timerVDL, TestData.Cultures, _cacheManager);
+            _invariantMarketDescriptionCache = new InvariantMarketDescriptionCache(_invariantMarketDescriptionMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timerIDL, TestData.Cultures, _cacheManager);
 
             _marketCacheProvider = new MarketCacheProvider(_invariantMarketDescriptionCache, _variantMarketDescriptionCache, _variantDescriptionListCache);
         }

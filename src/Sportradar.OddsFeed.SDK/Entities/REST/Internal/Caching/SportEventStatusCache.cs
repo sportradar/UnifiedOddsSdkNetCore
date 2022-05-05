@@ -295,16 +295,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             return result;
         }
 
-        /// <summary>
-        /// Adds the dto item to cache
-        /// </summary>
-        /// <param name="id">The identifier of the object</param>
-        /// <param name="item">The item</param>
-        /// <param name="culture">The culture</param>
-        /// <param name="dtoType">Type of the dto</param>
-        /// <param name="requester">The cache item which invoked request</param>
-        /// <returns><c>true</c> if added, <c>false</c> otherwise</returns>
-        protected override bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
+        /// <inheritdoc />
+        protected override async Task<bool> CacheAddDtoItemAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
             Guard.Argument(id, nameof(id)).NotNull();
             Guard.Argument(item, nameof(item)).NotNull();

@@ -1,10 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
@@ -48,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void player_profile_gets_cached()
+        public void PlayerProfileGetsCached()
         {
             const string callType = "GetPlayerProfileAsync";
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), "Should be called exactly 0 times.");
@@ -68,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void number_of_player_provider_calls_match_is_correct()
+        public void NumberOfPlayerProfileProviderCallsMatchIsCorrect()
         {
             const string callType = "GetPlayerProfileAsync";
             var player1 = _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures).Result;
@@ -84,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void competitor_profile_gets_cached()
+        public void CompetitorProfileGetsCached()
         {
             const string callType = "GetCompetitorAsync";
             Assert.IsNotNull(_memoryCache);
@@ -106,7 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void number_of_competitor_provider_calls_match_is_correct()
+        public void NumberOfCompetitorProfileProviderCallsMatchIsCorrect()
         {
             const string callType = "GetCompetitorAsync";
             var competitor1 = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures).Result;
@@ -122,7 +126,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void simpleteam_profile_gets_cached()
+        public void SimpleteamProfileGetsCached()
         {
             const string callType = "GetCompetitorAsync";
             Assert.IsNotNull(_memoryCache);
@@ -144,7 +148,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void number_of_simpleteam_provider_calls_match_is_correct()
+        public void NumberOfSimpleteamProviderCallsMatchIsCorrect()
         {
             const string callType = "GetCompetitorAsync";
             var competitor1 = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(1), TestData.Cultures).Result;
@@ -160,7 +164,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void simpleteam_is_cached_without_betradarId()
+        public void SimpleteamIsCachedWithoutBetradarId()
         {
             Assert.AreEqual(0, _memoryCache.Count());
             var competitorCI = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(1), TestData.Cultures).Result;
@@ -173,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void simpleteam_is_cached_without_referenceIds()
+        public void SimpleteamIsCachedWithoutReferenceIds()
         {
             Assert.AreEqual(0, _memoryCache.Count());
             var simpleTeamDto = CacheSimpleTeam(1, null);
@@ -189,7 +193,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void simpleteam_is_cached_with_betradarId()
+        public void SimpleteamIsCachedWithBetradarId()
         {
             Assert.AreEqual(0, _memoryCache.Count());
             var competitorCI = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(2), TestData.Cultures).Result;
@@ -202,7 +206,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod]
-        public void simpleteam_can_be_removed_from_cache()
+        public void SimpleteamCanBeRemovedFromCache()
         {
             Assert.AreEqual(0, _memoryCache.Count());
             var simpleTeamDto = CacheSimpleTeam(654321, null);
@@ -224,6 +228,241 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             var simpleTeamDto = new SimpleTeamProfileDTO(simpleTeam);
             _cacheManager.SaveDto(simpleTeamDto.Competitor.Id, simpleTeamDto, CultureInfo.CurrentCulture, DtoType.SimpleTeamProfile, null);
             return simpleTeamDto;
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsRequestForOneShouldNotInvokeApiRequests()
+        {
+            const string callType = "GetCompetitorAsync";
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+
+            var cultures = new List<CultureInfo> { TestData.Culture };
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            
+            var cid = StaticRandom.I1000;
+            for (var i = 0; i < 10; i++)
+            {
+                Debug.Print(i.ToString());
+                var competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), cultures).Result;
+                Assert.IsNotNull(competitor);
+            }
+
+            Assert.AreEqual(1, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called {cultures.Count} times.");
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsWithLanguagesRequestForOneShouldNotInvokeApiRequests()
+        {
+            const string callType = "GetCompetitorAsync";
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+
+            var cid = StaticRandom.I1000;
+            for (var i = 1; i < 10; i++)
+            {
+                Debug.Print(i.ToString());
+                var competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), TestData.Cultures).Result;
+                Assert.IsNotNull(competitor);
+            }
+
+            Assert.AreEqual(1, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+
+            Assert.AreEqual(TestData.Cultures.Count , _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count} times.");
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsWithLanguagesAreCachedAndApiCalledOnceForEach()
+        {
+            const string callType = "GetCompetitorAsync";
+            const int cidCount = 100;
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+
+            for (var i = 0; i < 1000; i++)
+            {
+                Debug.Print(i.ToString());
+                var cid = i < cidCount ? i + 1 : StaticRandom.I(cidCount);
+                var competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), TestData.Cultures).Result;
+                Assert.IsNotNull(competitor);
+            }
+
+            Assert.AreEqual(cidCount, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(TestData.Cultures.Count * cidCount, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count * cidCount} times.");
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsRequestForOneShouldNotInvokeApiRequestsDelayed()
+        {
+            const string callType = "GetCompetitorAsync";
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+
+            var cultures = new List<CultureInfo> { TestData.Culture };
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            _dataRouterManager.AddDelay(TimeSpan.FromSeconds(5), true, 100);
+
+            var cid = StaticRandom.I1000;
+            for (var i = 0; i < 10; i++)
+            {
+                Debug.Print(i.ToString());
+                var competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), cultures).Result;
+                Assert.IsNotNull(competitor);
+            }
+
+            Assert.AreEqual(1, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called {cultures.Count} times.");
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsWithLanguagesRequestForOneShouldNotInvokeApiRequestsDelayed()
+        {
+            const string callType = "GetCompetitorAsync";
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            _dataRouterManager.AddDelay(TimeSpan.FromSeconds(5), true, 100);
+
+            var cid = StaticRandom.I1000;
+            for (var i = 1; i < 10; i++)
+            {
+                Debug.Print(i.ToString());
+                var competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), TestData.Cultures).Result;
+                Assert.IsNotNull(competitor);
+            }
+
+            Assert.AreEqual(1, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+
+            Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count} times.");
+        }
+
+        [TestMethod]
+        [Timeout(180000)]
+        public void MultipleCompetitorsWithLanguagesAreCachedAndApiCalledOnceForEachDelayed()
+        {
+            const string callType = "GetCompetitorAsync";
+            const int cidCount = 100;
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            _dataRouterManager.AddDelay(TimeSpan.FromSeconds(10), true, 10);
+
+            for (var i = 0; i < 1000; i++)
+            {
+                Debug.Print($"{DateTime.Now} - {i}");
+                var cid = i < cidCount ? i + 1 : StaticRandom.I(cidCount);
+                var competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), TestData.Cultures).Result;
+                Assert.IsNotNull(competitor);
+            }
+
+            Assert.AreEqual(cidCount, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(TestData.Cultures.Count * cidCount, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count * cidCount} times.");
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsRequestForOneShouldNotInvokeApiRequestsDelayedAsync()
+        {
+            const string callType = "GetCompetitorAsync";
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+
+            var cultures = new List<CultureInfo> { TestData.Culture };
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            _dataRouterManager.AddDelay(TimeSpan.FromSeconds(5), true, 100);
+
+            var cid = StaticRandom.I1000;
+            var tasks = new List<Task>();
+            for (var i = 0; i < 10; i++)
+            {
+                var task = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), cultures);
+                tasks.Add(task);
+            }
+
+            Task.WhenAll(tasks).Wait();
+
+            Assert.AreEqual(1, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called {cultures.Count} times.");
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsWithLanguagesRequestForOneShouldNotInvokeApiRequestsDelayedAsync()
+        {
+            const string callType = "GetCompetitorAsync";
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            _dataRouterManager.AddDelay(TimeSpan.FromSeconds(5), true, 100);
+
+            var tasks = new List<Task>();
+            var cid = StaticRandom.I1000;
+            for (var i = 1; i < 10; i++)
+            {
+                var task = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), TestData.Cultures);
+                tasks.Add(task);
+            }
+
+            Task.WhenAll(tasks).Wait();
+
+            Assert.AreEqual(1, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count} times.");
+        }
+
+        [TestMethod]
+        [Timeout(30000)]
+        public void MultipleCompetitorsWithLanguagesAreCachedAndApiCalledOnceForEachDelayedAsync()
+        {
+            const string callType = "GetCompetitorAsync";
+            const int cidCount = 100;
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            _dataRouterManager.AddDelay(TimeSpan.FromSeconds(10), true, 10);
+
+            var tasks = new List<Task>();
+            for (var i = 0; i < 1000; i++)
+            {
+                var cid = i < cidCount ? i + 1 : StaticRandom.I(cidCount);
+                var task = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), TestData.Cultures);
+                tasks.Add(task);
+            }
+
+            Task.WhenAll(tasks).Wait();
+
+            Assert.AreEqual(cidCount, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(TestData.Cultures.Count * cidCount, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count * cidCount} times.");
+        }
+
+        [TestMethod]
+        [Timeout(120000)]
+        public void MultipleCompetitorsWithLanguagesAreCachedAndApiCalledOnceForEachDelayedAsyncPerf()
+        {
+            const string callType = "GetCompetitorAsync";
+            const int cidCount = 1000;
+            Assert.IsNotNull(_memoryCache);
+            Assert.IsTrue(!_memoryCache.Any());
+            Assert.AreEqual(0, _dataRouterManager.GetCallCount(callType), $"{callType} should be called 0 times.");
+            _dataRouterManager.AddDelay(TimeSpan.FromSeconds(10), true, 10);
+
+            var tasks = new List<Task>();
+            for (var i = 0; i < 10000; i++)
+            {
+                var cid = i < cidCount ? i + 1 : StaticRandom.I(cidCount);
+                var task = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(cid), TestData.Cultures);
+                tasks.Add(task);
+            }
+
+            Task.WhenAll(tasks).Wait();
+
+            Assert.AreEqual(cidCount, _memoryCache.Count(s => s.Key.Contains(":competitor:")));
+            Assert.AreEqual(TestData.Cultures.Count * cidCount, _dataRouterManager.GetCallCount(callType), $"{callType} should be called exactly {TestData.Cultures.Count * cidCount} times.");
         }
     }
 }

@@ -17,10 +17,14 @@ using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common;
 
 // ReSharper disable UnusedMember.Local
 
@@ -28,6 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
     internal class TestDataRouterManager : IDataRouterManager
     {
+        private static readonly ILogger Log = SdkLoggerFactory.GetLogger(typeof(TestDataRouterManager));
+
         public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
 
         private static readonly string DirPath = Directory.GetCurrentDirectory() + @"\REST XMLs\";
@@ -48,6 +54,9 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         private readonly ICacheManager _cacheManager;
         private readonly IDeserializer<RestMessage> _restDeserializer = new Deserializer<RestMessage>();
+        private TimeSpan _delay = TimeSpan.Zero;
+        private bool _delayVariable = false;
+        private int _delayPercent = 10;
 
         public int TotalRestCalls => RestCalls.Sum(s => s.Value);
 
@@ -86,8 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             {
                 if (RestCalls.ContainsKey(callType))
                 {
-                    int value;
-                    RestCalls.TryGetValue(callType, out value);
+                    RestCalls.TryGetValue(callType, out var value);
                     RestCalls[callType] = value + 1;
                 }
                 else
@@ -114,9 +122,44 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 return 0;
             }
 
-            int value;
-            RestCalls.TryGetValue(callType, out value);
+            RestCalls.TryGetValue(callType, out var value);
             return value;
+        }
+
+        public void AddDelay(TimeSpan delay, bool variable = false, int percentOfRequests = 20)
+        {
+            _delay = delay;
+            _delayVariable = variable;
+            _delayPercent = percentOfRequests;
+        }
+
+        private async Task ExecuteDelayAsync(URN id, CultureInfo culture)
+        {
+            if (_delay != TimeSpan.Zero)
+            {
+                if (_delayPercent < 1)
+                {
+                    return;
+                }
+                if (_delayPercent < 100)
+                {
+                    var percent = StaticRandom.I100;
+                    if (percent > _delayPercent)
+                    {
+                        return;
+                    }
+                }
+                var delayMs = (int)_delay.TotalMilliseconds;
+                if (_delayVariable)
+                {
+                    delayMs = StaticRandom.I(delayMs);
+                }
+                Debug.Print($"DRM - executing delay for {id} and {culture.TwoLetterISOLanguageName}: {delayMs}ms START");
+                //Log.LogInformation($"DRM - executing delay for {id} and {culture.TwoLetterISOLanguageName}: {delayMs}ms");
+                //Thread.Sleep(delayMs);
+                await Task.Delay(delayMs).ConfigureAwait(false);
+                Debug.Print($"DRM - executing delay for {id} and {culture.TwoLetterISOLanguageName}: {delayMs}ms END");
+            }
         }
 
         public async Task GetSportEventSummaryAsync(URN id, CultureInfo culture, ISportEventCI requester)
@@ -295,19 +338,28 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         private async Task GetCompetitorProfileAsync(URN id, CultureInfo culture, ISportEventCI requester)
         {
+            Debug.Print($"DRM-GetCompetitorProfileAsync for {id} and culture {culture.TwoLetterISOLanguageName} - START");
             var filePath = GetFile($"{culture.TwoLetterISOLanguageName}.competitor.{id?.Id ?? 1}.xml", culture);
+            CompetitorProfileDTO dto = null;
+            await ExecuteDelayAsync(id, culture).ConfigureAwait(false);
             if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
             {
-                filePath = GetFile(CompetitorProfileXml, culture);
+                //filePath = GetFile(CompetitorProfileXml, culture);
+                dto = new CompetitorProfileDTO(MessageFactoryRest.GetCompetitorProfileEndpoint(id == null ? 1 : (int)id.Id, StaticRandom.I(15)));
             }
-            var restDeserializer = new Deserializer<competitorProfileEndpoint>();
-            var mapper = new CompetitorProfileMapperFactory();
-            var stream = FileHelper.OpenFile(filePath);
-            var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
-            if (result != null)
+            else
             {
-                await _cacheManager.SaveDtoAsync(id, result, culture, DtoType.CompetitorProfile, requester).ConfigureAwait(false);
+                var restDeserializer = new Deserializer<competitorProfileEndpoint>();
+                var mapper = new CompetitorProfileMapperFactory();
+                var stream = FileHelper.OpenFile(filePath);
+                dto = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             }
+            
+            if (dto != null)
+            {
+                await _cacheManager.SaveDtoAsync(id, dto, culture, DtoType.CompetitorProfile, requester).ConfigureAwait(false);
+            }
+            Debug.Print($"DRM-GetCompetitorProfileAsync for {id} and culture {culture.TwoLetterISOLanguageName} - END");
         }
 
         private async Task GetSimpleTeamProfileAsync(URN id, CultureInfo culture, ISportEventCI requester)

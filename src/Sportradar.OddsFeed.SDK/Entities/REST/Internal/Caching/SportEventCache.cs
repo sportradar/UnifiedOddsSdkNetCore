@@ -434,17 +434,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
         }
 
-        /// <summary>
-        /// Adds the item to the cache
-        /// </summary>
-        /// <param name="id">The identifier of the item</param>
-        /// <param name="item">The item to be add</param>
-        /// <param name="culture">The culture of the data-transfer-object</param>
-        /// <param name="dtoType">Type of the cache item</param>
-        /// <param name="requester">The cache item which invoked request</param>
-        /// <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected override bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
+        /// <inheritdoc />
+        protected override async Task<bool> CacheAddDtoItemAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
             if (_isDisposed)
             {
@@ -528,7 +519,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     var sport = item as SportDTO;
                     if (sport != null)
                     {
-                        SaveTournamentDataFromSport(sport, culture);
+                        await SaveTournamentDataFromSportAsync(sport, culture).ConfigureAwait(false);
                         saved = true;
                     }
                     else
@@ -542,7 +533,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     {
                         foreach (var sportDTO in sportEntityList.Items)
                         {
-                            SaveTournamentDataFromSport(sportDTO, culture);
+                            await SaveTournamentDataFromSportAsync(sportDTO, culture).ConfigureAwait(false);
                         }
                         saved = true;
                     }
@@ -557,10 +548,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     var tourInfo = item as TournamentInfoDTO;
                     if (tourInfo != null)
                     {
-                        SaveTournamentDataToSportEventCache(tourInfo, tourInfo.CurrentSeason?.Id, culture);
+                        await SaveTournamentDataToSportEventCacheAsync(tourInfo, tourInfo.CurrentSeason?.Id, culture).ConfigureAwait(false);
                         if (tourInfo.Season != null)
                         {
-                            SaveTournamentDataToSportEventCache(tourInfo, tourInfo.Season?.Id, culture);
+                            await SaveTournamentDataToSportEventCacheAsync(tourInfo, tourInfo.Season?.Id, culture).ConfigureAwait(false);
                         }
                         break;
                     }
@@ -584,10 +575,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                             var tourInfosDTO = s as TournamentInfoDTO;
                             if (tourInfosDTO != null)
                             {
-                                SaveTournamentDataToSportEventCache(tourInfosDTO, tourInfosDTO.CurrentSeason?.Id, culture);
+                                await SaveTournamentDataToSportEventCacheAsync(tourInfosDTO, tourInfosDTO.CurrentSeason?.Id, culture).ConfigureAwait(false);
                                 if (tourInfosDTO.Season != null)
                                 {
-                                    SaveTournamentDataToSportEventCache(tourInfosDTO, tourInfosDTO.Season?.Id, culture);
+                                    await SaveTournamentDataToSportEventCacheAsync(tourInfosDTO, tourInfosDTO.Season?.Id, culture).ConfigureAwait(false);
                                 }
                                 continue;
                             }
@@ -832,7 +823,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             GC.SuppressFinalize(this);
         }
 
-        private void SaveTournamentDataFromSport(SportDTO sportDTO, CultureInfo culture)
+        private async Task SaveTournamentDataFromSportAsync(SportDTO sportDTO, CultureInfo culture)
         {
             if (sportDTO.Categories != null)
             {
@@ -842,33 +833,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     {
                         foreach (var tournamentData in categoryData.Tournaments)
                         {
-                            SaveTournamentDataToSportEventCache(tournamentData, tournamentData.CurrentSeason?.Id, culture);
+                            await SaveTournamentDataToSportEventCacheAsync(tournamentData, tournamentData.CurrentSeason?.Id, culture).ConfigureAwait(false);
                         }
                     }
                 }
             }
         }
 
-        private void SaveTournamentDataToSportEventCache(TournamentDTO tournamentDto, URN secondId, CultureInfo culture)
+        private async Task SaveTournamentDataToSportEventCacheAsync(TournamentDTO tournamentDto, URN secondId, CultureInfo culture)
         {
-            CacheAddDtoItem(tournamentDto.Id, tournamentDto, culture, DtoType.Tournament, null);
+            await CacheAddDtoItemAsync(tournamentDto.Id, tournamentDto, culture, DtoType.Tournament, null).ConfigureAwait(false);
 
             if (secondId != null && !Equals(tournamentDto.Id, secondId))
             {
                 var tourInfoDto = new TournamentInfoDTO(tournamentDto);
                 var newTournamentDto = new TournamentInfoDTO(tourInfoDto, tourInfoDto.Season != null,tourInfoDto.CurrentSeason != null);
-                CacheAddDtoItem(secondId, newTournamentDto, culture, DtoType.TournamentInfo, null);
+                await CacheAddDtoItemAsync(secondId, newTournamentDto, culture, DtoType.TournamentInfo, null).ConfigureAwait(false);
             }
         }
 
-        private void SaveTournamentDataToSportEventCache(TournamentInfoDTO tournamentDto, URN secondId, CultureInfo culture)
+        private async Task SaveTournamentDataToSportEventCacheAsync(TournamentInfoDTO tournamentDto, URN secondId, CultureInfo culture)
         {
-            CacheAddDtoItem(tournamentDto.Id, tournamentDto, culture, DtoType.TournamentInfo, null);
+            await CacheAddDtoItemAsync(tournamentDto.Id, tournamentDto, culture, DtoType.TournamentInfo, null).ConfigureAwait(false);
 
             if (secondId != null && !Equals(tournamentDto.Id, secondId))
             {
                 var newTournamentDto = new TournamentInfoDTO(tournamentDto, tournamentDto.Season != null, tournamentDto.CurrentSeason != null);
-                CacheAddDtoItem(secondId, newTournamentDto, culture, DtoType.TournamentInfo, null);
+                await CacheAddDtoItemAsync(secondId, newTournamentDto, culture, DtoType.TournamentInfo, null).ConfigureAwait(false);
             }
         }
 

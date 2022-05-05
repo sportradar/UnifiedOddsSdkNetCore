@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public static competitorProfileEndpoint GetCompetitorProfileEndpoint(int id = 0, int playerCount = 0, IDictionary<string, string> referenceIds = null)
         {
-            if (playerCount == 0)
+            if (playerCount == -1)
             {
                 playerCount = SR.I(20);
             }
@@ -63,12 +63,14 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 players.Add(GetPlayerExtended());
             }
 
+            var cUrn = id == 0 ? SR.Urn("competitor", 100000) : SR.Urn(id, "competitor");
+
             return new competitorProfileEndpoint
             {
                 competitor = new teamExtended
                 {
-                    id = id == 0 ? SR.Urn("competitor", 100000).ToString() : SR.Urn(id, "competitor").ToString(),
-                    name = "my name",
+                    id = cUrn.ToString(),
+                    name = "my name " + cUrn.Id,
                     abbreviation = SR.S1000,
                     @virtual = true,
                     virtualSpecified = true,
@@ -76,7 +78,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                     state = "PA",
                     reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id { name = s.Key, value = s.Value }).ToArray()
                 },
-                generated_at = DateTime.Today,
+                generated_at = DateTime.Now,
                 generated_atSpecified = true,
                 players = players.ToArray()
             };

@@ -7,18 +7,13 @@ using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "SCS0005:Weak random number generator.", Justification = "Good enough for tests")]
     public static class StaticRandom
     {
-        private static int _seed;
+        private static int _seed = Environment.TickCount;
 
-        private static readonly ThreadLocal<Random> ThreadLocal = new ThreadLocal<Random>
-            (() => new Random(Interlocked.Increment(ref _seed)));
-
-        static StaticRandom()
-        {
-            _seed = Environment.TickCount;
-        }
-
+        private static readonly ThreadLocal<Random> ThreadLocal = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref _seed)));
+        
         public static Random Instance => ThreadLocal.Value;
 
         public static string S(int limit = 0)

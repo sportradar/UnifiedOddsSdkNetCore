@@ -99,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="dtoType">Type of the dto item</param>
         /// <param name="requester">The cache item which invoked request</param>
         /// <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
-        public Task<bool> CacheAddDtoAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
+        public async Task<bool> CacheAddDtoAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
             Guard.Argument(id, nameof(id)).NotNull();
             Guard.Argument(item, nameof(item)).NotNull();
@@ -110,15 +110,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 using (_metrics.Measure.Timer.Time(timerOptionsDtType, MetricTags.Empty, $"{id} [{culture.TwoLetterISOLanguageName}]"))
                 {
-                    var syncTask = new Task<bool>(() =>
-                    {
-                        var result = CacheAddDtoItem(id, item, culture, dtoType, requester);
-                        return result;
-                    });
-
-                    syncTask.Start();
-
-                    return syncTask;
+                    var result = await CacheAddDtoItemAsync(id, item, culture, dtoType, requester).ConfigureAwait(false);
+                    return result;
                 }
             }
         }
@@ -183,7 +176,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <summary>
-        /// Adds the dto item to cache
+        /// Asynchronously adds the dto item to cache
         /// </summary>
         /// <param name="id">The identifier of the object</param>
         /// <param name="item">The item to be added</param>
@@ -191,7 +184,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="dtoType">Type of the dto</param>
         /// <param name="requester">The cache item which invoked request</param>
         /// <returns><c>true</c> if added, <c>false</c> otherwise</returns>
-        protected abstract bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester);
+        protected abstract Task<bool> CacheAddDtoItemAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester);
 
         /// <summary>
         /// Logs the conflict during saving the DTO instance

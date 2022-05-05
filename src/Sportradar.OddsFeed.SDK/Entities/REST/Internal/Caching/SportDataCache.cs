@@ -587,16 +587,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 : HealthCheckResult.Unhealthy("Dictionary is empty.");
         }
 
-        /// <summary>
-        /// Adds the item to the cache
-        /// </summary>
-        /// <param name="id">The identifier of the item</param>
-        /// <param name="item">The item to be added</param>
-        /// <param name="culture">The culture of the data-transfer-object</param>
-        /// <param name="dtoType">Type of the dto item</param>
-        /// <param name="requester">The cache item which invoked request</param>
-        /// <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
-        protected override bool CacheAddDtoItem(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
+        /// <inheritdoc />
+        protected override async Task<bool> CacheAddDtoItemAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
             if (_isDisposed)
             {

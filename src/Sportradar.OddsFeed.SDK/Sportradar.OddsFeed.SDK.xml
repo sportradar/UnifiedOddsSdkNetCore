@@ -20051,7 +20051,7 @@
             <param name="cacheItemType">A cache item type</param>
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles.ProfileCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
             <summary>
             Adds the dto item to cache
             </summary>
@@ -20176,9 +20176,9 @@
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SdkCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SdkCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
             <summary>
-            Adds the dto item to cache
+            Asynchronously adds the dto item to cache
             </summary>
             <param name="id">The identifier of the object</param>
             <param name="item">The item to be added</param>
@@ -20369,16 +20369,8 @@
             Starts the health check and returns <see cref="T:App.Metrics.Health.HealthCheckResult"/>
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportDataCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
-            <summary>
-            Adds the item to the cache
-            </summary>
-            <param name="id">The identifier of the item</param>
-            <param name="item">The item to be added</param>
-            <param name="culture">The culture of the data-transfer-object</param>
-            <param name="dtoType">Type of the dto item</param>
-            <param name="requester">The cache item which invoked request</param>
-            <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportDataCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+            <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportDataCache.SetDtoTypes">
             <summary>
@@ -20570,17 +20562,8 @@
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> representing the event identifier</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an asynchronous operation</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
-            <summary>
-            Adds the item to the cache
-            </summary>
-            <param name="id">The identifier of the item</param>
-            <param name="item">The item to be add</param>
-            <param name="culture">The culture of the data-transfer-object</param>
-            <param name="dtoType">Type of the cache item</param>
-            <param name="requester">The cache item which invoked request</param>
-            <returns><c>true</c> if is added/updated, <c>false</c> otherwise</returns>
-            <exception cref="T:System.NotImplementedException"></exception>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+            <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache.SetDtoTypes">
             <summary>
@@ -20811,16 +20794,8 @@
             <param name="cacheItemType">A cache item type</param>
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
-            <summary>
-            Adds the dto item to cache
-            </summary>
-            <param name="id">The identifier of the object</param>
-            <param name="item">The item</param>
-            <param name="culture">The culture</param>
-            <param name="dtoType">Type of the dto</param>
-            <param name="requester">The cache item which invoked request</param>
-            <returns><c>true</c> if added, <c>false</c> otherwise</returns>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+            <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventStatusCache.Dispose(System.Boolean)">
             <summary>
@@ -30211,19 +30186,10 @@
             <param name="cacheItemType">A cache item type</param>
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.InvariantMarketDescriptionCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
-            <summary>
-            Adds the dto item to cache
-            </summary>
-            <param name="id">The identifier of the object</param>
-            <param name="item">The item to be added</param>
-            <param name="culture">The culture of the item</param>
-            <param name="dtoType">Type of the dto</param>
-            <param name="requester">The cache item which invoked request</param>
-            <returns><c>true</c> if added, <c>false</c> otherwise</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">dtoType - null</exception>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.InvariantMarketDescriptionCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+            <inheritdoc />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.InvariantMarketDescriptionCache.Merge(System.Globalization.CultureInfo,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.InvariantMarketDescriptionCache.MergeAsync(System.Globalization.CultureInfo,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO})">
             <summary>
             Merges the provided descriptions with those found in cache
             </summary>
@@ -31209,19 +31175,10 @@
             <param name="cacheItemType">A cache item type</param>
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantDescriptionListCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
-            <summary>
-            Adds the dto item to cache
-            </summary>
-            <param name="id">The identifier of the object</param>
-            <param name="item">The item to be added</param>
-            <param name="culture">The culture of the item</param>
-            <param name="dtoType">Type of the dto</param>
-            <param name="requester">The cache item which invoked request</param>
-            <returns><c>true</c> if added, <c>false</c> otherwise</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">dtoType - null</exception>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantDescriptionListCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+            <inheritdoc />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantDescriptionListCache.Merge(System.Globalization.CultureInfo,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VariantDescriptionDTO})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantDescriptionListCache.MergeAsync(System.Globalization.CultureInfo,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.VariantDescriptionDTO})">
             <summary>
             Merges the provided descriptions with those found in cache
             </summary>
@@ -31388,19 +31345,10 @@
             <param name="cacheItemType">A cache item type</param>
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantMarketDescriptionCache.CacheAddDtoItem(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
-            <summary>
-            Adds the dto item to cache
-            </summary>
-            <param name="id">The identifier of the object</param>
-            <param name="item">The item to be added</param>
-            <param name="culture">The culture of the item</param>
-            <param name="dtoType">Type of the dto</param>
-            <param name="requester">The cache item which invoked request</param>
-            <returns><c>true</c> if added, <c>false</c> otherwise</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">dtoType - null</exception>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantMarketDescriptionCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Messages.URN,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ISportEventCI)">
+            <inheritdoc />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantMarketDescriptionCache.Merge(System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames.VariantMarketDescriptionCache.MergeAsync(System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.MarketDescriptionDTO)">
             <summary>
             Merges the provided descriptions with those found in cache
             </summary>
