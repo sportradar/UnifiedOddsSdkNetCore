@@ -76,14 +76,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     var commException = (CommunicationException) ex;
                     logBuilder.Append(" ResponseCode:").Append(commException.ResponseCode);
-                    logBuilder.Append(" Duration:").Append(watch.Elapsed);
-                    logBuilder.Append(" Response:").Append(commException.Response?.Replace("\n", string.Empty));
+                    logBuilder.Append(" Duration: ").Append(watch.ElapsedMilliseconds);
+                    logBuilder.Append(" ms Response:").Append(commException.Response?.Replace("\n", string.Empty));
                     RestLog.LogError(logBuilder.ToString());
                 }
                 throw;
             }
 
-            logBuilder.Append(" Duration:").Append(watch.Elapsed);
+            logBuilder.Append(" Duration: ").Append(watch.ElapsedMilliseconds).Append(" ms");
             if (!RestLog.IsEnabled(LogLevel.Debug))
             {
                 RestLog.LogInformation(logBuilder.ToString());
@@ -131,14 +131,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 {
                     var commException = (CommunicationException)ex;
                     logBuilder.Append(" ResponseCode:").Append(commException.ResponseCode);
-                    logBuilder.Append(" Duration:").Append(watch.Elapsed);
-                    logBuilder.Append(" Response:").Append(commException.Response?.Replace("\n", string.Empty));
+                    logBuilder.Append(" Duration: ").Append(watch.ElapsedMilliseconds);
+                    logBuilder.Append(" ms Response:").Append(commException.Response?.Replace("\n", string.Empty));
                     RestLog.LogError(logBuilder.ToString());
                 }
                 throw;
             }
 
-            logBuilder.Append(" Duration:").Append(watch.Elapsed);
+            logBuilder.Append(" Duration: ").Append(watch.ElapsedMilliseconds).Append(" ms");
             if (!RestLog.IsEnabled(LogLevel.Debug))
             {
                 RestLog.LogInformation(logBuilder.ToString());
