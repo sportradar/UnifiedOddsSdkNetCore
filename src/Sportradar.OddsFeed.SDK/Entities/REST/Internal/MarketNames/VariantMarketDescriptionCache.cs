@@ -350,7 +350,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogWarning($"Error deleting fetchedVariants for {id}", e);
+                    ExecutionLog.LogWarning(e, $"Error deleting fetchedVariants for {id}");
                 }
 
                 if (_cache.Contains(id))
@@ -519,7 +519,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 {
                     throw;
                 }
-                ExecutionLog.LogWarning("Mapping validation for MarketDescriptionCacheItem failed.", e);
+                ExecutionLog.LogWarning(e, "Mapping validation for MarketDescriptionCacheItem failed.");
             }
             finally
             {

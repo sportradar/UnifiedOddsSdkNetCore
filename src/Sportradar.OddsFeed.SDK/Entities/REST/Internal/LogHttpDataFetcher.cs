@@ -194,7 +194,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 RestLog.LogError($"Id:{dataId} Posting error at {watch.ElapsedMilliseconds} ms.");
                 if (ex.GetType() != typeof(ObjectDisposedException) && ex.GetType() != typeof(TaskCanceledException))
                 {
-                    RestLog.LogError(ex.Message, ex);
+                    RestLog.LogError(ex, ex.Message);
                 }
                 throw;
             }

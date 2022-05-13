@@ -183,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (IsRunning)
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying started recovery which is already in progress.");
+                ExecutionLog.LogError($"{_producer.Name}: trying to start recovery which is already in progress.");
                 return false;
             }
 
@@ -217,7 +217,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             catch (Exception ex)
             {
                 var actualException = ex.InnerException ?? ex;
-                ExecutionLog.LogError($"{_producer.Name} There was an error requesting recovery. Exception: {actualException.Message}");
+                ExecutionLog.LogError(actualException, $"{_producer.Name} There was an error requesting recovery.");
                 if (ex is RecoveryInitiationException)
                 {
                     throw;
@@ -260,7 +260,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (!IsRunning)
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying started recovery which is not running.");
+                ExecutionLog.LogError($"{_producer.Name}: trying to check recovery which is not running.");
                 return false;
             }
             return (TimeProviderAccessor.Current.Now - _startTime).TotalSeconds > _producer.MaxRecoveryTime;

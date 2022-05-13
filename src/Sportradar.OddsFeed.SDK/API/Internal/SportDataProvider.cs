@@ -139,14 +139,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             try
             {
-                LogInt.LogInformation($"Invoked GetSportsAsync: [Cultures={s}].");
+                LogInt.LogInformation($"Invoked GetSportsAsync: [Cultures={s}]");
                 var result = await _sportEntityFactory.BuildSportsAsync(cs, _exceptionStrategy).ConfigureAwait(false);
 
                 return result;
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetSportsAsync");
+                LogInt.LogError(e, $"Error executing GetSportsAsync: [Cultures={s}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -169,12 +169,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             try
             {
-                LogInt.LogInformation($"Invoked GetSportsAsync: [Id={id}, Cultures={s}].");
+                LogInt.LogInformation($"Invoked GetSportsAsync: [Id={id}, Cultures={s}]");
                 return await _sportEntityFactory.BuildSportAsync(id, cs, _exceptionStrategy).ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetSportsAsync");
+                LogInt.LogError(e, $"Error executing GetSportsAsync: [Id={id}, Cultures={s}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -194,7 +194,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
 
-            LogInt.LogInformation($"Invoked GetLiveSportEventsAsync: [Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetLiveSportEventsAsync: [Cultures={s}]");
 
             var tasks = cs.Select(c => _sportEventCache.GetEventIdsAsync((DateTime?)null, c)).ToList();
 
@@ -204,7 +204,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetLiveSportEventsAsync");
+                LogInt.LogError(e, $"Error executing GetLiveSportEventsAsync: [Cultures={s}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -235,7 +235,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
 
-            LogInt.LogInformation($"Invoked GetSportEventsByDateAsync: [Date={date}, Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetSportEventsByDateAsync: [Date={date}, Cultures={s}]");
 
             var tasks = cs.Select(c => _sportEventCache.GetEventIdsAsync(date, c)).ToList();
             try
@@ -244,7 +244,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetSportEventsByDateAsync");
+                LogInt.LogError(e, $"Error executing GetSportEventsByDateAsync: [Date={date}, Cultures={s}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -276,7 +276,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
 
-            LogInt.LogInformation($"Invoked GetTournament: [Id={id}, Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetTournament: [Id={id}, Cultures={s}]");
 
             var sportEventCI = _sportEventCache.GetEventCacheItem(id);
 
@@ -305,7 +305,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
 
-            LogInt.LogInformation($"Invoked GetCompetition: [Id={id}, SportId={sportId}, Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetCompetition: [Id={id}, SportId={sportId}, Cultures={s}]");
 
             if (sportId == null && id.TypeGroup.Equals(ResourceTypeGroup.MATCH))
             {
@@ -343,7 +343,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
 
-            LogInt.LogInformation($"Invoked GetSportEvent: [Id={id}, SportId={sportId}, Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetSportEvent: [Id={id}, SportId={sportId}, Cultures={s}]");
 
             if (sportId == null && id.TypeGroup.Equals(ResourceTypeGroup.MATCH))
             {
@@ -378,7 +378,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
         public async Task<ICompetitionStatus> GetSportEventStatusAsync(URN id)
         {
-            LogInt.LogInformation($"Invoked GetSportEventStatusAsync: Id={id}");
+            LogInt.LogInformation($"Invoked GetSportEventStatusAsync: [Id={id}]");
             try
             {
                 var sportEventStatusCI = await _sportEventStatusCache.GetSportEventStatusAsync(id).ConfigureAwait(false);
@@ -391,7 +391,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetSportEventStatusAsync");
+                LogInt.LogError(e, $"Error executing GetSportEventStatusAsync: [Id={id}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -412,7 +412,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
 
-            LogInt.LogInformation($"Invoked GetCompetitorAsync: [Id={id}, Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetCompetitorAsync: [Id={id}, Cultures={s}]");
             try
             {
                 var cacheItem = await _profileCache.GetCompetitorProfileAsync(id, cs).ConfigureAwait(false);
@@ -422,7 +422,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetCompetitorAsync");
+                LogInt.LogError(e, $"Error executing GetCompetitorAsync: [Id={id}, Cultures={s}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -443,7 +443,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var s = cs.Aggregate(string.Empty, (current, cultureInfo) => current + (";" + cultureInfo.TwoLetterISOLanguageName));
             s = s.Substring(1);
 
-            LogInt.LogInformation($"Invoked GetPlayerProfileAsync: [Id={id}, Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetPlayerProfileAsync: [Id={id}, Cultures={s}]");
             try
             {
                 var cacheItem = await _profileCache.GetPlayerProfileAsync(id, cs).ConfigureAwait(false);
@@ -469,7 +469,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="includeEventStatusDeletion">Delete also <see cref="ISportEventStatus"/> from the cache</param>
         public void DeleteSportEventFromCache(URN id, bool includeEventStatusDeletion = false)
         {
-            LogInt.LogInformation($"Invoked DeleteSportEventFromCache: Id={id}");
+            LogInt.LogInformation($"Invoked DeleteSportEventFromCache: [Id={id}]");
             _cacheManager.RemoveCacheItem(id, CacheItemType.SportEvent, "SportDataProvider");
 
             if (includeEventStatusDeletion)
@@ -484,7 +484,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="id">A <see cref="URN"/> specifying the id of <see cref="ILongTermEvent"/> to be deleted</param>
         public void DeleteTournamentFromCache(URN id)
         {
-            LogInt.LogInformation($"Invoked DeleteTournamentFromCache: Id={id}");
+            LogInt.LogInformation($"Invoked DeleteTournamentFromCache: [Id={id}]");
             _cacheManager.RemoveCacheItem(id, CacheItemType.SportEvent, "SportDataProvider");
         }
 
@@ -494,7 +494,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="id">A <see cref="URN"/> specifying the id of <see cref="ICompetitor"/> to be deleted</param>
         public void DeleteCompetitorFromCache(URN id)
         {
-            LogInt.LogInformation($"Invoked DeleteCompetitorFromCache: Id={id}");
+            LogInt.LogInformation($"Invoked DeleteCompetitorFromCache: [Id={id}]");
             _cacheManager.RemoveCacheItem(id, CacheItemType.Competitor, "SportDataProvider");
         }
 
@@ -504,7 +504,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="id">A <see cref="URN"/> specifying the id of <see cref="IPlayerProfile"/> to be deleted</param>
         public void DeletePlayerProfileFromCache(URN id)
         {
-            LogInt.LogInformation($"Invoked DeletePlayerProfileFromCache: Id={id}");
+            LogInt.LogInformation($"Invoked DeletePlayerProfileFromCache: [Id={id}]");
             _cacheManager.RemoveCacheItem(id, CacheItemType.Player, "SportDataProvider");
         }
 
@@ -532,7 +532,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var cs = culture == null ? _defaultCultures : new[] { culture };
             var s = string.Join(";", cs);
 
-            LogInt.LogInformation($"Invoked GetListOfSportEventsAsync: [StartIndex={startIndex}, Limit={limit}, Cultures={s}].");
+            LogInt.LogInformation($"Invoked GetListOfSportEventsAsync: [StartIndex={startIndex}, Limit={limit}, Cultures={s}]");
 
             try
             {
@@ -562,8 +562,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
         public async Task<IEnumerable<ISportEvent>> GetActiveTournamentsAsync(CultureInfo culture = null)
         {
-            LogInt.LogInformation($"Invoked GetActiveTournamentsAsync: Culture={culture}.");
             var cul = culture ?? _defaultCultures.First();
+            LogInt.LogInformation($"Invoked GetActiveTournamentsAsync: [Culture={cul.TwoLetterISOLanguageName}]");
             try
             {
                 await _sportDataCache.LoadAllTournamentsForAllSportsAsync().ConfigureAwait(false);
@@ -572,7 +572,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, $"Error executing GetActiveTournamentsAsync: Culture={culture}");
+                LogInt.LogError(e, $"Error executing GetActiveTournamentsAsync: [Culture={cul.TwoLetterISOLanguageName}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -590,8 +590,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
         public async Task<IEnumerable<ISportEvent>> GetAvailableTournamentsAsync(URN sportId, CultureInfo culture = null)
         {
-            LogInt.LogInformation($"Invoked GetAvailableTournamentsAsync: SportId={sportId}, Culture={culture}.");
             var cul = culture ?? _defaultCultures.First();
+            LogInt.LogInformation($"Invoked GetAvailableTournamentsAsync: [SportId={sportId}, Culture={cul.TwoLetterISOLanguageName}]");
             try
             {
                 var tours = await _dataRouterManager.GetSportAvailableTournamentsAsync(sportId, cul).ConfigureAwait(false);
@@ -599,7 +599,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, $"Error executing GetAvailableTournamentsAsync: SportId={sportId}, Culture={culture}");
+                LogInt.LogError(e, $"Error executing GetAvailableTournamentsAsync: [SportId={sportId}, Culture={cul.TwoLetterISOLanguageName}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -615,7 +615,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>Number of deleted items</returns>
         public int DeleteSportEventsFromCache(DateTime before)
         {
-            LogInt.LogInformation($"Invoked DeleteSportEventsFromCache: before={before}.");
+            LogInt.LogInformation($"Invoked DeleteSportEventsFromCache: [Before={before}]");
             return _sportEventCache.DeleteSportEventsFromCache(before);
         }
 
@@ -626,6 +626,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>Collection of <see cref="ExportableCI"/> containing all the items currently in the cache</returns>
         public async Task<IEnumerable<ExportableCI>> CacheExportAsync(CacheType cacheType)
         {
+            LogInt.LogInformation($"Invoked CacheExportAsync: [CacheType={cacheType}]");
             var tasks = new List<Task<IEnumerable<ExportableCI>>>();
             if (cacheType.HasFlag(CacheType.SportData))
             {
@@ -650,6 +651,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public Task CacheImportAsync(IEnumerable<ExportableCI> items)
         {
             var cacheItems = items.ToList();
+            LogInt.LogInformation($"Invoked CacheImportAsync: [items={cacheItems.Count}]");
             var tasks = new List<Task>
             {
                 _sportDataCache.ImportAsync(cacheItems),
@@ -681,7 +683,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             culture ??= _defaultCultures.First();
 
-            LogInt.LogInformation($"Invoked GetFixtureChangesAsync: After={after}, SportId={sportId}, Culture={culture.TwoLetterISOLanguageName}.");
+            LogInt.LogInformation($"Invoked GetFixtureChangesAsync: [After={after}, SportId={sportId}, Culture={culture.TwoLetterISOLanguageName}]");
 
             var result = (await _dataRouterManager.GetFixtureChangesAsync(after, sportId, culture).ConfigureAwait(false))?.ToList();
 
@@ -710,7 +712,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             culture ??= _defaultCultures.First();
 
-            LogInt.LogInformation($"Invoked GetResultChangesAsync: After={after}, SportId={sportId}, Culture={culture.TwoLetterISOLanguageName}.");
+            LogInt.LogInformation($"Invoked GetResultChangesAsync: [After={after}, SportId={sportId}, Culture={culture.TwoLetterISOLanguageName}]");
 
             var result = (await _dataRouterManager.GetResultChangesAsync(after, sportId, culture).ConfigureAwait(false))?.ToList();
 
@@ -727,7 +729,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             culture ??= _defaultCultures.First();
 
-            LogInt.LogInformation($"Invoked GetLotteriesAsync: Culture={culture.TwoLetterISOLanguageName}.");
+            LogInt.LogInformation($"Invoked GetLotteriesAsync: [Culture={culture.TwoLetterISOLanguageName}]");
 
             var result = (await _dataRouterManager.GetAllLotteriesAsync(culture, false).ConfigureAwait(false))?.ToList();
 
@@ -759,7 +761,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var compIds = urns.IsNullOrEmpty() ? "null" : string.Join(", ", urns);
             var periodIds = ints.IsNullOrEmpty() ? "null" : string.Join(", ", ints);
 
-            LogInt.LogInformation($"Invoked GetPeriodStatusesAsync: Id={id}, Culture={culture.TwoLetterISOLanguageName}, Competitors={compIds}, Periods={periodIds}.");
+            LogInt.LogInformation($"Invoked GetPeriodStatusesAsync: [Id={id}, Culture={culture.TwoLetterISOLanguageName}, Competitors={compIds}, Periods={periodIds}]");
 
             var periodSummaryDTO = await _dataRouterManager.GetPeriodSummaryAsync(id, culture, null, urns, ints).ConfigureAwait(false);
 
@@ -786,7 +788,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             try
             {
-                LogInt.LogInformation($"Invoked GetTimelineEventsAsync: Id={id}, Culture={culture.TwoLetterISOLanguageName}.");
+                LogInt.LogInformation($"Invoked GetTimelineEventsAsync: [Id={id}, Culture={culture.TwoLetterISOLanguageName}]");
 
                 var matchTimelineDTO = await _dataRouterManager.GetInformationAboutOngoingEventAsync(id, culture, null).ConfigureAwait(false);
 
@@ -799,7 +801,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetTimelineEventsAsync");
+                LogInt.LogError(e, $"Error executing GetTimelineEventsAsync: [Id={id}, Culture={culture.TwoLetterISOLanguageName}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;

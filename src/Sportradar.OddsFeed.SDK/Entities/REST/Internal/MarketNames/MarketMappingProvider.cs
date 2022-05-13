@@ -254,7 +254,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             sb.Append("]. AdditionalMessage=").Append(message);
 
-            ExecutionLog.LogError(sb.ToString(), innerException);
+            ExecutionLog.LogError(innerException, sb.ToString());
             if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
             {
                 throw new MappingException(message, propertyName, propertyValue, targetTypeName, innerException);
@@ -365,7 +365,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                         }
                         catch (NameExpressionException ex)
                         {
-                            ExecutionLog.LogError($"The generation of name for flex score mapped outcome {outcomeId} failed", ex);
+                            ExecutionLog.LogError(ex, $"The generation of name for flex score mapped outcome {outcomeId} failed");
                         }
                     }
 

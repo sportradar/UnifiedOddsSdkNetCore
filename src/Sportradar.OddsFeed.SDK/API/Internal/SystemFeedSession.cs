@@ -140,7 +140,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     }
                     catch (ArgumentException ex)
                     {
-                        _log.LogError($"An error occurred while determining the MessageType of the message whose validation has failed. Message={message}", ex);
+                        _log.LogError(ex, $"An error occurred while determining the MessageType of the message whose validation has failed. Message={message}");
                         return;
                     }
                     var eventArgs = new UnparsableMessageEventArgs(messageType, message.ProducerId.ToString(), message.EventId, e.RawMessage);
@@ -195,7 +195,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception ex)
             {
-                _log.LogWarning($"Client threw an exception when handling event {eventName}. Exception: {ex}");
+                _log.LogWarning(ex, $"Client threw an exception when handling event {eventName}.");
             }
         }
 

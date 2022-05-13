@@ -341,7 +341,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"An unexpected exception occurred while processing user message. Producer={_producer.Id}, Session={interest.Name}, Message={message}, Exception:", ex);
+                    ExecutionLog.LogError(ex, $"An unexpected exception occurred while processing user message. Producer={_producer.Id}, Session={interest.Name}, Message={message}");
                 }
 
                 if (newStatus != null && newStatus.Value != Status)
@@ -438,7 +438,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                     var started = StartRecovery();
                                     if (started.HasValue && started.Value)
                                     {
-                                        ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation started due to un-subscribed alive. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
+                                        ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation started due to unsubscribed alive. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, After={SdkInfo.ToEpochTime(_producer.LastTimestampBeforeDisconnect)}.");
                                         newStatus = ProducerRecoveryStatus.Started;
                                     }
                                     else if (started.HasValue)
@@ -458,7 +458,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"An unexpected exception occurred while processing system message. Producer={_producer.Id}, message={message}. Exception:", ex);
+                    ExecutionLog.LogError(ex, $"An unexpected exception occurred while processing system message. Producer={_producer.Id}, message={message}");
                 }
 
                 if (newStatus != null && newStatus.Value != Status)
@@ -576,7 +576,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"An unexpected exception occurred while checking status. Producer={_producer.Id}. Status={Status}, IsRunning={_recoveryOperation.IsRunning}", ex);
+                    ExecutionLog.LogError(ex, $"An unexpected exception occurred while checking status. Producer={_producer.Id}. Status={Status}, IsRunning={_recoveryOperation.IsRunning}");
                 }
 
                 if (newStatus != null && newStatus.Value != Status)

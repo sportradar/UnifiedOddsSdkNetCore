@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecLog.LogError($"Error saving dto data for id={id}, lang=[{culture.TwoLetterISOLanguageName}], type={dtoType}.", e);
+                    ExecLog.LogError(e, $"Error saving dto data for id={id}, lang=[{culture.TwoLetterISOLanguageName}], type={dtoType}.");
                 }
             }
             else

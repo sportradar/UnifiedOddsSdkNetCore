@@ -225,7 +225,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             sb.Append("]. AdditionalMessage=").Append(message);
 
-            ExecutionLog.LogError(sb.ToString(), innerException);
+            ExecutionLog.LogError(innerException, sb.ToString());
 
             if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
             {

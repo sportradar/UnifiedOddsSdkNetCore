@@ -147,7 +147,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 if (ex is CommunicationException || ex is DeserializationException || ex is FormatException)
                 {
                     var languagesString = string.Join(",", languagesToFetch.Select(l => l.TwoLetterISOLanguageName));
-                    ExecutionLog.LogWarning($"An error occurred while periodically fetching market description of languages {languagesString}", ex);
+                    ExecutionLog.LogWarning(ex, $"An error occurred while periodically fetching market description of languages {languagesString}");
                     return;
                 }
                 var disposedException = ex as ObjectDisposedException;
@@ -158,10 +158,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 }
                 if (ex is TaskCanceledException)
                 {
-                    ExecutionLog.LogWarning("An error occurred while periodically fetching market descriptions because the object graph is being disposed.");
+                    ExecutionLog.LogWarning(ex, "An error occurred while periodically fetching market descriptions because the object graph is being disposed.");
                     return;
                 }
-                ExecutionLog.LogWarning("An error occurred while periodically fetching market description.", ex);
+                ExecutionLog.LogWarning(ex, "An error occurred while periodically fetching market description.");
             }
 
             _hasTimerElapsedOnce = true;
@@ -341,7 +341,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogWarning($"An error occurred while fetching market descriptions. The exception:{ex.Message}");
+                ExecutionLog.LogWarning(ex, $"An error occurred while fetching market descriptions.");
                 return false;
             }
             return true;
@@ -579,7 +579,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                             throw;
                         }
 
-                        ExecutionLog.LogWarning($"Mapping validation for MarketDescriptionCacheItem failed. Id={marketDescription.Id}", e);
+                        ExecutionLog.LogWarning(e, $"Mapping validation for MarketDescriptionCacheItem failed. Id={marketDescription.Id}");
                     }
                 }
                 _fetchedLanguages.Add(culture);

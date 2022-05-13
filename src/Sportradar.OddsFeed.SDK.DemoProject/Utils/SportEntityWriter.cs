@@ -250,7 +250,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 }
                 catch (Exception e)
                 {
-                    _log.LogWarning($"Error obtaining tournament data {tour.Id}. Message={e.Message}");
+                    _log.LogWarning(e, $"Error obtaining tournament data {tour.Id}.");
                 }
             }
 
@@ -589,14 +589,14 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 var communicationException = ex.InnerExceptions.FirstOrDefault(inner => inner is CommunicationException);
                 if (communicationException != null)
                 {
-                    _log.LogWarning($"Communication exception occurred while fetching info for eventid= {entity.Id}. Message:{communicationException.Message}");
+                    _log.LogWarning(communicationException, $"Communication exception occurred while fetching info for eventId= {entity.Id}.");
                     return;
                 }
-                _log.LogError($"Un unexpected exception occurred while fetching info for eventId: {entity.Id}. Exception={ex}");
+                _log.LogError(ex, $"An unexpected exception occurred while fetching info for eventId: {entity.Id}");
             }
             catch (Exception ex)
             {
-                _log.LogError($"Un unhandled exception occurred while fetching info for eventId: {entity.Id}. Exception={ex}", ex);
+                _log.LogError(ex, $"An unhandled exception occurred while fetching info for eventId: {entity.Id}");
             }
         }
     }

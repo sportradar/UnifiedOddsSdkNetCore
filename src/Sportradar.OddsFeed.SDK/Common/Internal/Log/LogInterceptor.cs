@@ -228,7 +228,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 watch.Stop();
                 if (logEnabled)
                 {
-                    logger.LogError($"Exception during executing '{methodInfo.Name}': {Environment.NewLine}", e);
+                    logger.LogError(e, $"Exception during executing '{methodInfo.Name}': {Environment.NewLine}");
                 }
 
                 throw;

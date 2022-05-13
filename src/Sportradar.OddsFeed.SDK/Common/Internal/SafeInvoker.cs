@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
             if (ex is CommunicationException || ex is DeserializationException || ex is MappingException)
             {
-                log.LogError(errorMessage, ex);
+                log.LogError(ex, errorMessage);
                 return true;
             }
             return false;

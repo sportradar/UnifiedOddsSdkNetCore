@@ -373,7 +373,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogError($"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.", ex);
+                ExecutionLog.LogError(ex, $"Fetching summary for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.");
                 initialException = ex;
             }
             finally
@@ -455,7 +455,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogError($"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.", ex);
+                ExecutionLog.LogError(ex, $"Fetching fixtures for eventId={Id} for languages [{string.Join(",", missingCultures)}] COMPLETED WITH EX.");
                 potentialException = ex;
             }
             finally

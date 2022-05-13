@@ -165,7 +165,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             catch (Exception e)
             {
                 var langs = string.Join(",", locales.Select(s=>s.TwoLetterISOLanguageName));
-                _executionLog.LogWarning($"There was an error providing the variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
+                _executionLog.LogWarning(e, $"There was an error providing the variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]");
             }
             return null;
         }
@@ -180,7 +180,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             catch (Exception e)
             {
                 var langs = string.Join(",", locales.Select(s => s.TwoLetterISOLanguageName));
-                _executionLog.LogWarning($"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]", e);
+                _executionLog.LogWarning(e, $"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]");
             }
 
             return variantDescription ?? marketDescription;
@@ -223,7 +223,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning("Error reloading market description(s).", e);
+                _executionLog.LogWarning(e, "Error reloading market description(s).");
                 return false;
             }
         }

@@ -173,7 +173,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             }
             catch (Exception e)
             {
-                _log.LogWarning(e.Message, e);
+                _log.LogWarning(e, e.Message);
             }
 
             return null;

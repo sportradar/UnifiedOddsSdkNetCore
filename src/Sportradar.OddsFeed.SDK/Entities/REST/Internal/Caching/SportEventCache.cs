@@ -190,7 +190,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                     catch (FeedSdkException ex)
                     {
-                        ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception was: {ex}");
+                        ExecutionLog.LogWarning(ex, "An exception occurred while attempting to retrieve schedule.");
                     }
                     catch (AggregateException ex)
                     {
@@ -202,7 +202,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                     catch (Exception ex)
                     {
-                        ExecutionLog.LogWarning($"An exception occurred while attempting to retrieve schedule. Exception: {ex}");
+                        ExecutionLog.LogWarning(ex, "An exception occurred while attempting to retrieve schedule.");
                     }
                 }
             }
@@ -1217,7 +1217,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding sport event for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding sport event for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
             }
 
@@ -1248,7 +1248,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error adding timeline for id={item.SportEvent.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.", ex);
+                    ExecutionLog.LogError(ex, $"Error adding timeline for id={item.SportEvent.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
                 }
             }
         }

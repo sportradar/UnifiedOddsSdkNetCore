@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     throw new ObjectNotFoundException($"Market descriptions({culture}) could not be provided", ex);
                 }
 
-                _executionLog.LogWarning($"Market descriptions with the {culture} locale could not be provided", ex);
+                _executionLog.LogWarning(ex, $"Market descriptions with the {culture} locale could not be provided");
                 return null;
             }
         }
@@ -137,7 +137,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     throw new ObjectNotFoundException($"Market mappings for {marketId} could not be provided{specifiersMessage}", ex);
                 }
 
-                _executionLog.LogWarning($"Market mappings for the marketId: {marketId} could not be provided{specifiersMessage}", ex);
+                _executionLog.LogWarning(ex, $"Market mappings for the marketId: {marketId} could not be provided{specifiersMessage}");
                 return null;
             }
 

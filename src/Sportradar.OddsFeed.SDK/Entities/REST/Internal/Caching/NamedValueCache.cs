@@ -88,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             catch (AggregateException ex)
             {
-                ExecutionLog.LogError("An exception occurred while fetching named values", ex.InnerException);
+                ExecutionLog.LogError(ex.InnerException, "An exception occurred while fetching named values");
                 return false;
             }
 
