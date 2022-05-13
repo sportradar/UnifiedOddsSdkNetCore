@@ -256,7 +256,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 catch (Exception ex)
                 {
-                    ExecutionLog.LogError($"Error getting cache item for id={id}", ex);
+                    ExecutionLog.LogError(ex, $"Error getting cache item for id={id}");
                 }
             }
             return null;
@@ -384,7 +384,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     }
                 }
                 var endCount = Cache.Count();
-                ExecutionLog.LogInformation($"Deleted {startCount - endCount} items from cache.");
+                ExecutionLog.LogInformation($"Deleted {startCount - endCount} items from cache (before={before}).");
                 return startCount - endCount;
             }
         }
@@ -415,7 +415,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogError($"Error getting cache item sportId for id={id}", ex);
+                ExecutionLog.LogError(ex, $"Error getting cache item sportId for id={id}");
             }
 
             return null;
@@ -531,10 +531,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     var sportEntityList = item as EntityList<SportDTO>;
                     if (sportEntityList != null)
                     {
-                        foreach (var sportDTO in sportEntityList.Items)
-                        {
-                            await SaveTournamentDataFromSportAsync(sportDTO, culture).ConfigureAwait(false);
-                        }
+                        var tasks = sportEntityList.Items.Select(s => SaveTournamentDataFromSportAsync(s, culture));
+                        await Task.WhenAll(tasks).ConfigureAwait(false);
                         saved = true;
                     }
                     else
@@ -568,22 +566,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     break;
                 case DtoType.SportEventSummaryList:
                     var summaryList = item as EntityList<SportEventSummaryDTO>;
-                    if (summaryList != null)
+                    if (summaryList != null && !summaryList.Items.IsNullOrEmpty())
                     {
-                        foreach (var s in summaryList.Items)
-                        {
-                            var tourInfosDTO = s as TournamentInfoDTO;
-                            if (tourInfosDTO != null)
-                            {
-                                await SaveTournamentDataToSportEventCacheAsync(tourInfosDTO, tourInfosDTO.CurrentSeason?.Id, culture).ConfigureAwait(false);
-                                if (tourInfosDTO.Season != null)
-                                {
-                                    await SaveTournamentDataToSportEventCacheAsync(tourInfosDTO, tourInfosDTO.Season?.Id, culture).ConfigureAwait(false);
-                                }
-                                continue;
-                            }
-                            AddSportEvent(s.Id, s, culture, requester, dtoType);
-                        }
+                        var tasks = summaryList.Items.Select(s => SaveSportEventSummaryDTOAsync(s, culture, dtoType, requester));
+                        await Task.WhenAll(tasks).ConfigureAwait(false);
                         saved = true;
                     }
                     else
@@ -710,6 +696,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                         LogSavingDtoConflict(id, typeof(EntityList<TournamentInfoDTO>), item.GetType());
                     }
                     break;
+                case DtoType.PeriodSummary:
+                    break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type:{dtoType} for id: {id}.");
                     break;
@@ -821,6 +809,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private async Task SaveSportEventSummaryDTOAsync(SportEventSummaryDTO sportEventSummaryDTO, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
+        {
+            var tourInfosDTO = sportEventSummaryDTO as TournamentInfoDTO;
+            if (tourInfosDTO != null)
+            {
+                await SaveTournamentDataToSportEventCacheAsync(tourInfosDTO, tourInfosDTO.CurrentSeason?.Id, culture).ConfigureAwait(false);
+                if (tourInfosDTO.Season != null)
+                {
+                    await SaveTournamentDataToSportEventCacheAsync(tourInfosDTO, tourInfosDTO.Season?.Id, culture).ConfigureAwait(false);
+                }
+                return;
+            }
+            AddSportEvent(sportEventSummaryDTO.Id, sportEventSummaryDTO, culture, requester, dtoType);
         }
 
         private async Task SaveTournamentDataFromSportAsync(SportDTO sportDTO, CultureInfo culture)
