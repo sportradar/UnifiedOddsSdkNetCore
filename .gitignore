@@ -40,3 +40,6 @@ packages/**
 **/Help
 
 UpgradeLog.htm
+
+coverage.opencover.xml
+coverage.xml
