@@ -194,7 +194,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     FetchedCultures.Clear();
                     Categories.Clear();
                     Sports.Clear();
-                    _sportEventCache.DeleteSportEventsFromCache(DateTime.MaxValue);
+                    _sportEventCache.DeleteSportEventsFromCache(DateTime.Now.AddHours(-12));
                 }
 
                 var fetchTasks = cultureInfos.Select(c => _dataRouterManager.GetAllSportsAsync(c)).ToList();
