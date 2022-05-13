@@ -357,7 +357,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                                                                             : new[] { culture },
                                                                         _exceptionStrategy);
 
-            LogInt.LogInformation($"GetSportEvent returned: {result?.Id}.");
+            LogInt.LogInformation($"GetSportEvent returned: {result?.Id} for sport {sportId}.");
             return result;
         }
 
@@ -453,7 +453,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetPlayerProfileAsync");
+                LogInt.LogError(e, $"Error executing GetPlayerProfileAsync: [Id={id}, Cultures={s}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -545,7 +545,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetListOfSportEventsAsync");
+                LogInt.LogError(e, $"Error executing GetListOfSportEventsAsync: [StartIndex={startIndex}, Limit={limit}, Cultures={s}]");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -572,7 +572,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetActiveTournamentsAsync");
+                LogInt.LogError(e, $"Error executing GetActiveTournamentsAsync: Culture={culture}");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -599,7 +599,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             catch (Exception e)
             {
-                LogInt.LogError(e, "Error executing GetAvailableTournamentsAsync");
+                LogInt.LogError(e, $"Error executing GetAvailableTournamentsAsync: SportId={sportId}, Culture={culture}");
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
@@ -615,6 +615,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns>Number of deleted items</returns>
         public int DeleteSportEventsFromCache(DateTime before)
         {
+            LogInt.LogInformation($"Invoked DeleteSportEventsFromCache: before={before}.");
             return _sportEventCache.DeleteSportEventsFromCache(before);
         }
 
