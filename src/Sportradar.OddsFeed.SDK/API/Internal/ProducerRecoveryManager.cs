@@ -519,6 +519,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     {
                         ExecutionLog.LogWarning($"Producer id={Producer.Id}: alive violation detected. Recovery will be done on next system alive.");
                         newStatus = ProducerRecoveryStatus.Error;
+                        //TODO: do we need new recovery here - or just Delayed status
                     }
 
                     // Check whether there is an alive violation during recovery

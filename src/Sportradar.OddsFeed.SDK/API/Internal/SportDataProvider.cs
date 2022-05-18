@@ -330,11 +330,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="id">A <see cref="URN"/> specifying the sport event to retrieve</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="ICompetition"/> representing the specified sport event or a null reference if the requested sport event does not exist</returns>
+        /// <remarks>It is recommended to use GetCompetition method with sportId</remarks>
         public ICompetition GetCompetition(URN id, CultureInfo culture = null)
         {
             return GetCompetition(id, null, culture);
         }
-
 
         /// <inheritdoc />
         public ISportEvent GetSportEvent(URN id, URN sportId = null, CultureInfo culture = null)

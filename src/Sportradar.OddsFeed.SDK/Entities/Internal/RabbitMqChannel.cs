@@ -271,7 +271,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogWarning(e, $"Error checking connection for channelNumber {_channel?.ChannelNumber}.");
+                    ExecutionLog.LogWarning(e, $"Error checking connection for channelNumber: {_channel?.ChannelNumber}");
                 }
             }
 

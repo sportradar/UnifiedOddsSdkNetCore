@@ -5615,6 +5615,7 @@
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN"/> specifying the sport event to retrieve</param>
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetition"/> representing the specified sport event or a null reference if the requested sport event does not exist</returns>
+            <remarks>It is recommended to use GetCompetition method with sportId</remarks>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Internal.SportDataProvider.GetSportEvent(Sportradar.OddsFeed.SDK.Messages.URN,Sportradar.OddsFeed.SDK.Messages.URN,System.Globalization.CultureInfo)">
             <inheritdoc />
@@ -7620,7 +7621,12 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.Metrics.MetricsSettings.McUfSemaphorePool">
             <summary>
-            Default context for metrics - UFGlobalEventProcessor
+            Default context for metrics - UfSdkSemaphorePool
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.Metrics.MetricsSettings.McUfRabbitMqMessageReceiver">
+            <summary>
+            Default context for metrics - UfSdkSemaphorePool
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.RealTimeProvider">
