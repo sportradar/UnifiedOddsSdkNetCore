@@ -3,6 +3,7 @@
 */
 using System.Text;
 using System.Xml.Serialization;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
 #pragma warning disable 1591
 
@@ -107,6 +108,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
             builder.Append(", GeneratedAt=").Append(GeneratedAt);
             //builder.Append(", SentAt=").Append(SentAt);
             builder.Append(", ReceivedAt=").Append(ReceivedAt);
+            builder.Append(", Age=").Append(SdkInfo.GetMessageAge(GeneratedAt, ReceivedAt));
             if (RequestId.HasValue)
             {
                 builder.Append(", RequestId=").Append(RequestId.Value);

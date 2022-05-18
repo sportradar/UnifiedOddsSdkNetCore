@@ -7621,12 +7621,12 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.Metrics.MetricsSettings.McUfSemaphorePool">
             <summary>
-            Default context for metrics - UfSdkSemaphorePool
+            Default context for UfSdkSemaphorePool
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.Metrics.MetricsSettings.McUfRabbitMqMessageReceiver">
             <summary>
-            Default context for metrics - UfSdkSemaphorePool
+            Default context for UfSdkRabbitMessageReceiver
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.RealTimeProvider">
@@ -8025,6 +8025,22 @@
             <param name="baseValue">The base value</param>
             <param name="variablePercent">The max percent to deviate from base value</param>
             <returns>The new value within base-max</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetMessageAge(System.Int64,System.Int64)">
+            <summary>
+            Get the feed message age; how behind is at the time of consuming by the sdk
+            </summary>
+            <param name="generatedAt">The generatedAt timestamp from the message</param>
+            <param name="receivedAt">The timestamp when message consumed by the sdk</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetMessageAge2(System.Int64,System.Int64)">
+            <summary>
+            Get the feed message age; how behind is at the time of consuming by the sdk
+            </summary>
+            <param name="generatedAt">The generatedAt timestamp from the message</param>
+            <param name="receivedAt">The timestamp when message consumed by the sdk</param>
+            <returns></returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.SdkTimer">
             <summary>

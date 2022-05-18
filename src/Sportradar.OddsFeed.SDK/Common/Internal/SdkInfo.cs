@@ -490,5 +490,37 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             var newValue = AddVariableNumber(Convert.ToInt32(baseValue.TotalSeconds), variablePercent);
             return TimeSpan.FromSeconds(newValue);
         }
+
+        /// <summary>
+        /// Get the feed message age; how behind is at the time of consuming by the sdk
+        /// </summary>
+        /// <param name="generatedAt">The generatedAt timestamp from the message</param>
+        /// <param name="receivedAt">The timestamp when message consumed by the sdk</param>
+        /// <returns>The difference in ms</returns>
+        public static long GetMessageAge(long generatedAt, long receivedAt)
+        {
+            var age = receivedAt - generatedAt;
+            if (age < 0)
+            {
+                age = 0;
+            }
+            return age;
+        }
+
+        /// <summary>
+        /// Get the feed message age; how behind is at the time of consuming by the sdk (calculated via DateTime)
+        /// </summary>
+        /// <param name="generatedAt">The generatedAt timestamp from the message</param>
+        /// <param name="receivedAt">The timestamp when message consumed by the sdk</param>
+        /// <returns>The difference in ms</returns>
+        public static long GetMessageAge2(long generatedAt, long receivedAt)
+        {
+            var age = FromEpochTime(receivedAt) - FromEpochTime(generatedAt);
+            if (receivedAt < generatedAt)
+            {
+                age = TimeSpan.Zero;
+            }
+            return (long)age.TotalMilliseconds;
+        }
     }
 }
