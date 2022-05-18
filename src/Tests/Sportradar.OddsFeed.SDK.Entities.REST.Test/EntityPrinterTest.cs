@@ -177,6 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 
         private void PrintEntity(IEntityPrinter item)
         {
+            Assert.IsNotNull(item);
             var type = item.GetType();
             _log.LogInformation($"Start printing info for {type.Name} ...");
             _log.LogInformation("0 => " + item.ToString());

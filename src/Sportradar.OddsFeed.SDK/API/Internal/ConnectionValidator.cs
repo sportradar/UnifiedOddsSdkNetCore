@@ -70,6 +70,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets the public IP of the current machine
         /// </summary>
         /// <returns>A <see cref="IPAddress"/> representing the IP of the current machine or a null reference or a null reference if public IP could not be determined.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "S5332:Using clear-text protocols is security-sensitive.", Justification = "Not critical")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "Ok")]
         public IPAddress GetPublicIp()
         {
             string data;
@@ -77,16 +79,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             try
             {
                 var stream = _dataFetcher.GetDataAsync(new Uri("http://ipecho.net/plain")).Result;
-                using (var reader = new StreamReader(stream, Encoding.UTF8))
-                {
-                    data = reader.ReadToEnd();
-                }
+                using var reader = new StreamReader(stream, Encoding.UTF8);
+                data = reader.ReadToEnd();
             }
             catch (AggregateException)
             {
                 return null;
             }
-
 
             return IPAddress.TryParse(data, out var address)
                        ? address

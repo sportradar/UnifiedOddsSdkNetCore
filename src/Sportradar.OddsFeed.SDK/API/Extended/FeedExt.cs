@@ -69,11 +69,11 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
             {
                 RawApiDataReceived?.Invoke(sender, e);
 
-                Log.LogInformation($"Dispatching raw api message for {e.Uri} took {t.Elapsed.TotalMilliseconds}ms.");
+                Log.LogInformation($"Dispatching raw api message for {e.Uri} took {t.Elapsed.TotalMilliseconds} ms.");
             }
             catch (Exception ex)
             {
-                Log.LogError(ex, $"Error dispatching raw api data for {e.Uri}. Took {t.Elapsed.TotalMilliseconds}ms.");
+                Log.LogError(ex, $"Error dispatching raw api data for {e.Uri}. Took {t.Elapsed.TotalMilliseconds} ms.");
             }
         }
 
@@ -90,11 +90,11 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
             {
                 RawFeedMessageReceived?.Invoke(sender, e);
 
-                Log.LogInformation($"Dispatching raw feed message [{e.MessageInterest}]: {e.FeedMessage?.GetType().Name} for event {e.FeedMessage?.EventId} took {t.Elapsed.TotalMilliseconds}ms.");
+                Log.LogInformation($"Dispatching raw feed message [{e.MessageInterest}]: {e.FeedMessage?.GetType().Name} for event {e.FeedMessage?.EventId} took {t.Elapsed.TotalMilliseconds} ms.");
             }
             catch (Exception ex)
             {
-                Log.LogError(ex, $"Error dispatching raw feed message [{e.MessageInterest}] for {e.RoutingKey} and {e.FeedMessage?.EventId}. Took {t.Elapsed.TotalMilliseconds}ms.");
+                Log.LogError(ex, $"Error dispatching raw feed message [{e.MessageInterest}] for {e.RoutingKey} and {e.FeedMessage?.EventId}. Took {t.Elapsed.TotalMilliseconds} ms.");
             }
         }
 

@@ -44,6 +44,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     {
         private static IMetricsRoot _metricsRoot;
 
+
         /// <summary>
         /// Registers the base types.
         /// </summary>
@@ -51,6 +52,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="userConfig">The user configuration.</param>
         /// <param name="loggerFactory">The logger factory.</param>
         /// <param name="metricsRoot">The metrics root.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Vulnerability", "S4423:Weak SSL/TLS protocols should not be used", Justification = "Allowed till all moved to GA")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "Needed or ")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "SCS0005:Weak random number generator.", Justification = "Not critical")]
         public static void RegisterBaseTypes(this IUnityContainer container, IOddsFeedConfiguration userConfig, ILoggerFactory loggerFactory, IMetricsRoot metricsRoot)
         {
             Guard.Argument(container, nameof(container)).NotNull();
@@ -310,7 +314,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         public static void RegisterAdditionalTypes(this IUnityContainer container)
         {
-            RegisterSdkStatisticsWriter(container);
+            // Method intentionally left empty.
         }
 
         private static void RegisterNamedValuesProvider(IUnityContainer container, List<CultureInfo> locales, IOddsFeedConfigurationInternal config)
@@ -1106,27 +1110,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 new InjectionConstructor(
                     new ResolvedParameter<IProducersProvider>(),
                     config));
-        }
-
-        private static void RegisterSdkStatisticsWriter(IUnityContainer container)
-        {
-            //this invokes LoadProducers - it must not
-            //var statusProviders = new List<IHealthStatusProvider>
-            //{
-            //    container.Resolve<LogHttpDataFetcher>(),
-            //    container.Resolve<ISportEventCache>(),
-            //    container.Resolve<ISportDataCache>(),
-            //    container.Resolve<IMarketDescriptionCache>("InvariantMarketDescriptionsCache"),
-            //    container.Resolve<IMarketDescriptionCache>("VariantMarketDescriptionCache"),
-            //    container.Resolve<IVariantDescriptionCache>("VariantDescriptionListCache"),
-            //    container.Resolve<IProfileCache>(),
-            //    container.Resolve<ISportEventStatusCache>()
-            //};
-
-            //foreach (var sp in statusProviders)
-            //{
-            //    sp.RegisterHealthCheck();
-            //}
         }
 
         private static void RegisterReplayManager(IUnityContainer container, IOddsFeedConfigurationInternal config)
