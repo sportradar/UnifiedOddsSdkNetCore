@@ -8032,15 +8032,15 @@
             </summary>
             <param name="generatedAt">The generatedAt timestamp from the message</param>
             <param name="receivedAt">The timestamp when message consumed by the sdk</param>
-            <returns></returns>
+            <returns>The difference in ms</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetMessageAge2(System.Int64,System.Int64)">
             <summary>
-            Get the feed message age; how behind is at the time of consuming by the sdk
+            Get the feed message age; how behind is at the time of consuming by the sdk (calculated via DateTime)
             </summary>
             <param name="generatedAt">The generatedAt timestamp from the message</param>
             <param name="receivedAt">The timestamp when message consumed by the sdk</param>
-            <returns></returns>
+            <returns>The difference in ms</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.SdkTimer">
             <summary>
