@@ -3,6 +3,14 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2022-06-02  1.26.0
+Improvements for saving api data within caches (single item and for list of items)
+Changed the timestamp for periodic deletion of old event from cache (to now-12h)
+Improved logging format in LogHttpDataFetcher and SportDataProvider
+Improved logging for exceptions and warnings
+Added Age to FeedMessage string
+Added isOpen to OddsFeed
+
 2022-04-26  1.25.0
 Separate HttpClient for critical (summary, player profile, competitor profile and variant market description) and other requests
 Added configuration option for fast HttpClient in OperationManager (default timeout 5s)

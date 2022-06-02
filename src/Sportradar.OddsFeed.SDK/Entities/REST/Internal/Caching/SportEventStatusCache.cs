@@ -116,8 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                         return (SportEventStatusCI)item;
                     }
 
-                    var cachedEvent = _sportEventCache.GetEventCacheItem(eventId) as ICompetitionCI;
-                    if (cachedEvent != null)
+                    if (_sportEventCache.GetEventCacheItem(eventId) is ICompetitionCI cachedEvent)
                     {
                         await cachedEvent.FetchSportEventStatusAsync().ConfigureAwait(false);
                     }
@@ -296,14 +295,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <inheritdoc />
-        protected override async Task<bool> CacheAddDtoItemAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
+        protected override Task<bool> CacheAddDtoItemAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
         {
             Guard.Argument(id, nameof(id)).NotNull();
             Guard.Argument(item, nameof(item)).NotNull();
 
             if (_isDisposed)
             {
-                return false;
+                return Task.FromResult(false);
             }
 
             var saved = false;
@@ -457,7 +456,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
             }
-            return saved;
+            return Task.FromResult(saved);
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Metrics
         /// </summary>
         private const string McUfSemaphorePool = "UfSdkSemaphorePool";
         public static readonly TimerOptions TimerSemaphorePool = new TimerOptions { Context = McUfSemaphorePool, Name = "SemaphorePoolAcquire", MeasurementUnit = Unit.Items };
-        public static readonly GaugeOptions GaugeSemaphorePool = new GaugeOptions { Context = McUfSemaphorePool, Name = "SemaphorePoolAcquire", MeasurementUnit = Unit.Items };
+        public static readonly GaugeOptions GaugeSemaphorePool = new GaugeOptions { Context = McUfSemaphorePool, Name = "SemaphorePoolAcquireSize", MeasurementUnit = Unit.Items };
 
         /// <summary>
         /// Default context for UfSdkRabbitMessageReceiver

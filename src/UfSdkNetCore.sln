@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29326.143
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{80D2ACC0-BA2E-4BD3-87AF-20EB57F6A8A2}"
 EndProject
@@ -24,7 +24,7 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sportradar.OddsFeed.SDK.Doc
 		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E} = {FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportradar.OddsFeed.SDK.Test", "Tests\Sportradar.OddsFeed.SDK.Test\Sportradar.OddsFeed.SDK.Test.csproj", "{3632F835-2646-4019-9021-609151A7DD9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.Test", "Tests\Sportradar.OddsFeed.SDK.Test\Sportradar.OddsFeed.SDK.Test.csproj", "{3632F835-2646-4019-9021-609151A7DD9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,7 +62,6 @@ Global
 		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3632F835-2646-4019-9021-609151A7DD9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3632F835-2646-4019-9021-609151A7DD9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3632F835-2646-4019-9021-609151A7DD9D}.Release|Any CPU.ActiveCfg = Release|Any CPU

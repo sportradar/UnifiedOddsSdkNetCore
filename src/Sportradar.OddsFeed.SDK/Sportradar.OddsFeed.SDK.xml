@@ -1024,17 +1024,6 @@
             </summary>
             <returns>Constructed instance of the <see cref="T:Sportradar.OddsFeed.SDK.API.IOddsFeedSessionBuilder"/></returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Close">
-            <summary>
-            Closes the current <see cref="T:Sportradar.OddsFeed.SDK.API.Feed"/> instance and disposes resources used by it
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Dispose(System.Boolean)">
-            <summary>
-            Disposes the current instance and resources associated with it
-            </summary>
-            <param name="disposing">Value indicating whether the managed resources should also be disposed</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Open">
             <summary>
             Opens the current feed by opening all created sessions
@@ -1051,6 +1040,20 @@
             Connection to the message broker failed, Probable Reason={Invalid or expired token}
             or
             </exception>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.IsOpen">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Close">
+            <summary>
+            Closes the current <see cref="T:Sportradar.OddsFeed.SDK.API.Feed"/> instance and disposes resources used by it
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.Feed.Dispose(System.Boolean)">
+            <summary>
+            Disposes the current instance and resources associated with it
+            </summary>
+            <param name="disposing">Value indicating whether the managed resources should also be disposed</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.Feed.OnConnectionShutdown(System.Object,RabbitMQ.Client.ShutdownEventArgs)">
             <summary>
@@ -6177,6 +6180,11 @@
         <member name="M:Sportradar.OddsFeed.SDK.API.IOddsFeed.Open">
             <summary>
             Opens the current feed by opening all created sessions
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.API.IOddsFeed.IsOpen">
+            <summary>
+            Returns an indicator if the feed instance is opened or not
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.API.IOddsFeed.Close">

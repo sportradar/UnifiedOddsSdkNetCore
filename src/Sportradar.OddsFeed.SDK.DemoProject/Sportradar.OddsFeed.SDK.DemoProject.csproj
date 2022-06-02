@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.19" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.19" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.5" />
-    <PackageReference Include="Sportradar.OddsFeed.SDKCore" Version="1.25.0" />
+    <PackageReference Include="Sportradar.OddsFeed.SDKCore" Version="1.26.0" />
   </ItemGroup>
 
   <ItemGroup>
