@@ -357,10 +357,19 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// Gets the fixed length unique identifier
         /// </summary>
-        /// <param name="length">The length of the returned string</param>
+        /// <param name="length">The length of the returned string (min 3)</param>
         /// <param name="containDash">if set to <c>true</c> [contain dash].</param>
         public static string GetGuid(int length, bool containDash = false)
         {
+            if (length < 3)
+            {
+                length = 3;
+            }
+            else if (length > 20)
+            {
+                length = 20;
+            }
+
             var g = Guid.NewGuid().ToString();
 
             if (!containDash)
@@ -368,7 +377,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 g = g.Replace("-", string.Empty);
             }
 
-            if (length > 0 && length < g.Length)
+            if (length < g.Length)
             {
                 g = g.Substring(0, length);
             }

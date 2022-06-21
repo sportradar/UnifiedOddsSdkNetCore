@@ -183,11 +183,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             var interestName = _interest == null ? "system" : _interest.Name;
             _consumer = new EventingBasicConsumer(_channel);
-            _consumer.ConsumerTag = $"UfSdk-NetStd|{SdkInfo.GetVersion()}|{interestName}|{_channel.ChannelNumber}|{DateTime.Now:yyyyMMdd-HHmmss}";
+            _consumer.ConsumerTag = $"UfSdk-NetStd|{SdkInfo.GetVersion()}|{interestName}|{_channel.ChannelNumber}|{DateTime.Now:yyyyMMdd-HHmmss}|{SdkInfo.GetGuid(8)}";
             _consumer.Received += ConsumerOnDataReceived;
             _consumer.Shutdown += ConsumerOnShutdown;
             _channel.BasicConsume(declareResult.QueueName, true, _consumer.ConsumerTag, _consumer);
             _channel.ModelShutdown += ChannelOnModelShutdown;
+            ExecutionLog.LogInformation("BasicConsume for channel={}, queue={} and consumer tag {} executed.", _channel.ChannelNumber, declareResult.QueueName, _consumer.ConsumerTag);
 
             _lastMessageReceived = DateTime.MinValue;
             _channelStarted = DateTime.Now;
