@@ -90,7 +90,9 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
             {
                 RawFeedMessageReceived?.Invoke(sender, e);
 
-                Log.LogInformation($"Dispatching raw feed message [{e.MessageInterest}]: {e.FeedMessage?.GetType().Name} for event {e.FeedMessage?.EventId} took {t.Elapsed.TotalMilliseconds} ms.");
+                var requestId = e.FeedMessage?.RequestId == null ? null : $" ({e.FeedMessage.RequestId})";
+
+                Log.LogInformation($"Dispatching raw feed message [{e.MessageInterest}]: {e.FeedMessage?.GetType().Name} for event {e.FeedMessage?.EventId}{requestId} took {t.Elapsed.TotalMilliseconds} ms.");
             }
             catch (Exception ex)
             {

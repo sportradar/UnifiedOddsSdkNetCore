@@ -7977,7 +7977,7 @@
             <summary>
             Gets the fixed length unique identifier
             </summary>
-            <param name="length">The length of the returned string</param>
+            <param name="length">The length of the returned string (min 3)</param>
             <param name="containDash">if set to <c>true</c> [contain dash].</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.ClearSensitiveData(System.String)">
