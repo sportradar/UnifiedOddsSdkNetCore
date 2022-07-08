@@ -398,8 +398,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<HttpClient, HttpClient>("FastHttpClient", new ContainerControlledLifetimeManager(), new InjectionFactory(
                                                             unityContainer =>
                                                             {
-                                                                var httpClient = new HttpClient { Timeout = OperationManager.FastHttpClientTimeout };
-                                                                return httpClient;
+                                                                return new HttpClient { Timeout = OperationManager.FastHttpClientTimeout };
                                                             }));
 
             container.RegisterType<LogHttpDataFetcher, LogHttpDataFetcher>(

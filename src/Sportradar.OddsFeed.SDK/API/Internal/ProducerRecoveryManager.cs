@@ -138,6 +138,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     _semaphoreStatusChange.Wait();
                     StatusChanged?.Invoke(this, new TrackerStatusChangeEventArgs(requestId, oldStatus, newStatus));
                 }
+                catch (Exception ex)
+                {
+                    ExecutionLog.LogError(ex, $"{Producer.Name} Status change event failed.");
+                }
                 finally
                 {
                     _semaphoreStatusChange.ReleaseSafe();
@@ -184,13 +188,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 // the recovery was interrupted
                 if (recoveryResult.InterruptedAt.HasValue)
                 {
-                    ExecutionLog.LogWarning($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed with interruption at:{recoveryResult.InterruptedAt.Value}");
+                    ExecutionLog.LogWarning($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed with interruption at {recoveryResult.InterruptedAt.Value}");
                     _producer.SetLastTimestampBeforeDisconnect(recoveryResult.InterruptedAt.Value);
                     return ProducerRecoveryStatus.Error;
                 }
                 // the recovery was not interrupted
                 var recoveryDuration = TimeProviderAccessor.Current.Now - recoveryResult.StartTime;
-                ExecutionLog.LogInformation($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed in {recoveryDuration.TotalSeconds} sec.");
+                ExecutionLog.LogInformation($"Recovery with requestId={snapshotCompleted.request_id} for producer={Producer.Id} completed in {(int)recoveryDuration.TotalMilliseconds} ms.");
                 _producer.SetLastTimestampBeforeDisconnect(SdkInfo.FromEpochTime(snapshotCompleted.timestamp));
                 return _timestampTracker.IsBehind
                            ? ProducerRecoveryStatus.Delayed

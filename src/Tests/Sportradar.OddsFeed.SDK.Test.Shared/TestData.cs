@@ -1,13 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -15,6 +8,13 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Test.Shared
 {
@@ -26,6 +26,8 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public static readonly int BookmakerId = 1;
         public static readonly string AccessToken = "token";
         public static readonly string VirtualHost = "/virtualhost";
+
+        public static readonly string DelayedUrl = "https://deelay.me/{0}/https://httpbin.org/get";
 
         public static readonly URN SportId = URN.Parse("sr:sport:1");
         public static readonly URN CategoryId = URN.Parse("sr:category:1");
@@ -39,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         public static readonly CultureInfo Culture = new CultureInfo("en");
         public static IReadOnlyList<CultureInfo> Cultures => Cultures3;
         public static readonly IReadOnlyList<CultureInfo> Cultures3 = new List<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") });
-        public static readonly IReadOnlyList<CultureInfo> Cultures4 = new List<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") , new CultureInfo("nl") });
+        public static readonly IReadOnlyList<CultureInfo> Cultures4 = new List<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu"), new CultureInfo("nl") });
 
 
         public static readonly CultureInfo CultureNl = new CultureInfo("nl");
@@ -75,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             }
             foreach (var culture in cultureInfos)
             {
-                var checkCulture = new[] {culture};
+                var checkCulture = new[] { culture };
                 Task.Run(async () =>
                          {
                              date = await ci.GetScheduledAsync();
@@ -100,6 +102,16 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
                 message.SentAt = message.ReceivedAt = currentTimestamp;
             }
+        }
+
+        public static string GetDelayedUrl(TimeSpan delay)
+        {
+            return string.Format(DelayedUrl, delay.TotalMilliseconds);
+        }
+
+        public static string GetDelayedUrl(int delayMs)
+        {
+            return string.Format(DelayedUrl, delayMs);
         }
     }
 }

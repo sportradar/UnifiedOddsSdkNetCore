@@ -1,18 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Dawn;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Timer;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -26,6 +18,14 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using ITimer = Sportradar.OddsFeed.SDK.Common.Internal.ITimer;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -235,7 +235,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     try
                     {
-                        cachedTournament = (TournamentInfoCI) _sportEventCache.GetEventCacheItem(tournamentId);
+                        cachedTournament = (TournamentInfoCI)_sportEventCache.GetEventCacheItem(tournamentId);
                         var unused = cachedTournament.GetCompetitorsIdsAsync(cultureList).Result;
                     }
                     catch (Exception e)
@@ -247,7 +247,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             else
             {
-                cachedTournament = (TournamentInfoCI) _sportEventCache.GetEventCacheItem(tournamentId);
+                cachedTournament = (TournamentInfoCI)_sportEventCache.GetEventCacheItem(tournamentId);
                 if (fetchTournamentIfMissing)
                 {
                     try
@@ -321,7 +321,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                         {
                             if (!(Categories.TryGetValue(categoryId, out var cachedCategory) && cachedCategory.HasTranslationsFor(cultureList)))
                             {
-                                ExecutionLog.LogWarning($"An error occurred while retrieving sport from cache.For sportId = {id} and lang =[{string.Join(",", cultureList)}] we are missing category {categoryId}.");
+                                ExecutionLog.LogWarning($"An error occurred while retrieving sport from cache. For sportId = {id} and lang =[{string.Join(",", cultureList)}] we are missing category {categoryId}.");
                                 continue;
                             }
 
@@ -368,7 +368,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             if (disposing)
             {
-               _timer.Stop();
+                _timer.Stop();
                 if (!_isDisposed)
                 {
                     _isDisposed = true;
@@ -868,7 +868,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
                 if (stage.Tournament.Category != null)
                 {
-                    AddCategory(stage.Tournament.Category.Id, stage.Tournament.Category, stage.SportId, new List<URN> {stage.Id}, culture);
+                    AddCategory(stage.Tournament.Category.Id, stage.Tournament.Category, stage.SportId, new List<URN> { stage.Id }, culture);
                 }
                 return;
             }
@@ -998,11 +998,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     if (Sports.ContainsKey(id))
                     {
                         Sports.TryGetValue(id, out var ci);
-                        ci?.Merge(new SportCI(new SportDTO(item.Id.ToString(), item.Name, (IEnumerable<tournamentExtended>) null), _dataRouterManager, culture), culture);
+                        ci?.Merge(new SportCI(new SportDTO(item.Id.ToString(), item.Name, (IEnumerable<tournamentExtended>)null), _dataRouterManager, culture), culture);
                     }
                     else
                     {
-                        Sports.Add(id, new SportCI(new SportDTO(item.Id.ToString(), item.Name, (IEnumerable<tournamentExtended>) null), _dataRouterManager, culture));
+                        Sports.Add(id, new SportCI(new SportDTO(item.Id.ToString(), item.Name, (IEnumerable<tournamentExtended>)null), _dataRouterManager, culture));
                     }
                 }
                 catch (Exception e)

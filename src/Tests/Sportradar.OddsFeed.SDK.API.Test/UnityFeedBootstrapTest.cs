@@ -1,10 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Unity;
+
+using Castle.Core.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Sportradar.OddsFeed.SDK.API.Internal;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
@@ -15,8 +17,11 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
-using Unity.Lifetime;
+using System;
+using System.IO;
+using Unity;
 using Unity.Injection;
+using Unity.Lifetime;
 using Unity.Resolution;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
@@ -42,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             IUnityContainer container = new UnityContainer().EnableDiagnostic();
             var config = TestConfigurationInternal.GetConfig();
             _dispatcher = new Mock<IGlobalEventDispatcher>().Object;
-            
+
             container.RegisterBaseTypes(config, null, null);
 
             // we need to override initial loading of bookmaker details and producers
@@ -59,12 +64,11 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             newConfig.Load();
             container.RegisterInstance<IOddsFeedConfiguration>(newConfig, new ContainerControlledLifetimeManager());
             container.RegisterInstance<IOddsFeedConfigurationInternal>(newConfig, new ContainerControlledLifetimeManager());
-            
+
             container.RegisterTypes(_dispatcher, config);
-            
+
             //override
-            container.RegisterType<IProducerManager, ProducerManager>(new ContainerControlledLifetimeManager(),
-                                                                      new InjectionConstructor(new TestProducersProvider(), config));
+            container.RegisterType<IProducerManager, ProducerManager>(new ContainerControlledLifetimeManager(), new InjectionConstructor(new TestProducersProvider(), config));
 
             container.RegisterAdditionalTypes();
 
@@ -182,7 +186,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.IsNotNull(cacheSelector);
             Assert.IsInstanceOfType(cacheSelector, typeof(MarketCacheProvider));
 
-            var profileCache = _childContainer1.Resolve<IProfileCache>(); 
+            var profileCache = _childContainer1.Resolve<IProfileCache>();
             Assert.IsNotNull(profileCache);
             Assert.IsInstanceOfType(profileCache, typeof(ProfileCache));
 
@@ -259,6 +263,92 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
             var stats2 = _childContainer2.Resolve<IDataRouterManager>();
             Assert.AreEqual(stats1, stats2, "IDataRouterManager instances resolved on different containers must be equal");
+        }
+
+        [TestMethod]
+        public void HttpClientAreResolvedProperly()
+        {
+            var dataFetcher1 = _childContainer1.Resolve<IDataFetcher>();
+            Assert.IsNotNull(dataFetcher1, "Resolved IDataFetcher cannot be a null reference");
+            Assert.IsInstanceOfType(dataFetcher1, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
+            var dataFetcher2 = _childContainer1.Resolve<IDataFetcher>("RecoveryDataFetcher");
+            Assert.IsNotNull(dataFetcher2, "Resolved IDataFetcher cannot be a null reference");
+            Assert.IsInstanceOfType(dataFetcher2, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
+            var dataFetcher3 = _childContainer1.Resolve<IDataFetcher>("FastDataFetcher");
+            Assert.IsNotNull(dataFetcher3, "Resolved IDataFetcher cannot be a null reference");
+            Assert.IsInstanceOfType(dataFetcher3, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
+
+            Assert.AreNotEqual(dataFetcher1, dataFetcher2, "IDataFetcher 1-2 instances resolved must not be equal");
+            Assert.AreNotEqual(dataFetcher2, dataFetcher3, "IDataFetcher 2-3 instances resolved must not be equal");
+            Assert.AreNotEqual(dataFetcher1, dataFetcher3, "IDataFetcher 1-3 instances resolved must not be equal");
+        }
+
+        [TestMethod]
+        public void HttpClientTimeoutsWorkCorrectly()
+        {
+            var config = _childContainer1.Resolve<IOddsFeedConfiguration>();
+            var dataFetcher1 = _childContainer1.Resolve<IDataFetcher>();
+
+            Assert.AreEqual(30, config.HttpClientTimeout);
+            var fullUrl = TestData.GetDelayedUrl(config.HttpClientTimeout * 300);
+            var result = dataFetcher1.GetData(new Uri(fullUrl));
+            var responseContent = new StreamReader(result).ReadToEnd();
+            Assert.IsFalse(responseContent.IsNullOrEmpty());
+
+            try
+            {
+                fullUrl = TestData.GetDelayedUrl(config.HttpClientTimeout * 1100);
+                result = dataFetcher1.GetData(new Uri(fullUrl));
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(e.Message.Contains("task was"));
+            }
+        }
+
+        [TestMethod]
+        public void HttpClientRecoveryTimeoutsWorkCorrectly()
+        {
+            var config = _childContainer1.Resolve<IOddsFeedConfiguration>();
+            var dataFetcher1 = _childContainer1.Resolve<IDataFetcher>("RecoveryDataFetcher");
+
+            Assert.AreEqual(30, config.RecoveryHttpClientTimeout);
+            var fullUrl = TestData.GetDelayedUrl(config.RecoveryHttpClientTimeout * 300);
+            var result = dataFetcher1.GetData(new Uri(fullUrl));
+            var responseContent = new StreamReader(result).ReadToEnd();
+            Assert.IsFalse(responseContent.IsNullOrEmpty());
+
+            try
+            {
+                fullUrl = TestData.GetDelayedUrl(config.RecoveryHttpClientTimeout * 1100);
+                result = dataFetcher1.GetData(new Uri(fullUrl));
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(e.Message.Contains("task was"));
+            }
+        }
+
+        [TestMethod]
+        public void HttpClientFastTimeoutsWorkCorrectly()
+        {
+            var dataFetcher1 = _childContainer1.Resolve<IDataFetcher>("FastDataFetcher");
+
+            Assert.AreEqual(5, OperationManager.FastHttpClientTimeout.TotalSeconds);
+            var fullUrl = TestData.GetDelayedUrl((int)OperationManager.FastHttpClientTimeout.TotalSeconds * 300);
+            var result = dataFetcher1.GetData(new Uri(fullUrl));
+            var responseContent = new StreamReader(result).ReadToEnd();
+            Assert.IsFalse(responseContent.IsNullOrEmpty());
+
+            try
+            {
+                fullUrl = TestData.GetDelayedUrl((int)OperationManager.FastHttpClientTimeout.TotalSeconds * 1100);
+                result = dataFetcher1.GetData(new Uri(fullUrl));
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(e.Message.Contains("task was"));
+            }
         }
     }
 }
