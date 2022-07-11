@@ -1,20 +1,20 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Diagnostics;
-using Dawn;
-using System.IO;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using App.Metrics.Health;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 watch.Stop();
                 if (ex.GetType() == typeof(CommunicationException))
                 {
-                    var commException = (CommunicationException) ex;
+                    var commException = (CommunicationException)ex;
                     logBuilder.Append(" ResponseCode:").Append(commException.ResponseCode);
                     logBuilder.Append(" Duration: ").Append(watch.ElapsedMilliseconds);
                     logBuilder.Append(" ms Response:").Append(commException.Response?.Replace("\n", string.Empty));
@@ -202,7 +202,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             watch.Stop();
             if (RestLog.IsEnabled(LogLevel.Debug))
             {
-                RestLog.LogDebug($"Id:{dataId} Posting took {watch.ElapsedMilliseconds} ms. Response code: {(int) response.StatusCode}-{response.ReasonPhrase}.");
+                RestLog.LogDebug($"Id:{dataId} Posting took {watch.ElapsedMilliseconds} ms. Response code: {(int)response.StatusCode}-{response.ReasonPhrase}.");
             }
             else
             {

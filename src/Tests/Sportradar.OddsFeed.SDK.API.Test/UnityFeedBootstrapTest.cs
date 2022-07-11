@@ -274,7 +274,25 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             var dataFetcher2 = _childContainer1.Resolve<IDataFetcher>("RecoveryDataFetcher");
             Assert.IsNotNull(dataFetcher2, "Resolved IDataFetcher cannot be a null reference");
             Assert.IsInstanceOfType(dataFetcher2, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
-            var dataFetcher3 = _childContainer1.Resolve<IDataFetcher>("FastDataFetcher");
+            var dataFetcher3 = _childContainer1.Resolve<LogHttpDataFetcher>("FastLogHttpDataFetcher");
+            Assert.IsNotNull(dataFetcher3, "Resolved IDataFetcher cannot be a null reference");
+            Assert.IsInstanceOfType(dataFetcher3, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
+
+            Assert.AreNotEqual(dataFetcher1, dataFetcher2, "IDataFetcher 1-2 instances resolved must not be equal");
+            Assert.AreNotEqual(dataFetcher2, dataFetcher3, "IDataFetcher 2-3 instances resolved must not be equal");
+            Assert.AreNotEqual(dataFetcher1, dataFetcher3, "IDataFetcher 1-3 instances resolved must not be equal");
+        }
+
+        [TestMethod]
+        public void HttpClientFastIsTransient()
+        {
+            var dataFetcher1 = _childContainer1.Resolve<LogHttpDataFetcher>("FastLogHttpDataFetcher");
+            var dataFetcher2 = _childContainer1.Resolve<LogHttpDataFetcher>("FastLogHttpDataFetcher");
+            var dataFetcher3 = _childContainer1.Resolve<LogHttpDataFetcher>("FastLogHttpDataFetcher");
+            Assert.IsNotNull(dataFetcher1, "Resolved IDataFetcher cannot be a null reference");
+            Assert.IsInstanceOfType(dataFetcher1, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
+            Assert.IsNotNull(dataFetcher2, "Resolved IDataFetcher cannot be a null reference");
+            Assert.IsInstanceOfType(dataFetcher2, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
             Assert.IsNotNull(dataFetcher3, "Resolved IDataFetcher cannot be a null reference");
             Assert.IsInstanceOfType(dataFetcher3, typeof(LogHttpDataFetcher), "Resolved IDataFetcher must be instance of LogHttpDataFetcher");
 
@@ -332,7 +350,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         [TestMethod]
         public void HttpClientFastTimeoutsWorkCorrectly()
         {
-            var dataFetcher1 = _childContainer1.Resolve<IDataFetcher>("FastDataFetcher");
+            var dataFetcher1 = _childContainer1.Resolve<LogHttpDataFetcher>("FastLogHttpDataFetcher");
 
             Assert.AreEqual(5, OperationManager.FastHttpClientTimeout.TotalSeconds);
             var fullUrl = TestData.GetDelayedUrl((int)OperationManager.FastHttpClientTimeout.TotalSeconds * 300);

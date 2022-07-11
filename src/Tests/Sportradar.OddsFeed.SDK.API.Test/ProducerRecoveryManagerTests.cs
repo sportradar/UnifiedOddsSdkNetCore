@@ -1,8 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
@@ -11,6 +9,8 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Test.Shared;
+using System;
+using System.Diagnostics;
 
 namespace Sportradar.OddsFeed.SDK.API.Test
 {
@@ -55,8 +55,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         {
             _producer = new Producer(3, "Ctrl", "Betradar Ctrl", "https://api.betradar.com/v1/pre/", true, 20, 1800, "live", 4320);
             _messageBuilder = new FeedMessageBuilder(_producer.Id);
-            _timestampTracker = new TimestampTracker(_producer, new [] {DefaultInterest}, 20, 20);
-            _recoveryOperation = new RecoveryOperation(_producer, _recoveryRequestIssuerMock.Object, new[] {DefaultInterest}, 0, false);
+            _timestampTracker = new TimestampTracker(_producer, new[] { DefaultInterest }, 20, 20);
+            _recoveryOperation = new RecoveryOperation(_producer, _recoveryRequestIssuerMock.Object, new[] { DefaultInterest }, 0, false);
             _producerRecoveryManager = new ProducerRecoveryManager(_producer, _recoveryOperation, _timestampTracker, 30);
         }
 
@@ -248,7 +248,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         }
 
         [TestMethod]
-        public void recovery_is_restarted_after_connection_is_shutdown()
+        public void recovery_is_not_restarted_after_connection_is_shutdown()
         {
             var recoveryOperationMock = new Mock<IRecoveryOperation>();
             recoveryOperationMock.Setup(x => x.Start()).Returns(true);
@@ -260,17 +260,40 @@ namespace Sportradar.OddsFeed.SDK.API.Test
             Assert.AreEqual(ProducerRecoveryStatus.Error, _producerRecoveryManager.Status);
             recoveryOperationMock.Verify(x => x.Reset(), Times.Once);
             _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
+            recoveryOperationMock.Verify(x => x.Start(), Times.Exactly(1));
+        }
+
+        [TestMethod]
+        public void recovery_is_restarted_after_connection_is_up()
+        {
+            var recoveryOperationMock = new Mock<IRecoveryOperation>();
+            recoveryOperationMock.Setup(x => x.Start()).Returns(true);
+            _producerRecoveryManager = new ProducerRecoveryManager(_producer, recoveryOperationMock.Object, _timestampTracker, 30);
+            _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
+            Assert.AreEqual(ProducerRecoveryStatus.Started, _producerRecoveryManager.Status);
+            recoveryOperationMock.Verify(x => x.Start(), Times.Once);
+
+            _producerRecoveryManager.ConnectionShutdown();
+            Assert.AreEqual(ProducerRecoveryStatus.Error, _producerRecoveryManager.Status);
+            recoveryOperationMock.Verify(x => x.Reset(), Times.Once);
+            _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
+            recoveryOperationMock.Verify(x => x.Start(), Times.Exactly(1));
+
+            _producerRecoveryManager.ConnectionRecovered();
+            Assert.AreEqual(ProducerRecoveryStatus.Error, _producerRecoveryManager.Status);
+            recoveryOperationMock.Verify(x => x.Reset(), Times.Once);
+            _producerRecoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
             recoveryOperationMock.Verify(x => x.Start(), Times.Exactly(2));
         }
 
         [TestMethod]
-        public void recovery_is_started_after_connection_is_shutdown()
+        public void recovery_is_started_after_connection_is_back()
         {
             _timeProvider.Now = new DateTime(2000, 1, 1, 12, 0, 0);
             var disconnectedTime = _timeProvider.Now - TimeSpan.FromHours(2);
             _producer.SetLastTimestampBeforeDisconnect(disconnectedTime);
 
-            var recoveryOperation = new RecoveryOperation(_producer, _recoveryRequestIssuerMock.Object, new[] {DefaultInterest}, 0, false);
+            var recoveryOperation = new RecoveryOperation(_producer, _recoveryRequestIssuerMock.Object, new[] { DefaultInterest }, 0, false);
             var recoveryManager = new ProducerRecoveryManager(_producer, recoveryOperation, _timestampTracker, 30);
 
             recoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
@@ -283,6 +306,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
             recoveryManager.ConnectionShutdown();
             Assert.AreEqual(ProducerRecoveryStatus.Error, recoveryManager.Status);
+            recoveryManager.ConnectionRecovered();
             var time = _timeProvider.Now;
             _timeProvider.AddSeconds(40);
             recoveryManager.ProcessSystemMessage(_messageBuilder.BuildAlive());
