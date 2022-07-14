@@ -141,18 +141,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// Gets the <see cref="DrawDTO"/> from lottery draw summary endpoint
         /// </summary>
-        /// <param name="drawId">The id of the draw to be fetched</param>
+        /// <param name="id">The id of the draw to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
         /// <param name="requester">The cache item which invoked request</param>
-        Task GetDrawSummaryAsync(URN drawId, CultureInfo culture, ISportEventCI requester);
+        Task GetDrawSummaryAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
         /// Gets the <see cref="DrawDTO"/> from the lottery draw fixture endpoint
         /// </summary>
-        /// <param name="drawId">The id of the draw to be fetched</param>
+        /// <param name="id">The id of the draw to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
         /// <param name="requester">The cache item which invoked request</param>
-        Task GetDrawFixtureAsync(URN drawId, CultureInfo culture, ISportEventCI requester);
+        Task GetDrawFixtureAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
         /// Gets the lottery draw schedule

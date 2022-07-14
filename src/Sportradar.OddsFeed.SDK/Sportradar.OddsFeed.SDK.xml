@@ -7552,6 +7552,13 @@
             current instance was already stopped the call has no effect.
             </summary>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.LockHelper.GetLock(System.String)">
+            <summary>
+            Return a lock object for a named synchronization block.
+            </summary>
+            <param name="name">The lock name.</param>
+            <returns>object</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Internal.Log.LogAttribute">
             <summary>
             A method or class attribute indicating if the method input and output parameters should be logged
@@ -20484,11 +20491,6 @@
             The list of all supported <see cref="T:System.Globalization.CultureInfo"/>
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache._addLock">
-            <summary>
-            A <see cref="T:System.Object"/> to ensure thread safety when adding items to cache
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.SportEventCache._timer">
             <summary>
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ITimer"/> instance used to trigger periodic cache refresh-es
@@ -21571,7 +21573,7 @@
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO" /> from lottery draw summary endpoint
             </summary>
-            <param name="drawId">The id of the draw to be fetched</param>
+            <param name="id">The id of the draw to be fetched</param>
             <param name="culture">The language to be fetched</param>
             <param name="requester">The cache item which invoked request</param>
             <returns>Task</returns>
@@ -21582,7 +21584,7 @@
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO" /> from the lottery draw fixture endpoint
             </summary>
-            <param name="drawId">The id of the draw to be fetched</param>
+            <param name="id">The id of the draw to be fetched</param>
             <param name="culture">The language to be fetched</param>
             <param name="requester">The cache item which invoked request</param>
             <returns>Task</returns>
@@ -28061,7 +28063,7 @@
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO"/> from lottery draw summary endpoint
             </summary>
-            <param name="drawId">The id of the draw to be fetched</param>
+            <param name="id">The id of the draw to be fetched</param>
             <param name="culture">The language to be fetched</param>
             <param name="requester">The cache item which invoked request</param>
         </member>
@@ -28069,7 +28071,7 @@
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery.DrawDTO"/> from the lottery draw fixture endpoint
             </summary>
-            <param name="drawId">The id of the draw to be fetched</param>
+            <param name="id">The id of the draw to be fetched</param>
             <param name="culture">The language to be fetched</param>
             <param name="requester">The cache item which invoked request</param>
         </member>

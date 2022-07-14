@@ -499,7 +499,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return;
             }
 
-            // multiple class fields can be accessed from multiple threads(messages from user session(s), system session, here, ...)
+            // multiple class fields can be accessed from multiple threads (messages from user session(s), system session, here, ...)
             lock (_syncLock)
             {
                 ProducerRecoveryStatus? newStatus = null;

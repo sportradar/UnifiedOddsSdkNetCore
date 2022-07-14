@@ -1,13 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -17,6 +10,16 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Test.Shared;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Threading;
+using System.Threading.Tasks;
+using MatchCI = Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.MatchCI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 {
@@ -72,14 +75,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         public void SportEventBaseDataIsCachedCorrectly()
         {
             TestDataIsCaching();
-            var e = (IMatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
+            var e = (IMatchCI)_sportEventCache.GetEventCacheItem(TestData.EventId);
             ValidateSportEventCacheItem(e);
         }
 
         [TestMethod]
         public void SportEventCacheItemMergeFixture()
         {
-            var item = (IMatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
+            var item = (IMatchCI)_sportEventCache.GetEventCacheItem(TestData.EventId);
             Assert.IsNotNull(item); // empty with providers
 
             var tourId = item.GetTournamentIdAsync(TestData.Cultures).Result;
@@ -94,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         [TestMethod]
         public void SportEventCacheItemMergeDetails()
         {
-            var item = (IMatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
+            var item = (IMatchCI)_sportEventCache.GetEventCacheItem(TestData.EventId);
             Assert.IsNotNull(item); // empty with providers
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(DateSchedule), $"{DateSchedule} should be called exactly 0 times.");
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly 0 times.");
@@ -125,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(TestData.Cultures.Count * 3, _dataRouterManager.GetCallCount(DateSchedule), $"{DateSchedule} should be called exactly {TestData.Cultures.Count * 3} times.");
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly 0 times.");
 
-            var item = (IMatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
+            var item = (IMatchCI)_sportEventCache.GetEventCacheItem(TestData.EventId);
             Assert.IsNotNull(item); // preloaded with event summary with providers
             Assert.AreEqual(TestData.Cultures.Count * 3, _dataRouterManager.GetCallCount(DateSchedule), $"{DateSchedule} should be called exactly {TestData.Cultures.Count * 3} times.");
             Assert.AreEqual(0, _dataRouterManager.GetCallCount(SportEventSummary), $"{SportEventSummary} should be called exactly 0 times.");
@@ -202,7 +205,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             Assert.AreEqual(ScheduleEventCount, _sportEventCache.Cache.Count(c => c.Key.Contains("match")));
             Assert.AreEqual(TestData.Cultures.Count * 3 + 1, _dataRouterManager.GetCallCount(DateSchedule), $"{DateSchedule} should be called exactly {TestData.Cultures.Count * 3 + 1} times.");
 
-            var a = (IMatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
+            var a = (IMatchCI)_sportEventCache.GetEventCacheItem(TestData.EventId);
             ValidateSportEventCacheItem(a);
             Assert.IsNotNull(a, "Cached item not found.");
         }
@@ -249,130 +252,644 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
         }
 
         [TestMethod, Timeout(150000)]
-        public async Task SportEventCacheItemSequentialTest()
+        public async Task SportEventCacheSingleItemSequentialTest()
         {
             // slow implementation of async calls
             var stopWatch = Stopwatch.StartNew();
             Assert.AreEqual(0, _memoryCache.Count());
             var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
             while (i > 0)
             {
                 i--;
-                var startTime = stopWatch.Elapsed;
-                var culture = TestData.Cultures4[StaticRandom.I(4)];
 
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Loading {i} culture: {culture.TwoLetterISOLanguageName}");
-                var ci = (MatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
+                var ci = await GetMatchCacheItemAsync(TestData.EventId, culture, stopWatch, i).ConfigureAwait(false);
+                Assert.IsNotNull(ci);
+                Assert.AreEqual(TestData.EventId, ci.Id);
 
-                var name = await ci.GetNamesAsync(new[] { culture });
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} name");
-                var fixture = await ci.GetFixtureAsync(new[] { culture });
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} fixture");
-                var tour = await ci.GetTournamentIdAsync(TestData.Cultures);
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} tournament");
-                var booking  = await ci.GetBookingStatusAsync();
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} booking status");
-                var comps = await ci.GetCompetitorsIdsAsync(new[] {culture});
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} competitors");
-                var venue = await ci.GetVenueAsync(new[] { culture });
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} venue");
-                var liveOdds = await ci.GetLiveOddsAsync();
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} live odds");
-                var eventType = await ci.GetSportEventTypeAsync();
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} sport event type");
-                var stageType = await ci.GetStageTypeAsync();
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} stage type");
-                var status = await ci.FetchSportEventStatusAsync();
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} status");
-
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Tasks {i} completed.");
-                if (i % 10 == 3)
-                {
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Deleting {i} culture: {culture.TwoLetterISOLanguageName}");
-                    _sportEventCache.CacheDeleteItem(TestData.EventId, CacheItemType.All);
-                }
-                else
+                if (i % 10 != 3)
                 {
                     var c1 = _dataRouterManager.GetCallCount(SportEventSummary);
                     TestData.ValidateTestEventId(ci, new[] { culture }, true);
                     var c2 = _dataRouterManager.GetCallCount(SportEventSummary);
                     Assert.AreEqual(c1, c2);
                 }
-
-                var took = stopWatch.Elapsed - startTime;
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Iteration {i} completed. Took {took.Milliseconds} ms.");
             }
             Assert.AreEqual(2, _memoryCache.Count());
         }
 
         [TestMethod, Timeout(120000)]
-        public async Task SportEventCacheItemConcurrencyTest()
+        public async Task SportEventCacheSingleItemConcurrencyTest()
         {
             var stopWatch = Stopwatch.StartNew();
             Assert.AreEqual(0, _memoryCache.Count());
             var i = 1000;
-            var tasks = new List<Task>();
-            MatchCI ci = null;
+            var tasks = new List<Task<MatchCI>>();
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
             while (i > 0)
             {
-                var startTime = stopWatch.Elapsed;
                 i--;
-                tasks.Clear();
-                var culture = TestData.Cultures4[StaticRandom.I(4)];
-                try
-                {
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Loading {i} culture: {culture.TwoLetterISOLanguageName}");
-                    
-                    ci = (MatchCI) _sportEventCache.GetEventCacheItem(TestData.EventId);
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} culture: {culture.TwoLetterISOLanguageName}");
+                tasks.Add(GetMatchCacheItemAsync(TestData.EventId, culture, stopWatch, i));
+            }
 
-                    tasks.Add(ci.GetNamesAsync(new[] { culture }));
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} name");
-                    tasks.Add(ci.GetFixtureAsync(new[] { culture }));
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} fixture");
-                    tasks.Add(ci.GetTournamentIdAsync(TestData.Cultures));
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} tournament");
-                    tasks.Add(ci.GetBookingStatusAsync());
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} booking status");
-                    tasks.Add(ci.GetCompetitorsIdsAsync(new[] { culture }));
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} competitors");
-                    tasks.Add(ci.GetVenueAsync(new[] { culture }));
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} venue");
-                    tasks.Add(ci.GetLiveOddsAsync());
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} live odds");
-                    tasks.Add(ci.GetSportEventTypeAsync());
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} sport event type");
-                    tasks.Add(ci.GetStageTypeAsync());
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} stage type");
-                    tasks.Add(ci.FetchSportEventStatusAsync());
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} status");
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Prepare tasks {i} culture: {culture.TwoLetterISOLanguageName}");
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
-                }
-                catch (Exception e)
+            foreach (var task in tasks)
+            {
+                if (task.Result == null)
                 {
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Error: {e}");
+                    continue;
                 }
-                
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Tasks {i} completed.");
-                if (i % 10 == 3)
-                {
-                    Debug.WriteLine($"{GetElapsed(stopWatch)} Deleting {i} culture: {culture.TwoLetterISOLanguageName}");
-                    _sportEventCache.CacheDeleteItem(TestData.EventId, CacheItemType.All);
-                }
-                else
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+
+                if (task.Result.Id.Id % 10 != 3)
                 {
                     var c1 = _dataRouterManager.GetCallCount(SportEventSummary);
-                    TestData.ValidateTestEventId(ci, new[] { culture }, true);
+                    TestData.ValidateTestEventId(task.Result, new[] { culture }, true);
                     var c2 = _dataRouterManager.GetCallCount(SportEventSummary);
                     Assert.AreEqual(c1, c2);
                 }
-
-                var took = stopWatch.Elapsed - startTime;
-                Debug.WriteLine($"{GetElapsed(stopWatch)} Iteration {i} completed. Took {took.Milliseconds} ms.");
             }
+
             Assert.AreEqual(2, _memoryCache.Count());
+        }
+
+        [TestMethod, Timeout(150000)]
+        public async Task SportEventCacheUniqueItemSequentialTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:{i}");
+                i--;
+
+                var ci = await GetMatchCacheItemAsync(matchId, culture, stopWatch, i).ConfigureAwait(false);
+                Assert.IsNotNull(ci);
+                Assert.AreEqual(matchId, ci.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 500);
+
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheUniqueItemConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:{i}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 500);
+        }
+
+        [TestMethod, Timeout(150000)]
+        public async Task SportEventCacheSemiSequentialTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                var ci = await GetMatchCacheItemAsync(matchId, culture, stopWatch, i).ConfigureAwait(false);
+                Assert.IsNotNull(ci);
+                Assert.AreEqual(matchId, ci.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        //[TestMethod, Timeout(300000)]
+        public async Task SportEventCacheSemiWithDelaySequentialTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), true, 30);
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                var ci = await GetMatchCacheItemAsync(matchId, culture, stopWatch, i).ConfigureAwait(false);
+                Assert.IsNotNull(ci);
+                Assert.AreEqual(matchId, ci.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), true, 30);
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayAndPause050ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), false, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(50));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        //[TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayAndPause100ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), false, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(100));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        //[TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayAndPause150ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), false, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(150));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayAndPause200ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), false, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        //[TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayAndPause250ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), false, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(250));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        //[TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayAndPause350ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), false, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(350));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithDelayAndPause500ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), false, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(500));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheSemiWithVariableDelayAndPause200ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(1000), true, 30);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheCustomerScenarioAllRequestsSlowerAndPause200ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(300), false, 90);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheCustomerScenarioSomeRequestSlowAndPause200ConcurrencyTest()
+        {
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(3000), false, 10);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheCustomerScenarioAllRequestSlowAndPause200ConcurrencyThreadPool1Test()
+        {
+            ThreadPool.SetMaxThreads(1, 1);
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(300), false, 90);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheCustomerScenarioAllRequestSlowAndPause200ConcurrencyThreadPool2Test()
+        {
+            ThreadPool.SetMaxThreads(2, 2);
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(300), false, 90);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                tasks.Add(GetMatchCacheItemAsync(matchId, culture, stopWatch, i));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        [TestMethod, Timeout(120000)]
+        public async Task SportEventCacheCustomerScenarioAllRequestSlowAndPause200ConcurrencyNewThreadsTest()
+        {
+            //ThreadPool.SetMaxThreads(10, 10);
+            var stopWatch = Stopwatch.StartNew();
+            Assert.AreEqual(0, _memoryCache.Count());
+            var i = 1000;
+            var culture = TestData.Cultures4[StaticRandom.I(4)];
+            _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(300), false, 90);
+            _sportEventCache.LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            var tasks = new List<Task<MatchCI>>();
+            while (i > 0)
+            {
+                var matchId = URN.Parse($"sr:match:1{StaticRandom.I100}");
+                i--;
+
+                var task = GetMatchCacheItemAsync(matchId, culture, stopWatch, i);
+                tasks.Add(task);
+                var t = new Thread(async () => { await task.ConfigureAwait(false); });
+                t.Name = $"thread {i}-{matchId}";
+                t.Start();
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            foreach (var task in tasks)
+            {
+                Assert.IsNotNull(task.Result);
+                Assert.IsNotNull(task.Result.Id);
+            }
+            Assert.IsTrue(_memoryCache.Count() > 50);
+            Assert.IsTrue(_memoryCache.Count() < 100);
+        }
+
+        private async Task<MatchCI> GetMatchCacheItemAsync(URN matchId, CultureInfo culture, Stopwatch stopWatch, int i)
+        {
+            MatchCI ci = null;
+            var startTime = stopWatch.Elapsed;
+
+            try
+            {
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Loading {i} culture: {culture.TwoLetterISOLanguageName}");
+
+                ci = (MatchCI)_sportEventCache.GetEventCacheItem(matchId);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} culture: {culture.TwoLetterISOLanguageName}");
+
+                var name = await ci.GetNamesAsync(new[] { culture }).ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} name: {name?.Values.First()}");
+                var fixture = await ci.GetFixtureAsync(new[] { culture }).ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} fixture: {fixture.StartTime}");
+                var tournamentId = await ci.GetTournamentIdAsync(TestData.Cultures).ConfigureAwait(false);
+                // Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} tournament: {tournamentId}");
+                var bookingStatus = await ci.GetBookingStatusAsync().ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} booking status: {bookingStatus}");
+                var competitorIds = await ci.GetCompetitorsIdsAsync(new[] { culture }).ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} competitors: {string.Join(",", competitorIds.Select(s => s.ToString()))}");
+                var venue = await ci.GetVenueAsync(new[] { culture }).ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} venue: {venue?.Id}");
+                var liveOdds = await ci.GetLiveOddsAsync().ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} live odds: {liveOdds}");
+                var sportEventType = await ci.GetSportEventTypeAsync().ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} sport event type: {sportEventType}");
+                var stageType = await ci.GetStageTypeAsync().ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} stage type: {stageType}");
+                var status = await ci.FetchSportEventStatusAsync().ConfigureAwait(false);
+                //Debug.WriteLine($"{GetElapsed(stopWatch)} Get {i} status: {status}");
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Tasks {i} completed.");
+
+                if (i % 10 == 3)
+                {
+                    Debug.WriteLine($"{GetElapsed(stopWatch)} Deleting {i} culture: {culture.TwoLetterISOLanguageName}");
+                    _sportEventCache.CacheDeleteItem(matchId, CacheItemType.All);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"{GetElapsed(stopWatch)} Error: {e}");
+            }
+
+            var took = stopWatch.Elapsed - startTime;
+            Debug.WriteLine($"{GetElapsed(stopWatch)} Iteration {i} completed. Took {took.Milliseconds} ms.");
+
+            return ci;
         }
 
         private string GetElapsed(Stopwatch stopwatch)
