@@ -3,6 +3,11 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2022-07-15  1.27.0
+Improved API data distribution to SportEventCache
+Setup that each API endpoint on critical path has its own HttpClient
+Fix: recovery request url when configuring custom environment
+
 2022-06-02  1.26.0
 Improvements for saving api data within caches (single item and for list of items)
 Changed the timestamp for periodic deletion of old event from cache (to now-12h)
