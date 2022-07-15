@@ -63,7 +63,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             var i = 0;
             while (_dataRouterManager.GetCallCount(DateSchedule) != (TestData.Cultures.Count * 3) && i < 100)
             {
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
                 i++;
             }
             Assert.IsTrue(_memoryCache.GetCount() > 0, "Nothing was cached.");

@@ -100,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
         //}
 
         [TestMethod]
-        public void each_session_gets_different_instance_of_CacheMessageProcessor()
+        public void Each_session_gets_different_instance_of_CacheMessageProcessor()
         {
             var statusCache1 = _childContainer1.Resolve<IFeedMessageProcessor>("CacheMessageProcessor");
             Assert.IsNotNull(statusCache1, "Resolved CacheMessageProcessor cannot be a null reference");

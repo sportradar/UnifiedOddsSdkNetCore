@@ -171,8 +171,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return null;
             }
 
-            //Debug.Assert(Status == ProducerRecoveryStatus.Started);
-
             RecoveryResult recoveryResult;
             ExecutionLog.LogDebug($"SnapshotComplete[{"requestId" + snapshotCompleted.request_id}] for producer=[{"id=" + Producer.Id}] on session {interest.Name} received");
             if (!_recoveryOperation.TryComplete(interest, out recoveryResult))

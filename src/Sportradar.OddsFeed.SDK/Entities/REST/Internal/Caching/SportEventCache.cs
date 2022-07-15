@@ -69,11 +69,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         private readonly IEnumerable<CultureInfo> _cultures;
 
         /// <summary>
-        /// A <see cref="object"/> to ensure thread safety when adding items to cache
-        /// </summary>
-        //private readonly object _addLock = new object();
-
-        /// <summary>
         /// A <see cref="ITimer"/> instance used to trigger periodic cache refresh-es
         /// </summary>
         private readonly ITimer _timer;
@@ -144,6 +139,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             Task.Run(async () =>
             {
                 await OnTimerElapsedAsync().ConfigureAwait(false);
+                LockManager.Clean();
             });
         }
 
@@ -370,7 +366,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         public int DeleteSportEventsFromCache(DateTime before)
         {
             LockManager.Wait();
-
             try
             {
                 var startCount = Cache.Count();
@@ -378,7 +373,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     try
                     {
-
                         var ci = (SportEventCI)keyValuePair.Value;
                         if (ci.Scheduled != null && ci.Scheduled < before)
                         {
