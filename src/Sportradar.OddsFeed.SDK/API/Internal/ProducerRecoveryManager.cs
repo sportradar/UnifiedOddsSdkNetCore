@@ -10,7 +10,6 @@ using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -418,23 +417,21 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     }
                     else
                     {
-                        Debug.Assert(Status == ProducerRecoveryStatus.Started
-                                     || Status == ProducerRecoveryStatus.Completed
-                                     || Status == ProducerRecoveryStatus.Delayed);
+                        //Debug.Assert(Status == ProducerRecoveryStatus.Started || Status == ProducerRecoveryStatus.Completed || Status == ProducerRecoveryStatus.Delayed);
 
                         // we are no longer in sync with the feed
                         if (alive.subscribed == 0)
                         {
                             if (_recoveryOperation.IsRunning)
                             {
-                                Debug.Assert(Status == ProducerRecoveryStatus.Started);
+                                //Debug.Assert(Status == ProducerRecoveryStatus.Started);
                                 var timestamp = SdkInfo.FromEpochTime(previousAliveTimestamp);
                                 ExecutionLog.LogInformation($"Producer={_producer.Id}: Recovery operation interrupted. Current status={Enum.GetName(typeof(ProducerRecoveryStatus), Status)}, Timestamp={timestamp}.");
                                 _recoveryOperation.Interrupt(timestamp);
                             }
                             else
                             {
-                                Debug.Assert(Status == ProducerRecoveryStatus.Completed || Status == ProducerRecoveryStatus.Delayed);
+                                //Debug.Assert(Status == ProducerRecoveryStatus.Completed || Status == ProducerRecoveryStatus.Delayed);
                                 try
                                 {
                                     var started = StartRecovery();
@@ -527,7 +524,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     // Check whether there is an alive violation during recovery
                     if (Status == ProducerRecoveryStatus.Started && _timestampTracker.IsAliveViolated)
                     {
-                        Debug.Assert(_recoveryOperation.IsRunning);
+                        //Debug.Assert(_recoveryOperation.IsRunning);
                         ExecutionLog.LogWarning($"Producer id={Producer.Id}: alive violation detected during recovery. Additional recovery from {_timestampTracker.SystemAliveTimestamp} will be done once the current is completed.");
                         _recoveryOperation.Interrupt(SdkInfo.FromEpochTime(_timestampTracker.SystemAliveTimestamp));
                     }
@@ -542,7 +539,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     // Check whether the recovery is running and has timed-out
                     if (Status == ProducerRecoveryStatus.Started && _recoveryOperation.HasTimedOut())
                     {
-                        Debug.Assert(_recoveryOperation.IsRunning);
+                        //Debug.Assert(_recoveryOperation.IsRunning);
                         _recoveryOperation.CompleteTimedOut();
                         ExecutionLog.LogWarning($"Producer id={Producer.Id}: recovery timeout. New recovery from {_timestampTracker.SystemAliveTimestamp} will be done.");
                         newStatus = ProducerRecoveryStatus.Error;

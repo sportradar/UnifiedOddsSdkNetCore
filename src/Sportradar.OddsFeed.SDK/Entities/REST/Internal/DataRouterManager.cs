@@ -1046,6 +1046,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 if (!result.Id.Equals(id) || !result.Variant.Equals(variant))
                 {
                     _metricsRoot.Measure.Meter.Mark(meterOptionsGetVariantMarketDescriptionAsync, MetricTags.Empty, $"{id}?{variant} vs {result.Id}?{result.Variant}");
+                    _executionLog.LogDebug($"Received different market variant description then requested. ({id}?{variant} - {result.Id}?{result.Variant})");
                 }
             }
             catch (Exception e)
