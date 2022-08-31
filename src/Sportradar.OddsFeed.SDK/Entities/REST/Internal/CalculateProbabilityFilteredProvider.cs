@@ -10,7 +10,6 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -21,24 +20,24 @@ using System.Xml.Serialization;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
     /// <summary>
-    /// An implementation of the <see cref="ICalculateProbabilityProvider"/> which fetches the data, deserializes it and than maps / converts it to the output type
+    /// An implementation of the <see cref="ICalculateProbabilityFilteredProvider"/> which fetches the data, deserializes it and than maps / converts it to the output type
     /// </summary>
-    internal class CalculateProbabilityProvider : ICalculateProbabilityProvider
+    internal class CalculateProbabilityFilteredProvider : ICalculateProbabilityFilteredProvider
     {
         private readonly IDataPoster _poster;
-        private readonly IDeserializer<CalculationResponseType> _deserializer;
-        private readonly ISingleTypeMapperFactory<CalculationResponseType, CalculationDto> _mapperFactory;
+        private readonly IDeserializer<FilteredCalculationResponseType> _deserializer;
+        private readonly ISingleTypeMapperFactory<FilteredCalculationResponseType, FilteredCalculationDto> _mapperFactory;
         private readonly string _uriFormat;
         private readonly XmlSerializer _serializer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CalculateProbabilityProvider" /> class.
+        /// Initializes a new instance of the <see cref="CalculateProbabilityFilteredProvider" /> class.
         /// </summary>
         /// <param name="uriFormat">The url format specifying the url of the resources fetched by the fetcher</param>
         /// <param name="poster">A <see cref="IDataPoster" /> used to fetch the data</param>
-        /// <param name="deserializer">A <see cref="IDeserializer{CalculationResponseType}" /> used to deserialize the fetch data</param>
-        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{CalculationResponseType, CalculationDTO}" /> used to construct instances of <see cref="ISingleTypeMapper{CalculationDTO}" /></param>
-        public CalculateProbabilityProvider(string uriFormat, IDataPoster poster, IDeserializer<CalculationResponseType> deserializer, ISingleTypeMapperFactory<CalculationResponseType, CalculationDto> mapperFactory)
+        /// <param name="deserializer">A <see cref="IDeserializer{FilteredCalculationResponseType}" /> used to deserialize the fetch data</param>
+        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{FilteredCalculationResponseType, FilteredCalculationDto}" /> used to construct instances of <see cref="ISingleTypeMapper{FilteredCalculationDto}" /></param>
+        public CalculateProbabilityFilteredProvider(string uriFormat, IDataPoster poster, IDeserializer<FilteredCalculationResponseType> deserializer, ISingleTypeMapperFactory<FilteredCalculationResponseType, FilteredCalculationDto> mapperFactory)
         {
             if (string.IsNullOrWhiteSpace(uriFormat))
             {
@@ -49,32 +48,44 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _poster = poster ?? throw new ArgumentNullException(nameof(poster));
             _deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
             _mapperFactory = mapperFactory ?? throw new ArgumentNullException(nameof(mapperFactory));
-            _serializer = new XmlSerializer(typeof(SelectionsType));
+            _serializer = new XmlSerializer(typeof(FilterSelectionsType));
         }
 
         /// <summary>
-        /// Asynchronously gets a <see cref="CalculationDto"/> instance
+        /// Asynchronously gets a <see cref="FilteredCalculationDto"/> instance
         /// </summary>
         /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be fetched</param>
-        /// <returns>A <see cref="Task{CalculationDTO}"/> representing the probability calculation</returns>
-        public async Task<CalculationDto> GetDataAsync(IEnumerable<ISelection> selections)
+        /// <returns>A <see cref="Task{FilteredCalculationDto}"/> representing the probability calculation</returns>
+        public async Task<FilteredCalculationDto> GetDataAsync(IEnumerable<ISelection> selections)
         {
-            var content = GetContent(new SelectionsType
+            var resultSelection = new FilterSelectionsType();
+            var selectionSelection = new List<FilterSelectionType>();
+
+            foreach (var selection in selections)
             {
-                selection = selections.Select(s => new SelectionType
+                var filterSelectionMarketType = new FilterSelectionMarketType
                 {
-                    id = s.EventId.ToString(),
-                    market_id = s.MarketId,
-                    outcome_id = s.OutcomeId,
-                    specifiers = s.Specifiers
-                }).ToArray()
-            });
+                    market_id = selection.MarketId,
+                    outcome_id = selection.OutcomeId,
+                    specifiers = selection.Specifiers
+                };
+                var filterSelectionType = new FilterSelectionType
+                {
+                    id = selection.EventId.ToString(),
+                    market = new[] { filterSelectionMarketType }
+                };
+                selectionSelection.Add(filterSelectionType);
+            }
+
+            resultSelection.selection = selectionSelection.ToArray();
+
+            var content = GetContent(resultSelection);
 
             var responseMessage = await _poster.PostDataAsync(new Uri(_uriFormat), content).ConfigureAwait(false);
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new CommunicationException($"Getting probability calculations failed with StatusCode={responseMessage.StatusCode}",
+                throw new CommunicationException($"Getting probability calculations (filtered) failed with StatusCode={responseMessage.StatusCode}",
                     _uriFormat,
                     responseMessage.StatusCode,
                     null);
@@ -84,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             return _mapperFactory.CreateMapper(_deserializer.Deserialize(stream)).Map();
         }
 
-        private HttpContent GetContent(SelectionsType content)
+        private HttpContent GetContent(FilterSelectionsType content)
         {
             using (var stream = new MemoryStream())
             using (var writer = XmlWriter.Create(stream))

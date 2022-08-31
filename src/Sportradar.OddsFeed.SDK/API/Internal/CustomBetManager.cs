@@ -23,6 +23,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         private readonly IDataRouterManager _dataRouterManager;
 
+        public ICustomBetSelectionBuilder CustomBetSelectionBuilder { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomBetManager"/> class
         /// </summary>
@@ -82,6 +84,28 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
         }
 
-        public ICustomBetSelectionBuilder CustomBetSelectionBuilder { get; }
+        public async Task<ICalculationFilter> CalculateProbabilityFilterAsync(IEnumerable<ISelection> selections)
+        {
+            if (selections == null)
+            {
+                throw new ArgumentNullException(nameof(selections));
+            }
+
+            try
+            {
+                _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbabilityFilter({selections})");
+                return await _dataRouterManager.CalculateProbabilityFiltered(selections).ConfigureAwait(false);
+            }
+            catch (CommunicationException ce)
+            {
+                _executionLog.LogWarning(ce, $"Calculating probabilities filtered failed, CommunicationException: {ce.Message}");
+                throw;
+            }
+            catch (Exception e)
+            {
+                _executionLog.LogWarning(e, "Calculating probabilities filtered failed.");
+                throw;
+            }
+        }
     }
 }

@@ -13,13 +13,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to provides a probability calculation
     /// </summary>
-    internal class Calculation : ICalculation
+    internal class CalculationFilter : ICalculationFilter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Calculation"/> class
+        /// Initializes a new instance of the <see cref="ICalculationFilter"/> class
         /// </summary>
-        /// <param name="calculation">a <see cref="CalculationDto"/> representing the calculation</param>
-        internal Calculation(CalculationDto calculation)
+        /// <param name="calculation">a <see cref="FilteredCalculationDto"/> representing the calculation</param>
+        internal CalculationFilter(FilteredCalculationDto calculation)
         {
             if (calculation == null)
             {
@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
             Odds = calculation.Odds;
             Probability = calculation.Probability;
             GeneratedAt = SdkInfo.ParseDate(calculation.GeneratedAt);
-            AvailableSelections = calculation.AvailableSelections.Select(s => new AvailableSelections(s));
+            AvailableSelections = calculation.AvailableSelections.Select(s => new AvailableSelectionsFilter(s));
         }
 
         public double Odds { get; }
@@ -38,6 +38,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
 
         public DateTime? GeneratedAt { get; }
 
-        public IEnumerable<IAvailableSelections> AvailableSelections { get; }
+        public IEnumerable<IAvailableSelectionsFilter> AvailableSelections { get; }
     }
 }

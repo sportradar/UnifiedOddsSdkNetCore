@@ -138,11 +138,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// The available selections provider
         /// </summary>
-        private readonly IDataProvider<AvailableSelectionsDTO> _availableSelectionsProvider;
+        private readonly IDataProvider<AvailableSelectionsDto> _availableSelectionsProvider;
         /// <summary>
         /// The calculate probability provider
         /// </summary>
         private readonly ICalculateProbabilityProvider _calculateProbabilityProvider;
+        /// <summary>
+        /// The calculate probability provider (filtered)
+        /// </summary>
+        private readonly ICalculateProbabilityFilteredProvider _calculateProbabilityFilteredProvider;
         /// <summary>
         /// The fixture changes provider
         /// </summary>
@@ -222,6 +226,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="lotteryListProvider">Lottery list provider</param>
         /// <param name="availableSelectionsProvider">Available selections provider</param>
         /// <param name="calculateProbabilityProvider">The probability calculation provider</param>
+        /// <param name="calculateProbabilityFilteredProvider">The probability calculation provider (filtered)</param>
         /// <param name="fixtureChangesProvider">Fixture changes provider</param>
         /// <param name="resultChangesProvider">Result changes provider</param>
         /// <param name="listSportEventProvider">List sport events provider</param>
@@ -255,8 +260,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                                  IDataProvider<DrawDTO> drawFixtureProvider,
                                  IDataProvider<LotteryDTO> lotteryScheduleProvider,
                                  IDataProvider<EntityList<LotteryDTO>> lotteryListProvider,
-                                 IDataProvider<AvailableSelectionsDTO> availableSelectionsProvider,
+                                 IDataProvider<AvailableSelectionsDto> availableSelectionsProvider,
                                  ICalculateProbabilityProvider calculateProbabilityProvider,
+                                 ICalculateProbabilityFilteredProvider calculateProbabilityFilteredProvider,
                                  IDataProvider<IEnumerable<FixtureChangeDTO>> fixtureChangesProvider,
                                  IDataProvider<IEnumerable<ResultChangeDTO>> resultChangesProvider,
                                  IDataProvider<EntityList<SportEventSummaryDTO>> listSportEventProvider,
@@ -291,6 +297,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             Guard.Argument(lotteryListProvider, nameof(lotteryListProvider)).NotNull();
             Guard.Argument(availableSelectionsProvider, nameof(availableSelectionsProvider)).NotNull();
             Guard.Argument(calculateProbabilityProvider, nameof(calculateProbabilityProvider)).NotNull();
+            Guard.Argument(calculateProbabilityFilteredProvider, nameof(calculateProbabilityFilteredProvider)).NotNull();
             Guard.Argument(fixtureChangesProvider, nameof(fixtureChangesProvider)).NotNull();
             Guard.Argument(resultChangesProvider, nameof(resultChangesProvider)).NotNull();
             Guard.Argument(listSportEventProvider, nameof(listSportEventProvider)).NotNull();
@@ -328,6 +335,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             _lotteryListProvider = lotteryListProvider;
             _availableSelectionsProvider = availableSelectionsProvider;
             _calculateProbabilityProvider = calculateProbabilityProvider;
+            _calculateProbabilityFilteredProvider = calculateProbabilityFilteredProvider;
             _fixtureChangesProvider = fixtureChangesProvider;
             _resultChangesProvider = resultChangesProvider;
             _listSportEventProvider = listSportEventProvider;
@@ -1323,7 +1331,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{id}");
             WriteLog($"Executing GetAvailableSelectionsAsync for id={id}.", true);
 
-            AvailableSelectionsDTO result = null;
+            AvailableSelectionsDto result = null;
             int restCallTime;
             try
             {
@@ -1356,7 +1364,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"selections:{enumerable.Count}");
             WriteLog("Executing CalculateProbability.", true);
 
-            CalculationDTO result = null;
+            CalculationDto result = null;
             int restCallTime;
             try
             {
@@ -1376,6 +1384,35 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             WriteLog($"Executing CalculateProbability took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
             return new Calculation(result);
+        }
+
+        public async Task<ICalculationFilter> CalculateProbabilityFiltered(IEnumerable<ISelection> selections)
+        {
+            var enumerable = selections.ToList();
+            var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "CalculateProbabilityFiltered", MeasurementUnit = Unit.Requests };
+            using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"selections:{enumerable.Count}");
+            WriteLog("Executing CalculateProbabilityFiltered.", true);
+
+            FilteredCalculationDto result = null;
+            int restCallTime;
+            try
+            {
+                result = await _calculateProbabilityFilteredProvider.GetDataAsync(enumerable).ConfigureAwait(false);
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+            }
+            catch (Exception e)
+            {
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                var message = e.InnerException?.Message ?? e.Message;
+                _executionLog.LogError(e.InnerException ?? e, $"Error calculating probabilities (filtered). Message={message}");
+                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                {
+                    throw;
+                }
+            }
+
+            WriteLog($"Executing CalculateProbabilityFiltered took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
+            return new CalculationFilter(result);
         }
 
         /// <summary>

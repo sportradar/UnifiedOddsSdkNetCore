@@ -1,17 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="CalculationResponseType" /> instances to <see cref="CalculationDTO" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="CalculationResponseType" /> instances to <see cref="CalculationDto" /> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapper{CalculationDTO}" />
-    internal class CalculationMapper : ISingleTypeMapper<CalculationDTO>
+    internal class CalculationMapper : ISingleTypeMapper<CalculationDto>
     {
         /// <summary>
         /// A <see cref="CalculationResponseType"/> containing sport event data
@@ -24,19 +24,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">A <see cref="CalculationResponseType"/> containing available selections</param>
         internal CalculationMapper(CalculationResponseType data)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-            _data = data;
+            _data = data ?? throw new ArgumentNullException(nameof(data));
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="CalculationDTO" />
+        /// Maps it's data to instance of <see cref="CalculationDto" />
         /// </summary>
-        /// <returns>The created <see cref="CalculationDTO" /> instance</returns>
-        public CalculationDTO Map()
+        /// <returns>The created <see cref="CalculationDto" /> instance</returns>
+        public CalculationDto Map()
         {
-            return new CalculationDTO(_data);
+            return new CalculationDto(_data);
         }
     }
 }

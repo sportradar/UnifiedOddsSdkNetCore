@@ -4,9 +4,9 @@
 
 // ReSharper disable InconsistentNaming
 
-using System.ComponentModel;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
+using System.ComponentModel;
 
 namespace Sportradar.OddsFeed.SDK.Messages.REST
 {
@@ -99,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     {
     }
 
-    public partial class  matchSummaryEndpoint : RestMessage
+    public partial class matchSummaryEndpoint : RestMessage
     {
     }
 
@@ -130,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     public partial class competitorProfileEndpoint : RestMessage
     {
     }
-    
+
     public partial class simpleTeamProfileEndpoint : RestMessage
     {
     }
@@ -221,7 +221,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     public partial class stagePeriodEndpoint : RestMessage
     {
     }
-    
+
     public partial class raceScheduleEndpoint : RestMessage
     {
     }
@@ -231,6 +231,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     }
 
     public partial class CalculationResponseType : RestMessage
+    {
+    }
+    public partial class FilteredCalculationResponseType : RestMessage
     {
     }
 

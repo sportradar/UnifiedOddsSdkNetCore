@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
     /// <summary>
     /// Defines a data-transfer-object for available selections for the event
     /// </summary>
-    internal class AvailableSelectionsDto
+    internal class FilteredAvailableSelectionsDto
     {
         /// <summary>
         /// Gets the <see cref="URN"/> of the event
@@ -23,40 +23,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
         /// <summary>
         /// Gets the list of markets for this event
         /// </summary>
-        public IList<MarketDto> Markets { get; }
+        public IList<FilteredMarketDto> Markets { get; }
 
         /// <summary>
         /// Gets the <see cref="string"/> specifying when the associated message was generated (on the server side)
         /// </summary>
         public string GeneratedAt { get; }
 
-        internal AvailableSelectionsDto(AvailableSelectionsType availableSelections)
-        {
-            if (availableSelections == null)
-            {
-                throw new ArgumentNullException(nameof(availableSelections));
-            }
-
-            Event = URN.Parse(availableSelections.@event.id);
-            var markets = availableSelections.@event.markets;
-            Markets = markets != null
-                ? markets.Select(m => new MarketDto(m)).ToList().AsReadOnly()
-                : new ReadOnlyCollection<MarketDto>(new List<MarketDto>());
-            GeneratedAt = availableSelections.generated_at;
-        }
-
-        internal AvailableSelectionsDto(EventType eventType, string generatedAt)
+        internal FilteredAvailableSelectionsDto(FilteredEventType eventType)
         {
             if (eventType == null)
             {
                 throw new ArgumentNullException(nameof(eventType));
             }
 
-            Event = URN.Parse(eventType.id);
+            Event = URN.Parse(eventType.id.Replace(":live", string.Empty).Replace(":prematch", string.Empty));
             Markets = eventType.markets != null
-                          ? eventType.markets.Select(m => new MarketDto(m)).ToList().AsReadOnly()
-                          : new ReadOnlyCollection<MarketDto>(new List<MarketDto>());
-            GeneratedAt = generatedAt;
+                          ? eventType.markets.Select(m => new FilteredMarketDto(m)).ToList().AsReadOnly()
+                          : new ReadOnlyCollection<FilteredMarketDto>(new List<FilteredMarketDto>());
+            GeneratedAt = string.Empty;
         }
     }
 }

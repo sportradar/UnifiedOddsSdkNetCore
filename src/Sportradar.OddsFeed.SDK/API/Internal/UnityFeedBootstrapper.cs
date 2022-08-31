@@ -782,8 +782,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<IDataProvider<DrawDTO>>("drawFixtureProvider"),
                     new ResolvedParameter<IDataProvider<LotteryDTO>>("lotteryScheduleProvider"),
                     new ResolvedParameter<IDataProvider<EntityList<LotteryDTO>>>("lotteryListProvider"),
-                    new ResolvedParameter<IDataProvider<AvailableSelectionsDTO>>(),
+                    new ResolvedParameter<IDataProvider<AvailableSelectionsDto>>(),
                     new ResolvedParameter<ICalculateProbabilityProvider>(),
+                    new ResolvedParameter<ICalculateProbabilityFilteredProvider>(),
                     new ResolvedParameter<IDataProvider<IEnumerable<FixtureChangeDTO>>>(),
                     new ResolvedParameter<IDataProvider<IEnumerable<ResultChangeDTO>>>(),
                     new ResolvedParameter<IDataProvider<EntityList<SportEventSummaryDTO>>>("listSportEventProvider"),
@@ -1167,24 +1168,34 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<ICustomBetSelectionBuilder, CustomBetSelectionBuilder>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IDeserializer<AvailableSelectionsType>, Deserializer<AvailableSelectionsType>>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ISingleTypeMapperFactory<AvailableSelectionsType, AvailableSelectionsDTO>, AvailableSelectionsMapperFactory>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IDataProvider<AvailableSelectionsDTO>, DataProvider<AvailableSelectionsType, AvailableSelectionsDTO>>(
+            container.RegisterType<ISingleTypeMapperFactory<AvailableSelectionsType, AvailableSelectionsDto>, AvailableSelectionsMapperFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDataProvider<AvailableSelectionsDto>, DataProvider<AvailableSelectionsType, AvailableSelectionsDto>>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     config.ApiBaseUri + "/v1/custombet/{0}/available_selections",
                     new ResolvedParameter<IDataFetcher>(),
                     new ResolvedParameter<IDeserializer<AvailableSelectionsType>>(),
-                    new ResolvedParameter<ISingleTypeMapperFactory<AvailableSelectionsType, AvailableSelectionsDTO>>()));
+                    new ResolvedParameter<ISingleTypeMapperFactory<AvailableSelectionsType, AvailableSelectionsDto>>()));
 
             container.RegisterType<IDeserializer<CalculationResponseType>, Deserializer<CalculationResponseType>>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ISingleTypeMapperFactory<CalculationResponseType, CalculationDTO>, CalculationMapperFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISingleTypeMapperFactory<CalculationResponseType, CalculationDto>, CalculationMapperFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<ICalculateProbabilityProvider, CalculateProbabilityProvider>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     config.ApiBaseUri + "/v1/custombet/calculate",
                     new ResolvedParameter<IDataPoster>(),
                     new ResolvedParameter<IDeserializer<CalculationResponseType>>(),
-                    new ResolvedParameter<ISingleTypeMapperFactory<CalculationResponseType, CalculationDTO>>()));
+                    new ResolvedParameter<ISingleTypeMapperFactory<CalculationResponseType, CalculationDto>>()));
+
+            container.RegisterType<IDeserializer<FilteredCalculationResponseType>, Deserializer<FilteredCalculationResponseType>>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISingleTypeMapperFactory<FilteredCalculationResponseType, FilteredCalculationDto>, CalculationFilteredMapperFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ICalculateProbabilityFilteredProvider, CalculateProbabilityFilteredProvider>(
+                                                                                                new ContainerControlledLifetimeManager(),
+                                                                                                new InjectionConstructor(
+                                                                                                 config.ApiBaseUri + "/v1/custombet/calculate-filter",
+                                                                                                 new ResolvedParameter<IDataPoster>(),
+                                                                                                 new ResolvedParameter<IDeserializer<FilteredCalculationResponseType>>(),
+                                                                                                 new ResolvedParameter<ISingleTypeMapperFactory<FilteredCalculationResponseType, FilteredCalculationDto>>()));
 
             container.RegisterType<ICustomBetManager, CustomBetManager>(
                 new ContainerControlledLifetimeManager(),

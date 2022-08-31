@@ -7,9 +7,9 @@ using System.Collections.Generic;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
 {
     /// <summary>
-    /// Provides a probability calculation
+    /// Provides a probability calculation filter
     /// </summary>
-    public interface ICalculation
+    public interface ICalculationFilter
     {
         /// <summary>
         /// Gets the odds
@@ -24,11 +24,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
         /// <summary>
         /// The available selections
         /// </summary>
-        IEnumerable<IAvailableSelections> AvailableSelections => new List<IAvailableSelections>();
+        IEnumerable<IAvailableSelectionsFilter> AvailableSelections { get; }
 
         /// <summary>
         /// DateTime when API response was generated
         /// </summary>
-        DateTime? GeneratedAt => null;
+        DateTime? GeneratedAt { get; }
     }
 }

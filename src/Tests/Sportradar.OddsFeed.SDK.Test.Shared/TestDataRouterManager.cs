@@ -609,6 +609,12 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
+        public Task<ICalculationFilter> CalculateProbabilityFiltered(IEnumerable<ISelection> selections)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets the list of all fixtures that have changed in the last 24 hours
         /// </summary>

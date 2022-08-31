@@ -1,11 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet;
 using Sportradar.OddsFeed.SDK.Messages;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
@@ -14,6 +16,12 @@ namespace Sportradar.OddsFeed.SDK.API
     /// </summary>
     public interface ICustomBetManager
     {
+        /// <summary>
+        /// Returns an <see cref="ICustomBetSelectionBuilder"/> instance used to build selections
+        /// </summary>
+        /// <returns>An <see cref="ICustomBetSelectionBuilder"/> instance used to build selections</returns>
+        ICustomBetSelectionBuilder CustomBetSelectionBuilder { get; }
+
         /// <summary>
         /// Returns an <see cref="AvailableSelections"/> instance providing the available selections for the event associated with the provided <see cref="URN"/> identifier
         /// </summary>
@@ -29,9 +37,10 @@ namespace Sportradar.OddsFeed.SDK.API
         Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections);
 
         /// <summary>
-        /// Returns an <see cref="ICustomBetSelectionBuilder"/> instance used to build selections
+        /// Returns an <see cref="Calculation"/> instance providing the probability for the specified selections and filter out conflicting outcomes.
         /// </summary>
-        /// <returns>An <see cref="ICustomBetSelectionBuilder"/> instance used to build selections</returns>
-        ICustomBetSelectionBuilder CustomBetSelectionBuilder { get; }
+        /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>
+        /// <returns>An <see cref="Calculation"/> providing the probability for the specified selections</returns>
+        Task<ICalculationFilter> CalculateProbabilityFilterAsync(IEnumerable<ISelection> selections) => throw new NotImplementedException("Interface method not implemented.");
     }
 }
