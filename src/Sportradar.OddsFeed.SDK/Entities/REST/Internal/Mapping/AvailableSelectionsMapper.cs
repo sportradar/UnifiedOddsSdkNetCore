@@ -24,10 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <param name="data">A <see cref="AvailableSelectionsType"/> containing available selections</param>
         internal AvailableSelectionsMapper(AvailableSelectionsType data)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-            _data = data;
+            _data = data ?? throw new ArgumentNullException(nameof(data));
         }
 
         /// <summary>

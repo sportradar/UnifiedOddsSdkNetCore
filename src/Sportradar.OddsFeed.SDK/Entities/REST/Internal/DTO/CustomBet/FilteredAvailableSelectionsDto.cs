@@ -37,6 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
                 throw new ArgumentNullException(nameof(eventType));
             }
 
+            //TODO replacements should be removed once api bug fix
             Event = URN.Parse(eventType.id.Replace(":live", string.Empty).Replace(":prematch", string.Empty));
             Markets = eventType.markets != null
                           ? eventType.markets.Select(m => new FilteredMarketDto(m)).ToList().AsReadOnly()

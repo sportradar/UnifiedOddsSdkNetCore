@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// <summary>
     /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="CalculationResponseType" /> instances to <see cref="CalculationDto" /> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{CalculationDTO}" />
+    /// <seealso cref="ISingleTypeMapper{CalculationDto}" />
     internal class CalculationMapper : ISingleTypeMapper<CalculationDto>
     {
         /// <summary>

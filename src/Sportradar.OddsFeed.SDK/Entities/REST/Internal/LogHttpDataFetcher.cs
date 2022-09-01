@@ -57,15 +57,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public override async Task<Stream> GetDataAsync(Uri uri)
         {
             var dataId = _sequenceGenerator.GetNext().ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together.
-            var watch = new Stopwatch();
 
             var logBuilder = new StringBuilder();
             logBuilder.Append("Id:").Append(dataId).Append(" Fetching url: ").Append(uri.AbsoluteUri);
 
+            var watch = Stopwatch.StartNew();
             Stream responseStream;
             try
             {
-                watch.Start();
                 responseStream = await base.GetDataAsync(uri).ConfigureAwait(false);
                 watch.Stop();
             }
@@ -112,15 +111,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public override Stream GetData(Uri uri)
         {
             var dataId = _sequenceGenerator.GetNext().ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together
-            var watch = new Stopwatch();
 
             var logBuilder = new StringBuilder();
             logBuilder.Append("Id:").Append(dataId).Append(" Fetching url: ").Append(uri.AbsoluteUri);
 
+            var watch = Stopwatch.StartNew();
             Stream responseStream;
             try
             {
-                watch.Start();
                 responseStream = base.GetData(uri);
                 watch.Stop();
             }
