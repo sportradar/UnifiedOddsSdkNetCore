@@ -39,6 +39,18 @@
     <None Update="REST XMLs\bookmaker_details.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="REST XMLs\CustomBet\available_selections.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\CustomBet\calculate_filter_response.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\CustomBet\calculate_request.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REST XMLs\CustomBet\calculate_response.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="REST XMLs\events.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -462,6 +474,10 @@
     <None Update="XMLs\snapshot_completed.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="REST XMLs\CustomBet\" />
   </ItemGroup>
 
 </Project>

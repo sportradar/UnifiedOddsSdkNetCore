@@ -5,7 +5,6 @@ using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
@@ -40,8 +39,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
             Event = URN.Parse(availableSelections.@event.id);
             var markets = availableSelections.@event.markets;
             Markets = markets != null
-                ? markets.Select(m => new MarketDto(m)).ToList().AsReadOnly()
-                : new ReadOnlyCollection<MarketDto>(new List<MarketDto>());
+                ? markets.Select(m => new MarketDto(m)).ToList()
+                : new List<MarketDto>();
             GeneratedAt = availableSelections.generated_at;
         }
 
@@ -54,8 +53,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
 
             Event = URN.Parse(eventType.id);
             Markets = eventType.markets != null
-                          ? eventType.markets.Select(m => new MarketDto(m)).ToList().AsReadOnly()
-                          : new ReadOnlyCollection<MarketDto>(new List<MarketDto>());
+                          ? eventType.markets.Select(m => new MarketDto(m)).ToList()
+                          : new List<MarketDto>();
             GeneratedAt = generatedAt;
         }
     }

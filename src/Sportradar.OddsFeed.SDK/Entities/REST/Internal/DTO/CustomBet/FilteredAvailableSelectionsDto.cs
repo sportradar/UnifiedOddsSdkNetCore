@@ -5,7 +5,6 @@ using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
@@ -37,11 +36,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
                 throw new ArgumentNullException(nameof(eventType));
             }
 
-            //TODO replacements should be removed once api bug fix
-            Event = URN.Parse(eventType.id.Replace(":live", string.Empty).Replace(":prematch", string.Empty));
+            Event = URN.Parse(eventType.id);
             Markets = eventType.markets != null
-                          ? eventType.markets.Select(m => new FilteredMarketDto(m)).ToList().AsReadOnly()
-                          : new ReadOnlyCollection<FilteredMarketDto>(new List<FilteredMarketDto>());
+                          ? eventType.markets.Select(m => new FilteredMarketDto(m)).ToList()
+                          : new List<FilteredMarketDto>();
             GeneratedAt = string.Empty;
         }
     }

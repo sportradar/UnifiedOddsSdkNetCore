@@ -1357,7 +1357,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             return new AvailableSelections(result);
         }
 
-        public async Task<ICalculation> CalculateProbability(IEnumerable<ISelection> selections)
+        public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
         {
             var enumerable = selections.ToList();
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "CalculateProbability", MeasurementUnit = Unit.Requests };
@@ -1382,11 +1382,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 }
             }
 
+            //if (result != null)
+            //{
+            //    await _cacheManager.SaveDtoAsync(id, result, _defaultLocale, DtoType.Calculation, null).ConfigureAwait(false);
+            //}
+
             WriteLog($"Executing CalculateProbability took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
             return new Calculation(result);
         }
 
-        public async Task<ICalculationFilter> CalculateProbabilityFiltered(IEnumerable<ISelection> selections)
+        public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections)
         {
             var enumerable = selections.ToList();
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "CalculateProbabilityFiltered", MeasurementUnit = Unit.Requests };

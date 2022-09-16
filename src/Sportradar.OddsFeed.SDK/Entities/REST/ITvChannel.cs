@@ -8,7 +8,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     /// <summary>
     /// Defines a contract implemented by classes representing TV channels
     /// </summary>
-    public interface ITvChannel
+    public interface ITvChannel : IEntityPrinter
     {
         /// <summary>
         /// Gets a name of the channel represented by the current <see cref="ITvChannel"/> instance

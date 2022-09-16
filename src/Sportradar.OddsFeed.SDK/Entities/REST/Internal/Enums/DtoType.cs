@@ -113,7 +113,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums
         /// </summary>
         SimpleTeamProfile,
         /// <summary>
-        /// The available selections for the event
+        /// The custom bet available selections for the event
         /// </summary>
         AvailableSelections,
         /// <summary>
@@ -123,6 +123,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums
         /// <summary>
         /// The period summary
         /// </summary>
-        PeriodSummary
+        PeriodSummary,
+        /// <summary>
+        /// The custom bet calculation for the event
+        /// </summary>
+        Calculation
     }
 }

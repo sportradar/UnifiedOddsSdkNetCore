@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using System.Collections.Generic;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
     /// Defines a contract implemented by classes providing coverage information
     /// </summary>
-    public interface ICoverageInfo
+    public interface ICoverageInfo : IEntityPrinter
     {
         /// <summary>
         /// Gets a <see cref="string"/> describing the level of the available coverage

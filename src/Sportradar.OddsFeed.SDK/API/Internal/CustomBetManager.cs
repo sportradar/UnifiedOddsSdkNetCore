@@ -70,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             try
             {
                 _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbability({selections})");
-                return await _dataRouterManager.CalculateProbability(selections).ConfigureAwait(false);
+                return await _dataRouterManager.CalculateProbabilityAsync(selections).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {
@@ -94,7 +94,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             try
             {
                 _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbabilityFilter({selections})");
-                return await _dataRouterManager.CalculateProbabilityFiltered(selections).ConfigureAwait(false);
+                return await _dataRouterManager.CalculateProbabilityFilteredAsync(selections).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {

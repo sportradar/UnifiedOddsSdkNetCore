@@ -184,14 +184,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>
         /// <returns>The probability calculation for the specified selections</returns>
-        Task<ICalculation> CalculateProbability(IEnumerable<ISelection> selections);
+        Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections);
 
         /// <summary>
         /// Gets the probability calculation for the specified selections (filtered)
         /// </summary>
         /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>
         /// <returns>The probability calculation for the specified selections</returns>
-        Task<ICalculationFilter> CalculateProbabilityFiltered(IEnumerable<ISelection> selections);
+        Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections);
 
         /// <summary>
         /// Gets the list of all fixtures that have changed in the last 24 hours

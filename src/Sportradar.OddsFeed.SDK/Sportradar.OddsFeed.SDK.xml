@@ -22362,6 +22362,11 @@
             Gets the <see cref="T:System.String"/> specifying when the associated message was generated (on the server side)
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.CalculationDto.AvailableSelections">
+            <summary>
+            Gets the available selections
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.FilteredAvailableSelectionsDto">
             <summary>
             Defines a data-transfer-object for available selections for the event
@@ -22400,6 +22405,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.FilteredCalculationDto.GeneratedAt">
             <summary>
             Gets the <see cref="T:System.String"/> specifying when the associated message was generated (on the server side)
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.FilteredCalculationDto.AvailableSelections">
+            <summary>
+            Gets the available selections
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet.FilteredMarketDto">
@@ -27941,7 +27951,7 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType.AvailableSelections">
             <summary>
-            The available selections for the event
+            The custom bet available selections for the event
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType.TournamentInfoList">
@@ -27952,6 +27962,11 @@
         <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType.PeriodSummary">
             <summary>
             The period summary
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums.DtoType.Calculation">
+            <summary>
+            The custom bet calculation for the event
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.EventArguments.TournamentReceivedEventArgs">
@@ -28355,14 +28370,14 @@
             <param name="id">The id of the event</param>
             <returns>The available selections for event</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.CalculateProbability(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.CalculateProbabilityAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.CustomBet.ISelection})">
             <summary>
             Gets the probability calculation for the specified selections
             </summary>
             <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be calculated</param>
             <returns>The probability calculation for the specified selections</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.CalculateProbabilityFiltered(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.CustomBet.ISelection})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.Internal.IDataRouterManager.CalculateProbabilityFilteredAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.REST.CustomBet.ISelection})">
             <summary>
             Gets the probability calculation for the specified selections (filtered)
             </summary>

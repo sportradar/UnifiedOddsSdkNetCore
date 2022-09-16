@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -11,6 +12,8 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery;
@@ -54,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         private readonly ICacheManager _cacheManager;
         private readonly IDeserializer<RestMessage> _restDeserializer = new Deserializer<RestMessage>();
         private TimeSpan _delay = TimeSpan.Zero;
-        private bool _delayVariable = false;
+        private bool _delayVariable;
         private int _delayPercent = 10;
 
         public int TotalRestCalls => RestCalls.Sum(s => s.Value);
@@ -377,7 +380,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
         {
             Debug.Print($"DRM-GetCompetitorProfileAsync for {id} and culture {culture.TwoLetterISOLanguageName} - START");
             var filePath = GetFile($"{culture.TwoLetterISOLanguageName}.competitor.{id?.Id ?? 1}.xml", culture);
-            CompetitorProfileDTO dto = null;
+            CompetitorProfileDTO dto;
 
             await ExecuteDelayAsync(id, culture).ConfigureAwait(false);
 
@@ -493,10 +496,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
             await ExecuteDelayAsync("sr:variant:" + result.Id, culture).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                await LogSaveDtoAsync(URN.Parse("sr:variant:" + result.Id), result, culture, DtoType.MarketDescription, null).ConfigureAwait(false);
-            }
+            await LogSaveDtoAsync(URN.Parse("sr:variant:" + result.Id), result, culture, DtoType.MarketDescription, null).ConfigureAwait(false);
         }
 
         public async Task GetVariantDescriptionsAsync(CultureInfo culture)
@@ -599,20 +599,92 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             return null;
         }
 
-        public Task<IAvailableSelections> GetAvailableSelectionsAsync(URN id)
+        public async Task<IAvailableSelections> GetAvailableSelectionsAsync(URN id)
         {
-            throw new NotImplementedException();
+            RecordCall("GetAvailableSelectionsAsync");
+            var filePath = GetFile("available_selections.xml", CultureInfo.CurrentCulture);
+            var restDeserializer = new Deserializer<AvailableSelectionsType>();
+            var mapper = new AvailableSelectionsMapperFactory();
+            var stream = FileHelper.OpenFile(filePath);
+            var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
+
+            await ExecuteDelayAsync("available_selections", CultureInfo.CurrentCulture).ConfigureAwait(false);
+
+            if (id.Id == 0)
+            {
+                result = null;
+            }
+            else if (id.Id != 31561675)
+            {
+                result = new AvailableSelectionsDto(MessageFactoryRest.GetAvailableSelections(id, StaticRandom.I100));
+            }
+
+            if (result != null)
+            {
+                await LogSaveDtoAsync(URN.Parse($"sr:sels:{result.Markets.Count}"), result, CultureInfo.CurrentCulture, DtoType.AvailableSelections, null).ConfigureAwait(false);
+                return new AvailableSelections(result);
+            }
+
+            return null;
         }
 
-        public Task<ICalculation> CalculateProbability(IEnumerable<ISelection> selections)
+        public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
         {
-            throw new NotImplementedException();
+            RecordCall("CalculateProbabilityAsync");
+            var filePath = GetFile("calculate_response.xml", CultureInfo.CurrentCulture);
+            var restDeserializer = new Deserializer<CalculationResponseType>();
+            var mapper = new CalculationMapperFactory();
+            var stream = FileHelper.OpenFile(filePath);
+            var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
+
+            await ExecuteDelayAsync("calculate", CultureInfo.CurrentCulture).ConfigureAwait(false);
+
+            if (selections == null)
+            {
+                result = null;
+            }
+            else if (selections.IsNullOrEmpty())
+            {
+                result = new CalculationDto(MessageFactoryRest.GetCalculationResponse(StaticRandom.U1000, StaticRandom.I100));
+            }
+
+            if (result != null)
+            {
+                await LogSaveDtoAsync(URN.Parse($"sr:calc:{result.AvailableSelections.Count}"), result, CultureInfo.CurrentCulture, DtoType.Calculation, null).ConfigureAwait(false);
+                return new Calculation(result);
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
-        public Task<ICalculationFilter> CalculateProbabilityFiltered(IEnumerable<ISelection> selections)
+        public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections)
         {
-            throw new NotImplementedException();
+            RecordCall("CalculateProbabilityFilteredAsync");
+            var filePath = GetFile("calculate_filter_response.xml", CultureInfo.CurrentCulture);
+            var restDeserializer = new Deserializer<FilteredCalculationResponseType>();
+            var mapper = new CalculationFilteredMapperFactory();
+            var stream = FileHelper.OpenFile(filePath);
+            var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
+
+            await ExecuteDelayAsync("calculate_filter", CultureInfo.CurrentCulture).ConfigureAwait(false);
+
+            if (selections == null)
+            {
+                result = null;
+            }
+            else if (selections.IsNullOrEmpty())
+            {
+                result = new FilteredCalculationDto(MessageFactoryRest.GetFilteredCalculationResponse(StaticRandom.U1000, StaticRandom.I100));
+            }
+
+            if (result != null)
+            {
+                await LogSaveDtoAsync(URN.Parse($"sr:calcfilt:{result.AvailableSelections.Count}"), result, CultureInfo.CurrentCulture, DtoType.Calculation, null).ConfigureAwait(false);
+                return new CalculationFilter(result);
+            }
+
+            return null;
         }
 
         /// <summary>

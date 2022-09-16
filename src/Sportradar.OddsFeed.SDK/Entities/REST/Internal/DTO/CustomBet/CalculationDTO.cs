@@ -28,6 +28,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
         /// </summary>
         public string GeneratedAt { get; }
 
+        /// <summary>
+        /// Gets the available selections
+        /// </summary>
         public IList<AvailableSelectionsDto> AvailableSelections { get; }
 
         internal CalculationDto(CalculationResponseType calculation)

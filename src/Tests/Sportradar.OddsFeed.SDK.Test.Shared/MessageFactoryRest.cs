@@ -1,12 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Messages.REST;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Messages.REST;
 using SR = Sportradar.OddsFeed.SDK.Test.Shared.StaticRandom;
 // ReSharper disable UnusedMember.Local
 
@@ -106,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
 
         public static coverage GetCoverage()
         {
-            return new coverage {includes = "coverage includes " + SR.S1000};
+            return new coverage { includes = "coverage includes " + SR.S1000 };
         }
 
         public static coverageInfo GetCoverageInfo(int subItemCount = 0)
@@ -358,7 +359,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
             {
                 market_id = id == 0 ? SR.S1000 : id.ToString(),
                 product_id = producerId,
-                product_ids = $"{producerId}|{producerId+1}",
+                product_ids = $"{producerId}|{producerId + 1}",
                 sport_id = SR.Urn("sport", SR.I100).ToString(),
                 sov_template = SR.S1000,
                 valid_for = "setnr=" + SR.I100,
@@ -678,6 +679,125 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 }
             }
             return teams;
+        }
+
+        public static EventType GetEventType(URN eventId, int nbrMarkets = 10)
+        {
+            var marketTypes = new List<MarketType>();
+            for (var i = 0; i < nbrMarkets; i++)
+            {
+                var textOrNbr = SR.B;
+                var startNbr = SR.I100;
+                var outcomeTypes = new List<OutcomeType>();
+                for (var j = 0; j < SR.I(nbrMarkets) + 1; j++)
+                {
+                    var outcomeType = new OutcomeType
+                    {
+                        id = textOrNbr ? $"sr:exact_goals:3+:{startNbr + j}" : (startNbr + j).ToString()
+                    };
+                    outcomeTypes.Add(outcomeType);
+                }
+
+                var marketType = new MarketType
+                {
+                    id = i + 1,
+                    specifiers = SR.I100 > 95 ? "total=1" : string.Empty,
+                    outcome = outcomeTypes.ToArray()
+                };
+                marketTypes.Add(marketType);
+            }
+
+            return new EventType
+            {
+                id = eventId.ToString(),
+                markets = marketTypes.ToArray()
+            };
+        }
+
+        public static FilteredEventType GetFilteredEventType(URN eventId, int nbrMarkets = 10)
+        {
+            var marketTypes = new List<FilteredMarketType>();
+            for (var i = 0; i < nbrMarkets; i++)
+            {
+                var textOrNbr = SR.B;
+                var startNbr = SR.I100;
+                var outcomeTypes = new List<FilteredOutcomeType>();
+                for (var j = 0; j < SR.I(nbrMarkets) + 1; j++)
+                {
+                    var outcomeType = new FilteredOutcomeType
+                    {
+                        id = textOrNbr ? $"sr:exact_goals:3+:{startNbr + j}" : (startNbr + j).ToString(),
+                        conflict = SR.B,
+                        conflictSpecified = true
+                    };
+                    outcomeTypes.Add(outcomeType);
+                }
+
+                var marketType = new FilteredMarketType
+                {
+                    id = i + 1,
+                    specifiers = SR.I100 > 95 ? "total=1" : string.Empty,
+                    outcome = outcomeTypes.ToArray(),
+                    conflict = SR.B,
+                    conflictSpecified = true
+                };
+                marketTypes.Add(marketType);
+            }
+
+            return new FilteredEventType
+            {
+                id = eventId.ToString(),
+                markets = marketTypes.ToArray()
+            };
+        }
+
+        public static AvailableSelectionsType GetAvailableSelections(URN eventId, int nbrMarkets = 10)
+        {
+            return new AvailableSelectionsType
+            {
+                generated_at = DateTime.Now.ToString(SdkInfo.ISO8601_24H_FullFormat),
+                @event = GetEventType(eventId, nbrMarkets)
+            };
+        }
+
+        public static CalculationResponseType GetCalculationResponse(URN eventId, int nbrSelections = 5)
+        {
+            var eventTypes = new List<EventType>();
+            for (var i = 0; i < nbrSelections; i++)
+            {
+                var eventType = GetEventType(eventId, SR.I(10));
+                eventTypes.Add(eventType);
+            }
+            return new CalculationResponseType
+            {
+                generated_at = DateTime.Now.ToString(SdkInfo.ISO8601_24H_FullFormat),
+                available_selections = eventTypes.ToArray(),
+                calculation = new CalculationResultType
+                {
+                    odds = SR.D(100),
+                    probability = SR.D0
+                }
+            };
+        }
+
+        public static FilteredCalculationResponseType GetFilteredCalculationResponse(URN eventId, int nbrSelections = 5)
+        {
+            var eventTypes = new List<FilteredEventType>();
+            for (var i = 0; i < nbrSelections; i++)
+            {
+                var eventType = GetFilteredEventType(eventId, SR.I(10));
+                eventTypes.Add(eventType);
+            }
+            return new FilteredCalculationResponseType
+            {
+                generated_at = DateTime.Now.ToString(SdkInfo.ISO8601_24H_FullFormat),
+                available_selections = eventTypes.ToArray(),
+                calculation = new FilteredCalculationResultType
+                {
+                    odds = SR.D(100),
+                    probability = SR.D0
+                }
+            };
         }
     }
 }
