@@ -689,7 +689,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 var textOrNbr = SR.B;
                 var startNbr = SR.I100;
                 var outcomeTypes = new List<OutcomeType>();
-                for (var j = 0; j < SR.I(nbrMarkets) + 1; j++)
+                for (var j = 0; j < SR.I(nbrMarkets + 1); j++)
                 {
                     var outcomeType = new OutcomeType
                     {
@@ -722,7 +722,7 @@ namespace Sportradar.OddsFeed.SDK.Test.Shared
                 var textOrNbr = SR.B;
                 var startNbr = SR.I100;
                 var outcomeTypes = new List<FilteredOutcomeType>();
-                for (var j = 0; j < SR.I(nbrMarkets) + 1; j++)
+                for (var j = 0; j < SR.I(nbrMarkets + 1); j++)
                 {
                     var outcomeType = new FilteredOutcomeType
                     {

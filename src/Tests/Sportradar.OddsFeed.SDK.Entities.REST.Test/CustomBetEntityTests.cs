@@ -10,6 +10,7 @@ using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
@@ -104,6 +105,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                     MarketCompare(sourceMarket, resultMarket);
                 }
             }
+            var marketCount = calculation.AvailableSelections.SelectMany(s => s.Markets).Count();
+            var outcomeCount = calculation.AvailableSelections.SelectMany(s => s.Markets).SelectMany(o => o.Outcomes).Count();
+            Trace.WriteLine($"Calculation has {marketCount} markets and {outcomeCount} outcomes.");
         }
 
 
@@ -128,6 +132,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
             {
                 Assert.AreEqual(SdkInfo.ParseDate(calculationResponseType.generated_at), calculation.GeneratedAt);
             }
+            var marketCount = calculation.AvailableSelections.SelectMany(s => s.Markets).Count();
+            var outcomeCount = calculation.AvailableSelections.SelectMany(s => s.Markets).SelectMany(o => o.Outcomes).Count();
+            Trace.WriteLine($"Calculation has {marketCount} markets and {outcomeCount} outcomes.");
         }
 
         [TestMethod]
@@ -164,6 +171,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
                     MarketCompare(sourceMarket, resultMarket);
                 }
             }
+            var marketCount = calculation.AvailableSelections.SelectMany(s => s.Markets).Count();
+            var outcomeCount = calculation.AvailableSelections.SelectMany(s => s.Markets).SelectMany(o => o.Outcomes).Count();
+            Trace.WriteLine($"Calculation has {marketCount} markets and {outcomeCount} outcomes.");
         }
 
         [TestMethod]
