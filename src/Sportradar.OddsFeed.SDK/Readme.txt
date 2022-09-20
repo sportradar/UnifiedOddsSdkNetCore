@@ -3,6 +3,9 @@
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html
 
 CHANGE LOG:
+2022-09-20  1.28.0
+CustomBet - added support for calculate-filter endpoint
+
 2022-07-15  1.27.0
 Improved API data distribution to SportEventCache
 Setup that each API endpoint on critical path has its own HttpClient
