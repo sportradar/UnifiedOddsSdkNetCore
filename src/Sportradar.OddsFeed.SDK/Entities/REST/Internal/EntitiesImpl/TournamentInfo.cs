@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="categorySummary">The category summary</param>
         /// <param name="currentSeasonInfo">The full current season info</param>
         public TournamentInfo(TournamentInfoBasicCI cacheItem, ICategorySummary categorySummary, ICurrentSeasonInfo currentSeasonInfo)
-            : base (cacheItem.Id, cacheItem.Name as IReadOnlyDictionary<CultureInfo, string>)
+            : base(cacheItem.Id, cacheItem.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
             Category = categorySummary;
             CurrentSeason = currentSeasonInfo;

@@ -1,16 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -23,6 +24,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Occurs when data from Sports API arrives
         /// </summary>
         event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
+
+        /// <summary>
+        /// The exception handling strategy
+        /// </summary>
+        ExceptionHandlingStrategy ExceptionHandlingStrategy { get; }
 
         /// <summary>
         /// Gets the <see cref="SportEventSummaryDTO"/> or its derived type from the summary endpoint

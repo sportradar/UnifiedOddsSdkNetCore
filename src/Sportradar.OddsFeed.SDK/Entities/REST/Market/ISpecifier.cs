@@ -7,7 +7,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
     /// Defines a contract implemented by classes representing market / outright / outcome specifiers
     /// representing a part of unique identifiers
     /// </summary>
-    public interface ISpecifier {
+    public interface ISpecifier
+    {
         /// <summary>
         /// Gets the type name of the specifier represented by the current instance
         /// </summary>

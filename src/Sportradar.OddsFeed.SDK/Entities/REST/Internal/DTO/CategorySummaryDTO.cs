@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="name">The name of the category</param>
         /// <param name="countryCode">A country code</param>
         internal CategorySummaryDTO(string id, string name, string countryCode)
-            :base(id, name)
+            : base(id, name)
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();

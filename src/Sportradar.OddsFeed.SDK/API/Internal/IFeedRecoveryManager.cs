@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Opens the current instance
         /// </summary>
         /// <param name="interests">The interests for which to open trackers</param>
-        void Open(IEnumerable<MessageInterest> interests);
+        void Open(ICollection<MessageInterest> interests);
 
         /// <summary>
         /// Closes the current instance

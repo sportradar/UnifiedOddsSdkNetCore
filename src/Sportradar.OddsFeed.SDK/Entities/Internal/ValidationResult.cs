@@ -11,16 +11,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// The validation was successful, the validated object is valid
         /// </summary>
-        SUCCESS,
+        Success,
 
         /// <summary>
         /// The validation detected some minor issues, but the validated object can still be used for further processing
         /// </summary>
-        PROBLEMS_DETECTED,
+        ProblemsDetected,
 
         /// <summary>
         /// The validation failed, the validated object is not valid
         /// </summary>
-        FAILURE
+        Failure
     }
 }

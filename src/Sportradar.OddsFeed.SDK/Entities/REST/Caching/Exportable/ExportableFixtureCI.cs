@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public IDictionary<string, string> ExtraInfo { get; set; }
 
         /// <summary>
-        /// A <see cref="IEnumerable{T}"/> representation of the tv channels
+        /// A <see cref="IEnumerable{T}"/> representation of the TV channels
         /// </summary>
         public IEnumerable<ExportableTvChannelCI> TvChannels { get; set; }
 

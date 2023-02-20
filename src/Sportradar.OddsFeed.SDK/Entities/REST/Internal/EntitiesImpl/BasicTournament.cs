@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                                ISportEntityFactory sportEntityFactory,
                                ISportEventCache sportEventCache,
                                ISportDataCache sportDataCache,
-                               IEnumerable<CultureInfo> cultures,
+                               IReadOnlyCollection<CultureInfo> cultures,
                                ExceptionHandlingStrategy exceptionStrategy)
             : base(id, sportId, ExecutionLogPrivate, sportEventCache, cultures, exceptionStrategy)
         {
@@ -176,7 +176,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
-            return tasks.Select(s=>s.Result);
+            return tasks.Select(s => s.Result);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 ? await tournamentInfoCI.GetScheduleAsync(Cultures).ConfigureAwait(false)
                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(tournamentInfoCI.GetScheduleAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
 
-            return item?.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, SportId, Cultures, ExceptionStrategy));
+            return item?.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, SportId, Cultures.ToList(), ExceptionStrategy));
         }
     }
 }

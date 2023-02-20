@@ -16,39 +16,40 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     /// </summary>
     internal class SportEventStatisticsDTO
     {
-        public IEnumerable<TeamStatisticsDTO> TotalStatisticsDTOs { get; internal set; }
+        public IEnumerable<TeamStatisticsDTO> TotalStatisticsDtos { get; internal set; }
 
-        public IEnumerable<PeriodStatisticsDTO> PeriodStatisticsDTOs { get; internal set; }
+        public IEnumerable<PeriodStatisticsDTO> PeriodStatisticsDtos { get; internal set; }
 
         // from feed
         public SportEventStatisticsDTO(statisticsType result)
         {
             Guard.Argument(result, nameof(result)).NotNull();
 
-            var totalStatisticsDTOs = new List<TeamStatisticsDTO>();
-            totalStatisticsDTOs.Add(new TeamStatisticsDTO(
-                null,
-                null,
-                HomeAway.Home,
-                result.yellow_cards?.home,
-                result.red_cards?.home,
-                result.yellow_red_cards?.home,
-                result.corners?.home,
-                result.green_cards?.home
-            ));
-            totalStatisticsDTOs.Add(new TeamStatisticsDTO(
-                null,
-                null,
-                HomeAway.Away,
-                result.yellow_cards?.away,
-                result.red_cards?.away,
-                result.yellow_red_cards?.away,
-                result.corners?.away,
-                result.green_cards?.away
-            ));
-            TotalStatisticsDTOs = totalStatisticsDTOs;
+            TotalStatisticsDtos = new List<TeamStatisticsDTO>
+                                  {
+                                      new TeamStatisticsDTO(
+                                                            null,
+                                                            null,
+                                                            HomeAway.Home,
+                                                            result.yellow_cards?.home,
+                                                            result.red_cards?.home,
+                                                            result.yellow_red_cards?.home,
+                                                            result.corners?.home,
+                                                            result.green_cards?.home
+                                                           ),
+                                      new TeamStatisticsDTO(
+                                                            null,
+                                                            null,
+                                                            HomeAway.Away,
+                                                            result.yellow_cards?.away,
+                                                            result.red_cards?.away,
+                                                            result.yellow_red_cards?.away,
+                                                            result.corners?.away,
+                                                            result.green_cards?.away
+                                                           )
+                                  };
 
-            PeriodStatisticsDTOs = null;
+            PeriodStatisticsDtos = null;
         }
 
         // from API
@@ -57,7 +58,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(statistics, nameof(statistics)).NotNull();
 
             var teamStats = new List<TeamStatisticsDTO>();
-            if (statistics.totals != null && statistics.totals.Any())
+            if (statistics.totals?.Any() == true)
             {
                 // can here be more then 1 sub-array? 
                 foreach (var total in statistics.totals)
@@ -68,7 +69,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     }
                 }
 
-                TotalStatisticsDTOs = teamStats;
+                TotalStatisticsDtos = teamStats;
             }
 
             if (statistics.periods != null)
@@ -78,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 {
                     periodStats.Add(new PeriodStatisticsDTO(period, homeAwayCompetitors));
                 }
-                PeriodStatisticsDTOs = periodStats;
+                PeriodStatisticsDtos = periodStats;
             }
         }
     }

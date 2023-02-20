@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 
@@ -33,16 +33,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
                 : null;
         }
 
-        internal OutcomeDescription(MarketOutcomeCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
+        internal OutcomeDescription(MarketOutcomeCacheItem cacheItem, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
-
             Id = cacheItem.Id;
-            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureList.ToDictionary(culture => culture, cacheItem.GetName));
-            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => !string.IsNullOrEmpty(cacheItem.GetDescription(c))).ToDictionary(c => c, cacheItem.GetDescription));
+            _names = new ReadOnlyDictionary<CultureInfo, string>(cultures.ToDictionary(culture => culture, cacheItem.GetName));
+            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultures.Where(c => !string.IsNullOrEmpty(cacheItem.GetDescription(c))).ToDictionary(c => c, cacheItem.GetDescription));
         }
     }
 }

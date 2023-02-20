@@ -3,10 +3,12 @@
 */
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Dawn;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Castle.Core.Internal;
+using Dawn;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.Messages
 {
@@ -63,7 +65,8 @@ namespace Sportradar.OddsFeed.SDK.Messages
             new Tuple<string, ResourceTypeGroup>("market", ResourceTypeGroup.OTHER),
             new Tuple<string, ResourceTypeGroup>("lottery", ResourceTypeGroup.LOTTERY),
             new Tuple<string, ResourceTypeGroup>("draw", ResourceTypeGroup.DRAW),
-            new Tuple<string, ResourceTypeGroup>("competition_group", ResourceTypeGroup.STAGE)
+            new Tuple<string, ResourceTypeGroup>("competition_group", ResourceTypeGroup.STAGE),
+            new Tuple<string, ResourceTypeGroup>("group", ResourceTypeGroup.OTHER)
         };
 
         /// <summary>
@@ -112,7 +115,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// Initializes a new instance of the <see cref="URN"/> class.
         /// </summary>
         /// <param name="urn">The urn to be used as a template</param>
-        public URN(URN urn) 
+        public URN(URN urn)
             : this(urn?.Prefix, urn?.Type, urn?.Id ?? 0)
         {
         }
@@ -125,6 +128,18 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <exception cref="FormatException">The format of the provided representation is not correct</exception>
         public static URN Parse(string urnString)
         {
+            return Parse(urnString, false);
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="URN"/> instance by parsing the provided <see cref="string"/>
+        /// </summary>
+        /// <param name="urnString">The <see cref="string"/> representation of the URN</param>
+        /// <param name="isCustomType">Indicates if the urn type is for custom use</param>
+        /// <returns>A <see cref="URN"/> constructed by parsing the provided string representation</returns>
+        /// <exception cref="FormatException">The format of the provided representation is not correct</exception>
+        public static URN Parse(string urnString, bool isCustomType)
+        {
             Guard.Argument(urnString, nameof(urnString)).NotNull().NotEmpty();
 
             var match = Regex.Match(urnString, RegexPattern);
@@ -134,9 +149,9 @@ namespace Sportradar.OddsFeed.SDK.Messages
             }
 
             var type = match.Groups[TypeGroupName].Value;
-            if (Types.All(t => t.Item1 != type))
+            if (!isCustomType && Types.All(t => t.Item1 != type))
             {
-                //throw new FormatException($"Resource type name: '{type}' is not supported");
+                SdkLoggerFactory.GetLoggerForExecution(typeof(URN)).LogDebug($"Urn resource type name: '{type}' is not supported. Input={urnString}");
             }
 
             return new URN(
@@ -158,6 +173,29 @@ namespace Sportradar.OddsFeed.SDK.Messages
             try
             {
                 urn = Parse(urnString);
+                success = true;
+            }
+            catch (Exception)
+            {
+                urn = null;
+            }
+            return success;
+        }
+
+        /// <summary>
+        /// Tries to construct a <see cref="URN"/> instance by parsing the provided <see cref="string"/>
+        /// </summary>
+        /// <param name="urnString">The <see cref="string"/> representation of the URN</param>
+        /// <param name="isCustomType">Indicates if the urn type is for custom use</param>
+        /// <param name="urn">When the method returns it contains the <see cref="URN"/> constructed by parsing the provided string if the parsing was successful, otherwise null</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool TryParse(string urnString, bool isCustomType, out URN urn)
+        {
+            var success = false;
+
+            try
+            {
+                urn = Parse(urnString, isCustomType);
                 success = true;
             }
             catch (Exception)

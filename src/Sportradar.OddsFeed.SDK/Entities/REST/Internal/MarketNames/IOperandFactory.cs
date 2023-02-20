@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="specifiers">A <see cref="IReadOnlyDictionary{String,String}"/> representing specifiers for the market associated with the constructed operand.</param>
         /// <param name="operandExpression">A <see cref="string"/> representation of the operand.</param>
         /// <returns>The constructed <see cref="IOperand"/> instance.</returns>
-        /// <exception cref="FormatException">The format of the <code>operandExpression</code> is not correct</exception>
+        /// <exception cref="FormatException">The format of the <c>operandExpression</c> is not correct</exception>
         IOperand BuildOperand(IReadOnlyDictionary<string, string> specifiers, string operandExpression);
     }
 }

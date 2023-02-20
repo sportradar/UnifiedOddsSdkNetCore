@@ -10,24 +10,14 @@ namespace Sportradar.OddsFeed.SDK.Common
     /// <summary>
     /// Provides methods to get logger for specific <see cref="LoggerType"/>
     /// </summary>
-    public class SdkLoggerFactory
+    public static class SdkLoggerFactory
     {
         /// <summary>
         /// Default repository name for the SDK
         /// </summary>
         internal const string SdkLogRepositoryName = "Sportradar.OddsFeed.SDK";
 
-        private static ILoggerFactory _factory;
-
-        //set by dependency injection
-        /// <summary>
-        /// The constructor used to set <see cref="ILoggerFactory"/> for SDK
-        /// </summary>
-        /// <param name="factory"></param>
-        public SdkLoggerFactory(ILoggerFactory factory)
-        {
-            _factory = factory;
-        }
+        private static ILoggerFactory Factory;
 
         /// <summary>
         /// The <see cref="ILoggerFactory"/> used with SDK to create <see cref="ILogger"/>
@@ -36,13 +26,17 @@ namespace Sportradar.OddsFeed.SDK.Common
         {
             get
             {
-                if (_factory == null)
-                {
-                    _factory = new NullLoggerFactory();
-                }
-                //ConfigureLogger(_factory);
-                return _factory;
+                return Factory ??= new NullLoggerFactory();
             }
+        }
+
+        /// <summary>
+        /// Set the <see cref="ILoggerFactory"/>
+        /// </summary>
+        /// <param name="factory">An <see cref="ILoggerFactory"/> to be used</param>
+        public static void SetLoggerFactory(ILoggerFactory factory)
+        {
+            Factory = factory;
         }
 
         /// <summary>
@@ -140,19 +134,36 @@ namespace Sportradar.OddsFeed.SDK.Common
             {
                 return LogLevel.None;
             }
-            
+
             if (logger.IsEnabled(LogLevel.Trace))
+            {
                 return LogLevel.Trace;
+            }
+
             if (logger.IsEnabled(LogLevel.Debug))
+            {
                 return LogLevel.Debug;
+            }
+
             if (logger.IsEnabled(LogLevel.Information))
+            {
                 return LogLevel.Information;
+            }
+
             if (logger.IsEnabled(LogLevel.Warning))
+            {
                 return LogLevel.Warning;
+            }
+
             if (logger.IsEnabled(LogLevel.Error))
+            {
                 return LogLevel.Error;
+            }
+
             if (logger.IsEnabled(LogLevel.Critical))
+            {
                 return LogLevel.Critical;
+            }
 
             return LogLevel.None;
         }
@@ -171,17 +182,34 @@ namespace Sportradar.OddsFeed.SDK.Common
             }
 
             if (logger.IsEnabled(LogLevel.Trace))
+            {
                 return minLevel;
+            }
+
             if (logger.IsEnabled(LogLevel.Debug) && LogLevel.Debug >= minLevel)
+            {
                 return LogLevel.Debug;
+            }
+
             if (logger.IsEnabled(LogLevel.Information) && LogLevel.Information >= minLevel)
+            {
                 return LogLevel.Information;
+            }
+
             if (logger.IsEnabled(LogLevel.Warning) && LogLevel.Warning >= minLevel)
+            {
                 return LogLevel.Warning;
+            }
+
             if (logger.IsEnabled(LogLevel.Error) && LogLevel.Error >= minLevel)
+            {
                 return LogLevel.Error;
+            }
+
             if (logger.IsEnabled(LogLevel.Critical) && LogLevel.Critical >= minLevel)
+            {
                 return LogLevel.Critical;
+            }
 
             return minLevel;
         }

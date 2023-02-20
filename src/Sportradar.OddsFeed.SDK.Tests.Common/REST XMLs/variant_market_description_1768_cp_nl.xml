@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<market_descriptions response_code="OK">
+	<market id="1768" name="Speler punten" variant="pre:competitorprops:35432179:608000">
+		<outcomes>
+			<outcome id="pre:competitorprops:35432179:608000:22" name="Kyle Anderson 22+"/>
+			<outcome id="pre:competitorprops:35432179:608000:23" name="Kyle Anderson 23+"/>
+			<outcome id="pre:competitorprops:35432179:608000:24" name="Kyle Anderson 24+"/>
+			<outcome id="pre:competitorprops:35432179:608000:10" name="Kyle Anderson 10+"/>
+			<outcome id="pre:competitorprops:35432179:608000:11" name="Kyle Anderson 11+"/>
+			<outcome id="pre:competitorprops:35432179:608000:12" name="Kyle Anderson 12+"/>
+			<outcome id="pre:competitorprops:35432179:608000:13" name="Kyle Anderson 13+"/>
+			<outcome id="pre:competitorprops:35432179:608000:14" name="Kyle Anderson 14+"/>
+			<outcome id="pre:competitorprops:35432179:608000:15" name="Kyle Anderson 15+"/>
+			<outcome id="pre:competitorprops:35432179:608000:16" name="Kyle Anderson 16+"/>
+			<outcome id="pre:competitorprops:35432179:608000:17" name="Kyle Anderson 17+"/>
+			<outcome id="pre:competitorprops:35432179:608000:18" name="Kyle Anderson 18+"/>
+			<outcome id="pre:competitorprops:35432179:608000:19" name="Kyle Anderson 19+"/>
+			<outcome id="pre:competitorprops:35432179:608000:7" name="Kyle Anderson 7+"/>
+			<outcome id="pre:competitorprops:35432179:608000:8" name="Kyle Anderson 8+"/>
+			<outcome id="pre:competitorprops:35432179:608000:9" name="Kyle Anderson 9+"/>
+			<outcome id="pre:competitorprops:35432179:608000:20" name="Kyle Anderson 20+"/>
+			<outcome id="pre:competitorprops:35432179:608000:21" name="Kyle Anderson 21+"/>
+		</outcomes>
+	</market>
+</market_descriptions>

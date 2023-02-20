@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -36,7 +36,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         public EntityList<SportEventSummaryDTO> Map()
         {
             var events = _data.sport_event.Select(RestMapperHelper.MapSportEvent).ToList();
-            //var nonMatches = events.Count(s => s.GetType() != typeof(MatchDTO));
             return new EntityList<SportEventSummaryDTO>(events);
         }
     }

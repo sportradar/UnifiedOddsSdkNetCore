@@ -3,19 +3,19 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using Castle.Core.Internal;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -214,7 +214,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(bookmakerDetailsProvider, nameof(bookmakerDetailsProvider)).NotNull();
 
             _publicConfig = publicConfig;
-            _bookmakerDetailsProvider = (BookmakerDetailsProvider) bookmakerDetailsProvider;
+            _bookmakerDetailsProvider = (BookmakerDetailsProvider)bookmakerDetailsProvider;
 
             StatisticsEnabled = true;
             StatisticsTimeout = 1800;
@@ -288,7 +288,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 {
                     throw new InvalidOperationException("The API configuration is already loaded");
                 }
-                
+
                 if (Environment != SdkEnvironment.Replay)
                 {
                     try

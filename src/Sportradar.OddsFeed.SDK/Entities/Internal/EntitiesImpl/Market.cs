@@ -3,11 +3,11 @@
 */
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// </summary>
     internal class Market : IMarket
     {
-        private readonly IEnumerable<CultureInfo> _cultures;
+        private readonly IReadOnlyCollection<CultureInfo> _cultures;
 
         /// <summary>
         /// A <see cref="INameProvider"/> instance used to generate the market name(s)
@@ -68,14 +68,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="nameProvider">A <see cref="INameProvider"/> instance used to generate the market name(s) </param>
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
         /// <param name="marketDefinition">The associated market definition</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         internal Market(int id,
                         IReadOnlyDictionary<string, string> specifiers,
                         IReadOnlyDictionary<string, string> additionalInfo,
                         INameProvider nameProvider,
                         IMarketMappingProvider mappingProvider,
                         IMarketDefinition marketDefinition,
-                        IEnumerable<CultureInfo> cultures)
+                        IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(nameProvider, nameof(nameProvider)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();

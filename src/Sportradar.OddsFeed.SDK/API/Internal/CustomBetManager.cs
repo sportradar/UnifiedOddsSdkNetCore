@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -36,13 +36,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             CustomBetSelectionBuilder = customBetSelectionBuilder ?? throw new ArgumentNullException(nameof(customBetSelectionBuilder));
         }
 
-        public async Task<IAvailableSelections> GetAvailableSelectionsAsync(URN eventId)
+        public Task<IAvailableSelections> GetAvailableSelectionsAsync(URN eventId)
         {
             if (eventId == null)
             {
                 throw new ArgumentNullException(nameof(eventId));
             }
 
+            return GetAvailableSelectionsInternalAsync(eventId);
+        }
+
+        private async Task<IAvailableSelections> GetAvailableSelectionsInternalAsync(URN eventId)
+        {
             try
             {
                 _clientLog.LogInformation($"Invoking CustomBetManager.GetAvailableSelectionsAsync({eventId})");
@@ -60,13 +65,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
         }
 
-        public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
+        public Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
         {
             if (selections == null)
             {
                 throw new ArgumentNullException(nameof(selections));
             }
 
+            return CalculateProbabilityInternalAsync(selections);
+        }
+
+        private async Task<ICalculation> CalculateProbabilityInternalAsync(IEnumerable<ISelection> selections)
+        {
             try
             {
                 _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbability({selections})");
@@ -84,13 +94,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
         }
 
-        public async Task<ICalculationFilter> CalculateProbabilityFilterAsync(IEnumerable<ISelection> selections)
+        public Task<ICalculationFilter> CalculateProbabilityFilterAsync(IEnumerable<ISelection> selections)
         {
             if (selections == null)
             {
                 throw new ArgumentNullException(nameof(selections));
             }
 
+            return CalculateProbabilityFilterInternalAsync(selections);
+        }
+
+        private async Task<ICalculationFilter> CalculateProbabilityFilterInternalAsync(IEnumerable<ISelection> selections)
+        {
             try
             {
                 _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbabilityFilter({selections})");

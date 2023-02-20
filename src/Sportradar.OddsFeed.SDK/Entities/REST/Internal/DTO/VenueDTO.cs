@@ -1,11 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System.Collections.Generic;
+using System.Linq;
 using Castle.Core.Internal;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {

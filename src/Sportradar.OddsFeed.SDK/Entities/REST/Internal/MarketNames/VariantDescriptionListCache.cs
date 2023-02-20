@@ -4,13 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -92,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                            IDataRouterManager dataRouterManager,
                                            IMappingValidatorFactory mappingValidatorFactory,
                                            ITimer timer,
-                                           IEnumerable<CultureInfo> prefetchLanguages,
+                                           IReadOnlyCollection<CultureInfo> prefetchLanguages,
                                            ICacheManager cacheManager)
             : base(cacheManager)
         {
@@ -106,13 +106,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             _dataRouterManager = dataRouterManager;
             _mappingValidatorFactory = mappingValidatorFactory;
             _timer = timer;
-            _prefetchLanguages = new ReadOnlyCollection<CultureInfo>(prefetchLanguages.ToList());
+            _prefetchLanguages = prefetchLanguages;
             _timer.Elapsed += OnTimerElapsed;
             _timer.Start();
         }
 
         /// <summary>
-        /// Invoked when the <code>_timer</code> ticks in order to periodically fetch market descriptions for configured languages
+        /// Invoked when the <c>_timer</c> ticks in order to periodically fetch market descriptions for configured languages
         /// </summary>
         /// <param name="sender">The <see cref="ITimer"/> raising the event</param>
         /// <param name="e">A <see cref="EventArgs"/> instance containing the event data</param>
@@ -145,8 +145,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     ExecutionLog.LogWarning(ex, $"An error occurred while periodically fetching variant market description of languages {languagesString}");
                     return;
                 }
-                var disposedException = ex as ObjectDisposedException;
-                if (disposedException != null)
+                if (ex is ObjectDisposedException disposedException)
                 {
                     ExecutionLog.LogWarning($"An error occurred while periodically fetching variant market descriptions because the object graph is being disposed. Object causing the exception:{disposedException.ObjectName}");
                     return;
@@ -172,7 +171,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             _semaphoreCacheMerge.Wait();
             var cacheItem = _cache.GetCacheItem(id);
             _semaphoreCacheMerge.ReleaseSafe();
-            return (VariantDescriptionCacheItem) cacheItem?.Value;
+            return (VariantDescriptionCacheItem)cacheItem?.Value;
         }
 
         /// <summary>
@@ -180,19 +179,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// language are fetched from the service and stored/merged into the local cache.
         /// </summary>
         /// <param name="id">The id of the <see cref="VariantDescriptionCacheItem"/> instance to get</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the languages which the returned item must contain</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying the languages which the returned item must contain</param>
         /// <returns>A <see cref="Task"/> representing the async operation</returns>
         /// <exception cref="CommunicationException">An error occurred while accessing the remote party</exception>
         /// <exception cref="DeserializationException">An error occurred while deserializing fetched data</exception>
         /// <exception cref="FormatException">An error occurred while mapping deserialized entities</exception>
-        private async Task<VariantDescriptionCacheItem> GetVariantDescriptionInternalAsync(string id, IEnumerable<CultureInfo> cultures)
+        private async Task<VariantDescriptionCacheItem> GetVariantDescriptionInternalAsync(string id, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
-
-            VariantDescriptionCacheItem description;
-            if ((description = GetItemFromCache(id)) != null && !LanguageHelper.GetMissingCultures(cultureList, description.FetchedLanguages).Any())
+            var description = GetItemFromCache(id);
+            if (description != null && !LanguageHelper.GetMissingCultures(cultures, description.FetchedLanguages).Any())
             {
                 return description;
             }
@@ -201,7 +198,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 await _semaphore.WaitAsync().ConfigureAwait(false);
 
                 description = GetItemFromCache(id);
-                var missingLanguages = LanguageHelper.GetMissingCultures(cultureList, description?.FetchedLanguages).ToList();
+                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, description?.FetchedLanguages).ToList();
 
                 if (missingLanguages.Any())
                 {
@@ -219,8 +216,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             }
             catch (Exception ex)
             {
-                var disposedException = ex as ObjectDisposedException;
-                if (disposedException != null)
+                if (ex is ObjectDisposedException disposedException)
                 {
                     ExecutionLog.LogWarning($"An error occurred while fetching market descriptions because the object graph is being disposed. Object causing the exception: {disposedException.ObjectName}.");
                     return null;
@@ -235,7 +231,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 }
             }
 
-            return (description = GetItemFromCache(id)) != null && !LanguageHelper.GetMissingCultures(cultureList, description.FetchedLanguages).Any()
+            description = GetItemFromCache(id);
+            return description != null && !LanguageHelper.GetMissingCultures(cultures, description.FetchedLanguages).Any()
                 ? description
                 : null;
         }
@@ -277,14 +274,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="variantId">The variant identifier</param>
         /// <param name="cultures">The cultures</param>
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
-        public async Task<IVariantDescription> GetVariantDescriptorAsync(string variantId, IEnumerable<CultureInfo> cultures)
+        public async Task<IVariantDescription> GetVariantDescriptorAsync(string variantId, IReadOnlyCollection<CultureInfo> cultures)
         {
-            var cultureList = cultures as List<CultureInfo> ?? cultures.ToList();
-
             VariantDescriptionCacheItem cacheItem;
             try
             {
-                cacheItem = await GetVariantDescriptionInternalAsync(variantId, cultureList).ConfigureAwait(false);
+                cacheItem = await GetVariantDescriptionInternalAsync(variantId, cultures).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -297,7 +292,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             return cacheItem == null
                 ? null
-                : new VariantDescription(cacheItem, cultureList);
+                : new VariantDescription(cacheItem, cultures);
         }
 
         /// <summary>
@@ -325,7 +320,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         public void RegisterHealthCheck()
         {
-            //HealthChecks.RegisterHealthCheck("VariantDescriptionListCache", new Func<HealthCheckResult>(StartHealthCheck));
         }
 
         /// <summary>
@@ -354,12 +348,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="cacheItemType">A cache item type</param>
         public override void CacheDeleteItem(URN id, CacheItemType cacheItemType)
         {
-            if (id != null)
+            if (id != null && (cacheItemType == CacheItemType.All || cacheItemType == CacheItemType.MarketDescription))
             {
-                if (cacheItemType == CacheItemType.All || cacheItemType == CacheItemType.MarketDescription)
-                {
-                    _cache.Remove(id.Id.ToString());
-                }
+                _cache.Remove(id.Id.ToString());
             }
         }
 
@@ -462,13 +453,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case DtoType.VariantDescription:
                     break;
                 case DtoType.VariantDescriptionList:
-                    var variantDescriptionList = item as EntityList<VariantDescriptionDTO>;
-                    if (variantDescriptionList != null)
+                    if (item is EntityList<VariantDescriptionDTO> variantDescriptionList)
                     {
-                        //WriteLog($"Saving {variantDescriptionList.Items.Count()} variant descriptions for lang: [{culture.TwoLetterISOLanguageName}].");
-                        await MergeAsync(culture, variantDescriptionList.Items).ConfigureAwait(false);
+                        await MergeAsync(culture, new ReadOnlyCollection<VariantDescriptionDTO>(variantDescriptionList.Items.ToList())).ConfigureAwait(false);
                         saved = true;
-                        //WriteLog($"Saving {variantDescriptionList.Items.Count()} variant descriptions for lang: [{culture.TwoLetterISOLanguageName}] COMPLETED.");
                     }
                     else
                     {
@@ -491,6 +479,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                     break;
                 case DtoType.PeriodSummary:
                     break;
+                case DtoType.Calculation:
+                    break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
                     break;
@@ -501,29 +491,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Merges the provided descriptions with those found in cache
         /// </summary>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the <code>descriptions</code></param>
-        /// <param name="descriptions">A <see cref="IEnumerable{MarketDescriptionDTO}"/> containing market descriptions in specified language</param>
-        private async Task MergeAsync(CultureInfo culture, IEnumerable<VariantDescriptionDTO> descriptions)
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the <c>descriptions</c></param>
+        /// <param name="descriptions">A <see cref="IReadOnlyCollection{MarketDescriptionDTO}"/> containing market descriptions in specified language</param>
+        private async Task MergeAsync(CultureInfo culture, IReadOnlyCollection<VariantDescriptionDTO> descriptions)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
             Guard.Argument(descriptions, nameof(descriptions)).NotNull().NotEmpty();
-
-            var descriptionList = descriptions as List<VariantDescriptionDTO> ?? descriptions.ToList();
             try
             {
                 await _semaphoreCacheMerge.WaitAsync().ConfigureAwait(false);
-                foreach (var marketDescription in descriptionList)
+                foreach (var marketDescription in descriptions)
                 {
                     var cachedItem = _cache.GetCacheItem(marketDescription.Id);
                     if (cachedItem == null)
                     {
-
                         cachedItem = new CacheItem(marketDescription.Id, VariantDescriptionCacheItem.Build(marketDescription, _mappingValidatorFactory, culture, CacheName));
                         _cache.Add(cachedItem, new CacheItemPolicy());
                     }
                     else
                     {
-                        ((VariantDescriptionCacheItem) cachedItem.Value).Merge(marketDescription, culture);
+                        ((VariantDescriptionCacheItem)cachedItem.Value).Merge(marketDescription, culture);
                     }
                 }
                 _fetchedLanguages.Add(culture);

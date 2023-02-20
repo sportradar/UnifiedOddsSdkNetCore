@@ -80,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 SdkInfo.ExecutionLog.LogWarning($"PeriodScore - can not parse away score: {periodScore.away_score}");
             }
-            PeriodNumber = periodScore.numberSpecified ? periodScore.number : (int?) null;
+            PeriodNumber = periodScore.numberSpecified ? periodScore.number : (int?)null;
             MatchStatusCode = periodScore.match_status_code;
             Type = GetPeriodType(periodScore.type);
         }
@@ -128,4 +128,3 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
     }
 }
-

@@ -79,24 +79,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         public ExportableRaceDriverProfileCI RaceDriverProfile { get; set; }
 
         /// <summary>
-        /// A <see cref="IEnumerable{T}"/> representing the languages for which the current instance has translations
-        /// </summary>
-        public IEnumerable<CultureInfo> FetchedCultures { get; set; }
-
-        /// <summary>
         /// A <see cref="CultureInfo"/> representing the primary culture
         /// </summary>
         public CultureInfo PrimaryCulture { get; set; }
 
         /// <summary>
-        /// A <see cref="DateTime"/>
-        /// </summary>
-        public DateTime? LastTimeCompetitorProfileIsFetched { get; set; }
-
-        /// <summary>
         /// The list of CultureInfo used to fetch competitor profiles
         /// </summary>
-        public IEnumerable<CultureInfo> CultureCompetitorProfileFetched { get; set; }
+        public IDictionary<CultureInfo, DateTime> CultureCompetitorProfileFetched { get; set; }
 
         /// <summary>
         /// A <see cref="string"/> representing the sport id

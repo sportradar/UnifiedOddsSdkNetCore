@@ -1,6 +1,15 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Timer;
@@ -17,15 +26,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using ITimer = Sportradar.OddsFeed.SDK.Common.Internal.ITimer;
 
 // ReSharper disable InconsistentlySynchronizedField
@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <summary>
         /// A <see cref="ILogger"/> instance used for logging
         /// </summary>
-        private new static readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(SportEventCache));
+        private static new readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(SportEventCache));
 
         /// <summary>
         /// The list of dates already automatically loaded by the timer
@@ -214,7 +214,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <summary>
-        /// Asynchronously gets a sport event schedule specified by the <code>id</code> in the language specified by <code>culture</code>
+        /// Asynchronously gets a sport event schedule specified by the <c>id</c> in the language specified by <c>culture</c>
         /// </summary>
         /// <param name="date">The value specifying which schedule to get</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the retrieved schedule</param>
@@ -623,7 +623,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     {
                         AddSportEvent(id, tourSeasons.Tournament, culture, requester, dtoType);
                         var cacheItem = (TournamentInfoCI)_sportEventCacheItemFactory.Get(Cache.Get(id.ToString()));
-                        cacheItem.Merge(tourSeasons, culture, true);
+                        cacheItem?.Merge(tourSeasons, culture, true);
 
                         if (tourSeasons.Seasons != null && tourSeasons.Seasons.Any())
                         {
@@ -713,6 +713,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     break;
                 case DtoType.PeriodSummary:
                     break;
+                case DtoType.Calculation:
+                    break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type:{dtoType} for id: {id}.");
                     break;
@@ -785,6 +787,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         public void RegisterHealthCheck()
         {
+            // Method intentionally left empty.
         }
 
         /// <summary>
@@ -1383,7 +1386,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             foreach (var type in types.Select(t => t.Name))
             {
                 if (!status.ContainsKey(type))
+                {
                     status[type] = 0;
+                }
             }
             return status;
         }

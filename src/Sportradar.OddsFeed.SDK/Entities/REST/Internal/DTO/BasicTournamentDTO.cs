@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -55,12 +55,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 id = tournamentInfo.tournament.id,
                 name = tournamentInfo.tournament.name,
                 scheduled = tournamentInfo.tournament.scheduled,
-                scheduledSpecified =  tournamentInfo.tournament.scheduledSpecified,
-                scheduled_end =  tournamentInfo.tournament.scheduled_end,
+                scheduledSpecified = tournamentInfo.tournament.scheduledSpecified,
+                scheduled_end = tournamentInfo.tournament.scheduled_end,
                 scheduled_endSpecified = tournamentInfo.tournament.scheduled_endSpecified,
                 tournament = tournamentInfo.tournament,
-                type =  null
-
+                type = null
             })
         {
             Guard.Argument(tournamentInfo, nameof(tournamentInfo)).NotNull();
@@ -91,7 +90,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Guard.Argument(tournament, nameof(tournament)).NotNull();
 
-            //TournamentCoverage = new TournamentCoverageDTO(tournament.season_coverage_info);
             Category = tournament.category == null
                 ? null
                 : URN.Parse(tournament.category.id);

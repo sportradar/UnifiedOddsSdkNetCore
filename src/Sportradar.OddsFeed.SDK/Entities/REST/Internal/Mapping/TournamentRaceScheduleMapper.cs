@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <returns>Constructed <see cref="EntityList{SportEventSummaryDTO}"/> instance</returns>
         public EntityList<SportEventSummaryDTO> Map()
         {
-            if(_data.sport_events == null || !_data.sport_events.Any())
+            if (_data.sport_events == null || !_data.sport_events.Any())
             {
                 return new EntityList<SportEventSummaryDTO>(new List<SportEventSummaryDTO>());
             }

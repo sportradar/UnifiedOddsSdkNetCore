@@ -77,9 +77,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>ILocalizedNamedValue</returns>
         public async Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture)
         {
-            return SportEventStatusCI == null || SportEventStatusCI.MatchStatusId < 0  || MatchStatusCache == null
+            return SportEventStatusCI == null || SportEventStatusCI.MatchStatusId < 0 || MatchStatusCache == null
                 ? null
-                : await MatchStatusCache.GetAsync(SportEventStatusCI.MatchStatusId, new List<CultureInfo> {culture}).ConfigureAwait(false);
+                : await MatchStatusCache.GetAsync(SportEventStatusCI.MatchStatusId, new List<CultureInfo> { culture }).ConfigureAwait(false);
         }
 
         /// <summary>

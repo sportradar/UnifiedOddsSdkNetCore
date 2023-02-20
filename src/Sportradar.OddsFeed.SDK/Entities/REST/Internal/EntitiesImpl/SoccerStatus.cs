@@ -14,8 +14,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             if (ci?.SportEventStatistics != null)
             {
-                Statistics = new SoccerStatistics(ci.SportEventStatistics.TotalStatisticsDTOs,
-                                                  ci.SportEventStatistics.PeriodStatisticsDTOs);
+                Statistics = new SoccerStatistics(ci.SportEventStatistics.TotalStatisticsDtos,
+                                                  ci.SportEventStatistics.PeriodStatisticsDtos);
             }
         }
     }

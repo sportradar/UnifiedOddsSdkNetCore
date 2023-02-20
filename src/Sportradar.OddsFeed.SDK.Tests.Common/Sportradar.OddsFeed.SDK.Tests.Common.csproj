@@ -1,0 +1,749 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="REST XMLs\betstop_reasons.xml" />
+    <None Remove="REST XMLs\betting_status.xml" />
+    <None Remove="REST XMLs\bookmaker_details.xml" />
+    <None Remove="REST XMLs\CustomBet\available_selections.xml" />
+    <None Remove="REST XMLs\CustomBet\calculate_filter_response.xml" />
+    <None Remove="REST XMLs\CustomBet\calculate_request.xml" />
+    <None Remove="REST XMLs\CustomBet\calculate_response.xml" />
+    <None Remove="REST XMLs\events.xml" />
+    <None Remove="REST XMLs\event_details_de.xml" />
+    <None Remove="REST XMLs\event_details_en.xml" />
+    <None Remove="REST XMLs\event_details_hu.xml" />
+    <None Remove="REST XMLs\event_details_nl.xml" />
+    <None Remove="REST XMLs\event_info.xml" />
+    <None Remove="REST XMLs\event_info_full.xml" />
+    <None Remove="REST XMLs\fixtures_de.xml" />
+    <None Remove="REST XMLs\fixtures_en.xml" />
+    <None Remove="REST XMLs\fixtures_hu.xml" />
+    <None Remove="REST XMLs\fixtures_nl.xml" />
+    <None Remove="REST XMLs\invariant_market_descriptions_de.xml" />
+    <None Remove="REST XMLs\invariant_market_descriptions_en.xml" />
+    <None Remove="REST XMLs\invariant_market_descriptions_hu.xml" />
+    <None Remove="REST XMLs\invariant_market_descriptions_nl.xml" />
+    <None Remove="REST XMLs\live_events.xml" />
+    <None Remove="REST XMLs\match_status_descriptions.en.xml" />
+    <None Remove="REST XMLs\match_status_descriptions.hu.xml" />
+    <None Remove="REST XMLs\match_status_descriptions.nl.xml" />
+    <None Remove="REST XMLs\match_status_descriptions_de.xml" />
+    <None Remove="REST XMLs\match_status_descriptions_en.xml" />
+    <None Remove="REST XMLs\match_status_descriptions_hu.xml" />
+    <None Remove="REST XMLs\match_status_descriptions_nl.xml" />
+    <None Remove="REST XMLs\match_summary.xml" />
+    <None Remove="REST XMLs\match_timeline.de.xml" />
+    <None Remove="REST XMLs\match_timeline.en.xml" />
+    <None Remove="REST XMLs\match_timeline.hu.xml" />
+    <None Remove="REST XMLs\match_timeline.nl.xml" />
+    <None Remove="REST XMLs\match_timeline_de.xml" />
+    <None Remove="REST XMLs\match_timeline_en.xml" />
+    <None Remove="REST XMLs\match_timeline_hu.xml" />
+    <None Remove="REST XMLs\match_timeline_nl.xml" />
+    <None Remove="REST XMLs\not_found.xml" />
+    <None Remove="REST XMLs\ongoing_event_info.xml" />
+    <None Remove="REST XMLs\probabilities.match.11501813.xml" />
+    <None Remove="REST XMLs\probabilities_match_11501813.xml" />
+    <None Remove="REST XMLs\producers.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_1_de.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_1_en.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_1_hu.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_2_de.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_2_en.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_2_hu.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_66390_de.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_66390_en.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_66390_hu.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_66410_de.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_66410_en.xml" />
+    <None Remove="REST XMLs\Profiles\competitor_66410_hu.xml" />
+    <None Remove="REST XMLs\Profiles\player_1_de.xml" />
+    <None Remove="REST XMLs\Profiles\player_1_en.xml" />
+    <None Remove="REST XMLs\Profiles\player_1_hu.xml" />
+    <None Remove="REST XMLs\Profiles\player_2_de.xml" />
+    <None Remove="REST XMLs\Profiles\player_2_en.xml" />
+    <None Remove="REST XMLs\Profiles\player_2_hu.xml" />
+    <None Remove="REST XMLs\Profiles\simpleteam_1_de.xml" />
+    <None Remove="REST XMLs\Profiles\simpleteam_1_en.xml" />
+    <None Remove="REST XMLs\Profiles\simpleteam_1_hu.xml" />
+    <None Remove="REST XMLs\Profiles\simpleteam_2_de.xml" />
+    <None Remove="REST XMLs\Profiles\simpleteam_2_en.xml" />
+    <None Remove="REST XMLs\Profiles\simpleteam_2_hu.xml" />
+    <None Remove="REST XMLs\race_summary.xml" />
+    <None Remove="REST XMLs\race_summary_giro.xml" />
+    <None Remove="REST XMLs\schedule.de.xml" />
+    <None Remove="REST XMLs\schedule.en.xml" />
+    <None Remove="REST XMLs\schedule.hu.xml" />
+    <None Remove="REST XMLs\schedule.nl.xml" />
+    <None Remove="REST XMLs\schedule_de.xml" />
+    <None Remove="REST XMLs\schedule_en.xml" />
+    <None Remove="REST XMLs\schedule_hu.xml" />
+    <None Remove="REST XMLs\schedule_nl.xml" />
+    <None Remove="REST XMLs\sports.de.xml" />
+    <None Remove="REST XMLs\sports.en.xml" />
+    <None Remove="REST XMLs\sports.hu.xml" />
+    <None Remove="REST XMLs\sports.nl.xml" />
+    <None Remove="REST XMLs\sports_de.xml" />
+    <None Remove="REST XMLs\sports_en.xml" />
+    <None Remove="REST XMLs\sports_hu.xml" />
+    <None Remove="REST XMLs\sports_nl.xml" />
+    <None Remove="REST XMLs\sport_categories.de.xml" />
+    <None Remove="REST XMLs\sport_categories.en.xml" />
+    <None Remove="REST XMLs\sport_categories.hu.xml" />
+    <None Remove="REST XMLs\sport_categories.nl.xml" />
+    <None Remove="REST XMLs\sport_categories_de.xml" />
+    <None Remove="REST XMLs\sport_categories_en.xml" />
+    <None Remove="REST XMLs\sport_categories_hu.xml" />
+    <None Remove="REST XMLs\sport_categories_nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_match_123456_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_match_1_de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_match_1_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_match_1_hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_match_1_nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_match_654321_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_1_de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_1_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_1_hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_1_nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_80242.en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_80242.hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_80242_de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_80242_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_80242_hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_season_80242_nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111.de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111.en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111.hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111.nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111_de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111_hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_simple_tournament_11111_nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_stage_940265_de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_stage_940265_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_stage_940265_hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_stage_940265_nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030.de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030.en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030.hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030.nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030_de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030_hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_1030_nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40.de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40.en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40.hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40.nl.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40_de.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40_en.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40_hu.xml" />
+    <None Remove="REST XMLs\Summarys\summary_sr_tournament_40_nl.xml" />
+    <None Remove="REST XMLs\tournaments.de.xml" />
+    <None Remove="REST XMLs\tournaments.en.xml" />
+    <None Remove="REST XMLs\tournaments.hu.xml" />
+    <None Remove="REST XMLs\tournaments.nl.xml" />
+    <None Remove="REST XMLs\tournaments_de.xml" />
+    <None Remove="REST XMLs\tournaments_en.xml" />
+    <None Remove="REST XMLs\tournaments_hu.xml" />
+    <None Remove="REST XMLs\tournaments_nl.xml" />
+    <None Remove="REST XMLs\tournament_info.xml" />
+    <None Remove="REST XMLs\tournament_info_extra.xml" />
+    <None Remove="REST XMLs\tournament_schedule.de.xml" />
+    <None Remove="REST XMLs\tournament_schedule.en.xml" />
+    <None Remove="REST XMLs\tournament_schedule.hu.xml" />
+    <None Remove="REST XMLs\tournament_schedule.nl.xml" />
+    <None Remove="REST XMLs\tournament_schedule_de.xml" />
+    <None Remove="REST XMLs\tournament_schedule_en.xml" />
+    <None Remove="REST XMLs\tournament_schedule_hu.xml" />
+    <None Remove="REST XMLs\tournament_schedule_nl.xml" />
+    <None Remove="REST XMLs\tournament_seasons.de.xml" />
+    <None Remove="REST XMLs\tournament_seasons.en.xml" />
+    <None Remove="REST XMLs\tournament_seasons.hu.xml" />
+    <None Remove="REST XMLs\tournament_seasons.nl.xml" />
+    <None Remove="REST XMLs\tournament_seasons_de.xml" />
+    <None Remove="REST XMLs\tournament_seasons_en.xml" />
+    <None Remove="REST XMLs\tournament_seasons_hu.xml" />
+    <None Remove="REST XMLs\tournament_seasons_nl.xml" />
+    <None Remove="REST XMLs\variant_market_description.de.xml" />
+    <None Remove="REST XMLs\variant_market_description.en.xml" />
+    <None Remove="REST XMLs\variant_market_description.hu.xml" />
+    <None Remove="REST XMLs\variant_market_description.nl.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions.de.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions.en.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions.hu.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions.nl.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions_de.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions_en.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions_hu.xml" />
+    <None Remove="REST XMLs\variant_market_descriptions_nl.xml" />
+    <None Remove="REST XMLs\variant_market_description_1768_cp_de.xml" />
+    <None Remove="REST XMLs\variant_market_description_1768_cp_en.xml" />
+    <None Remove="REST XMLs\variant_market_description_1768_cp_hu.xml" />
+    <None Remove="REST XMLs\variant_market_description_1768_cp_nl.xml" />
+    <None Remove="REST XMLs\variant_market_description_534_de.xml" />
+    <None Remove="REST XMLs\variant_market_description_534_en.xml" />
+    <None Remove="REST XMLs\variant_market_description_534_hu.xml" />
+    <None Remove="REST XMLs\variant_market_description_534_nl.xml" />
+    <None Remove="REST XMLs\variant_market_description_768_de.xml" />
+    <None Remove="REST XMLs\variant_market_description_768_en.xml" />
+    <None Remove="REST XMLs\variant_market_description_768_hu.xml" />
+    <None Remove="REST XMLs\variant_market_description_768_nl.xml" />
+    <None Remove="REST XMLs\variant_market_description_de.xml" />
+    <None Remove="REST XMLs\variant_market_description_en.xml" />
+    <None Remove="REST XMLs\variant_market_description_hu.xml" />
+    <None Remove="REST XMLs\variant_market_description_invalid_534_en.xml" />
+    <None Remove="REST XMLs\variant_market_description_nl.xml" />
+    <None Remove="REST XMLs\whoami.xml" />
+    <None Remove="REST XMLs\Wns\draw_fixture_de.xml" />
+    <None Remove="REST XMLs\Wns\draw_fixture_en.xml" />
+    <None Remove="REST XMLs\Wns\draw_fixture_hu.xml" />
+    <None Remove="REST XMLs\Wns\draw_fixture_nl.xml" />
+    <None Remove="REST XMLs\Wns\draw_summary_de.xml" />
+    <None Remove="REST XMLs\Wns\draw_summary_en.xml" />
+    <None Remove="REST XMLs\Wns\draw_summary_hu.xml" />
+    <None Remove="REST XMLs\Wns\draw_summary_nl.xml" />
+    <None Remove="REST XMLs\Wns\lotteries_de.xml" />
+    <None Remove="REST XMLs\Wns\lotteries_en.xml" />
+    <None Remove="REST XMLs\Wns\lotteries_hu.xml" />
+    <None Remove="REST XMLs\Wns\lotteries_nl.xml" />
+    <None Remove="REST XMLs\Wns\lottery_schedule_de.xml" />
+    <None Remove="REST XMLs\Wns\lottery_schedule_en.xml" />
+    <None Remove="REST XMLs\Wns\lottery_schedule_hu.xml" />
+    <None Remove="REST XMLs\Wns\lottery_schedule_nl.xml" />
+    <None Remove="XMLs\alive.xml" />
+    <None Remove="XMLs\bet_cancel.xml" />
+    <None Remove="XMLs\bet_settlement.xml" />
+    <None Remove="XMLs\bet_stop.xml" />
+    <None Remove="XMLs\fixture_change.xml" />
+    <None Remove="XMLs\odds_change.xml" />
+    <None Remove="XMLs\probabilities.xml" />
+    <None Remove="XMLs\product_down.xml" />
+    <None Remove="XMLs\rollback_bet_cancel.xml" />
+    <None Remove="XMLs\rollback_bet_settlement.xml" />
+    <None Remove="XMLs\snapshot_completed.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="REST XMLs\betting_status.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\betstop_reasons.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\bookmaker_details.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\CustomBet\available_selections.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\CustomBet\calculate_filter_response.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\CustomBet\calculate_request.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\CustomBet\calculate_response.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\events.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\event_details_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\event_details_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\event_details_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\event_details_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\event_info.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\event_info_full.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\fixtures_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\fixtures_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\fixtures_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\fixtures_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\invariant_market_descriptions_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\invariant_market_descriptions_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\invariant_market_descriptions_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\invariant_market_descriptions_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\live_events.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_status_descriptions_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_status_descriptions_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_status_descriptions_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_status_descriptions_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_summary.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_timeline_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_timeline_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_timeline_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\match_timeline_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\not_found.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\ongoing_event_info.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\probabilities_match_11501813.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\producers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\race_summary.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\race_summary_giro.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\schedule_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\schedule_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\schedule_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\schedule_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sports_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sports_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sports_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sports_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sport_categories_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sport_categories_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sport_categories_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\sport_categories_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_match_654321_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_match_123456_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_stage_940265_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_stage_940265_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_stage_940265_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_stage_940265_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_80242_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_80242_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_simple_tournament_11111_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_simple_tournament_11111_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_simple_tournament_11111_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_simple_tournament_11111_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_1030_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_1030_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_1030_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_1030_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_40_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_40_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_40_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_tournament_40_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournaments_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournaments_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournaments_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournaments_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_info.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_info_extra.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_schedule_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_schedule_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_schedule_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_schedule_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_seasons_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_seasons_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_seasons_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\tournament_seasons_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_descriptions_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_descriptions_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_descriptions_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_descriptions_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_534_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_invalid_534_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_534_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_1768_cp_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_768_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_1768_cp_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_1768_cp_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_768_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_768_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_1768_cp_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_768_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_534_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_534_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\variant_market_description_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\whoami.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_fixture_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_fixture_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_fixture_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_fixture_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_summary_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_summary_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_summary_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\draw_summary_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lotteries_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lotteries_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lotteries_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lotteries_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lottery_schedule_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lottery_schedule_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lottery_schedule_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Wns\lottery_schedule_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_1_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_2_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_66390_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_66410_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\player_1_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\player_2_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\simpleteam_1_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\simpleteam_2_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_1_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_2_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_66390_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_66410_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\player_1_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\player_2_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\simpleteam_1_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\simpleteam_2_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_1_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_2_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_66390_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\competitor_66410_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\player_1_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\player_2_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\simpleteam_1_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Profiles\simpleteam_2_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_match_1_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_match_1_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_match_1_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_match_1_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_1_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_1_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_1_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_1_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_80242_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Summarys\summary_sr_season_80242_nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\alive.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\bet_cancel.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\bet_settlement.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\bet_stop.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\fixture_change.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\odds_change.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\probabilities.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\product_down.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\rollback_bet_cancel.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\rollback_bet_settlement.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XMLs\snapshot_completed.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq.AutoMock" Version="3.4.0" />
+    <PackageReference Include="xunit.abstractions" Version="2.0.3" />
+    <PackageReference Include="xunit.assert" Version="2.4.2" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj" />
+  </ItemGroup>
+
+</Project>

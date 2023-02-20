@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <returns>The created <see cref="FixtureDTO"/> instance </returns>
         public FixtureDTO Map()
         {
-            return new FixtureDTO(_data.fixture, _data.generated_atSpecified ? _data.generated_at : (DateTime?) null);
+            return new FixtureDTO(_data.fixture, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null);
         }
     }
 }

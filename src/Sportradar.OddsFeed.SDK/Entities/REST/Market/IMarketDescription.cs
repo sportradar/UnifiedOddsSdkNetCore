@@ -52,13 +52,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
         IEnumerable<string> Groups { get; }
 
         /// <summary>
-        /// Gets the name of the market description in the language specified by the passed <code>culture</code>
+        /// Gets the name of the market description in the language specified by the passed <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the retrieved name</param>
         string GetName(CultureInfo culture);
 
         /// <summary>
-        /// Gets the description of the market description in the language specified by the passed <code>culture</code>
+        /// Gets the description of the market description in the language specified by the passed <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the retrieved description</param>
         string GetDescription(CultureInfo culture);

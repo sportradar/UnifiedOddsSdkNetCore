@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
@@ -45,8 +45,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="SportEventConditions"/> class
         /// </summary>
         /// <param name="ci">A <see cref="SportEventConditionsCI"/> used to create new instance</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the supported languages of the constructed instance</param>
-        public SportEventConditions(SportEventConditionsCI ci, IEnumerable<CultureInfo> cultures)
+        /// <param name="cultures">A <see cref="ICollection{CultureInfo}"/> specifying the supported languages of the constructed instance</param>
+        public SportEventConditions(SportEventConditionsCI ci, ICollection<CultureInfo> cultures)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
@@ -85,13 +85,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             var refereeStr = Referee == null
                 ? string.Empty
-                : ((Referee) Referee).ToString("c");
+                : ((Referee)Referee).ToString("c");
             var weatherStr = WeatherInfo == null
                 ? string.Empty
-                : ((WeatherInfo) WeatherInfo).ToString("c");
+                : ((WeatherInfo)WeatherInfo).ToString("c");
             var pitcherStr = Pitchers == null
                 ? string.Empty
-                : string.Join(",", Pitchers.Select(s=>s.Id));
+                : string.Join(",", Pitchers.Select(s => s.Id));
             return $"Attendance={Attendance}, EventMode={EventMode}, Referee={refereeStr}, WeatherInfo={weatherStr}, Pitchers=[{pitcherStr}]";
         }
 

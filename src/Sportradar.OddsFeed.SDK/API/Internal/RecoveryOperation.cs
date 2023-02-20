@@ -4,10 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
@@ -96,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets a value indicating whether [adjusted after age]
         /// </summary>
         /// <value><c>true</c> if [adjusted after age]; otherwise, <c>false</c></value>
-        private readonly bool _adjustedAfterAge;
+        private bool _adjustedAfterAge;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecoveryOperation"/> class
@@ -152,7 +153,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             // if all interests are a combination of different message scopes, use the producer
             // scopes to determine whether all snapshots were received
-            else if (_allInterests.Count <= MessageInterest.MessageScopes.Length 
+            else if (_allInterests.Count <= MessageInterest.MessageScopes.Length
                      && _allInterests.All(MessageInterest.MessageScopes.Contains))
             {
                 done = _producer.Scope
@@ -171,7 +172,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             return done;
         }
-
 
         /// <summary>
         /// Attempts to start a recovery operation
@@ -218,6 +218,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 var actualException = ex.InnerException ?? ex;
                 ExecutionLog.LogError(actualException, $"{_producer.Name} There was an error requesting recovery.");
+                if (actualException.Message.Contains("Forbidden", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _adjustedAfterAge = true;
+                }
                 if (ex is RecoveryInitiationException)
                 {
                     throw;
@@ -228,6 +232,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             IsRunning = true;
             _startTime = TimeProviderAccessor.Current.Now;
             InterruptionTime = null;
+            _adjustedAfterAge = true; // so if several attempts fails, it will eventually adjust timestamp
             return true;
         }
 

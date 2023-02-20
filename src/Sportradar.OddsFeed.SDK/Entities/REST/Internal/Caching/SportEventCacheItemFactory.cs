@@ -1,9 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
 using System.Globalization;
 using System.Runtime.Caching;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
@@ -251,7 +251,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 return lottery;
             }
-            return (SportEventCI) cacheItem;
+            return (SportEventCI)cacheItem;
         }
 
         /// <summary>

@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages;
 using System.Collections.Generic;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
 {
@@ -14,6 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
         /// <summary>
         /// Gets the <see cref="URN"/> of the event
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
         URN Event { get; }
 
         /// <summary>

@@ -1,29 +1,19 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
-using App.Metrics;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using System;
 using System.Diagnostics;
+using App.Metrics;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 
 namespace Sportradar.OddsFeed.SDK.Common
 {
     /// <summary>
     /// Provides methods to get <see cref="IMetricsRoot"/> to record sdk metrics
     /// </summary>
-    public class SdkMetricsFactory
+    public static class SdkMetricsFactory
     {
-        private static IMetricsRoot _metricsRoot;
-
-        /// <summary>
-        /// Used to set <see cref="IMetricsRoot"/> used within sdk
-        /// </summary>
-        /// <param name="metricsRoot">The <see cref="IMetricsRoot"/> used within sdk</param>
-        public SdkMetricsFactory(IMetricsRoot metricsRoot)
-        {
-            _metricsRoot = metricsRoot;
-        }
+        private static IMetricsRoot MetricsRootInternal;
 
         /// <summary>
         /// The <see cref="IMetricsRoot"/> used within sdk
@@ -32,12 +22,18 @@ namespace Sportradar.OddsFeed.SDK.Common
         {
             get
             {
-                if (_metricsRoot == null)
-                {
-                    _metricsRoot = AppMetrics.CreateDefaultBuilder().Build();
-                }
-                return _metricsRoot;
+                MetricsRootInternal ??= AppMetrics.CreateDefaultBuilder().Build();
+                return MetricsRootInternal;
             }
+        }
+
+        /// <summary>
+        /// Set the <see cref="IMetricsRoot"/>
+        /// </summary>
+        /// <param name="metricsRoot">An <see cref="IMetricsRoot"/> to be used</param>
+        public static void SetMetricsFactory(IMetricsRoot metricsRoot)
+        {
+            MetricsRootInternal = metricsRoot;
         }
 
         /// <summary>
@@ -46,19 +42,19 @@ namespace Sportradar.OddsFeed.SDK.Common
         /// <returns>Returns <see cref="IMetricsRoot"/> </returns>
         public static IMeasureMetrics GetMeasure()
         {
-            return _metricsRoot?.Measure;
+            return MetricsRootInternal?.Measure;
         }
 
         /// <summary>
-        /// Record system/app metrics
+        /// Record system/application metrics
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator", "RCS1075:Avoid empty catch clause that catches System.Exception.", Justification = "Ignore all metrics setup issues")]
         public static void SystemMeasures()
         {
             if (MetricsRoot == null)
             {
                 return;
             }
-
 
             try
             {
@@ -73,12 +69,7 @@ namespace Sportradar.OddsFeed.SDK.Common
                 var privilegedCpuTimeUsed = process.PrivilegedProcessorTime.TotalMilliseconds - lastPrivilegedProcessorTime.TotalMilliseconds;
                 var userCpuTimeUsed = process.UserProcessorTime.TotalMilliseconds - lastUserProcessorTime.TotalMilliseconds;
 
-                lastTotalProcessorTime = process.TotalProcessorTime;
-                lastPrivilegedProcessorTime = process.PrivilegedProcessorTime;
-                lastUserProcessorTime = process.UserProcessorTime;
-
                 var cpuTimeElapsed = (DateTime.UtcNow - lastTimeStamp).TotalMilliseconds * Environment.ProcessorCount;
-                lastTimeStamp = DateTime.UtcNow;
 
                 MetricsRoot.Measure.Gauge.SetValue(SystemUsageMetricsRegistry.Gauges.TotalCpuUsed, totalCpuTimeUsed * 100 / cpuTimeElapsed);
                 MetricsRoot.Measure.Gauge.SetValue(SystemUsageMetricsRegistry.Gauges.PrivilegedCpuUsed, privilegedCpuTimeUsed * 100 / cpuTimeElapsed);

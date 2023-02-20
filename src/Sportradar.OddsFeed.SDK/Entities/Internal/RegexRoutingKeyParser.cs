@@ -29,13 +29,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static readonly string RegexPatternFormat = @"\A.+\.{0}\." + $@"(?<{GroupName}>\d+)\..+\z";
 
         /// <summary>
-        /// Gets a <see cref="URN"/> representing the sportId by parsing the provided <code>routingKey</code>
+        /// Gets a <see cref="URN"/> representing the sportId by parsing the provided <c>routingKey</c>
         /// </summary>
         /// <param name="routingKey">The routing key specified by the feed</param>
         /// <param name="messageTypeName">The type name of the received message</param>
-        /// <returns>The sportId obtained by parsing the provided <code>routingKey</code></returns>
+        /// <returns>The sportId obtained by parsing the provided <c>routingKey</c></returns>
         public URN GetSportId(string routingKey, string messageTypeName)
         {
+            if (messageTypeName.Equals("alive", StringComparison.InvariantCultureIgnoreCase) ||
+                messageTypeName.Equals("snapshot_complete", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
+            }
+
             var match = Regex.Match(routingKey, string.Format(RegexPatternFormat, messageTypeName));
             if (!match.Success)
             {
@@ -46,27 +52,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Tries to get a <see cref="URN"/> representing of the sportId by parsing the provided <code>routingKey</code>
+        /// Tries to get a <see cref="URN"/> representing of the sportId by parsing the provided <c>routingKey</c>
         /// </summary>
         /// <param name="routingKey">The routing key specified by the feed</param>
         /// <param name="messageTypeName">The type name of the received message</param>
         /// <param name="sportId">If the method returned true the sportId; Otherwise undefined</param>
-        /// <returns>True if sportId could be retrieved from <code>routingKey</code>; Otherwise false</returns>
+        /// <returns>True if sportId could be retrieved from <c>routingKey</c>; Otherwise false</returns>
         public bool TryGetSportId(string routingKey, string messageTypeName, out URN sportId)
         {
             sportId = null;
             try
             {
-                if (routingKey.IsNullOrEmpty())
+                if (routingKey.IsNullOrEmpty() ||
+                    messageTypeName.Equals("alive", StringComparison.InvariantCultureIgnoreCase) ||
+                    messageTypeName.Equals("snapshot_complete", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return false;
                 }
+
                 sportId = GetSportId(routingKey, messageTypeName);
             }
             catch (Exception)
             {
                 return false;
             }
+
             return true;
         }
     }

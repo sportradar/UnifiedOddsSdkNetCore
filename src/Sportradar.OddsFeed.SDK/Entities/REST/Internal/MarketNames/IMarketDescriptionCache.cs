@@ -17,14 +17,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     internal interface IMarketDescriptionCache : IHealthStatusProvider, IDisposable
     {
         /// <summary>
-        /// Asynchronously gets a <see cref="IMarketDescription" /> instance for the market specified by <code>id</code> and <code>specifiers</code>
+        /// Asynchronously gets a <see cref="IMarketDescription" /> instance for the market specified by <c>id</c> and <c>specifiers</c>
         /// </summary>
         /// <param name="marketId">The market identifier</param>
         /// <param name="variant">A <see cref="string" /> specifying market variant or a null reference if market is invariant</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying required translations</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}" /> specifying required translations</param>
         /// <returns>A <see cref="Task{T}" /> representing the async retrieval operation</returns>
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
-        Task<IMarketDescription> GetMarketDescriptionAsync(int marketId, string variant, IEnumerable<CultureInfo> cultures);
+        Task<IMarketDescription> GetMarketDescriptionAsync(int marketId, string variant, IReadOnlyCollection<CultureInfo> cultures);
 
         /// <summary>
         /// Asynchronously loads the list of market descriptions from the Sports API

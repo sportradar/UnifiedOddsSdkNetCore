@@ -93,7 +93,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="dto">The <see cref="ProductInfoDTO"/> data</param>
         public ProductInfo(ProductInfoDTO dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 return;
             }
@@ -166,8 +166,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
         public async Task<ExportableProductInfoCI> ExportAsync()
         {
-            var linkTasks = _links?.Select(async l => await ((ProductInfoLink) l).ExportAsync().ConfigureAwait(false));
-            var channelTasks = _channels?.Select(async c => await ((StreamingChannel) c).ExportAsync().ConfigureAwait(false));
+            var linkTasks = _links?.Select(async l => await ((ProductInfoLink)l).ExportAsync().ConfigureAwait(false));
+            var channelTasks = _channels?.Select(async c => await ((StreamingChannel)c).ExportAsync().ConfigureAwait(false));
 
             return new ExportableProductInfoCI
             {

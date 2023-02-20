@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -176,7 +175,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _tournamentId;
             }
-            await FetchMissingSummary(cultures, false).ConfigureAwait(false);
+            var cultureInfos = cultures.ToList();
+            await FetchMissingSummary(cultureInfos, false).ConfigureAwait(false);
+            if (_tournamentId == null)
+            {
+                await FetchMissingFixtures(cultureInfos).ConfigureAwait(false);
+            }
             return _tournamentId;
         }
 
@@ -296,7 +300,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 _tournamentId = eventSummary.Tournament.Id;
             }
-            if(eventSummary.Coverage != null)
+            if (eventSummary.Coverage != null)
             {
                 _coverageInfo = new CoverageInfoCI(eventSummary.Coverage);
             }
@@ -379,6 +383,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <param name="culture">The culture</param>
         private void ActualMergeTimeline(MatchTimelineDTO timelineDTO, CultureInfo culture)
         {
+            if (timelineDTO.SportEvent is MatchDTO matchDTO)
+            {
+                ActualMerge(matchDTO, culture);
+            }
             if (_eventTimeline == null)
             {
                 _eventTimeline = new EventTimelineCI(timelineDTO, culture);
@@ -407,7 +415,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     : null;
                 match.TournamentId = _tournamentId?.ToString();
                 match.Fixture = _fixture != null
-                    ? await ((Fixture) _fixture).ExportAsync().ConfigureAwait(false)
+                    ? await ((Fixture)_fixture).ExportAsync().ConfigureAwait(false)
                     : null;
                 match.EventTimeline = _eventTimeline != null
                     ? await _eventTimeline.ExportAsync().ConfigureAwait(false)

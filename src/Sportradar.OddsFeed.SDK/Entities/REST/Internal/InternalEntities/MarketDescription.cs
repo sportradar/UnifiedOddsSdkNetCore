@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 
         public IEnumerable<IOutcomeDescription> Outcomes { get; internal set; }
 
-        public IEnumerable<ISpecifier> Specifiers { get; }
+        public IEnumerable<ISpecifier> Specifiers { get; internal set; }
 
         public IEnumerable<IMarketMappingData> Mappings { get; internal set; }
 
@@ -36,30 +36,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public MarketDescriptionCacheItem MarketDescriptionCI { get; }
 
-        internal MarketDescription(MarketDescriptionCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
+        internal MarketDescription(MarketDescriptionCacheItem cacheItem, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
-
             MarketDescriptionCI = cacheItem;
 
             Id = cacheItem.Id;
-            _names = new ReadOnlyDictionary<CultureInfo, string>(cultureList.ToDictionary(c => c, cacheItem.GetName));
-            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(cacheItem.HasTranslationsFor).ToDictionary(c => c, cacheItem.GetDescription));
+            _names = new ReadOnlyDictionary<CultureInfo, string>(cultures.ToDictionary(c => c, cacheItem.GetName));
+            _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultures.Where(cacheItem.HasTranslationsFor).ToDictionary(c => c, cacheItem.GetDescription));
             Outcomes = cacheItem.Outcomes == null
                 ? null
-                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureList)).ToList());
+                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription)new OutcomeDescription(o, cultures)).ToList());
             Specifiers = cacheItem.Specifiers == null
                 ? null
-                : new ReadOnlyCollection<ISpecifier>(cacheItem.Specifiers.Select(s => (ISpecifier) new Specifier(s)).ToList());
+                : new ReadOnlyCollection<ISpecifier>(cacheItem.Specifiers.Select(s => (ISpecifier)new Specifier(s)).ToList());
             Mappings = cacheItem.Mappings == null
                 ? null
-                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData) new MarketMapping(m)).ToList());
+                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData)new MarketMapping(m)).ToList());
             Attributes = cacheItem.Attributes == null
                 ? null
-                : new ReadOnlyCollection<IMarketAttribute>(cacheItem.Attributes.Select(a => (IMarketAttribute) new MarketAttribute(a)).ToList());
+                : new ReadOnlyCollection<IMarketAttribute>(cacheItem.Attributes.Select(a => (IMarketAttribute)new MarketAttribute(a)).ToList());
 
             OutcomeType = cacheItem.OutcomeType;
 
@@ -74,6 +72,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         public void SetMappings(IReadOnlyCollection<IMarketMappingData> mappings)
         {
             Mappings = mappings;
+        }
+
+        public void SetSpecifiers(IReadOnlyCollection<ISpecifier> specifiers)
+        {
+            Specifiers = specifiers;
         }
 
         public void SetFetchInfo(string source, DateTime lastDataReceived)

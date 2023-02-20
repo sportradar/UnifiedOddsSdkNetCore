@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         /// <param name="cultures">The list of <see cref="CultureInfo"/> to fetch <see cref="IMarketMapping"/></param>
         /// <returns>A <see cref="Task{IMarketMappingId}"/> representing the asynchronous operation</returns>
-        Task<IEnumerable<IMarketMapping>> GetMappedMarketIdAsync(IEnumerable<CultureInfo> cultures);
+        Task<IEnumerable<IMarketMapping>> GetMappedMarketIdAsync(IReadOnlyCollection<CultureInfo> cultures);
 
         /// <summary>
         /// Asynchronously gets the mapping Id of the specified outcome
@@ -26,6 +26,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="outcomeId">The outcome identifier used to get mapped outcomeId</param>
         /// <param name="cultures">The list of <see cref="CultureInfo"/> to fetch <see cref="IOutcomeMapping"/></param>
         /// <returns>A <see cref="Task{IOutcomeMappingId}"/> representing the asynchronous operation</returns>
-        Task<IEnumerable<IOutcomeMapping>> GetMappedOutcomeIdAsync(string outcomeId, IEnumerable<CultureInfo> cultures);
+        Task<IEnumerable<IOutcomeMapping>> GetMappedOutcomeIdAsync(string outcomeId, IReadOnlyCollection<CultureInfo> cultures);
     }
 }

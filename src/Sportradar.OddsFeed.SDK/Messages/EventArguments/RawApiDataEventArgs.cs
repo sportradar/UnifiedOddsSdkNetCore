@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages.REST;
 using System;
+using Sportradar.OddsFeed.SDK.Messages.REST;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 

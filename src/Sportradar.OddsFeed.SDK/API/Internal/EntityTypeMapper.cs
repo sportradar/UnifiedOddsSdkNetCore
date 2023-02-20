@@ -29,33 +29,33 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             switch (id.TypeGroup)
             {
                 case ResourceTypeGroup.MATCH:
-                {
-                    return typeof(IMatch);
-                }
+                    {
+                        return typeof(IMatch);
+                    }
                 case ResourceTypeGroup.STAGE:
-                {
-                    return typeof(IStage);
-                }
+                    {
+                        return typeof(IStage);
+                    }
                 case ResourceTypeGroup.BASIC_TOURNAMENT:
-                {
-                    return typeof(IBasicTournament);
-                }
+                    {
+                        return typeof(IBasicTournament);
+                    }
                 case ResourceTypeGroup.TOURNAMENT:
-                {
-                    return typeof(ITournament);
-                }
+                    {
+                        return typeof(ITournament);
+                    }
                 case ResourceTypeGroup.SEASON:
-                {
-                    return typeof(ISeason);
-                }
+                    {
+                        return typeof(ISeason);
+                    }
                 case ResourceTypeGroup.DRAW:
-                {
-                    return typeof(IDraw);
-                }
+                    {
+                        return typeof(IDraw);
+                    }
                 case ResourceTypeGroup.LOTTERY:
-                {
-                    return typeof(ILottery);
-                }
+                    {
+                        return typeof(ILottery);
+                    }
                 case ResourceTypeGroup.OTHER:
                 case ResourceTypeGroup.UNKNOWN:
                 default:

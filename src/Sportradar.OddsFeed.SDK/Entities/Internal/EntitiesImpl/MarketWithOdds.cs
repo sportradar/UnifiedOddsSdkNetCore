@@ -55,7 +55,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// for one outcome associated with the current <see cref="IMarketWithOdds"/> instance</param>
         /// <param name="marketMetadata">A <see cref="IMarketMetadata"/> to be set</param>
         /// <param name="marketDefinition">The associated market definition</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         internal MarketWithOdds(int id,
                                 IReadOnlyDictionary<string, string> specifiers,
                                 IReadOnlyDictionary<string, string> additionalInfo,
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                 IEnumerable<IOutcomeOdds> outcomeOdds,
                                 IMarketMetadata marketMetadata,
                                 IMarketDefinition marketDefinition,
-                                IEnumerable<CultureInfo> cultures)
+                                IReadOnlyCollection<CultureInfo> cultures)
             : base(id, specifiers, additionalInfo, nameProvider, mappingProvider, marketDefinition, cultures)
         {
             Status = status;

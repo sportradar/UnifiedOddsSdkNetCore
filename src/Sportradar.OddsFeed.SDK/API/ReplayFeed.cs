@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 return;
             }
             base.InitFeed();
-            ((ProducerManager) ProducerManager).SetIgnoreRecovery(0);
+            ((ProducerManager)ProducerManager).SetIgnoreRecovery(0);
         }
     }
 }

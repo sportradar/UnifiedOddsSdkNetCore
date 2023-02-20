@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
 using System.Threading;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -25,7 +25,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// Current sequence number
         /// </summary>
         private long _value;
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IncrementalSequenceGenerator"/> which generates positive sequence numbers
@@ -63,7 +62,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 newValue = currentValue + 1 < _maxValue
                     ? currentValue + 1
                     : _minValue;
-
             } while (currentValue != Interlocked.CompareExchange(ref _value, newValue, currentValue));
             return newValue;
         }

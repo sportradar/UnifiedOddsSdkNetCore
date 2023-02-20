@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Gets a <see cref="URN"/> representing id of the related entity
         /// </summary>
-        public URN Id { get;}
+        public URN Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IDictionary{CultureInfo, String}"/> containing translated name of the item
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             Id = id;
-            Name = new Dictionary<CultureInfo, string> {{culture, name}};
+            Name = new Dictionary<CultureInfo, string> { { culture, name } };
         }
 
         /// <summary>

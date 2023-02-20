@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -157,6 +156,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 return _categoryId;
             }
             await FetchMissingSummary(cultures, false).ConfigureAwait(false);
+            if (_categoryId == null)
+            {
+                await FetchMissingFixtures(cultures).ConfigureAwait(false);
+            }
             return _categoryId;
         }
 
@@ -190,7 +193,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             return _additionalParentIds;
         }
 
-
         /// <summary>
         /// Get stages as an asynchronous operation.
         /// </summary>
@@ -212,14 +214,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 {
                     _stageScheduleFetched = true;
                     var results = await DataRouterManager.GetSportEventsForTournamentAsync(Id, DefaultCulture, this).ConfigureAwait(false);
-
-                    if (!results.IsNullOrEmpty())
+                    if (results != null)
                     {
-                        _childStages = new ReadOnlyCollection<URN>(results.Select(r => r.Item1).ToList());
+                        var sportEventIds = results.ToList();
+                        if (!sportEventIds.IsNullOrEmpty())
+                        {
+                            _childStages = new ReadOnlyCollection<URN>(sportEventIds.Select(r => r.Item1).ToList());
+                        }
                     }
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 
@@ -333,13 +339,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 lock (MergeLock)
                 {
                     base.MergeFixture(fixtureDTO, culture, false);
-                    _categoryId = fixtureDTO.Tournament?.Category?.Id;
+                    if (fixtureDTO.Tournament?.Category != null)
+                    {
+                        _categoryId = fixtureDTO.Tournament?.Category?.Id;
+                    }
                 }
             }
             else
             {
                 base.MergeFixture(fixtureDTO, culture, false);
-                _categoryId = fixtureDTO.Tournament?.Category?.Id;
+                if (fixtureDTO.Tournament?.Category != null)
+                {
+                    _categoryId = fixtureDTO.Tournament?.Category?.Id;
+                }
             }
         }
 
@@ -356,7 +368,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             stage.CategoryId = _categoryId?.ToString();
             stage.ParentStageId = _parentStageId?.ToString();
             stage.ChildStages = _childStages?.Select(s => s.ToString());
-            stage.AdditionalParentIds = _additionalParentIds?.Select(s=>s.ToString()).ToList();
+            stage.AdditionalParentIds = _additionalParentIds?.Select(s => s.ToString()).ToList();
 
             return exportable;
         }

@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {

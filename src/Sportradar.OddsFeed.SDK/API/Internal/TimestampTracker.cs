@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// A <see cref="MessageTimingInfo"/> used to track alive messages from the system session
         /// </summary>
         private readonly MessageTimingInfo _systemAliveTimingInfo;
-        
+
         /// <summary>
         /// Sdk start time (used for recovery initiation)
         /// </summary>
@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="allInterests">A <see cref="IEnumerable{T}"/> containing <see cref="MessageInterest"/> for all created sessions</param>
         /// <param name="maxInactivitySeconds">The max interval in seconds between live messages on a system session</param>
         /// <param name="maxMessageAgeInSeconds">The maximum latency of the user messages</param>
-        public TimestampTracker(Producer producer, IEnumerable<MessageInterest> allInterests, int maxInactivitySeconds, int maxMessageAgeInSeconds)
+        public TimestampTracker(Producer producer, ICollection<MessageInterest> allInterests, int maxInactivitySeconds, int maxMessageAgeInSeconds)
         {
             Guard.Argument(producer, nameof(producer)).NotNull();
             Guard.Argument(maxInactivitySeconds, nameof(maxInactivitySeconds)).Positive();
@@ -109,9 +109,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var aliveMessagesTimingInfo = new Dictionary<MessageInterest, MessageTimingInfo>();
             var nonAliveMessagesTimingInfo = new Dictionary<MessageInterest, MessageTimingInfo>();
 
-            var allInterestsList = allInterests as IList<MessageInterest> ?? allInterests.ToList();
             var producerScopes = producer.Scope.Select(MessageInterest.FromScope).ToList();
-            foreach (var interest in allInterestsList)
+            foreach (var interest in allInterests)
             {
                 if (!interest.IsScopeInterest || producerScopes.Contains(interest))
                 {
@@ -218,7 +217,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var nonAliveInfo = string.Join(",", _nonAliveMessagesTimingInfo.Select(pair => pair.Key.Name + ":" + "latency=" + $"{pair.Value.Latency.Hours:D2}:{pair.Value.Latency.Minutes:D2}:{pair.Value.Latency.Seconds:D2}.{pair.Value.Latency.Milliseconds:D3}"));
             var behindInfo = $"IsBehind({IsBehind}):Alive(s)[{aliveInfo}],NonAlives[{nonAliveInfo}]";
             var pingStatus = IsAliveViolated ? "Failed" : "Ok";
-            var violationInfo = $"Ping({pingStatus}):age={ _systemAliveTimingInfo.Age.Hours:D2}:{ _systemAliveTimingInfo.Age.Minutes:D2}:{ _systemAliveTimingInfo.Age.Seconds:D2}.{ _systemAliveTimingInfo.Age.Milliseconds:D3}";
+            var violationInfo = $"Ping({pingStatus}):age={_systemAliveTimingInfo.Age.Hours:D2}:{_systemAliveTimingInfo.Age.Minutes:D2}:{_systemAliveTimingInfo.Age.Seconds:D2}.{_systemAliveTimingInfo.Age.Milliseconds:D3}";
             return $"[[{violationInfo}],[{behindInfo}]]";
         }
 

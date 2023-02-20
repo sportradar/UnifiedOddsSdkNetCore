@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
@@ -25,13 +25,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Initializes a new instance of the <see cref="CompositeMappingValidator"/> class.
         /// </summary>
         /// <param name="validators">The <see cref="IReadOnlyCollection{T}"/> containing actual validators.</param>
-        public CompositeMappingValidator(IEnumerable<IMappingValidator> validators)
+        public CompositeMappingValidator(ICollection<IMappingValidator> validators)
         {
             Guard.Argument(validators, nameof(validators)).NotNull().NotEmpty();
 
             _validators = validators as IReadOnlyCollection<IMappingValidator> ?? new ReadOnlyCollection<IMappingValidator>(validators.ToList());
         }
-
 
         /// <summary>
         /// Validate the provided specifiers against current instance.

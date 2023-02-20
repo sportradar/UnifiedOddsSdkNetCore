@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// A <see cref="IEnumerable{T}"/> specifying languages the current instance supports
         /// </summary>
-        public readonly IEnumerable<CultureInfo> Cultures;
+        public readonly IReadOnlyCollection<CultureInfo> Cultures;
 
         /// <summary>
         /// A <see cref="ISportEventCache"/> instance containing <see cref="SportEventCI"/>
@@ -59,13 +59,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="sportId">A <see cref="URN"/> identifying the sport current instance belong to</param>
         /// <param name="executionLog">The <see cref="ILogger"/> instance used for execution logging</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> instance containing <see cref="SportEventCI"/></param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the instance will handle potential exceptions</param>
         public SportEvent(URN id,
                         URN sportId,
                         ILogger executionLog,
                         ISportEventCache sportEventCache,
-                        IEnumerable<CultureInfo> cultures,
+                        IReadOnlyCollection<CultureInfo> cultures,
                         ExceptionHandlingStrategy exceptionStrategy)
         {
             Guard.Argument(id, nameof(id)).NotNull();
@@ -185,7 +185,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected override string PrintC()
         {
             var detailsCultures = string.Join(", ", Cultures.Select(k => k.TwoLetterISOLanguageName));
-            string result = $"Id={Id}, Sport={GetSportIdAsync().Result}, ScheduledStartTime={GetScheduledTimeAsync().Result}, ScheduledEndTime={GetScheduledEndTimeAsync().Result}";
+            var result = $"Id={Id}, Sport={GetSportIdAsync().Result}, ScheduledStartTime={GetScheduledTimeAsync().Result}, ScheduledEndTime={GetScheduledEndTimeAsync().Result}";
             result += $", CulturesLoaded=[{detailsCultures}]";
             return result;
         }

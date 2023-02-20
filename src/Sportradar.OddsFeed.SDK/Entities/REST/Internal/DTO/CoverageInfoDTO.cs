@@ -3,8 +3,8 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -30,8 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Includes = coverageInfo.coverage != null && coverageInfo.coverage.Any()
                 ? new ReadOnlyCollection<string>(coverageInfo.coverage.Select(c => c.includes).ToList())
                 : null;
-            CoveredFrom? coveredFrom;
-            RestMapperHelper.TryGetCoveredFrom(coverageInfo.covered_from, out coveredFrom);
+            RestMapperHelper.TryGetCoveredFrom(coverageInfo.covered_from, out var coveredFrom);
             CoveredFrom = coveredFrom;
         }
     }

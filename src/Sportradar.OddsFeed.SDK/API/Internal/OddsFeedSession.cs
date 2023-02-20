@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the name of the session
         /// </summary>
-        public string Name { get; } // => MessageInterest.Name;
+        public string Name { get; }
 
         /// <summary>
         /// Raised when a message which cannot be parsed is received
@@ -115,7 +115,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             _getRoutingKeys = getRoutingKeys;
 
-            Name = char.ToUpperInvariant(MessageInterest.Name[0]) + MessageInterest.Name.Substring(1);
+            Name = char.ToUpperInvariant(MessageInterest.Name[0]) + MessageInterest.Name[1..];
         }
 
         /// <summary>
@@ -129,17 +129,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var validationResult = _messageValidator.Validate(message);
             switch (validationResult)
             {
-                case ValidationResult.FAILURE:
+                case ValidationResult.Failure:
                     ExecutionLog.LogWarning($"{WriteMessageInterest()}Validation of message=[{message}] failed. Raising OnUnparsableMessageReceived event");
                     var messageType = _messageDataExtractor.GetMessageTypeFromMessage(message);
                     var eventArgs = new UnparsableMessageEventArgs(messageType, message.ProducerId.ToString(), message.EventId, e.RawMessage);
                     Dispatch(OnUnparsableMessageReceived, eventArgs, "OnUnparsableMessageReceived", message.ProducerId);
                     return;
-                case ValidationResult.PROBLEMS_DETECTED:
+                case ValidationResult.ProblemsDetected:
                     ExecutionLog.LogWarning($"{WriteMessageInterest()}Problems were detected while validating message=[{message}], but the message is still eligible for further processing.");
                     _messageProcessor.ProcessMessage(message, MessageInterest, e.RawMessage);
                     return;
-                case ValidationResult.SUCCESS:
+                case ValidationResult.Success:
                     ExecutionLog.LogDebug($"{WriteMessageInterest()}Message=[{message}] successfully validated. Continuing with message processing.");
                     _messageProcessor.ProcessMessage(message, MessageInterest, e.RawMessage);
                     return;
@@ -163,7 +163,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var producerId = 0;
             if (!string.IsNullOrEmpty(basicMessageData.ProducerId))
             {
-                int.TryParse(basicMessageData.ProducerId, out producerId);
+                _ = int.TryParse(basicMessageData.ProducerId, out producerId);
             }
             Dispatch(OnUnparsableMessageReceived, dispatchEventArgs, "OnUnparsableMessageReceived", producerId);
         }
@@ -177,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             var processingTook = string.Empty;
             var sdkProcessingTime = DateTime.Now - SdkInfo.FromEpochTime(e.Message.ReceivedAt);
-            if(sdkProcessingTime.TotalMilliseconds > 500)
+            if (sdkProcessingTime.TotalMilliseconds > 500)
             {
                 processingTook = $" Sdk processing took {(int)sdkProcessingTime.TotalMilliseconds}ms";
             }
@@ -203,7 +203,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var specificDispatcher = _sportSpecificDispatchers.Get(URN.Parse(message.EventId), message.SportId);
             return specificDispatcher == null
                 ? this
-                : (IEntityDispatcherInternal) specificDispatcher;
+                : (IEntityDispatcherInternal)specificDispatcher;
         }
 
         /// <summary>
@@ -215,15 +215,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
 
-            var alive = message as alive;
-            if (alive != null)
+            if (message is alive)
             {
                 //ProcessAlive(alive);
                 return;
             }
 
-            var snapShotComplete = message as snapshot_complete;
-            if (snapShotComplete != null)
+            if (message is snapshot_complete)
             {
                 //ProcessSnapshotComplete(snapShotComplete);
                 //DispatchProducerUp(MessageMapperHelper.GetEnumValue<Product>(snapShotComplete.producer), snapShotComplete.timestamp);

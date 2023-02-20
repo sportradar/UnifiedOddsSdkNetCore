@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(messageMapper, nameof(messageMapper)).NotNull();
 
-            ProcessorId = Guid.NewGuid().ToString().Substring(0, 4);
+            ProcessorId = Guid.NewGuid().ToString()[..4];
 
             _stashedItems = new List<StashedItem>();
             _feedMessageMapper = messageMapper;
@@ -87,10 +87,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 _stashedItems.Remove(stashedItem);
             }
 
-            await Task.Run(() =>
-            {
-                ReleaseMessagesFromStashedItem(stashedItem);
-            }).ConfigureAwait(false);
+            await Task.Run(() => ReleaseMessagesFromStashedItem(stashedItem)).ConfigureAwait(false);
         }
 
         private void ReleaseMessagesFromStashedItem(StashedItem stashedItem)
@@ -100,11 +97,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 var item = stashedItem.StatefulFeedMessagesQueue.Dequeue();
                 RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(item.Message, item.Interest, item.RawMsg));
             }
-        }
-
-        private static void EnqueueMessage(StashedItem stashedItem, StashedMessage stashedMessage)
-        {
-            stashedItem.StatefulFeedMessagesQueue.Enqueue(stashedMessage);
         }
 
         private StashedItem GetStashedItem(int producerId)
@@ -122,22 +114,18 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(interest, nameof(interest)).NotNull();
-            
-            var alive = message as alive;
-            if (alive != null)
+
+            if (message is alive alive)
             {
                 AliveReceived?.Invoke(this, new AliveEventArgs(_feedMessageMapper, alive, rawMessage));
             }
 
-            var snap = message as snapshot_complete;
-            if (snap != null)
+            if (message is snapshot_complete snap)
             {
                 SnapshotCompleteReceived?.Invoke(this, new SnapshotCompleteEventArgs(_feedMessageMapper, snap, interest, rawMessage));
             }
-            
+
             FeedMessageReceived?.Invoke(this, new FeedMessageReceivedEventArgs(message, interest, rawMessage));
-            
-            //RaiseOnMessageProcessedEvent(new FeedMessageReceivedEventArgs(message, interest, rawMessage));
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <summary>
     /// Contract for creating factory for creating new <see cref="IProducerRecoveryManager"/>
     /// </summary>
-    internal  interface IProducerRecoveryManagerFactory
+    internal interface IProducerRecoveryManagerFactory
     {
         /// <summary>
         /// Creates new <see cref="IProducerRecoveryManager" /> based on <see cref="IProducer" />

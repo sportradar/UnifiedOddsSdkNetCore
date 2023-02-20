@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         /// <param name="propertyValue">The <see cref="string"/> representation of the property value which caused the exception</param>
         /// <param name="targetTypeName">The <see cref="TargetTypeName"/> of the target entity</param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
-        public MappingException(string message, string propertyName, string propertyValue, string targetTypeName,  Exception innerException)
+        public MappingException(string message, string propertyName, string propertyValue, string targetTypeName, Exception innerException)
             : base(message, innerException)
         {
             PropertyName = propertyName;
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
-        public MappingException(SerializationInfo info, StreamingContext context)
+        protected MappingException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             PropertyName = info.GetString("sdkPropertyName");
@@ -71,10 +71,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         }
 
         /// <summary>
-        /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with information about the exception.
+        /// When overridden in a derived class, sets the <see cref="SerializationInfo" /> with information about the exception.
         /// </summary>
-        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
+        /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("sdkPropertyName", PropertyName);

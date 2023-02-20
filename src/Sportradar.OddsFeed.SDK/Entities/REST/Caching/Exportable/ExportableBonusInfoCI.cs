@@ -20,11 +20,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// <summary>
         /// A <see cref="BonusDrumType"/> representing the bonus drum type
         /// </summary>
-        public BonusDrumType? BonusDrumType { get; set;  }
+        public BonusDrumType? BonusDrumType { get; set; }
 
         /// <summary>
         /// A <see cref="string"/> representing the bonus range
         /// </summary>
-        public string BonusRange { get; set;  }
+        public string BonusRange { get; set; }
     }
 }

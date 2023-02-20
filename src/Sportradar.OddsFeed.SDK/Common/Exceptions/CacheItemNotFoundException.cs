@@ -11,7 +11,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
     /// An exception thrown by the SDK cache components when the requested key was not found in the cache
     /// </summary>
     /// <seealso cref="FeedSdkException" />
-    /// <seealso cref="FeedSdkException" />
     [Serializable]
     public class CacheItemNotFoundException : FeedSdkException
     {
@@ -45,9 +44,27 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
-        public CacheItemNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public CacheItemNotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             Key = info.GetString("sdkKey");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeedSdkException" /> class with a specified error message.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        protected CacheItemNotFoundException(string message) : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeedSdkException" /> class.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
+        protected CacheItemNotFoundException(string message, Exception innerException) : base(message, innerException)
+        {
         }
 
         /// <summary>

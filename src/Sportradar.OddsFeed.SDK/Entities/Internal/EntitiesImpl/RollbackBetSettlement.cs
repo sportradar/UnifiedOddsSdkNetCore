@@ -25,7 +25,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public RollbackBetSettlement(IMessageTimestamp timestamp, IProducer producer, T competition, long? requestId, IEnumerable<IMarketCancel> markets, byte[] rawMessage)
             : base(timestamp, producer, competition, requestId, markets, rawMessage)
         {
-
         }
     }
 }

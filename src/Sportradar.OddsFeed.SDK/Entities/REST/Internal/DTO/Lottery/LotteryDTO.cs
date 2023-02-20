@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
@@ -69,9 +69,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                 return;
             }
 
-            if (item.sport!=null)
+            if (item.sport != null)
             {
-                Sport = new SportDTO(item.sport.id, item.sport.name, (IEnumerable<tournamentExtended>) null);
+                Sport = new SportDTO(item.sport.id, item.sport.name, (IEnumerable<tournamentExtended>)null);
             }
             if (item.category != null)
             {
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                 DrawEvents = item.draw_events.Select(draw => new DrawDTO(draw)).ToList();
             }
 
-            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?) null;
+            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;
         }
     }
 }

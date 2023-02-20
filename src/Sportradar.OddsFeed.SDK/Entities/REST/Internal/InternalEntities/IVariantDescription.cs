@@ -10,8 +10,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
     /// <summary>
     /// Defines a contract implemented by classes representing variant description
     /// </summary>
-    internal interface IVariantDescription {
-
+    internal interface IVariantDescription
+    {
         /// <summary>
         /// Gets the id of the market described by the current instance
         /// </summary>

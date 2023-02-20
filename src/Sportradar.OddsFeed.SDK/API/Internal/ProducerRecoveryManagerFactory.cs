@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         public IProducerRecoveryManager GetRecoveryTracker(IProducer producer, IEnumerable<MessageInterest> allInterests)
         {
             var allInterestsList = allInterests as IList<MessageInterest> ?? allInterests.ToList();
-            var timestampTracker = new TimestampTracker((Producer) producer, allInterestsList, _config.InactivitySeconds, _config.InactivitySeconds);
+            var timestampTracker = new TimestampTracker((Producer)producer, allInterestsList, _config.InactivitySeconds, _config.InactivitySeconds);
             var recoveryOperation = new RecoveryOperation((Producer)producer, _recoveryRequestIssuer, allInterestsList, _config.NodeId, _config.AdjustAfterAge);
             return new ProducerRecoveryManager(producer, recoveryOperation, timestampTracker, _config.MinIntervalBetweenRecoveryRequests);
         }

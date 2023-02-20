@@ -2,11 +2,11 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -77,7 +77,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         /// <param name="semaphore">The <see cref="SemaphoreSlim"/> to be released</param>
         /// <returns>True if releasing the semaphore succeeded (e.g. instance was not yet disposed); otherwise false</returns>
-
         public static bool ReleaseSafe(this SemaphoreSlim semaphore)
         {
             try

@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             RaceDriverId = item.race_driver != null ? URN.Parse(item.race_driver.id) : null;
             RaceTeamId = item.race_team != null ? URN.Parse(item.race_team.id) : null;
-            Car = item.car != null ? new CarDTO(item.car) : null; 
+            Car = item.car != null ? new CarDTO(item.car) : null;
         }
     }
 }

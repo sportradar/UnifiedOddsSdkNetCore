@@ -30,7 +30,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         public double? Refund { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Constructor for additional probabilities
+        /// </summary>
+        /// <param name="win">Win value</param>
+        /// <param name="lose">Lose value</param>
+        /// <param name="halfWin">HalfWin value</param>
+        /// <param name="halfLose">HalfLose value</param>
+        /// <param name="refund">Refund value</param>
         public AdditionalProbabilities(double? win, double? lose, double? halfWin, double? halfLose, double? refund)
         {
             Win = win;

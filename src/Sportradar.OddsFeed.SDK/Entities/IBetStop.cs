@@ -12,7 +12,6 @@ namespace Sportradar.OddsFeed.SDK.Entities
     /// <typeparam name="T">A <see cref="ICompetition"/> derived type specifying the type of the associated sport event</typeparam>
     public interface IBetStop<out T> : IEventMessage<T> where T : ISportEvent
     {
-
         /// <summary>
         /// Gets a <see cref="MarketStatus"/> specifying the new status of the associated markets
         /// </summary>

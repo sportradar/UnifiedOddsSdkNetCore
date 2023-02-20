@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
@@ -16,20 +16,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     internal static class FeedMapperHelper
     {
         /// <summary>
-        /// Creates and returns a <see cref="IReadOnlyDictionary{TKey, TValue}"/> by splitting values provided by the <code>valueParts</code>
+        /// Creates and returns a <see cref="IReadOnlyDictionary{TKey, TValue}"/> by splitting values provided by the <c>valueParts</c>
         /// </summary>
         /// <param name="values">The values to be split</param>
         /// <param name="separators">The separators to be used for splitting </param>
         /// <returns>The <see cref="IReadOnlyDictionary{TKey,TValue}"/> obtained by splitting the provided values</returns>
         private static IReadOnlyDictionary<string, string> CreateDictionary(string[] values, params string[] separators)
         {
-            Guard.Argument(values, nameof(values)).NotNull();//.NotEmpty();
-            Guard.Argument(separators, nameof(separators)).NotNull();//.NotEmpty();
+            Guard.Argument(values, nameof(values)).NotNull();
+            Guard.Argument(separators, nameof(separators)).NotNull();
             //TODO: Check why .NotEmpty throws in some cases
             if (values.Length == 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(values));
+            }
+
             if (separators.Length == 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(separators));
+            }
 
             var tuples = new List<Tuple<string, string>>(values.Length);
             foreach (var specifier in values)
@@ -63,7 +68,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="value">A <see cref="string"/> representation of the validity attributes</param>
         /// <returns>A <see cref="IDictionary{String, String}"/> containing validity attributes</returns>
-
         public static IReadOnlyDictionary<string, string> GetValidForAttributes(string value)
         {
             Guard.Argument(value, nameof(value)).NotNull().NotEmpty();

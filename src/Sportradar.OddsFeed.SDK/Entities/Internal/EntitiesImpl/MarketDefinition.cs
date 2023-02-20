@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         private readonly IReadOnlyDictionary<string, string> _specifiers;
 
-        private readonly IEnumerable<CultureInfo> _cultures;
+        private readonly IReadOnlyCollection<CultureInfo> _cultures;
 
         private readonly ExceptionHandlingStrategy _exceptionHandlingStrategy;
 
@@ -64,12 +64,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="specifiers">The associated market specifiers</param>
         /// <param name="cultures">The cultures</param>
         /// <param name="exceptionHandlingStrategy">The exception handling strategy</param>
-        internal MarketDefinition(int marketId, 
-            IMarketCacheProvider marketCacheProvider, 
-            URN sportId, 
-            int producerId, 
+        internal MarketDefinition(int marketId,
+            IMarketCacheProvider marketCacheProvider,
+            URN sportId,
+            int producerId,
             IReadOnlyDictionary<string, string> specifiers,
-            IEnumerable<CultureInfo> cultures,
+            IReadOnlyCollection<CultureInfo> cultures,
             ExceptionHandlingStrategy exceptionHandlingStrategy)
         {
             _marketId = marketId;
@@ -127,7 +127,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             GetMarketDefinition();
             return _marketDescription?.Attributes == null || _marketDescription.Attributes.IsNullOrEmpty()
                 ? null
-                : new ReadOnlyDictionary <string, string> (_marketDescription.Attributes.ToDictionary(k => k.Name, v => v.Description));
+                : new ReadOnlyDictionary<string, string>(_marketDescription.Attributes.ToDictionary(k => k.Name, v => v.Description));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                     {
                         throw new CacheItemNotFoundException($"Market description for market={_marketId} not found.", _marketId.ToString(), ex);
                     }
-                }  
+                }
             }
         }
     }

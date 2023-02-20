@@ -1,4 +1,7 @@
-﻿using App.Metrics;
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+using App.Metrics;
 using App.Metrics.Gauge;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal.Metrics

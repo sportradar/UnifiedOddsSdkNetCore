@@ -3,12 +3,8 @@
 */
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Test.Shared")]
-[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Test")]
-[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.API.Test")]
-[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Common.Test")]
-[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Entities.Test")]
-[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Entities.REST.Test")]
-[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Messages.Test")]
-
+[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests")]
+[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests.Common")]
+[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests.Integration")]
+[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests.Performance")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

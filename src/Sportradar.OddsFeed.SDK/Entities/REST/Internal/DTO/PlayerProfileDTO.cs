@@ -80,26 +80,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="record">A <see cref="playerExtended"/> containing information about the player</param>
         /// <param name="generatedAt">The timestamp when the response was created</param>
         public PlayerProfileDTO(playerExtended record, DateTime? generatedAt)
-            :base(record.id, record.name)
+            : base(record.id, record.name)
         {
             Guard.Argument(record, nameof(record)).NotNull();
 
             Type = record.type;
             DateOfBirth = string.IsNullOrEmpty(record.date_of_birth)
                 ? null
-                : (DateTime?) DateTime.ParseExact(record.date_of_birth, "yyyy-MM-dd", null);
+                : (DateTime?)DateTime.ParseExact(record.date_of_birth, "yyyy-MM-dd", null);
             Nationality = record.nationality;
             Height = record.heightSpecified
-                ? (int?) record.height
+                ? (int?)record.height
                 : null;
             Weight = record.weightSpecified
-                ? (int?) record.weight
+                ? (int?)record.weight
                 : null;
             CountryCode = record.country_code;
             FullName = record.full_name;
             Nickname = record.nickname;
             JerseyNumber = record.jersey_numberSpecified
-                ? (int?) record.jersey_number
+                ? (int?)record.jersey_number
                 : null;
             Gender = record.gender;
             GeneratedAt = generatedAt;

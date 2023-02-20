@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -61,9 +61,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                 tournament = item.draw_fixture?.lottery == null
                     ? null
                     : new tournament
-                        {
-                            sport =  item.draw_fixture.lottery.sport
-                        }
+                    {
+                        sport = item.draw_fixture.lottery.sport
+                    }
             })
         {
             Guard.Argument(item, nameof(item)).NotNull();
@@ -80,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
                 DisplayId = item.draw_fixture.display_idSpecified
                                     ? item.draw_fixture.display_id
-                                    : (int?) null;
+                                    : (int?)null;
             }
 
             ResultsChronological = false;
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
                 }
             }
 
-            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?) null;
+            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;
         }
 
         internal DrawDTO(draw_fixtures item)
@@ -129,9 +129,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
             DisplayId = fixture.display_idSpecified
                             ? fixture.display_id
-                            : (int?) null;
+                            : (int?)null;
 
-            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?) null;
+            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;
         }
 
         internal DrawDTO(draw_event item)
@@ -147,12 +147,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
             {
                 return;
             }
-            
+
             Status = RestMapperHelper.MapDrawStatus(item.status, item.statusSpecified);
 
             DisplayId = item.display_idSpecified
                         ? item.display_id
-                        : (int?) null;
+                        : (int?)null;
         }
     }
 }

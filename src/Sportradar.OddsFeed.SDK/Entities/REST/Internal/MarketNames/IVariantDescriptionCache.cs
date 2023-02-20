@@ -17,13 +17,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     internal interface IVariantDescriptionCache : IHealthStatusProvider, IDisposable
     {
         /// <summary>
-        /// Asynchronously gets a <see cref="IVariantDescription" /> instance for the variant market specified by <code>id</code>
+        /// Asynchronously gets a <see cref="IVariantDescription" /> instance for the variant market specified by <c>id</c>
         /// </summary>
         /// <param name="variantId">The variant identifier</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying required translations</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}" /> specifying required translations</param>
         /// <returns>A <see cref="Task{T}" /> representing the async retrieval operation</returns>
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
-        Task<IVariantDescription> GetVariantDescriptorAsync(string variantId, IEnumerable<CultureInfo> cultures);
+        Task<IVariantDescription> GetVariantDescriptorAsync(string variantId, IReadOnlyCollection<CultureInfo> cultures);
 
         /// <summary>
         /// Asynchronously loads the variant list of market descriptions from the Sports API

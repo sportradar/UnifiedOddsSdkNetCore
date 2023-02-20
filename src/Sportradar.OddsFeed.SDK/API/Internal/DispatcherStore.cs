@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -105,13 +105,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
         }
 
-
         /// <summary>
-        /// Gets the <see cref="ISpecificEntityDispatcherInternal"/> instance associated with the sport entity associated with provided <code>id</code> and <code>sportId</code>
+        /// Gets the <see cref="ISpecificEntityDispatcherInternal"/> instance associated with the sport entity associated with provided <c>id</c> and <c>sportId</c>
         /// </summary>
         /// <param name="id">The <see cref="URN"/> representing the identifier of the sport entity for which to get the dispatcher</param>
         /// <param name="sportId">The <see cref="URN"/> representing the id of the sport to which the sport entity belongs to.</param>
-        /// <returns>IEntityDispatcherInternal used to dispatch the instance specified by <code>id</code> and <code>sportId</code>.</returns>
+        /// <returns>IEntityDispatcherInternal used to dispatch the instance specified by <c>id</c> and <c>sportId</c>.</returns>
         public ISpecificEntityDispatcherInternal Get(URN id, URN sportId)
         {
             var entityType = _typeMapper.Map(id, (int)sportId.Id);
@@ -119,8 +118,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             lock (_syncLock)
             {
-                ISpecificEntityDispatcherInternal dispatcher;
-                if (_dispatchers.TryGetValue(key, out dispatcher) && dispatcher.IsOpened)
+                if (_dispatchers.TryGetValue(key, out var dispatcher) && dispatcher.IsOpened)
                 {
                     return dispatcher;
                 }

@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl

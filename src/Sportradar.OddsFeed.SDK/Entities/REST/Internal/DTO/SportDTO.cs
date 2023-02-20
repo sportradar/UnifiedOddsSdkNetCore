@@ -3,8 +3,8 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="name">The name of the sport</param>
         /// <param name="tournaments">A <see cref="IEnumerable{tournamentExtended}"/> representing tournament which belong to the sport</param>
         internal SportDTO(string id, string name, IEnumerable<tournamentExtended> tournaments)
-            :base(id, name)
+            : base(id, name)
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     distinctRecord.category.id,
                     distinctRecord.category.name,
                     distinctRecord.category.country_code,
-                    recordList.Where(record => record.category.id == distinctRecord.category.id)));
+                    recordList.Where(record => record.category.id == distinctRecord.category.id).ToList()));
             }
             Categories = new ReadOnlyCollection<CategoryDTO>(categories);
         }

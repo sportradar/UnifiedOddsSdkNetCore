@@ -8,7 +8,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Represents a first step when building a <see cref="IOddsFeedSession"/> instance
     /// </summary>
-    
     public interface IOddsFeedSessionBuilder
     {
         /// <summary>
@@ -22,7 +21,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Represents a second step when building a <see cref="IOddsFeedSession"/> instance
     /// </summary>
-    
     public interface ISessionBuilder
     {
         /// <summary>

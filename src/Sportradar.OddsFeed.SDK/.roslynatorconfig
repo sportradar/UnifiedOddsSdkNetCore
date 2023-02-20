@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="My Rules" ToolsVersion="15.0">
+
+  <!-- Specify zero or more paths to other rulesets that should be included. Action="Default,None,Hidden,Info,Warning,Error" -->
+  <Include Path="..\.roslynatorconfig" Action="Default" />
+
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <Rule Id="CS0618" Action="Info" />
+  </Rules>
+
+  <!-- Specify default action that should be applied to all analyzers except those explicitly specified. -->
+  <IncludeAll Action="Error" />
+
+</RuleSet>

@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
             _feedMessage = feedMessage;
             _defaultCultures = cultures as IReadOnlyCollection<CultureInfo>;
             _rawMessage = rawMessage;
-            
+
             _betSettlement = GetBetSettlement();
         }
 

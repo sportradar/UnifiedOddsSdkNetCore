@@ -1,0 +1,1364 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <match_status_descriptions response_code="OK">
+    <match_status id="0" description="Nicht gestartet">
+      <sports all="true"/>
+    </match_status>
+    <match_status id="1" description="1. Drittel" period_number="1">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:131"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="2" description="2. Drittel" period_number="2">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:131"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="3" description="3. Drittel" period_number="3">
+      <sports>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:131"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="4" description="4. Periode" period_number="4">
+      <sports>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:131"/>
+      </sports>
+    </match_status>
+    <match_status id="5" description="5. Periode" period_number="5">
+      <sports/>
+    </match_status>
+    <match_status id="6" description="1. HZ" period_number="1">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+      </sports>
+    </match_status>
+    <match_status id="7" description="2. HZ" period_number="2">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+      </sports>
+    </match_status>
+    <match_status id="8" description="1. Satz" period_number="1">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+      </sports>
+    </match_status>
+    <match_status id="9" description="2. Satz" period_number="2">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+      </sports>
+    </match_status>
+    <match_status id="10" description="3. Satz" period_number="3">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+      </sports>
+    </match_status>
+    <match_status id="11" description="4. Satz" period_number="4">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+      </sports>
+    </match_status>
+    <match_status id="12" description="5. Satz" period_number="5">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+      </sports>
+    </match_status>
+    <match_status id="13" description="1. Viertel" period_number="1">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:11"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:153"/>
+      </sports>
+    </match_status>
+    <match_status id="14" description="2. Viertel" period_number="2">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:11"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:153"/>
+      </sports>
+    </match_status>
+    <match_status id="15" description="3. Viertel" period_number="3">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:11"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:153"/>
+      </sports>
+    </match_status>
+    <match_status id="16" description="4. Viertel" period_number="4">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:11"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:153"/>
+      </sports>
+    </match_status>
+    <match_status id="17" description="Golden Set">
+      <sports>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:34"/>
+      </sports>
+    </match_status>
+    <match_status id="18" description="Golden raid">
+      <sports>
+        <sport id="sr:sport:138"/>
+      </sports>
+    </match_status>
+    <match_status id="19" description="Münzwurf">
+      <sports>
+        <sport id="sr:sport:138"/>
+      </sports>
+    </match_status>
+    <match_status id="20" description="Läuft">
+      <sports>
+        <sport id="sr:sport:3"/>
+        <sport id="sr:sport:22"/>
+      </sports>
+    </match_status>
+    <match_status id="21" description="im Gange">
+      <sports>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:155"/>
+      </sports>
+    </match_status>
+    <match_status id="22" description="Spiel beginnt bald">
+      <sports/>
+    </match_status>
+    <match_status id="30" description="Pause">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:3"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:131"/>
+      </sports>
+    </match_status>
+    <match_status id="31" description="Halbzeit">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:157"/>
+      </sports>
+    </match_status>
+    <match_status id="32" description="Verl.">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:155"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="33" description="Halbzeit Verl.">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+      </sports>
+    </match_status>
+    <match_status id="34" description="Elfmeterschießen">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="35" description="SO folgt">
+      <sports>
+        <sport id="sr:sport:4"/>
+      </sports>
+    </match_status>
+    <match_status id="36" description="Siebenmeterwerfen folgt">
+      <sports>
+        <sport id="sr:sport:6"/>
+      </sports>
+    </match_status>
+    <match_status id="37" description="Warten auf goldenes Set">
+      <sports>
+        <sport id="sr:sport:23"/>
+      </sports>
+    </match_status>
+    <match_status id="38" description="Warten auf Golden raid">
+      <sports>
+        <sport id="sr:sport:138"/>
+      </sports>
+    </match_status>
+    <match_status id="39" description="Golden Raid">
+      <sports/>
+    </match_status>
+    <match_status id="40" description="Verlängerung">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:3"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:11"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:155"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="41" description="1. HZ Verlängerung">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+      </sports>
+    </match_status>
+    <match_status id="42" description="2. HZ Verlängerung">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+      </sports>
+    </match_status>
+    <match_status id="50" description="Elfmeterschießen">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="51" description="Siebenmeterwerfen">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:29"/>
+      </sports>
+    </match_status>
+    <match_status id="52" description="Penalty">
+      <sports>
+        <sport id="sr:sport:4"/>
+      </sports>
+    </match_status>
+    <match_status id="60" description="Verschoben">
+      <sports>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:24"/>
+      </sports>
+    </match_status>
+    <match_status id="61" description="Start verzögert">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:157"/>
+      </sports>
+    </match_status>
+    <match_status id="70" description="abgesagt">
+      <sports/>
+    </match_status>
+    <match_status id="71" description="Spiel 1" period_number="1">
+      <sports/>
+    </match_status>
+    <match_status id="72" description="Spiel 2" period_number="2">
+      <sports/>
+    </match_status>
+    <match_status id="73" description="Spiel 3" period_number="3">
+      <sports/>
+    </match_status>
+    <match_status id="74" description="Spiel 4" period_number="4">
+      <sports/>
+    </match_status>
+    <match_status id="75" description="Spiel 5" period_number="5">
+      <sports/>
+    </match_status>
+    <match_status id="76" description="Spiel 6" period_number="6">
+      <sports/>
+    </match_status>
+    <match_status id="77" description="Spiel 7" period_number="7">
+      <sports/>
+    </match_status>
+    <match_status id="80" description="unterbrochen">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:3"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:7"/>
+        <sport id="sr:sport:11"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:15"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:21"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:26"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:131"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:155"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="81" description="Unterbrochen">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:31"/>
+      </sports>
+    </match_status>
+    <match_status id="90" description="abgebrochen">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:3"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:21"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:155"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="91" description="Walkover">
+      <sports/>
+    </match_status>
+    <match_status id="92" description="Aufgegeben">
+      <sports>
+        <sport id="sr:sport:5"/>
+      </sports>
+    </match_status>
+    <match_status id="93" description="Walkover, Spieler 1 hat gewonnen">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="94" description="Walkover, Spieler 2 hat gewonnen">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="95" description="Spieler 1 zurückgezogen, Spieler 2 hat gewonnen">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="96" description="Spieler 2 zurückgezogen, Spieler 1 hat gewonnen">
+      <sports>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="97" description="Spieler 1 ausgeschlossen, Spieler 2 hat gewonnen">
+      <sports>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:37"/>
+      </sports>
+    </match_status>
+    <match_status id="98" description="Spieler 2 ausgeschlossen, Spieler 1 hat gewonnen">
+      <sports>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:37"/>
+      </sports>
+    </match_status>
+    <match_status id="99" description="Nur Ergebnis">
+      <sports/>
+    </match_status>
+    <match_status id="100" description="Beendet">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:3"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:5"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:19"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:21"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:117"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:155"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="110" description="n.V.">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:138"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:155"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="111" description="n.V.">
+      <sports/>
+    </match_status>
+    <match_status id="120" description="n.E.">
+      <sports>
+        <sport id="sr:sport:1"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:6"/>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:29"/>
+        <sport id="sr:sport:137"/>
+        <sport id="sr:sport:157"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="130" description="Nach Golden Set">
+      <sports>
+        <sport id="sr:sport:23"/>
+      </sports>
+    </match_status>
+    <match_status id="140" description="Nach Golden raid">
+      <sports>
+        <sport id="sr:sport:138"/>
+      </sports>
+    </match_status>
+    <match_status id="141" description="1. Map" period_number="1">
+      <sports>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="142" description="2. Map" period_number="2">
+      <sports>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="143" description="3. Map" period_number="3">
+      <sports>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="144" description="4. Map" period_number="4">
+      <sports>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="145" description="5. Map" period_number="5">
+      <sports>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="146" description="6. Map" period_number="6">
+      <sports>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="147" description="7. Map" period_number="7">
+      <sports>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="151" description="1. Spiel" period_number="1">
+      <sports>
+        <sport id="sr:sport:37"/>
+      </sports>
+    </match_status>
+    <match_status id="152" description="2. Spiel" period_number="2">
+      <sports>
+        <sport id="sr:sport:37"/>
+      </sports>
+    </match_status>
+    <match_status id="153" description="3. Spiel" period_number="3">
+      <sports>
+        <sport id="sr:sport:37"/>
+      </sports>
+    </match_status>
+    <match_status id="154" description="4. Spiel" period_number="4">
+      <sports>
+        <sport id="sr:sport:37"/>
+      </sports>
+    </match_status>
+    <match_status id="155" description="5. Spiel" period_number="5">
+      <sports>
+        <sport id="sr:sport:37"/>
+      </sports>
+    </match_status>
+    <match_status id="161" description="1. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="162" description="2. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="163" description="3. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="164" description="4. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="165" description="5. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="166" description="6. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="167" description="7. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="168" description="8. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="169" description="9. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="170" description="10. Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="171" description="Extra-Ende">
+      <sports>
+        <sport id="sr:sport:28"/>
+      </sports>
+    </match_status>
+    <match_status id="301" description="Erste Pause">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:117"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="302" description="Zweite Pause">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:4"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:117"/>
+        <sport id="sr:sport:153"/>
+        <sport id="sr:sport:195"/>
+      </sports>
+    </match_status>
+    <match_status id="303" description="Dritte Pause">
+      <sports>
+        <sport id="sr:sport:2"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:16"/>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:24"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:117"/>
+        <sport id="sr:sport:153"/>
+      </sports>
+    </match_status>
+    <match_status id="304" description="Vierte Pause">
+      <sports>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+        <sport id="sr:sport:32"/>
+        <sport id="sr:sport:34"/>
+        <sport id="sr:sport:37"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:110"/>
+        <sport id="sr:sport:111"/>
+        <sport id="sr:sport:117"/>
+      </sports>
+    </match_status>
+    <match_status id="305" description="Fünfte Pause">
+      <sports>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="306" description="Sechste Pause">
+      <sports>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:109"/>
+        <sport id="sr:sport:111"/>
+      </sports>
+    </match_status>
+    <match_status id="401" description="1. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="402" description="1. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="403" description="2. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="404" description="2. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="405" description="3. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="406" description="3. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="407" description="4. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="408" description="4. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="409" description="5. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="410" description="5. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="411" description="6. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="412" description="6. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="413" description="7. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="414" description="7. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="415" description="8. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="416" description="8. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="417" description="9. Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="418" description="9. Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="419" description="Extra-Inning Top">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="420" description="Extra-Inning Bottom">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="421" description="Break Top 1 Bottom 1">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="422" description="Break Top 2 Bottom 1">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="423" description="Break Top 2 Bottom 2">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="424" description="Break Top 3 Bottom 2">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="425" description="Break Top 3 Bottom 3">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="426" description="Break Top 4 Bottom 3">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="427" description="Break Top 4 Bottom 4">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="428" description="Break Top 5 Bottom 4">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="429" description="Break Top 5 Bottom 5">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="430" description="Break Top 6 Bottom 5">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="431" description="Break Top 6 Bottom 6">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="432" description="Break Top 7 Bottom 6">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="433" description="Break Top 7 Bottom 7">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="434" description="Break Top 8 Bottom 7">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="435" description="Break Top 8 Bottom 8">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="436" description="Break Top 9 Bottom 8">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="437" description="Break Top 9 Bottom 9">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="438" description="Break Top EI Bottom 9">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="439" description="Break Top EI Bottom EI">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="440" description="Sudden Death">
+      <sports>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+      </sports>
+    </match_status>
+    <match_status id="441" description="6. Satz" period_number="6">
+      <sports>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+      </sports>
+    </match_status>
+    <match_status id="442" description="7. Satz" period_number="7">
+      <sports>
+        <sport id="sr:sport:20"/>
+        <sport id="sr:sport:22"/>
+        <sport id="sr:sport:23"/>
+        <sport id="sr:sport:31"/>
+      </sports>
+    </match_status>
+    <match_status id="443" description="Sudden Death">
+      <sports>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+      </sports>
+    </match_status>
+    <match_status id="444" description="Nach Sudden Deatch">
+      <sports>
+        <sport id="sr:sport:12"/>
+        <sport id="sr:sport:13"/>
+        <sport id="sr:sport:24"/>
+      </sports>
+    </match_status>
+    <match_status id="445" description="Pause">
+      <sports>
+        <sport id="sr:sport:19"/>
+      </sports>
+    </match_status>
+    <match_status id="501" description="Erste Innings, Heimteam">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="502" description="Erste Innings, Auswärtsteam">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="503" description="Zweite Innings, Heimmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="504" description="Zweite Innings, Auswärtsmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="505" description="Super Over">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="506" description="Super Over, Heimmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="507" description="Super Over, Auswärtsmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="508" description="nach Super Over">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="509" description="Innings-Pause">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="510" description="Super Over-Pause">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="511" description="Essenspause">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="512" description="Teepause">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="513" description="Stumps">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="514" description="8. Satz" period_number="8">
+      <sports>
+        <sport id="sr:sport:22"/>
+      </sports>
+    </match_status>
+    <match_status id="515" description="9. Satz" period_number="9">
+      <sports>
+        <sport id="sr:sport:22"/>
+      </sports>
+    </match_status>
+    <match_status id="516" description="10. Satz" period_number="10">
+      <sports>
+        <sport id="sr:sport:22"/>
+      </sports>
+    </match_status>
+    <match_status id="517" description="11. Satz" period_number="11">
+      <sports>
+        <sport id="sr:sport:22"/>
+      </sports>
+    </match_status>
+    <match_status id="518" description="12. Satz" period_number="12">
+      <sports>
+        <sport id="sr:sport:22"/>
+      </sports>
+    </match_status>
+    <match_status id="519" description="13. Satz" period_number="13">
+      <sports>
+        <sport id="sr:sport:22"/>
+      </sports>
+    </match_status>
+    <match_status id="520" description="3. Innings, Heimmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="521" description="3. Innings, Auswärtsmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="522" description="4. Innings, Heimmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="523" description="4. Innings, Auswärtsmannschaft">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="524" description="Essenspause">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="525" description="Getränke">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="526" description="Super over">
+      <sports>
+        <sport id="sr:sport:21"/>
+      </sports>
+    </match_status>
+    <match_status id="531" description="1. Inning" period_number="1">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="532" description="2. Inning" period_number="2">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="533" description="3. Inning" period_number="3">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="534" description="4. Inning" period_number="4">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="535" description="5. Inning" period_number="5">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="536" description="6. Inning" period_number="6">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="537" description="7. Inning" period_number="7">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="538" description="8. Inning" period_number="8">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="539" description="9. Inning" period_number="9">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+    <match_status id="540" description="1. Runde">
+      <sports>
+        <sport id="sr:sport:117"/>
+      </sports>
+    </match_status>
+    <match_status id="541" description="2. Runde">
+      <sports>
+        <sport id="sr:sport:117"/>
+      </sports>
+    </match_status>
+    <match_status id="542" description="3. Runde">
+      <sports>
+        <sport id="sr:sport:117"/>
+      </sports>
+    </match_status>
+    <match_status id="543" description="4. Runde">
+      <sports>
+        <sport id="sr:sport:117"/>
+      </sports>
+    </match_status>
+    <match_status id="544" description="5. Runde">
+      <sports>
+        <sport id="sr:sport:117"/>
+      </sports>
+    </match_status>
+    <match_status id="545" description="6. Runde">
+      <sports/>
+    </match_status>
+    <match_status id="546" description="7. Runde">
+      <sports/>
+    </match_status>
+    <match_status id="547" description="Break top EI bottom 3">
+      <sports/>
+    </match_status>
+    <match_status id="548" description="Break top EI bottom 7">
+      <sports>
+        <sport id="sr:sport:3"/>
+      </sports>
+    </match_status>
+  </match_status_descriptions>

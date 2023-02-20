@@ -3,6 +3,7 @@
 */
 using System.Collections.Generic;
 using System.Linq;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
@@ -43,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Reference"/> class
         /// </summary>
-        /// <param name="referenceCI">The reference ci</param>
+        /// <param name="referenceCI">The reference cache item</param>
         public Reference(ReferenceIdCI referenceCI)
         {
             if (referenceCI == null)
@@ -82,9 +83,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string" /> containing details of the current instance</returns>
         protected override string PrintF()
         {
-            return References == null || !References.Any()
-                ? "no references"
-                : References.Aggregate(string.Empty, (current, item) => current = $"{current}, {item.Key}={item.Value}").Substring(2);
+            if (References.IsNullOrEmpty())
+            {
+                return "no references";
+            }
+            return string.Join(", ", References.Select(s => $"{s.Key}={s.Value}"));
         }
 
         /// <summary>

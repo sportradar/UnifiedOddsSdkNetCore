@@ -48,22 +48,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <param name="tournament">The <see cref="tournament"/> used for creating instance</param>
         internal TournamentDTO(tournament tournament)
-            :base(tournament.id, tournament.name)
+            : base(tournament.id, tournament.name)
         {
             Guard.Argument(tournament, nameof(tournament)).NotNull();
 
             Scheduled = tournament.scheduledSpecified
-                ? (DateTime?) tournament.scheduled
+                ? (DateTime?)tournament.scheduled
                 : null;
 
             ScheduledEnd = tournament.scheduled_endSpecified
-                ? (DateTime?) tournament.scheduled_end
+                ? (DateTime?)tournament.scheduled_end
                 : null;
 
             Sport = new SportEntityDTO(tournament.sport.id, tournament.sport.name);
 
             //TODO: check for 'vf': is it still required?
-            Category = tournament.category == null && tournament.id.StartsWith("vf")
+            Category = tournament.category == null && tournament.id.StartsWith("vf", StringComparison.InvariantCultureIgnoreCase)
                 ? CreateFakeCategory()
                 : new CategorySummaryDTO(tournament.category?.id, tournament.category?.name, tournament.category?.country_code);
 
@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             Sport = new SportEntityDTO(tournament.sport.id, tournament.sport.name);
 
-            Category = tournament.category == null && tournament.id.StartsWith("vf")
+            Category = tournament.category == null && tournament.id.StartsWith("vf", StringComparison.InvariantCultureIgnoreCase)
                 ? CreateFakeCategory()
                 : new CategorySummaryDTO(tournament.category?.id, tournament.category?.name, tournament.category?.country_code);
 

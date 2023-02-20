@@ -17,16 +17,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="specifiers">A <see cref="IReadOnlyDictionary{String,String}" /> representing specifiers for the market associated with the constructed operand.</param>
         /// <param name="operandExpression">A <see cref="string" /> representation of the operand.</param>
         /// <returns>The constructed <see cref="IOperand" /> instance.</returns>
-        /// <exception cref="FormatException">The format of the <code>operandExpression</code> is not correct</exception>
+        /// <exception cref="FormatException">The format of the <c>operandExpression</c> is not correct</exception>
         public IOperand BuildOperand(IReadOnlyDictionary<string, string> specifiers, string operandExpression)
         {
-            if((operandExpression.StartsWith("(") && !operandExpression.EndsWith(")")) ||
-                (!operandExpression.StartsWith("(") && operandExpression.EndsWith(")")))
+            if ((operandExpression.StartsWith("(", StringComparison.InvariantCultureIgnoreCase) && !operandExpression.EndsWith(")", StringComparison.InvariantCultureIgnoreCase)) ||
+                (!operandExpression.StartsWith("(", StringComparison.InvariantCultureIgnoreCase) && operandExpression.EndsWith(")", StringComparison.InvariantCultureIgnoreCase)))
             {
                 throw new FormatException($"Format of the operand {operandExpression} is not correct. It contains un-closed parenthesis");
             }
 
-            if (operandExpression.StartsWith("(") && operandExpression.EndsWith(")"))
+            if (operandExpression.StartsWith("(", StringComparison.InvariantCultureIgnoreCase) && operandExpression.EndsWith(")", StringComparison.InvariantCultureIgnoreCase))
             {
                 //remove parenthesis
                 operandExpression = operandExpression.Substring(1, operandExpression.Length - 2);
@@ -34,12 +34,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 string[] parts;
                 if (operandExpression.Contains("+"))
                 {
-                    operation = SimpleMathOperation.ADD;
+                    operation = SimpleMathOperation.Add;
                     parts = operandExpression.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
                 }
                 else if (operandExpression.Contains("-"))
                 {
-                    operation = SimpleMathOperation.SUBTRACT;
+                    operation = SimpleMathOperation.Subtract;
                     parts = operandExpression.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
                 }
                 else

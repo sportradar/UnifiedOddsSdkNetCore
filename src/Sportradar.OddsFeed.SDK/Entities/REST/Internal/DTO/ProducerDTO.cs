@@ -64,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Url = producer.api_url;
             ScopeNames = string.IsNullOrEmpty(producer.scope)
                 ? null
-                : producer.scope.Split(new[] {"|"}, StringSplitOptions.RemoveEmptyEntries);
+                : producer.scope.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
             StatefulRecoveryWindow = producer.stateful_recovery_window_in_minutes;
         }
     }

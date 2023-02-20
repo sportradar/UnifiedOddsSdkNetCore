@@ -15,7 +15,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string Type { get; }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecifierDTO"/> class.
         /// </summary>

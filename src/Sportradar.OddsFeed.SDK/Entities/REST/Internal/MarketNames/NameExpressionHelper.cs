@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
@@ -40,7 +40,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var currentIndex = 0;
             var format = descriptor;
             var expressions = new List<string>();
-            do
+
+            while (true)
             {
                 var startIndex = descriptor.IndexOf("{", currentIndex, StringComparison.Ordinal);
                 var endIndex = descriptor.IndexOf("}", currentIndex, StringComparison.Ordinal);
@@ -52,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
                 if (startIndex < 0 || endIndex < 0 || endIndex <= startIndex)
                 {
-                    throw new FormatException(@"Format of the descriptor is incorrect. Each opening '{' must be closed by corresponding '}'");
+                    throw new FormatException("Format of the descriptor is incorrect. Each opening '{' must be closed by corresponding '}'");
                 }
 
                 var expression = descriptor.Substring(startIndex, endIndex - startIndex + 1);
@@ -61,22 +62,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 currentIndex = endIndex == descriptor.Length
                     ? endIndex
                     : endIndex + 1;
-            } while (true);
+            }
 
             descriptorFormat = format;
 
-            return expressions.Any()
-                ? expressions
-                : null;
+            return expressions;
         }
 
         /// <summary>
         /// Parses the expression and verifies it's format
         /// </summary>
         /// <param name="expression">The name expression.</param>
-        /// <param name="operator">When the call returns it specifies the operator parsed from the <code>expression</code></param>
-        /// <param name="operand">When the call returns it specifies the operand parsed from the <code>expression</code></param>
-        /// <exception cref="FormatException">The <code>expression</code> couldn't be parsed due to incorrect format</exception>
+        /// <param name="operator">When the call returns it specifies the operator parsed from the <c>expression</c></param>
+        /// <param name="operand">When the call returns it specifies the operand parsed from the <c>expression</c></param>
+        /// <exception cref="FormatException">The <c>expression</c> couldn't be parsed due to incorrect format</exception>
         internal static void ParseExpression(string expression, out string @operator, out string operand)
         {
             Guard.Argument(expression, nameof(expression)).NotNull().NotEmpty();

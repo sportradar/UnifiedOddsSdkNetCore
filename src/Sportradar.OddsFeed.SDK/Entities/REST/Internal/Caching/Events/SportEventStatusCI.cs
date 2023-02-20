@@ -86,7 +86,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// Gets the indicator for competitors if there are home or away
         /// </summary>
         /// <value>The indicator for competitors if there are home or away</value>
-        public IDictionary<HomeAway, URN> HomeAwayCompetitors => FeedStatusDTO?._homeAwayCompetitors ?? SapiStatusDTO?._homeAwayCompetitors;
+        public IDictionary<HomeAway, URN> HomeAwayCompetitors => FeedStatusDTO?.HomeAwayCompetitors ?? SapiStatusDTO?.HomeAwayCompetitors;
 
         /// <summary>
         /// Gets the penalty score of the home competitor competing on the associated sport event (for Ice Hockey)
@@ -180,32 +180,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
         private void UpdatePeriodStatistics()
         {
-            if (SapiStatusDTO?.SportEventStatistics?.PeriodStatisticsDTOs != null)
+            if (SapiStatusDTO?.SportEventStatistics?.PeriodStatisticsDtos != null && FeedStatusDTO != null)
             {
-                if (FeedStatusDTO != null)
+                if (FeedStatusDTO.SportEventStatistics == null)
                 {
-                    if (FeedStatusDTO.SportEventStatistics == null)
-                    {
-                        FeedStatusDTO.SportEventStatistics = SapiStatusDTO.SportEventStatistics;
-                    }
-                    else if (FeedStatusDTO.SportEventStatistics.PeriodStatisticsDTOs == null)
-                    {
-                        FeedStatusDTO.SportEventStatistics.PeriodStatisticsDTOs = SapiStatusDTO.SportEventStatistics.PeriodStatisticsDTOs;
-                    }
+                    FeedStatusDTO.SportEventStatistics = SapiStatusDTO.SportEventStatistics;
+                }
+                else if (FeedStatusDTO.SportEventStatistics.PeriodStatisticsDtos == null)
+                {
+                    FeedStatusDTO.SportEventStatistics.PeriodStatisticsDtos = SapiStatusDTO.SportEventStatistics.PeriodStatisticsDtos;
                 }
             }
-            if (SapiStatusDTO?.SportEventStatistics?.TotalStatisticsDTOs != null)
+            if (SapiStatusDTO?.SportEventStatistics?.TotalStatisticsDtos != null && FeedStatusDTO != null)
             {
-                if (FeedStatusDTO != null)
+                if (FeedStatusDTO.SportEventStatistics == null)
                 {
-                    if (FeedStatusDTO.SportEventStatistics == null)
-                    {
-                        FeedStatusDTO.SportEventStatistics = SapiStatusDTO.SportEventStatistics;
-                    }
-                    else if (FeedStatusDTO.SportEventStatistics.TotalStatisticsDTOs == null)
-                    {
-                        FeedStatusDTO.SportEventStatistics.TotalStatisticsDTOs = SapiStatusDTO.SportEventStatistics.TotalStatisticsDTOs;
-                    }
+                    FeedStatusDTO.SportEventStatistics = SapiStatusDTO.SportEventStatistics;
+                }
+                else if (FeedStatusDTO.SportEventStatistics.TotalStatisticsDtos == null)
+                {
+                    FeedStatusDTO.SportEventStatistics.TotalStatisticsDtos = SapiStatusDTO.SportEventStatistics.TotalStatisticsDtos;
                 }
             }
         }

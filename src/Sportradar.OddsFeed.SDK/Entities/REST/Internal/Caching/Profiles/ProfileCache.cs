@@ -1,6 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Health;
 using App.Metrics.Timer;
@@ -18,15 +27,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
 {
@@ -86,7 +86,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         public ProfileCache(MemoryCache cache,
                             IDataRouterManager dataRouterManager,
                             ICacheManager cacheManager)
-            : base(cacheManager, null)
+            : base(cacheManager)
         {
             Guard.Argument(cache, nameof(cache)).NotNull();
             Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
@@ -131,11 +131,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
         /// Asynchronously gets a <see cref="PlayerProfileCI"/> representing the profile for the specified player
         /// </summary>
         /// <param name="playerId">A <see cref="URN"/> specifying the id of the player for which to get the profile</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages in which the information should be available</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages in which the information should be available</param>
         /// <returns>A <see cref="Task{PlayerProfileCI}"/> representing the asynchronous operation</returns>
         /// <exception cref="CacheItemNotFoundException">The requested item was not found in cache and could not be obtained from the API</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4457:Parameter validation in \"async\"/\"await\" methods should be wrapped", Justification = "<Pending>")]
-        public async Task<PlayerProfileCI> GetPlayerProfileAsync(URN playerId, IEnumerable<CultureInfo> cultures)
+        public async Task<PlayerProfileCI> GetPlayerProfileAsync(URN playerId, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(playerId, nameof(playerId)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull();
@@ -163,44 +163,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     // try to fetch for competitor, to avoid requests by each player
                     if (cachedItem?.CompetitorId != null)
                     {
-                        var competitorCI = (CompetitorCI)_cache.Get(cachedItem.CompetitorId.ToString());
-                        if (competitorCI != null &&
-                            (competitorCI.LastTimeCompetitorProfileFetched < DateTime.Now.AddSeconds(-30)
-                             || LanguageHelper.GetMissingCultures(wantedCultures, competitorCI.CultureCompetitorProfileFetched.ToList()).Any()))
-                        {
-                            ExecutionLog.LogDebug($"Fetching competitor profile for competitor {competitorCI.Id} instead of player {cachedItem.Id} for languages=[{string.Join(",", missingLanguages.Select(s => s.TwoLetterISOLanguageName))}].");
-
-                            try
-                            {
-                                await WaitTillIdIsAvailableAsync(_fetchedCompetitorProfiles, cachedItem.CompetitorId).ConfigureAwait(false);
-
-                                var cultureTasks = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetCompetitorAsync(competitorCI.Id, c, null));
-                                await Task.WhenAll(cultureTasks.Values).ConfigureAwait(false);
-                            }
-                            catch (Exception)
-                            {
-                                // ignored
-                            }
-                            finally
-                            {
-                                if (!_isDisposed)
-                                {
-                                    await ReleaseIdAsync(_fetchedCompetitorProfiles, cachedItem.CompetitorId).ConfigureAwait(false);
-                                }
-                            }
-
-                            cachedItem = (PlayerProfileCI)_cache.Get(playerId.ToString());
-                            missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys.ToList()).ToList();
-                            if (!missingLanguages.Any())
-                            {
-                                return cachedItem;
-                            }
-                        }
+                        await GetCompetitorProfileInsteadOfPlayerProfile(playerId, cachedItem.CompetitorId, missingLanguages);
                     }
 
-                    var cultureTaskDictionary = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetPlayerProfileAsync(playerId, c, null));
-                    await Task.WhenAll(cultureTaskDictionary.Values).ConfigureAwait(false);
-
+                    cachedItem = (PlayerProfileCI)_cache.Get(playerId.ToString());
+                    missingLanguages = LanguageHelper.GetMissingCultures(wantedCultures, cachedItem?.Names.Keys.ToList()).ToList();
+                    if (missingLanguages.Any())
+                    {
+                        var cultureTaskDictionary = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetPlayerProfileAsync(playerId, c, null));
+                        await Task.WhenAll(cultureTaskDictionary.Values).ConfigureAwait(false);
+                    }
                     cachedItem = (PlayerProfileCI)_cache.Get(playerId.ToString());
                 }
                 catch (Exception ex)
@@ -221,15 +193,38 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             }
         }
 
+        private async Task GetCompetitorProfileInsteadOfPlayerProfile(URN playerId, URN competitorId, IReadOnlyCollection<CultureInfo> wantedCultures)
+        {
+            if (competitorId == null || wantedCultures.IsNullOrEmpty())
+            {
+                return;
+            }
+            var competitorCI = (CompetitorCI)_cache.Get(competitorId.ToString());
+            if (competitorCI == null)
+            {
+                ExecutionLog.LogDebug($"Fetching competitor profile for competitor {competitorId} instead of player {playerId} for languages=[{LanguageHelper.GetCultureList(wantedCultures)}].");
+                _ = await GetCompetitorProfileAsync(competitorId, wantedCultures).ConfigureAwait(false);
+            }
+            else
+            {
+                var missingCultures = competitorCI.GetMissingProfileCultures(wantedCultures);
+                if (!missingCultures.IsNullOrEmpty())
+                {
+                    ExecutionLog.LogDebug($"Fetching competitor profile for competitor {competitorId} instead of player {playerId} for languages=[{LanguageHelper.GetCultureList(missingCultures)}].");
+                    _ = await GetCompetitorProfileAsync(competitorId, missingCultures.ToList()).ConfigureAwait(false);
+                }
+            }
+        }
+
         /// <summary>
         /// Asynchronously gets <see cref="CompetitorCI"/> representing the profile for the specified competitor
         /// </summary>
         /// <param name="competitorId">A <see cref="URN"/> specifying the id of the competitor for which to get the profile</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages in which the information should be available</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages in which the information should be available</param>
         /// <returns>A <see cref="Task{PlayerProfileCI}"/> representing the asynchronous operation</returns>
         /// <exception cref="CacheItemNotFoundException">The requested item was not found in cache and could not be obtained from the API</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4457:Parameter validation in \"async\"/\"await\" methods should be wrapped", Justification = "<Pending>")]
-        public async Task<CompetitorCI> GetCompetitorProfileAsync(URN competitorId, IEnumerable<CultureInfo> cultures)
+        public async Task<CompetitorCI> GetCompetitorProfileAsync(URN competitorId, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(competitorId, nameof(competitorId)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull();
@@ -246,15 +241,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 CompetitorCI cachedItem;
                 try
                 {
+                    var missingLanguages = cultures.ToList();
                     cachedItem = (CompetitorCI)_cache.Get(competitorId.ToString());
-                    var missingLanguages = LanguageHelper.GetMissingCultures(cultures.ToList(), cachedItem?.Names.Keys.ToList()).ToList();
+                    if (cachedItem != null)
+                    {
+                        missingLanguages = cachedItem.GetMissingProfileCultures(cultures).ToList();
+                    }
                     if (missingLanguages.Any())
                     {
                         var cultureTasks = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetCompetitorAsync(competitorId, c, null));
                         await Task.WhenAll(cultureTasks.Values).ConfigureAwait(false);
-                        cachedItem = (CompetitorCI)_cache.Get(competitorId.ToString());
                     }
-
+                    cachedItem = (CompetitorCI)_cache.Get(competitorId.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -269,7 +267,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 {
                     await ReleaseIdAsync(_fetchedCompetitorProfiles, competitorId).ConfigureAwait(false);
                 }
-
                 return cachedItem;
             }
         }
@@ -320,7 +317,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
             var details = $" [Players: {keys.Count(c => c.Contains("player"))}, Competitors: {keys.Count(c => c.Contains("competitor"))}, Teams: {keys.Count(c => c.Equals("team"))}, SimpleTeams: {keys.Count(URN.IsSimpleTeam)}]";
 
             return _cache.Any()
-                ? new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy($"Cache has { _cache.Count() } items{ details}."))
+                ? new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy($"Cache has {_cache.Count()} items{details}."))
                 : new ValueTask<HealthCheckResult>(HealthCheckResult.Unhealthy("Cache is empty."));
         }
 
@@ -457,8 +454,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 case DtoType.Tournament:
                     break;
                 case DtoType.PlayerProfile:
-                    var playerProfile = item as PlayerProfileDTO;
-                    if (playerProfile != null)
+                    if (item is PlayerProfileDTO playerProfile)
                     {
                         await AddPlayerProfileAsync(playerProfile, null, culture, true).ConfigureAwait(false);
                         saved = true;
@@ -469,8 +465,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     }
                     break;
                 case DtoType.Competitor:
-                    var competitor = item as CompetitorDTO;
-                    if (competitor != null)
+                    if (item is CompetitorDTO competitor)
                     {
                         await AddCompetitorAsync(id, competitor, culture, true).ConfigureAwait(false);
                         saved = true;
@@ -481,8 +476,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     }
                     break;
                 case DtoType.CompetitorProfile:
-                    var competitorProfile = item as CompetitorProfileDTO;
-                    if (competitorProfile != null)
+                    if (item is CompetitorProfileDTO competitorProfile)
                     {
                         await AddCompetitorProfileAsync(id, competitorProfile, culture, true).ConfigureAwait(false);
                         saved = true;
@@ -493,8 +487,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     }
                     break;
                 case DtoType.SimpleTeamProfile:
-                    var simpleTeamProfile = item as SimpleTeamProfileDTO;
-                    if (simpleTeamProfile != null)
+                    if (item is SimpleTeamProfileDTO simpleTeamProfile)
                     {
                         await AddCompetitorProfileAsync(id, simpleTeamProfile, culture, true).ConfigureAwait(false);
                         saved = true;
@@ -509,8 +502,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 case DtoType.SportEventStatus:
                     break;
                 case DtoType.MatchTimeline:
-                    var matchTimeline = item as MatchTimelineDTO;
-                    if (matchTimeline != null)
+                    if (item is MatchTimelineDTO matchTimeline)
                     {
                         saved = await SaveCompetitorsFromSportEventAsync(matchTimeline.SportEvent, culture).ConfigureAwait(false);
                     }
@@ -541,8 +533,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 case DtoType.SportList:
                     break;
                 case DtoType.SportEventSummaryList:
-                    var sportEventSummaryList = item as EntityList<SportEventSummaryDTO>;
-                    if (sportEventSummaryList != null)
+                    if (item is EntityList<SportEventSummaryDTO> sportEventSummaryList)
                     {
                         var tasks = sportEventSummaryList.Items.Select(s => SaveCompetitorsFromSportEventAsync(s, culture));
                         await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -572,8 +563,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                 case DtoType.AvailableSelections:
                     break;
                 case DtoType.TournamentInfoList:
-                    var ts = item as EntityList<TournamentInfoDTO>;
-                    if (ts != null)
+                    if (item is EntityList<TournamentInfoDTO> ts)
                     {
                         var tasks = ts.Items.Select(s => SaveCompetitorsFromSportEventAsync(s, culture));
                         await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -583,6 +573,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                     {
                         LogSavingDtoConflict(id, typeof(EntityList<TournamentInfoDTO>), item.GetType());
                     }
+                    break;
+                case DtoType.PeriodSummary:
+                    break;
+                case DtoType.Calculation:
                     break;
                 default:
                     ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
@@ -832,22 +826,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles
                         await ReleaseIdAsync(_mergeUrns, id).ConfigureAwait(false);
                     }
                 }
-
-                if (item?.Players != null && item.Players.Any())
-                {
-                    var tasks = item.Players.Select(s => AddPlayerProfileAsync(s, id, culture, false));
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
-                }
             }
             else
             {
                 _cache.Add(id.ToString(), new CompetitorCI(item, culture, _dataRouterManager), GetCorrectCacheItemPolicy(id));
+            }
 
-                if (item.Players != null && item.Players.Any())
-                {
-                    var tasks = item.Players.Select(s => AddPlayerProfileAsync(s, id, culture, false));
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
-                }
+            if (item?.Players != null && item.Players.Any())
+            {
+                var tasks = item.Players.Select(s => AddPlayerProfileAsync(s, id, culture, true));
+                await Task.WhenAll(tasks).ConfigureAwait(false);
             }
         }
 

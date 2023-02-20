@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Qualifier = record.qualifier;
             Division = record.divisionSpecified
                            ? record.division
-                           : (int?) null;
+                           : (int?)null;
         }
     }
 }

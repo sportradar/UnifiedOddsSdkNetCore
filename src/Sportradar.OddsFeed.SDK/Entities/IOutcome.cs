@@ -11,8 +11,8 @@ namespace Sportradar.OddsFeed.SDK.Entities
     /// <summary>
     /// Represent a betting market outcome
     /// </summary>
-    public interface IOutcome {
-
+    public interface IOutcome
+    {
         /// <summary>
         /// Gets the value uniquely identifying the current instance
         /// </summary>

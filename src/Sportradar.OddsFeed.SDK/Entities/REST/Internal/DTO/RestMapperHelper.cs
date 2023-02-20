@@ -41,9 +41,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                         return new StageDTO(item);
                     }
                 case ResourceTypeGroup.BASIC_TOURNAMENT:
-                {
-                    return new BasicTournamentDTO(item);
-                }
+                    {
+                        return new BasicTournamentDTO(item);
+                    }
                 case ResourceTypeGroup.TOURNAMENT:
                 case ResourceTypeGroup.SEASON:
                     {
@@ -53,8 +53,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     {
                         return new SportEventSummaryDTO(item);
                     }
+
+                case ResourceTypeGroup.OTHER:
+                case ResourceTypeGroup.DRAW:
+                case ResourceTypeGroup.LOTTERY:
                 default:
-                    throw new ArgumentException($"ResourceTypeGroup: {id.TypeGroup} is not supported", nameof(id));
+                    throw new ArgumentException($"ResourceTypeGroup: {id.TypeGroup} is not supported", nameof(item));
             }
         }
 
@@ -75,16 +79,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             switch (id.TypeGroup)
             {
                 case ResourceTypeGroup.BASIC_TOURNAMENT:
-                {
-                    return new BasicTournamentDTO(item);
-                }
+                    {
+                        return new BasicTournamentDTO(item);
+                    }
                 case ResourceTypeGroup.TOURNAMENT:
                 case ResourceTypeGroup.SEASON:
-                {
-                    return new TournamentInfoDTO(item);
-                }
+                    {
+                        return new TournamentInfoDTO(item);
+                    }
+
+                case ResourceTypeGroup.MATCH:
+                case ResourceTypeGroup.STAGE:
+                case ResourceTypeGroup.OTHER:
+                case ResourceTypeGroup.UNKNOWN:
+                case ResourceTypeGroup.DRAW:
+                case ResourceTypeGroup.LOTTERY:
                 default:
-                    throw new ArgumentException($"ResourceTypeGroup: {id.TypeGroup} is not supported", nameof(id));
+                    throw new ArgumentException($"ResourceTypeGroup: {id.TypeGroup} is not supported", nameof(item));
             }
         }
 
@@ -329,7 +340,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <returns>A <see cref="SportEventType"/> member obtained by mapping. A null reference is mapped to null reference</returns>
         public static bool TryGetStageType(string value, out StageType? result)
         {
-            if(string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 result = null;
                 return true;

@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
 
         public EntityList<LotteryDTO> Map()
         {
-            var items = _data.lottery.Select(s=> new LotteryDTO(s)).ToList();
+            var items = _data.lottery.Select(s => new LotteryDTO(s)).ToList();
             return new EntityList<LotteryDTO>(items);
         }
     }

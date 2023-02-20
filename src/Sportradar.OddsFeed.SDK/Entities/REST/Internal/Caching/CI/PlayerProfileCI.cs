@@ -1,6 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -8,11 +13,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
@@ -32,6 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private string _abbreviation;
         private string _gender;
         private URN _competitorId;
+        private readonly object _lockAdd = new object();
 
         /// <summary>
         /// A <see cref="IDictionary{CultureInfo, String}"/> containing player name in different languages
@@ -200,23 +201,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 throw new ArgumentNullException(nameof(exportable));
             }
-            Names = exportable.Name.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(exportable.Name);
-            if (!Names.IsNullOrEmpty())
+
+            lock (_lockAdd)
             {
-                _fetchedCultures = new List<CultureInfo>(exportable.Name.Keys);
-                _primaryCulture = exportable.Name.Keys.First();
+                Names = exportable.Name.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(exportable.Name);
+                if (!Names.IsNullOrEmpty())
+                {
+                    _fetchedCultures = new List<CultureInfo>(exportable.Name.Keys);
+                    _primaryCulture = exportable.Name.Keys.First();
+                }
+
+                _nationalities = exportable.Nationalities.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(exportable.Nationalities);
+                _type = exportable.Type;
+                _dateOfBirth = exportable.DateOfBirth;
+                _height = exportable.Height;
+                _weight = exportable.Weight;
+                _abbreviation = exportable.Abbreviation;
+                _gender = exportable.Gender;
+                _competitorId = string.IsNullOrEmpty(exportable.CompetitorId) ? null : URN.Parse(exportable.CompetitorId);
+                CountryCode = exportable.CountryCode;
+                FullName = exportable.FullName;
+                Nickname = exportable.Nickname;
             }
-            _nationalities = exportable.Nationalities.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(exportable.Nationalities);
-            _type = exportable.Type;
-            _dateOfBirth = exportable.DateOfBirth;
-            _height = exportable.Height;
-            _weight = exportable.Weight;
-            _abbreviation = exportable.Abbreviation;
-            _gender = exportable.Gender;
-            _competitorId = string.IsNullOrEmpty(exportable.CompetitorId) ? null : URN.Parse(exportable.CompetitorId);
-            CountryCode = exportable.CountryCode;
-            FullName = exportable.FullName;
-            Nickname = exportable.Nickname;
         }
 
         /// <summary>
@@ -230,35 +236,37 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(profile, nameof(profile)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            _type = profile.Type;
-            _dateOfBirth = profile.DateOfBirth;
-            Names[culture] = profile.Name;
-            _nationalities[culture] = profile.Nationality;
-            _height = profile.Height;
-            _weight = profile.Weight;
-            _gender = profile.Gender;
-            CountryCode = profile.CountryCode;
-            FullName = profile.FullName;
-            Nickname = profile.Nickname;
-
-            if (string.IsNullOrEmpty(_abbreviation))
+            lock (_lockAdd)
             {
-                _abbreviation = SdkInfo.GetAbbreviationFromName(profile.Name);
-            }
+                _type = profile.Type;
+                _dateOfBirth = profile.DateOfBirth;
+                Names[culture] = profile.Name;
+                _nationalities[culture] = profile.Nationality;
+                _height = profile.Height;
+                _weight = profile.Weight;
+                _gender = profile.Gender;
+                CountryCode = profile.CountryCode;
+                FullName = profile.FullName;
+                Nickname = profile.Nickname;
+                if (string.IsNullOrEmpty(_abbreviation))
+                {
+                    _abbreviation = SdkInfo.GetAbbreviationFromName(profile.Name);
+                }
 
-            if (competitorId != null)
-            {
-                _competitorId = competitorId;
-            }
+                if (competitorId != null)
+                {
+                    _competitorId = competitorId;
+                }
 
-            if (_fetchedCultures == null)
-            {
-                _fetchedCultures = new List<CultureInfo>();
-            }
+                if (_fetchedCultures == null)
+                {
+                    _fetchedCultures = new List<CultureInfo>();
+                }
 
-            if (!_fetchedCultures.Contains(culture))
-            {
-                _fetchedCultures.Add(culture);
+                if (!_fetchedCultures.Contains(culture))
+                {
+                    _fetchedCultures.Add(culture);
+                }
             }
         }
 
@@ -273,15 +281,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(playerCompetitor, nameof(playerCompetitor)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            Names[culture] = playerCompetitor.Name;
-            _nationalities[culture] = playerCompetitor.Nationality;
-            _abbreviation = string.IsNullOrEmpty(playerCompetitor.Abbreviation)
-                ? SdkInfo.GetAbbreviationFromName(playerCompetitor.Name)
-                : playerCompetitor.Abbreviation;
-
-            if (competitorId != null)
+            lock (_lockAdd)
             {
-                _competitorId = competitorId;
+                Names[culture] = playerCompetitor.Name;
+                _nationalities[culture] = playerCompetitor.Nationality;
+                _abbreviation = string.IsNullOrEmpty(playerCompetitor.Abbreviation)
+                                    ? SdkInfo.GetAbbreviationFromName(playerCompetitor.Name)
+                                    : playerCompetitor.Abbreviation;
+                if (competitorId != null)
+                {
+                    _competitorId = competitorId;
+                }
             }
         }
 
@@ -334,11 +344,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 if (!_fetchedCultures.Contains(culture))
                 {
-
-                    var task = Task.Run(async () =>
-                    {
-                        await _dataRouterManager.GetPlayerProfileAsync(Id, culture, null).ConfigureAwait(false);
-                    });
+                    var task = Task.Run(async () => await _dataRouterManager.GetPlayerProfileAsync(Id, culture, null).ConfigureAwait(false));
                     task.Wait();
                 }
             }

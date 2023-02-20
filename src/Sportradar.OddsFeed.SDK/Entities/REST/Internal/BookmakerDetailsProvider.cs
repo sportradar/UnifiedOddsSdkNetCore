@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
@@ -39,11 +39,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="fetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
         /// <param name="deserializer">A <see cref="IDeserializer{scheduleType}" /> used to deserialize the fetch data</param>
         /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{scheduleType, EntityList}" /> used to construct instances of <see cref="ISingleTypeMapper{ISportEventsSchedule}" /></param>
-        public BookmakerDetailsProvider(
-            string bookmakerDetailsUriFormat,
-            IDataFetcher fetcher,
-            IDeserializer<bookmaker_details> deserializer,
-            ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO> mapperFactory)
+        public BookmakerDetailsProvider(string bookmakerDetailsUriFormat,
+                                        IDataFetcher fetcher,
+                                        IDeserializer<bookmaker_details> deserializer,
+                                        ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO> mapperFactory)
             : base(bookmakerDetailsUriFormat, fetcher, deserializer, mapperFactory)
         {
             Guard.Argument(bookmakerDetailsUriFormat, nameof(bookmakerDetailsUriFormat)).NotNull().NotEmpty();
@@ -57,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Gets a <see cref="!:T" /> instance in language specified by the provided <code>languageCode</code>
+        /// Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>

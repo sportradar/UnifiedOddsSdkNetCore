@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
@@ -25,12 +25,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Gets the id of the group
         /// </summary>
-        public string Id { get; private set;}
+        public string Id { get; private set; }
 
         /// <summary>
         /// Gets the name of the group
         /// </summary>
-        public string Name { get; private set;}
+        public string Name { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{URN}"/> representing group competitors
@@ -65,7 +65,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 throw new ArgumentNullException(nameof(exportable));
             }
-            
+
             Id = exportable.Id;
             Name = exportable.Name;
             CompetitorsIds = exportable.Competitors?.Select(URN.Parse).ToList();
@@ -81,12 +81,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         {
             Guard.Argument(group, nameof(group)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
-            
-            if(string.IsNullOrEmpty(Id) || !string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(group.Id))
+
+            if (string.IsNullOrEmpty(Id) || (!string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(group.Id)))
             {
                 Id = group.Id;
             }
-            if(string.IsNullOrEmpty(Name) || !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(group.Name))
+            if (string.IsNullOrEmpty(Name) || (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(group.Name)))
             {
                 Name = group.Name;
             }
@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 var tempCompetitors = CompetitorsIds == null ? new List<URN>() : new List<URN>(CompetitorsIds);
                 var tempCompetitorsReferences = CompetitorsReferences == null ? new Dictionary<URN, ReferenceIdCI>() : new Dictionary<URN, ReferenceIdCI>(CompetitorsReferences);
-                
+
                 if (tempCompetitors.Count > 0 && tempCompetitors.Count != group.Competitors.Count())
                 {
                     tempCompetitors.Clear();
@@ -153,7 +153,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 Id = Id,
                 Name = Name,
-                Competitors = CompetitorsIds?.Select(s=>s.ToString()),
+                Competitors = CompetitorsIds?.Select(s => s.ToString()),
                 CompetitorsReferences = cr.IsNullOrEmpty() ? null : cr
             });
         }

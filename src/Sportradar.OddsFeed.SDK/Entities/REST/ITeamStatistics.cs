@@ -58,12 +58,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The name</value>
         string Name { get; }
-        
+
         /// <summary>
         /// Gets the total count of green cards
         /// </summary>
         /// <value>The total count of green cards</value>
         int? GreenCards { get; }
-
     }
 }

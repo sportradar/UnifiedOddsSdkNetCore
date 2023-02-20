@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
 using App.Metrics;
 using App.Metrics.Timer;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -72,12 +72,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <summary>
-        /// Asynchronously gets a match stats descriptions specified by the language specified by <code>culture</code>
+        /// Asynchronously gets a match stats descriptions specified by the language specified by <c>culture</c>
         /// </summary>
         /// <returns>A value indicating whether the data was successfully fetched</returns>
         private bool FetchAndMerge()
         {
-            //Metric.Context("CACHE").Meter("NamedValueCache->FetchAndMerge", Unit.Calls);
             EntityList<NamedValueDTO> record;
             try
             {
@@ -92,12 +91,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 return false;
             }
 
-
             foreach (var item in record.Items)
             {
                 _namedValues[item.Id] = item.Description;
             }
-            CacheLog.LogDebug($"{record.Items.Count()} items retrieved.");
+
+            var logMsg = $"{record.Items.Count()} items retrieved.";
+            CacheLog.LogDebug(logMsg);
+
             return true;
         }
 
@@ -133,8 +134,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     _dataFetched = FetchAndMerge();
                 }
             }
-            string description;
-            if (_namedValues.TryGetValue(id, out description))
+
+            if (_namedValues.TryGetValue(id, out var description))
             {
                 return new NamedValue(id, description);
             }
@@ -143,6 +144,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 throw new ArgumentOutOfRangeException($"Cache item missing for id={id}.");
             }
+
             return new NamedValue(id);
         }
     }

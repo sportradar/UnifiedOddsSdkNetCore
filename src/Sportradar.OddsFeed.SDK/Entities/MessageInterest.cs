@@ -3,8 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Castle.Core.Internal;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities
@@ -82,7 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// Constructs a <see cref="MessageInterest"/> indicating an interest in pre-match messages
         /// </summary>
         /// <returns>A <see cref="MessageInterest"/> indicating an interest in pre-match messages</returns>
-        public static readonly MessageInterest PrematchMessagesOnly = new MessageInterest("prematch", 3,  null, "prematch");   //LCOO
+        public static readonly MessageInterest PrematchMessagesOnly = new MessageInterest("prematch", 3, null, "prematch");   //LCOO
 
         /// <summary>
         /// Constructs a <see cref="MessageInterest"/> indicating an interest in hi priority messages
@@ -109,10 +110,18 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <returns>A <see cref="MessageInterest"/> indicating an interest in messages associated with specific events</returns>
         public static MessageInterest SpecificEventsOnly(IEnumerable<URN> eventIds)
         {
-            Guard.Argument(eventIds, nameof(eventIds)).NotNull().NotEmpty();
+            if (eventIds == null)
+            {
+                throw new ArgumentNullException(nameof(eventIds));
+            }
+            var urns = eventIds.ToList();
+            if (urns.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Missing event ids", nameof(eventIds));
+            }
 
             //channels using this routing key will also receive 'system' messages so they have to be manually removed in the receiver
-            return new MessageInterest("custom", -1, eventIds.Distinct());
+            return new MessageInterest("custom", -1, urns.Distinct());
         }
 
         /// <summary>
@@ -172,9 +181,10 @@ namespace Sportradar.OddsFeed.SDK.Entities
 
             var interestList = interests as List<MessageInterest> ?? new List<MessageInterest>(interests);
 
-            return interestList.Count == 1
-                   || interestList.Count == 2 && interestList.Contains(HighPriorityMessages) || interestList.Contains(LowPriorityMessages)
-                   || interestList.All(MessageScopes.Contains);
+            return interestList.Count == 1 ||
+                   (interestList.Count == 2 && interestList.Contains(HighPriorityMessages)) ||
+                   interestList.Contains(LowPriorityMessages) ||
+                   interestList.All(MessageScopes.Contains);
         }
     }
 }

@@ -53,17 +53,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public static bool IsEnumMember<TEnum>(object value) where TEnum : struct
         {
             var enumType = typeof(TEnum);
-            if (!enumType.IsEnum)
-            {
-                throw new InvalidOperationException($"Type specified by generic parameter T must be an enum. Provided type was:{typeof(TEnum).FullName}");
-            }
-            return Enum.IsDefined(enumType, value);
+            return !enumType.IsEnum
+                ? throw new InvalidOperationException($"Type specified by generic parameter T must be an enum. Provided type was:{typeof(TEnum).FullName}")
+                : Enum.IsDefined(enumType, value);
         }
 
         /// <summary>
-        /// Converts the provided <code>value</code> to the member of the specified enum
+        /// Converts the provided <c>value</c> to the member of the specified enum
         /// </summary>
-        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <typeparam name="T">The type of enum to which to convert the <c>value</c></typeparam>
         /// <param name="value">The value to be converted</param>
         /// <returns>The member of the specified enum</returns>
         public static T GetEnumValue<T>(int value) where T : struct, IConvertible
@@ -81,14 +79,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Converts the provided int <code>value</code> to the member of the specified enum, or returns <code>defaultValue</code>
-        /// if value of <code>specified</code> is false
+        /// Converts the provided int <c>value</c> to the member of the specified enum, or returns <c>defaultValue</c> if value of <c>specified</c> is false
         /// </summary>
-        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <typeparam name="T">The type of enum to which to convert the <c>value</c></typeparam>
         /// <param name="specified">Value indicating whether the value field was specified in the feed message</param>
         /// <param name="value">The value in the feed message</param>
-        /// <param name="defaultValue">A <see cref="T"/> member to be returned if <code>specified</code> is false</param>
-        /// <returns>The <code>value</code> converted to enum <see cref="T"/> member</returns>
+        /// <param name="defaultValue">A structure member to be returned if <c>specified</c> is false</param>
+        /// <returns>The <c>value</c> converted to enum structure member</returns>
         public static T GetEnumValue<T>(bool specified, int value, T defaultValue) where T : struct, IConvertible
         {
             return !specified
@@ -97,29 +94,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Converts the provided int <code>value</code> to the member of the specified enum, or returns <code>defaultValue</code>
-        /// if value of <code>specified</code> is false
+        /// Converts the provided int <c>value</c> to the member of the specified enum, or returns <c>defaultValue</c>
+        /// if value of <c>specified</c> is false
         /// </summary>
-        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <typeparam name="T">The type of enum to which to convert the <c>value</c></typeparam>
         /// <param name="specified">Value indicating whether the value field was specified in the feed message</param>
         /// <param name="value">The value in the feed message</param>
-        /// <param name="unknownValue">A <see cref="T"/> member to be returned if value is not known, but specified</param>
-        /// <param name="naValue">A <see cref="T"/> member to be returned if value is not specified</param>
-        /// <returns>The <code>value</code> converted to enum <see cref="T"/> member</returns>
+        /// <param name="unknownValue">A structure member to be returned if value is not known, but specified</param>
+        /// <param name="naValue">A structure member to be returned if value is not specified</param>
+        /// <returns>The <c>value</c> converted to enum structure member</returns>
         public static T GetEnumValue<T>(bool specified, int value, T unknownValue, T naValue) where T : struct, IConvertible
         {
             return !specified
                 ? naValue
-                : GetEnumValue<T>(value, unknownValue);
+                : GetEnumValue(value, unknownValue);
         }
 
         /// <summary>
-        /// Converts the provided int <code>value</code> to the member of the specified enum, or returns <code>defaultValue</code>
+        /// Converts the provided int <c>value</c> to the member of the specified enum, or returns <c>defaultValue</c>
         /// </summary>
-        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <typeparam name="T">The type of enum to which to convert the <c>value</c></typeparam>
         /// <param name="value">The value in the feed message</param>
-        /// <param name="defaultValue">A <see cref="T"/> member to be returned if unknown <code>value</code></param>
-        /// <returns>The <code>value</code> converted to enum <see cref="T"/> member</returns>
+        /// <param name="defaultValue">A structure member to be returned if unknown <c>value</c></param>
+        /// <returns>The <c>value</c> converted to enum structure member</returns>
         public static T GetEnumValue<T>(int value, T defaultValue) where T : struct, IConvertible
         {
             try
@@ -136,9 +133,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Converts the provided string <code>value</code> (enum value name) to the member of the specified enum
+        /// Converts the provided string <c>value</c> (enum value name) to the member of the specified enum
         /// </summary>
-        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <typeparam name="T">The type of enum to which to convert the <c>value</c></typeparam>
         /// <param name="value">The value name to be converted</param>
         /// <returns>The member of the specified enum</returns>
         public static T GetEnumValue<T>(string value) where T : struct, IConvertible
@@ -167,11 +164,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Converts the provided string <code>value</code> (enum value name) to the member of the specified enum
+        /// Converts the provided string <c>value</c> (enum value name) to the member of the specified enum
         /// </summary>
-        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <typeparam name="T">The type of enum to which to convert the <c>value</c></typeparam>
         /// <param name="value">The value name to be converted</param>
-        /// <param name="defaultValue">A <see cref="T"/> member to be returned if <code>value</code> is not member of enum</param>
+        /// <param name="defaultValue">A structure member to be returned if <c>value</c> is not member of enum</param>
         /// <returns>The member of the specified enum</returns>
         public static T GetEnumValue<T>(string value, T defaultValue) where T : struct, IConvertible
         {
@@ -199,11 +196,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Converts the provided string <code>value</code> (enum value name) to the member of the specified enum
+        /// Converts the provided string <c>value</c> (enum value name) to the member of the specified enum
         /// </summary>
-        /// <typeparam name="T">The type of enum to which to convert the <code>value</code></typeparam>
+        /// <typeparam name="T">The type of enum to which to convert the <c>value</c></typeparam>
         /// <param name="value">The value name to be converted</param>
-        /// <param name="defaultValue">A <see cref="T"/> member to be returned if <code>value</code> is not member of enum</param>
+        /// <param name="defaultValue">A struct member to be returned if <c>value</c> is not member of enum</param>
         /// <param name="predefinedPairs">The predefined pairs of string value to enum</param>
         /// <returns>The member of the specified enum</returns>
         public static T GetEnumValue<T>(string value, T defaultValue, IDictionary<string, T> predefinedPairs) where T : struct, IConvertible

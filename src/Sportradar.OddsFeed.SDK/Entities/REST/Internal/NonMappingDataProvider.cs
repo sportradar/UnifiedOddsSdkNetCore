@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 
@@ -20,7 +20,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// Event raised when the data provider receives the api message
         /// </summary>
+#pragma warning disable CS0067
         public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
+#pragma warning restore CS0067
 
         /// <summary>
         /// A <see cref="IDataFetcher"/> used to fetch the data
@@ -81,10 +83,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Constructs and returns an <see cref="Uri"/> instance used to retrieve resource with specified <code>id</code>
+        /// Constructs and returns an <see cref="Uri"/> instance used to retrieve resource with specified <c>id</c>
         /// </summary>
         /// <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
-        /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <code>identifiers</code></returns>
+        /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <c>identifiers</c></returns>
         protected virtual Uri GetRequestUri(params object[] identifiers)
         {
             Guard.Argument(identifiers, nameof(identifiers)).NotNull();
@@ -126,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Gets a <see cref="!:T" /> instance in language specified by the provided <code>languageCode</code>
+        /// Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>

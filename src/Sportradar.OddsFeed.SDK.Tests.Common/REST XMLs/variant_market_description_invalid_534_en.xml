@@ -1,0 +1,16 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<market_descriptions response_code="OK">
+	<market id="534" name="World Cup - Group Points Portugal" variant="pre:markettext:168883">
+		<outcomes>
+			<outcome id="pre:outcometext:108719" name="7 Points"/>
+			<outcome id="pre:outcometext:108720" name="4 Points"/>
+			<outcome id="pre:outcometext:108721" name="6 Points"/>
+			<outcome id="pre:outcometext:108722" name="9 Points"/>
+			<outcome id="pre:outcometext:108723" name="5 Points"/>
+			<outcome id="pre:outcometext:108724" name="3 Points"/>
+			<outcome id="pre:outcometext:108725" name="2 Points"/>
+			<outcome id="pre:outcometext:108726" name="1 Point"/>
+			<outcome id="pre:outcometext:108727"/>
+		</outcomes>
+	</market>
+</market_descriptions>

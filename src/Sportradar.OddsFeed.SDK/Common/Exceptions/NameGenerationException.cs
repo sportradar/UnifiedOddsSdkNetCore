@@ -82,7 +82,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
             MarketSpecifiers = (IReadOnlyDictionary<string, string>)info.GetValue("sdkMarketSpecifiers", typeof(IReadOnlyDictionary<string, string>));
             OutcomeId = info.GetString("sdkOutcomeId");
             NameDescriptor = info.GetString("sdkNameDescriptor");
-            Culture = (CultureInfo) info.GetValue("sdkCulture", typeof(CultureInfo));
+            Culture = (CultureInfo)info.GetValue("sdkCulture", typeof(CultureInfo));
         }
 
         /// <summary>
@@ -117,7 +117,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
                 .Append(" NameDescriptor=").Append(NameDescriptor ?? "null")
                 .Append(" Culture=").Append(Culture?.TwoLetterISOLanguageName ?? "null");
             return sb.ToString();
-
         }
     }
 }

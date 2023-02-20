@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string ShirtType { get; }
 
         public string SleeveDetail { get; }
-        
+
         public JerseyDTO(jersey item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
@@ -44,16 +44,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             SleeveColor = item.sleeve;
             Type = item.type;
             HorizontalStripes = item.horizontal_stripesSpecified
-                ? (bool?) item.horizontal_stripes
+                ? (bool?)item.horizontal_stripes
                 : null;
             Split = item.splitSpecified
-                ? (bool?) item.split
+                ? (bool?)item.split
                 : null;
             Squares = item.squaresSpecified
-                ? (bool?) item.squares
+                ? (bool?)item.squares
                 : null;
             Stripes = item.stripesSpecified
-                ? (bool?) item.stripes
+                ? (bool?)item.stripes
                 : null;
             StripesColor = item.stripes_color;
             SplitColor = item.split_color;

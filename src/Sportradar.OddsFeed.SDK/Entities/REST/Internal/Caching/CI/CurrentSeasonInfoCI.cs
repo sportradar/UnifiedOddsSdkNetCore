@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -75,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             : base(dto.Id, dto.Name, culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
-            
+
             Year = dto.Year;
             StartDate = dto.StartDate;
             EndDate = dto.EndDate;
@@ -158,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 SeasonCoverage = SeasonCoverage != null ? await SeasonCoverage.ExportAsync().ConfigureAwait(false) : null,
                 Groups = groupsTask != null ? await Task.WhenAll(groupsTask) : null,
                 CurrentRound = CurrentRound != null ? await CurrentRound.ExportAsync().ConfigureAwait(false) : null,
-                Competitors = CompetitorsIds?.Select(s=>s.ToString()),
+                Competitors = CompetitorsIds?.Select(s => s.ToString()),
                 Schedule = Schedule?.Select(s => s.ToString()).ToList()
             };
         }

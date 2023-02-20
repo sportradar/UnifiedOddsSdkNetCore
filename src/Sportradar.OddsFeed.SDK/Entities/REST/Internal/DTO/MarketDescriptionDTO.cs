@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal IEnumerable<MarketAttributeDTO> Attributes { get; }
 
-        internal IEnumerable<string> Groups { get; }
+        internal IEnumerable<string> Groups { get; private set; }
 
         internal MarketDescriptionDTO(desc_market description)
         {
@@ -48,11 +48,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Mappings = description.mappings?.Select(m => new MarketMappingDTO(m)).ToList();
             Attributes = description.attributes?.Select(a => new MarketAttributeDTO(a)).ToList();
             Variant = description.variant;
-            OutcomeType = mapOutcomeType(description.outcome_type, description.includes_outcomes_of_type);
-            Groups = description.groups?.Split(new[] {SdkInfo.MarketGroupsDelimiter}, StringSplitOptions.RemoveEmptyEntries);
+            OutcomeType = MapOutcomeType(description.outcome_type, description.includes_outcomes_of_type);
+            Groups = description.groups?.Split(new[] { SdkInfo.MarketGroupsDelimiter }, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        private string mapOutcomeType(string outcomeType, string includesOutcomesOfType)
+        private static string MapOutcomeType(string outcomeType, string includesOutcomesOfType)
         {
             if (outcomeType != null)
             {
@@ -69,9 +69,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 return SdkInfo.FreeTextVariantValue;
             }
 
-            if (includesOutcomesOfType.StartsWith("sr:"))
+            if (includesOutcomesOfType.StartsWith("sr:", StringComparison.InvariantCultureIgnoreCase))
             {
-                return includesOutcomesOfType.Substring(3);
+                return includesOutcomesOfType[3..];
             }
 
             return null;
@@ -88,6 +88,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 Id = newId;
             }
+        }
+
+        /// <summary>
+        /// Overrides the group list
+        /// </summary>
+        /// <param name="groups">The new groups</param>
+        internal void OverrideGroups(IReadOnlyCollection<string> groups)
+        {
+            Groups = groups;
         }
     }
 }

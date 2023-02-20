@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames

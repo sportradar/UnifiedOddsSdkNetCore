@@ -25,6 +25,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// A <see cref="DateTime"/> representation of the changed at
         /// </summary>
         public DateTime ChangedAt { get; set; }
-
     }
 }

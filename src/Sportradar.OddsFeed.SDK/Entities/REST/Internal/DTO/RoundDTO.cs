@@ -56,11 +56,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             PhaseOrGroupLongName = !string.IsNullOrEmpty(round.group_long_name) ? round.group_long_name : null;
             Group = round.group;
             Phase = round.phase;
-            GroupId = string.IsNullOrEmpty(round.group_id)
-                ? null
-                : URN.TryParse(round.group_id, out var groupId)
-                    ? groupId
-                    : null;
+            if (string.IsNullOrEmpty(round.group_id))
+            {
+                GroupId = null;
+            }
+            else
+            {
+                GroupId = URN.TryParse(round.group_id, out var groupId) ? groupId : null;
+            }
             OtherMatchId = round.other_match_id;
             CupRoundMatches = round.cup_round_matchesSpecified
                 ? (int?)round.cup_round_matches

@@ -1,11 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System.Diagnostics.CodeAnalysis;
+
 namespace Sportradar.OddsFeed.SDK.Common
 {
     /// <summary>
     /// Enumerates sdk exception handling strategies
     /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum ExceptionHandlingStrategy
     {
         /// <summary>

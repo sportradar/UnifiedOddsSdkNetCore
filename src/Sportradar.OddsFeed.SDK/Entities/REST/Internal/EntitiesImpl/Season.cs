@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                       ISportEntityFactory sportEntityFactory,
                       ISportEventCache sportEventCache,
                       ISportDataCache sportDataCache,
-                      IEnumerable<CultureInfo> cultures,
+                      IReadOnlyCollection<CultureInfo> cultures,
                       ExceptionHandlingStrategy exceptionStrategy)
             : base(id, sportId, ExecutionLogPrivate, sportEventCache, cultures, exceptionStrategy)
         {
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             var sportData = ExceptionStrategy == ExceptionHandlingStrategy.THROW
                 ? await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false)
-                : await new Func<URN, IEnumerable<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
+                : await new Func<URN, IReadOnlyCollection<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
 
             return sportData == null
                 ? null
@@ -226,7 +226,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{ITournamentInfo}"/> representing the asynchronous operation</returns>
         public async Task<ITournamentInfo> GetTournamentInfoAsync()
         {
-            var seasonCI = (ITournamentInfoCI) _sportEventCache.GetEventCacheItem(Id);
+            var seasonCI = (ITournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
             if (seasonCI == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
@@ -250,11 +250,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var categoryCI = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
             var categorySummary = categoryCI == null ? null : new CategorySummary(categoryCI.Id, categoryCI.Names, categoryCI.CountryCode);
 
-            var currentSeasonCI = tournamentInfoBasicCI.CurrentSeason == null
-                                      ? null
-                                      : Id.Equals(tournamentInfoBasicCI.CurrentSeason.Id)
-                                          ? seasonCI
-                                          : (TournamentInfoCI) SportEventCache.GetEventCacheItem(tournamentInfoBasicCI.CurrentSeason.Id);
+            ITournamentInfoCI currentSeasonCI;
+            if (tournamentInfoBasicCI.CurrentSeason == null)
+            {
+                currentSeasonCI = null;
+            }
+            else
+            {
+                currentSeasonCI = Id.Equals(tournamentInfoBasicCI.CurrentSeason.Id)
+                    ? seasonCI
+                    : (TournamentInfoCI)SportEventCache.GetEventCacheItem(tournamentInfoBasicCI.CurrentSeason.Id);
+            }
 
             // there is no current season - return empty TournamentInfo
             if (currentSeasonCI == null)
@@ -296,7 +302,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
-            return tasks.Select(s=>s.Result);
+            return tasks.Select(s => s.Result);
         }
 
         /// <summary>
@@ -319,7 +325,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 sportEventIds = tasks.First().Result;
             }
 
-            return sportEventIds?.Select(i => _sportEntityFactory.BuildSportEvent<ICompetition>(i.Item1, i.Item2 ?? SportId, Cultures, ExceptionStrategy)).ToList();
+            return sportEventIds?.Select(i => _sportEntityFactory.BuildSportEvent<ICompetition>(i.Item1, i.Item2 ?? SportId, Cultures.ToList(), ExceptionStrategy)).ToList();
         }
     }
 }

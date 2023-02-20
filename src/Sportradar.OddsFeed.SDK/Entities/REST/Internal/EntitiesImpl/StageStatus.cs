@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
@@ -29,9 +32,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>ILocalizedNamedValue</returns>
         public async Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture)
         {
-            return SportEventStatusCI == null || SportEventStatusCI.MatchStatusId < 0  || MatchStatusCache == null
+            return SportEventStatusCI == null || SportEventStatusCI.MatchStatusId < 0 || MatchStatusCache == null
                        ? null
-                       : await MatchStatusCache.GetAsync(SportEventStatusCI.MatchStatusId, new List<CultureInfo> {culture}).ConfigureAwait(false);
+                       : await MatchStatusCache.GetAsync(SportEventStatusCI.MatchStatusId, new List<CultureInfo> { culture }).ConfigureAwait(false);
         }
     }
 }

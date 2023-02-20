@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated sport name</param>
         /// <param name="categories">the <see cref="IEnumerable{CategoryData}"/> representing the categories, which belong to the sport</param>
         public SportData(URN id, IReadOnlyDictionary<CultureInfo, string> names, IEnumerable<CategoryData> categories)
-            :base(id, names)
+            : base(id, names)
         {
             if (categories != null)
             {

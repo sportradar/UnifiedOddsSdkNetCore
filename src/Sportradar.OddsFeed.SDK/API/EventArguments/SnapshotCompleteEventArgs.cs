@@ -33,6 +33,8 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <summary>
         /// The raw message
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Is kept for consistency between different messages event arguments")]
+        // ReSharper disable once NotAccessedField.Local
         private readonly byte[] _rawMessage;
 
         /// <summary>

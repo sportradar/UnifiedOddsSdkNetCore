@@ -40,7 +40,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public ProductInfoLink(ExportableProductInfoLinkCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             _reference = exportable.Reference;
             _name = exportable.Name;

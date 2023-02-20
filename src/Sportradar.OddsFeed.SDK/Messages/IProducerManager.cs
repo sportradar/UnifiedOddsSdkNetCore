@@ -29,6 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// </summary>
         /// <param name="id">The id of the producer to retrieve</param>
         /// <returns>An <see cref="IProducer"/></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
         IProducer Get(int id);
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <param name="name">The name of the producer to retrieve</param>
         /// <remarks>Search is case insensitive</remarks>
         /// <returns>An <see cref="IProducer"/></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
         IProducer Get(string name);
 
         /// <summary>

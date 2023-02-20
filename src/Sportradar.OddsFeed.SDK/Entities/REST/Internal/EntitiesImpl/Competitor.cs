@@ -1,6 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -9,13 +17,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Messages;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
@@ -30,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         private readonly URN _competitorId;
         private CompetitorCI _competitorCI;
         private readonly IProfileCache _profileCache;
-        private readonly List<CultureInfo> _cultures;
+        private readonly IReadOnlyCollection<CultureInfo> _cultures;
         private readonly ISportEntityFactory _sportEntityFactory;
         private readonly ExceptionHandlingStrategy _exceptionStrategy;
         private ReferenceIdCI _referenceId;
@@ -276,7 +277,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         public Competitor(CompetitorCI ci,
             IProfileCache profileCache,
-            IEnumerable<CultureInfo> cultures,
+            IReadOnlyCollection<CultureInfo> cultures,
             ISportEntityFactory sportEntityFactory,
             ExceptionHandlingStrategy exceptionStrategy,
             ICompetitionCI rootCompetitionCI)
@@ -288,7 +289,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             _competitorId = ci.Id;
             _competitorCI = ci;
             _profileCache = profileCache;
-            _cultures = cultures.ToList();
+            _cultures = cultures;
             _sportEntityFactory = sportEntityFactory;
             _exceptionStrategy = exceptionStrategy;
             _competitionCI = (CompetitionCI)rootCompetitionCI;
@@ -306,7 +307,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCI"/> for all competitors</param>
         public Competitor(CompetitorCI ci,
             IProfileCache profileCache,
-            IEnumerable<CultureInfo> cultures,
+            IReadOnlyCollection<CultureInfo> cultures,
             ISportEntityFactory sportEntityFactory,
             ExceptionHandlingStrategy exceptionStrategy,
             IDictionary<URN, ReferenceIdCI> competitorsReferences)
@@ -318,7 +319,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             _competitorId = ci.Id;
             _competitorCI = ci;
             _profileCache = profileCache;
-            _cultures = cultures.ToList();
+            _cultures = cultures;
             _sportEntityFactory = sportEntityFactory;
             _exceptionStrategy = exceptionStrategy;
             _competitionCI = null;
@@ -351,7 +352,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCI"/> for all competitors</param>
         public Competitor(URN competitorId,
             IProfileCache profileCache,
-            IEnumerable<CultureInfo> cultures,
+            IReadOnlyCollection<CultureInfo> cultures,
             ISportEntityFactory sportEntityFactory,
             ExceptionHandlingStrategy exceptionStrategy,
             IDictionary<URN, ReferenceIdCI> competitorsReferences)
@@ -365,18 +366,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             _competitorId = competitorId;
             _competitorCI = null;
             _profileCache = profileCache;
-            _cultures = cultures.ToList();
+            _cultures = cultures;
             _sportEntityFactory = sportEntityFactory;
             _exceptionStrategy = exceptionStrategy;
             _competitionCI = null;
             _referenceId = null;
 
-            if (competitorsReferences != null && competitorsReferences.Any())
+            if (competitorsReferences != null && competitorsReferences.Any() && competitorsReferences.TryGetValue(competitorId, out var q))
             {
-                if (competitorsReferences.TryGetValue(competitorId, out var q))
-                {
-                    _referenceId = q;
-                }
+                _referenceId = q;
             }
         }
 
@@ -388,16 +386,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             var abbreviations = string.Join(", ", Abbreviations.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
             var associatedPlayersStr = string.Empty;
-            var associatedPlayerIds = _competitorCI?.GetAssociatedPlayerIds();
+            var associatedPlayerIds = _competitorCI?.GetAssociatedPlayerIds()?.ToList();
             if (!associatedPlayerIds.IsNullOrEmpty())
             {
-                associatedPlayersStr = string.Join(", ", associatedPlayerIds);
+                associatedPlayersStr = string.Join(", ", associatedPlayerIds!);
                 associatedPlayersStr = $", AssociatedPlayers=[{associatedPlayersStr}]";
             }
-            var reference = _referenceId?.ReferenceIds == null || !_referenceId.ReferenceIds.Any()
-                                ? string.Empty
-                                // ReSharper disable once RedundantAssignment
-                                : _referenceId.ReferenceIds.Aggregate(string.Empty, (current, item) => current = $"{current}, {item.Key}={item.Value}").Substring(2);
+            var reference = string.Empty;
+            if (_referenceId != null && !_referenceId.ReferenceIds.IsNullOrEmpty())
+            {
+                var stringBuilder = new StringBuilder();
+                stringBuilder.AppendJoin(", ", _referenceId.ReferenceIds.Select(s => $"{s.Key}={s.Value}"));
+                reference = stringBuilder.ToString();
+            }
             return $"{base.PrintC()}, Gender={Gender}, Reference={reference}, Abbreviations=[{abbreviations}]{associatedPlayersStr}";
         }
 
@@ -464,12 +465,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                                         {
                                             var competitorsQualifiers = await _competitionCI.GetCompetitorsQualifiersAsync().ConfigureAwait(false);
 
-                                            if (competitorsQualifiers != null && competitorsQualifiers.Any())
+                                            if (competitorsQualifiers != null && competitorsQualifiers.Any() && competitorsQualifiers.TryGetValue(_competitorCI.Id, out var qualifier))
                                             {
-                                                if (competitorsQualifiers.TryGetValue(_competitorCI.Id, out var qualifier))
-                                                {
-                                                    TeamQualifier = qualifier;
-                                                }
+                                                TeamQualifier = qualifier;
                                             }
                                         });
                     task.Wait();
@@ -497,14 +495,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             if (_competitorId != null && _competitorCI == null && _profileCache != null)
             {
-                //_competitorCI = _profileCache.GetCompetitorProfileAsync(_competitorId, _cultures).Result;
                 LoadCompetitorProfileInCache();
                 _lastCompetitorFetch = DateTime.Now;
             }
 
             if (_competitorCI != null && _profileCache != null && _lastCompetitorFetch < DateTime.Now.AddSeconds(-30))
             {
-                //_competitorCI = _profileCache.GetCompetitorProfileAsync(_competitorCI.Id, _cultures).Result;
                 LoadCompetitorProfileInCache();
                 _lastCompetitorFetch = DateTime.Now;
             }
@@ -518,7 +514,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                                 {
                                     _competitorCI = await _profileCache.GetCompetitorProfileAsync(_competitorId, _cultures).ConfigureAwait(false);
                                 });
-            //Task.WhenAll(task).ConfigureAwait(false);
             task.Wait();
         }
     }

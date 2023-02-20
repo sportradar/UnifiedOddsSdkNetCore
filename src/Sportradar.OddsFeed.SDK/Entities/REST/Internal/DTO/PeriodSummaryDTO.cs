@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             GeneratedAt = stagePeriod.generated_atSpecified
                 ? stagePeriod.generated_at.ToLocalTime()
-                : (DateTime?) null;
+                : (DateTime?)null;
         }
     }
 }

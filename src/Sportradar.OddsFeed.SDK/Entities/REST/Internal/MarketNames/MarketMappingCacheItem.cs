@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         public int MarketTypeId { get; }
 
-        public  int? MarketSubTypeId { get; }
+        public int? MarketSubTypeId { get; }
 
         public string SovTemplate { get; }
 
@@ -85,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             foreach (var outcomeMappingDTO in dto.OutcomeMappings)
             {
-                var mapping = OutcomeMappings.FirstOrDefault(f=>f.OutcomeId.Equals(outcomeMappingDTO.OutcomeId, StringComparison.InvariantCultureIgnoreCase));
+                var mapping = OutcomeMappings.FirstOrDefault(f => f.OutcomeId.Equals(outcomeMappingDTO.OutcomeId, StringComparison.InvariantCultureIgnoreCase));
                 if (mapping == null && shouldHave)
                 {
                     //investigate

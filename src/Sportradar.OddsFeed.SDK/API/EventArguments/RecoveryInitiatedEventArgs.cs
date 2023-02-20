@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         {
             return _after;
         }
-        
+
         /// <summary>
         /// Gets the associated event identifier
         /// </summary>

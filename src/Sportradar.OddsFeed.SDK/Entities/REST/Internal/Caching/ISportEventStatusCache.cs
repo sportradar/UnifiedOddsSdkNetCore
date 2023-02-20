@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
     internal interface ISportEventStatusCache : ISdkCache, IHealthStatusProvider, IDisposable
     {
         /// <summary>
-        /// Gets the cached <see cref="SportEventStatusCI"/> instance associated with the sport event specified by the <code>eventId</code>"/>. If the instance associated
+        /// Gets the cached <see cref="SportEventStatusCI"/> instance associated with the sport event specified by the <c>eventId</c>"/>. If the instance associated
         /// with the specified event is not found, it tries to obtain it via API, if still cant, a <see cref="SportEventStatusCI"/> instance indicating a 'not started' event is returned.
         /// </summary>
         /// <param name="eventId">A <see cref="URN"/> representing the id of the sport event whose status to get</param>

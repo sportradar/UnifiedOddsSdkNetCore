@@ -4,16 +4,19 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics;
+using Castle.Core.Internal;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -308,16 +311,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         protected async Task FetchMissingSummary(IEnumerable<CultureInfo> cultures, bool forceFetch)
         {
-            Guard.Argument(cultures, nameof(cultures)).NotNull();
-
             // to improve performance check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
+            if (cultureInfos.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Missing cultures");
+            }
             var missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedSummaries).ToList();
             if (!missingCultures.Any() && !forceFetch)
             {
                 return;
             }
-            
+
+            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(MetricsSettings.TimerFetchMissingSummary, $"{Id}");
+
             var id = $"{Id}_Summary";
             SemaphoreSlim semaphore = null;
             Exception initialException = null;
@@ -384,7 +391,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 SemaphorePool.Release(id);
             }
 
-            if (initialException != null && ((DataRouterManager) DataRouterManager).ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+            if (initialException != null && DataRouterManager.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
             {
                 throw initialException;
             }
@@ -397,16 +404,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         protected async Task FetchMissingFixtures(IEnumerable<CultureInfo> cultures)
         {
-            Guard.Argument(cultures, nameof(cultures)).NotNull();
-
             // to improve performance check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
+            if (cultureInfos.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Missing cultures");
+            }
             var missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedFixtures).ToList();
             if (!missingCultures.Any())
             {
                 return;
             }
-            
+
+            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(MetricsSettings.TimerFetchMissingFixtures, $"{Id}");
+
             var id = $"{Id}_Fixture";
             SemaphoreSlim semaphore = null;
             Exception potentialException = null;
@@ -466,7 +477,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 SemaphorePool.Release(id);
             }
 
-            if (potentialException != null && ((DataRouterManager) DataRouterManager).ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+            if (potentialException != null && ((DataRouterManager)DataRouterManager).ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
             {
                 throw potentialException;
             }
@@ -497,7 +508,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
-            
+
             lock (MergeLock)
             {
                 Names[culture] = dto.Name;

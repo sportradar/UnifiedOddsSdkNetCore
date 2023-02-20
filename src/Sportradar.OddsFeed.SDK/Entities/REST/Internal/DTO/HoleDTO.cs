@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal int Number { get; }
 
         internal int Par { get; }
-        
+
         internal HoleDTO(hole hole)
         {
             Number = hole.number;

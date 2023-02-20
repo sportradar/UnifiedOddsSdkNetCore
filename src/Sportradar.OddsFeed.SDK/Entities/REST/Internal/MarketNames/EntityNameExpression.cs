@@ -2,10 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
@@ -81,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             if (_propertyName.Equals("event"))
             {
-                if (_sportEvent is IMatch || _sportEvent is ISoccerEvent)
+                if (_sportEvent is IMatch)
                 {
                     var homeCompetitor = await GetHomeCompetitor(culture).ConfigureAwait(false);
                     var awayCompetitor = await GetAwayCompetitor(culture).ConfigureAwait(false);
@@ -104,22 +104,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private async Task<string> GetHomeCompetitor(CultureInfo culture)
         {
-            var match = _sportEvent as IMatch;
-            if (match != null)
+            if (_sportEvent is IMatch match)
             {
                 var competitor = await InvokeAndWrapAsync(match.GetHomeCompetitorAsync).ConfigureAwait(false);
                 return competitor?.GetName(culture);
             }
 
-            var soccer = _sportEvent as ISoccerEvent;
-            if (soccer != null)
-            {
-                var competitor = await InvokeAndWrapAsync(soccer.GetHomeCompetitorAsync).ConfigureAwait(false);
-                return competitor?.GetName(culture);
-            }
-
-            var stage = _sportEvent as IStage;
-            if (stage != null)
+            if (_sportEvent is IStage stage)
             {
                 var competitors = await InvokeAndWrapAsync(stage.GetCompetitorsAsync).ConfigureAwait(false);
                 return competitors?.First().GetName(culture);
@@ -130,22 +121,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private async Task<string> GetAwayCompetitor(CultureInfo culture)
         {
-            var match = _sportEvent as IMatch;
-            if (match != null)
+            if (_sportEvent is IMatch match)
             {
                 var competitor = await InvokeAndWrapAsync(match.GetAwayCompetitorAsync).ConfigureAwait(false);
                 return competitor?.GetName(culture);
             }
 
-            var soccer = _sportEvent as ISoccerEvent;
-            if (soccer != null)
-            {
-                var competitor = await InvokeAndWrapAsync(soccer.GetAwayCompetitorAsync).ConfigureAwait(false);
-                return competitor?.GetName(culture);
-            }
-
-            var stage = _sportEvent as IStage;
-            if (stage != null)
+            if (_sportEvent is IStage stage)
             {
                 var competitors = await InvokeAndWrapAsync(stage.GetCompetitorsAsync).ConfigureAwait(false);
                 return competitors?.Skip(1).First().GetName(culture);

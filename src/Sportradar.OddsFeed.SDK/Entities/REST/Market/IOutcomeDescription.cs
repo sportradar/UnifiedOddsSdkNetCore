@@ -8,8 +8,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
     /// <summary>
     /// Defines a contract implemented by classes representing betting outcome description
     /// </summary>
-    public interface IOutcomeDescription {
-
+    public interface IOutcomeDescription
+    {
         /// <summary>
         /// Gets a value uniquely identifying the current outcome within the market
         /// </summary>

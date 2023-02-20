@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -17,7 +17,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
     /// </summary>
     internal class TournamentsMapper : ISingleTypeMapper<EntityList<SportDTO>>
     {
-
         /// <summary>
         /// A <see cref="IEqualityComparer{tournamentExtended}"/> used to compare different <see cref="tournamentExtended"/> instances
         /// </summary>
@@ -61,7 +60,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
             return new EntityList<SportDTO>(new ReadOnlyCollection<SportDTO>(sports));
         }
 
-
         /// <summary>
         /// Constructs and returns a new instance of the <see cref="ISingleTypeMapper{T}"/> instance used to map <see cref="tournamentsEndpoint"/> instances
         /// to <see cref="EntityList{SportDTO}"/> instances
@@ -92,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
 
             public int GetHashCode(tournamentExtended obj)
             {
-                return obj?.sport.id.GetHashCode() ?? 0;
+                return obj.sport?.id.GetHashCode() ?? 0;
             }
         }
     }

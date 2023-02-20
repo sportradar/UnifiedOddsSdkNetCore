@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="outcomeProbabilities">a <see cref="IEnumerable{IOutcomeProbabilities}"/> where each <see cref="IOutcomeProbabilities"/> instance specifies the odds
         /// for one outcome associated with the current <see cref="IMarketWithProbabilities"/> instance</param>
         /// <param name="marketDefinition">The associated market definition</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="cashoutStatus">A <see cref="CashoutStatus"/> enum member specifying the availability of cashout, or a null reference</param>
         /// <param name="marketMetadata">A <see cref="IMarketMetadata"/> to be set</param>
         internal MarketWithProbabilities(int id,
@@ -56,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                          MarketStatus status,
                                          IEnumerable<IOutcomeProbabilities> outcomeProbabilities,
                                          IMarketDefinition marketDefinition,
-                                         IEnumerable<CultureInfo> cultures,
+                                         IReadOnlyCollection<CultureInfo> cultures,
                                          CashoutStatus? cashoutStatus,
                                          IMarketMetadata marketMetadata)
             : base(id, specifiers, additionalInfo, nameProvider, mappingProvider, marketDefinition, cultures)

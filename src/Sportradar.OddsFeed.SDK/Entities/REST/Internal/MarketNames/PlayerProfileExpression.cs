@@ -1,9 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -52,12 +52,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             string name = null;
             if (urn.Type == "player")
             {
-                var profile = await _profileCache.GetPlayerProfileAsync(urn, new[] {culture}).ConfigureAwait(false);
+                var profile = await _profileCache.GetPlayerProfileAsync(urn, new[] { culture }).ConfigureAwait(false);
                 name = profile?.GetName(culture);
             }
             else if (urn.Type == "competitor")
             {
-                var profile = await _profileCache.GetCompetitorProfileAsync(urn, new[] {culture}).ConfigureAwait(false);
+                var profile = await _profileCache.GetCompetitorProfileAsync(urn, new[] { culture }).ConfigureAwait(false);
                 name = profile?.GetName(culture);
             }
             return name;

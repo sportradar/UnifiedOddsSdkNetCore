@@ -71,6 +71,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal StageDTO(stageSummaryEndpoint stageEvent)
             : base(stageEvent)
         {
+            if (stageEvent == null)
+            {
+                return;
+            }
             if (stageEvent.sport_event == null)
             {
                 return;
@@ -83,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 Tournament = new TournamentDTO(stageEvent.sport_event.tournament);
             }
-            if (stageEvent.sport_event.parent != null)
+            if (stageEvent.sport_event!.parent != null)
             {
                 ParentStage = new StageDTO(stageEvent.sport_event.parent);
             }
@@ -106,42 +110,44 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
         }
 
-        internal StageDTO(parentStage parentStage) 
+        internal StageDTO(parentStage parentStage)
             : base(parentStage)
         {
         }
 
-        internal StageDTO(TournamentDTO tournament) 
+        internal StageDTO(TournamentDTO tournament)
             : this(new sportEvent
+            {
+                id = tournament.Id.ToString(),
+                name = tournament.Name,
+                //type = tournament.type,
+                scheduledSpecified = tournament.Scheduled != null,
+                scheduled = tournament.Scheduled.GetValueOrDefault(DateTime.MinValue),
+                scheduled_endSpecified = tournament.ScheduledEnd != null,
+                scheduled_end = tournament.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
+                //liveodds = tournament.liveodds,
+                //season = tournament.season,
+                tournament = new tournament
                 {
                     id = tournament.Id.ToString(),
                     name = tournament.Name,
-                    //type = tournament.type,
                     scheduledSpecified = tournament.Scheduled != null,
                     scheduled = tournament.Scheduled.GetValueOrDefault(DateTime.MinValue),
                     scheduled_endSpecified = tournament.ScheduledEnd != null,
                     scheduled_end = tournament.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
-                    //liveodds = tournament.liveodds,
-                    //season = tournament.season,
-                    tournament = new tournament{
-                        id = tournament.Id.ToString(),
-                        name = tournament.Name,
-                        scheduledSpecified = tournament.Scheduled != null,
-                        scheduled = tournament.Scheduled.GetValueOrDefault(DateTime.MinValue),
-                        scheduled_endSpecified = tournament.ScheduledEnd != null,
-                        scheduled_end = tournament.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
-                        category = new category
-                        {
-                            id = tournament.Category.Id.ToString(),
-                            name = tournament.Category.Name,
-                            country_code = tournament.Category.CountryCode
-                        },
-                        sport = new sport {
-                            id = tournament.Sport.Id.ToString(),
-                            name = tournament.Sport.Name
-                        }
+                    category = new category
+                    {
+                        id = tournament.Category.Id.ToString(),
+                        name = tournament.Category.Name,
+                        country_code = tournament.Category.CountryCode
+                    },
+                    sport = new sport
+                    {
+                        id = tournament.Sport.Id.ToString(),
+                        name = tournament.Sport.Name
                     }
-                })
+                }
+            })
         {
             Tournament = tournament;
         }

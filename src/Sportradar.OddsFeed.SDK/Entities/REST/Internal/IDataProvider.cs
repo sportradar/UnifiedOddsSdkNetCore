@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
 
         /// <summary>
-        /// Asynchronously gets a <see cref="T"/> instance in language specified by the provided <code>languageCode</code>
+        /// Asynchronously gets a rest response class instance in language specified by the provided <c>languageCode</c>
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="CultureInfo"/></param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task<T> GetDataAsync(string languageCode);
 
         /// <summary>
-        /// Asynchronously gets a <see cref="T"/> instance specified by the provided identifiersA two letter language code of the <see cref="CultureInfo"/>
+        /// Asynchronously gets a rest response class instance specified by the provided identifiersA two letter language code of the <see cref="CultureInfo"/>
         /// </summary>
         /// <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task<T> GetDataAsync(params string[] identifiers);
 
         /// <summary>
-        /// Gets a <see cref="T"/> instance in language specified by the provided <code>languageCode</code>
+        /// Gets a rest response class instance in language specified by the provided <c>languageCode</c>
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="CultureInfo"/></param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
@@ -51,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         T GetData(string languageCode);
 
         /// <summary>
-        /// Gets a <see cref="T"/> instance specified by the provided identifiersA two letter language code of the <see cref="CultureInfo"/>
+        /// Gets a rest response class instance specified by the provided identifiersA two letter language code of the <see cref="CultureInfo"/>
         /// </summary>
         /// <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>

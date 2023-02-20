@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
     /// </summary>
     internal class DrawInfoDTO
     {
-        public DrawType DrawType{ get; }
+        public DrawType DrawType { get; }
 
         public TimeType TimeType { get; }
 

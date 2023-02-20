@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Collections.Generic;
 
 namespace Sportradar.OddsFeed.SDK.Messages
 {
@@ -75,5 +76,11 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// </summary>
         /// <value>The stateful recovery window in minutes.</value>
         int StatefulRecoveryWindow { get; }
+
+        /// <summary>
+        /// Gets the scope of the producer
+        /// </summary>
+        /// <value>The scope</value>
+        IReadOnlyCollection<string> Scope { get; }
     }
 }

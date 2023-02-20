@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using Castle.Core.Internal;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -36,10 +36,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                    IEnumerable<CultureInfo> cultures,
                                    ExceptionHandlingStrategy exceptionHandlingStrategy)
         {
-
             Guard.Argument(marketId, nameof(marketId)).Positive();
             Guard.Argument(cultures, nameof(cultures)).NotNull();
-            
+
             _marketCacheProvider = marketCacheProvider;
             _marketId = marketId;
             _outcomeId = outcomeId;

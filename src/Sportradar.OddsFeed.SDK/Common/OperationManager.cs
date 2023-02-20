@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
 using System;
+using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 
 namespace Sportradar.OddsFeed.SDK.Common
 {

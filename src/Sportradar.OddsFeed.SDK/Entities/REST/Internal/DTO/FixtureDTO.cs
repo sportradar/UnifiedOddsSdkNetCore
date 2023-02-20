@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
 using Castle.Core.Internal;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -25,11 +25,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal DateTime? NextLiveTime { get; }
 
         internal IReadOnlyDictionary<string, string> ExtraInfo { get; }
-        
+
         internal IEnumerable<TvChannelDTO> TvChannels { get; }
 
         internal ProductInfoDTO ProductInfo { get; }
-
 
         internal readonly IDictionary<string, string> ReferenceIds;
 
@@ -53,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(fixture, nameof(fixture)).NotNull();
 
             StartTime = fixture.start_timeSpecified
-                ? (DateTime?) fixture.start_time.ToLocalTime()
+                ? (DateTime?)fixture.start_time.ToLocalTime()
                 : null;
             if (!string.IsNullOrEmpty(fixture.next_live_time))
             {
@@ -62,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StartTimeConfirmed = fixture.start_time_confirmedSpecified && fixture.start_time_confirmed;
             ExtraInfo = fixture.extra_info != null && fixture.extra_info.Any()
                 ? new ReadOnlyDictionary<string, string>(fixture.extra_info.ToDictionary(e => e.key, e => e.value))
-                : null;
+                : new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
             TvChannels = fixture.tv_channels != null && fixture.tv_channels.Any()
                 ? new ReadOnlyCollection<TvChannelDTO>(fixture.tv_channels.Select(t => new TvChannelDTO(t)).ToList())
                 : null;
@@ -90,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 ParentStage = new StageDTO(fixture.parent);
             }
-            if(ParentStage == null && Type != null && Type == SportEventType.Parent && fixture.tournament != null)
+            if (ParentStage == null && Type != null && Type == SportEventType.Parent && fixture.tournament != null)
             {
                 ParentStage = new StageDTO(new TournamentDTO(fixture.tournament));
             }

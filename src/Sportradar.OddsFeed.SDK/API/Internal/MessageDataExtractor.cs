@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.Linq;
 using System.Text;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -107,7 +107,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 : message.Substring(searchStartIndex, quoteIndex - searchStartIndex);
         }
 
-
         /// <summary>
         /// Constructs and returns a <see cref="BasicMessageData" /> specifying the basic data of the message
         /// </summary>
@@ -128,7 +127,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             return new BasicMessageData(messageName, product, eventId);
         }
-
 
         /// <summary>
         /// Gets the <see cref="MessageType" /> member from the provided <see cref="FeedMessage" /> instance

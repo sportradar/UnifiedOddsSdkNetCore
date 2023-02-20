@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <race_summary generated_at="2022-11-08T12:42:29.153+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/bsa/unified/v1/xml/endpoints/unified/race_summary.xsd" xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sport_event id="sr:stage:940265" name="Grand Prix de France 2022" type="parent" stage_type="event" scheduled="2022-07-22T12:00:00+00:00" scheduled_end="2022-07-24T15:00:00+00:00">
+      <parent id="sr:stage:937183" name="Formula 1 2022" type="parent" stage_type="season"/>
+      <tournament id="sr:stage:937183" name="Formula 1 2022" scheduled="2022-03-18T12:00:00+00:00" scheduled_end="2022-11-20T15:00:00+00:00">
+        <sport id="sr:sport:40" name="Formula 1"/>
+        <category id="sr:category:36" name="Formula 1"/>
+      </tournament>
+      <competitors>
+        <competitor id="sr:competitor:4521" name="Alonso, Fernando" abbreviation="ALO" gender="male"/>
+        <competitor id="sr:competitor:6152" name="Kubica, Robert" abbreviation="KUB" gender="male"/>
+        <competitor id="sr:competitor:7135" name="Hamilton, Lewis" abbreviation="HAM" gender="male"/>
+        <competitor id="sr:competitor:7610" name="Vettel, Sebastian" abbreviation="VET" gender="male"/>
+        <competitor id="sr:competitor:41600" name="Bottas, Valtteri" abbreviation="BOT" gender="male"/>
+        <competitor id="sr:competitor:41603" name="Ricciardo, Daniel" abbreviation="RIC" gender="male"/>
+        <competitor id="sr:competitor:46337" name="Perez, Sergio" abbreviation="PER" gender="male"/>
+        <competitor id="sr:competitor:135592" name="Magnussen, Kevin" abbreviation="MAG" gender="male"/>
+        <competitor id="sr:competitor:178318" name="Verstappen, Max" abbreviation="VER" gender="male"/>
+        <competitor id="sr:competitor:184751" name="Ocon, Esteban" abbreviation="OCO" gender="male"/>
+        <competitor id="sr:competitor:189029" name="Sainz Jr, Carlos" abbreviation="SAI" gender="male"/>
+        <competitor id="sr:competitor:269471" name="Leclerc, Charles" abbreviation="LEC" gender="male"/>
+        <competitor id="sr:competitor:302866" name="Stroll, Lance" abbreviation="STR" gender="male"/>
+        <competitor id="sr:competitor:381362" name="Gasly, Pierre" abbreviation="GAS" gender="male"/>
+        <competitor id="sr:competitor:391432" name="Russell, George" abbreviation="RUS" gender="male"/>
+        <competitor id="sr:competitor:447677" name="Latifi, Nicholas" abbreviation="LAT" gender="male"/>
+        <competitor id="sr:competitor:495898" name="Norris, Lando" abbreviation="NOR" gender="male"/>
+        <competitor id="sr:competitor:522994" name="Albon, Alexander" abbreviation="ALB" gender="male"/>
+        <competitor id="sr:competitor:568799" name="Schumacher, Mick" abbreviation="MSC" gender="male"/>
+        <competitor id="sr:competitor:764646" name="Tsunoda, Yuki" abbreviation="TSU" gender="male"/>
+        <competitor id="sr:competitor:811508" name="Zhou, Guanyu" abbreviation="ZHO" gender="male"/>
+        <competitor id="sr:competitor:901325" name="de Vries, Nyck" abbreviation="DE" gender="male"/>
+      </competitors>
+      <races>
+        <sport_event id="sr:stage:940267" type="child" stage_type="practice" scheduled="2022-07-22T12:00:00+00:00"/>
+        <sport_event id="sr:stage:940269" type="child" stage_type="practice" scheduled="2022-07-22T15:00:00+00:00"/>
+        <sport_event id="sr:stage:940271" type="child" stage_type="practice" scheduled="2022-07-23T11:00:00+00:00"/>
+        <sport_event id="sr:stage:940273" type="child" stage_type="qualifying" scheduled="2022-07-23T14:00:00+00:00"/>
+        <sport_event id="sr:stage:940343" type="child" stage_type="race" scheduled="2022-07-24T13:00:00+00:00"/>
+      </races>
+    </sport_event>
+    <sport_event_status status="ended">
+      <results>
+        <competitor id="sr:competitor:391432"/>
+        <competitor id="sr:competitor:522994"/>
+        <competitor id="sr:competitor:568799"/>
+        <competitor id="sr:competitor:302866"/>
+        <competitor id="sr:competitor:41600"/>
+        <competitor id="sr:competitor:41603"/>
+        <competitor id="sr:competitor:901325"/>
+        <competitor id="sr:competitor:6152"/>
+        <competitor id="sr:competitor:447677"/>
+        <competitor id="sr:competitor:46337"/>
+        <competitor id="sr:competitor:381362"/>
+        <competitor id="sr:competitor:269471"/>
+        <competitor id="sr:competitor:495898"/>
+        <competitor id="sr:competitor:811508"/>
+        <competitor id="sr:competitor:135592"/>
+        <competitor id="sr:competitor:178318"/>
+        <competitor id="sr:competitor:7610"/>
+        <competitor id="sr:competitor:4521"/>
+        <competitor id="sr:competitor:7135"/>
+        <competitor id="sr:competitor:189029"/>
+        <competitor id="sr:competitor:764646"/>
+        <competitor id="sr:competitor:184751"/>
+      </results>
+    </sport_event_status>
+  </race_summary>

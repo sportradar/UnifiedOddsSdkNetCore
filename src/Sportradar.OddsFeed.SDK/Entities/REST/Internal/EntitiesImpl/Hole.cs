@@ -11,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="IHole" />
     internal class Hole : EntityPrinter, IHole
-    { 
+    {
         /// <summary>
         /// Gets the number of the hole
         /// </summary>

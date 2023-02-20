@@ -35,10 +35,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             ExpectedTotals = oddsGenerationProperties.expected_totalsSpecified
                                  ? oddsGenerationProperties.expected_totals
-                                 : (double?) null;
+                                 : (double?)null;
             ExpectedSupremacy = oddsGenerationProperties.expected_supremacySpecified
                                     ? oddsGenerationProperties.expected_supremacy
-                                    : (double?) null;
+                                    : (double?)null;
         }
     }
 }

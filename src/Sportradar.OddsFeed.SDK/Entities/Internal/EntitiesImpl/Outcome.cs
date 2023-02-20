@@ -3,9 +3,9 @@
 */
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
 
@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
     /// </summary>
     internal abstract class Outcome : IOutcome
     {
-        private readonly IEnumerable<CultureInfo> _cultures;
+        private readonly IReadOnlyCollection<CultureInfo> _cultures;
 
         /// <summary>
         /// A <see cref="INameProvider"/> used to generate the outcome name(s)
@@ -51,9 +51,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="id">the value uniquely identifying the current <see cref="Outcome" /> instance</param>
         /// <param name="nameProvider">A <see cref="INameProvider"/> used to generate the outcome name(s)</param>
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition"></param>
-        protected Outcome(string id, INameProvider nameProvider, IMarketMappingProvider mappingProvider, IEnumerable<CultureInfo> cultures, IOutcomeDefinition outcomeDefinition)
+        protected Outcome(string id, INameProvider nameProvider, IMarketMappingProvider mappingProvider, IReadOnlyCollection<CultureInfo> cultures, IOutcomeDefinition outcomeDefinition)
         {
             Guard.Argument(nameProvider, nameof(nameProvider)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();

@@ -1,6 +1,13 @@
 bin/
 obj/
 libs/
+package/
+
+# Visual Studio Code
+.vscode
+
+# Rider
+.idea
 
 *.cache
 # *.nupkg
@@ -12,7 +19,6 @@ src/**/*.dll
 *.pyc
 *.user
 *.suo
-*.sln
 *.ignore
 
 *.GhostDoc.xml
@@ -32,6 +38,8 @@ XsdSchemaFetcher/SchemaFetcher/packages/*
 .vs/**
 **/.vs/**
 **/.sonarqube/**
+**/.sonarlint/**
+**/TestResults/**
 
 .nuget/**
 
@@ -43,3 +51,7 @@ UpgradeLog.htm
 
 coverage.opencover.xml
 coverage.xml
+
+# dotCover output
+dotCover.Output.*
+/dotCover.Output

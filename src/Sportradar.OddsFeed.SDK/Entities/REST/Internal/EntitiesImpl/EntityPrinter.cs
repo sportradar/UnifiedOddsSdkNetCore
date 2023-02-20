@@ -51,10 +51,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             {
                 format = "G";
             }
-            format = format.ToLower();
+            format = format.ToLowerInvariant();
 
-            ICustomFormatter formatter = formatProvider?.GetFormat(GetType()) as ICustomFormatter;
-            if (formatter != null)
+            if (formatProvider?.GetFormat(GetType()) is ICustomFormatter formatter)
             {
                 return formatter.Format(format, this, formatProvider);
             }
@@ -71,7 +70,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 //case "g":
                 default:
                     return PrintI();
-
             }
         }
 
@@ -118,12 +116,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
         private static string PrintJson(Type type, object item)
         {
-            MemoryStream stream1 = new MemoryStream();
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(type);
+            var stream1 = new MemoryStream();
+            var ser = new DataContractJsonSerializer(type);
             ser.WriteObject(stream1, item);
-            StreamReader sr = new StreamReader(stream1);
+            var sr = new StreamReader(stream1);
             stream1.Position = 0;
-            string json = sr.ReadToEnd();
+            var json = sr.ReadToEnd();
             return json;
         }
     }

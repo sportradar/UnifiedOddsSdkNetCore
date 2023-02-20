@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -49,6 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         private readonly object _lock = new object();
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         protected MarketDescriptionCacheItem(
             long id,
             IDictionary<CultureInfo, string> names,
@@ -63,7 +64,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             CultureInfo culture,
             string source)
         {
-
             Guard.Argument(culture, nameof(culture)).NotNull();
             Guard.Argument(names, nameof(names)).NotNull();
             Guard.Argument(descriptions, nameof(descriptions)).NotNull();
@@ -128,16 +128,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            string name;
-            return _names.TryGetValue(culture, out name) ? name : null;
+            return _names.TryGetValue(culture, out var name) ? name : null;
         }
 
         internal string GetDescription(CultureInfo culture)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            string description;
-            if (_descriptions.TryGetValue(culture, out description))
+            if (_descriptions.TryGetValue(culture, out var description))
             {
                 return description;
             }

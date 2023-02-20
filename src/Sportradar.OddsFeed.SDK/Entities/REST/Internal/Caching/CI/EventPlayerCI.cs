@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// </summary>
         /// <param name="dto">A <see cref="EventPlayerDTO"/> data</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided data</param>
-        public EventPlayerCI(EventPlayerDTO dto, CultureInfo culture) 
+        public EventPlayerCI(EventPlayerDTO dto, CultureInfo culture)
             : base(dto.Id, dto.Name, culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();

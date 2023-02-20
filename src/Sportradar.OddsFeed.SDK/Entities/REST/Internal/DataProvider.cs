@@ -1,6 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -8,10 +13,6 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages.REST;
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -115,10 +116,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Constructs and returns an <see cref="Uri"/> instance used to retrieve resource with specified <code>id</code>
+        /// Constructs and returns an <see cref="Uri"/> instance used to retrieve resource with specified <c>id</c>
         /// </summary>
         /// <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
-        /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <code>identifiers</code></returns>
+        /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <c>identifiers</c></returns>
         protected virtual Uri GetRequestUri(params object[] identifiers)
         {
             Guard.Argument(identifiers, nameof(identifiers)).NotNull();
@@ -161,7 +162,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Gets a <see cref="!:T" /> instance in language specified by the provided <code>languageCode</code>
+        /// Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
@@ -230,7 +231,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 foreach (var identifier in identifiers)
                 {
-                    if (identifier == null)
+                    if (identifier.IsNullOrEmpty() || identifier.Length > 3 || SdkInfo.IsNumeric(identifier))
                     {
                         continue;
                     }
@@ -242,7 +243,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                             return identifier;
                         }
                     }
-                    catch (Exception)
+                    catch
                     {
                         // ignored
                     }

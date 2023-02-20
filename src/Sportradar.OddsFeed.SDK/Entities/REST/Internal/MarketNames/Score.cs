@@ -51,12 +51,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         /// <param name="value">A string representation of a <see cref="Score"/></param>
         /// <returns>a <see cref="Score"/> instance constructed from it's string representation</returns>
-        /// <exception cref="FormatException">The format of <code>value</code> is not correct</exception>
+        /// <exception cref="FormatException">The format of <c>value</c> is not correct</exception>
         public static Score Parse(string value)
         {
             Guard.Argument(value, nameof(value)).NotNull().NotEmpty();
 
-            var parts = value.Split(new[] {":"}, StringSplitOptions.RemoveEmptyEntries);
+            var parts = value.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
             {
                 throw new FormatException($"The format of value={value} is not correct. It must contain exactly one : sign");

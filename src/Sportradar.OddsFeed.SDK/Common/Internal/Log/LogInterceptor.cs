@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 
@@ -60,10 +61,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
 
         private void TaskExecutionFinished(Task task)
         {
-            LogProxyPerm perm;
-            if (!_proxyPerms.TryGetValue(task.Id, out perm))
+            if (!_proxyPerms.TryGetValue(task.Id, out var perm))
             {
-                Debug.WriteLine($"No perm for task. Id: {task.Id}");
+                SdkLoggerFactory.GetLoggerForExecution(typeof(LogInterceptor)).LogWarning($"No perm for task. Id: {task.Id}");
                 return;
             }
             var underlyingResultType = "Task->" + perm.Result.GetType().GetProperty("Result")?.PropertyType.Name;
@@ -73,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 var exceptionMsg = "EXCEPTION: ";
                 if (task.Exception != null)
                 {
-                    if (task.Exception.InnerExceptions != null)
+                    if (!task.Exception.InnerExceptions.IsNullOrEmpty())
                     {
                         exceptionMsg += task.Exception.InnerExceptions[0].ToString();
                     }
@@ -118,10 +118,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 logger.LogInformation($"{taskId}Finished executing '{methodInfo.Name}'. Time: {watch.ElapsedMilliseconds} ms.");
             }
 
-            if (logEnabled && !string.Equals(methodInfo.ReturnType.FullName, "System.Void"))
+            if (logEnabled && !string.Equals(methodInfo.ReturnType.FullName, "System.Void", StringComparison.InvariantCultureIgnoreCase))
             {
-                var responseMessage = result as HttpResponseMessage;
-                if (responseMessage != null)
+                if (result is HttpResponseMessage responseMessage)
                 {
                     logger.LogDebug($"{taskId}{methodInfo.Name} result: {resultTypeName}={WriteHttpResponseMessage(responseMessage)}");
                 }
@@ -192,7 +191,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                 var methodCall = $"{methodInfo.Name}()";
                 if (invocation.Arguments != null && invocation.Arguments.Any())
                 {
-                    methodCall = $"{methodInfo.Name}({string.Join(",", invocation.Arguments.Select(s=> $"{s?.GetType().Name}={s}"))})";
+                    methodCall = $"{methodInfo.Name}({string.Join(",", invocation.Arguments.Select(s => $"{s?.GetType().Name}={s}"))})";
                 }
                 if (logEnabled)
                 {

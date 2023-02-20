@@ -1,10 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -141,6 +143,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <value>The <see cref="IOddsFeedConfigurationSection"/> used to obtain 'hidden' properties</value>
         internal IOddsFeedConfigurationSection Section { get; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         public OddsFeedConfiguration(
             string accessToken,
             int inactivitySeconds,
@@ -192,12 +195,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             //appropriately set properties introduced with new builder:
             Environment = useIntegrationEnvironment ? SdkEnvironment.Integration : SdkEnvironment.Production;
-            if (apiHost.ToLower().StartsWith("http://"))
+            if (apiHost.ToLowerInvariant().StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
                 ApiHost = apiHost.Substring(7);  //remove leading http://
                 UseApiSsl = false;
             }
-            else if (apiHost.ToLower().StartsWith("https://"))
+            else if (apiHost.ToLowerInvariant().StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
             {
                 ApiHost = apiHost.Substring(8); //remove leading https://
                 UseApiSsl = true;
@@ -216,6 +219,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Section = section;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         public OddsFeedConfiguration(
             string accessToken,
             SdkEnvironment environment,

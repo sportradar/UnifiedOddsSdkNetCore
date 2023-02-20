@@ -144,7 +144,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal TournamentInfoDTO(tournament tournament)
             : base(new sportEvent
             {
-
                 id = tournament.id,
                 name = tournament.name,
                 scheduledSpecified = IsTournamentScheduleSpecified(tournament, true),
@@ -182,7 +181,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             TournamentInfo = null;
 
-            ExhibitionGames = tournament.exhibition_gamesSpecified ? tournament.exhibition_games : (bool?) null;
+            ExhibitionGames = tournament.exhibition_gamesSpecified ? tournament.exhibition_games : (bool?)null;
         }
 
         /// <summary>
@@ -192,7 +191,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal TournamentInfoDTO(tournamentInfoEndpoint tournament)
             : base(new sportEvent
             {
-
                 id = tournament.tournament.id,
                 name = tournament.tournament.name,
                 scheduledSpecified = IsTournamentScheduleSpecified(tournament.tournament, true) || tournament.tournament.current_season != null,
@@ -220,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     ? null
                     : new ReadOnlyCollection<CompetitorDTO>(tournament.tournament.competitors.Select(c => new CompetitorDTO(c)).ToList());
 
-            CurrentSeason = tournament.tournament.current_season == null
+            CurrentSeason = tournament.tournament == null || tournament.tournament.current_season == null
                 ? null
                 : new CurrentSeasonInfoDTO(tournament.tournament.current_season);
 
@@ -269,11 +267,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 };
             }
 
-            GeneratedAt = tournament.generated_atSpecified ? tournament.generated_at : (DateTime?) null;
+            GeneratedAt = tournament.generated_atSpecified ? tournament.generated_at : (DateTime?)null;
 
             ExhibitionGames = tournament.tournament.exhibition_gamesSpecified
                 ? tournament.tournament.exhibition_games
-                : (bool?) null;
+                : (bool?)null;
         }
 
         /// <summary>
@@ -400,7 +398,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             TournamentCoverage = fixture.Coverage == null
                 ? null
-                : new TournamentCoverageDTO(new tournamentLiveCoverageInfo { live_coverage = fixture.Coverage.IsLive.ToString().ToLower() });
+                : new TournamentCoverageDTO(new tournamentLiveCoverageInfo { live_coverage = fixture.Coverage.IsLive.ToString().ToLowerInvariant() });
 
             Category = fixture.Tournament?.Category;
 
@@ -515,9 +513,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             if (useStartTime)
             {
-                return tournament.scheduledSpecified || tournament.tournament_length != null && tournament.tournament_length.start_dateSpecified;
+                return tournament.scheduledSpecified || (tournament.tournament_length != null && tournament.tournament_length.start_dateSpecified);
             }
-            return tournament.scheduled_endSpecified || tournament.tournament_length != null && tournament.tournament_length.end_dateSpecified;
+            return tournament.scheduled_endSpecified || (tournament.tournament_length != null && tournament.tournament_length.end_dateSpecified);
         }
 
         private static DateTime GetTournamentSchedule(tournament tournament, bool useStartTime)

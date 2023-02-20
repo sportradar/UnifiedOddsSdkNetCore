@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <param name="season">The season</param>
         public CurrentSeasonInfoDTO(seasonExtended season)
-            : base (season.id, season.name)
+            : base(season.id, season.name)
         {
             Guard.Argument(season, nameof(season)).NotNull();
 

@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     internal class PlayerProfile : Player, IPlayerProfile
     {
         private readonly PlayerProfileCI _playerProfileCI;
-        private readonly List<CultureInfo> _cultures;
+        private readonly IReadOnlyCollection<CultureInfo> _cultures;
 
         /// <summary>
         /// Gets a value describing the type(e.g. forward, defense, ...) of the player represented by current instance
@@ -70,22 +70,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="PlayerProfile"/> class
         /// </summary>
         /// <param name="ci">A <see cref="PlayerProfileCI"/> representing cached player profile info</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying supported languages of the constructed instance</param>
-        public PlayerProfile(PlayerProfileCI ci, IEnumerable<CultureInfo> cultures)
-            :base(ci.Id, cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName))
+        /// <param name="cultures">A <see cref="ICollection{CultureInfo}"/> specifying supported languages of the constructed instance</param>
+        public PlayerProfile(PlayerProfileCI ci, IReadOnlyCollection<CultureInfo> cultures)
+            : base(ci.Id, cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName))
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             _playerProfileCI = ci;
-            _cultures = cultures.ToList();
+            _cultures = cultures;
         }
 
         /// <summary>
         /// Gets the nationality of the player represented by the current instance in the specified language or a null reference
         /// </summary>
         /// <param name="culture">The culture</param>
-        /// <returns>The nationality of the player represented by the current instance in  the language specified by <code>culture</code></returns>
+        /// <returns>The nationality of the player represented by the current instance in  the language specified by <c>culture</c></returns>
         public string GetNationality(CultureInfo culture)
         {
             return Nationalities.ContainsKey(culture)

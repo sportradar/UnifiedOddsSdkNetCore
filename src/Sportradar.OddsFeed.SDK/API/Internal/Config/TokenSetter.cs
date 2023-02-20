@@ -72,11 +72,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             {
                 sdkEnvironment = section.UfEnvironment.Value;
             }
+#pragma warning disable CS0618
             else if (!section.UseIntegrationEnvironment)
+#pragma warning restore CS0618
             {
                 sdkEnvironment = SdkEnvironment.Production;
             }
-                
+
             var supportedLanguages = new List<CultureInfo>();
             if (!string.IsNullOrEmpty(section.SupportedLanguages))
             {
@@ -106,9 +108,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                 disabledProducers = producerIds.Select(producerId => int.Parse(producerId.Trim())).ToList();
             }
 
-             var mqHost = string.IsNullOrEmpty(section.Host)
-                             ? EnvironmentManager.GetMqHost(sdkEnvironment)
-                             : section.Host;
+            var mqHost = string.IsNullOrEmpty(section.Host)
+                            ? EnvironmentManager.GetMqHost(sdkEnvironment)
+                            : section.Host;
             var apiHost = string.IsNullOrEmpty(section.ApiHost)
                              ? EnvironmentManager.GetApiHost(sdkEnvironment)
                              : section.ApiHost;

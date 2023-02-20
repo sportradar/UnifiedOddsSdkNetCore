@@ -6,8 +6,8 @@ namespace Sportradar.OddsFeed.SDK.Entities
     /// <summary>
     /// Provided by the prematch odds producer only, and contains a few key-parameters that can be used in a client’s own special odds model, or even offer spread betting bets based on it.
     /// </summary>
-    public interface IOddsGeneration {
-
+    public interface IOddsGeneration
+    {
         /// <summary>
         /// Gets the expected totals (how many goals are expected in total?)
         /// </summary>

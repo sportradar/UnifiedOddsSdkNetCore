@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -37,13 +37,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             CultureInfo culture,
             string source)
         {
-
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             Id = id;
             Outcomes = outcomes;
             Mappings = mappings;
-            FetchedLanguages = new List<CultureInfo>(new[] {culture});
+            FetchedLanguages = new List<CultureInfo>(new[] { culture });
 
             SourceCache = source;
             LastDataReceived = DateTime.Now;

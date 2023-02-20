@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
             Guard.Argument(operandString, nameof(operandString)).NotNull().NotEmpty();
-            Guard.Argument(operation, nameof(operation)).Require(System.Enum.IsDefined(typeof(SimpleMathOperation), operation));
+            Guard.Argument(operation, nameof(operation)).Require(Enum.IsDefined(typeof(SimpleMathOperation), operation));
 
             _specifiers = specifiers;
             _operandString = operandString;
@@ -78,14 +78,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             switch (_operation)
             {
-                case SimpleMathOperation.ADD:
+                case SimpleMathOperation.Add:
                     return Task.FromResult(value + _staticValue);
-                case SimpleMathOperation.SUBTRACT:
+                case SimpleMathOperation.Subtract:
                     return Task.FromResult(value - _staticValue);
                 default:
                     throw new InvalidOperationException($"Operation {Enum.GetName(typeof(SimpleMathOperation), _operation)} is not supported");
             }
-
         }
 
         /// <summary>
@@ -110,9 +109,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             switch (_operation)
             {
-                case SimpleMathOperation.ADD:
+                case SimpleMathOperation.Add:
                     return Task.FromResult(value + _staticValue);
-                case SimpleMathOperation.SUBTRACT:
+                case SimpleMathOperation.Subtract:
                     return Task.FromResult(value - _staticValue);
                 default:
                     throw new InvalidOperationException($"Operation {Enum.GetName(typeof(SimpleMathOperation), _operation)} is not supported");

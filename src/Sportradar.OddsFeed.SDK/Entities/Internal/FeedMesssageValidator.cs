@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -104,7 +104,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         /// <param name="message">The <see cref="FeedMessage"/> instance containing the market whose specifiers are being validated</param>
         /// <param name="market">A <see cref="FeedMarket"/> instance containing the specifiers to validate</param>
-        /// <param name="marketId">The id of the <code>market</code> in the <code>message</code></param>
+        /// <param name="marketId">The id of the <c>market</c> in the <c>message</c></param>
         private static bool ValidateSpecifiers(FeedMessage message, FeedMarket market, int marketId)
         {
             Guard.Argument(message, nameof(message)).NotNull();
@@ -235,15 +235,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             if (!_producerManager.Exists(message.ProducerId))
             {
                 LogFailure(message, "producer", message.ProducerId);
-                return ValidationResult.PROBLEMS_DETECTED;
+                return ValidationResult.ProblemsDetected;
             }
             var producer = _producerManager.Get(message.ProducerId);
             if (!producer.IsAvailable || producer.IsDisabled)
             {
                 LogFailure(message, "producer", message.ProducerId);
-                return ValidationResult.PROBLEMS_DETECTED;
+                return ValidationResult.ProblemsDetected;
             }
-            return ValidationResult.SUCCESS;
+            return ValidationResult.Success;
         }
 
         /// <summary>
@@ -260,25 +260,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (!ValidateMessage(message) || markets == null)
             {
-                return ValidationResult.FAILURE;
+                return ValidationResult.Failure;
             }
 
             if (!markets.Any())
             {
-                return ValidationResult.SUCCESS;
+                return ValidationResult.Success;
             }
 
-            var result = ValidationResult.SUCCESS;
+            var result = ValidationResult.Success;
             foreach (var market in markets)
             {
                 if (!ValidateSpecifiers(message, market, market.id))
                 {
-                    result = ValidationResult.PROBLEMS_DETECTED;
+                    result = ValidationResult.ProblemsDetected;
                 }
 
                 if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).Result)
                 {
-                    result = ValidationResult.PROBLEMS_DETECTED;
+                    result = ValidationResult.ProblemsDetected;
                 }
             }
             return result;
@@ -296,8 +296,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             ValidateMessageProducer(message);
 
             return ValidateMessage(message)
-                ? ValidationResult.SUCCESS
-                : ValidationResult.FAILURE;
+                ? ValidationResult.Success
+                : ValidationResult.Failure;
         }
 
         /// <summary>
@@ -313,15 +313,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (!ValidateMessage(message))
             {
-                return ValidationResult.FAILURE;
+                return ValidationResult.Failure;
             }
 
             if (message.subscribed >= 0)
             {
-                return ValidationResult.SUCCESS;
+                return ValidationResult.Success;
             }
             LogWarning(message, "subscribed", message.subscribed);
-            return ValidationResult.PROBLEMS_DETECTED;
+            return ValidationResult.ProblemsDetected;
         }
 
         /// <summary>
@@ -337,15 +337,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (!ValidateMessage(message))
             {
-                return ValidationResult.FAILURE;
+                return ValidationResult.Failure;
             }
 
             if (message.change_typeSpecified && !MessageMapperHelper.IsEnumMember<FixtureChangeType>(message.change_type))
             {
                 LogWarning(message, "change_type", message.change_type);
-                return ValidationResult.PROBLEMS_DETECTED;
+                return ValidationResult.ProblemsDetected;
             }
-            return ValidationResult.SUCCESS;
+            return ValidationResult.Success;
         }
 
         /// <summary>
@@ -361,15 +361,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (!ValidateMessage(message))
             {
-                return ValidationResult.FAILURE;
+                return ValidationResult.Failure;
             }
 
             if (string.IsNullOrEmpty(message.groups))
             {
                 LogFailure(message, "groups", message.groups);
-                return ValidationResult.FAILURE;
+                return ValidationResult.Failure;
             }
-            return ValidationResult.SUCCESS;
+            return ValidationResult.Success;
         }
 
         /// <summary>
@@ -385,25 +385,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (!ValidateMessage(message))
             {
-                return ValidationResult.FAILURE;
+                return ValidationResult.Failure;
             }
 
             if (message.outcomes == null || !message.outcomes.Any())
             {
-                return ValidationResult.SUCCESS;
+                return ValidationResult.Success;
             }
 
-            var result = ValidationResult.SUCCESS;
+            var result = ValidationResult.Success;
             foreach (var market in message.outcomes)
             {
                 if (!ValidateSpecifiers(message, market, market.id))
                 {
-                    result = ValidationResult.PROBLEMS_DETECTED;
+                    result = ValidationResult.ProblemsDetected;
                 }
 
                 if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).Result)
                 {
-                    result = ValidationResult.PROBLEMS_DETECTED;
+                    result = ValidationResult.ProblemsDetected;
                 }
             }
             return result;
@@ -425,9 +425,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 //set the value to null so it will not be processed by the message mapper
                 message.superceded_by = null;
                 LogWarning(message, "superseded_by", message.superceded_by);
-                if (result == ValidationResult.SUCCESS)
+                if (result == ValidationResult.Success)
                 {
-                    result = ValidationResult.PROBLEMS_DETECTED;
+                    result = ValidationResult.ProblemsDetected;
                 }
             }
             return result;
@@ -446,14 +446,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (!ValidateMessage(message))
             {
-                return ValidationResult.FAILURE;
+                return ValidationResult.Failure;
             }
 
-            var result = ValidationResult.SUCCESS;
+            var result = ValidationResult.Success;
             if (message.odds_change_reasonSpecified && !MessageMapperHelper.IsEnumMember<OddsChangeReason>(message.odds_change_reason))
             {
                 LogWarning(message, "odds_change_reason", message.odds_change_reason);
-                result = ValidationResult.PROBLEMS_DETECTED;
+                result = ValidationResult.ProblemsDetected;
             }
 
             if (message.odds == null)
@@ -464,12 +464,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             if (message.odds.betstop_reasonSpecified && !_namedValuesProvider.BetStopReasons.IsValueDefined(message.odds.betstop_reason))
             {
                 LogWarning(message, "betstop_reason", message.odds.betstop_reason);
-                result = ValidationResult.PROBLEMS_DETECTED;
+                result = ValidationResult.ProblemsDetected;
             }
             if (message.odds.betting_statusSpecified && !_namedValuesProvider.BettingStatuses.IsValueDefined(message.odds.betting_status))
             {
                 LogWarning(message, "betting_status", message.odds.betting_status);
-                result = ValidationResult.PROBLEMS_DETECTED;
+                result = ValidationResult.ProblemsDetected;
             }
 
             if (message.odds.market == null || !message.odds.market.Any())
@@ -482,17 +482,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 if (market.statusSpecified && !MessageMapperHelper.IsEnumMember<MarketStatus>(market.status))
                 {
                     LogFailure(message, $"market {market.id} market_status", market.status);
-                    return ValidationResult.FAILURE;
+                    return ValidationResult.Failure;
                 }
 
                 if (!ValidateSpecifiers(message, market, market.id))
                 {
-                    result = ValidationResult.PROBLEMS_DETECTED;
+                    result = ValidationResult.ProblemsDetected;
                 }
 
                 if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).Result)
                 {
-                    result = ValidationResult.PROBLEMS_DETECTED;
+                    result = ValidationResult.ProblemsDetected;
                 }
 
                 if (market.outcome == null || !market.outcome.Any())
@@ -513,7 +513,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             if (outcome.activeSpecified && (outcome.active < 0 || outcome.active > 1))
             {
                 LogWarning(message, $"markets[{market.id}].outcomes[{outcome.id}].active", outcome.active);
-                currentResult = ValidationResult.PROBLEMS_DETECTED;
+                currentResult = ValidationResult.ProblemsDetected;
             }
 
             if (outcome.teamSpecified)
@@ -521,13 +521,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 if (message.EventURN.TypeGroup != ResourceTypeGroup.MATCH)
                 {
                     LogWarning(message, $"Player outcome=[marketId={market.id}, outcomeId={outcome.id}] cannot be mapped to IPlayerOutcomeOdds because associated event[id={message.EventURN}] is not an match", outcome.team);
-                    currentResult = ValidationResult.PROBLEMS_DETECTED;
+                    currentResult = ValidationResult.ProblemsDetected;
                 }
 
                 if (outcome.team < 1 || outcome.team > 2)
                 {
                     LogWarning(message, $"Player outcome=[marketId={market.id}, outcomeId={outcome.id}] cannot be mapped to IPlayerOutcomeOdds because team attribute value {outcome.team} is out of range", outcome.team);
-                    currentResult = ValidationResult.PROBLEMS_DETECTED;
+                    currentResult = ValidationResult.ProblemsDetected;
                 }
             }
             return currentResult;

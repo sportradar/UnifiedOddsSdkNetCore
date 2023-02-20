@@ -17,7 +17,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public RaceDriverProfile(RaceDriverProfileCI raceDriverProfileCI)
         {
             if (raceDriverProfileCI == null)
+            {
                 throw new ArgumentNullException(nameof(raceDriverProfileCI));
+            }
 
             RaceDriverId = raceDriverProfileCI.RaceDriverId;
             RaceTeamId = raceDriverProfileCI.RaceTeamId;

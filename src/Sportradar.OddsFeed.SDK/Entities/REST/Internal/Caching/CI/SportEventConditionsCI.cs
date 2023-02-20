@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
@@ -97,7 +97,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 {
                     Referee.Merge(dto.Referee, culture);
                 }
-
             }
             if (dto.WeatherInfo != null)
             {

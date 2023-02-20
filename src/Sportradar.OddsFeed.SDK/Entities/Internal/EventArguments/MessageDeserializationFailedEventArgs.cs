@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments
         /// Initializes a new instance of the <see cref="MessageDeserializationFailedEventArgs"/> class
         /// </summary>
         /// <param name="rawData">the name of the message which could not be deserialized, or a null reference if message name could not be retrieved</param>
-        internal MessageDeserializationFailedEventArgs(IEnumerable<byte> rawData)
+        internal MessageDeserializationFailedEventArgs(ICollection<byte> rawData)
         {
             Guard.Argument(rawData, nameof(rawData)).NotNull().NotEmpty();
 

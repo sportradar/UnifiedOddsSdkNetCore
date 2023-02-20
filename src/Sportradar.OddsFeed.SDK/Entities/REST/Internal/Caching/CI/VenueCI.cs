@@ -3,10 +3,10 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
@@ -64,9 +64,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="VenueCI"/> class
         /// </summary>
         /// <param name="venue">A <see cref="VenueDTO"/> containing information about a venue</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the <c>dto</c></param>
         internal VenueCI(VenueDTO venue, CultureInfo culture)
-            :base(venue)
+            : base(venue)
         {
             Guard.Argument(venue, nameof(venue)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
@@ -82,7 +82,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="VenueCI"/> class
         /// </summary>
         /// <param name="exportable">A <see cref="ExportableVenueCI"/> containing information about a venue</param>
-        public VenueCI(ExportableVenueCI exportable) 
+        public VenueCI(ExportableVenueCI exportable)
             : base(exportable)
         {
             _names = new Dictionary<CultureInfo, string>(exportable.Name);
@@ -92,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Coordinates = exportable.Coordinates;
             CountryCode = exportable.CountryCode;
             State = exportable.State;
-            Course = exportable.Course?.Select(s=>new HoleCI(s));
+            Course = exportable.Course?.Select(s => new HoleCI(s));
         }
 
         /// <summary>
@@ -128,7 +128,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 ? _names[culture]
                 : null;
         }
-
 
         /// <summary>
         /// Gets the city name of the venue in the specified language
@@ -184,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 Coordinates = Coordinates,
                 CountryCode = CountryCode,
                 State = State,
-                Course = Course?.Select(s => new ExportableHoleCI {Number = s.Number, Par = s.Par})
+                Course = Course?.Select(s => new ExportableHoleCI { Number = s.Number, Par = s.Par })
             });
         }
     }

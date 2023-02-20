@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 Seasons = item.seasons.Select(s => new SeasonDTO(s));
             }
 
-            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?) null;
+            GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;
         }
     }
 }

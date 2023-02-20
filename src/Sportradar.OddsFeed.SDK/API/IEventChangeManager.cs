@@ -86,6 +86,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// Stops scheduled job for fetching fixture and result changes
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
         void Stop();
     }
 }

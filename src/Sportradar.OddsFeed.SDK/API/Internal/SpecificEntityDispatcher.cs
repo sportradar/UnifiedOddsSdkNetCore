@@ -16,7 +16,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     /// <seealso cref="EntityDispatcher{T}" />
     internal class SpecificEntityDispatcher<T> : EntityDispatcher<T>, ISpecificEntityDispatcher<T>, ISpecificEntityDispatcherInternal where T : ISportEvent
     {
-
         /// <summary>
         /// Occurs after the current instance is closed
         /// </summary>
@@ -30,7 +29,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         internal SpecificEntityDispatcher(IFeedMessageMapper messageMapper, IEnumerable<CultureInfo> defaultCultures)
             : base(messageMapper, defaultCultures)
         {
-
         }
 
         /// <summary>

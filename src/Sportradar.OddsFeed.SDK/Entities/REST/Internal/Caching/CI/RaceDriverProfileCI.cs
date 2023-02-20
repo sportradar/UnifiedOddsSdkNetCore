@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -33,7 +33,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public RaceDriverProfileCI(ExportableRaceDriverProfileCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
+
             RaceDriverId = exportable.RaceDriverId != null ? URN.Parse(exportable.RaceDriverId) : null;
             RaceTeamId = exportable.RaceTeamId != null ? URN.Parse(exportable.RaceTeamId) : null;
             Car = exportable.Car != null ? new CarCI(exportable.Car) : null;

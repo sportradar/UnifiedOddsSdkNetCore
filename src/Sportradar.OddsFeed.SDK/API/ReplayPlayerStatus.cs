@@ -26,6 +26,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// The setting up
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         Setting_up = 3
     }
 }

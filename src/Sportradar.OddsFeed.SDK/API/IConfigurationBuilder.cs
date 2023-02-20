@@ -185,7 +185,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// </remarks>
     public interface IConfigurationBuilder : IRecoveryConfigurationBuilder<IConfigurationBuilder>
     {
-
     }
 
     /// <summary>
@@ -193,7 +192,6 @@ namespace Sportradar.OddsFeed.SDK.API
     /// </summary>
     public interface IReplayConfigurationBuilder : IConfigurationBuilderBase<IReplayConfigurationBuilder>
     {
-
     }
 
     /// <summary>

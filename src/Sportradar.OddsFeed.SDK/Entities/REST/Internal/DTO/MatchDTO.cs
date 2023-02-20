@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -97,45 +97,45 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <remarks>Not all properties are filled via fixture (i.e.Venue, Conditions,..)</remarks>
         internal MatchDTO(fixture fixture)
             : this(new matchSummaryEndpoint
-                            {
-                                sport_event = new sportEvent
-                                {
-                                    id = fixture.id,
-                                    name = fixture.name,
-                                    type = fixture.type,
-                                    scheduledSpecified = fixture.scheduledSpecified,
-                                    scheduled = fixture.scheduled,
-                                    scheduled_endSpecified = fixture.scheduled_endSpecified,
-                                    scheduled_end = fixture.scheduled_end,
-                                    liveodds = fixture.liveodds,
-                                    season = fixture.season,
-                                    tournament = fixture.tournament,
-                                    tournament_round = fixture.tournament_round,
-                                    competitors = fixture.competitors?.Select(t => new teamCompetitor
-                                                                                {
-                                                                                    abbreviation = t.abbreviation,
-                                                                                    country = t.country,
-                                                                                    id = t.id,
-                                                                                    name = t.name,
-                                                                                    qualifier = t.qualifier,
-                                                                                    @virtual = t.@virtual,
-                                                                                    virtualSpecified = t.virtualSpecified,
-                                                                                    country_code = t.country_code,
-                                                                                    reference_ids = t.reference_ids,
-                                                                                    division = t.division,
-                                                                                    divisionSpecified = t.divisionSpecified,
-                                                                                    state = t.state
-                                                                                }).ToArray(),
-                                    parent = fixture.parent,
-                                    races = fixture.races,
-                                    status = fixture.status,
-                                    replaced_by = fixture.replaced_by,
-                                    next_live_time = fixture.next_live_time,
-                                    sport_event_conditions = fixture.sport_event_conditions,
-                                    start_time_tbdSpecified = fixture.start_time_tbdSpecified,
-                                    start_time_tbd = fixture.start_time_tbd
-                                }
-                            })
+            {
+                sport_event = new sportEvent
+                {
+                    id = fixture.id,
+                    name = fixture.name,
+                    type = fixture.type,
+                    scheduledSpecified = fixture.scheduledSpecified,
+                    scheduled = fixture.scheduled,
+                    scheduled_endSpecified = fixture.scheduled_endSpecified,
+                    scheduled_end = fixture.scheduled_end,
+                    liveodds = fixture.liveodds,
+                    season = fixture.season,
+                    tournament = fixture.tournament,
+                    tournament_round = fixture.tournament_round,
+                    competitors = fixture.competitors?.Select(t => new teamCompetitor
+                    {
+                        abbreviation = t.abbreviation,
+                        country = t.country,
+                        id = t.id,
+                        name = t.name,
+                        qualifier = t.qualifier,
+                        @virtual = t.@virtual,
+                        virtualSpecified = t.virtualSpecified,
+                        country_code = t.country_code,
+                        reference_ids = t.reference_ids,
+                        division = t.division,
+                        divisionSpecified = t.divisionSpecified,
+                        state = t.state
+                    }).ToArray(),
+                    parent = fixture.parent,
+                    races = fixture.races,
+                    status = fixture.status,
+                    replaced_by = fixture.replaced_by,
+                    next_live_time = fixture.next_live_time,
+                    sport_event_conditions = fixture.sport_event_conditions,
+                    start_time_tbdSpecified = fixture.start_time_tbdSpecified,
+                    start_time_tbd = fixture.start_time_tbd
+                }
+            })
         {
             Venue = fixture.venue == null
                 ? null

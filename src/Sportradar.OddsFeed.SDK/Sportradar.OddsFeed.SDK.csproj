@@ -1,62 +1,81 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <PackageId>Sportradar.OddsFeed.SDKCore</PackageId>
-    <Product>Sportradar.OddsFeed.SDKCore</Product>
-    <Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Standard 2.1)</Description>
-    <Copyright>Copyright © Sportradar AG 2020</Copyright>
-    <Authors>Sportradar AG</Authors>
-    <Company>Sportradar AG</Company>
-    <RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
-    <PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
-    <PackageProjectUrl>http://sdk.sportradar.com</PackageProjectUrl>
-    <AssemblyVersion>1.28.0.0</AssemblyVersion>
-    <FileVersion>1.28.0.0</FileVersion>
-    <Version>1.28.0</Version>
+	<TargetFramework>netstandard2.1</TargetFramework>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	<PackageId>Sportradar.OddsFeed.SDKCore</PackageId>
+	<Product>Sportradar.OddsFeed.SDKCore</Product>
+	<Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Standard 2.1)</Description>
+	<Copyright>Copyright © Sportradar AG 2022</Copyright>
+	<Authors>Sportradar AG</Authors>
+	<Company>Sportradar AG</Company>
+	<RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
+	<PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
+	<PackageProjectUrl>https://sdk.sportradar.com</PackageProjectUrl>
+	<AssemblyVersion>1.30.1.0</AssemblyVersion>
+	<FileVersion>1.30.1.0</FileVersion>
+	<Version>1.30.1</Version>
+	<UserSecretsId>27ef2334-e9fc-4f05-b88a-a33259c908c3</UserSecretsId>
+	<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	<EnableNETAnalyzers>True</EnableNETAnalyzers>
+	<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+	<PackageReadmeFile>Readme.md</PackageReadmeFile>
+	<PackageIcon>uf-ns.png</PackageIcon>
+	<Title>Sportradar.OddsFeed.SDKCore</Title>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>Sportradar.OddsFeed.SDK.xml</DocumentationFile>
+	<DocumentationFile>Sportradar.OddsFeed.SDK.xml</DocumentationFile>
+	<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
   </PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	</PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="App.Metrics" Version="3.2.0" />
-    <PackageReference Include="App.Metrics.Abstractions" Version="3.2.0" />
-    <PackageReference Include="App.Metrics.Core" Version="3.2.0" />
-    <PackageReference Include="App.Metrics.Health.Core" Version="3.2.0" />
-    <PackageReference Include="Castle.Core" Version="4.4.0" />
-    <PackageReference Include="Dawn.Guard" Version="1.12.0" />
-    <PackageReference Include="Humanizer" Version="2.8.26" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
-    <PackageReference Include="System.Collections" Version="4.3.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-    <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
-    <PackageReference Include="System.Threading" Version="4.3.0" />
-    <PackageReference Include="Unity" Version="5.11.3" />
+	<PackageReference Include="App.Metrics" Version="3.2.0" />
+	<PackageReference Include="App.Metrics.Abstractions" Version="3.2.0" />
+	<PackageReference Include="App.Metrics.Core" Version="3.2.0" />
+	<PackageReference Include="App.Metrics.Health.Core" Version="3.2.0" />
+	<PackageReference Include="Castle.Core" Version="4.4.0" />
+	<PackageReference Include="Dawn.Guard" Version="1.12.0" />
+	<PackageReference Include="Humanizer" Version="2.8.26" />
+	<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
+	<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	<PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
+	<PackageReference Include="System.Collections" Version="4.3.0" />
+	<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+	<PackageReference Include="System.Runtime" Version="4.3.1" />
+	<PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
+	<PackageReference Include="System.Threading" Version="4.3.0" />
+	<PackageReference Include="Unity" Version="5.11.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="LICENSE">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="LICENSE.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Readme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="LICENSE.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+	<None Update="LICENSE">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="LICENSE.txt">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="Readme.md">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+	<None Update="uf-ns.png">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+	<None Include="LICENSE.txt">
+	  <Pack>True</Pack>
+	  <PackagePath></PackagePath>
+	</None>
   </ItemGroup>
 
 </Project>

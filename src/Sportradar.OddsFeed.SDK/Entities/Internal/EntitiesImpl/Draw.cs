@@ -37,12 +37,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="id">A <see cref="URN"/> uniquely identifying the sport event associated with the current instance</param>
         /// <param name="sportId">A <see cref="URN"/> uniquely identifying the sport associated with the current instance</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> instance containing <see cref="SportEventCI"/></param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the initialized instance will handle potential exceptions</param>
         public Draw(URN id,
                     URN sportId,
                     ISportEventCache sportEventCache,
-                    IEnumerable<CultureInfo> cultures,
+                    IReadOnlyCollection<CultureInfo> cultures,
                     ExceptionHandlingStrategy exceptionStrategy)
             : base(id, sportId, ExecutionLogPrivate, sportEventCache, cultures, exceptionStrategy)
         {
@@ -94,7 +94,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <exception cref="NotImplementedException"></exception>
         public async Task<IEnumerable<IDrawResult>> GetResultsAsync()
         {
-            var drawCI = (DrawCI) SportEventCache.GetEventCacheItem(Id);
+            var drawCI = (DrawCI)SportEventCache.GetEventCacheItem(Id);
             if (drawCI == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No draw cache item for id={Id}.");

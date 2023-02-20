@@ -117,6 +117,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the competitor results
         /// </summary>
         /// <value>The results</value>
-        IEnumerable<ICompetitorResult> CompetitorResults => null;
+        IEnumerable<ICompetitorResult> CompetitorResults => new List<ICompetitorResult>();
     }
 }

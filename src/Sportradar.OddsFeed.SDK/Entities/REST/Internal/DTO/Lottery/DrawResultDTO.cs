@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
             Value = item.valueSpecified
                 ? item.value
-                : (int?) null;
+                : (int?)null;
             Name = item.name;
         }
     }

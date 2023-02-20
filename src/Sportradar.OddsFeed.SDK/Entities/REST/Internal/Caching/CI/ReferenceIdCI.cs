@@ -91,8 +91,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 return;
             }
-            string val;
-            if (referenceIds.TryGetValue("betradar", out val))
+
+            if (referenceIds.TryGetValue("betradar", out var val))
             {
                 int.TryParse(val, out _betradarId);
             }

@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                             ISportEventCache sportEventCache,
                             ISportEventStatusCache sportEventStatusCache,
                             ILocalizedNamedValueCache matchStatusCache,
-                            IEnumerable<CultureInfo> cultures,
+                            IReadOnlyCollection<CultureInfo> cultures,
                             ExceptionHandlingStrategy exceptionStrategy)
             : base(id, sportId, sportEntityFactory, sportEventCache, sportEventStatusCache, matchStatusCache, cultures, exceptionStrategy)
         {

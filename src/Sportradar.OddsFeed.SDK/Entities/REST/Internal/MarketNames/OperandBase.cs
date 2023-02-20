@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
@@ -25,8 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
             Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
 
-            string specifierValueString;
-            if (!specifiers.TryGetValue(specifierName, out specifierValueString))
+            if (!specifiers.TryGetValue(specifierName, out var specifierValueString))
             {
                 throw new InvalidOperationException($"Specifier with name {specifierName} does not exist");
             }
@@ -49,8 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(specifierName, nameof(specifierName)).NotNull().NotEmpty();
             Guard.Argument(specifiers, nameof(specifiers)).NotNull().NotEmpty();
 
-            string specifierValueString;
-            if (!specifiers.TryGetValue(specifierName, out specifierValueString))
+            if (!specifiers.TryGetValue(specifierName, out var specifierValueString))
             {
                 throw new InvalidOperationException($"Specifier with name {specifierName} does not exist");
             }

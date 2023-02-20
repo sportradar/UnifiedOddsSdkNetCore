@@ -31,6 +31,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns>A <see cref="Task{String}"/> containing the value of the operand as a <see cref="string"/></returns>
         /// <exception cref="NameExpressionException">Error occurred while evaluating value of the operand</exception>
         Task<string> GetStringValue();
-
     }
 }

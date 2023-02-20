@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -29,8 +29,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public int? CornerKicks { get; }
 
         public int? GreenCards { get; }
-        
+
         // from feed
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         internal TeamStatisticsDTO(string name, URN teamId, HomeAway? homeAway, int? yellowCards, int? redCards, int? yellowRedCards, int? cornerKicks, int? greenCards)
         {
             Name = name; // not available on the AMQP message
@@ -43,22 +44,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             GreenCards = greenCards;
             var valueExists = false;
             var c = 0;
-            if(yellowCards != null)
+            if (yellowCards != null)
             {
                 valueExists = true;
                 c += yellowCards.Value;
             }
-            if(redCards != null)
+            if (redCards != null)
             {
                 valueExists = true;
                 c += redCards.Value;
             }
-            if(yellowRedCards != null)
+            if (yellowRedCards != null)
             {
                 valueExists = true;
                 c += yellowRedCards.Value;
             }
-            if(greenCards != null)
+            if (greenCards != null)
             {
                 valueExists = true;
                 c += greenCards.Value;

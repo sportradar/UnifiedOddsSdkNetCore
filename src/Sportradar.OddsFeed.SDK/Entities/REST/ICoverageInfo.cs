@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using System.Collections.Generic;
+using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {

@@ -3,7 +3,6 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-
 using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -11,8 +10,8 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <summary>
     /// Defines a contract implemented by classes representing odds feed configuration / settings
     /// </summary>
-    public interface IOddsFeedConfiguration {
-
+    public interface IOddsFeedConfiguration
+    {
         /// <summary>
         /// Gets the access token used when accessing feed's REST interface
         /// </summary>

@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -70,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Asynchronously gets the cash out probabilities for the specified sport event
         /// </summary>
         /// <typeparam name="T">The type of the sport event</typeparam>
-        /// <param name="param">a <see cref="String"/> specifying which probabilities to get</param>
+        /// <param name="param">A parameter specifying which probabilities to get</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the returned data, or a null reference to use default languages</param>
         /// <returns>A <see cref="Task{T}" /> representing the asynchronous operation</returns>
         private async Task<ICashOutProbabilities<T>> GetProbabilitiesInternalAsync<T>(string param, CultureInfo culture = null) where T : ISportEvent
@@ -82,9 +82,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     ExecutionLog,
                     "Error occurred while fetching probabilities for " + param).ConfigureAwait(false);
 
+            var cultureResult = culture == null ? _defaultCultures : new[] { culture };
+
             return data == null
                 ? null
-                : _messageMapper.MapCashOutProbabilities<T>(data, culture == null ? _defaultCultures : new[] {culture}, null);
+                : _messageMapper.MapCashOutProbabilities<T>(data, cultureResult, null);
         }
 
         /// <summary>

@@ -3,8 +3,8 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <param name="record">A <see cref="team"/> containing information about a team</param>
         internal CompetitorDTO(team record)
-            :base(new player {id = record.id, name = record.name })
+            : base(new player { id = record.id, name = record.name })
         {
             Guard.Argument(record, nameof(record)).NotNull();
 

@@ -3,6 +3,7 @@
 */
 using System;
 using Dawn;
+using Microsoft.Extensions.Logging;
 using Timer = System.Threading.Timer;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
@@ -10,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// A timer used for invocation of period tasks
     /// </summary>
-    internal class SdkTimer : ITimer
+    internal sealed class SdkTimer : ITimer
     {
         /// <summary>
         /// Internally used <see cref="Timer"/> instance
@@ -18,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         private readonly Timer _timer;
 
         /// <summary>
-        /// Value specifying the time between tha start of the timer and the first firing of the <see cref="Elapsed"/> event
+        /// Value specifying the time between the start of the timer and the first firing of the <see cref="Elapsed"/> event
         /// </summary>
         private TimeSpan _dueTime;
 
@@ -54,11 +55,22 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         }
 
         /// <summary>
-        /// Disposes un-managed resources associated with the current instance
+        /// Disposes unmanaged resources associated with the current instance
         /// </summary>
         ~SdkTimer()
         {
             Dispose(false);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="SdkTimer"/> class.
+        /// </summary>
+        /// <param name="dueTime">A <see cref="TimeSpan"/> specifying a time period before the <see cref="Elapsed"/> event will be raised for the first time.</param>
+        /// <param name="period">A <see cref="TimeSpan"/> specifying a period between subsequent raises of the <see cref="Elapsed"/> event.</param>
+        /// <returns>New timer instance</returns>
+        public static SdkTimer Create(TimeSpan dueTime, TimeSpan period)
+        {
+            return new SdkTimer(dueTime, period);
         }
 
         /// <summary>
@@ -67,15 +79,22 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="state">A <see cref="object"/> instance passed to the timer when it was constructed</param>
         private void OnTick(object state)
         {
-            var handler = Elapsed;
-            handler?.Invoke(this, new EventArgs());
+            try
+            {
+                var handler = Elapsed;
+                handler?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception e)
+            {
+                SdkLoggerFactory.GetLoggerForExecution(typeof(SdkTimer)).LogError(e, "Error invoking SdkTimer.OnTick");
+            }
         }
 
         /// <summary>
         /// Disposes resources associated with the current instance
         /// </summary>
         /// <param name="disposing">Value indicating whether the managed resources should also be disposed</param>
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (_isDisposed)
             {
@@ -102,7 +121,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         /// <summary>
         /// Starts (or restarts if already running) the current instance so it will start raising the <see cref="Elapsed"/> event.
-        /// Note that the <code>dueTime</code> and <code>period</code> arguments will override those passed to the
+        /// Note that the <c>dueTime</c> and <c>period</c> arguments will override those passed to the
         /// constructor and any subsequent calls to <see cref="Start()"/> will use new values
         /// </summary>
         /// <param name="dueTime">A <see cref="TimeSpan"/> specifying a time period before the <see cref="Elapsed"/> event will be raised for the first time.</param>

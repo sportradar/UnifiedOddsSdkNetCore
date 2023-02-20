@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(weatherInfo, nameof(weatherInfo)).NotNull();
 
             TemperatureCelsius = weatherInfo.temperature_celsiusSpecified
-                ? (int?) weatherInfo.temperature_celsius
+                ? (int?)weatherInfo.temperature_celsius
                 : null;
             Wind = weatherInfo.wind;
             WindAdvantage = weatherInfo.wind_advantage;

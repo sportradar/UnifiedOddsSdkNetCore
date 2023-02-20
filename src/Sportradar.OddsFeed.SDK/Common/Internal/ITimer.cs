@@ -8,7 +8,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// Defines a contract implemented by classes used to execute period tasks
     /// </summary>
-    internal interface ITimer : IDisposable {
+    internal interface ITimer : IDisposable
+    {
         /// <summary>
         /// Raised when the timer elapses
         /// </summary>
@@ -23,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         /// <summary>
         /// Starts (or restarts, if already running) the current instance so it will start raising the <see cref="Elapsed"/> event.
-        /// Note that the <code>dueTime</code> and <code>period</code> arguments will override those passed to the
+        /// Note that the <c>dueTime</c> and <c>period</c> arguments will override those passed to the
         /// constructor and any subsequent calls to <see cref="Start()"/> will use the new values
         /// </summary>
         /// <param name="dueTime">A <see cref="TimeSpan"/> specifying a time period before the <see cref="Elapsed"/> event will be raised for the first time.</param>
@@ -32,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         /// <summary>
         /// Starts (or restarts, if already running) the current instance so the <see cref="Elapsed"/> event will be raised once.
-        /// Note the <code>dueTime</code> will not override values used by the <see cref="Start()"/> method
+        /// Note the <c>dueTime</c> will not override values used by the <see cref="Start()"/> method
         /// </summary>
         /// <param name="dueTime">The due time.</param>
         void FireOnce(TimeSpan dueTime);

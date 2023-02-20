@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -38,11 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         {
             Guard.Argument(item, nameof(item)).NotNull();
 
-            if (Nationality == null)
-            {
-                Nationality = new Dictionary<CultureInfo, string>();
-            }
-
+            Nationality = new Dictionary<CultureInfo, string>();
             Nationality[culture] = item.Nationality;
             CountryCode = item.CountryCode;
         }
@@ -51,7 +47,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="ManagerCI"/> class
         /// </summary>
         /// <param name="exportable">The <see cref="ExportableManagerCI"/> with manager info</param>
-        public ManagerCI(ExportableManagerCI exportable) 
+        public ManagerCI(ExportableManagerCI exportable)
             : base(URN.Parse(exportable.Id), new Dictionary<CultureInfo, string>(exportable.Name))
         {
             Nationality = exportable.Nationality != null

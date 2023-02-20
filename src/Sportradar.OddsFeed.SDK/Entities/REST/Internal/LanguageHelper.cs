@@ -2,9 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Castle.Core.Internal;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -30,6 +31,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             var missingCultures = wantedCultureInfos.Where(c => !alreadyUsedCultureInfos.Contains(c)).ToList();
 
             return missingCultures.Distinct();
+        }
+
+        /// <summary>
+        /// Get string representation of list of cultures
+        /// </summary>
+        /// <param name="cultures">The list of cultures</param>
+        /// <returns>A string representation of list of cultures</returns>
+        public static string GetCultureList(IReadOnlyCollection<CultureInfo> cultures)
+        {
+            return cultures.IsNullOrEmpty() ? string.Empty : string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
+        }
+
+        /// <summary>
+        /// Get string representation of list of cultures
+        /// </summary>
+        /// <param name="cultures">The list of cultures</param>
+        /// <returns>A string representation of list of cultures</returns>
+        public static string GetCultureList(ICollection<CultureInfo> cultures)
+        {
+            return cultures.IsNullOrEmpty() ? string.Empty : string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
         }
     }
 }

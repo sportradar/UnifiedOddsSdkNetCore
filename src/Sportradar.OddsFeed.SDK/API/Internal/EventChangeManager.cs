@@ -51,17 +51,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private bool _isDispatching;
         private readonly ConcurrentDictionary<EventChangeEventArgs, bool> _eventUpdates; // boolean value indicating if this is fixture update
 
-        public EventChangeManager(TimeSpan fixtureChangeInterval, 
+        public EventChangeManager(TimeSpan fixtureChangeInterval,
                                   TimeSpan resultChangeInterval,
-                                  ISportDataProvider sportDataProvider, 
+                                  ISportDataProvider sportDataProvider,
                                   ISportEventCache sportEventCache,
                                   IOddsFeedConfiguration config,
                                   IMetricsRoot metricsRoot)
-        {   
+        {
             Guard.Argument(config, nameof(config)).NotNull();
             Guard.Argument(sportDataProvider, nameof(sportDataProvider)).NotNull();
             Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
-            
+
             _config = config;
             _sportDataProvider = (SportDataProvider)sportDataProvider;
             _sportEventCache = sportEventCache;
@@ -85,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         public void SetFixtureChangeInterval(TimeSpan fixtureChangeInterval)
         {
-            if(fixtureChangeInterval < TimeSpan.FromMinutes(1) || fixtureChangeInterval > TimeSpan.FromHours(12))
+            if (fixtureChangeInterval < TimeSpan.FromMinutes(1) || fixtureChangeInterval > TimeSpan.FromHours(12))
             {
                 throw new ArgumentException("Interval must be between 1 minute and 12 hours", nameof(fixtureChangeInterval));
             }
@@ -100,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         public void SetResultChangeInterval(TimeSpan resultChangeInterval)
         {
-            if(resultChangeInterval < TimeSpan.FromMinutes(1) || resultChangeInterval > TimeSpan.FromHours(12))
+            if (resultChangeInterval < TimeSpan.FromMinutes(1) || resultChangeInterval > TimeSpan.FromHours(12))
             {
                 throw new ArgumentException("Interval must be between 1 minute and 12 hours", nameof(resultChangeInterval));
             }
@@ -119,7 +119,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 throw new ArgumentException("Manager must first be stopped.", nameof(fixtureChangeTimestamp));
             }
-            if(fixtureChangeTimestamp < DateTime.Now.AddDays(-1) || fixtureChangeTimestamp > DateTime.Now)
+            if (fixtureChangeTimestamp < DateTime.Now.AddDays(-1) || fixtureChangeTimestamp > DateTime.Now)
             {
                 throw new ArgumentException("Timestamp must be in the last 24 hours.", nameof(fixtureChangeTimestamp));
             }
@@ -134,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 throw new ArgumentException("Manager must first be stopped.", nameof(resultChangeTimestamp));
             }
-            if(resultChangeTimestamp < DateTime.Now.AddDays(-1) || resultChangeTimestamp > DateTime.Now)
+            if (resultChangeTimestamp < DateTime.Now.AddDays(-1) || resultChangeTimestamp > DateTime.Now)
             {
                 throw new ArgumentException("Timestamp must be in the last 24 hours.", nameof(resultChangeTimestamp));
             }
@@ -185,11 +185,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             lock (_lockFixture)
             {
-                if(!IsRunning)
+                if (!IsRunning)
                 {
                     return;
                 }
-                var timerOptionsFixtureChangesAutoFetch = new TimerOptions {Context = MetricsContext, Name = "EventCacheManager-FixtureChanges", MeasurementUnit = Unit.Requests};
+                var timerOptionsFixtureChangesAutoFetch = new TimerOptions { Context = MetricsContext, Name = "EventCacheManager-FixtureChanges", MeasurementUnit = Unit.Requests };
                 using var t = _metricsRoot.Measure.Timer.Time(timerOptionsFixtureChangesAutoFetch);
                 try
                 {
@@ -219,7 +219,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         {
                             if (fixtureChange.UpdateTime > eventUpdate.Key.UpdateTime)
                             {
-                                _eventUpdates.TryRemove(eventUpdate.Key, out bool _);
+                                _eventUpdates.TryRemove(eventUpdate.Key, out _);
                             }
                             else
                             {
@@ -233,9 +233,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         _eventUpdates.TryAdd(new EventChangeEventArgs(fixtureChange.SportEventId, fixtureChange.UpdateTime, sportEvent), true);
                         UpdateLastFixtureChange(fixtureChange.UpdateTime);
                     }
-                    
 
-                    LogExec.LogInformation($"Invoking GetFixtureChanges took {t.Elapsed.TotalSeconds}s.");
+                    LogExec.LogInformation($"Invoking GetFixtureChanges took {t.Elapsed.TotalMilliseconds} ms.");
                 }
                 catch (Exception ex)
                 {
@@ -262,11 +261,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             lock (_lockResult)
             {
-                if(!IsRunning)
+                if (!IsRunning)
                 {
                     return;
                 }
-                var timerOptionsResultChangesAutoFetch = new TimerOptions {Context = MetricsContext, Name = "EventCacheManager-ResultChanges", MeasurementUnit = Unit.Requests};
+                var timerOptionsResultChangesAutoFetch = new TimerOptions { Context = MetricsContext, Name = "EventCacheManager-ResultChanges", MeasurementUnit = Unit.Requests };
                 using var t = _metricsRoot.Measure.Timer.Time(timerOptionsResultChangesAutoFetch);
                 try
                 {
@@ -281,21 +280,21 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         LogExec.LogInformation($"Invoking GetResultChanges. After={LastResultChange}");
                         changes = _sportDataProvider.GetResultChangesAsync(LastResultChange, null, _config.DefaultLocale).Result;
                     }
-                    
+
                     changes = changes.OrderBy(o => o.UpdateTime);
-                    
+
                     foreach (var resultChange in changes)
                     {
-                        if(!IsRunning)
+                        if (!IsRunning)
                         {
                             break;
                         }
                         var eventUpdate = _eventUpdates.FirstOrDefault(a => a.Key.SportEventId.Equals(resultChange.SportEventId));
                         if (eventUpdate.Key != null)
                         {
-                            if(resultChange.UpdateTime > eventUpdate.Key.UpdateTime)
+                            if (resultChange.UpdateTime > eventUpdate.Key.UpdateTime)
                             {
-                                _eventUpdates.TryRemove(eventUpdate.Key, out bool _);
+                                _eventUpdates.TryRemove(eventUpdate.Key, out _);
                             }
                             else
                             {
@@ -308,7 +307,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         _eventUpdates.TryAdd(new EventChangeEventArgs(resultChange.SportEventId, resultChange.UpdateTime, sportEvent), false);
                         UpdateLastResultChange(resultChange.UpdateTime);
                     }
-                    LogExec.LogInformation($"Invoking GetResultChanges took {t.Elapsed.TotalSeconds}s.");
+                    LogExec.LogInformation($"Invoking GetResultChanges took {t.Elapsed.TotalMilliseconds} ms.");
                 }
                 catch (Exception ex)
                 {
@@ -337,7 +336,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         private void DispatchUpdateChangeMessages()
         {
-            if(_isDispatching)
+            if (_isDispatching)
             {
                 return;
             }
@@ -358,7 +357,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                         ResultChange?.Invoke(this, eventUpdate.Key);
                     }
 
-                    _eventUpdates.TryRemove(eventUpdate.Key, out bool _);
+                    _eventUpdates.TryRemove(eventUpdate.Key, out _);
                 }
                 catch (Exception ex)
                 {

@@ -23,10 +23,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
     internal class SportCI : CacheItem, IExportableCI
     {
         /// <summary>
-        /// Gets <see cref="IEnumerable{URN}"/> specifying the id's of child categories
+        /// Gets <see cref="ICollection{URN}"/> specifying the id's of child categories
         /// </summary>
         /// 
-        public IEnumerable<URN> CategoryIds
+        public ICollection<URN> CategoryIds
         {
             get;
             private set;
@@ -56,9 +56,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         public SportCI(SportDTO data, IDataRouterManager dataRouterManager, CultureInfo culture)
             : base(data.Id, data.Name, culture)
         {
+            CategoryIds = new Collection<URN>();
             if (data.Categories != null)
             {
-                CategoryIds = new ReadOnlyCollection<URN>(data.Categories.Select(i => i.Id).ToList());
+                CategoryIds = new Collection<URN>(data.Categories.Select(i => i.Id).ToList());
             }
 
             _dataRouterManager = dataRouterManager;
@@ -71,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         public SportCI(ExportableSportCI exportable)
             : base(exportable)
         {
-            CategoryIds = exportable.CategoryIds != null ? new ReadOnlyCollection<URN>(exportable.CategoryIds.Select(URN.Parse).ToList()) : null;
+            CategoryIds = exportable.CategoryIds != null ? new Collection<URN>(exportable.CategoryIds.Select(URN.Parse).ToList()) : new Collection<URN>();
             _loadedCategories = exportable.LoadedCategories != null ? new List<CultureInfo>(exportable.LoadedCategories) : new List<CultureInfo>();
         }
 
@@ -86,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
             var sportCacheItem = item as SportCI;
             if (sportCacheItem?.CategoryIds != null && sportCacheItem.CategoryIds.Any())
             {
-                CategoryIds = new ReadOnlyCollection<URN>(sportCacheItem.CategoryIds.Concat(CategoryIds ?? new List<URN>()).Distinct().ToList());
+                CategoryIds = new Collection<URN>(sportCacheItem.CategoryIds.Concat(CategoryIds ?? new List<URN>()).Distinct().ToList());
             }
 
             if (sportCacheItem?._loadedCategories?.Any() ?? false)

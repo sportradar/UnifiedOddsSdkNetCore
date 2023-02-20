@@ -63,9 +63,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         internal CustomConfigurationBuilder(string accessToken, IConfigurationSectionProvider sectionProvider)
             : base(accessToken, sectionProvider)
         {
-            //_messagingHost = SdkInfo.IntegrationHost;
-            //_messagingPort = SdkInfo.DefaultHostPort;
-            //_apiHost = SdkInfo.IntegrationApiHost;
             _useMessagingSsl = true;
             _useApiSsl = true;
         }
@@ -74,7 +71,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// Check the properties values before build the configuration and throws an exception is invalid values are found
         /// </summary>
         /// <exception cref="InvalidOperationException">The value of one or more properties is not correct</exception>
-
         protected override void PreBuildCheck()
         {
             base.PreBuildCheck();
@@ -83,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             {
                 throw new InvalidOperationException("MessagingHost is missing");
             }
-            if (_messagingHost.ToLower().StartsWith("http://") || _messagingHost.ToLower().StartsWith("https://"))
+            if (_messagingHost.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || _messagingHost.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException($"messagingHost must not contain protocol specification. Value={_messagingHost}");
             }
@@ -91,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             {
                 throw new InvalidOperationException("ApiHost is missing");
             }
-            if (_apiHost.ToLower().StartsWith("http://") || _apiHost.ToLower().StartsWith("https://"))
+            if (_apiHost.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || _apiHost.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException($"apiHost must not contain protocol specification. Value={_apiHost}");
             }
@@ -262,7 +258,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
                                                    ExceptionHandlingStrategy,
                                                    AdjustAfterAge ?? false,
                                                    HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout,
-                                                   RecoveryHttpClientTimeout ?? HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout, 
+                                                   RecoveryHttpClientTimeout ?? HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout,
                                                    Section);
 
             return config;

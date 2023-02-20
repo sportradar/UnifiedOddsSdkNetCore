@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -41,7 +41,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         internal CoverageInfoCI(ExportableCoverageInfoCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             Level = exportable.Level;
             IsLive = exportable.IsLive;
@@ -55,7 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
         public Task<ExportableCoverageInfoCI> ExportAsync()
         {
-            return Task.FromResult(new ExportableCoverageInfoCI { 
+            return Task.FromResult(new ExportableCoverageInfoCI
+            {
                 Level = Level,
                 IsLive = IsLive,
                 Includes = Includes,

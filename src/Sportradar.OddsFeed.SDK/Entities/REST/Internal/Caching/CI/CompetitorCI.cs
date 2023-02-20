@@ -1,6 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -10,11 +16,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
@@ -48,22 +49,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         private string _gender;
         private string _ageGroup;
         private RaceDriverProfileCI _raceDriverProfile;
-        private DateTime _lastTimeCompetitorProfileFetched;
-        private List<CultureInfo> _cultureCompetitorProfileFetched;
         private string _state;
         private URN _sportId;
         private URN _categoryId;
         private string _shortName;
 
         /// <summary>
-        /// Last time (if any) competitor profile was fetched
-        /// </summary>
-        public DateTime LastTimeCompetitorProfileFetched => _lastTimeCompetitorProfileFetched;
-
-        /// <summary>
         /// The list of CultureInfo used to fetch competitor profiles
         /// </summary>
-        public List<CultureInfo> CultureCompetitorProfileFetched => _cultureCompetitorProfileFetched;
+        public IDictionary<CultureInfo, DateTime> CultureCompetitorProfileFetched { get; private set; }
 
         /// <summary>
         /// Gets the name of the competitor in the specified language
@@ -323,20 +317,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <value>The root source</value>
         public string RootSource { get; }
 
-        /// <summary>
-        /// Gets the <see cref="IList{T}"/> specifying the languages for which the current instance has translations
-        /// </summary>
-        /// <value>The fetched cultures</value>
-        private IList<CultureInfo> _fetchedCultures;
         private readonly IDataRouterManager _dataRouterManager;
         private readonly object _lock = new object();
+        private readonly object _lockAdd = new object();
         private CultureInfo _primaryCulture;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompetitorCI"/> class
         /// </summary>
         /// <param name="competitor">A <see cref="CompetitorDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch <see cref="CompetitorDTO"/></param>
         internal CompetitorCI(CompetitorDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(competitor)
@@ -344,8 +334,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(competitor, nameof(competitor)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
+            CultureCompetitorProfileFetched = new Dictionary<CultureInfo, DateTime>();
 
             _dataRouterManager = dataRouterManager;
 
@@ -354,8 +344,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
-            _lastTimeCompetitorProfileFetched = DateTime.MinValue;
-            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             RootSource = "CompetitorDTO";
             Merge(competitor, culture);
         }
@@ -364,7 +352,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="CompetitorCI"/> class
         /// </summary>
         /// <param name="competitor">A <see cref="CompetitorProfileDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch <see cref="CompetitorProfileDTO"/></param>
         internal CompetitorCI(CompetitorProfileDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager = null)
             : base(competitor.Competitor)
@@ -372,8 +360,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(competitor, nameof(competitor)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
+            CultureCompetitorProfileFetched = new Dictionary<CultureInfo, DateTime>();
 
             _dataRouterManager = dataRouterManager;
 
@@ -382,8 +370,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
-            _lastTimeCompetitorProfileFetched = DateTime.Now;
-            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             RootSource = "CompetitorProfileDTO";
             Merge(competitor, culture);
         }
@@ -392,7 +378,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="CompetitorCI"/> class
         /// </summary>
         /// <param name="competitor">A <see cref="SimpleTeamProfileDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch <see cref="SimpleTeamProfileDTO"/></param>
         internal CompetitorCI(SimpleTeamProfileDTO competitor, CultureInfo culture, IDataRouterManager dataRouterManager = null)
             : base(competitor.Competitor)
@@ -400,8 +386,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(competitor, nameof(competitor)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
+            CultureCompetitorProfileFetched = new Dictionary<CultureInfo, DateTime>();
 
             _dataRouterManager = dataRouterManager;
 
@@ -410,8 +396,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
-            _lastTimeCompetitorProfileFetched = DateTime.Now;
-            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             RootSource = "SimpleTeamProfileDTO";
             Merge(competitor, culture);
         }
@@ -420,7 +404,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="CompetitorCI"/> class
         /// </summary>
         /// <param name="playerCompetitor">A <see cref="PlayerCompetitorDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch <see cref="CompetitorDTO"/></param>
         internal CompetitorCI(PlayerCompetitorDTO playerCompetitor, CultureInfo culture, IDataRouterManager dataRouterManager)
             : base(playerCompetitor)
@@ -429,8 +413,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Guard.Argument(culture, nameof(culture)).NotNull();
             Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
 
-            _fetchedCultures = new List<CultureInfo>();
             _primaryCulture = culture;
+            CultureCompetitorProfileFetched = new Dictionary<CultureInfo, DateTime>();
 
             _dataRouterManager = dataRouterManager;
 
@@ -439,8 +423,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<URN>();
             _jerseys = new List<JerseyCI>();
-            _lastTimeCompetitorProfileFetched = DateTime.MinValue;
-            _cultureCompetitorProfileFetched = new List<CultureInfo>();
             RootSource = "PlayerCompetitorDTO";
             Merge(playerCompetitor, culture);
         }
@@ -465,13 +447,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _venue = originalCompetitorCI._venue;
             _gender = originalCompetitorCI._gender;
             _ageGroup = originalCompetitorCI._ageGroup;
-            _fetchedCultures = originalCompetitorCI._fetchedCultures;
-            _dataRouterManager = originalCompetitorCI._dataRouterManager;
-            _primaryCulture = originalCompetitorCI._primaryCulture;
             _raceDriverProfile = originalCompetitorCI._raceDriverProfile;
             _shortName = originalCompetitorCI._shortName;
-            _lastTimeCompetitorProfileFetched = originalCompetitorCI._lastTimeCompetitorProfileFetched;
-            _cultureCompetitorProfileFetched = originalCompetitorCI._cultureCompetitorProfileFetched;
+            _dataRouterManager = originalCompetitorCI._dataRouterManager;
+            _primaryCulture = originalCompetitorCI._primaryCulture;
+            CultureCompetitorProfileFetched = originalCompetitorCI.CultureCompetitorProfileFetched ?? new Dictionary<CultureInfo, DateTime>();
         }
 
         /// <summary>
@@ -491,49 +471,52 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Merges the information from the provided <see cref="CompetitorDTO"/> into the current instance
         /// </summary>
         /// <param name="competitor">A <see cref="CompetitorDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         internal void Merge(CompetitorDTO competitor, CultureInfo culture)
         {
             Guard.Argument(competitor, nameof(competitor)).NotNull();
 
-            _isVirtual = competitor.IsVirtual;
-            Names[culture] = competitor.Name;
-            _countryNames[culture] = competitor.CountryName;
-            _abbreviations[culture] = string.IsNullOrEmpty(competitor.Abbreviation)
-                ? SdkInfo.GetAbbreviationFromName(competitor.Name)
-                : competitor.Abbreviation;
-            _referenceId = UpdateReferenceIds(competitor.Id, competitor.ReferenceIds);
-            if (!string.IsNullOrEmpty(competitor.CountryCode))
+            lock (_lockAdd)
             {
-                _countryCode = competitor.CountryCode;
-            }
-            if (!string.IsNullOrEmpty(competitor.State))
-            {
-                _state = competitor.State;
-            }
-            if (competitor.Players != null && !competitor.Players.IsNullOrEmpty())
-            {
-                _associatedPlayerIds = competitor.Players.Select(s => s.Id).ToList();
-            }
-            if (!string.IsNullOrEmpty(competitor.Gender))
-            {
-                _gender = competitor.Gender;
-            }
-            if (!string.IsNullOrEmpty(competitor.AgeGroup))
-            {
-                _ageGroup = competitor.AgeGroup;
-            }
-            if (competitor.SportId != null)
-            {
-                _sportId = competitor.SportId;
-            }
-            if (competitor.CategoryId != null)
-            {
-                _categoryId = competitor.CategoryId;
-            }
-            if (!string.IsNullOrEmpty(competitor.ShortName))
-            {
-                _shortName = competitor.ShortName;
+                _isVirtual = competitor.IsVirtual;
+                Names[culture] = competitor.Name;
+                _countryNames[culture] = competitor.CountryName;
+                _abbreviations[culture] = string.IsNullOrEmpty(competitor.Abbreviation)
+                                              ? SdkInfo.GetAbbreviationFromName(competitor.Name)
+                                              : competitor.Abbreviation;
+                _referenceId = UpdateReferenceIds(competitor.Id, competitor.ReferenceIds);
+                if (!string.IsNullOrEmpty(competitor.CountryCode))
+                {
+                    _countryCode = competitor.CountryCode;
+                }
+                if (!string.IsNullOrEmpty(competitor.State))
+                {
+                    _state = competitor.State;
+                }
+                if (competitor.Players != null && !competitor.Players.IsNullOrEmpty())
+                {
+                    _associatedPlayerIds = competitor.Players.Select(s => s.Id).ToList();
+                }
+                if (!string.IsNullOrEmpty(competitor.Gender))
+                {
+                    _gender = competitor.Gender;
+                }
+                if (!string.IsNullOrEmpty(competitor.AgeGroup))
+                {
+                    _ageGroup = competitor.AgeGroup;
+                }
+                if (competitor.SportId != null)
+                {
+                    _sportId = competitor.SportId;
+                }
+                if (competitor.CategoryId != null)
+                {
+                    _categoryId = competitor.CategoryId;
+                }
+                if (!string.IsNullOrEmpty(competitor.ShortName))
+                {
+                    _shortName = competitor.ShortName;
+                }
             }
         }
 
@@ -541,136 +524,140 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Merges the information from the provided <see cref="CompetitorProfileDTO"/> into the current instance
         /// </summary>
         /// <param name="competitorProfile">A <see cref="CompetitorProfileDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         internal void Merge(CompetitorProfileDTO competitorProfile, CultureInfo culture)
         {
             Guard.Argument(competitorProfile, nameof(competitorProfile)).NotNull();
             Guard.Argument(competitorProfile.Competitor, nameof(competitorProfile.Competitor)).NotNull();
 
-            _isVirtual = competitorProfile.Competitor.IsVirtual;
-            Names[culture] = competitorProfile.Competitor.Name;
-            _countryNames[culture] = competitorProfile.Competitor.CountryName;
-            _abbreviations[culture] = string.IsNullOrEmpty(competitorProfile.Competitor.Abbreviation)
-                ? SdkInfo.GetAbbreviationFromName(competitorProfile.Competitor.Name)
-                : competitorProfile.Competitor.Abbreviation;
-            _referenceId = UpdateReferenceIds(competitorProfile.Competitor.Id, competitorProfile.Competitor.ReferenceIds);
-            if (!string.IsNullOrEmpty(competitorProfile.Competitor.CountryCode))
+            lock (_lockAdd)
             {
-                _countryCode = competitorProfile.Competitor.CountryCode;
-            }
-            if (!string.IsNullOrEmpty(competitorProfile.Competitor.State))
-            {
-                _state = competitorProfile.Competitor.State;
-            }
-            if (!competitorProfile.Players.IsNullOrEmpty())
-            {
-                _associatedPlayerIds = competitorProfile.Players.Select(s => s.Id).ToList();
-            }
-            if (!competitorProfile.Jerseys.IsNullOrEmpty())
-            {
-                _jerseys = competitorProfile.Jerseys.Select(s => new JerseyCI(s)).ToList();
-            }
-            if (competitorProfile.Manager != null)
-            {
-                if (_manager == null)
+                _isVirtual = competitorProfile.Competitor.IsVirtual;
+                Names[culture] = competitorProfile.Competitor.Name;
+                _countryNames[culture] = competitorProfile.Competitor.CountryName;
+                _abbreviations[culture] = string.IsNullOrEmpty(competitorProfile.Competitor.Abbreviation)
+                                              ? SdkInfo.GetAbbreviationFromName(competitorProfile.Competitor.Name)
+                                              : competitorProfile.Competitor.Abbreviation;
+                _referenceId = UpdateReferenceIds(competitorProfile.Competitor.Id, competitorProfile.Competitor.ReferenceIds);
+                if (!string.IsNullOrEmpty(competitorProfile.Competitor.CountryCode))
                 {
-                    _manager = new ManagerCI(competitorProfile.Manager, culture);
+                    _countryCode = competitorProfile.Competitor.CountryCode;
                 }
-                else
+                if (!string.IsNullOrEmpty(competitorProfile.Competitor.State))
                 {
-                    _manager.Merge(competitorProfile.Manager, culture);
+                    _state = competitorProfile.Competitor.State;
                 }
-            }
-            if (competitorProfile.Venue != null)
-            {
-                if (_venue == null)
+                if (!competitorProfile.Players.IsNullOrEmpty())
                 {
-                    _venue = new VenueCI(competitorProfile.Venue, culture);
+                    _associatedPlayerIds = competitorProfile.Players.Select(s => s.Id).ToList();
                 }
-                else
+                if (!competitorProfile.Jerseys.IsNullOrEmpty())
                 {
-                    _venue.Merge(competitorProfile.Venue, culture);
+                    _jerseys = competitorProfile.Jerseys.Select(s => new JerseyCI(s)).ToList();
                 }
+                if (competitorProfile.Manager != null)
+                {
+                    if (_manager == null)
+                    {
+                        _manager = new ManagerCI(competitorProfile.Manager, culture);
+                    }
+                    else
+                    {
+                        _manager.Merge(competitorProfile.Manager, culture);
+                    }
+                }
+
+                if (competitorProfile.Venue != null)
+                {
+                    if (_venue == null)
+                    {
+                        _venue = new VenueCI(competitorProfile.Venue, culture);
+                    }
+                    else
+                    {
+                        _venue.Merge(competitorProfile.Venue, culture);
+                    }
+                }
+                if (!string.IsNullOrEmpty(competitorProfile.Competitor.Gender))
+                {
+                    _gender = competitorProfile.Competitor.Gender;
+                }
+                if (!string.IsNullOrEmpty(competitorProfile.Competitor.AgeGroup))
+                {
+                    _ageGroup = competitorProfile.Competitor.AgeGroup;
+                }
+                if (competitorProfile.RaceDriverProfile != null)
+                {
+                    _raceDriverProfile = new RaceDriverProfileCI(competitorProfile.RaceDriverProfile);
+                }
+                if (competitorProfile.Competitor.SportId != null)
+                {
+                    _sportId = competitorProfile.Competitor.SportId;
+                }
+                if (competitorProfile.Competitor.CategoryId != null)
+                {
+                    _categoryId = competitorProfile.Competitor.CategoryId;
+                }
+                if (!string.IsNullOrEmpty(competitorProfile.Competitor.ShortName))
+                {
+                    _shortName = competitorProfile.Competitor.ShortName;
+                }
+                AddOrUpdateProfileFetchTime(culture);
             }
-            if (!string.IsNullOrEmpty(competitorProfile.Competitor.Gender))
-            {
-                _gender = competitorProfile.Competitor.Gender;
-            }
-            if (!string.IsNullOrEmpty(competitorProfile.Competitor.AgeGroup))
-            {
-                _ageGroup = competitorProfile.Competitor.AgeGroup;
-            }
-            if (competitorProfile.RaceDriverProfile != null)
-            {
-                _raceDriverProfile = new RaceDriverProfileCI(competitorProfile.RaceDriverProfile);
-            }
-            if (competitorProfile.Competitor.SportId != null)
-            {
-                _sportId = competitorProfile.Competitor.SportId;
-            }
-            if (competitorProfile.Competitor.CategoryId != null)
-            {
-                _categoryId = competitorProfile.Competitor.CategoryId;
-            }
-            if (!string.IsNullOrEmpty(competitorProfile.Competitor.ShortName))
-            {
-                _shortName = competitorProfile.Competitor.ShortName;
-            }
-            _lastTimeCompetitorProfileFetched = DateTime.Now;
-            _cultureCompetitorProfileFetched.Add(culture);
-            _fetchedCultures.Add(culture);
         }
 
         /// <summary>
         /// Merges the information from the provided <see cref="SimpleTeamProfileDTO"/> into the current instance
         /// </summary>
         /// <param name="simpleTeamProfile">A <see cref="SimpleTeamProfileDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         internal void Merge(SimpleTeamProfileDTO simpleTeamProfile, CultureInfo culture)
         {
             Guard.Argument(simpleTeamProfile, nameof(simpleTeamProfile)).NotNull();
             Guard.Argument(simpleTeamProfile.Competitor, nameof(simpleTeamProfile.Competitor)).NotNull();
 
-            _isVirtual = simpleTeamProfile.Competitor.IsVirtual;
-            Names[culture] = simpleTeamProfile.Competitor.Name;
-            _countryNames[culture] = simpleTeamProfile.Competitor.CountryName;
-            _abbreviations[culture] = string.IsNullOrEmpty(simpleTeamProfile.Competitor.Abbreviation)
-                ? SdkInfo.GetAbbreviationFromName(simpleTeamProfile.Competitor.Name)
-                : simpleTeamProfile.Competitor.Abbreviation;
-            _referenceId = UpdateReferenceIds(simpleTeamProfile.Competitor.Id, simpleTeamProfile.Competitor.ReferenceIds);
-            if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.CountryCode))
+            lock (_lockAdd)
             {
-                _countryCode = simpleTeamProfile.Competitor.CountryCode;
+                _isVirtual = simpleTeamProfile.Competitor.IsVirtual;
+                Names[culture] = simpleTeamProfile.Competitor.Name;
+                _countryNames[culture] = simpleTeamProfile.Competitor.CountryName;
+                _abbreviations[culture] = string.IsNullOrEmpty(simpleTeamProfile.Competitor.Abbreviation)
+                                              ? SdkInfo.GetAbbreviationFromName(simpleTeamProfile.Competitor.Name)
+                                              : simpleTeamProfile.Competitor.Abbreviation;
+                _referenceId = UpdateReferenceIds(simpleTeamProfile.Competitor.Id, simpleTeamProfile.Competitor.ReferenceIds);
+                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.CountryCode))
+                {
+                    _countryCode = simpleTeamProfile.Competitor.CountryCode;
+                }
+                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.State))
+                {
+                    _state = simpleTeamProfile.Competitor.State;
+                }
+                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.Gender))
+                {
+                    _gender = simpleTeamProfile.Competitor.Gender;
+                }
+                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.AgeGroup))
+                {
+                    _ageGroup = simpleTeamProfile.Competitor.AgeGroup;
+                }
+                if (!simpleTeamProfile.Competitor.Players.IsNullOrEmpty())
+                {
+                    _associatedPlayerIds = simpleTeamProfile.Competitor.Players.Select(s => s.Id).ToList();
+                }
+                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.ShortName))
+                {
+                    _shortName = simpleTeamProfile.Competitor.ShortName;
+                }
+                AddOrUpdateProfileFetchTime(culture);
             }
-            if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.State))
-            {
-                _state = simpleTeamProfile.Competitor.State;
-            }
-            if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.Gender))
-            {
-                _gender = simpleTeamProfile.Competitor.Gender;
-            }
-            if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.AgeGroup))
-            {
-                _ageGroup = simpleTeamProfile.Competitor.AgeGroup;
-            }
-            if (simpleTeamProfile.Competitor.Players != null && simpleTeamProfile.Competitor.Players.Any())
-            {
-                _lastTimeCompetitorProfileFetched = DateTime.Now;
-                _cultureCompetitorProfileFetched.Add(culture);
-            }
-            if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.ShortName))
-            {
-                _shortName = simpleTeamProfile.Competitor.ShortName;
-            }
-            _fetchedCultures.Add(culture);
         }
 
         /// <summary>
         /// Merges the information from the provided <see cref="CompetitorDTO"/> into the current instance
         /// </summary>
         /// <param name="playerCompetitor">A <see cref="PlayerCompetitorDTO"/> containing information about the competitor</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <code>dto</code></param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
         internal void Merge(PlayerCompetitorDTO playerCompetitor, CultureInfo culture)
         {
             Guard.Argument(playerCompetitor, nameof(playerCompetitor)).NotNull();
@@ -693,56 +680,54 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (!item.Names.IsNullOrEmpty())
+            lock (_lockAdd)
             {
-                foreach (var k in item.Names.Keys)
+                if (!item.Names.IsNullOrEmpty())
                 {
-                    Names[k] = item.Names[k];
+                    foreach (var k in item.Names.Keys)
+                    {
+                        Names[k] = item.Names[k];
+                    }
                 }
-            }
-
-            if (!item._countryNames.IsNullOrEmpty())
-            {
-                foreach (var k in item._countryNames.Keys)
+                if (!item._countryNames.IsNullOrEmpty())
                 {
-                    _countryNames[k] = item._countryNames[k];
+                    foreach (var k in item._countryNames.Keys)
+                    {
+                        _countryNames[k] = item._countryNames[k];
+                    }
                 }
-            }
-
-            if (!item._abbreviations.IsNullOrEmpty())
-            {
-                foreach (var k in item._abbreviations.Keys)
+                if (!item._abbreviations.IsNullOrEmpty())
                 {
-                    _abbreviations[k] = item._abbreviations[k];
+                    foreach (var k in item._abbreviations.Keys)
+                    {
+                        _abbreviations[k] = item._abbreviations[k];
+                    }
                 }
-            }
-
-            if (!item._associatedPlayerIds.IsNullOrEmpty())
-            {
-                _associatedPlayerIds = item._associatedPlayerIds.ToList();
-            }
-            _isVirtual = item.IsVirtual;
-            _referenceId = item._referenceId ?? _referenceId;
-            if (item._jerseys != null && !item._jerseys.IsNullOrEmpty())
-            {
-                _jerseys = item._jerseys.ToList();
-            }
-            _countryCode = item._countryCode ?? _countryCode;
-            _state = item._state ?? _state;
-            _manager = item._manager ?? _manager;
-            _venue = item._venue ?? _venue;
-            _gender = item._gender ?? _gender;
-            _ageGroup = item._ageGroup ?? _ageGroup;
-            _raceDriverProfile = item._raceDriverProfile ?? _raceDriverProfile;
-            _referenceId = item._referenceId ?? _referenceId;
-            _lastTimeCompetitorProfileFetched = item._lastTimeCompetitorProfileFetched;
-            _cultureCompetitorProfileFetched = item._cultureCompetitorProfileFetched?.ToList();
-            _fetchedCultures = item._fetchedCultures;
-            _sportId = item._sportId ?? _sportId;
-            _categoryId = item._categoryId ?? _categoryId;
-            if (!string.IsNullOrEmpty(item.ShortName))
-            {
-                _shortName = item.ShortName;
+                if (!item._associatedPlayerIds.IsNullOrEmpty())
+                {
+                    _associatedPlayerIds = item._associatedPlayerIds.ToList();
+                }
+                _isVirtual = item.IsVirtual;
+                _referenceId = item._referenceId ?? _referenceId;
+                if (item._jerseys != null && !item._jerseys.IsNullOrEmpty())
+                {
+                    _jerseys = item._jerseys.ToList();
+                }
+                _countryCode = item._countryCode ?? _countryCode;
+                _state = item._state ?? _state;
+                _manager = item._manager ?? _manager;
+                _venue = item._venue ?? _venue;
+                _gender = item._gender ?? _gender;
+                _ageGroup = item._ageGroup ?? _ageGroup;
+                _raceDriverProfile = item._raceDriverProfile ?? _raceDriverProfile;
+                _referenceId = item._referenceId ?? _referenceId;
+                _sportId = item._sportId ?? _sportId;
+                _categoryId = item._categoryId ?? _categoryId;
+                if (!string.IsNullOrEmpty(item.ShortName))
+                {
+                    _shortName = item.ShortName;
+                }
+                CultureCompetitorProfileFetched = item.CultureCompetitorProfileFetched.ToDictionary(pair => pair.Key, pair => pair.Value);
             }
         }
 
@@ -772,14 +757,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 
         private void FetchProfileIfNeeded(CultureInfo culture)
         {
-            if (_fetchedCultures.Contains(culture))
+            if (!IsEligibleForFetch(culture))
             {
                 return;
             }
 
             lock (_lock)
             {
-                if (!_fetchedCultures.Contains(culture) && _dataRouterManager != null)
+                if (IsEligibleForFetch(culture) && _dataRouterManager != null)
                 {
                     var task = Task.Run(async () => await _dataRouterManager.GetCompetitorAsync(Id, culture, null).ConfigureAwait(false));
                     task.Wait();
@@ -788,7 +773,49 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
-        /// Create exportable ci as an asynchronous operation
+        /// Check if culture is eligible for fetching (is not yet fetched)
+        /// </summary>
+        /// <param name="culture">Check for specified language</param>
+        /// <returns>Returns true if it should be fetched, otherwise false</returns>
+        public bool IsEligibleForFetch(CultureInfo culture)
+        {
+            return !CultureCompetitorProfileFetched.ContainsKey(culture);
+        }
+
+        /// <summary>
+        /// Check if culture is eligible for fetching (is not yet fetched or it was fetched long ago)
+        /// </summary>
+        /// <param name="culture">Check for specified language</param>
+        /// <returns>Returns true if it should be fetched, otherwise false</returns>
+        public bool IsEligibleForFetchForce(CultureInfo culture)
+        {
+            return !CultureCompetitorProfileFetched.ContainsKey(culture) || CultureCompetitorProfileFetched[culture] < DateTime.Now.AddSeconds(-30);
+        }
+
+        /// <summary>
+        /// Get the list of cultures which are requested filtered by those already received within last timeout
+        /// </summary>
+        /// <param name="wantedCultures">The list of cultures which we wanted</param>
+        /// <returns>The list of cultures which are requested filtered by those already received within last timeout</returns>
+        public ICollection<CultureInfo> GetMissingProfileCultures(IReadOnlyCollection<CultureInfo> wantedCultures)
+        {
+            return wantedCultures.IsNullOrEmpty() ? new Collection<CultureInfo>() : (ICollection<CultureInfo>)wantedCultures.Where(IsEligibleForFetch).ToList();
+        }
+
+        private void AddOrUpdateProfileFetchTime(CultureInfo culture)
+        {
+            if (CultureCompetitorProfileFetched.ContainsKey(culture))
+            {
+                CultureCompetitorProfileFetched[culture] = DateTime.Now;
+            }
+            else
+            {
+                CultureCompetitorProfileFetched.Add(culture, DateTime.Now);
+            }
+        }
+
+        /// <summary>
+        /// Create exportable CI as an asynchronous operation
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>Task&lt;T&gt;.</returns>
@@ -820,12 +847,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 Gender = _gender,
                 AgeGroup = _ageGroup,
                 RaceDriverProfile = _raceDriverProfile != null ? await _raceDriverProfile.ExportAsync().ConfigureAwait(false) : null,
-                FetchedCultures = _fetchedCultures.IsNullOrEmpty() ? new List<CultureInfo>() : new List<CultureInfo>(_fetchedCultures.ToList()),
                 PrimaryCulture = _primaryCulture,
-                LastTimeCompetitorProfileIsFetched = _lastTimeCompetitorProfileFetched > DateTime.MinValue
-                                                                          ? _lastTimeCompetitorProfileFetched
-                                                                          : (DateTime?)null,
-                CultureCompetitorProfileFetched = _cultureCompetitorProfileFetched,
+                CultureCompetitorProfileFetched = CultureCompetitorProfileFetched.ToDictionary(pair => pair.Key, pair => pair.Value),
                 SportId = _sportId?.ToString(),
                 CategoryId = _categoryId?.ToString(),
                 ShortName = _shortName
@@ -855,18 +878,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 _venue = exportable.Venue != null ? new VenueCI(exportable.Venue) : null;
                 _gender = exportable.Gender;
                 _ageGroup = exportable.AgeGroup;
-                _fetchedCultures = exportable.FetchedCultures.IsNullOrEmpty() ? new List<CultureInfo>() : new List<CultureInfo>(exportable.FetchedCultures);
                 _primaryCulture = exportable.PrimaryCulture;
                 _raceDriverProfile = exportable.RaceDriverProfile == null ? null : new RaceDriverProfileCI(exportable.RaceDriverProfile);
                 _referenceId = exportable.ReferenceIds.IsNullOrEmpty() ? null : new ReferenceIdCI(exportable.ReferenceIds);
-                _lastTimeCompetitorProfileFetched = DateTime.MinValue;
-                if (exportable.LastTimeCompetitorProfileIsFetched.HasValue)
-                {
-                    _lastTimeCompetitorProfileFetched = exportable.LastTimeCompetitorProfileIsFetched.Value;
-                }
+                CultureCompetitorProfileFetched = new Dictionary<CultureInfo, DateTime>();
                 if (exportable.CultureCompetitorProfileFetched != null)
                 {
-                    _cultureCompetitorProfileFetched = exportable.CultureCompetitorProfileFetched.ToList();
+                    CultureCompetitorProfileFetched = exportable.CultureCompetitorProfileFetched.ToDictionary(pair => pair.Key, pair => pair.Value);
                 }
                 _sportId = exportable.SportId != null ? URN.Parse(exportable.SportId) : null;
                 _categoryId = exportable.CategoryId != null ? URN.Parse(exportable.CategoryId) : null;

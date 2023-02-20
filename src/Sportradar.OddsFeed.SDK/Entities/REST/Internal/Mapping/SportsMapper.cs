@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
                 throw new InvalidOperationException("The provided sportsEndpoint instance contains no sports");
             }
 
-            var sports = _data.sport.Select(x => new SportDTO(x.id, x.name, (IEnumerable<tournamentExtended>) null));
+            var sports = _data.sport.Select(x => new SportDTO(x.id, x.name, (IEnumerable<tournamentExtended>)null));
             return new EntityList<SportDTO>(sports);
         }
 

@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>Returns base <see cref="SportEventStatusCI"/> instance</returns>
         public SportEventStatusCI CreateNotStarted()
         {
-            return new SportEventStatusCI(new SportEventStatusDTO(new sportEventStatus {status = (int)EventStatus.Unknown, match_status = -1}, null), null);
+            return new SportEventStatusCI(new SportEventStatusDTO(new sportEventStatus { status = (int)EventStatus.Unknown, match_status = -1 }, null), null);
         }
     }
 }

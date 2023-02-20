@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <param name="record">A <see cref="pitcher"/> containing information about a pitcher</param>
         internal PitcherDTO(pitcher record)
-            :base(record.id, record.name)
+            : base(record.id, record.name)
         {
             Guard.Argument(record, nameof(record)).NotNull();
             Hand = record.hand.Equals("l", StringComparison.InvariantCultureIgnoreCase)

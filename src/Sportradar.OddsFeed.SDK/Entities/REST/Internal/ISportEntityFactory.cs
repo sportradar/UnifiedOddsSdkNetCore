@@ -17,12 +17,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     internal interface ISportEntityFactory
     {
         /// <summary>
-        /// Builds and returns a <see cref="IEnumerable{ISport}"/> representing all sports supported by the feed
+        /// Builds and returns a <see cref="IReadOnlyCollection{ISport}"/> representing all sports supported by the feed
         /// </summary>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation</returns>
-        Task<IEnumerable<ISport>> BuildSportsAsync(IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
+        Task<IEnumerable<ISport>> BuildSportsAsync(IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds and returns a new instance of the <see cref="ISport"/> representing the sport specified by its id
@@ -31,15 +31,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>A <see cref="Task{ITournament}"/> representing the asynchronous operation</returns>
-        Task<ISport> BuildSportAsync(URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
+        Task<ISport> BuildSportAsync(URN sportId, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds and returns a new instance of the <see cref="IPlayer"/> representing the player or competitor profile specified by its id
         /// </summary>
         /// <param name="playerId">A <see cref="URN"/> specifying the id of the player or competitor which will be represented by the constructed instance</param>
         /// <param name="cultures">A list of all supported languages</param>
-        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>        /// <returns>A <see cref="Task{IPlayer}"/> representing the asynchronous operation</returns>
-        Task<IPlayer> BuildPlayerAsync(URN playerId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
+        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
+        /// <returns>A <see cref="Task{IPlayer}"/> representing the asynchronous operation</returns>
+        Task<IPlayer> BuildPlayerAsync(URN playerId, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds and returns a new instance of the <see cref="IPlayer"/> representing the player and/or competitor profiles specified by ids
@@ -47,8 +48,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="playersIds">A list of <see cref="URN"/> specifying the ids of the players or competitors which will be represented by the constructed instances</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
-        /// /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation</returns>
-        Task<IEnumerable<IPlayer>> BuildPlayersAsync(IEnumerable<URN> playersIds, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
+        /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation</returns>
+        Task<IEnumerable<IPlayer>> BuildPlayersAsync(IReadOnlyCollection<URN> playersIds, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the <see cref="ISportEvent"/> derived class based on specified id
@@ -59,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="cultures">The cultures used for returned instance</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ISportEvent"/> derived instance</returns>
-        T BuildSportEvent<T>(URN eventId, URN sportId, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent;
+        T BuildSportEvent<T>(URN eventId, URN sportId, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent;
 
         /// <summary>
         /// Builds the instance of the <see cref="ICompetitor"/> class
@@ -69,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
-        ICompetitor BuildCompetitor(CompetitorCI competitorCI, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
+        ICompetitor BuildCompetitor(CompetitorCI competitorCI, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ICompetitor"/> class
@@ -79,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
-        ICompetitor BuildCompetitor(URN competitorId, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy);
+        ICompetitor BuildCompetitor(URN competitorId, IReadOnlyCollection<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ICompetitor"/> class
@@ -89,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
-        ICompetitor BuildCompetitor(CompetitorCI competitorCI, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy);
+        ICompetitor BuildCompetitor(CompetitorCI competitorCI, IReadOnlyCollection<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ITeamCompetitor"/> class
@@ -99,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI teamCompetitorCI, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
+        ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI teamCompetitorCI, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ICompetitor"/> class
@@ -109,7 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
-        Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
+        Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ICompetitor"/> class
@@ -119,7 +120,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="competitorsReferences">The dictionary of competitor references (associated with specific match)</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
-        Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IEnumerable<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy);
+        Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IReadOnlyCollection<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ITeamCompetitor"/> class
@@ -129,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IEnumerable<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
+        Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy);
 
         /// <summary>
         /// Builds the instance of the <see cref="ICategorySummary"/> class
@@ -137,6 +138,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="categoryId">A <see cref="URN"/> of the <see cref="ICategorySummary"/> used to create new instance</param>
         /// <param name="cultures">A culture of the current instance of <see cref="ICategorySummary"/></param>
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
-        Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IEnumerable<CultureInfo> cultures);
+        Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IReadOnlyCollection<CultureInfo> cultures);
     }
 }

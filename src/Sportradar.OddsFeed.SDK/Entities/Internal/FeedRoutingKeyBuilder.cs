@@ -40,8 +40,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             {
                 if (both && interest == MessageInterest.LowPriorityMessages)
                 {
-                   sessionKeys.Add(GetBaseKeys(interest, nodeId).Union(GetLiveKeys()).ToList());
-                   continue;
+                    sessionKeys.Add(GetBaseKeys(interest, nodeId).Union(GetLiveKeys()).ToList());
+                    continue;
                 }
                 sessionKeys.Add(GetBaseKeys(interest, nodeId).Union(GetStandardKeys(nodeId).Union(GetLiveKeys())).ToList());
             }
@@ -54,17 +54,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>IEnumerable&lt;System.String&gt;.</returns>
         public static IEnumerable<string> GetStandardKeys(int nodeId = 0)
         {
-            if(nodeId > 0)
-                return new List<string>
-                {
-                    "-.-.-.product_down.#",
-                    $"-.-.-.snapshot_complete.-.-.-.{nodeId}"
-                };
-            return new List<string>
+            if (nodeId > 0)
             {
-                "-.-.-.product_down.#",
-                "-.-.-.snapshot_complete.#"
-            };
+                return new List<string>
+                       {
+                           "-.-.-.product_down.#",
+                           $"-.-.-.snapshot_complete.-.-.-.{nodeId}"
+                       };
+            }
+
+            return new List<string>
+                   {
+                       "-.-.-.product_down.#",
+                       "-.-.-.snapshot_complete.#"
+                   };
         }
 
         /// <summary>
@@ -94,8 +97,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             {
                 throw new ArgumentException("Combination of MessageInterests is not supported.", nameof(interests));
             }
-            if ((messageInterests.Contains(MessageInterest.LowPriorityMessages) && !messageInterests.Contains(MessageInterest.HighPriorityMessages))
-                && !(messageInterests.Contains(MessageInterest.LowPriorityMessages) && messageInterests.Contains(MessageInterest.HighPriorityMessages)))
+
+            if (messageInterests.Contains(MessageInterest.LowPriorityMessages) &&
+                !messageInterests.Contains(MessageInterest.HighPriorityMessages) &&
+                !(messageInterests.Contains(MessageInterest.LowPriorityMessages) &&
+                  messageInterests.Contains(MessageInterest.HighPriorityMessages)))
             {
                 throw new ArgumentException("Combination must have both Low and High priority messages", nameof(interests));
             }
@@ -271,7 +277,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 "*.*.virt.*.*.*.*"
             };
         }
-
 
         /// <summary>
         /// Constructs a <see cref="MessageInterest"/> indicating an interest in messages associated with specific events

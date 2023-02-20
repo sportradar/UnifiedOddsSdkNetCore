@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Threading;
+using Dawn;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         /// <param name="messageMapper">A <see cref="IFeedMessageMapper"/> used to map the feed messages to messages used by the SDK</param>
         /// <param name="defaultCultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the default languages as specified in the configuration</param>
-        internal EntityDispatcher(IFeedMessageMapper messageMapper, IEnumerable<CultureInfo> defaultCultures)
+        private protected EntityDispatcher(IFeedMessageMapper messageMapper, IEnumerable<CultureInfo> defaultCultures)
         {
             Guard.Argument(messageMapper, nameof(messageMapper)).NotNull();
             Guard.Argument(defaultCultures, nameof(defaultCultures)).NotNull().NotEmpty();
@@ -95,50 +95,43 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="rawMessage"></param>
         public virtual void Dispatch(FeedMessage message, byte[] rawMessage)
         {
-            var oddsChange = message as odds_change;
-            if (oddsChange != null)
+            if (message is odds_change oddsChange)
             {
                 DispatchOddsChange(oddsChange, rawMessage);
                 return;
             }
 
-            var betStop = message as bet_stop;
-            if (betStop != null)
+            if (message is bet_stop betStop)
             {
                 DispatchBetStop(betStop, rawMessage);
                 return;
             }
 
-            var betSettlement = message as bet_settlement;
-            if (betSettlement != null)
+            if (message is bet_settlement betSettlement)
             {
                 DispatchBetSettlement(betSettlement, rawMessage);
                 return;
             }
 
-            var rollbackBetSettlement = message as rollback_bet_settlement;
-            if (rollbackBetSettlement != null)
+            if (message is rollback_bet_settlement rollbackBetSettlement)
             {
                 DispatchRollbackBetSettlement(rollbackBetSettlement, rawMessage);
                 return;
             }
 
-            var betCancel = message as bet_cancel;
-            if (betCancel != null)
+            if (message is bet_cancel betCancel)
             {
                 DispatchBetCancel(betCancel, rawMessage);
                 return;
             }
 
-            var rollbackBetCancel = message as rollback_bet_cancel;
-            if (rollbackBetCancel != null)
+            if (message is rollback_bet_cancel rollbackBetCancel)
             {
                 DispatchRollbackBetCancel(rollbackBetCancel, rawMessage);
                 return;
             }
 
-            var fixtureChange = message as fixture_change;
-            if (fixtureChange != null)
+            if (message is fixture_change fixtureChange)
             {
                 DispatchFixtureChange(fixtureChange, rawMessage);
                 return;

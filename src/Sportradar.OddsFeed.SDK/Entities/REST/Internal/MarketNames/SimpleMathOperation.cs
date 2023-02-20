@@ -11,11 +11,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Specifies an addition (+)
         /// </summary>
-        ADD,
+        Add,
 
         /// <summary>
         /// Specifies an subtraction (-)
         /// </summary>
-        SUBTRACT
+        Subtract
     }
 }

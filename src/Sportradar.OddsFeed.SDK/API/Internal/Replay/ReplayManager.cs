@@ -107,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
                 return new List<IReplayEvent>();
             }
 
-            var xml = new XmlDocument {XmlResolver = null};
+            var xml = new XmlDocument { XmlResolver = null };
             xml.Load(response);
 
             var result = new List<IReplayEvent>();
@@ -370,7 +370,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
                 xml.Load(response.Content.ReadAsStreamAsync().Result);
 
                 responseMsg = xml.DocumentElement?.SelectSingleNode("action")?.InnerText;
-                if (responseMsg != null && !responseMsg.EndsWith("."))
+                if (responseMsg != null && !responseMsg.EndsWith(".", StringComparison.InvariantCultureIgnoreCase))
                 {
                     responseMsg += ".";
                 }
@@ -379,7 +379,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
                 if (!response.IsSuccessStatusCode)
                 {
                     success = false;
-                    errorMsg = $"Request was not successfully completed. Response: {(int) response.StatusCode}-{response.ReasonPhrase}";
+                    errorMsg = $"Request was not successfully completed. Response: {(int)response.StatusCode}-{response.ReasonPhrase}";
                 }
             }
 

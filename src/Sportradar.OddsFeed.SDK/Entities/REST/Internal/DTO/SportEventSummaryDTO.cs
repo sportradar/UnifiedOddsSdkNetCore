@@ -95,10 +95,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             Id = URN.Parse(parentStage.id);
             Scheduled = parentStage.scheduledSpecified
-                            ? (DateTime?) parentStage.scheduled.ToLocalTime()
+                            ? (DateTime?)parentStage.scheduled.ToLocalTime()
                             : null;
             ScheduledEnd = parentStage.scheduled_endSpecified
-                               ? (DateTime?) parentStage.scheduled_end.ToLocalTime()
+                               ? (DateTime?)parentStage.scheduled_end.ToLocalTime()
                                : null;
             Name = parentStage.name;
             if (!string.IsNullOrEmpty(parentStage.replaced_by) && URN.TryParse(parentStage.replaced_by, out var replacedBy))
@@ -121,10 +121,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             Id = URN.Parse(childStage.id);
             Scheduled = childStage.scheduledSpecified
-                            ? (DateTime?) childStage.scheduled.ToLocalTime()
+                            ? (DateTime?)childStage.scheduled.ToLocalTime()
                             : null;
             ScheduledEnd = childStage.scheduled_endSpecified
-                               ? (DateTime?) childStage.scheduled_end.ToLocalTime()
+                               ? (DateTime?)childStage.scheduled_end.ToLocalTime()
                                : null;
             Name = childStage.name;
             if (!string.IsNullOrEmpty(childStage.replaced_by) && URN.TryParse(childStage.replaced_by, out var replacedBy))

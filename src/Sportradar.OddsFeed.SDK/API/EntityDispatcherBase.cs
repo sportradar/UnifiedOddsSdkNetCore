@@ -1,11 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using System;
-using System.Diagnostics;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.API
         }
 
         /// <summary>
-        /// Dispatches the <code>message</code>
+        /// Dispatches the <c>message</c>
         /// </summary>
         /// <typeparam name="T">The type of the event arguments</typeparam>
         /// <param name="handler">Event delegate</param>

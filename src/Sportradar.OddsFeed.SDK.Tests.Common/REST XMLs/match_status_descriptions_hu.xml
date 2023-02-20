@@ -1,0 +1,1364 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<match_status_descriptions response_code="OK">
+	<match_status id="0" description="Nem kezdődött el">
+		<sports all="true"/>
+	</match_status>
+	<match_status id="1" description="1. harmad" period_number="1">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:131"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="2" description="2. harmad" period_number="2">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:131"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="3" description="3. harmad" period_number="3">
+		<sports>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:131"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="4" description="4. játékrész" period_number="4">
+		<sports>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:131"/>
+		</sports>
+	</match_status>
+	<match_status id="5" description="5. játékrész" period_number="5">
+		<sports/>
+	</match_status>
+	<match_status id="6" description="1. félidő" period_number="1">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+		</sports>
+	</match_status>
+	<match_status id="7" description="2. félidő" period_number="2">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+		</sports>
+	</match_status>
+	<match_status id="8" description="1. játszma" period_number="1">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+		</sports>
+	</match_status>
+	<match_status id="9" description="2. játszma" period_number="2">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+		</sports>
+	</match_status>
+	<match_status id="10" description="3. játszma" period_number="3">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+		</sports>
+	</match_status>
+	<match_status id="11" description="4. játszma" period_number="4">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+		</sports>
+	</match_status>
+	<match_status id="12" description="5. játszma" period_number="5">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+		</sports>
+	</match_status>
+	<match_status id="13" description="1. negyed" period_number="1">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:11"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:153"/>
+		</sports>
+	</match_status>
+	<match_status id="14" description="2. negyed" period_number="2">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:11"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:153"/>
+		</sports>
+	</match_status>
+	<match_status id="15" description="3. negyed" period_number="3">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:11"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:153"/>
+		</sports>
+	</match_status>
+	<match_status id="16" description="4. negyed" period_number="4">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:11"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:153"/>
+		</sports>
+	</match_status>
+	<match_status id="17" description="Arany szett">
+		<sports>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:34"/>
+		</sports>
+	</match_status>
+	<match_status id="18" description="Golden raid">
+		<sports>
+			<sport id="sr:sport:138"/>
+		</sports>
+	</match_status>
+	<match_status id="19" description="Coin toss">
+		<sports>
+			<sport id="sr:sport:138"/>
+		</sports>
+	</match_status>
+	<match_status id="20" description="Elkezdődött">
+		<sports>
+			<sport id="sr:sport:3"/>
+			<sport id="sr:sport:22"/>
+		</sports>
+	</match_status>
+	<match_status id="21" description="Folyamatban van">
+		<sports>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:155"/>
+		</sports>
+	</match_status>
+	<match_status id="22" description="Hamarosan kezdődik">
+		<sports/>
+	</match_status>
+	<match_status id="30" description="Szünet">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:3"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:131"/>
+		</sports>
+	</match_status>
+	<match_status id="31" description="Félidő">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:157"/>
+		</sports>
+	</match_status>
+	<match_status id="32" description="Hosszabítás">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:155"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="33" description="Hosszabítás félidő">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+		</sports>
+	</match_status>
+	<match_status id="34" description="Büntetők">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="35" description="Várakozás a büntető lövésekre">
+		<sports>
+			<sport id="sr:sport:4"/>
+		</sports>
+	</match_status>
+	<match_status id="36" description="Büntetőkre várva">
+		<sports>
+			<sport id="sr:sport:6"/>
+		</sports>
+	</match_status>
+	<match_status id="37" description="Awaiting golden set">
+		<sports>
+			<sport id="sr:sport:23"/>
+		</sports>
+	</match_status>
+	<match_status id="38" description="Awaiting golden raid">
+		<sports>
+			<sport id="sr:sport:138"/>
+		</sports>
+	</match_status>
+	<match_status id="39" description="Golden Raid">
+		<sports/>
+	</match_status>
+	<match_status id="40" description="Hosszabítás">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:3"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:11"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:155"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="41" description="Hosszabítás 1. félidő">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+		</sports>
+	</match_status>
+	<match_status id="42" description="Hosszabítás 2. félidő">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+		</sports>
+	</match_status>
+	<match_status id="50" description="Büntetők">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="51" description="Büntetők">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:29"/>
+		</sports>
+	</match_status>
+	<match_status id="52" description="Büntetőlövés">
+		<sports>
+			<sport id="sr:sport:4"/>
+		</sports>
+	</match_status>
+	<match_status id="60" description="Elhalasztva">
+		<sports>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:24"/>
+		</sports>
+	</match_status>
+	<match_status id="61" description="Halasztott kezdés">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:157"/>
+		</sports>
+	</match_status>
+	<match_status id="70" description="Törölve">
+		<sports/>
+	</match_status>
+	<match_status id="71" description="Játék 1" period_number="1">
+		<sports/>
+	</match_status>
+	<match_status id="72" description="Játék 2" period_number="2">
+		<sports/>
+	</match_status>
+	<match_status id="73" description="Játék 3" period_number="3">
+		<sports/>
+	</match_status>
+	<match_status id="74" description="Játék 4" period_number="4">
+		<sports/>
+	</match_status>
+	<match_status id="75" description="Játék 5" period_number="5">
+		<sports/>
+	</match_status>
+	<match_status id="76" description="Játék 6" period_number="6">
+		<sports/>
+	</match_status>
+	<match_status id="77" description="Játék 7" period_number="7">
+		<sports/>
+	</match_status>
+	<match_status id="80" description="Megszakítva">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:3"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:7"/>
+			<sport id="sr:sport:11"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:15"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:21"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:26"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:131"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:155"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="81" description="Felfüggesztve">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:31"/>
+		</sports>
+	</match_status>
+	<match_status id="90" description="Félbeszakadt">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:3"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:21"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:155"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="91" description="Játék nélkül">
+		<sports/>
+	</match_status>
+	<match_status id="92" description="Feladta">
+		<sports>
+			<sport id="sr:sport:5"/>
+		</sports>
+	</match_status>
+	<match_status id="93" description="Walkover, player 1 nyert">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="94" description="Walkover, player 2 nyert">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="95" description="Player 1 visszavonult, Player 2 nyert">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="96" description="Player 2 visszavonult, Player 1 nyert">
+		<sports>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="97" description="Player 1 defaulted, player 2 won">
+		<sports>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:37"/>
+		</sports>
+	</match_status>
+	<match_status id="98" description="Player 2 defaulted, player 1 won">
+		<sports>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:37"/>
+		</sports>
+	</match_status>
+	<match_status id="99" description="Csak eredmény">
+		<sports/>
+	</match_status>
+	<match_status id="100" description="Vége">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:3"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:5"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:19"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:21"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:117"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:155"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="110" description="Hosszabításban">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:138"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:155"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="111" description="After overtime">
+		<sports/>
+	</match_status>
+	<match_status id="120" description="Büntetőkkel">
+		<sports>
+			<sport id="sr:sport:1"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:6"/>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:29"/>
+			<sport id="sr:sport:137"/>
+			<sport id="sr:sport:157"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="130" description="After golden set">
+		<sports>
+			<sport id="sr:sport:23"/>
+		</sports>
+	</match_status>
+	<match_status id="140" description="After golden raid">
+		<sports>
+			<sport id="sr:sport:138"/>
+		</sports>
+	</match_status>
+	<match_status id="141" description="1. térkép" period_number="1">
+		<sports>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="142" description="2. térkép" period_number="2">
+		<sports>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="143" description="3. térkép" period_number="3">
+		<sports>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="144" description="4. térkép" period_number="4">
+		<sports>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="145" description="5. térkép" period_number="5">
+		<sports>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="146" description="6th map" period_number="6">
+		<sports>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="147" description="7th map" period_number="7">
+		<sports>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="151" description="1. Játék" period_number="1">
+		<sports>
+			<sport id="sr:sport:37"/>
+		</sports>
+	</match_status>
+	<match_status id="152" description="2. Játék" period_number="2">
+		<sports>
+			<sport id="sr:sport:37"/>
+		</sports>
+	</match_status>
+	<match_status id="153" description="3. Játék" period_number="3">
+		<sports>
+			<sport id="sr:sport:37"/>
+		</sports>
+	</match_status>
+	<match_status id="154" description="4. Játék" period_number="4">
+		<sports>
+			<sport id="sr:sport:37"/>
+		</sports>
+	</match_status>
+	<match_status id="155" description="5. Játék" period_number="5">
+		<sports>
+			<sport id="sr:sport:37"/>
+		</sports>
+	</match_status>
+	<match_status id="161" description="1st end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="162" description="2nd end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="163" description="3rd end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="164" description="4th end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="165" description="5th end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="166" description="6th end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="167" description="7th end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="168" description="8th end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="169" description="9th end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="170" description="10th end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="171" description="Extra end">
+		<sports>
+			<sport id="sr:sport:28"/>
+		</sports>
+	</match_status>
+	<match_status id="301" description="Első szünet">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:117"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="302" description="Második szünet">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:4"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:117"/>
+			<sport id="sr:sport:153"/>
+			<sport id="sr:sport:195"/>
+		</sports>
+	</match_status>
+	<match_status id="303" description="Harmadik szünet">
+		<sports>
+			<sport id="sr:sport:2"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:16"/>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:24"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:117"/>
+			<sport id="sr:sport:153"/>
+		</sports>
+	</match_status>
+	<match_status id="304" description="Negyedik szünet">
+		<sports>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+			<sport id="sr:sport:32"/>
+			<sport id="sr:sport:34"/>
+			<sport id="sr:sport:37"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:110"/>
+			<sport id="sr:sport:111"/>
+			<sport id="sr:sport:117"/>
+		</sports>
+	</match_status>
+	<match_status id="305" description="Ötödik szünet">
+		<sports>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="306" description="Hatodik szünet">
+		<sports>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:109"/>
+			<sport id="sr:sport:111"/>
+		</sports>
+	</match_status>
+	<match_status id="401" description="1st inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="402" description="1st inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="403" description="2nd inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="404" description="2nd inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="405" description="3rd inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="406" description="3rd inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="407" description="4th inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="408" description="4th inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="409" description="5th inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="410" description="5th inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="411" description="6th inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="412" description="6th inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="413" description="7th inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="414" description="7th inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="415" description="8th inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="416" description="8th inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="417" description="9th inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="418" description="9th inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="419" description="Extra inning top">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="420" description="Extra inning bottom">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="421" description="Break top1-bottom1">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="422" description="Break top2-bottom1">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="423" description="Break top2-bottom2">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="424" description="Break top3-bottom2">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="425" description="Break top3-bottom3">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="426" description="Break top4-bottom3">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="427" description="Break top4-bottom4">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="428" description="Break top5-bottom4">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="429" description="Break top5-bottom5">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="430" description="Break top6-bottom5">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="431" description="Break top6-bottom6">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="432" description="Break top7-bottom6">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="433" description="Break top7-bottom7">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="434" description="Break top8-bottom7">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="435" description="Break top8-bottom8">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="436" description="Break top9-bottom8">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="437" description="Break top9-bottom9">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="438" description="Break topEI-bottom9">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="439" description="Break topEI-bottomEI">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="440" description="Hirtelen halál">
+		<sports>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+		</sports>
+	</match_status>
+	<match_status id="441" description="6. szett" period_number="6">
+		<sports>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+		</sports>
+	</match_status>
+	<match_status id="442" description="7. szett" period_number="7">
+		<sports>
+			<sport id="sr:sport:20"/>
+			<sport id="sr:sport:22"/>
+			<sport id="sr:sport:23"/>
+			<sport id="sr:sport:31"/>
+		</sports>
+	</match_status>
+	<match_status id="443" description="Hamasrosan kezdődik - Hirtelen halál">
+		<sports>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+		</sports>
+	</match_status>
+	<match_status id="444" description="Hirtelen halál után">
+		<sports>
+			<sport id="sr:sport:12"/>
+			<sport id="sr:sport:13"/>
+			<sport id="sr:sport:24"/>
+		</sports>
+	</match_status>
+	<match_status id="445" description="Szünet">
+		<sports>
+			<sport id="sr:sport:19"/>
+		</sports>
+	</match_status>
+	<match_status id="501" description="Első inning, hazai csapat">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="502" description="Első inning, vendég csapat">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="503" description="Második inning, hazai csapat">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="504" description="Második inning, vendég csapat">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="505" description="Super Overre várva">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="506" description="Super over, hazai csapat">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="507" description="Super over, vendég csapat">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="508" description="Super over után">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="509" description="Inning szünet">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="510" description="Super over szünet">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="511" description="Ebédszünet">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="512" description="Teaszünet">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="513" description="Stumpok">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="514" description="8. szett" period_number="8">
+		<sports>
+			<sport id="sr:sport:22"/>
+		</sports>
+	</match_status>
+	<match_status id="515" description="9. szett" period_number="9">
+		<sports>
+			<sport id="sr:sport:22"/>
+		</sports>
+	</match_status>
+	<match_status id="516" description="10. szett" period_number="10">
+		<sports>
+			<sport id="sr:sport:22"/>
+		</sports>
+	</match_status>
+	<match_status id="517" description="11. szett" period_number="11">
+		<sports>
+			<sport id="sr:sport:22"/>
+		</sports>
+	</match_status>
+	<match_status id="518" description="12. szett" period_number="12">
+		<sports>
+			<sport id="sr:sport:22"/>
+		</sports>
+	</match_status>
+	<match_status id="519" description="13. szett" period_number="13">
+		<sports>
+			<sport id="sr:sport:22"/>
+		</sports>
+	</match_status>
+	<match_status id="520" description="Third innings, home team">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="521" description="Third innings, away team">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="522" description="Fourth innings, home team">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="523" description="Fourth innings, away team">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="524" description="Vacsora szünet">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="525" description="Üdítők">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="526" description="Super over">
+		<sports>
+			<sport id="sr:sport:21"/>
+		</sports>
+	</match_status>
+	<match_status id="531" description="1. inning" period_number="1">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="532" description="2. inning" period_number="2">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="533" description="3. inning" period_number="3">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="534" description="4. inning" period_number="4">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="535" description="5. inning" period_number="5">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="536" description="6. inning" period_number="6">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="537" description="7. inning" period_number="7">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="538" description="8. inning" period_number="8">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="539" description="9. inning" period_number="9">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+	<match_status id="540" description="First round">
+		<sports>
+			<sport id="sr:sport:117"/>
+		</sports>
+	</match_status>
+	<match_status id="541" description="Second round">
+		<sports>
+			<sport id="sr:sport:117"/>
+		</sports>
+	</match_status>
+	<match_status id="542" description="Third round">
+		<sports>
+			<sport id="sr:sport:117"/>
+		</sports>
+	</match_status>
+	<match_status id="543" description="Fourth round">
+		<sports>
+			<sport id="sr:sport:117"/>
+		</sports>
+	</match_status>
+	<match_status id="544" description="Fifth round">
+		<sports>
+			<sport id="sr:sport:117"/>
+		</sports>
+	</match_status>
+	<match_status id="545" description="Sixth round">
+		<sports/>
+	</match_status>
+	<match_status id="546" description="Seventh round">
+		<sports/>
+	</match_status>
+	<match_status id="547" description="Break topEI-bottom3">
+		<sports/>
+	</match_status>
+	<match_status id="548" description="Break topEI-bottom7">
+		<sports>
+			<sport id="sr:sport:3"/>
+		</sports>
+	</match_status>
+</match_status_descriptions>

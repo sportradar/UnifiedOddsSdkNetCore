@@ -34,11 +34,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <returns>Constructed <see cref="IEnumerable{FixtureChangeDTO}"/> instance</returns>
         public IEnumerable<FixtureChangeDTO> Map()
         {
-            if(_data.fixture_change == null)
+            if (_data.fixture_change == null)
             {
                 return new List<FixtureChangeDTO>();
             }
-            return _data.fixture_change.Select(f => new FixtureChangeDTO(f, _data.generated_atSpecified ? _data.generated_at : (DateTime?) null)).ToList();
+            return _data.fixture_change.Select(f => new FixtureChangeDTO(f, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null)).ToList();
         }
     }
 }

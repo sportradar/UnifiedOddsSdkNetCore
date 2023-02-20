@@ -1,7 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -10,11 +14,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
@@ -144,8 +143,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         {
             Guard.Argument(exportable, nameof(exportable)).NotNull();
 
-            var exportableCompetition = exportable as ExportableCompetitionCI;
-            if (exportableCompetition != null)
+            if (exportable is ExportableCompetitionCI exportableCompetition)
             {
                 _bookingStatus = exportableCompetition.BookingStatus;
                 _venue = exportableCompetition.Venue != null ? new VenueCI(exportableCompetition.Venue) : null;
@@ -192,7 +190,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>Asynchronously returns the <see cref="BookingStatus"/> if available</returns>
         public async Task<BookingStatus?> GetBookingStatusAsync()
         {
-            if (_bookingStatus != null || Id.TypeGroup == ResourceTypeGroup.STAGE || LoadedFixtures.Any())
+            if (_bookingStatus != null || LoadedFixtures.Any())
             {
                 return _bookingStatus;
             }
@@ -488,8 +486,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             var teamCompetitorDtos = competitors.ToList();
             if (Id.TypeGroup == ResourceTypeGroup.MATCH && teamCompetitorDtos.Count == 2)
             {
-                string name;
-                if (Names.TryGetValue(culture, out name) && !string.IsNullOrEmpty(name))
+                if (Names.TryGetValue(culture, out var name) && !string.IsNullOrEmpty(name))
                 {
                     return;
                 }

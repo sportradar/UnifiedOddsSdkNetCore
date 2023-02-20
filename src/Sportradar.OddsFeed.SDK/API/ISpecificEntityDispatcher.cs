@@ -14,6 +14,5 @@ namespace Sportradar.OddsFeed.SDK.API
     /// <seealso cref="IEntityDispatcher{T}" />
     public interface ISpecificEntityDispatcher<T> : IOpenable, IEntityDispatcher<T> where T : ISportEvent
     {
-
     }
 }

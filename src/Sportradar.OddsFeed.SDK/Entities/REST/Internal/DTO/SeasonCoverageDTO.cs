@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(coverageInfo, nameof(coverageInfo)).NotNull();
 
             MaxCovered = coverageInfo.max_coveredSpecified
-                ? (int?) coverageInfo.max_covered
+                ? (int?)coverageInfo.max_covered
                 : null;
 
             MaxCoverageLevel = coverageInfo.max_coverage_level;

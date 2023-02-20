@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="marketDefinition">The associated market definition</param>
         /// <param name="voidReason">A value specifying the void reason or a null reference</param>
         /// <param name="voidReasonsCache">A <see cref="INamedValueCache"/> used to get void reason descriptions</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         internal MarketCancel(int id,
                             IReadOnlyDictionary<string, string> specifiers,
                             IReadOnlyDictionary<string, string> additionalInfo,
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                             IMarketDefinition marketDefinition,
                             int? voidReason,
                             INamedValueCache voidReasonsCache,
-                            IEnumerable<CultureInfo> cultures)
+                            IReadOnlyCollection<CultureInfo> cultures)
             : base(id, specifiers, additionalInfo, nameProvider, mappingProvider, marketDefinition, cultures)
         {
             Guard.Argument(voidReasonsCache, nameof(voidReasonsCache)).NotNull();

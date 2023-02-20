@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         /// <param name="countryCode">the country code</param>
         /// <param name="tournaments">the <see cref="IEnumerable{URN}"/> representing the tournaments, which belong to the category</param>
         public CategoryData(URN id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode, IEnumerable<URN> tournaments)
-            :base(id, names)
+            : base(id, names)
         {
             //Guard.Argument(tournaments, nameof()).NotNull(); // on WNSs there is no tournament
             //Guard.Argument(Contract.Exists(tournaments, t => true));

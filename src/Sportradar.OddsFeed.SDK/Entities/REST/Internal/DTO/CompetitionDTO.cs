@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -152,7 +152,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             GeneratedAt = matchSummary.generated_atSpecified
                               ? matchSummary.generated_at.ToLocalTime()
-                              : (DateTime?) null;
+                              : (DateTime?)null;
         }
 
         /// <summary>
@@ -170,9 +170,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             GeneratedAt = stageSummary.generated_atSpecified
                               ? stageSummary.generated_at.ToLocalTime()
-                              : (DateTime?) null;
+                              : (DateTime?)null;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
+        /// </summary>
+        /// <param name="stageSummary">A <see cref="sportEventChildrenSport_event"/> instance containing basic information about the sport event</param>
+        /// <remarks>LiveOdds = null</remarks>
         internal CompetitionDTO(sportEventChildrenSport_event stageSummary)
             : base(stageSummary)
         {
@@ -181,23 +186,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 Type = type;
             }
 
-            //LiveOdds = null;
-
             if (RestMapperHelper.TryGetStageType(stageSummary.stage_type, out var stageType))
             {
                 StageType = stageType;
             }
         }
 
-        protected CompetitionDTO(parentStage parentStage) 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
+        /// </summary>
+        /// <param name="parentStage">A <see cref="parentStage"/> instance containing basic information about the sport event</param>
+        /// <remarks>LiveOdds = null</remarks>
+        protected CompetitionDTO(parentStage parentStage)
             : base(parentStage)
         {
             if (RestMapperHelper.TryGetSportEventType(parentStage.type, out var type))
             {
                 Type = type;
             }
-
-            //LiveOdds = null;
 
             if (RestMapperHelper.TryGetStageType(parentStage.stage_type, out var stageType))
             {

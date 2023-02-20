@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities;
@@ -41,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(processors, nameof(processors)).NotNull().NotEmpty().Require(processors.All(p => p != null));
 
-            ProcessorId = Guid.NewGuid().ToString().Substring(0,4);
+            ProcessorId = Guid.NewGuid().ToString().Substring(0, 4);
 
             _processors = processors;
 
@@ -56,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             ExecutionLog.LogDebug($"{ProcessorId} - CompositeMessageProcessor.OnProcessorMessageProcessedEvent called by {sender?.GetType().Name}");
             RaiseOnMessageProcessedEvent(e);
         }
-        
+
         /// <summary>
         /// Processes and dispatches the provided <see cref="FeedMessage"/> instance
         /// </summary>
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(interest, nameof(interest)).NotNull();
-            
+
             foreach (var processor in _processors)
             {
                 processor.ProcessMessage(message, interest, rawMessage);

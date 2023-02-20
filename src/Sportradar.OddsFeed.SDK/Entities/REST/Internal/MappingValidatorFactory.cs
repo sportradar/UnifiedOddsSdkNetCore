@@ -3,10 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Dawn;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             return Regex.IsMatch(value, DecimalPattern)
                 ? new DecimalValueMappingValidator(name, decimal.Parse(value.Replace("*", "0"), NumberStyles.Any, CultureInfo.InvariantCulture))
-                : (IMappingValidator) new SpecificValueMappingValidator(name, value);
+                : (IMappingValidator)new SpecificValueMappingValidator(name, value);
         }
 
         /// <summary>

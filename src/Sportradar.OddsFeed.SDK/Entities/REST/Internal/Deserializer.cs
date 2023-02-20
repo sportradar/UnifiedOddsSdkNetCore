@@ -4,12 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         private static readonly IReadOnlyDictionary<string, SerializerWithInfo> Serializers;
 
         /// <summary>
-        /// Initializes the <code>Serializers</code> static field
+        /// Initializes the <c>Serializers</c> static field
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3963:\"static\" fields should be initialized inline", Justification = "Allowed")]
         static Deserializer()
@@ -87,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Deserialize the provided<see cref="byte"/> array to a <see cref="FeedMessage"/> derived instance
         /// </summary>
         /// <param name="stream">A <see cref="Stream"/> instance containing data to be deserialized </param>
-        /// <returns>The <code>data</code> deserialized to <see cref="FeedMessage"/> instance</returns>
+        /// <returns>The <c>data</c> deserialized to <see cref="FeedMessage"/> instance</returns>
         /// <exception cref="DeserializationException">The deserialization failed</exception>
         public T Deserialize(Stream stream)
         {
@@ -101,7 +101,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <typeparam name="T1">A <typeparamref name="T" /> derived type specifying the target of deserialization</typeparam>
         /// <param name="stream">A <see cref="Stream" /> instance containing data to be deserialized</param>
-        /// <returns>The <code>data</code> deserialized to <typeparamref name="T1" /> instance</returns>
+        /// <returns>The <c>data</c> deserialized to <typeparamref name="T1" /> instance</returns>
         /// <exception cref="DeserializationException">The deserialization failed</exception>
         public T1 Deserialize<T1>(Stream stream) where T1 : T
         {

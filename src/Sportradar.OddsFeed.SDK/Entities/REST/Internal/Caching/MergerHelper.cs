@@ -14,9 +14,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             // find by id
             var resultGroup = !string.IsNullOrEmpty(dtoGroup.Id) ? ciGroups.FirstOrDefault(c => c.Id.Equals(dtoGroup.Id)) : null;
-            
+
             // find by name
-            if(resultGroup == null)
+            if (resultGroup == null)
             {
                 resultGroup = !string.IsNullOrEmpty(dtoGroup.Name) ? ciGroups.FirstOrDefault(c => c.Name.Equals(dtoGroup.Name)) : null;
             }
@@ -28,13 +28,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (string.IsNullOrEmpty(existingGroup.Id) && string.IsNullOrEmpty(existingGroup.Name))
                     {
-                        if(existingGroup.CompetitorsIds?.Count() != dtoGroup.Competitors.Count())
+                        if (existingGroup.CompetitorsIds?.Count() != dtoGroup.Competitors.Count())
                         {
                             continue;
                         }
 
                         // if all competitors match in the group
-                        if(dtoGroup.Competitors.All(groupCompetitor=> existingGroup.CompetitorsIds.Count(cId => groupCompetitor.Id.Equals(cId)) == 1))
+                        if (dtoGroup.Competitors.All(groupCompetitor => existingGroup.CompetitorsIds.Count(cId => groupCompetitor.Id.Equals(cId)) == 1))
                         {
                             return existingGroup;
                         }
@@ -49,9 +49,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         {
             // find by id
             var resultGroup = !string.IsNullOrEmpty(ciGroup.Id) ? dtoGroups.FirstOrDefault(c => c.Id.Equals(ciGroup.Id)) : null;
-            
+
             // find by name
-            if(resultGroup == null)
+            if (resultGroup == null)
             {
                 resultGroup = !string.IsNullOrEmpty(ciGroup.Name) ? dtoGroups.FirstOrDefault(c => c.Name.Equals(ciGroup.Name)) : null;
             }
@@ -63,13 +63,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 {
                     if (string.IsNullOrEmpty(existingGroup.Id) && string.IsNullOrEmpty(existingGroup.Name))
                     {
-                        if(existingGroup.Competitors?.Count() != ciGroup.CompetitorsIds.Count())
+                        if (existingGroup.Competitors?.Count() != ciGroup.CompetitorsIds.Count())
                         {
                             continue;
                         }
 
                         // if all competitors match in the group
-                        if(ciGroup.CompetitorsIds.All(cId=> existingGroup.Competitors.Count(c => cId.Equals(c.Id)) == 1))
+                        if (ciGroup.CompetitorsIds.All(cId => existingGroup.Competitors.Count(c => cId.Equals(c.Id)) == 1))
                         {
                             return existingGroup;
                         }

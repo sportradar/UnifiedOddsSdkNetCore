@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
@@ -179,7 +179,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             Guard.Argument(id, nameof(id)).Positive();
             Guard.Argument(timestamp, nameof(timestamp)).Require(timestamp > DateTime.MinValue);
 
-            var p = (Producer) Get(id);
+            var p = (Producer)Get(id);
             if (p.Id.Equals(SdkInfo.UnknownProducerId))
             {
                 return;
@@ -222,7 +222,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             Guard.Argument(id, nameof(id)).Positive();
 
-            var p = (Producer) Get(id);
+            var p = (Producer)Get(id);
             p.SetLastTimestampBeforeDisconnect(DateTime.MinValue);
         }
 
@@ -261,13 +261,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 foreach (var producer in _producers)
                 {
-                    ((Producer) producer).IgnoreRecovery = true;
-                    ((Producer) producer).SetProducerDown(false);
+                    ((Producer)producer).IgnoreRecovery = true;
+                    ((Producer)producer).SetProducerDown(false);
                 }
             }
             else
             {
-                var p = (Producer) Get(id);
+                var p = (Producer)Get(id);
                 if (p != null)
                 {
                     p.IgnoreRecovery = true;
@@ -286,7 +286,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         }
 
         /// <summary>
-        /// Dispatches the <code>RecoveryInitiated</code>
+        /// Dispatches the <c>RecoveryInitiated</c>
         /// </summary>
         /// <param name="eventArgs">Event arguments</param>
         public void InvokeRecoveryInitiated(RecoveryInitiatedEventArgs eventArgs)

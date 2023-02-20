@@ -15,7 +15,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// </summary>
     internal class LocalizedNamedValue : NamedValue, ILocalizedNamedValue
     {
-
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}" /> containing translated descriptions
         /// </summary>
@@ -28,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="descriptions">The descriptions.</param>
         /// <param name="defaultCulture">A <see cref="CultureInfo"/> specifying the default language</param>
         public LocalizedNamedValue(int id, IDictionary<CultureInfo, string> descriptions, CultureInfo defaultCulture)
-            :base(id)
+            : base(id)
         {
             if ((descriptions == null && defaultCulture != null) || (descriptions != null && defaultCulture == null))
             {

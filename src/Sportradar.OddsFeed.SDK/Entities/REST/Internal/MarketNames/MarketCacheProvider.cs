@@ -1,6 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -11,11 +16,6 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
@@ -62,21 +62,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Gets a <see cref="IMarketDescription" /> instance for the market specified by <code>id</code> and <code>specifiers</code>
+        /// Gets a <see cref="IMarketDescription" /> instance for the market specified by <c>id</c> and <c>specifiers</c>
         /// </summary>
         /// <param name="marketId">The market identifier</param>
         /// <param name="specifiers">A dictionary specifying market specifiers or a null reference if market is invariant</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying required translations</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying required translations</param>
         /// <param name="fetchVariantDescriptions"></param>
         /// <returns>A <see cref="IMarketDescription" /> instance describing the specified markets</returns>
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
-        public async Task<IMarketDescription> GetMarketDescriptionAsync(int marketId, IReadOnlyDictionary<string, string> specifiers, IEnumerable<CultureInfo> cultures, bool fetchVariantDescriptions)
+        public async Task<IMarketDescription> GetMarketDescriptionAsync(int marketId,
+                                                                        IReadOnlyDictionary<string, string> specifiers,
+                                                                        IReadOnlyCollection<CultureInfo> cultures,
+                                                                        bool fetchVariantDescriptions)
         {
             IMarketDescription marketDescriptor;
-            var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
             try
             {
-                marketDescriptor = await _invariantMarketsCache.GetMarketDescriptionAsync(marketId, null, cultureInfos).ConfigureAwait(false);
+                marketDescriptor = await _invariantMarketsCache.GetMarketDescriptionAsync(marketId, null, cultures).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -104,15 +106,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 // case 2: defined/known dynamic variant market => (pre:outcometext market) || (market is player props)
                 if (IsMarketOutcomeText(marketDescriptor) || IsMarketPlayerProps(marketDescriptor))
                 {
-                    return await ProvideDynamicVariantEndpointMarketAsync(marketId, cultureInfos, marketDescriptor, variantValue).ConfigureAwait(false);
+                    return await ProvideDynamicVariantEndpointMarketAsync(marketId, cultures, marketDescriptor, variantValue).ConfigureAwait(false);
                 }
 
                 // case 3: "normal" variant market available on the full variant market list (static)
-                var marketDesc = await ProvideFullVariantListEndpointMarketAsync(marketId, cultureInfos, marketDescriptor, variantValue).ConfigureAwait(false);
+                var marketDesc = await ProvideFullVariantListEndpointMarketAsync(marketId, cultures, marketDescriptor, variantValue).ConfigureAwait(false);
                 if (marketDesc == null)
                 {
                     // case 4: dynamic market which is not defined
-                    marketDesc = await ProvideDynamicVariantEndpointMarketAsync(marketId, cultureInfos, marketDescriptor, variantValue).ConfigureAwait(false);
+                    marketDesc = await ProvideDynamicVariantEndpointMarketAsync(marketId, cultures, marketDescriptor, variantValue).ConfigureAwait(false);
                 }
 
                 return marketDesc;
@@ -121,11 +123,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             return marketDescriptor;
         }
 
-        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId, IList<CultureInfo> locales, IMarketDescription marketDescription, string variantValue)
+        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription, string variantValue)
         {
+            var languages = string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
             try
             {
-                var variantDescription = await _variantDescriptionListCache.GetVariantDescriptorAsync(variantValue, locales).ConfigureAwait(false);
+                var variantDescription = await _variantDescriptionListCache.GetVariantDescriptorAsync(variantValue, cultures).ConfigureAwait(false);
 
                 if (variantDescription == null)
                 {
@@ -164,27 +167,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             }
             catch (Exception e)
             {
-                var langs = string.Join(",", locales.Select(s => s.TwoLetterISOLanguageName));
-                _executionLog.LogWarning(e, $"There was an error providing the variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]");
+                _executionLog.LogWarning(e, $"There was an error providing the variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{languages}]");
             }
             return null;
         }
 
-        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IList<CultureInfo> locales, IMarketDescription marketDescription, string variantValue)
+        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription, string variantValue)
         {
             IMarketDescription variantDescription = null;
+            var languages = string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
             try
             {
-                variantDescription = await _variantMarketsCache.GetMarketDescriptionAsync(marketId, variantValue, locales).ConfigureAwait(false);
+                variantDescription = await _variantMarketsCache.GetMarketDescriptionAsync(marketId, variantValue, cultures).ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                var langs = string.Join(",", locales.Select(s => s.TwoLetterISOLanguageName));
-                _executionLog.LogWarning(e, $"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{langs}]");
+                _executionLog.LogError(e, $"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{languages}]");
             }
 
             if (variantDescription == null)
             {
+                _executionLog.LogError($"There was no explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{languages}]");
                 return null;
             }
 
@@ -204,6 +207,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 if (!mappings.IsNullOrEmpty() || !marketDescription.Mappings.IsNullOrEmpty())
                 {
                     ((MarketDescription)variantDescription).SetMappings((mappings ?? marketDescription.Mappings) as IReadOnlyCollection<IMarketMappingData>);
+                }
+
+                if (variantDescription.Specifiers.IsNullOrEmpty() && !marketDescription.Specifiers.IsNullOrEmpty())
+                {
+                    ((MarketDescription)variantDescription).SetSpecifiers(marketDescription.Specifiers as IReadOnlyCollection<ISpecifier>);
                 }
             }
 

@@ -1,6 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
@@ -10,10 +14,6 @@ using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -222,7 +222,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Opens the current instance
         /// </summary>
         /// <param name="interests">The interests for which to open trackers</param>
-        public void Open(IEnumerable<MessageInterest> interests)
+        public void Open(ICollection<MessageInterest> interests)
         {
             Guard.Argument(interests, nameof(interests)).NotNull().NotEmpty();
 

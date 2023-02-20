@@ -1,13 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Messages;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
@@ -17,14 +17,14 @@ namespace Sportradar.OddsFeed.SDK.API
     public interface ISportDataProvider
     {
         /// <summary>
-        /// Asynchronously gets a <see cref="IEnumerable{ISport}"/> representing all available sports in language specified by the <code>culture</code>
+        /// Asynchronously gets a <see cref="IEnumerable{ISport}"/> representing all available sports in language specified by the <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
         Task<IEnumerable<ISport>> GetSportsAsync(CultureInfo culture = null);
 
         /// <summary>
-        /// Asynchronously gets a <see cref="ISport"/> instance representing the sport specified by it's id in the language specified by <code>culture</code>, or a null reference if sport with specified id does not exist
+        /// Asynchronously gets a <see cref="ISport"/> instance representing the sport specified by it's id in the language specified by <c>culture</c>, or a null reference if sport with specified id does not exist
         /// </summary>
         /// <param name="id">A <see cref="URN"/> identifying the sport to retrieve.</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
@@ -32,23 +32,23 @@ namespace Sportradar.OddsFeed.SDK.API
         Task<ISport> GetSportAsync(URN id, CultureInfo culture = null);
 
         /// <summary>
-        /// Asynchronously gets a <see cref="IEnumerable{ICompetition}"/> representing currently live sport events in the language specified by <code>culture</code>
+        /// Asynchronously gets a <see cref="IEnumerable{ICompetition}"/> representing currently live sport events in the language specified by <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
         Task<IEnumerable<ICompetition>> GetLiveSportEventsAsync(CultureInfo culture = null);
 
         /// <summary>
-        /// Asynchronously gets a <see cref="IEnumerable{ICompetition}"/> representing sport events scheduled for date specified by <code>date</code> in language specified by <code>culture</code>
+        /// Asynchronously gets a <see cref="IEnumerable{ICompetition}"/> representing sport events scheduled for date specified by <c>date</c> in language specified by <c>culture</c>
         /// </summary>
-        /// <param name="date">A <see cref="DateTime"/> specifying the day for which to retrieve the schedule</param>
+        /// <param name="scheduleDate">A <see cref="DateTime"/> specifying the day for which to retrieve the schedule</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
-        Task<IEnumerable<ICompetition>> GetSportEventsByDateAsync(DateTime date, CultureInfo culture = null);
+        Task<IEnumerable<ICompetition>> GetSportEventsByDateAsync(DateTime scheduleDate, CultureInfo culture = null);
 
         /// <summary>
-        /// Gets a <see cref="ILongTermEvent"/> representing the specified tournament in language specified by <code>culture</code> or a null reference if the tournament with
-        /// specified <code>id</code> does not exist
+        /// Gets a <see cref="ILongTermEvent"/> representing the specified tournament in language specified by <c>culture</c> or a null reference if the tournament with
+        /// specified <c>id</c> does not exist
         /// </summary>
         /// <param name="id">A <see cref="URN"/> specifying the tournament to retrieve</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
@@ -56,8 +56,8 @@ namespace Sportradar.OddsFeed.SDK.API
         ILongTermEvent GetTournament(URN id, CultureInfo culture = null);
 
         /// <summary>
-        /// Gets a <see cref="ICompetition"/> representing the specified sport event in language specified by <code>culture</code> or a null reference if the sport event with
-        /// specified <code>id</code> does not exist
+        /// Gets a <see cref="ICompetition"/> representing the specified sport event in language specified by <c>culture</c> or a null reference if the sport event with
+        /// specified <c>id</c> does not exist
         /// </summary>
         /// <param name="id">A <see cref="URN"/> specifying the sport event to retrieve</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
@@ -65,8 +65,8 @@ namespace Sportradar.OddsFeed.SDK.API
         ICompetition GetCompetition(URN id, CultureInfo culture = null);
 
         /// <summary>
-        /// Gets a <see cref="ICompetition"/> representing the specified sport event in language specified by <code>culture</code> or a null reference if the sport event with
-        /// specified <code>id</code> does not exist
+        /// Gets a <see cref="ICompetition"/> representing the specified sport event in language specified by <c>culture</c> or a null reference if the sport event with
+        /// specified <c>id</c> does not exist
         /// </summary>
         /// <param name="id">A <see cref="URN"/> specifying the sport event to retrieve</param>
         /// <param name="sportId">A <see cref="URN"/> of the sport this event belongs to</param>
@@ -75,14 +75,17 @@ namespace Sportradar.OddsFeed.SDK.API
         ICompetition GetCompetition(URN id, URN sportId, CultureInfo culture = null);
 
         /// <summary>
-        /// Gets a <see cref="ISportEvent"/> derived class representing the specified sport event in language specified by <code>culture</code> or a null reference if the sport event with
-        /// specified <code>id</code> does not exist
+        /// Gets a <see cref="ISportEvent"/> derived class representing the specified sport event in language specified by <c>culture</c> or a null reference if the sport event with
+        /// specified <c>id</c> does not exist
         /// </summary>
         /// <param name="id">A <see cref="URN"/> specifying the sport event to retrieve</param>
         /// <param name="sportId">A <see cref="URN"/> of the sport this event belongs to</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="ISportEvent"/> derived class representing the specified sport event or a null reference if the requested sport event does not exist</returns>
-        ISportEvent GetSportEvent(URN id, URN sportId = null, CultureInfo culture = null) => null;
+        ISportEvent GetSportEvent(URN id, URN sportId = null, CultureInfo culture = null)
+        {
+            return null;
+        }
 
         /// <summary>
         /// Asynchronously gets a <see cref="ICompetitionStatus"/> for specific sport event
@@ -193,14 +196,20 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of all fixtures that have changed in the last 24 hours</returns>
-        Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(DateTime? after, URN sportId, CultureInfo culture = null) => Task.FromResult<IEnumerable<IFixtureChange>>(null);
+        Task<IEnumerable<IFixtureChange>> GetFixtureChangesAsync(DateTime? after, URN sportId, CultureInfo culture = null)
+        {
+            return Task.FromResult<IEnumerable<IFixtureChange>>(null);
+        }
 
         /// <summary>
         /// Gets the list of all results that have changed in the last 24 hours
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of all results that have changed in the last 24 hours</returns>
-        Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture = null) => Task.FromResult<IEnumerable<IResultChange>>(null);
+        Task<IEnumerable<IResultChange>> GetResultChangesAsync(CultureInfo culture = null)
+        {
+            return Task.FromResult<IEnumerable<IResultChange>>(null);
+        }
 
         /// <summary>
         /// Gets the list of all results that have changed in the last 24 hours
@@ -209,14 +218,20 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="sportId">A <see cref="URN"/> specifying the sport for which the fixtures should be returned</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of all results that have changed in the last 24 hours</returns>
-        Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture = null) => Task.FromResult<IEnumerable<IResultChange>>(null);
+        Task<IEnumerable<IResultChange>> GetResultChangesAsync(DateTime? after, URN sportId, CultureInfo culture = null)
+        {
+            return Task.FromResult<IEnumerable<IResultChange>>(null);
+        }
 
         /// <summary>
         /// Gets the list of available lotteries
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A list of available lotteries</returns>
-        Task<IEnumerable<ILottery>> GetLotteriesAsync(CultureInfo culture = null) => Task.FromResult<IEnumerable<ILottery>>(null);
+        Task<IEnumerable<ILottery>> GetLotteriesAsync(CultureInfo culture = null)
+        {
+            return Task.FromResult<IEnumerable<ILottery>>(null);
+        }
 
         /// <summary>
         /// Get sport event period summary as an asynchronous operation
@@ -226,7 +241,10 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="competitorIds">The list of competitor ids to fetch the results for</param>
         /// <param name="periods">The list of period ids to fetch the results for</param>
         /// <returns>The period statuses or empty if not found</returns>
-        Task<IEnumerable<IPeriodStatus>> GetPeriodStatusesAsync(URN id, CultureInfo culture = null, IEnumerable<URN> competitorIds = null, IEnumerable<int> periods = null) => Task.FromResult<IEnumerable<IPeriodStatus>>(null);
+        Task<IEnumerable<IPeriodStatus>> GetPeriodStatusesAsync(URN id, CultureInfo culture = null, IEnumerable<URN> competitorIds = null, IEnumerable<int> periods = null)
+        {
+            return Task.FromResult<IEnumerable<IPeriodStatus>>(null);
+        }
 
         /// <summary>
         /// Get the associated event timeline for single culture
@@ -234,6 +252,9 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="id">The id of the sport event to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
         /// <returns>The event timeline or empty if not found</returns>
-        Task<IEnumerable<ITimelineEvent>> GetTimelineEventsAsync(URN id, CultureInfo culture = null) => Task.FromResult<IEnumerable<ITimelineEvent>>(null);
+        Task<IEnumerable<ITimelineEvent>> GetTimelineEventsAsync(URN id, CultureInfo culture = null)
+        {
+            return Task.FromResult<IEnumerable<ITimelineEvent>>(null);
+        }
     }
 }

@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Net.Security;
+using System.Security.Authentication;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using System;
-using System.Net.Security;
-using System.Security.Authentication;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -76,8 +76,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         }
 
         /// <summary>
-        /// Configures the current <see cref="ConfiguredConnectionFactory"/> based on config options read from <code>_config</code> field
+        /// Configures the current <see cref="ConfiguredConnectionFactory"/> based on config options read from <c>_config</c> field
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Vulnerability", "S4423:Weak SSL/TLS protocols should not be used", Justification = "Support for all feed environment")]
         protected void Configure()
         {
             HostName = _config.Host;
@@ -96,10 +97,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 Ssl.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
             }
 
-            ClientProperties.Add("SrUfSdkType", ".netstd");
+            ClientProperties.Add("SrUfSdkType", SdkInfo.SdkType);
             ClientProperties.Add("SrUfSdkVersion", SdkInfo.GetVersion());
             ClientProperties.Add("SrUfSdkInit", $"{DateTime.Now:yyyyMMddHHmm}");
-            ClientProperties.Add("SrUfSdkConnName", "RabbitMQ / NETStd");
+            ClientProperties.Add("SrUfSdkConnName", $"RabbitMQ / {SdkInfo.SdkType}");
             ClientProperties.Add("SrUfSdkBId", $"{_config.BookmakerDetails?.BookmakerId}");
         }
 

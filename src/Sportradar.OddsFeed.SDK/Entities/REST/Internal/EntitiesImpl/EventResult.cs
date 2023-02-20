@@ -39,9 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public decimal? PointsDecimal { get; }
 
         /// <summary>
-        /// Gets the wc points
+        /// Gets the WC points
         /// </summary>
-        /// <value>The wc points</value>
+        /// <value>The WC points</value>
         public decimal? WcPoints { get; }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             AwayScore = dto.AwayScore;
             Grid = dto.Grid;
             Distance = dto.Distance;
-            CompetitorResults = dto.CompetitorResults?.Select(s => new CompetitorResult(s));
+            CompetitorResults = dto.CompetitorResults?.Select(s => new CompetitorResult(s)).ToList() ?? new List<CompetitorResult>();
         }
     }
 }

@@ -3,10 +3,11 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
@@ -25,25 +26,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
         private Dictionary<string, ISdkCache> _caches;
 
+        public long MaxSaveTime { get; private set; }
+
+        public long TotalSaveTime { get; private set; }
 
         /// <summary>
         /// Registers the cache in the CacheManager
         /// </summary>
         /// <param name="name">The name of the instance</param>
         /// <param name="cache">The cache to be registered</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3928:Parameter names used into ArgumentException constructors should match an existing one ", Justification = "Invalid argument")]
         public void RegisterCache(string name, ISdkCache cache)
         {
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
             Guard.Argument(cache, nameof(cache)).NotNull();
 
-            if (_caches == null)
-            {
-                _caches = new Dictionary<string, ISdkCache>();
-            }
+            _caches ??= new Dictionary<string, ISdkCache>();
             if (cache.RegisteredDtoTypes == null || !cache.RegisteredDtoTypes.Any())
             {
-                throw new ArgumentException("Missing registered dto types", nameof(cache.RegisteredDtoTypes));
+                throw new InvalidOperationException($"Missing registered dto types in {cache.CacheName}");
             }
             if (_caches.ContainsKey(name))
             {
@@ -87,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 return;
             }
-            
+
             var appropriateCaches = _caches.Where(s => s.Value.RegisteredDtoTypes.Contains(dtoType)).ToList();
 
             if (!appropriateCaches.Any())
@@ -95,6 +95,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 ExecLog.LogWarning($"No cache with registered type:{dtoType} and lang:[{culture.TwoLetterISOLanguageName}] to save data.");
                 return;
             }
+
+            var stopWatch = Stopwatch.StartNew();
 
             var tasks = appropriateCaches.Select(c => c.Value.CacheAddDtoAsync(id, item, culture, dtoType, requester)).ToArray();
             if (tasks.Any())
@@ -111,6 +113,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             else
             {
                 ExecLog.LogWarning("Cannot save data. There is no registered cache.");
+            }
+
+            stopWatch.Stop();
+
+            TotalSaveTime += stopWatch.ElapsedMilliseconds;
+            if (stopWatch.ElapsedMilliseconds > MaxSaveTime)
+            {
+                MaxSaveTime = stopWatch.ElapsedMilliseconds;
             }
         }
 

@@ -1,9 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
 using System;
 using System.Collections.Generic;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
 {

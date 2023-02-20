@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -8,7 +9,6 @@ using Sportradar.OddsFeed.SDK.Messages.Internal;
 #pragma warning disable 1591
 
 // ReSharper disable InconsistentNaming
-
 namespace Sportradar.OddsFeed.SDK.Messages.Feed
 {
     /// <summary>
@@ -117,6 +117,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
         }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "alive", IgnoreNamespace = false)]
     public partial class alive : FeedMessage
     {
@@ -138,11 +139,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "snapshot_complete", IgnoreNamespace = false)]
     public partial class snapshot_complete : FeedMessage
     {
@@ -164,11 +166,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "odds_change", IgnoreNamespace = false)]
     public partial class odds_change : FeedMessage
     {
@@ -190,11 +193,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "bet_stop", IgnoreNamespace = false)]
     public partial class bet_stop : FeedMessage
     {
@@ -216,11 +220,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "bet_settlement", IgnoreNamespace = false)]
     public partial class bet_settlement : FeedMessage
     {
@@ -242,11 +247,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "rollback_bet_settlement", IgnoreNamespace = false)]
     public partial class rollback_bet_settlement : FeedMessage
     {
@@ -268,11 +274,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "bet_cancel", IgnoreNamespace = false)]
     public partial class bet_cancel : FeedMessage
     {
@@ -294,11 +301,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "rollback_bet_cancel", IgnoreNamespace = false)]
     public partial class rollback_bet_cancel : FeedMessage
     {
@@ -320,11 +328,12 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "FeedMessages defaults")]
     [OverrideXmlNamespace(RootElementName = "fixture_change", IgnoreNamespace = false)]
     public partial class fixture_change : FeedMessage
     {
@@ -346,8 +355,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 }

@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Builds and returns a <see cref="INameExpression"/> specified by the passed <code>operand</code>
+        /// Builds and returns a <see cref="INameExpression"/> specified by the passed <c>operand</c>
         /// </summary>
         /// <param name="operand">The operand of the name expression</param>
         /// <param name="sportEvent">The <see cref="ISportEvent"/> instance associated with the target</param>
@@ -72,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             {
                 return new EntityNameExpression(operand, sportEvent);
             }
-            if(operand.Equals("event", StringComparison.InvariantCultureIgnoreCase))
+            if (operand.Equals("event", StringComparison.InvariantCultureIgnoreCase))
             {
                 return new EntityNameExpression(operand, sportEvent);
             }
@@ -108,33 +108,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             switch (Array.IndexOf(NameExpressionHelper.DefinedOperators, @operator))
             {
                 case 0: //+
-                {
-                    EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    return new PlusNameExpression(_operandFactory.BuildOperand(specifiers, operand));
-                }
+                    {
+                        EnsureSpecifiersNotNullOrEmpty(specifiers);
+                        return new PlusNameExpression(_operandFactory.BuildOperand(specifiers, operand));
+                    }
                 case 1: //-
-                {
-                    EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    return new MinusNameExpression(_operandFactory.BuildOperand(specifiers, operand));
-                }
+                    {
+                        EnsureSpecifiersNotNullOrEmpty(specifiers);
+                        return new MinusNameExpression(_operandFactory.BuildOperand(specifiers, operand));
+                    }
                 case 2: //$
-                {
-                    return BuildEntityNameExpression(operand, sportEvent);
-                }
+                    {
+                        return BuildEntityNameExpression(operand, sportEvent);
+                    }
                 case 3: //!
-                {
-                    EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    return new OrdinalNameExpression(_operandFactory.BuildOperand(specifiers, operand));
-                }
+                    {
+                        EnsureSpecifiersNotNullOrEmpty(specifiers);
+                        return new OrdinalNameExpression(_operandFactory.BuildOperand(specifiers, operand));
+                    }
                 case 4: //%
-                {
-                    EnsureSpecifiersNotNullOrEmpty(specifiers);
-                    return new PlayerProfileExpression(_profileCache, _operandFactory.BuildOperand(specifiers, operand));
-                }
+                    {
+                        EnsureSpecifiersNotNullOrEmpty(specifiers);
+                        return new PlayerProfileExpression(_profileCache, _operandFactory.BuildOperand(specifiers, operand));
+                    }
                 default:
-                {
-                    throw new ArgumentException($"Operator {@operator} is not supported. Supported operators are: {string.Join(",", NameExpressionHelper.DefinedOperators)}", nameof(@operator));
-                }
+                    {
+                        throw new ArgumentException($"Operator {@operator} is not supported. Supported operators are: {string.Join(",", NameExpressionHelper.DefinedOperators)}", nameof(@operator));
+                    }
             }
         }
     }

@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Castle.Core.Internal;
-using Dawn;
-using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using Dawn;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {

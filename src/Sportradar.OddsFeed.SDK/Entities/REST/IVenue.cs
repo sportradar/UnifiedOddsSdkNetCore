@@ -78,6 +78,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the course
         /// </summary>
         /// <value>The course</value>
-        IEnumerable<IHole> Course => null;
+        IEnumerable<IHole> Course => new List<IHole>();
     }
 }

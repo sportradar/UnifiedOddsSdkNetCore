@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 BasicEvents = timeline.timeline.Select(s => new BasicEventDTO(s));
             }
 
-            GeneratedAt = timeline.generated_atSpecified ? timeline.generated_at : (DateTime?) null;
+            GeneratedAt = timeline.generated_atSpecified ? timeline.generated_at : (DateTime?)null;
         }
     }
 }

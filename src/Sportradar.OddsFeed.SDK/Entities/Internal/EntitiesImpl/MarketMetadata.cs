@@ -68,17 +68,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                     NextBetstop = marketMetadata.next_betstop;
                     NextBetstopDate = SdkInfo.TryFromEpochTime(marketMetadata.next_betstop);
                 }
-                if(marketMetadata.start_timeSpecified)
+                if (marketMetadata.start_timeSpecified)
                 {
                     StartTime = marketMetadata.start_time;
                     StartTimeDate = SdkInfo.TryFromEpochTime(marketMetadata.start_time);
                 }
-                if(marketMetadata.end_timeSpecified)
+                if (marketMetadata.end_timeSpecified)
                 {
                     EndTime = marketMetadata.end_time;
                     EndTimeDate = SdkInfo.TryFromEpochTime(marketMetadata.end_time);
                 }
-                if(marketMetadata.aams_idSpecified)
+                if (marketMetadata.aams_idSpecified)
                 {
                     AamsId = marketMetadata.aams_id;
                 }

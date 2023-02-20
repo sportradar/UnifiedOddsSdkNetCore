@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StoppageTimeAnnounced = stoppageTimeAnnounced;
             RemainingTime = remainingTime;
             RemainingTimeInPeriod = remainingTimeInPeriod;
-            IsStopped = isStoppedSpecified ? (bool?) isStopped : null;
+            IsStopped = isStoppedSpecified ? (bool?)isStopped : null;
         }
     }
 }

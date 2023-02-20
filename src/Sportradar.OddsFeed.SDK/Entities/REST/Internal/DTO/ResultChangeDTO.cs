@@ -30,7 +30,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal ResultChangeDTO(resultChange resultChange, DateTime? generatedAt)
         {
             if (resultChange == null)
+            {
                 throw new ArgumentNullException(nameof(resultChange));
+            }
 
             SportEventId = URN.Parse(resultChange.sport_event_id);
             UpdateTime = resultChange.update_time;

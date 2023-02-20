@@ -5,14 +5,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     internal enum RecoveryStatusChangeReason
     {
-        RECOVERY_STARTED,
+        RecoveryStarted,
 
-        INITIAL_RECOVERY_COMPLETED,
+        InitialRecoveryCompleted,
 
-        RECOVERY_FAILED,
+        RecoveryFailed,
 
-        PROCESSING_DELAYED,
+        ProcessingDelayed,
 
-        ALIVE_INTERVAL_VIOLATION
+        AliveIntervalViolation
     }
 }

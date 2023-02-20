@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
             BonusBalls = info.bonus_ballsSpecified
                 ? info.bonus_balls
-                : (int?) null;
+                : (int?)null;
 
             BonusDrumType = RestMapperHelper.MapBonusDrumType(info.bonus_drum, info.bonus_drumSpecified);
 

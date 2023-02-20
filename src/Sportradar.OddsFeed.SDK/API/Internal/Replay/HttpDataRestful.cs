@@ -2,10 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -25,32 +25,26 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(HttpDataRestful));
 
         /// <summary>
-        /// A <see cref="HttpClient"/> used to invoke HTTP requests
+        /// A <see cref="ISdkHttpClient"/> used to invoke HTTP requests
         /// </summary>
-        private readonly HttpClient _client;
+        private readonly ISdkHttpClient _client;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpDataRestful"/> class.
         /// </summary>
-        /// <param name="client">A <see cref="T:System.Net.Http.HttpClient" /> used to invoke HTTP requests</param>
-        /// <param name="accessToken">A token used when making the http requests</param>
+        /// <param name="client">A <see cref="ISdkHttpClient" /> used to invoke HTTP requests</param>
         /// <param name="responseDeserializer">The deserializer for unexpected response</param>
         /// <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
         /// <param name="connectionFailureTimeout">indicates the timeout after which comes out of "blocking mode" (in seconds)</param>
-        public HttpDataRestful(HttpClient client, string accessToken, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15)
-            : base(client, accessToken, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
+        public HttpDataRestful(ISdkHttpClient client, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15)
+            : base(client, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
         {
             Guard.Argument(client, nameof(client)).NotNull();
             Guard.Argument(client.DefaultRequestHeaders, nameof(client)).NotNull();
-            Guard.Argument(accessToken, nameof(accessToken)).NotNull().NotEmpty();
             Guard.Argument(connectionFailureLimit, nameof(connectionFailureLimit)).Positive();
             Guard.Argument(connectionFailureTimeout, nameof(connectionFailureTimeout)).Positive();
 
             _client = client;
-            if (_client.DefaultRequestHeaders != null && !_client.DefaultRequestHeaders.Contains("x-access-token"))
-            {
-                _client.DefaultRequestHeaders.Add("x-access-token", accessToken);
-            }
         }
 
         /// <summary>

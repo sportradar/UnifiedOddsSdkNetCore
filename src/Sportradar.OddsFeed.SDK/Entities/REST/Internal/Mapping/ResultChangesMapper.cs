@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <returns>Constructed <see cref="IEnumerable{ResultChangeDTO}"/> instance</returns>
         public IEnumerable<ResultChangeDTO> Map()
         {
-            if(_data.result_change == null)
+            if (_data.result_change == null)
             {
                 return new List<ResultChangeDTO>();
             }

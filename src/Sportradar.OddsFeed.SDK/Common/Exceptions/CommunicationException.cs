@@ -90,10 +90,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
             : base(info, context)
         {
             Url = info.GetString("sdkUrl");
-            ResponseCode = (HttpStatusCode) info.GetValue("sdkResponseCode", typeof(HttpStatusCode));
+            ResponseCode = (HttpStatusCode)info.GetValue("sdkResponseCode", typeof(HttpStatusCode));
             Response = info.GetString("sdkResponse");
         }
-
 
         /// <summary>
         /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with information about the exception.

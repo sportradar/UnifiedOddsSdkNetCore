@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         /// <returns>The created <see cref="PlayerProfileDTO"/> instance </returns>
         public PlayerProfileDTO Map()
         {
-            return new PlayerProfileDTO(_data.player, _data.generated_atSpecified ? _data.generated_at : (DateTime?) null);
+            return new PlayerProfileDTO(_data.player, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null);
         }
     }
 }

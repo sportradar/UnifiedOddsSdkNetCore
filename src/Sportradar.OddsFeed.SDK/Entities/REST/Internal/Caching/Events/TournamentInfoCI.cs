@@ -1,13 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Castle.Core.Internal;
-using Dawn;
-using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +8,14 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using Dawn;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
@@ -234,7 +235,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return await PrepareCompetitorList(_competitors, wantedCultures).ConfigureAwait(false);
             }
-            await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            if (wantedCultures.Any())
+            {
+                await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            }
             return await PrepareCompetitorList(_competitors, wantedCultures).ConfigureAwait(false);
         }
 
@@ -261,7 +265,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _currentSeasonInfo;
             }
-            await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            if (wantedCultures.Any())
+            {
+                await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            }
             return _currentSeasonInfo;
         }
 
@@ -277,7 +284,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _groups;
             }
-            await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            if (wantedCultures.Any())
+            {
+                await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            }
             return _groups;
         }
 
@@ -299,7 +309,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                     _loadedSchedules.AddRange(missingCultures);
                     if (tasks.First().Result != null)
                     {
-                        _scheduleUrns = tasks.First().Result.Select(s => s.Item1);
+                        _scheduleUrns = tasks.First().Result.Select(s => s.Item1).ToList();
                     }
                 }
             }
@@ -324,7 +334,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 return _round;
             }
-            await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            if (wantedCultures.Any())
+            {
+                await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
+            }
             return _round;
         }
 
@@ -667,6 +680,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// </summary>
         /// <param name="groups">The groups</param>
         /// <param name="culture">The culture</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1066:Collapsible \"if\" statements should be merged", Justification = "Allowed for readability")]
         private void MergeGroups(IEnumerable<GroupDTO> groups, CultureInfo culture)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
@@ -680,27 +694,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 ? new List<GroupCI>()
                 : new List<GroupCI>(_groups);
 
-            var groupDTOs = groups.ToList();
+            var groupDtos = groups.ToList();
             // remove obsolete groups
             if (!_groups.IsNullOrEmpty())
             {
                 try
                 {
-                    if (groupDTOs.Count > 0 && !groupDTOs.Count.Equals(tmpGroups.Count))
+                    if (groupDtos.Count > 0 && !groupDtos.Count.Equals(tmpGroups.Count))
                     {
                         tmpGroups.Clear();
                     }
-                    else if (tmpGroups.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)) && !groupDTOs.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)))
+                    else if (tmpGroups.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)) && !groupDtos.Any(c => string.IsNullOrEmpty(c.Id) && string.IsNullOrEmpty(c.Name)))
                     {
                         tmpGroups.Clear();
                     }
                     else
                     {
-                        foreach (var tmpGroup in _groups)
+                        foreach (var tmpGroup in _groups!)
                         {
                             if (!string.IsNullOrEmpty(tmpGroup.Id))
                             {
-                                if (groupDTOs.FirstOrDefault(f => f.Id.Equals(tmpGroup.Id, StringComparison.InvariantCultureIgnoreCase)) == null)
+                                if (groupDtos.FirstOrDefault(f => f.Id.Equals(tmpGroup.Id, StringComparison.InvariantCultureIgnoreCase)) == null)
                                 {
                                     tmpGroups.Remove(tmpGroup);
                                     continue;
@@ -709,7 +723,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
                             if (string.IsNullOrEmpty(tmpGroup.Id) && !string.IsNullOrEmpty(tmpGroup.Name))
                             {
-                                if (groupDTOs.FirstOrDefault(f => !string.IsNullOrEmpty(f.Name) && f.Name.Equals(tmpGroup.Name, StringComparison.InvariantCultureIgnoreCase)) == null)
+                                if (groupDtos.FirstOrDefault(f => !string.IsNullOrEmpty(f.Name) && f.Name.Equals(tmpGroup.Name, StringComparison.InvariantCultureIgnoreCase)) == null)
                                 {
                                     tmpGroups.Remove(tmpGroup);
                                     continue;
@@ -718,7 +732,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 
                             if (string.IsNullOrEmpty(tmpGroup.Id) && string.IsNullOrEmpty(tmpGroup.Name))
                             {
-                                if (groupDTOs.First(f => string.IsNullOrEmpty(f.Id) && string.IsNullOrEmpty(f.Name)) == null)
+                                if (groupDtos.Any(f => string.IsNullOrEmpty(f.Id) && string.IsNullOrEmpty(f.Name)))
                                 {
                                     tmpGroups.Remove(tmpGroup);
                                     continue;
@@ -732,11 +746,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                             }
 
                             // if no group with matching competitors
-                            var groupExists = MergerHelper.FindExistingGroup(groupDTOs, tmpGroup);
+                            var groupExists = MergerHelper.FindExistingGroup(groupDtos, tmpGroup);
                             if (groupExists == null)
                             {
                                 tmpGroups.Remove(tmpGroup);
-                                continue;
                             }
                         }
                     }
@@ -754,7 +767,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 }
             }
 
-            foreach (var group in groupDTOs)
+            foreach (var group in groupDtos)
             {
                 var tempGroup = MergerHelper.FindExistingGroup(tmpGroups, group);
                 if (tempGroup == null)
@@ -800,6 +813,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         {
             var exportable = await base.CreateExportableCIAsync<T>();
             var info = exportable as ExportableTournamentInfoCI;
+
+            if (info == null)
+            {
+                ExecutionLog.LogWarning($"Problem exporting {Id}. Expected: {typeof(ExportableTournamentInfoCI)}, actual: {exportable?.GetType().Name}");
+                return exportable;
+            }
 
             info.CategoryId = _categoryId?.ToString();
             info.TournamentCoverage = _tournamentCoverage != null ? await _tournamentCoverage.ExportAsync().ConfigureAwait(false) : null;

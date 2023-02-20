@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
 using App.Metrics;
 using App.Metrics.Timer;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,6 @@ using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
-using System;
 using Unity;
 
 namespace Sportradar.OddsFeed.SDK.API.Extended
@@ -91,7 +91,6 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
                 RawFeedMessageReceived?.Invoke(sender, e);
 
                 var requestId = e.FeedMessage?.RequestId == null ? null : $" ({e.FeedMessage.RequestId})";
-
                 Log.LogInformation($"Dispatching raw feed message [{e.MessageInterest}]: {e.FeedMessage?.GetType().Name} for event {e.FeedMessage?.EventId}{requestId} took {t.Elapsed.TotalMilliseconds} ms.");
             }
             catch (Exception ex)

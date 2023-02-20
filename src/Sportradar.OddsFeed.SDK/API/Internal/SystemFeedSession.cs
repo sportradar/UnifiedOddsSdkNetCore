@@ -2,16 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.Linq;
 using System.Threading;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
@@ -38,11 +37,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         private bool _isDisposed;
 
         /// <summary>
-        /// A <see cref="IGlobalEventDispatcher"/> used to dispatch global events
-        /// </summary>
-        private readonly IGlobalEventDispatcher _globalEventDispatcher;
-
-        /// <summary>
         /// A <see cref="IMessageReceiver"/> used to provide feed messages
         /// </summary>
         private readonly IMessageReceiver _messageReceiver;
@@ -56,11 +50,6 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// The A <see cref="IMessageDataExtractor"/> instance used to extract basic message data from messages which could not be deserialized
         /// </summary>
         private readonly IMessageDataExtractor _messageDataExtractor;
-
-        /// <summary>
-        /// A <see cref="IFeedMessageMapper"/> used to map the feed messages to messages used by the SDK
-        /// </summary>
-        private readonly IFeedMessageMapper _messageMapper;
 
         /// <summary>
         /// Gets a value indicating whether the current instance is opened
@@ -81,28 +70,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="OddsFeedSession"/> class
         /// </summary>
-        /// <param name="globalEventDispatcher">A <see cref="IGlobalEventDispatcher"/> used to dispatch global events</param>
         /// <param name="messageReceiver"> A <see cref="IMessageReceiver"/> used to provide feed messages</param>
-        /// <param name="messageMapper">A <see cref="IFeedMessageMapper"/> used to map the feed messages to messages used by the SDK</param>
         /// <param name="messageValidator">A <see cref="IFeedMessageValidator"/> instance used to validate received messages</param>
         /// <param name="messageDataExtractor">A <see cref="IMessageDataExtractor"/> instance used to extract basic message data from messages which could not be deserialized</param>
-        public FeedSystemSession(
-            IGlobalEventDispatcher globalEventDispatcher,
-            IMessageReceiver messageReceiver,
-            IFeedMessageMapper messageMapper,
-            IFeedMessageValidator messageValidator,
-            IMessageDataExtractor messageDataExtractor)
+        public FeedSystemSession(IMessageReceiver messageReceiver, IFeedMessageValidator messageValidator, IMessageDataExtractor messageDataExtractor)
         {
-            Guard.Argument(globalEventDispatcher, nameof(globalEventDispatcher)).NotNull();
             Guard.Argument(messageReceiver, nameof(messageReceiver)).NotNull();
-            Guard.Argument(messageMapper, nameof(messageMapper)).NotNull();
             Guard.Argument(messageValidator, nameof(messageValidator)).NotNull();
             Guard.Argument(messageDataExtractor, nameof(messageDataExtractor)).NotNull();
 
-            _globalEventDispatcher = globalEventDispatcher;
             _messageReceiver = messageReceiver;
             _messageValidator = messageValidator;
-            _messageMapper = messageMapper;
             _messageDataExtractor = messageDataExtractor;
         }
 
@@ -115,7 +93,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (feedMessage is alive alive)
             {
-                var args = new FeedMessageReceivedEventArgs(alive, null,  rawMessage);
+                var args = new FeedMessageReceivedEventArgs(alive, null, rawMessage);
                 Dispatch(AliveReceived, args, "AliveReceived");
             }
         }
@@ -131,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var validationResult = _messageValidator.Validate(message);
             switch (validationResult)
             {
-                case ValidationResult.FAILURE:
+                case ValidationResult.Failure:
                     _log.LogWarning($"Validation of message=[{message}] failed. Raising OnUnparsableMessageReceived event");
                     MessageType messageType;
                     try
@@ -146,10 +124,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     var eventArgs = new UnparsableMessageEventArgs(messageType, message.ProducerId.ToString(), message.EventId, e.RawMessage);
                     Dispatch(UnparsableMessageReceived, eventArgs, "OnUnparsableMessageReceived");
                     return;
-                case ValidationResult.PROBLEMS_DETECTED:
+                case ValidationResult.ProblemsDetected:
                     _log.LogWarning($"Problems were detected while validating message=[{message}], but the message is still eligible for further processing.");
                     return;
-                case ValidationResult.SUCCESS:
+                case ValidationResult.Success:
                     _log.LogDebug($"Message=[{message}] successfully validated. Continuing with message processing");
                     ProcessMessage(message, e.RawMessage);
                     return;

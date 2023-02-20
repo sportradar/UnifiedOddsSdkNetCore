@@ -16,7 +16,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public Car(CarCI car)
         {
             if (car == null)
+            {
                 throw new ArgumentNullException(nameof(car));
+            }
 
             Name = car.Name;
             Chassis = car.Chassis;

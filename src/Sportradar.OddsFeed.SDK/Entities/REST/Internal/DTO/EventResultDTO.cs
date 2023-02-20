@@ -172,19 +172,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(stageResultCompetitor, nameof(stageResultCompetitor)).NotNull();
 
             Id = stageResultCompetitor.id;
-            Position = stageResultCompetitor.positionSpecified ? stageResultCompetitor.position : (int?) null;
-            PointsDecimal = stageResultCompetitor.pointsSpecified ? (decimal) stageResultCompetitor.points : (decimal?) null;
-            WcPoints = stageResultCompetitor.wc_pointsSpecified ? (decimal?) stageResultCompetitor.wc_points : null;
+            Position = stageResultCompetitor.positionSpecified ? stageResultCompetitor.position : (int?)null;
+            PointsDecimal = stageResultCompetitor.pointsSpecified ? (decimal)stageResultCompetitor.points : (decimal?)null;
+            WcPoints = stageResultCompetitor.wc_pointsSpecified ? (decimal?)stageResultCompetitor.wc_points : null;
             Time = stageResultCompetitor.time;
-            TimeRanking = stageResultCompetitor.time_rankingSpecified ? stageResultCompetitor.time_ranking : (int?) null;
+            TimeRanking = stageResultCompetitor.time_rankingSpecified ? stageResultCompetitor.time_ranking : (int?)null;
             Status = stageResultCompetitor.status;
             StatusComment = stageResultCompetitor.status_comment;
-            SprintDecimal = stageResultCompetitor.sprintSpecified ? (decimal)stageResultCompetitor.sprint : (decimal?) null;
-            SprintRanking = stageResultCompetitor.sprint_rankingSpecified ? stageResultCompetitor.sprint_ranking : (int?) null;
-            ClimberDecimal = stageResultCompetitor.climberSpecified ? (decimal)stageResultCompetitor.climber : (decimal?) null;
-            ClimberRanking = stageResultCompetitor.climber_rankingSpecified ? stageResultCompetitor.climber_ranking : (int?) null;
-            Grid = stageResultCompetitor.gridSpecified ? stageResultCompetitor.grid : (int?) null;
-            Distance = stageResultCompetitor.distanceSpecified ? stageResultCompetitor.distance : (double?) null;
+            SprintDecimal = stageResultCompetitor.sprintSpecified ? (decimal)stageResultCompetitor.sprint : (decimal?)null;
+            SprintRanking = stageResultCompetitor.sprint_rankingSpecified ? stageResultCompetitor.sprint_ranking : (int?)null;
+            ClimberDecimal = stageResultCompetitor.climberSpecified ? (decimal)stageResultCompetitor.climber : (decimal?)null;
+            ClimberRanking = stageResultCompetitor.climber_rankingSpecified ? stageResultCompetitor.climber_ranking : (int?)null;
+            Grid = stageResultCompetitor.gridSpecified ? stageResultCompetitor.grid : (int?)null;
+            Distance = stageResultCompetitor.distanceSpecified ? stageResultCompetitor.distance : (double?)null;
             if (!stageResultCompetitor.result.IsNullOrEmpty())
             {
                 CompetitorResults = stageResultCompetitor.result.Select(s => new CompetitorResultDTO(s));

@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿/*
+* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+*/
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -126,7 +129,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         {
             if (!uniqueItems.ContainsKey(key))
             {
-                //Debug.WriteLine($"AddOrUpdate key {key} - {uniqueItems.Count}");
                 uniqueItems.AddOrUpdate(key, DateTime.Now, UpdateValueFactory);
                 return;
             }
@@ -135,7 +137,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             while (_waitAll || (uniqueItems.ContainsKey(key) && stopWatch.ElapsedMilliseconds < lockTimeout.TotalMilliseconds))
             {
                 Task.Delay(lockSleep).Wait();
-                //Debug.WriteLine($"Waiting for free processing for key {key} took {stopWatch.ElapsedMilliseconds} ms. {uniqueItems.Count}");
             }
 
             if (stopWatch.ElapsedMilliseconds > lockTimeout.TotalMilliseconds)
@@ -156,7 +157,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     return;
                 }
                 Task.Delay(lockSleep).Wait();
-                //Debug.WriteLine($"Waiting for release for key {key} took {stopWatch.ElapsedMilliseconds} ms.");
             }
 
             if (stopWatch.ElapsedMilliseconds > lockTimeout.TotalMilliseconds)

@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Guard.Argument(periodStatus, nameof(periodStatus)).NotNull();
 
-            Number = periodStatus.numberSpecified ? periodStatus.number : (int?) null;
+            Number = periodStatus.numberSpecified ? periodStatus.number : (int?)null;
             Type = periodStatus.type;
             Status = periodStatus.status;
             if (!periodStatus.competitor.IsNullOrEmpty())

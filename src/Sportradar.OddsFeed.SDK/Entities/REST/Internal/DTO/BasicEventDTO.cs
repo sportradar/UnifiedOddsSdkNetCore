@@ -3,8 +3,8 @@
 */
 using System;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
@@ -41,15 +41,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(item, nameof(item)).NotNull();
 
             Id = item.id;
-            HomeScore = item.home_scoreSpecified ? (decimal?) item.home_score : null;
-            AwayScore = item.away_scoreSpecified ? (decimal?) item.away_score : null;
-            MatchTime = item.match_timeSpecified ? (int?) item.match_time : null;
+            HomeScore = item.home_scoreSpecified ? (decimal?)item.home_score : null;
+            AwayScore = item.away_scoreSpecified ? (decimal?)item.away_score : null;
+            MatchTime = item.match_timeSpecified ? (int?)item.match_time : null;
             Period = item.period;
             PeriodName = item.period_name;
             Points = item.points;
             StoppageTime = item.stoppage_time;
             Team = item.team == null
-                ? (HomeAway?) null
+                ? (HomeAway?)null
                 : item.team.Equals("home", StringComparison.InvariantCultureIgnoreCase)
                     ? HomeAway.Home
                     : HomeAway.Away;
@@ -70,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 Player = new EventPlayerDTO(item.player);
             }
-            MatchStatusCode = item.match_status_codeSpecified ? (int?) item.match_status_code : null;
+            MatchStatusCode = item.match_status_codeSpecified ? (int?)item.match_status_code : null;
             MatchClock = item.match_clock;
         }
     }

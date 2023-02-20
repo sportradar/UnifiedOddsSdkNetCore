@@ -2,11 +2,11 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
@@ -121,7 +121,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>The id of the associated category</returns>
         public async Task<URN> GetCategoryIdAsync()
         {
-            if(_categoryId != null)
+            if (_categoryId != null)
             {
                 return _categoryId;
             }
@@ -140,7 +140,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<BonusInfoCI> GetBonusInfoAsync()
         {
-            if(_bonusInfo != null)
+            if (_bonusInfo != null)
             {
                 return _bonusInfo;
             }
@@ -178,7 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
         public async Task<IEnumerable<URN>> GetScheduledDrawsAsync()
         {
-            if (_scheduleFetched || _scheduledDraws != null && _scheduledDraws.Any())
+            if (_scheduleFetched || (_scheduledDraws != null && _scheduledDraws.Any()))
             {
                 return _scheduledDraws;
             }

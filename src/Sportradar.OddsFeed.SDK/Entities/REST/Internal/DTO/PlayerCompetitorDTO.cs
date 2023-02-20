@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <param name="record">A <see cref="playerCompetitor"/> containing information about a player as a member of competitor</param>
         internal PlayerCompetitorDTO(playerCompetitor record)
-            :base(new player {id = record.id, name = record.name })
+            : base(new player { id = record.id, name = record.name })
         {
             Guard.Argument(record, nameof(record)).NotNull();
 

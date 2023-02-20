@@ -9,6 +9,7 @@ namespace Sportradar.OddsFeed.SDK.API
     /// Enumerates the types of the caches supported by the SDK
     /// </summary>
     [Flags]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator", "RCS1135:Declare enum member with zero value (when enum has FlagsAttribute).", Justification = "Allowed to prevent breaking change")]
     public enum CacheType
     {
         /// <summary>

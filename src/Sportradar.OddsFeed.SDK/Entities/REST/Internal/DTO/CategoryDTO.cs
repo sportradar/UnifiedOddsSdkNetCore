@@ -3,8 +3,8 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -30,9 +30,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="id">The id of the category</param>
         /// <param name="name">The name of the category</param>
         /// <param name="countryCode">A country code</param>
-        /// <param name="tournaments">A <see cref="IEnumerable{TournamentDTO}"/> containing tournaments belonging to category</param>
-        internal CategoryDTO(string id, string name, string countryCode, IEnumerable<tournamentExtended> tournaments)
-            :base(id, name, countryCode)
+        /// <param name="tournaments">A <see cref="ICollection{TournamentDTO}"/> containing tournaments belonging to category</param>
+        internal CategoryDTO(string id, string name, string countryCode, ICollection<tournamentExtended> tournaments)
+            : base(id, name, countryCode)
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// A <see cref="IEqualityComparer{tournamentExtended}"/> implementation used for equality comparison of <see cref="tournamentExtended"/> instances
         /// </summary>
         /// <seealso cref="IEqualityComparer{tournamentExtended}" />
-        private class TournamentByTournamentIdEqualityComparer : IEqualityComparer<tournamentExtended>
+        private sealed class TournamentByTournamentIdEqualityComparer : IEqualityComparer<tournamentExtended>
         {
             public bool Equals(tournamentExtended x, tournamentExtended y)
             {

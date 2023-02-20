@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="voidFactor">the <see cref="VoidFactor" /> associated with a current <see cref="IOutcomeSettlement" /> or a null reference</param>
         /// <param name="nameProvider">A <see cref="INameProvider"/> used to generate the outcome name(s)</param>
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>
         internal OutcomeSettlement(double? deadHeatFactor,
                                    string id,
@@ -29,12 +29,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                    VoidFactor? voidFactor,
                                    INameProvider nameProvider,
                                    IMarketMappingProvider mappingProvider,
-                                   IEnumerable<CultureInfo> cultures,
+                                   IReadOnlyCollection<CultureInfo> cultures,
                                    IOutcomeDefinition outcomeDefinition)
             : base(id, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
             DeadHeatFactor = deadHeatFactor;
+#pragma warning disable CS0618
             Result = result == 1;
+#pragma warning restore CS0618
             VoidFactor = voidFactor;
             OutcomeResult = result switch
             {

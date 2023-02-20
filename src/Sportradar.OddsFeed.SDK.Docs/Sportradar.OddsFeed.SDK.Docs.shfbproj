@@ -39,7 +39,7 @@
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <HelpTitle>Odds Feed SDK Std Documentation</HelpTitle>
-    <HelpFileVersion>1.28.0</HelpFileVersion>
+    <HelpFileVersion>1.30.1</HelpFileVersion>
     <NamingMethod>MemberName</NamingMethod>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <RootNamespaceContainer>False</RootNamespaceContainer>
@@ -47,7 +47,7 @@
     <MaximumGroupParts>2</MaximumGroupParts>
     <Preliminary>False</Preliminary>
     <CopyrightHref>http://sdk.sportradar.com/unifiedfeed/netcore</CopyrightHref>
-    <CopyrightText>Copyright &amp;#169%3b 2020-2022, Sportradar AG</CopyrightText>
+    <CopyrightText>Copyright &amp;#169%3b 2020-2023, Sportradar AG</CopyrightText>
     <FeedbackEMailAddress>sdk%40sportradar.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>SDK Team</FeedbackEMailLinkText>
     <SdkLinkTarget>Top</SdkLinkTarget>

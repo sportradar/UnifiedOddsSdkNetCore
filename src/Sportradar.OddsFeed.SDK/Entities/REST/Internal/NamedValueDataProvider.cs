@@ -2,11 +2,11 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Dawn;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
@@ -21,7 +21,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// Event raised when the data provider receives the api message
         /// </summary>
+#pragma warning disable CS0067
         public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
+#pragma warning restore CS0067
 
         /// <summary>
         /// The url format specifying the url of the resources fetched by the fetcher
@@ -34,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         private readonly IDataFetcher _fetcher;
 
         /// <summary>
-        /// The name of the xml element containing id / description attributes
+        /// The name of the XML element containing id / description attributes
         /// </summary>
         private readonly string _xmlElementName;
 
@@ -43,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="uriFormat">The url format specifying the url of the resources fetched by the fetcher</param>
         /// <param name="fetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
-        /// <param name="xmlElementName">The name of the xml element containing id / description attributes</param>
+        /// <param name="xmlElementName">The name of the XML element containing id / description attributes</param>
         public NamedValueDataProvider(string uriFormat, IDataFetcher fetcher, string xmlElementName)
         {
             Guard.Argument(uriFormat, nameof(uriFormat)).NotNull().NotEmpty();
@@ -78,10 +80,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 var nodes = document.DocumentElement.SelectNodes(_xmlElementName);
                 var result = from XmlNode m in nodes
-                    where m.Attributes?["id"] != null && m.Attributes["description"] != null
-                    let id = int.Parse(m.Attributes["id"].Value)
-                    let desc = m.Attributes?["description"].Value
-                    select new NamedValueDTO(id, desc);
+                             where m.Attributes?["id"] != null && m.Attributes["description"] != null
+                             let id = int.Parse(m.Attributes["id"].Value)
+                             let desc = m.Attributes?["description"].Value
+                             select new NamedValueDTO(id, desc);
                 return new EntityList<NamedValueDTO>(result);
             }
 
@@ -89,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Asynchronously gets a <see cref="!:T" /> instance in language specified by the provided <code>languageCode</code>
+        /// Asynchronously gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
@@ -113,7 +115,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Gets a <see cref="!:T" /> instance in language specified by the provided <code>languageCode</code>
+        /// Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>

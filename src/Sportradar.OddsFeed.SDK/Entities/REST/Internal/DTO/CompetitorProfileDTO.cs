@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Competitor = new CompetitorDTO(record.competitor);
             if (record.players != null && record.players.Any())
             {
-                Players = new ReadOnlyCollection<PlayerProfileDTO>(record.players.Select(p => new PlayerProfileDTO(p, record.generated_atSpecified ? record.generated_at : (DateTime?) null)).ToList());
+                Players = new ReadOnlyCollection<PlayerProfileDTO>(record.players.Select(p => new PlayerProfileDTO(p, record.generated_atSpecified ? record.generated_at : (DateTime?)null)).ToList());
             }
             if (record.jerseys != null)
             {

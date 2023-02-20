@@ -4,13 +4,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Timer;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -83,7 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <param name="dataProvider">A <see cref="IDataProvider{T}"/> to retrieve match status descriptions</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how potential exceptions should be handled</param>
-        public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, IEnumerable<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
+        public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, ICollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
             Guard.Argument(dataProvider, nameof(dataProvider)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
@@ -97,7 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         }
 
         /// <summary>
-        /// Asynchronously gets a match stats descriptions specified by the language specified by <code>culture</code>
+        /// Asynchronously gets a match stats descriptions specified by the language specified by <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the retrieved match statuses</param>
         /// <returns>A <see cref="Task" /> representing the retrieval operation</returns>
@@ -131,9 +131,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             CacheLog.LogDebug($"LocalizedNamedValueCache: {record.Items.Count()} items retrieved for locale '{culture.TwoLetterISOLanguageName}'.");
         }
 
-
         /// <summary>
-        /// Asynchronously gets a match status descriptions specified by the language specified by <code>culture</code>
+        /// Asynchronously gets a match status descriptions specified by the language specified by <c>culture</c>
         /// </summary>
         /// <param name="cultures">A array of <see cref="CultureInfo"/> specifying the language of the retrieved match statuses</param>
         /// <returns>A <see cref="Task" /> representing the retrieval operation</returns>
@@ -187,7 +186,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             _semaphore.Wait(-1);
             if (!_loadedCultures.Any())
             {
-                GetInternalAsync(new[] {_defaultCultures.First()}).RunSynchronously();
+                GetInternalAsync(new[] { _defaultCultures.First() }).RunSynchronously();
             }
             var exists = _namedValues.ContainsKey(id);
             if (!_isDisposed)
@@ -254,7 +253,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
 
                 return new LocalizedNamedValue(id, null, null);
-
             }
 
             var dic = itemDictionary.Where(s => cultureList.Contains(s.Key)).ToDictionary(t => t.Key, t => t.Value);

@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dawn;
 using System.Globalization;
 using System.Linq;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
@@ -22,20 +22,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 
         internal VariantDescriptionCacheItem VariantDescriptionCacheItem { get; }
 
-        internal VariantDescription(VariantDescriptionCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
+        internal VariantDescription(VariantDescriptionCacheItem cacheItem, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
-
             Id = cacheItem.Id;
             Outcomes = cacheItem.Outcomes == null
                 ? null
-                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureList)).ToList());
+                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription)new OutcomeDescription(o, cultures)).ToList());
             Mappings = cacheItem.Mappings == null
                 ? null
-                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData) new MarketMapping(m)).ToList());
+                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData)new MarketMapping(m)).ToList());
 
             VariantDescriptionCacheItem = cacheItem;
         }

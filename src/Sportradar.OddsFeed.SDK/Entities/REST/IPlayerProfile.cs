@@ -44,10 +44,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         IReadOnlyDictionary<CultureInfo, string> Nationalities { get; }
 
         /// <summary>
-        /// Gets the nationality of the player represented by the current instance in  the language specified by <code>culture</code>
+        /// Gets the nationality of the player represented by the current instance in  the language specified by <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the returned nationality</param>
-        /// <returns>The nationality of the player represented by the current instance in  the language specified by <code>culture</code></returns>
+        /// <returns>The nationality of the player represented by the current instance in  the language specified by <c>culture</c></returns>
         string GetNationality(CultureInfo culture);
 
         /// <summary>

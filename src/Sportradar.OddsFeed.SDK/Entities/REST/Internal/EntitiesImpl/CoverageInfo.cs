@@ -68,7 +68,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public CoverageInfo(ExportableCoverageInfoCI exportable)
         {
             if (exportable == null)
+            {
                 throw new ArgumentNullException(nameof(exportable));
+            }
 
             _level = exportable.Level;
             _isLive = exportable.IsLive;

@@ -1,6 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using App.Metrics;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -8,16 +13,11 @@ using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
@@ -113,7 +113,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         /// <param name="sender">The <see cref="object"/> representation of the event sender</param>
         /// <param name="eventArgs">A <see cref="BasicDeliverEventArgs"/> containing event information</param>
-        private void consumer_OnReceived(object sender, BasicDeliverEventArgs eventArgs)
+        private void Consumer_OnReceived(object sender, BasicDeliverEventArgs eventArgs)
         {
             if (eventArgs.Body == null || !eventArgs.Body.Any())
             {
@@ -139,7 +139,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     feedMessage = _deserializer.Deserialize(new MemoryStream(eventArgs.Body));
                     producer = _producerManager.Get(feedMessage.ProducerId);
                     messageName = feedMessage.GetType().Name;
-                    if (!string.IsNullOrEmpty(feedMessage.EventId) && URN.TryParse(feedMessage.EventId, out URN eventUrn))
+                    if (!string.IsNullOrEmpty(feedMessage.EventId) && URN.TryParse(feedMessage.EventId, out var eventUrn))
                     {
                         feedMessage.EventURN = eventUrn;
                     }
@@ -279,7 +279,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             _interest = interest;
             _channel.Open(interest, routingKeys);
-            _channel.Received += consumer_OnReceived;
+            _channel.Received += Consumer_OnReceived;
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         public void Close()
         {
-            _channel.Received -= consumer_OnReceived;
+            _channel.Received -= Consumer_OnReceived;
             _channel.Close();
         }
     }

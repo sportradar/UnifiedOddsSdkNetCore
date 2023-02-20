@@ -44,9 +44,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         Task<DateTime?> GetScheduledEndTimeAsync();
 
         /// <summary>
-        /// Asynchronously gets a <see cref="bool?"/> specifying if the start time to be determined is set for the associated sport event.
+        /// Asynchronously gets a value specifying if the start time to be determined is set for the associated sport event.
         /// </summary>
-        /// <returns>A <see cref="bool?"/> specifying if the start time to be determined is set for the associated sport event.</returns>
+        /// <returns>A value specifying if the start time to be determined is set for the associated sport event.</returns>
         Task<bool?> GetStartTimeTbdAsync();
 
         /// <summary>

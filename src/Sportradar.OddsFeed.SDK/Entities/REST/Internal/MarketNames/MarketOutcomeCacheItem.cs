@@ -2,8 +2,8 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Dawn;
 using System.Globalization;
+using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
@@ -21,18 +21,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(dto, nameof(dto)).NotNull();
 
             Id = dto.Id;
-            _names = new Dictionary<CultureInfo, string> { {culture, dto.Name} };
+            _names = new Dictionary<CultureInfo, string> { { culture, dto.Name } };
             _descriptions = string.IsNullOrEmpty(dto.Description)
                 ? new Dictionary<CultureInfo, string>()
-                : new Dictionary<CultureInfo, string> {{culture, dto.Description}};
+                : new Dictionary<CultureInfo, string> { { culture, dto.Description } };
         }
 
         internal string GetName(CultureInfo culture)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            string name;
-            if (_names.TryGetValue(culture, out name))
+            if (_names.TryGetValue(culture, out var name))
             {
                 return name;
             }
@@ -43,8 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            string description;
-            if (_descriptions.TryGetValue(culture, out description))
+            if (_descriptions.TryGetValue(culture, out var description))
             {
                 return description;
             }

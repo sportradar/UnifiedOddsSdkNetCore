@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Dawn;
 using System.Linq;
+using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets the scope of the producer
         /// </summary>
         /// <value>The scope</value>
-        public IEnumerable<string> Scope { get; }
+        public IReadOnlyCollection<string> Scope { get; }
 
         /// <summary>
         /// Gets the recovery info about last recovery attempt
@@ -120,6 +120,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="maxRecoveryTime">The maximum time in seconds in which recovery must be completed</param>
         /// <param name="scope">The scope of the producer</param>
         /// <param name="statefulRecoveryWindowInMinutes">The stateful recovery window in minutes</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         public Producer(int id, string name, string description, string apiUrl, bool active, int maxInactivitySeconds, int maxRecoveryTime, string scope, int statefulRecoveryWindowInMinutes)
         {
             Guard.Argument(id).Positive();
@@ -140,7 +141,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             if (!string.IsNullOrEmpty(apiUrl))
             {
-                var tmp = ApiUrl.EndsWith("/") ? ApiUrl.Remove(apiUrl.Length - 1) : ApiUrl;
+                var tmp = ApiUrl.EndsWith("/", StringComparison.InvariantCultureIgnoreCase) ? ApiUrl.Remove(apiUrl.Length - 1) : ApiUrl;
                 Code = tmp.Split('/').Last();
             }
 
@@ -204,26 +205,20 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 format = "G";
             }
-            format = format.ToLower();
+            format = format.ToLowerInvariant();
 
             if (formatProvider?.GetFormat(GetType()) is ICustomFormatter formatter)
             {
                 return formatter.Format(format, this, formatProvider);
             }
 
-            switch (format)
+            return format switch
             {
-                case "c":
-                    return $"{Id}-{Name}";
-                case "f":
-                    return $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]";
-                case "i":
-                    return Id.ToString();
-                //case "g":
-                default:
-                    return $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]";
-
-            }
+                "c" => $"{Id}-{Name}",
+                "f" => $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]",
+                "i" => Id.ToString(),
+                _ => $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]",
+            };
         }
 
         /// <summary>
@@ -233,11 +228,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c></returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is Producer))
+            if (!(obj is Producer producer))
             {
                 return false;
             }
-            return Equals((Producer)obj);
+            return Equals(producer);
         }
 
         /// <summary>
@@ -262,7 +257,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             unchecked
             {
-                return (Id * 397) ^ (Name != null ? Name.ToLower().GetHashCode() : 0);
+                return (Id * 397) ^ (Name != null ? Name.ToLowerInvariant().GetHashCode() : 0);
             }
         }
     }

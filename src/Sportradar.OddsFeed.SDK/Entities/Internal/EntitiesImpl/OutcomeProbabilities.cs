@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="probabilities">The probabilities for the current <see cref="OutcomeProbabilities" /> instance</param>
         /// <param name="nameProvider">A <see cref="INameProvider"/> used to generate the outcome name(s)</param>
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapping ids of markets and outcomes</param>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying languages the current instance supports</param>
+        /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="outcomeDefinition">The associated <see cref="IOutcomeDefinition"/></param>
         /// <param name="additionalProbabilities">Additional probability attributes for markets which potentially will be (partly) refunded</param>
         internal OutcomeProbabilities(string id,
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                                       double? probabilities,
                                       INameProvider nameProvider,
                                       IMarketMappingProvider mappingProvider,
-                                      IEnumerable<CultureInfo> cultures,
+                                      IReadOnlyCollection<CultureInfo> cultures,
                                       IOutcomeDefinition outcomeDefinition,
                                       IAdditionalProbabilities additionalProbabilities)
             : base(id, nameProvider, mappingProvider, cultures, outcomeDefinition)

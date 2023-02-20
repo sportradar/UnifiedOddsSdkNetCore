@@ -38,7 +38,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             ? null
             : _namedValueProvider.BetStopReasons.GetNamedValue(_betStopReason.Value);
 
-
         /// <summary>
         /// Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.INamedValue" /> indicating the odds change was triggered by a possible event
         /// </summary>
