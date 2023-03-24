@@ -14790,6 +14790,12 @@
             </summary>
             <value>The short name</value>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitor.EnsureProfileLoaded">
+            <summary>
+            Ensures the profile is loaded for the competitor. This makes use of async await to avoid Task.Run().Wait() deadlocks
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.REST.ICompetitorResult">
             <summary>
             Defines contract used by classes that provide competitor result information

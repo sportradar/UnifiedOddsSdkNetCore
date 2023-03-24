@@ -122,5 +122,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The short name</value>
         string ShortName => null;
+
+        /// <summary>
+        /// Ensures the profile is loaded for the competitor. This makes use of async await to avoid Task.Run().Wait() deadlocks
+        /// </summary>
+        /// <returns></returns>
+        Task EnsureProfileLoaded();
     }
 }

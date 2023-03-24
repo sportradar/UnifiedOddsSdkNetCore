@@ -107,13 +107,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             if (_sportEvent is IMatch match)
             {
                 var competitor = await InvokeAndWrapAsync(match.GetHomeCompetitorAsync).ConfigureAwait(false);
+                await competitor.EnsureProfileLoaded();
                 return competitor?.GetName(culture);
             }
 
             if (_sportEvent is IStage stage)
             {
                 var competitors = await InvokeAndWrapAsync(stage.GetCompetitorsAsync).ConfigureAwait(false);
-                return competitors?.First().GetName(culture);
+                var competitor = competitors?.First();
+                if (competitor != null)
+                {
+                    await competitor.EnsureProfileLoaded();
+                    return competitor.GetName(culture);
+                }
+
+                return null;
             }
 
             throw new NameExpressionException($"Operand {_propertyName} is not supported. Supported operands are: {string.Join(",", SupportedOperands)}", null);
@@ -124,13 +132,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             if (_sportEvent is IMatch match)
             {
                 var competitor = await InvokeAndWrapAsync(match.GetAwayCompetitorAsync).ConfigureAwait(false);
+                await competitor.EnsureProfileLoaded();
                 return competitor?.GetName(culture);
             }
 
             if (_sportEvent is IStage stage)
             {
                 var competitors = await InvokeAndWrapAsync(stage.GetCompetitorsAsync).ConfigureAwait(false);
-                return competitors?.Skip(1).First().GetName(culture);
+                var competitor = competitors?.Skip(1).First();
+                if (competitor != null)
+                {
+                    await competitor.EnsureProfileLoaded();
+                    return competitor.GetName(culture);
+                }
+
+                return null;
             }
 
             throw new NameExpressionException($"Operand {_propertyName} is not supported. Supported operands are: {string.Join(",", SupportedOperands)}", null);

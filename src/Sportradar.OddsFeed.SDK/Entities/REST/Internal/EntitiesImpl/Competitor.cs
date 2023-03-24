@@ -266,6 +266,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <value>The short name</value>
         public string ShortName => GetOrLoadCompetitor()?.ShortName;
 
+        public async Task EnsureProfileLoaded()
+        {
+            // Ensure cache is loaded
+            await GetOrLoadCompetitorAsync();
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Competitor"/> class
         /// </summary>
@@ -502,6 +508,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             if (_competitorCI != null && _profileCache != null && _lastCompetitorFetch < DateTime.Now.AddSeconds(-30))
             {
                 LoadCompetitorProfileInCache();
+                _lastCompetitorFetch = DateTime.Now;
+            }
+
+            return _competitorCI;
+        }
+
+        private async Task<CompetitorCI> GetOrLoadCompetitorAsync()
+        {
+            if (_competitorId != null && _competitorCI == null && _profileCache != null)
+            {
+                _competitorCI = await _profileCache.GetCompetitorProfileAsync(_competitorId, _cultures).ConfigureAwait(false);
+                _lastCompetitorFetch = DateTime.Now;
+            }
+
+            if (_competitorCI != null && _profileCache != null && _lastCompetitorFetch < DateTime.Now.AddSeconds(-30))
+            {
+                _competitorCI = await _profileCache.GetCompetitorProfileAsync(_competitorId, _cultures).ConfigureAwait(false);
                 _lastCompetitorFetch = DateTime.Now;
             }
 

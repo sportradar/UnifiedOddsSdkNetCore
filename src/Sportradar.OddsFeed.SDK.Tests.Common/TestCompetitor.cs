@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
 
@@ -147,5 +148,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         /// </summary>
         /// <value>The state</value>
         public string State { get; }
+
+        public Task EnsureProfileLoaded()
+        {
+            return Task.CompletedTask;
+        }
     }
 }
