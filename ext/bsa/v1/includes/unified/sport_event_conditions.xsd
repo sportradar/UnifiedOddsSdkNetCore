@@ -8,6 +8,7 @@
         <xs:sequence>
             <xs:element type="referee" name="referee" minOccurs="0" maxOccurs="1"/>
             <xs:element type="pitchers" name="pitchers" minOccurs="0" maxOccurs="1" />
+            <xs:element type="pitcher_history" name="pitcherHistory" minOccurs="0" maxOccurs="1"/>
             <xs:element type="venue" name="venue" minOccurs="0" maxOccurs="1" />
             <xs:element type="weatherInfo" minOccurs="0" name="weather_info"/>
         </xs:sequence>

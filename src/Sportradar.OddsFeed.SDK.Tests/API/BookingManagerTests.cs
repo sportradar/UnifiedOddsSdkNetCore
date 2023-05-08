@@ -5,6 +5,7 @@ using System.Net.Http;
 using FluentAssertions;
 using Moq;
 using Sportradar.OddsFeed.SDK.API.Internal;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -61,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
                     .Setup(x => x.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
                     .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
-                _result = _sut.BookLiveOddsEvent(_urn);
+                Assert.Throws<CommunicationException>(() => _result = _sut.BookLiveOddsEvent(_urn));
             }
 
             [Fact]

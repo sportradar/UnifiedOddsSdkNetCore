@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
             Guard.Argument(value, nameof(value)).NotNull().NotEmpty();
 
-            return Regex.IsMatch(value, DecimalPattern)
+            return Regex.IsMatch(value, DecimalPattern, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1))
                 ? new DecimalValueMappingValidator(name, decimal.Parse(value.Replace("*", "0"), NumberStyles.Any, CultureInfo.InvariantCulture))
                 : (IMappingValidator)new SpecificValueMappingValidator(name, value);
         }

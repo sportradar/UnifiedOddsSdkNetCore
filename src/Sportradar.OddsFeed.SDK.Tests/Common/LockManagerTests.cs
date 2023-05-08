@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void WaitRepeatTest()
+        public void WaitRepeat()
         {
             const string id = "some_id";
             var stopWatch = Stopwatch.StartNew();
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void RepeatedReleaseTest()
+        public void RepeatedRelease()
         {
             const string id = "some_id";
             var stopWatch = Stopwatch.StartNew();
@@ -46,12 +46,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         //TODO unreliable in pipeline
         //[Fact(Timeout = 15000)]
-        public void WaitTest()
+        public void Wait()
         {
             const string id = "some_id";
             var stopWatch = Stopwatch.StartNew();
             _lockManager.Wait(id);
-            Task.Delay(TimeSpan.FromSeconds(3)).Wait();
+            Task.Delay(TimeSpan.FromSeconds(3)).GetAwaiter().GetResult();
             _lockManager.Release(id);
             Assert.True(stopWatch.Elapsed > TimeSpan.FromSeconds(3));
             Assert.True(stopWatch.Elapsed < TimeSpan.FromSeconds(10));
@@ -64,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         //unreliable in pipeline
         //[Fact(Timeout = 20000)]
-        public void WaitTillTimeoutTest()
+        public void WaitTillTimeout()
         {
             const string id = "some_id";
             var stopWatch = Stopwatch.StartNew();

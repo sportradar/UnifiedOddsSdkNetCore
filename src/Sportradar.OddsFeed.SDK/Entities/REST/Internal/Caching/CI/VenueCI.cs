@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
@@ -58,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// Gets the course
         /// </summary>
         /// <value>The course</value>
-        public IEnumerable<HoleCI> Course { get; private set; }
+        public ICollection<CourseCI> Courses { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VenueCI"/> class
@@ -74,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _names = new Dictionary<CultureInfo, string>();
             _countryNames = new Dictionary<CultureInfo, string>();
             _cityNames = new Dictionary<CultureInfo, string>();
-            Course = new List<HoleCI>();
+            Courses = new List<CourseCI>();
             Merge(venue, culture);
         }
 
@@ -92,7 +93,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             Coordinates = exportable.Coordinates;
             CountryCode = exportable.CountryCode;
             State = exportable.State;
-            Course = exportable.Course?.Select(s => new HoleCI(s));
+            Courses = exportable.Courses.IsNullOrEmpty()
+                ? new List<CourseCI>()
+                    : exportable.Courses.Select(s => new CourseCI(s)).ToList();
         }
 
         /// <summary>
@@ -112,7 +115,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             _cityNames[culture] = venue.City;
             CountryCode = venue.CountryCode;
             State = venue.State;
-            Course = venue.Course?.Select(s => new HoleCI(s));
+            Courses = venue.Courses.IsNullOrEmpty()
+                ? new List<CourseCI>()
+                : venue.Courses.Select(s => new CourseCI(s)).ToList();
         }
 
         /// <summary>
@@ -183,7 +188,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                 Coordinates = Coordinates,
                 CountryCode = CountryCode,
                 State = State,
-                Course = Course?.Select(s => new ExportableHoleCI { Number = s.Number, Par = s.Par })
+                Courses = Courses?.Select(s => new ExportableCourseCI { Id = s.Id, Name = s.Name, Holes = s.Holes.Select(h => new ExportableHoleCI { Number = h.Number, Par = h.Par }).ToList() }).ToList()
             });
         }
     }

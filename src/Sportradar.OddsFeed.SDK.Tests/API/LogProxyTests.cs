@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void LogInputAndOutputParametersOfVoidMethodTest()
+        public void LogInputAndOutputParametersOfVoidMethod()
         {
             _demoClass.DemoVoidMethod();
             var res = _demoClass.DemoIntMethod(10, 50);
@@ -33,14 +33,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void LogInputAndOutputParametersOfAsyncCallerMethodTest()
+        public void LogInputAndOutputParametersOfAsyncCallerMethod()
         {
             var res = _demoClass.DemoLongLastingMethodAsyncCaller(45, 10);
             Assert.Equal(100, res);
         }
 
         [Fact]
-        public async Task LogInputAndOutputParametersOfAsyncMethodTest()
+        public async Task LogInputAndOutputParametersOfAsyncMethod()
         {
             var res = await _demoClass.DemoLongLastingMethodAsync(10, 25);
             res += await _demoClass.DemoLongLastingMethodAsync(15, 20);
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public async Task LogInputAndOutputParametersOfAsyncGroupTest()
+        public async Task LogInputAndOutputParametersOfAsyncGroup()
         {
             var res1 = await _demoClass.DemoLongLastingMethodAsync(10, 25);
             await _demoClass.DemoLongLastingMethodAsync(15, 20);
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public async Task LogInputAndOutParametersOfGroupAsyncMethodTest()
+        public async Task LogInputAndOutParametersOfGroupAsyncMethod()
         {
             var tasks = new List<Task>
              {
@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public async Task LogInAndOutParamsOfGroupAsyncMethodTest()
+        public async Task LogInAndOutParamsOfGroupAsyncMethod()
         {
             var res = await _demoClass.DemoLongLastingMethodAsync(45, 10);
             Assert.Equal(100, res);
@@ -87,26 +87,18 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
 
         //not sure what this proves?
         [Fact]
-        public void LogInAndOutParamsOfCustomMethodTest()
+        public async Task LogInAndOutParamsOfCustomMethod()
         {
             const int res = 100;
-            Task.Run(async () =>
-            {
-                await _demoClass.DemoCustomMethodAsync(450);
-            }).GetAwaiter().GetResult();
-
+            await _demoClass.DemoCustomMethodAsync(450).ConfigureAwait(false);
             Assert.Equal(100, res);
         }
 
         [Fact]
-        public void MethodWithTaskThrowsExceptionAsyncTest()
+        public async Task MethodWithTaskThrowsExceptionAsync()
         {
             var res = 100;
-            Task.Run(async () =>
-            {
-                await Assert.ThrowsAsync<Exception>(async () => res = await _demoClass.DemoMethodWithTaskThrowsExceptionAsync(450).ConfigureAwait(false));
-            }).GetAwaiter().GetResult();
-
+            await Assert.ThrowsAsync<Exception>(async () => res = await _demoClass.DemoMethodWithTaskThrowsExceptionAsync(450).ConfigureAwait(false));
             Assert.Equal(100, res);
         }
     }

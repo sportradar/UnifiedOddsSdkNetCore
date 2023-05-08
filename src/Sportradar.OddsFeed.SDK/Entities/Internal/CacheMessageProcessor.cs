@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -161,7 +160,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             try
             {
-                Task.Run(async () => await _sportEventCache.GetEventIdsAsync(urn, (IEnumerable<CultureInfo>)null)).ConfigureAwait(false);
+                _sportEventCache.GetEventIdsAsync(urn, (IEnumerable<CultureInfo>)null).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (Exception e)
             {

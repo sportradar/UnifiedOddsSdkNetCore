@@ -5,15 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Microsoft.Extensions.Logging;
 using Dawn;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.API;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
+using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
@@ -299,9 +299,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Console.WriteLine();
             Console.WriteLine("Sample events:");
-            for (int i = 0; i < ExampleReplayEvents.SampleEvents.Count; i++)
+            for (var i = 0; i < ExampleReplayEvents.SampleEvents.Count; i++)
             {
-                Console.WriteLine($"{i, 2} {ExampleReplayEvents.SampleEvents[i]}");
+                Console.WriteLine($"{i,2} {ExampleReplayEvents.SampleEvents[i]}");
             }
 
             Console.WriteLine();
@@ -309,17 +309,16 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             while (true)
             {
                 Console.WriteLine("Select an event to add or enter 'x' if you do not want to add additional events:");
-                string additionalConsoleInput = Console.ReadLine();
+                var additionalConsoleInput = Console.ReadLine();
 
                 if (additionalConsoleInput.Equals("x", StringComparison.CurrentCultureIgnoreCase))
                 {
                     break;
                 }
 
-                int additionalItemPosition;
-                if (!int.TryParse(additionalConsoleInput, out additionalItemPosition)
-                    || additionalItemPosition < 0
-                    || additionalItemPosition > ExampleReplayEvents.SampleEvents.Count)
+                if (!int.TryParse(additionalConsoleInput, out var additionalItemPosition)
+                 || additionalItemPosition < 0
+                 || additionalItemPosition > ExampleReplayEvents.SampleEvents.Count)
                 {
                     Console.WriteLine("Invalid input, retry");
                     continue;

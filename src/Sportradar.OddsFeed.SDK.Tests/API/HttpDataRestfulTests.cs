@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         public void PutDataAsyncTest()
         {
             // in logRest file there should be result for this call
-            var result = _httpDataRestful.PutDataAsync(_putUri).Result;
+            var result = _httpDataRestful.PutDataAsync(_putUri).GetAwaiter().GetResult();
             Assert.NotNull(result);
             Assert.True(result.IsSuccessStatusCode);
         }
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         public void PutDataAsyncTestWithWrongUrl()
         {
             // in logRest file there should be result for this call
-            var ex = Assert.Throws<AggregateException>(() => _httpDataRestful.PutDataAsync(_badUri).Result);
+            var ex = Assert.Throws<AggregateException>(() => _httpDataRestful.PutDataAsync(_badUri).GetAwaiter().GetResult());
             Assert.IsType<AggregateException>(ex);
             if (ex.InnerException != null)
             {
@@ -60,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         //[Fact]
         public void DeleteDataAsyncTest()
         {
-            var result = _httpDataRestful.DeleteDataAsync(_deleteUri).Result;
+            var result = _httpDataRestful.DeleteDataAsync(_deleteUri).GetAwaiter().GetResult();
             Assert.NotNull(result);
             Assert.True(result.IsSuccessStatusCode);
         }
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         //[Fact]
         public void DeleteDataAsyncTestWithWrongUrl()
         {
-            var ex = Assert.Throws<AggregateException>(() => _httpDataRestful.DeleteDataAsync(_badUri).Result);
+            var ex = Assert.Throws<AggregateException>(() => _httpDataRestful.DeleteDataAsync(_badUri).GetAwaiter().GetResult());
             Assert.IsType<AggregateException>(ex);
             if (ex.InnerException != null)
             {

@@ -109,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the exception handling strategy
         /// </summary>
-        public ExceptionHandlingStrategy ExceptionHandlingStrategy => _publicConfig.ExceptionHandlingStrategy;
+        public ExceptionHandlingStrategy ExceptionHandlingStrategy { get; private set; }
 
         /// <summary>
         /// Gets a value specifying the host name of the AQMP broker
@@ -228,6 +228,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             }
             Environment = publicConfig.Environment;
             _useReplay = _publicConfig.Environment == SdkEnvironment.Replay;
+            ExceptionHandlingStrategy = _publicConfig.ExceptionHandlingStrategy;
         }
 
         /// <summary>

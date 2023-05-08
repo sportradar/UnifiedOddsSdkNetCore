@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
                 dataFetcher,
                 deserializer,
                 mapperFactory);
-            Entity = dataProvider.GetDataAsync("", "en").Result;
+            Entity = dataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
         }
 
         [Fact]

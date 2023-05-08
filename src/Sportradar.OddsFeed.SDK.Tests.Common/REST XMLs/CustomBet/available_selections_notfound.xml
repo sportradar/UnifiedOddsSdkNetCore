@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response xmlns="http://schemas.sportradar.com/custombet/v1/endpoints" response_code="NOT_FOUND" generated_at="2023-04-05T09:00:58+00:00">
+	<message>No data for the event: sr:match:123:prematch</message>
+</response>

@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:include schemaLocation="urn.xsd" />
+    <xs:include schemaLocation="urn.xsd"/>
     <xs:complexType name="pitcher">
         <xs:attribute type="xs:string" name="name" use="required"/>
         <xs:attribute type="xs:string" name="hand" use="required"/>
         <xs:attribute type="xs:string" name="competitor" use="required"/>
         <xs:attribute type="playerUrn" name="id" use="required"/>
+        <xs:attribute type="xs:string" name="short_name" use="optional"/>
+        <xs:attribute type="xs:dateTime" name="changed_at" use="optional"/>
     </xs:complexType>
     <xs:complexType name="pitchers">
         <xs:sequence>
-            <xs:element type="pitcher" name="pitcher" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="pitcher" name="pitcher" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="pitcher_history">
+        <xs:sequence>
+            <xs:element type="pitcher" name="pitcher" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

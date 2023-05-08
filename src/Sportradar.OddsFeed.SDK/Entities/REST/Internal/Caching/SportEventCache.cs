@@ -151,7 +151,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             //check what needs to be fetched, then go fetched by culture, (not by date)
             var datesToFetch = new List<DateTime>();
 
-            await _timerSemaphoreSlim.WaitAsync().ConfigureAwait(false);
+            await _timerSemaphoreSlim.WaitAsync(TimeSpan.FromMinutes(1)).ConfigureAwait(false);
 
             var date = DateTime.Now;
             for (var i = 0; i < 3; i++)
@@ -168,6 +168,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
 
             if (!datesToFetch.Any())
             {
+                _timerSemaphoreSlim.ReleaseSafe();
                 return;
             }
 
@@ -365,6 +366,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>Number of deleted items</returns>
         public int DeleteSportEventsFromCache(DateTime before)
         {
+            var deletedItemsCount = 0;
             LockManager.Wait();
             try
             {
@@ -374,7 +376,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                     try
                     {
                         var ci = (SportEventCI)keyValuePair.Value;
-                        if (ci.Scheduled != null && ci.Scheduled < before)
+                        if (ci.Scheduled != null && ci.Scheduled < before && ci.ScheduledEnd == null)
                         {
                             Cache.Remove(keyValuePair.Key);
                         }
@@ -390,7 +392,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
 
                 var endCount = Cache.Count();
-                ExecutionLog.LogInformation($"Deleted {startCount - endCount} items from cache (before={before}).");
+                deletedItemsCount = startCount - endCount;
+                ExecutionLog.LogInformation($"Deleted {deletedItemsCount} items from cache (before={before}).");
                 return startCount - endCount;
             }
             catch (Exception e)
@@ -401,7 +404,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 LockManager.Release();
             }
-            return 0;
+            return deletedItemsCount;
         }
 
         /// <summary>

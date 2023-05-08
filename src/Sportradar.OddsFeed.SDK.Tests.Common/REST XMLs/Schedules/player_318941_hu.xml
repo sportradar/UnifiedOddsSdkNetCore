@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <player_profile xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:20:16+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <player type="D" date_of_birth="1997-05-14" nationality="Portugália" country_code="PRT" height="187" weight="83" full_name="Ruben Santos Gato Alves Dias" gender="male" id="sr:player:318941" name="Ruben Dias"/>
+  </player_profile>

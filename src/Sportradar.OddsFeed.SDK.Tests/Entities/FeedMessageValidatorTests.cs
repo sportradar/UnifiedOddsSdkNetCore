@@ -43,10 +43,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities
 
             var dataFetcher = new TestDataFetcher();
 
-            var betStopReasonsCache = new NamedValueCache(new NamedValueDataProvider(FileHelper.FindFile("betstop_reasons.xml"), dataFetcher, "betstop_reason"), ExceptionHandlingStrategy.THROW);
-
-            var bettingStatusCache = new NamedValueCache(new NamedValueDataProvider(FileHelper.FindFile("betting_status.xml"), dataFetcher, "betting_status"),
-                ExceptionHandlingStrategy.THROW);
+            var nameCacheSdkTimer = SdkTimer.Create(TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
+            var betStopReasonsCache = new NamedValueCache(new NamedValueDataProvider(FileHelper.FindFile("betstop_reasons.xml"), dataFetcher, "betstop_reason"), ExceptionHandlingStrategy.THROW, "BetstopReasons", nameCacheSdkTimer);
+            var bettingStatusCache = new NamedValueCache(new NamedValueDataProvider(FileHelper.FindFile("betting_status.xml"), dataFetcher, "betting_status"), ExceptionHandlingStrategy.THROW, "BettingStatus", nameCacheSdkTimer);
 
             var namedValueProviderMock = new Mock<INamedValuesProvider>();
             namedValueProviderMock.Setup(x => x.BetStopReasons).Returns(betStopReasonsCache);

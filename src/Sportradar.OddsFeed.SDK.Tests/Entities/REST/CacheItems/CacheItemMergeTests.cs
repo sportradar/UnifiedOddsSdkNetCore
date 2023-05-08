@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void CompetitorTest()
+        public void Competitor()
         {
             var teamType1 = new team
             {
@@ -70,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void CoverageInfoMergeTest()
+        public void CoverageInfoMerge()
         {
             var coverageInfoType = new coverageInfo
             {
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void GroupTest()
+        public void Group()
         {
             var teamType1En = new team
             {
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerTest()
+        public void Player()
         {
             var sportEntityDTO = new SportEntityDTO("sr:player:1", "Sport Entity Name");
             var playerCI = new SportEntityCI(sportEntityDTO);
@@ -169,7 +169,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void ProductInfoTest()
+        public void ProductInfo()
         {
             var productInfoType = new productInfo
             {
@@ -208,7 +208,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void ProductInfoLinkTest()
+        public void ProductInfoLink()
         {
             var productInfoLinkType1 = new productInfoLink
             {
@@ -225,7 +225,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void RefereeTest()
+        public void Referee()
         {
             var refereeType = new referee
             {
@@ -244,7 +244,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void RoundMergeTest()
+        public void RoundMerge()
         {
             var matchRoundTypeEn = new matchRound
             {
@@ -285,7 +285,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void SeasonCoverageMergeTest()
+        public void SeasonCoverageMerge()
         {
             var coverageInfoCI = new SeasonCoverageCI(new SeasonCoverageDTO(RestMessageBuilder.BuildCoverageRecord("max", "min", 4, 1, 1, SR.Urn("season").ToString())));
 
@@ -297,7 +297,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void SeasonTest()
+        public void Season()
         {
             var seasonExtendedType1 = new seasonExtended
             {
@@ -320,7 +320,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void SportEntityTest()
+        public void SportEntity()
         {
             var sportEntityCI = new SportEntityDTO("sr:sport:1", "name 1");
 
@@ -331,7 +331,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
 
         //TODO: sportEventConditionsType has Venue, DTO and CI is missing it
         [Fact]
-        public void SportEventConditionsTest()
+        public void SportEventConditions()
         {
             var venue1 = new venue
             {
@@ -388,7 +388,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void StreamingChannelTest()
+        public void StreamingChannel()
         {
             var streamingChannelType = new streamingChannel
             {
@@ -404,7 +404,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void TeamCompetitorMergeTest()
+        public void TeamCompetitorMerge()
         {
             var teamType1 = new teamCompetitor
             {
@@ -452,7 +452,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void VenueMergeTest()
+        public void VenueMerge()
         {
             var venue1 = new venue
             {
@@ -494,7 +494,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void WeatherInfoTest()
+        public void WeatherInfo()
         {
             var weatherInfo = new weatherInfo
             {

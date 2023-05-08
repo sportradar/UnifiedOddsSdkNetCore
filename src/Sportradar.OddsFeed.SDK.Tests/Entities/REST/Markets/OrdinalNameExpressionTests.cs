@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         private readonly IOperandFactory _operandFactory = new OperandFactory();
 
         [Fact]
-        public async Task OrdinalNameExpressionTest()
+        public async Task OrdinalNameExpression()
         {
             var specifiers = new Dictionary<string, string> { { "reply_nr", "1" } };
             var expression = new OrdinalNameExpression(_operandFactory.BuildOperand(new ReadOnlyDictionary<string, string>(specifiers), "reply_nr"));

@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using FluentAssertions;
 using Moq;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -26,42 +27,47 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         private Uri _huMatchStatusUri;
         private Uri _nlMatchStatusUri;
 
-        private LocalizedNamedValueCache Setup(ExceptionHandlingStrategy exceptionStrategy)
+        private LocalizedNamedValueCache Setup(ExceptionHandlingStrategy exceptionStrategy, SdkTimer cacheSdkTimer = null)
         {
             var dataFetcher = new TestDataFetcher();
             _fetcherMock = new Mock<IDataFetcher>();
 
             _enMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_en.xml", UriKind.Absolute);
-            _fetcherMock.Setup(args => args.GetDataAsync(_enMatchStatusUri))
-                .Returns(dataFetcher.GetDataAsync(_enMatchStatusUri));
+            _fetcherMock.Setup(args => args.GetDataAsync(_enMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_enMatchStatusUri));
 
             _deMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_de.xml", UriKind.Absolute);
-            _fetcherMock.Setup(args => args.GetDataAsync(_deMatchStatusUri))
-                .Returns(dataFetcher.GetDataAsync(_deMatchStatusUri));
+            _fetcherMock.Setup(args => args.GetDataAsync(_deMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_deMatchStatusUri));
 
             _huMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_hu.xml", UriKind.Absolute);
-            _fetcherMock.Setup(args => args.GetDataAsync(_huMatchStatusUri))
-                .Returns(dataFetcher.GetDataAsync(_huMatchStatusUri));
+            _fetcherMock.Setup(args => args.GetDataAsync(_huMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_huMatchStatusUri));
 
             _nlMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_nl.xml", UriKind.Absolute);
-            _fetcherMock.Setup(args => args.GetDataAsync(_nlMatchStatusUri))
-                .Returns(dataFetcher.GetDataAsync(_nlMatchStatusUri));
+            _fetcherMock.Setup(args => args.GetDataAsync(_nlMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_nlMatchStatusUri));
 
             var uriFormat = $"{TestData.RestXmlPath}/match_status_descriptions_{{0}}.xml";
+            var nameCacheSdkTimer = cacheSdkTimer ?? SdkTimer.Create(TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
             return new LocalizedNamedValueCache(new NamedValueDataProvider(uriFormat, _fetcherMock.Object, "match_status"),
-                new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") }, exceptionStrategy);
+                new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") }, exceptionStrategy, "MatchStatus", nameCacheSdkTimer);
         }
 
         [Fact]
         [SuppressMessage("ReSharper", "RedundantAssignment")]
         [SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Allowed in this test")]
-        public async Task Data_is_fetched_once_per_locale()
+        public async Task DataIsFetchedOnlyOncePerLocale()
         {
             var cache = Setup(ExceptionHandlingStrategy.THROW);
             var namedValue = await cache.GetAsync(0);
             namedValue = await cache.GetAsync(0, new[] { new CultureInfo("en") });
             namedValue = await cache.GetAsync(0, new[] { new CultureInfo("de") });
             namedValue = await cache.GetAsync(0, new[] { new CultureInfo("hu") });
+
+            Assert.NotNull(namedValue);
+
+            _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
+            _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
+            _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
+            _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
+
             namedValue = await cache.GetAsync(0, new[] { new CultureInfo("nl") });
             namedValue = await cache.GetAsync(0, TestData.Cultures4);
 
@@ -74,24 +80,32 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        [SuppressMessage("ReSharper", "RedundantAssignment")]
-        [SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Allowed in this test")]
-        public async Task Only_requested_locales_are_fetched()
+        public void InitialDataFetchDoesNotBlockConstructor()
         {
-            var cache = Setup(ExceptionHandlingStrategy.THROW);
-            var namedValue = await cache.GetAsync(0, new[] { new CultureInfo("en") });
-            namedValue = await cache.GetAsync(0, new[] { new CultureInfo("de") });
-
-            Assert.NotNull(namedValue);
-
-            _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
-            _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
+            Setup(ExceptionHandlingStrategy.CATCH, SdkTimer.Create(TimeSpan.FromSeconds(10), TimeSpan.Zero));
+            _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Never);
+            _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Never);
             _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Never);
             _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
         }
 
         [Fact]
-        public async Task Correct_value_are_loaded()
+        public void InitialDataFetchStartedByConstructor()
+        {
+            Setup(ExceptionHandlingStrategy.CATCH, SdkTimer.Create(TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
+
+            var finished = ExecutionHelper.WaitToComplete(() =>
+                                                              {
+                                                                  _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
+                                                                  _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
+                                                                  _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
+                                                                  _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
+                                                              }, 15000);
+            Assert.True(finished);
+        }
+
+        [Fact]
+        public async Task CorrectValuesAreLoaded()
         {
             var cache = Setup(ExceptionHandlingStrategy.THROW);
             var doc = XDocument.Load($"{TestData.RestXmlPath}/match_status_descriptions_en.xml");
@@ -119,7 +133,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task Throwing_exception_strategy_is_respected()
+        public async Task ThrowingExceptionStrategyIsRespected()
         {
             var cache = Setup(ExceptionHandlingStrategy.THROW);
             Func<Task> action = () => cache.GetAsync(1000);
@@ -127,7 +141,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task Catching_exception_strategy_is_respected()
+        public async Task CatchingExceptionStrategyIsRespected()
         {
             var cache = Setup(ExceptionHandlingStrategy.CATCH);
             var value = await cache.GetAsync(1000);

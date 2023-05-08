@@ -5,9 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
-using Castle.Core.Internal;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -162,6 +163,14 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The date when it was created
         /// </summary>
         public static readonly DateTime Created = DateTime.Now;
+        /// <summary>
+        /// The regex pattern to extract error message from failed API requests
+        /// </summary>
+        public const string ApiResponseErrorPattern = @"<errors>([a-zA-Z0-9 -_\:.\/'{}]*)<\/errors>";
+        /// <summary>
+        /// The regex pattern to extract response message from failed API requests
+        /// </summary>
+        public const string ApiResponseMessagePattern = @"<message>([a-zA-Z0-9 -_\:.]*)<\/message>";
 
         /// <summary>
         /// Gets the assembly version number
@@ -561,28 +570,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public static int GetRandom(int maxValue = int.MaxValue)
         {
-            if (maxValue < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} not valid. Must be 0 or greater.");
-            }
-            if (maxValue == 0)
-            {
-                maxValue = int.MaxValue;
-            }
             return RandomNumberGenerator.GetInt32(maxValue);
         }
 
         public static int GetRandom(int minValue, int maxValue)
         {
-            if (maxValue < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} not valid. Must be 0 or greater.");
-            }
-            if (maxValue == 0)
-            {
-                maxValue = int.MaxValue;
-            }
-
             if (minValue > maxValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(minValue), $"{minValue} not valid. Must be less then {maxValue}.");
@@ -601,6 +593,31 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return maxValue;
             }
             return initialValue;
+        }
+
+        public static string ExtractHttpResponseMessage(HttpContent responseContent)
+        {
+            if (responseContent == null)
+            {
+                return string.Empty;
+            }
+
+            var response = responseContent.ReadAsStringAsync().GetAwaiter().GetResult();
+            return ExtractHttpResponseMessage(response);
+        }
+        public static string ExtractHttpResponseMessage(string responseContent)
+        {
+            if (responseContent.IsNullOrEmpty())
+            {
+                return string.Empty;
+            }
+            var errorMatch = Regex.Match(responseContent, ApiResponseErrorPattern, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+            var messageMatch = Regex.Match(responseContent, ApiResponseMessagePattern, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+            if (messageMatch.Success)
+            {
+                return errorMatch.Success ? $"{messageMatch.Groups[1].Value} (detail: {errorMatch.Groups[1].Value})" : messageMatch.Groups[1].Value;
+            }
+            return responseContent;
         }
     }
 }

@@ -89,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public string GetNameTemplate(CultureInfo culture)
         {
             //// name templates need to be always fetched from the cache because of the variant markets (they are not being fetched on market definition creation)
-            //var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync((int) _marketDescription.Id, _specifiers, new[] {culture}, true).Result;
+            //var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync((int) _marketDescription.Id, _specifiers, new[] {culture}, true).GetAwaiter().GetResult();
             //return marketDescription?.GetName(culture);
 
             GetMarketDefinition();
@@ -163,7 +163,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 }
                 try
                 {
-                    _marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, _cultures, true).Result; // was false and true in GetNameTemplate
+                    _marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, _cultures, true).GetAwaiter().GetResult(); // was false and true in GetNameTemplate
                 }
                 catch (CacheItemNotFoundException ci)
                 {

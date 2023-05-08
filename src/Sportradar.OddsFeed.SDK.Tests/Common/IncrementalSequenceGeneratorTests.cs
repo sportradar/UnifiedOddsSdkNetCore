@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void TestGetNextIsThreadSafe()
+        public async Task TestGetNextIsThreadSafe()
         {
             const int min = -11;
             const int max = 543;
@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
                 tasks.Add(Task.Run(() => generator.GetNext()));
             }
 
-            Task.WaitAll(tasks.ToArray());
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
             const int range = max - min;
             const int reminder = iterations % range;

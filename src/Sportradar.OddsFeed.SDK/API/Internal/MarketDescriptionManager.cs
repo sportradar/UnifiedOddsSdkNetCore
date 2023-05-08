@@ -155,7 +155,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
-            return tasks.All(a => a.Result);
+            return tasks.All(a => a.GetAwaiter().GetResult());
         }
 
         /// <summary>

@@ -14,11 +14,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
 {
     public class NameExpressionFactoryTests
     {
-        private readonly ISportEvent _sportEvent = new Mock<ISportEvent>().Object;
+        private readonly ISportEvent _sportEvent = new Mock<IMatch>().Object;
         private readonly NameExpressionFactory _factory = new NameExpressionFactory(new OperandFactory(), new Mock<IProfileCache>().Object);
 
         [Fact]
-        public void Cardinal_name_expression_is_build()
+        public void CardinalNameExpressionIsBuild()
         {
             var specifiers = new Dictionary<string, string> { { "player", "sr:player:1" } };
             var expression = _factory.BuildExpression(_sportEvent, specifiers, null, "player");
@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void Plus_name_expression_is_build()
+        public void PlusNameExpressionIsBuild()
         {
             var specifiers = new Dictionary<string, string> { { "player", "sr:player:1" } };
             var expression = _factory.BuildExpression(_sportEvent, specifiers, "+", "player");
@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void Minus_name_expression_is_build()
+        public void MinusNameExpressionIsBuild()
         {
             var specifiers = new Dictionary<string, string> { { "player", "sr:player:1" } };
             var expression = _factory.BuildExpression(_sportEvent, specifiers, "-", "player");
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void Entity_name_expression_is_build()
+        public void EntityNameExpressionIsBuild()
         {
             var specifiers = new Dictionary<string, string> { { "player", "sr:player:1" } };
             var expression = _factory.BuildExpression(_sportEvent, specifiers, "$", "competitor1");
@@ -58,7 +58,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void Ordinal_name_expression_is_build()
+        public void OrdinalNameExpressionIsBuild()
         {
             var specifiers = new Dictionary<string, string> { { "player", "sr:player:1" } };
             var expression = _factory.BuildExpression(_sportEvent, specifiers, "!", "player");
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void Player_profile_name_expression_is_build()
+        public void PlayerProfileNameExpressionIsBuild()
         {
             var specifiers = new Dictionary<string, string> { { "player", "sr:player:1" } };
             var expression = _factory.BuildExpression(_sportEvent, specifiers, "%", "player");

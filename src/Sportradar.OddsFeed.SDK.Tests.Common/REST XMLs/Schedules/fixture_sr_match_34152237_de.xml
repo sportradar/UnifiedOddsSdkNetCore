@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <fixtures_fixture xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:08:34+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <fixture start_time_confirmed="true" start_time="2023-03-19T16:30:00+00:00" liveodds="not_available" status="postponed" next_live_time="2023-03-19T16:30:00+00:00" id="sr:match:34152237" scheduled="2023-03-19T16:30:00+00:00" start_time_tbd="false">
+      <tournament_round type="group" number="28" group_long_name="Premier League" betradar_id="1" betradar_name="Premier League" phase="regular season"/>
+      <season start_date="2022-08-05" end_date="2023-05-28" year="22/23" tournament_id="sr:tournament:17" id="sr:season:93741" name="Premier League 22/23"/>
+      <tournament id="sr:tournament:17" name="Premier League">
+        <sport id="sr:sport:1" name="Fußball"/>
+        <category id="sr:category:1" name="England" country_code="ENG"/>
+      </tournament>
+      <competitors>
+        <competitor qualifier="home" id="sr:competitor:17" name="Manchester City" abbreviation="MCI" short_name="Man City" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4861"/>
+            <reference_id name="aams" value="17"/>
+          </reference_ids>
+        </competitor>
+        <competitor qualifier="away" id="sr:competitor:37" name="West Ham United" abbreviation="WHU" short_name="West Ham" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4865"/>
+            <reference_id name="aams" value="37"/>
+          </reference_ids>
+        </competitor>
+      </competitors>
+      <venue id="sr:venue:606" name="Etihad Stadium" capacity="53400" city_name="Manchester" country_name="England" country_code="ENG" map_coordinates="53.484592,-2.202695"/>
+      <tv_channels/>
+      <extra_info>
+        <info key="RTS" value="not_available"/>
+        <info key="extended_live_markets_offered" value="false"/>
+        <info key="streaming" value="false"/>
+        <info key="auto_traded" value="false"/>
+        <info key="neutral_ground" value="false"/>
+        <info key="period_length" value="45"/>
+        <info key="overtime_length" value="15"/>
+      </extra_info>
+      <coverage_info level="gold" live_coverage="true" covered_from="venue">
+        <coverage includes="basic_score"/>
+        <coverage includes="key_events"/>
+        <coverage includes="detailed_events"/>
+        <coverage includes="lineups"/>
+        <coverage includes="commentary"/>
+        <coverage includes="extended_markets"/>
+      </coverage_info>
+      <product_info>
+        <is_in_live_score/>
+        <is_in_hosted_statistics/>
+        <is_in_live_center_soccer/>
+        <is_in_live_match_tracker/>
+        <links>
+          <link name="live_match_tracker" ref="https://widgets.sir.sportradar.com/sportradar/en/standalone/match.lmtPlus#matchId=34152237"/>
+        </links>
+      </product_info>
+      <reference_ids>
+        <reference_id name="BetradarCtrl" value="73198167"/>
+        <reference_id name="aams" value="2291181"/>
+      </reference_ids>
+      <scheduled_start_time_changes>
+        <scheduled_start_time_change old_time="2023-03-18T15:00:00+00:00" new_time="2023-03-19T16:30:00+00:00" changed_at="2023-01-25T15:06:05+00:00"/>
+        <scheduled_start_time_change old_time="2023-03-18T15:00:00+00:00" new_time="2023-03-18T15:00:00+00:00" changed_at="2022-08-31T08:49:57+00:00"/>
+        <scheduled_start_time_change old_time="2023-03-18T14:00:00+00:00" new_time="2023-03-18T15:00:00+00:00" changed_at="2022-06-20T19:33:35+00:00"/>
+      </scheduled_start_time_changes>
+    </fixture>
+  </fixtures_fixture>

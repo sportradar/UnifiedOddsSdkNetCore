@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void InitialCallsDoneTest()
+        public void InitialCallsDone()
         {
             Assert.NotEmpty(_invariantMarketDescriptionMemoryCache);
             Assert.NotEmpty(_variantMarketDescriptionListMemoryCache);
@@ -69,6 +69,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             Assert.NotNull(_variantDescriptionListCache);
             Assert.NotNull(_variantMarketDescriptionCache);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -78,10 +79,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetInvariantMarketDescriptionTest()
+        public async Task GetInvariantMarketDescription()
         {
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(282, null, _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -97,10 +99,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetNonExistingInvariantMarketDescriptionTest()
+        public async Task GetNonExistingInvariantMarketDescription()
         {
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(2820, null, _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -109,11 +112,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetVariantMarketDescriptionFromListTest()
+        public async Task GetVariantMarketDescriptionFromList()
         {
             var specifiers = new Dictionary<string, string> { { "variant", "sr:correct_score:bestof:12" } };
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(374, specifiers, _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -129,11 +133,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetVariantMarketDescriptionFromListMultipleMappingsTest()
+        public async Task GetVariantMarketDescriptionFromListMultipleMappings()
         {
             var specifiers = new Dictionary<string, string> { { "variant", "sr:decided_by_extra_points:bestof:5" } };
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(239, specifiers, _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -150,7 +155,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetVariantMarketDescriptionFromSinglePreOutcomeTextTest()
+        public async Task GetVariantMarketDescriptionFromSinglePreOutcomeText()
         {
             const int marketId = 534;
             const string variantSpecifier = "pre:markettext:168883";
@@ -159,6 +164,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
 
+            Assert.Equal(_cultures.Count * 3, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -176,7 +182,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetVariantMarketDescriptionFromSinglePlayerPropsTest()
+        public async Task GetVariantMarketDescriptionFromSinglePlayerProps()
         {
             const int marketId = 768;
             const string variantSpecifier = "pre:playerprops:35432179:608000";
@@ -185,6 +191,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
 
+            Assert.Equal(_cultures.Count * 3, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -202,7 +209,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetVariantMarketDescriptionFromSingleUnsupportedCompetitorPropsTest()
+        public async Task GetVariantMarketDescriptionFromSingleUnsupportedCompetitorProps()
         {
             const int marketId = 1768;
             const string variantSpecifier = "pre:competitorprops:35432179:608000";
@@ -213,6 +220,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
 
+            Assert.Equal(_cultures.Count * 3, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -230,13 +238,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetMarketDescriptionForOutComeTypePlayerTest()
+        public async Task GetMarketDescriptionForOutComeTypePlayer()
         {
             const int marketId = 679;
             const string specifiers = "maxovers=20|type=live|inningnr=1";
             Assert.Empty(_variantMarketDescriptionMemoryCache);
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -253,13 +262,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetMarketDescriptionForOutComeTypeCompetitorTest()
+        public async Task GetMarketDescriptionForOutComeTypeCompetitor()
         {
             const int marketId = 1109;
             const string specifiers = "lapnr=5";
             Assert.Empty(_variantMarketDescriptionMemoryCache);
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -273,13 +283,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetMarketDescriptionWithCompetitorInOutcomeTemplateTest()
+        public async Task GetMarketDescriptionWithCompetitorInOutcomeTemplate()
         {
             const int marketId = 303;
             const string specifiers = "quarternr=4|hcp=-3.5";
             Assert.Empty(_variantMarketDescriptionMemoryCache);
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -296,13 +307,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetMarketDescriptionWithScoreInNameTemplateTest()
+        public async Task GetMarketDescriptionWithScoreInNameTemplate()
         {
             const int marketId = 41;
             const string specifiers = "score=2:0";
             Assert.Empty(_variantMarketDescriptionMemoryCache);
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
 
+            Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(0, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));
@@ -319,7 +331,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task GetVariantMarketDescriptionFromSinglePreOutcomeTextInvalidOutcomeTest()
+        public async Task GetVariantMarketDescriptionFromSinglePreOutcomeTextInvalidOutcome()
         {
             const int marketId = 534;
             const string variantSpecifier = "pre:markettext:168883";
@@ -328,6 +340,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
             var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, TestData.Cultures1, true);
 
+            Assert.Equal((_cultures.Count * 2) + 1, _dataRouterManager.TotalRestCalls);
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetMarketDescriptionsAsync"));
             Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount("GetVariantDescriptionsAsync"));
             Assert.Equal(TestData.Cultures1.Count, _dataRouterManager.GetCallCount("GetVariantMarketDescriptionAsync"));

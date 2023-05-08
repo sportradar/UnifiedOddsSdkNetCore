@@ -9,7 +9,6 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics;
 using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -317,7 +316,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 throw new ArgumentException("Missing cultures");
             }
-            var missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedSummaries).ToList();
+            var missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedSummaries);
             if (!missingCultures.Any() && !forceFetch)
             {
                 return;
@@ -335,7 +334,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 await semaphore.WaitAsync().ConfigureAwait(false);
 
                 // make sure there is still some data missing and was not fetched while waiting to acquire the lock
-                missingCultures = forceFetch ? cultureInfos.ToList() : LanguageHelper.GetMissingCultures(cultureInfos, LoadedSummaries).ToList();
+                missingCultures = forceFetch ? cultureInfos.ToList() : LanguageHelper.GetMissingCultures(cultureInfos, LoadedSummaries);
                 if (!missingCultures.Any())
                 {
                     return;
@@ -410,7 +409,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             {
                 throw new ArgumentException("Missing cultures");
             }
-            var missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedFixtures).ToList();
+            var missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedFixtures);
             if (!missingCultures.Any())
             {
                 return;
@@ -428,7 +427,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 await semaphore.WaitAsync().ConfigureAwait(false);
 
                 // make sure there is still some data missing and was not fetched while waiting to acquire the lock
-                missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedFixtures).ToList();
+                missingCultures = LanguageHelper.GetMissingCultures(cultureInfos, LoadedFixtures);
                 if (!missingCultures.Any())
                 {
                     return;

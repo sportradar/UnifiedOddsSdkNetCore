@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -40,6 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets the group name of the current <see cref="IRound"/> per language
         /// </summary>
+        [Obsolete("GroupName was removed from API")]
         IDictionary<CultureInfo, string> GroupName { get; }
 
         /// <summary>
@@ -76,6 +78,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>Return the group name if exists, or null</returns>
+        [Obsolete("GroupName was removed from API")]
         string GetGroupName(CultureInfo culture)
         {
             return null;

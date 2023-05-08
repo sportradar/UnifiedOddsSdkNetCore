@@ -19,10 +19,6 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
     /// </summary>
     public class SportDataCacheMissTests
     {
-        private const string AllTournaments = "GetAllTournamentsForAllSportAsync";
-        private const string AllSports = "GetAllSportsAsync";
-        private const string SportEventSummary = "GetSportEventSummaryAsync";
-
         private readonly SportDataCache _sportDataCache;
         private readonly SportEventCache _sportEventCache;
         private readonly TestDataRouterManager _dataRouterManager;
@@ -57,36 +53,36 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             Assert.Equal(0, _sportDataCache.Categories.Count);
             Assert.Empty(_sportEventCache.Cache);
 
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-            var sports = _sportDataCache.GetSportsAsync(TestData.Cultures).Result; // initial load
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            var sports = _sportDataCache.GetSportsAsync(TestData.Cultures).GetAwaiter().GetResult(); // initial load
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCountPlus, _sportDataCache.Categories.Count);
             Assert.Equal(TestData.CacheTournamentCount, _sportEventCache.Cache.Count(c => c.Key.Contains("tournament") || c.Key.Contains("season")));
             Assert.Empty(_sportEventCache.SpecialTournaments);
 
-            var data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).Result;
+            var data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).GetAwaiter().GetResult();
             Assert.Null(data01);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCountPlus, _sportDataCache.Categories.Count);
             Assert.Equal(TestData.CacheTournamentCount + 1, _sportEventCache.Cache.Count(c => c.Key.Contains("tournament") || c.Key.Contains("season")));
             Assert.Single(_sportEventCache.SpecialTournaments);
 
-            data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).Result;
+            data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).GetAwaiter().GetResult();
             Assert.Null(data01);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCountPlus, _sportDataCache.Categories.Count);
@@ -104,36 +100,36 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             Assert.Equal(0, _sportDataCache.Categories.Count);
             Assert.Empty(_sportEventCache.Cache);
 
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-            var sports = _sportDataCache.GetSportsAsync(TestData.Cultures).Result; // initial load
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            var sports = _sportDataCache.GetSportsAsync(TestData.Cultures).GetAwaiter().GetResult(); // initial load
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCountPlus, _sportDataCache.Categories.Count);
             Assert.Equal(TestData.CacheTournamentCount, _sportEventCache.Cache.Count(c => c.Key.Contains("tournament") || c.Key.Contains("season")));
             Assert.Empty(_sportEventCache.SpecialTournaments);
 
-            var data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, TestData.Cultures).Result;
+            var data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, TestData.Cultures).GetAwaiter().GetResult();
             Assert.NotNull(data01);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount + 1, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCountPlus + 1, _sportDataCache.Categories.Count);
             Assert.Equal(TestData.CacheTournamentCount + 1, _sportEventCache.Cache.Count(c => c.Key.Contains("tournament") || c.Key.Contains("season")));
             Assert.Single(_sportEventCache.SpecialTournaments);
 
-            data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, TestData.Cultures).Result;
+            data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, TestData.Cultures).GetAwaiter().GetResult();
             Assert.NotNull(data01);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount + 1, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCountPlus + 1, _sportDataCache.Categories.Count);
@@ -149,17 +145,17 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         {
             var nonExistingTournamentUrn = URN.Parse($"{TestData.SimpleTournamentId11111}9");
             Assert.Equal(0, _sportEventCache.Cache.Count(c => c.Key.Contains("tournament") || c.Key.Contains("season")));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-            var data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).Result;
+            var data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).GetAwaiter().GetResult();
             for (var i = 0; i < 3; i++)
             {
-                data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).Result;
+                data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, TestData.Cultures).GetAwaiter().GetResult();
             }
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCount, _sportDataCache.Categories.Count);
@@ -173,17 +169,17 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         {
             var nonExistingTournamentUrn = URN.Parse($"{TestData.SimpleTournamentId11111}9");
             Assert.Equal(0, _sportEventCache.Cache.Count(c => c.Key.Contains("tournament") || c.Key.Contains("season")));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-            var data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, new[] { TestData.CultureNl }).Result;
+            var data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, new[] { TestData.CultureNl }).GetAwaiter().GetResult();
             foreach (var t in TestData.Cultures)
             {
-                data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, new[] { t }).Result;
+                data01 = _sportDataCache.GetSportForTournamentAsync(nonExistingTournamentUrn, new[] { t }).GetAwaiter().GetResult();
             }
 
-            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCount, _sportDataCache.Categories.Count);
@@ -196,17 +192,17 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         public void SportDataCacheCorrectlySavesExistingFetchMissWhenCalledForEachCulture()
         {
             Assert.Equal(0, _sportEventCache.Cache.Count(c => c.Key.Contains("tournament") || c.Key.Contains("season")));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-            var data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, new[] { TestData.CultureNl }).Result;
+            var data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, new[] { TestData.CultureNl }).GetAwaiter().GetResult();
             foreach (var t in TestData.Cultures)
             {
-                data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, new[] { t }).Result;
+                data01 = _sportDataCache.GetSportForTournamentAsync(TestData.SimpleTournamentId11111, new[] { t }).GetAwaiter().GetResult();
             }
 
-            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count + 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             Assert.Equal(TestData.CacheSportCount + 1, _sportDataCache.Sports.Count);
             Assert.Equal(TestData.CacheCategoryCount + 1, _sportDataCache.Categories.Count);

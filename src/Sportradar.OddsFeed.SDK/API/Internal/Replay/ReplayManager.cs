@@ -59,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             }
             var uri = new Uri(url);
 
-            var response = _dataRestful.PutDataAsync(uri).Result;
+            var response = _dataRestful.PutDataAsync(uri).GetAwaiter().GetResult();
 
             return HandleHttpResponseMessage(response);
         }
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
 
             var uri = new Uri($"{_apiHost}/events/{eventId}{BuildNodeIdQuery("?")}");
 
-            var response = _dataRestful.DeleteDataAsync(uri).Result;
+            var response = _dataRestful.DeleteDataAsync(uri).GetAwaiter().GetResult();
 
             return HandleHttpResponseMessage(response);
         }
@@ -99,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         {
             var uri = new Uri($"{_apiHost}/{BuildNodeIdQuery("?")}");
 
-            var response = _dataRestful.GetDataAsync(uri).Result;
+            var response = _dataRestful.GetDataAsync(uri).GetAwaiter().GetResult();
 
             if (response == null)
             {
@@ -198,7 +198,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
 
             var uri = new Uri($"{_apiHost}/play?speed={speed}&max_delay={maxDelay}{BuildNodeIdQuery("&")}{paramProducerId}{paramRewriteTimestamps}{paramRunParallel}");
 
-            var response = _dataRestful.PostDataAsync(uri).Result;
+            var response = _dataRestful.PostDataAsync(uri).GetAwaiter().GetResult();
 
             return HandleHttpResponseMessage(response);
         }
@@ -228,7 +228,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
 
             var uri = new Uri($"{_apiHost}/scenario/play/{scenarioId}?speed={speed}&max_delay={maxDelay}{BuildNodeIdQuery("&")}{paramProducerId}{paramRewriteTimestamps}");
 
-            var response = _dataRestful.PostDataAsync(uri).Result;
+            var response = _dataRestful.PostDataAsync(uri).GetAwaiter().GetResult();
 
             return HandleHttpResponseMessage(response);
         }
@@ -240,7 +240,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         {
             var uri = new Uri($"{_apiHost}/stop{BuildNodeIdQuery("?")}");
 
-            var response = _dataRestful.PostDataAsync(uri).Result;
+            var response = _dataRestful.PostDataAsync(uri).GetAwaiter().GetResult();
 
             return HandleHttpResponseMessage(response);
         }
@@ -252,7 +252,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         {
             var uri = new Uri($"{_apiHost}/reset{BuildNodeIdQuery("?")}");
 
-            var response = _dataRestful.PostDataAsync(uri).Result;
+            var response = _dataRestful.PostDataAsync(uri).GetAwaiter().GetResult();
 
             return HandleHttpResponseMessage(response);
         }
@@ -265,7 +265,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         {
             var uri = new Uri($"{_apiHost}/status{BuildNodeIdQuery("?")}");
 
-            var response = _dataRestful.GetDataAsync(uri).Result;
+            var response = _dataRestful.GetDataAsync(uri).GetAwaiter().GetResult();
 
             if (response == null)
             {
@@ -304,7 +304,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         {
             var uri = new Uri($"{_apiHost}/scenario{BuildNodeIdQuery("?")}");
 
-            var response = _dataRestful.GetDataAsync(uri).Result;
+            var response = _dataRestful.GetDataAsync(uri).GetAwaiter().GetResult();
 
             if (response == null)
             {
@@ -367,7 +367,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             if (response.Content != null)
             {
                 var xml = new XmlDocument();
-                xml.Load(response.Content.ReadAsStreamAsync().Result);
+                xml.Load(response.Content.ReadAsStreamAsync().GetAwaiter().GetResult());
 
                 responseMsg = xml.DocumentElement?.SelectSingleNode("action")?.InnerText;
                 if (responseMsg != null && !responseMsg.EndsWith(".", StringComparison.InvariantCultureIgnoreCase))

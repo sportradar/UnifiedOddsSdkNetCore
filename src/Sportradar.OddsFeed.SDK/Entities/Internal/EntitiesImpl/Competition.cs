@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -218,7 +219,62 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCI, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
-            return tasks.Select(s => s.Result);
+            return tasks.Select(s => s.GetAwaiter().GetResult());
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="IEnumerable{T}"/> representing competitors in the sport event associated with the current instance
+        /// </summary>
+        /// <param name="culture">The culture in which we want to return competitor data</param>
+        /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
+        public async Task<IEnumerable<ICompetitor>> GetCompetitorsAsync(CultureInfo culture)
+        {
+            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                return null;
+            }
+
+            var cultureList = new[] { culture };
+            var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+                            ? await competitionCI.GetCompetitorsIdsAsync(cultureList).ConfigureAwait(false)
+                            : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(competitionCI.GetCompetitorsIdsAsync).SafeInvokeAsync(cultureList, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+
+            var competitorsIds = items == null ? new List<URN>() : items.ToList();
+            if (!competitorsIds.Any())
+            {
+                return new List<ICompetitor>();
+            }
+
+            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildTeamCompetitorAsync(s, cultureList, competitionCI, ExceptionStrategy)).ToList();
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            return tasks.Select(s => s.GetAwaiter().GetResult());
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="IEnumerable{T}"/> representing competitors in the sport event associated with the current instance
+        /// </summary>
+        /// <param name="culture">Optional culture in which we want to fetch competitor data (otherwise default is used)</param>
+        /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
+        public async Task<IEnumerable<URN>> GetCompetitorIdsAsync(CultureInfo culture = null)
+        {
+            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCI == null)
+            {
+                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                return null;
+            }
+
+            if (competitionCI.Competitors.IsNullOrEmpty() || culture != null)
+            {
+                // force summary request if needed
+                var cultureList = new[] { culture ?? Cultures.First() };
+                await competitionCI.GetNamesAsync(cultureList).ConfigureAwait(false);
+            }
+
+            var competitorsIds = competitionCI.Competitors == null ? new List<URN>() : competitionCI.Competitors.ToList();
+            return competitorsIds;
         }
 
         /// <summary>

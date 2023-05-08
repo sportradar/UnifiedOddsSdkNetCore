@@ -39,6 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         private readonly IProfileCache _profileCache;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
         private readonly IReadOnlyCollection<URN> _soccerSportUrns;
+        private readonly TestDataRouterManager _dataRouterManager;
 
         public TestSportEntityFactory(ITestOutputHelper outputHelper,
                                       ISportDataCache sportDataCache = null,
@@ -56,7 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             _sportEventCache = sportEventCache;
             _eventStatusCache = eventStatusCache;
             _matchStatusCache = matchStatusCache;
-            _profileCache = profileCache ?? new ProfileCache(profileMemoryCache, new TestDataRouterManager(cacheManager, outputHelper), cacheManager);
+            _dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
+            _profileCache = profileCache ?? new ProfileCache(profileMemoryCache, _dataRouterManager, cacheManager, _sportEventCache);
             _soccerSportUrns = soccerSportUrns ?? SdkInfo.SoccerSportUrns;
         }
 
@@ -72,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public Task<IPlayer> BuildPlayerAsync(URN playerId, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
         {
-            var playerNames = cultures.ToDictionary(culture => culture, culture => "PlayerName");
+            var playerNames = cultures.ToDictionary(culture => culture, culture => $"PlayerName {culture.TwoLetterISOLanguageName}");
             var player = new Player(playerId, playerNames);
             return Task.FromResult((IPlayer)player);
         }
@@ -87,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             var players = new List<IPlayer>();
             foreach (var playersId in playersIds)
             {
-                var playerCi = await _profileCache.GetPlayerProfileAsync(playersId, cultures).ConfigureAwait(false);
+                var playerCi = await _profileCache.GetPlayerProfileAsync(playersId, cultures, true).ConfigureAwait(false);
                 if (playerCi != null)
                 {
                     players.Add(new Player(playerCi.Id, playerCi.Names));
@@ -148,7 +150,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public ITeamCompetitor BuildTeamCompetitor(TeamCompetitorCI teamCompetitorCI, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            throw new NotImplementedException();
+            var teamCompetitor = new TeamCompetitor(teamCompetitorCI, cultures, this, exceptionStrategy, _profileCache, rootCompetitionCI);
+            return teamCompetitor;
         }
 
         /// <summary>
@@ -161,7 +164,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
         public Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            throw new NotImplementedException();
+            var competitor = new Competitor(competitorId, _profileCache, cultures, this, exceptionStrategy, rootCompetitionCI.GetCompetitorsReferencesAsync().GetAwaiter().GetResult());
+            return Task.FromResult((ICompetitor)competitor);
         }
 
         /// <summary>
@@ -173,7 +177,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
         public Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IReadOnlyCollection<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
         {
-            throw new NotImplementedException();
+            var competitor = new Competitor(competitorId, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
+            return Task.FromResult((ICompetitor)competitor);
         }
 
         /// <summary>
@@ -186,7 +191,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
         public Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            throw new NotImplementedException();
+            var teamCompetitor = MessageFactorySdk.GetTeamCompetitor((int)teamCompetitorId.Id);
+            return Task.FromResult(teamCompetitor);
         }
 
         /// <summary>
@@ -197,7 +203,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
         public Task<ICategorySummary> BuildCategoryAsync(URN categoryId, IReadOnlyCollection<CultureInfo> cultures)
         {
-            throw new NotImplementedException();
+            var category = MessageFactorySdk.GetCategory((int)categoryId.Id);
+            var categorySummary = new CategorySummary(category.Id, category.Names, category.CountryCode);
+            return Task.FromResult((ICategorySummary)categorySummary);
         }
     }
 }

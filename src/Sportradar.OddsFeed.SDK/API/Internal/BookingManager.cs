@@ -3,10 +3,10 @@
 */
 using System;
 using System.Globalization;
-using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
@@ -36,13 +36,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to save booking status</param>
         public BookingManager(IOddsFeedConfigurationInternal config, IDataPoster dataPoster, ICacheManager cacheManager)
         {
-            Guard.Argument(config, nameof(config)).NotNull();
-            Guard.Argument(dataPoster, nameof(dataPoster)).NotNull();
-            Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
-
-            _config = config;
-            _dataPoster = dataPoster;
-            _cacheManager = cacheManager;
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _dataPoster = dataPoster ?? throw new ArgumentNullException(nameof(dataPoster));
+            _cacheManager = cacheManager ?? throw new ArgumentNullException(nameof(cacheManager));
         }
 
         /// <summary>
@@ -52,33 +48,44 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <returns><c>true</c> if event was successfully booked, <c>false</c> otherwise</returns>
         public bool BookLiveOddsEvent(URN eventId)
         {
-            Guard.Argument(eventId, nameof(eventId)).NotNull();
+            if (eventId == null)
+            {
+                throw new ArgumentNullException(nameof(eventId));
+            }
 
             try
             {
                 _clientLog.LogInformation($"Invoking BookingManager.BookLiveOddsEvent({eventId})");
                 var postUrl = string.Format(BookLiveOddsEventUrl, _config.ApiBaseUri, eventId);
 
-                var response = _dataPoster.PostDataAsync(new Uri(postUrl)).Result;
+                var response = _dataPoster.PostDataAsync(new Uri(postUrl)).GetAwaiter().GetResult();
 
-                _clientLog.LogInformation($"BookingManager.bookLiveOddsEvent({eventId}) completed, status: {response.StatusCode}.");
                 if (response.IsSuccessStatusCode)
                 {
+                    _clientLog.LogInformation($"BookingManager.bookLiveOddsEvent({eventId}) completed, status: {response.StatusCode}.");
                     _cacheManager.SaveDto(eventId, eventId, CultureInfo.CurrentCulture, DtoType.BookingStatus, null);
                     return true;
                 }
-
                 _cacheManager.RemoveCacheItem(eventId, CacheItemType.SportEvent, "BookingManager");
-
-                _executionLog.LogWarning($"Event[{eventId}] booking failed. API response code: {response.StatusCode}.");
+                var filteredResponse = SdkInfo.ExtractHttpResponseMessage(response.Content);
+                _clientLog.LogWarning($"BookingManager.bookLiveOddsEvent({eventId}) completed, status: {response.StatusCode}, message: {filteredResponse}");
+                throw new CommunicationException($"Failed booking event {eventId}", postUrl, response.StatusCode, filteredResponse, null);
             }
             catch (CommunicationException ce)
             {
-                _executionLog.LogWarning(ce, $"Event[{eventId}] booking failed, CommunicationException: {ce.Message}");
+                _executionLog.LogError(ce, $"Event[{eventId}] booking failed. API response code: {ce.ResponseCode}.");
+                if (_config.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                {
+                    throw;
+                }
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning(e, $"Event[{eventId}] booking failed.");
+                _executionLog.LogError(e, $"Event[{eventId}] booking failed.");
+                if (_config.ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                {
+                    throw;
+                }
             }
 
             return false;

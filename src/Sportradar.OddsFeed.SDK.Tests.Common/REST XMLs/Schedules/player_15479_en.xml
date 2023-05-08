@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <player_profile xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:15:23+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <player type="G" date_of_birth="1985-04-18" nationality="Poland" country_code="POL" height="190" weight="83" full_name="Lukasz Fabianski" gender="male" id="sr:player:15479" name="Fabianski, Lukasz"/>
+  </player_profile>

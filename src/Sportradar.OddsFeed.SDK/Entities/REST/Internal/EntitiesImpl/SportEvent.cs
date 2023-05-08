@@ -102,10 +102,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 return null;
             }
 
+            var cultureList = new[] { culture };
             var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await sportEventCI.GetNamesAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IReadOnlyDictionary<CultureInfo, string>>>(sportEventCI
-                        .GetNamesAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Name"))
+                ? await sportEventCI.GetNamesAsync(cultureList).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IReadOnlyDictionary<CultureInfo, string>>>(sportEventCI.GetNamesAsync).SafeInvokeAsync(cultureList, ExecutionLog, GetFetchErrorMessage("Name"))
                     .ConfigureAwait(false);
 
             return item == null || !item.ContainsKey(culture)
@@ -185,7 +185,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected override string PrintC()
         {
             var detailsCultures = string.Join(", ", Cultures.Select(k => k.TwoLetterISOLanguageName));
-            var result = $"Id={Id}, Sport={GetSportIdAsync().Result}, ScheduledStartTime={GetScheduledTimeAsync().Result}, ScheduledEndTime={GetScheduledEndTimeAsync().Result}";
+            var result = $"Id={Id}, Sport={GetSportIdAsync().GetAwaiter().GetResult()}, ScheduledStartTime={GetScheduledTimeAsync().GetAwaiter().GetResult()}, ScheduledEndTime={GetScheduledEndTimeAsync().GetAwaiter().GetResult()}";
             result += $", CulturesLoaded=[{detailsCultures}]";
             return result;
         }

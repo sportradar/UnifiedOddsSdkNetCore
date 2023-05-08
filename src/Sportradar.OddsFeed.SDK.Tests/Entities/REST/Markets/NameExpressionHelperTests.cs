@@ -15,56 +15,56 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
     public class NameExpressionHelperTests
     {
         [Fact]
-        public void MissingOpeningBracketsCauseException()
+        public void MissingOpeningBracketsThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("$competitor1}", out _, out _);
             action.Should().Throw<FormatException>();
         }
 
         [Fact]
-        public void MissingClosingBracketsCauseException()
+        public void MissingClosingBracketsThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("{$competitor1", out _, out _);
             action.Should().Throw<FormatException>();
         }
 
         [Fact]
-        public void NoBracketsCauseException()
+        public void NoBracketsThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("$competitor1", out _, out _);
             action.Should().Throw<FormatException>();
         }
 
         [Fact]
-        public void ToShortExpressionCausesException()
+        public void ToShortExpressionThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("{}", out _, out _);
             action.Should().Throw<FormatException>();
         }
 
         [Fact]
-        public void MissingOpeningBracketInDescriptorCausesException()
+        public void MissingOpeningBracketInDescriptorThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("Competitor $competitor1} to {score} points", out _, out _);
             action.Should().Throw<FormatException>();
         }
 
         [Fact]
-        public void MissingClosingBracketInDescriptorCausesException()
+        public void MissingClosingBracketInDescriptorThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("Competitor $competitor1} to {score points", out _, out _);
             action.Should().Throw<FormatException>();
         }
 
         [Fact]
-        public void MissingOpeningBracketOnBeginningInDescriptorCausesException()
+        public void MissingOpeningBracketOnBeginningInDescriptorThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("$competitor1} to {score} points", out _, out _);
             action.Should().Throw<FormatException>();
         }
 
         [Fact]
-        public void MissingClosingBracketOnEndInDescriptorCausesException()
+        public void MissingClosingBracketOnEndInDescriptorThrows()
         {
             Action action = () => NameExpressionHelper.ParseExpression("{$competitor1} to {score", out _, out _);
             action.Should().Throw<FormatException>();

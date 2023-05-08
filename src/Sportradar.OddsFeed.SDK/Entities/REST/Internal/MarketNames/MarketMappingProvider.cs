@@ -226,7 +226,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             var result = string.Empty;
             if (sovKey == "$score")
             {
-                var eventStatus = _eventStatusCache.GetSportEventStatusAsync(_sportEvent.Id).Result;
+                var eventStatus = _eventStatusCache.GetSportEventStatusAsync(_sportEvent.Id).GetAwaiter().GetResult();
                 if (eventStatus != null)
                 {
                     result = $"{eventStatus.HomeScore ?? 0}:{eventStatus.AwayScore ?? 0}";

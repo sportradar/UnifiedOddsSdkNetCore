@@ -20,12 +20,36 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <inheritdoc />
         public HttpRequestHeaders DefaultRequestHeaders { get; }
 
-        public SdkHttpClientPool(string accessToken, int poolSize, int timeoutSecond)
-        : this(accessToken, poolSize, TimeSpan.FromSeconds(timeoutSecond))
+        public SdkHttpClientPool(string accessToken, int poolSize, int timeoutSecond, int maxServerConnections)
+        : this(accessToken, poolSize, TimeSpan.FromSeconds(timeoutSecond), maxServerConnections)
         {
         }
 
-        public SdkHttpClientPool(string accessToken, int poolSize, TimeSpan timeout)
+        public SdkHttpClientPool(string accessToken, int poolSize, TimeSpan timeout, int maxServerConnections)
+        {
+            if (poolSize < 1)
+            {
+                poolSize = 1;
+            }
+            var httpClientHandler = new HttpClientHandler
+            {
+                MaxConnectionsPerServer = maxServerConnections,
+                AllowAutoRedirect = true
+            };
+            _httpClientPool = new List<HttpClient>(poolSize);
+            for (var i = 0; i < poolSize; i++)
+            {
+                var httpClient = new HttpClient(httpClientHandler) { Timeout = timeout };
+                httpClient.DefaultRequestHeaders.Add("x-access-token", accessToken);
+                httpClient.DefaultRequestHeaders.Add("User-Agent", $"UfSdk-{SdkInfo.SdkType}/{SdkInfo.GetVersion()} (NET: {Environment.Version}, OS: {Environment.OSVersion}, Init: {SdkInfo.Created:yyyyMMddHHmm})");
+                _httpClientPool.Add(httpClient);
+            }
+
+            SdkLoggerFactory.GetLoggerForExecution(typeof(SdkHttpClientPool)).LogDebug($"SdkHttpClientPool with size {poolSize} and timeout {timeout.TotalSeconds}s created.");
+            DefaultRequestHeaders = _httpClientPool.First().DefaultRequestHeaders;
+        }
+
+        internal SdkHttpClientPool(string accessToken, int poolSize, TimeSpan timeout, HttpMessageHandler httpMessageHandler)
         {
             if (poolSize < 1)
             {
@@ -34,8 +58,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             _httpClientPool = new List<HttpClient>(poolSize);
             for (var i = 0; i < poolSize; i++)
             {
-                var httpClient = new HttpClient { Timeout = timeout };
-                httpClient.DefaultRequestHeaders.Add("x-access-token", accessToken); //
+                var httpClient = new HttpClient(httpMessageHandler) { Timeout = timeout };
+                httpClient.DefaultRequestHeaders.Add("x-access-token", accessToken);
                 httpClient.DefaultRequestHeaders.Add("User-Agent", $"UfSdk-{SdkInfo.SdkType}/{SdkInfo.GetVersion()} (NET: {Environment.Version}, OS: {Environment.OSVersion}, Init: {SdkInfo.Created:yyyyMMddHHmm})");
                 _httpClientPool.Add(httpClient);
             }

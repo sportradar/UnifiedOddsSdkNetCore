@@ -6,7 +6,6 @@
         <xs:attribute type="xs:int" name="number" use="optional"/>
         <xs:attribute type="xs:string" name="name" use="optional"/>
         <xs:attribute type="xs:string" name="group_long_name" use="optional"/>
-        <xs:attribute type="xs:string" name="group_name" use="optional"/>
         <xs:attribute type="xs:string" name="group" use="optional" />
         <xs:attribute type="xs:string" name="group_id" use="optional" />
         <xs:attribute type="xs:int" name="cup_round_matches" use="optional"/>

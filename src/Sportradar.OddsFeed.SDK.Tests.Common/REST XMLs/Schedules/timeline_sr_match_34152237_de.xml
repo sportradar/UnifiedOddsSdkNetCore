@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <match_timeline xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:10:11+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <sport_event id="sr:match:34152237" scheduled="2023-03-19T16:30:00+00:00" start_time_tbd="false">
+      <tournament_round type="group" number="28" group_long_name="Premier League" betradar_id="1" betradar_name="Premier League" phase="regular season"/>
+      <season start_date="2022-08-05" end_date="2023-05-28" year="22/23" tournament_id="sr:tournament:17" id="sr:season:93741" name="Premier League 22/23"/>
+      <tournament id="sr:tournament:17" name="Premier League">
+        <sport id="sr:sport:1" name="Fußball"/>
+        <category id="sr:category:1" name="England" country_code="ENG"/>
+      </tournament>
+      <competitors>
+        <competitor qualifier="home" id="sr:competitor:17" name="Manchester City" abbreviation="MCI" short_name="Man City" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4861"/>
+          </reference_ids>
+        </competitor>
+        <competitor qualifier="away" id="sr:competitor:37" name="West Ham United" abbreviation="WHU" short_name="West Ham" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4865"/>
+          </reference_ids>
+        </competitor>
+      </competitors>
+      <venue id="sr:venue:606" name="Etihad Stadium" capacity="53400" city_name="Manchester" country_name="England" country_code="ENG" map_coordinates="53.484592,-2.202695"/>
+    </sport_event>
+    <sport_event_conditions>
+      <venue id="sr:venue:606" name="Etihad Stadium" capacity="53400" city_name="Manchester" country_name="England" country_code="ENG" map_coordinates="53.484592,-2.202695"/>
+    </sport_event_conditions>
+    <sport_event_status match_status_code="60" status="postponed" match_status="postponed"/>
+    <coverage_info level="gold" live_coverage="true" covered_from="venue">
+      <coverage includes="basic_score"/>
+      <coverage includes="key_events"/>
+      <coverage includes="detailed_events"/>
+      <coverage includes="lineups"/>
+      <coverage includes="commentary"/>
+    </coverage_info>
+  </match_timeline>

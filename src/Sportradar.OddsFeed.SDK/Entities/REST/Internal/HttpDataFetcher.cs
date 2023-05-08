@@ -114,8 +114,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             var responseMessage = new HttpResponseMessage();
             try
             {
-                responseMessage = _client.GetAsync(uri).Result;
-                return ProcessGetDataAsync(responseMessage, uri).Result;
+                responseMessage = _client.GetAsync(uri).GetAwaiter().GetResult();
+                return ProcessGetDataAsync(responseMessage, uri).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -137,11 +137,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 var responseContent = string.Empty;
                 try
                 {
-                    responseContent = new StreamReader(responseMessage.Content.ReadAsStreamAsync().Result).ReadToEnd();
+                    responseContent = new StreamReader(responseMessage.Content.ReadAsStreamAsync().GetAwaiter().GetResult()).ReadToEndAsync().GetAwaiter().GetResult();
                     var memoryStream = new MemoryStream();
                     var writer = new StreamWriter(memoryStream);
-                    writer.Write(responseContent);
-                    writer.Flush();
+                    await writer.WriteAsync(responseContent);
+                    await writer.FlushAsync();
                     memoryStream.Position = 0;
                     var response = _responseDeserializer.Deserialize(memoryStream);
                     responseContent = response.action;

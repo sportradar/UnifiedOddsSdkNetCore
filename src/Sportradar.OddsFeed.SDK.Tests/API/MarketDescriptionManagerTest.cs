@@ -47,33 +47,33 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void MarketDescriptionManagerInitTest()
+        public void MarketDescriptionManagerInit()
         {
             var marketDescriptionManager = new MarketDescriptionManager(TestConfigurationInternal.GetConfig(), _marketCacheProvider, _invariantMarketDescriptionCache, _variantDescriptionListCache, _variantMarketDescriptionCache);
             Assert.NotNull(marketDescriptionManager);
         }
 
         [Fact]
-        public async Task MarketDescriptionManagerGetMarketDescriptionsTest()
+        public async Task MarketDescriptionManagerGetMarketDescriptions()
         {
             // calls from initialization are done
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestCalls["GetVariantDescriptionsAsync"]);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestCalls["GetMarketDescriptionsAsync"]);
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestMethodCalls[TestDataRouterManager.EndpointVariantDescriptions]);
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestMethodCalls[TestDataRouterManager.EndpointMarketDescriptions]);
             var marketDescriptionManager = new MarketDescriptionManager(TestConfigurationInternal.GetConfig(), _marketCacheProvider, _invariantMarketDescriptionCache, _variantDescriptionListCache, _variantMarketDescriptionCache);
             var marketDescriptions = (await marketDescriptionManager.GetMarketDescriptionsAsync()).ToList();
             // no new calls should be done, since already everything loaded
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestCalls["GetVariantDescriptionsAsync"]);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestCalls["GetMarketDescriptionsAsync"]);
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestMethodCalls[TestDataRouterManager.EndpointVariantDescriptions]);
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestMethodCalls[TestDataRouterManager.EndpointMarketDescriptions]);
             Assert.Equal(TestData.InvariantListCacheCount, marketDescriptions.Count);
         }
 
         [Fact]
-        public async Task MarketDescriptionManagerGetMarketMappingTest()
+        public async Task MarketDescriptionManagerGetMarketMapping()
         {
             var marketDescriptionManager = new MarketDescriptionManager(TestConfigurationInternal.GetConfig(), _marketCacheProvider, _invariantMarketDescriptionCache, _variantDescriptionListCache, _variantMarketDescriptionCache);
             var marketMapping = (await marketDescriptionManager.GetMarketMappingAsync(115, _producersProvider.GetProducers().First())).ToList();
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestCalls["GetVariantDescriptionsAsync"]);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestCalls["GetMarketDescriptionsAsync"]);
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestMethodCalls[TestDataRouterManager.EndpointVariantDescriptions]);
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.RestMethodCalls[TestDataRouterManager.EndpointMarketDescriptions]);
             Assert.Equal(3, marketMapping.Count);
             Assert.Equal("6:14", marketMapping[0].MarketId);
         }

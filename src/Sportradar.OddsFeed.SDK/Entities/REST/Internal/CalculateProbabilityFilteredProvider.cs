@@ -85,7 +85,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new CommunicationException($"Getting probability calculations (filtered) failed with StatusCode={responseMessage.StatusCode}",
+                var message = SdkInfo.ExtractHttpResponseMessage(responseMessage.Content);
+                throw new CommunicationException($"Getting probability calculations (filtered) failed with message={message}",
                     _uriFormat,
                     responseMessage.StatusCode,
                     null);

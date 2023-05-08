@@ -21,8 +21,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 {
     public static class TestData
     {
-        public static readonly string RestXmlPath = Directory.GetCurrentDirectory() + @"/REST XMLs/";
-        public static readonly string FeedXmlPath = Directory.GetCurrentDirectory() + @"/XMLs/";
+        public static readonly string RestXmlPath = Directory.GetCurrentDirectory() + "/REST XMLs/";
+        public static readonly string FeedXmlPath = Directory.GetCurrentDirectory() + "/XMLs/";
 
         public static readonly int BookmakerId = 1;
         public static readonly string AccessToken = "token";
@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public static readonly CultureInfo Culture = new CultureInfo("en");
         public static IReadOnlyCollection<CultureInfo> Cultures => Cultures3;
-        public static IReadOnlyCollection<CultureInfo> Cultures1 => new Collection<CultureInfo> { Culture };
+        public static IReadOnlyCollection<CultureInfo> Cultures1 => new Collection<CultureInfo> { Cultures3.First() };
         public static readonly IReadOnlyCollection<CultureInfo> Cultures3 = new Collection<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") });
         public static readonly IReadOnlyCollection<CultureInfo> Cultures4 = new Collection<CultureInfo>(new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu"), new CultureInfo("nl") });
         public static readonly CultureInfo CultureNl = new CultureInfo("nl");

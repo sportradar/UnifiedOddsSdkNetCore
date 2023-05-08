@@ -32,10 +32,10 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// </summary>
         VoidFactor? VoidFactor { get; }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         /// <summary>
         /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement"/> is winning - i.e. have the bets placed on this outcome winning or losing
         /// </summary>
-#pragma warning disable CS0618 // Type or member is obsolete
         OutcomeResult OutcomeResult => Result ? OutcomeResult.Won : OutcomeResult.Lost;
 #pragma warning restore CS0618 // Type or member is obsolete
     }

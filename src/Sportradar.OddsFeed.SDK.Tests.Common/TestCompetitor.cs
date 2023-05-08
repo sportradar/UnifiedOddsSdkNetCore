@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -12,6 +13,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         {
             Id = id;
             Names = new Dictionary<CultureInfo, string> { { culture, name } };
+        }
+
+        public TestCompetitor(URN id, IDictionary<CultureInfo, string> names)
+        {
+            Id = id;
+            Names = new ReadOnlyDictionary<CultureInfo, string>(names);
         }
 
         /// <summary>

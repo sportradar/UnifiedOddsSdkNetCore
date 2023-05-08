@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         public void CorrectKeyProducesResponseStatusOk()
         {
             var provider = BuildProvider(null);
-            var dto = provider.GetDataAsync(new string[1]).Result;
+            var dto = provider.GetDataAsync(new string[1]).GetAwaiter().GetResult();
 
             Assert.NotNull(dto);
             Assert.Equal(HttpStatusCode.OK, dto.ResponseCode);
@@ -56,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             CommunicationException exception = null;
             try
             {
-                var dto = provider.GetDataAsync(new string[1]).Result;
+                var dto = provider.GetDataAsync(new string[1]).GetAwaiter().GetResult();
                 Assert.NotNull(dto);
             }
             catch (AggregateException ex)

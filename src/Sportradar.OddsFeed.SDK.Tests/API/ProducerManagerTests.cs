@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
     public class ProducerManagerTests
     {
         [Fact]
-        public void ProducerManagerInitTest()
+        public void ProducerManagerInit()
         {
             var producerManager = TestProducerManager.Create();
             Assert.NotNull(producerManager);
@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void UnknownProducerTest()
+        public void UnknownProducer()
         {
             var producerManager = TestProducerManager.Create();
 
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void CompareProducersTest()
+        public void CompareProducers()
         {
             var producerManager = TestProducerManager.Create();
 
@@ -56,7 +56,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerGetByIdTest()
+        public void ProducerManagerGetById()
         {
             var producerManager = TestProducerManager.Create();
 
@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerGetByNameTest()
+        public void ProducerManagerGetByName()
         {
             var producerManager = TestProducerManager.Create();
 
@@ -76,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerExistsByIdTest()
+        public void ProducerManagerExistsById()
         {
             var producerManager = TestProducerManager.Create();
 
@@ -85,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerExistsByNameTest()
+        public void ProducerManagerExistsByName()
         {
             var producerManager = TestProducerManager.Create();
 
@@ -94,7 +94,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerNotExistsByIdTest()
+        public void ProducerManagerNotExistsById()
         {
             var producerManager = TestProducerManager.Create();
 
@@ -103,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerUpdateLocked01Test()
+        public void ProducerManagerUpdateLocked01()
         {
             var producerId = 1;
             var producerManager = TestProducerManager.Create();
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerUpdateLocked02Test()
+        public void ProducerManagerUpdateLocked02()
         {
             var producerId = 1;
             var date = DateTime.Now;
@@ -131,7 +131,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         }
 
         [Fact]
-        public void ProducerManagerUpdateTest()
+        public void ProducerManagerUpdate()
         {
             var producerId = 1;
             var date = DateTime.Now;
@@ -149,7 +149,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
 
         // [Fact]
         // [ExpectedException(typeof(InvalidOperationException))]
-        // public void ProducerManagerUpdateLocked01Test()
+        // public void ProducerManagerUpdateLocked01()
         // {
         //     var producerId = 1;
         //     var producerManager = TestProducerManager.Create();
@@ -164,7 +164,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
         //
         // [Fact]
         // [ExpectedException(typeof(InvalidOperationException))]
-        // public void ProducerManagerUpdateLocked02Test()
+        // public void ProducerManagerUpdateLocked02()
         // {
         //     var producerId = 1;
         //     var date = DateTime.Now;

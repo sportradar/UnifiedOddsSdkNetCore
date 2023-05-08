@@ -152,13 +152,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             if (playerId.Type.Equals("competitor", StringComparison.InvariantCultureIgnoreCase))
             {
-                var competitorCI = await _profileCache.GetCompetitorProfileAsync(playerId, cultures).ConfigureAwait(false);
+                var competitorCI = await _profileCache.GetCompetitorProfileAsync(playerId, cultures, false).ConfigureAwait(false);
                 return competitorCI == null
                     ? null
                     : new Competitor(competitorCI, _profileCache, cultures, this, exceptionStrategy, (ICompetitionCI)null);
             }
 
-            var playerProfileCI = await _profileCache.GetPlayerProfileAsync(playerId, cultures).ConfigureAwait(false);
+            var playerProfileCI = await _profileCache.GetPlayerProfileAsync(playerId, cultures, false).ConfigureAwait(false);
             return playerProfileCI == null
                 ? null
                 : new PlayerProfile(playerProfileCI, cultures);
@@ -179,11 +179,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             {
                 if (id.Type.Equals("competitor", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    competitorTasks.Add(_profileCache.GetCompetitorProfileAsync(id, cultures));
+                    competitorTasks.Add(_profileCache.GetCompetitorProfileAsync(id, cultures, false));
                 }
                 else
                 {
-                    playerTasks.Add(_profileCache.GetPlayerProfileAsync(id, cultures));
+                    playerTasks.Add(_profileCache.GetPlayerProfileAsync(id, cultures, false));
                 }
             }
 
@@ -193,17 +193,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var result = new List<IPlayer>();
             foreach (var competitorTask in competitorTasks)
             {
-                if (competitorTask.IsCompleted && competitorTask.Result != null)
+                if (competitorTask.IsCompleted && competitorTask.GetAwaiter().GetResult() != null)
                 {
-                    result.Add(new Competitor(competitorTask.Result, _profileCache, cultures, this, exceptionStrategy, (ICompetitionCI)null));
+                    result.Add(new Competitor(competitorTask.GetAwaiter().GetResult(), _profileCache, cultures, this, exceptionStrategy, (ICompetitionCI)null));
                 }
             }
 
             foreach (var playerTask in playerTasks)
             {
-                if (playerTask.IsCompleted && playerTask.Result != null)
+                if (playerTask.IsCompleted && playerTask.GetAwaiter().GetResult() != null)
                 {
-                    result.Add(new PlayerProfile(playerTask.Result, cultures));
+                    result.Add(new PlayerProfile(playerTask.GetAwaiter().GetResult(), cultures));
                 }
             }
 
@@ -319,7 +319,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
         public async Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            var competitorCI = await _profileCache.GetCompetitorProfileAsync(competitorId, cultures).ConfigureAwait(false);
+            var competitorCI = await _profileCache.GetCompetitorProfileAsync(competitorId, cultures, false).ConfigureAwait(false);
             if (competitorCI != null)
             {
                 return BuildCompetitor(competitorCI, cultures, rootCompetitionCI, exceptionStrategy);
@@ -337,7 +337,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The constructed <see cref="ICompetitor"/> instance</returns>
         public async Task<ICompetitor> BuildCompetitorAsync(URN competitorId, IReadOnlyCollection<CultureInfo> cultures, IDictionary<URN, ReferenceIdCI> competitorsReferences, ExceptionHandlingStrategy exceptionStrategy)
         {
-            var competitorCI = await _profileCache.GetCompetitorProfileAsync(competitorId, cultures).ConfigureAwait(false);
+            var competitorCI = await _profileCache.GetCompetitorProfileAsync(competitorId, cultures, false).ConfigureAwait(false);
             if (competitorCI != null)
             {
                 return BuildCompetitor(competitorCI, cultures, competitorsReferences, exceptionStrategy);
@@ -355,7 +355,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <returns>The constructed <see cref="ITeamCompetitor"/> instance</returns>
         public async Task<ITeamCompetitor> BuildTeamCompetitorAsync(URN teamCompetitorId, IReadOnlyCollection<CultureInfo> cultures, ICompetitionCI rootCompetitionCI, ExceptionHandlingStrategy exceptionStrategy)
         {
-            var competitorCI = await _profileCache.GetCompetitorProfileAsync(teamCompetitorId, cultures).ConfigureAwait(false);
+            var competitorCI = await _profileCache.GetCompetitorProfileAsync(teamCompetitorId, cultures, false).ConfigureAwait(false);
             if (competitorCI is TeamCompetitorCI teamCompetitorCI)
             {
                 return BuildTeamCompetitor(teamCompetitorCI, cultures, rootCompetitionCI, exceptionStrategy);

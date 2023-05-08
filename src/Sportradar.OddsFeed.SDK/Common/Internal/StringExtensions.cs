@@ -44,5 +44,15 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 ? result + space
                 : space + result;
         }
+
+        /// <summary>
+        /// Check string if it is null or empty
+        /// </summary>
+        /// <param name="value">Input string</param>
+        /// <returns>Value indicating if the string is null or empty</returns>
+        public static bool IsNullOrEmpty(this string value)
+        {
+            return string.IsNullOrEmpty(value);
+        }
     }
 }

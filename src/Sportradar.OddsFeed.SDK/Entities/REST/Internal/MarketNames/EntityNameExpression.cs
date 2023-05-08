@@ -5,8 +5,11 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
@@ -26,6 +29,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         private readonly ISportEvent _sportEvent;
 
+        private readonly IProfileCache _profileCache;
+
         /// <summary>
         /// Lists the supported operand names
         /// </summary>
@@ -40,13 +45,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// </summary>
         /// <param name="propertyName">The name <see cref="ISportEvent"/> property</param>
         /// <param name="sportEvent">A <see cref="ISportEvent"/> related to the entity associated with the current instance.</param>
-        internal EntityNameExpression(string propertyName, ISportEvent sportEvent)
+        /// <param name="profileCache">A profile cache to get the competitor name</param>
+        internal EntityNameExpression(string propertyName, ISportEvent sportEvent, IProfileCache profileCache)
         {
             Guard.Argument(propertyName, nameof(propertyName)).NotNull().NotEmpty();
             Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
+            Guard.Argument(profileCache, nameof(profileCache)).NotNull();
 
             _propertyName = propertyName;
             _sportEvent = sportEvent;
+            _profileCache = profileCache;
         }
 
         /// <summary>
@@ -98,42 +106,50 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case 1:
                     return await GetAwayCompetitor(culture).ConfigureAwait(false);
                 default:
-                    throw new NameExpressionException($"Operand {_propertyName} is not supported. Supported operands are: {string.Join(", ", SupportedOperands)}", null);
+                    throw new NameExpressionException($"Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {string.Join(", ", SupportedOperands)}", null);
             }
         }
 
         private async Task<string> GetHomeCompetitor(CultureInfo culture)
         {
-            if (_sportEvent is IMatch match)
+            if (_sportEvent is Competition competition)
             {
-                var competitor = await InvokeAndWrapAsync(match.GetHomeCompetitorAsync).ConfigureAwait(false);
-                return competitor?.GetName(culture);
+                var competitorIds = await competition.GetCompetitorIdsAsync().ConfigureAwait(false);
+                var listCompetitorIds = competitorIds.ToList();
+                if (!listCompetitorIds.IsNullOrEmpty())
+                {
+                    var name = await _profileCache.GetCompetitorNameAsync(listCompetitorIds.First(), culture, false).ConfigureAwait(false);
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        return name;
+                    }
+                    var competitors = await competition.GetCompetitorsAsync(culture).ConfigureAwait(false);
+                    return competitors?.First().GetName(culture);
+                }
             }
 
-            if (_sportEvent is IStage stage)
-            {
-                var competitors = await InvokeAndWrapAsync(stage.GetCompetitorsAsync).ConfigureAwait(false);
-                return competitors?.First().GetName(culture);
-            }
-
-            throw new NameExpressionException($"Operand {_propertyName} is not supported. Supported operands are: {string.Join(",", SupportedOperands)}", null);
+            throw new NameExpressionException($"Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {string.Join(",", SupportedOperands)}", null);
         }
 
         private async Task<string> GetAwayCompetitor(CultureInfo culture)
         {
-            if (_sportEvent is IMatch match)
+            if (_sportEvent is Competition competition)
             {
-                var competitor = await InvokeAndWrapAsync(match.GetAwayCompetitorAsync).ConfigureAwait(false);
-                return competitor?.GetName(culture);
+                var competitorIds = await competition.GetCompetitorIdsAsync().ConfigureAwait(false);
+                var listCompetitorIds = competitorIds.ToList();
+                if (!listCompetitorIds.IsNullOrEmpty())
+                {
+                    var name = await _profileCache.GetCompetitorNameAsync(listCompetitorIds.Skip(1).First(), culture, false).ConfigureAwait(false);
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        return name;
+                    }
+                    var competitors = await competition.GetCompetitorsAsync(culture).ConfigureAwait(false);
+                    return competitors?.Skip(1).First().GetName(culture);
+                }
             }
 
-            if (_sportEvent is IStage stage)
-            {
-                var competitors = await InvokeAndWrapAsync(stage.GetCompetitorsAsync).ConfigureAwait(false);
-                return competitors?.Skip(1).First().GetName(culture);
-            }
-
-            throw new NameExpressionException($"Operand {_propertyName} is not supported. Supported operands are: {string.Join(",", SupportedOperands)}", null);
+            throw new NameExpressionException($"Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {string.Join(",", SupportedOperands)}", null);
         }
     }
 }

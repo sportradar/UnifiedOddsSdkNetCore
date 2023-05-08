@@ -205,14 +205,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <remarks>The timeline is cached only after the event status indicates that the event has finished</remarks>
         public async Task<EventTimelineCI> GetEventTimelineAsync(IEnumerable<CultureInfo> cultures)
         {
-            var wantedCultures = cultures as IList<CultureInfo> ?? cultures.ToList();
+            var wantedCultures = cultures as ICollection<CultureInfo> ?? cultures.ToList();
             if (_eventTimeline == null || !_eventTimeline.IsFinalized)
             {
                 // if we don't have timeline or is not yet finalized, all cultures should be fetched; otherwise only missing ones
             }
             else
             {
-                wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, _eventTimeline.FetchedCultureInfos).ToList();
+                wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, _eventTimeline.FetchedCultureInfos);
             }
 
             var tasks = wantedCultures.Select(s => DataRouterManager.GetInformationAboutOngoingEventAsync(Id, s, this));

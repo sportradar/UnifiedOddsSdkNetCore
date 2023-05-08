@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public override Encoding Encoding
         {
-            get { return Encoding.Unicode; }
+            get => Encoding.Unicode;
         }
 
         public override void WriteLine(string value)
@@ -23,9 +23,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             _output.WriteLine(value);
         }
 
-        public override void WriteLine(string format, params object[] args)
+        public override void WriteLine(string format, params object[] arg)
         {
-            _output.WriteLine(format, args);
+            _output.WriteLine(format, arg);
         }
 
         public override void Write(char value)

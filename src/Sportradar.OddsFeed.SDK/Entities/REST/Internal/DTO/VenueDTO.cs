@@ -45,11 +45,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         internal string Coordinates { get; }
 
+        //TODO - this was changed
         /// <summary>
         /// Gets the course
         /// </summary>
         /// <value>The course</value>
-        internal IEnumerable<HoleDTO> Course { get; }
+        internal ICollection<CourseDTO> Courses { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VenueDTO"/> class
@@ -68,10 +69,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             CountryCode = venue.country_code;
             State = venue.state;
             Coordinates = venue.map_coordinates;
-            if (!venue.course.IsNullOrEmpty())
-            {
-                Course = venue.course.Select(s => new HoleDTO(s));
-            }
+            Courses = venue.course.IsNullOrEmpty()
+                ? new List<CourseDTO>()
+                : venue.course.Select(s => new CourseDTO(s)).ToList();
         }
     }
 }

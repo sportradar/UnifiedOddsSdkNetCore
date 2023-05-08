@@ -77,10 +77,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             var data = _exceptionStrategy == ExceptionHandlingStrategy.THROW
                 ? await _dataProvider.GetDataAsync(param).ConfigureAwait(false)
-                : await new Func<string, Task<cashout>>(_dataProvider.GetDataAsync).SafeInvokeAsync(
-                    param,
-                    ExecutionLog,
-                    "Error occurred while fetching probabilities for " + param).ConfigureAwait(false);
+                : await new Func<string, Task<cashout>>(_dataProvider.GetDataAsync).SafeInvokeAsync(param, ExecutionLog, "Error occurred while fetching probabilities for " + param).ConfigureAwait(false);
 
             var cultureResult = culture == null ? _defaultCultures : new[] { culture };
 

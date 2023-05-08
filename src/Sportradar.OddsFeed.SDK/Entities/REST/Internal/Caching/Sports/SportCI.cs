@@ -98,11 +98,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
 
         public async Task LoadCategoriesAsync(IEnumerable<CultureInfo> cultures)
         {
-            var wantedCultures = cultures as List<CultureInfo> ?? cultures.ToList();
+            var wantedCultures = cultures as ICollection<CultureInfo> ?? cultures.ToList();
             try
             {
                 await _loadedCategoriesSemaphore.WaitAsync().ConfigureAwait(false);
-                wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, _loadedCategories).ToList();
+                wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, _loadedCategories);
                 if (!wantedCultures.Any())
                 {
                     return;

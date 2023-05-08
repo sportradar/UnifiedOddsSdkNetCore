@@ -88,15 +88,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 return responseStream;
             }
 
-            var responseContent = new StreamReader(responseStream).ReadToEnd();
+            var responseContent = new StreamReader(responseStream).ReadToEndAsync().GetAwaiter().GetResult();
             responseContent = responseContent.Replace("\n", string.Empty);
             logBuilder.Append(" Response:").Append(responseContent);
             RestLog.LogDebug(logBuilder.ToString());
 
             var memoryStream = new MemoryStream();
             var writer = new StreamWriter(memoryStream);
-            writer.Write(responseContent);
-            writer.Flush();
+            await writer.WriteAsync(responseContent);
+            await writer.FlushAsync();
             memoryStream.Position = 0;
             return memoryStream;
         }
@@ -142,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 return responseStream;
             }
 
-            var responseContent = new StreamReader(responseStream).ReadToEnd();
+            var responseContent = new StreamReader(responseStream).ReadToEndAsync().GetAwaiter().GetResult();
             responseContent = responseContent.Replace("\n", string.Empty);
             logBuilder.Append(" Response:").Append(responseContent);
             RestLog.LogDebug(logBuilder.ToString());
@@ -180,7 +180,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                         RestLog.LogInformation($"Id:{dataId} Posting url: {uri.AbsoluteUri}");
                     }
                 }
-                catch (Exception)
+                catch
                 {
                     // ignored
                 }
@@ -200,11 +200,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             catch (Exception ex)
             {
                 watch.Stop();
-                if (!RestLog.IsEnabled(LogLevel.Information))
-                {
-                    RestLog.LogError($"Id:{dataId} Error posting to url: {uri.AbsoluteUri}");
-                }
-                RestLog.LogError($"Id:{dataId} Posting error at {watch.ElapsedMilliseconds} ms.");
+                RestLog.LogError($"Id:{dataId} Posting error to {uri.AbsoluteUri} at {watch.ElapsedMilliseconds} ms.");
                 if (ex.GetType() != typeof(ObjectDisposedException) && ex.GetType() != typeof(TaskCanceledException))
                 {
                     RestLog.LogError(ex, ex.Message);
@@ -218,16 +214,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             {
                 try
                 {
-                    responseContent = response.Content.ReadAsStringAsync().Result;
+                    responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
-                catch (Exception)
+                catch
                 {
                     // ignored
                 }
             }
-            if (RestLog.IsEnabled(LogLevel.Debug))
+            if (RestLog.IsEnabled(LogLevel.Debug) || !response.IsSuccessStatusCode)
             {
-                RestLog.LogDebug($"Id:{dataId} Posting took {watch.ElapsedMilliseconds} ms. Response: {(int)response.StatusCode}-{response.ReasonPhrase} {responseContent}");
+                var msg = $"Id:{dataId} Posting took {watch.ElapsedMilliseconds} ms. Response: {(int)response.StatusCode}-{response.ReasonPhrase} {responseContent}";
+                if (!response.IsSuccessStatusCode)
+                {
+                    RestLog.LogWarning(msg);
+                }
+                else
+                {
+                    RestLog.Log(SdkLoggerFactory.GetWriteLogLevel(RestLog, LogLevel.Debug), msg);
+                }
             }
             else
             {

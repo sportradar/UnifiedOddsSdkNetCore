@@ -46,7 +46,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities
             namedValuesProviderMock.Setup(x => x.BetStopReasons).Returns(namedValuesCacheMock.Object);
             namedValuesProviderMock.Setup(x => x.BettingStatuses).Returns(namedValuesCacheMock.Object);
 
-            _mapper = new FeedMessageMapper(new TestSportEntityFactory(outputHelper),
+            var sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
+            _mapper = new FeedMessageMapper(sportEntityFactoryBuilder.SportEntityFactory,
                 nameProviderFactoryMock.Object,
                 mappingProviderFactoryMock.Object,
                 namedValuesProviderMock.Object,

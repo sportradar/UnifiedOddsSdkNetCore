@@ -3,6 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -41,8 +42,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(item, nameof(item)).NotNull();
 
             Id = item.id;
-            HomeScore = item.home_scoreSpecified ? (decimal?)item.home_score : null;
-            AwayScore = item.away_scoreSpecified ? (decimal?)item.away_score : null;
+            HomeScore = string.IsNullOrEmpty(item.home_score) ? (decimal?)null : decimal.Parse(item.home_score, NumberStyles.Any, CultureInfo.InvariantCulture);
+            AwayScore = string.IsNullOrEmpty(item.away_score) ? (decimal?)null : decimal.Parse(item.away_score, NumberStyles.Any, CultureInfo.InvariantCulture);
             MatchTime = item.match_timeSpecified ? (int?)item.match_time : null;
             Period = item.period;
             PeriodName = item.period_name;

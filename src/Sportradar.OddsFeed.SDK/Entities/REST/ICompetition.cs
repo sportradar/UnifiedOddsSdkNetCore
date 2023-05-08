@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 
@@ -66,6 +67,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         Task<string> GetLiveOddsAsync()
         {
             return Task.FromResult<string>(null);
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="IEnumerable{T}"/> representing competitors in the sport event associated with the current instance
+        /// </summary>
+        /// <param name="culture">The culture in which we want to return competitor data</param>
+        /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
+        Task<IEnumerable<ICompetitor>> GetCompetitorsAsync(CultureInfo culture)
+        {
+            return Task.FromResult<IEnumerable<ICompetitor>>(null);
         }
     }
 }

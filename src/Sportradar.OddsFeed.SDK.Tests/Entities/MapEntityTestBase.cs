@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities
 {
     public abstract class MapEntityTestBase
     {
-        private static readonly IDeserializer<FeedMessage> Deserializer = new Deserializer<FeedMessage>();
+        internal static readonly IDeserializer<FeedMessage> Deserializer = new Deserializer<FeedMessage>();
 
         internal readonly IFeedMessageMapper Mapper;
 
@@ -36,13 +36,15 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities
             var nameProviderMock = new Mock<INameProvider>();
             nameProviderFactoryMock.Setup(m => m.BuildNameProvider(It.IsAny<ICompetition>(), It.IsAny<int>(), It.IsAny<IReadOnlyDictionary<string, string>>())).Returns(nameProviderMock.Object);
 
-            var voidReasonCache = new NamedValueCache(new NamedValueDataProvider(TestData.RestXmlPath + @"\void_reasons.xml", new TestDataFetcher(), "void_reason"), ExceptionHandlingStrategy.THROW);
+            var nameCacheSdkTimer = SdkTimer.Create(TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
+            var voidReasonCache = new NamedValueCache(new NamedValueDataProvider(TestData.RestXmlPath + @"\void_reasons.xml", new TestDataFetcher(), "void_reason"), ExceptionHandlingStrategy.THROW, "VoidReasons", nameCacheSdkTimer);
 
             var namedValuesProviderMock = new Mock<INamedValuesProvider>();
             namedValuesProviderMock.Setup(x => x.VoidReasons).Returns(voidReasonCache);
 
+            var sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
             Mapper = new FeedMessageMapper(
-                new TestSportEntityFactory(outputHelper),
+                sportEntityFactoryBuilder.SportEntityFactory,
                 nameProviderFactoryMock.Object,
                 new Mock<IMarketMappingProviderFactory>().Object,
                 namedValuesProviderMock.Object,

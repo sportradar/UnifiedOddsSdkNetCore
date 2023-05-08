@@ -24,6 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
     public class NameProviderFlexMarketsCacheTests
     {
         private readonly INameProvider _nameProvider;
+        private readonly TestDataRouterManager _dataRouterManager;
 
         public NameProviderFlexMarketsCacheTests(ITestOutputHelper outputHelper)
         {
@@ -39,14 +40,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
              });
 
             var cacheManager = new CacheManager();
-            var dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
+            _dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
 
             IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
 
             timer = new TestTimer(true);
-            IMarketDescriptionCache variantMdCache = new VariantMarketDescriptionCache(variantMemoryCache, dataRouterManager, mappingValidatorFactory, cacheManager);
-            IMarketDescriptionCache inVariantMdCache = new InvariantMarketDescriptionCache(invariantMemoryCache, dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, cacheManager);
-            IVariantDescriptionCache variantsMdCache = new VariantDescriptionListCache(variantsMemoryCache, dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, cacheManager);
+            IMarketDescriptionCache variantMdCache = new VariantMarketDescriptionCache(variantMemoryCache, _dataRouterManager, mappingValidatorFactory, cacheManager);
+            IMarketDescriptionCache inVariantMdCache = new InvariantMarketDescriptionCache(invariantMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, cacheManager);
+            IVariantDescriptionCache variantsMdCache = new VariantDescriptionListCache(variantsMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, cacheManager);
 
             _nameProvider = new NameProvider(
                 new MarketCacheProvider(inVariantMdCache, variantMdCache, variantsMdCache),
@@ -92,6 +93,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         {
             var result = await _nameProvider.GetOutcomeNameAsync(outcomeId, TestData.Culture).ConfigureAwait(false);
             result.Should().Be(expected);
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
     }
 }

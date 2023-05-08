@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         private const int DefaultIgnoreBetPalTimelineSportEventStatusCacheTimeout = 3;
 
         [Fact]
-        public void InitializationTest()
+        public void Initialization()
         {
             ResetOperationManager();
             Assert.Equal(DefaultSportEventStatusCacheTimeout, OperationManager.SportEventStatusCacheTimeout.TotalMinutes);
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void SportEventStatusCacheTimeoutTest()
+        public void SportEventStatusCacheTimeout()
         {
             ResetOperationManager();
             Assert.Equal(DefaultSportEventStatusCacheTimeout, OperationManager.SportEventStatusCacheTimeout.TotalMinutes);
@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void SportEventStatusCacheTimeoutMinTest()
+        public void SportEventStatusCacheTimeoutMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultSportEventStatusCacheTimeout, OperationManager.SportEventStatusCacheTimeout.TotalMinutes);
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void SportEventStatusCacheTimeoutMaxTest()
+        public void SportEventStatusCacheTimeoutMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultSportEventStatusCacheTimeout, OperationManager.SportEventStatusCacheTimeout.TotalMinutes);
@@ -51,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void SportEventStatusCacheTimeoutBelowMinTest()
+        public void SportEventStatusCacheTimeoutBelowMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultSportEventStatusCacheTimeout, OperationManager.SportEventStatusCacheTimeout.TotalMinutes);
@@ -60,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void SportEventStatusCacheTimeoutAboveMaxTest()
+        public void SportEventStatusCacheTimeoutAboveMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultSportEventStatusCacheTimeout, OperationManager.SportEventStatusCacheTimeout.TotalMinutes);
@@ -69,7 +69,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void ProfileCacheTimeoutTest()
+        public void ProfileCacheTimeout()
         {
             ResetOperationManager();
             Assert.Equal(DefaultProfileCacheTimeout, OperationManager.ProfileCacheTimeout.TotalHours);
@@ -78,7 +78,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void ProfileCacheTimeoutMinTest()
+        public void ProfileCacheTimeoutMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultProfileCacheTimeout, OperationManager.ProfileCacheTimeout.TotalHours);
@@ -87,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void ProfileCacheTimeoutMaxTest()
+        public void ProfileCacheTimeoutMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultProfileCacheTimeout, OperationManager.ProfileCacheTimeout.TotalHours);
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void ProfileCacheTimeoutBelowMinTest()
+        public void ProfileCacheTimeoutBelowMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultProfileCacheTimeout, OperationManager.ProfileCacheTimeout.TotalHours);
@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void ProfileCacheTimeoutAboveMaxTest()
+        public void ProfileCacheTimeoutAboveMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultProfileCacheTimeout, OperationManager.ProfileCacheTimeout.TotalHours);
@@ -114,7 +114,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void VariantMarketDescriptionCacheTimeoutTest()
+        public void VariantMarketDescriptionCacheTimeout()
         {
             ResetOperationManager();
             Assert.Equal(DefaultVariantMarketDescriptionCacheTimeout, OperationManager.VariantMarketDescriptionCacheTimeout.TotalHours);
@@ -123,7 +123,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void VariantMarketDescriptionCacheTimeoutMinTest()
+        public void VariantMarketDescriptionCacheTimeoutMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultVariantMarketDescriptionCacheTimeout, OperationManager.VariantMarketDescriptionCacheTimeout.TotalHours);
@@ -132,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void VariantMarketDescriptionCacheTimeoutMaxTest()
+        public void VariantMarketDescriptionCacheTimeoutMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultVariantMarketDescriptionCacheTimeout, OperationManager.VariantMarketDescriptionCacheTimeout.TotalHours);
@@ -141,7 +141,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void VariantMarketDescriptionCacheTimeoutBelowMinTest()
+        public void VariantMarketDescriptionCacheTimeoutBelowMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultVariantMarketDescriptionCacheTimeout, OperationManager.VariantMarketDescriptionCacheTimeout.TotalHours);
@@ -150,7 +150,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void VariantMarketDescriptionCacheTimeoutAboveMaxTest()
+        public void VariantMarketDescriptionCacheTimeoutAboveMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultVariantMarketDescriptionCacheTimeout, OperationManager.VariantMarketDescriptionCacheTimeout.TotalHours);
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutTest()
+        public void IgnoreBetPalTimelineSportEventStatusCacheTimeout()
         {
             ResetOperationManager();
             Assert.Equal(DefaultIgnoreBetPalTimelineSportEventStatusCacheTimeout, OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout.TotalHours);
@@ -168,7 +168,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutMinTest()
+        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultIgnoreBetPalTimelineSportEventStatusCacheTimeout, OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout.TotalHours);
@@ -177,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutMaxTest()
+        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultIgnoreBetPalTimelineSportEventStatusCacheTimeout, OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout.TotalHours);
@@ -186,7 +186,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutBelowMinTest()
+        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutBelowMin()
         {
             ResetOperationManager();
             Assert.Equal(DefaultIgnoreBetPalTimelineSportEventStatusCacheTimeout, OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout.TotalHours);
@@ -195,7 +195,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutAboveMaxTest()
+        public void IgnoreBetPalTimelineSportEventStatusCacheTimeoutAboveMax()
         {
             ResetOperationManager();
             Assert.Equal(DefaultIgnoreBetPalTimelineSportEventStatusCacheTimeout, OperationManager.IgnoreBetPalTimelineSportEventStatusCacheTimeout.TotalHours);
@@ -204,12 +204,31 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         }
 
         [Fact]
-        public void IgnoreBetPalTimelineSportEventStatusTest()
+        public void IgnoreBetPalTimelineSportEventStatus()
         {
             ResetOperationManager();
             Assert.False(OperationManager.IgnoreBetPalTimelineSportEventStatus);
             OperationManager.SetIgnoreBetPalTimelineSportEventStatus(true);
             Assert.True(OperationManager.IgnoreBetPalTimelineSportEventStatus);
+        }
+
+        [Fact]
+        public void SetMaxConnectionsPerServerSavedValidNumber()
+        {
+            const int newMaxConnections = 1000;
+            ResetOperationManager();
+            Assert.Equal(int.MaxValue, OperationManager.MaxConnectionsPerServer);
+            OperationManager.SetMaxConnectionsPerServer(newMaxConnections);
+            Assert.Equal(newMaxConnections, OperationManager.MaxConnectionsPerServer);
+        }
+
+        [Fact]
+        public void SetMaxConnectionsPerServerInvalidNumberThrows()
+        {
+            const int newMaxConnections = 0;
+            Assert.Equal(int.MaxValue, OperationManager.MaxConnectionsPerServer);
+            Assert.Throws<InvalidOperationException>(() => OperationManager.SetMaxConnectionsPerServer(newMaxConnections));
+            Assert.Equal(int.MaxValue, OperationManager.MaxConnectionsPerServer);
         }
 
         private void ResetOperationManager()

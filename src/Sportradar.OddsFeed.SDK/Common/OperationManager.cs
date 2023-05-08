@@ -71,6 +71,12 @@ namespace Sportradar.OddsFeed.SDK.Common
         public static TimeSpan FastHttpClientTimeout { get; private set; }
 
         /// <summary>
+        /// Gets the maximum number of concurrent connections (per server endpoint) allowed by an HttpClient object. (default: int.Max)
+        /// </summary>
+        /// <remarks>At feed initialization creates new HttpClientHandler with MaxConnectionsPerServer set</remarks>
+        public static int MaxConnectionsPerServer { get; private set; }
+
+        /// <summary>
         /// Initialization of default values of the <see cref="OperationManager"/>
         /// </summary>
         static OperationManager()
@@ -83,6 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Common
             RabbitConnectionTimeout = ConnectionFactory.DefaultConnectionTimeout / 1000;
             RabbitHeartbeat = ConnectionFactory.DefaultHeartbeat;
             FastHttpClientTimeout = TimeSpan.FromSeconds(5);
+            MaxConnectionsPerServer = int.MaxValue;
         }
 
         /// <summary>
@@ -191,7 +198,7 @@ namespace Sportradar.OddsFeed.SDK.Common
         /// Sets a timeout for HttpClient for fast api request (in seconds).
         /// </summary>
         /// <param name="timeout">The timeout to be set</param>
-        /// /// <remarks>Between 1 and 30 (default 5s) - set before connection is made.</remarks>
+        /// <remarks>Between 1 and 30 (default 5s) - set before connection is made.</remarks>
         public static void SetFastHttpClientTimeout(TimeSpan timeout)
         {
             if (timeout >= TimeSpan.FromSeconds(1) && timeout <= TimeSpan.FromSeconds(30))
@@ -202,6 +209,22 @@ namespace Sportradar.OddsFeed.SDK.Common
             }
 
             throw new InvalidOperationException($"Invalid timeout value for FastHttpClientTimeout: {timeout.TotalSeconds} seconds.");
+        }
+
+        /// <summary>
+        /// Sets the maximum number of concurrent connections (per server endpoint) allowed by an HttpClient object. (default: int.Max)
+        /// </summary>
+        /// <param name="maxConnectionsPerServer">The new maximum number of concurrent connections (per server endpoint) allowed by an HttpClient object.</param>
+        public static void SetMaxConnectionsPerServer(int maxConnectionsPerServer)
+        {
+            if (maxConnectionsPerServer > 0)
+            {
+                MaxConnectionsPerServer = maxConnectionsPerServer;
+                InteractionLog.LogInformation($"Set MaxConnectionsPerServer to {maxConnectionsPerServer}.");
+                return;
+            }
+
+            throw new InvalidOperationException($"Invalid value for MaxConnectionsPerServer: {maxConnectionsPerServer}.");
         }
     }
 }

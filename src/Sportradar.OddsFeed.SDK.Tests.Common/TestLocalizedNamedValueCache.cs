@@ -2,13 +2,11 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
-using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;

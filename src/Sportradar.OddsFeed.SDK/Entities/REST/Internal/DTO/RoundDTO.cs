@@ -1,6 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -20,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string Group { get; }
 
-        //TODO: group_name was removed from xsd
+        [Obsolete("GroupName was removed from API")]
         internal string GroupName { get; }
 
         internal URN GroupId { get; }
@@ -52,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 ? (int?)round.number
                 : null;
             Name = !string.IsNullOrEmpty(round.name) ? round.name : null;
-            GroupName = !string.IsNullOrEmpty(round.group_name) ? round.group_name : null;
+            GroupName = !string.IsNullOrEmpty(round.group) ? round.group : null;
             PhaseOrGroupLongName = !string.IsNullOrEmpty(round.group_long_name) ? round.group_long_name : null;
             Group = round.group;
             Phase = round.phase;

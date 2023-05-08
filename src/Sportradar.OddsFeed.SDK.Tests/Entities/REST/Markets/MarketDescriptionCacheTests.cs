@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void MarketDescriptionMergeTest()
+        public void MarketDescriptionMerge()
         {
             var msg1 = RMF.GetDescMarket(10);
             var msg2 = RMF.GetDescMarket(msg1);
@@ -166,7 +166,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task VariantMarketDescriptionCacheIsCachingTest()
+        public async Task VariantMarketDescriptionCacheIsCaching()
         {
             const string callType = "GetVariantMarketDescriptionAsync";
             Assert.Empty(_variantMemoryCache);
@@ -184,7 +184,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task InVariantMarketDescriptionCacheIsCachingTest()
+        public async Task InVariantMarketDescriptionCacheIsCaching()
         {
             const string callType = "GetMarketDescriptionsAsync";
             var market = await _inVariantMdCache.GetMarketDescriptionAsync(178, "lcoo:markettext:1", TestData.Cultures);
@@ -200,7 +200,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void InVariantMarketDescriptionCacheIsAutoCachingTest()
+        public void InVariantMarketDescriptionCacheIsAutoCaching()
         {
             const string callType = "GetMarketDescriptionsAsync";
             //The data is automatically fetched when the cache is constructed and timer is started in the cache constructor

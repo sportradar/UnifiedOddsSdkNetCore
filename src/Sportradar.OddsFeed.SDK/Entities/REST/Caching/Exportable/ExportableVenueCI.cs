@@ -47,6 +47,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable
         /// Gets the course
         /// </summary>
         /// <value>The course</value>
-        public IEnumerable<ExportableHoleCI> Course { get; set; }
+        public ICollection<ExportableCourseCI> Courses { get; set; }
     }
 }

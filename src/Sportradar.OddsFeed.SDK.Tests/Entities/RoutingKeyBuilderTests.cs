@@ -15,14 +15,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities
     public class RoutingKeyBuilderTests
     {
         [Fact]
-        public void NoMessageInterestTest()
+        public void NoMessageInterest()
         {
             Action action = () => FeedRoutingKeyBuilder.GenerateKeys(new List<MessageInterest>());
             action.Should().Throw<ArgumentException>();
         }
 
         [Fact]
-        public void SingleMessageInterestTest()
+        public void SingleMessageInterest()
         {
             var interests = new List<MessageInterest> { MessageInterest.AllMessages };
             var keys = FeedRoutingKeyBuilder.GenerateKeys(interests);

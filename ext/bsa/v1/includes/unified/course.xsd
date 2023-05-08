@@ -6,6 +6,8 @@
     <xs:sequence>
       <xs:element name="hole" type="hole" maxOccurs="unbounded"/>
     </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="hole">
     <xs:attribute name="number" type="xs:int" use="required"/>

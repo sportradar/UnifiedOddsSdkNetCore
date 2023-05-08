@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <player_profile xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:18:29+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <player type="D" date_of_birth="2000-01-24" nationality="England" country_code="ENG" height="175" weight="67" full_name="Benjamin Anthony Johnson" gender="male" id="sr:player:1372516" name="Johnson, Ben"/>
+  </player_profile>

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sportradar.OddsFeed.SDK.Common;
@@ -33,10 +32,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             var task1 = pool.AcquireAsync("1");
             var task2 = pool.AcquireAsync("1");
 
-            Thread.Sleep(10);
+            Task.Delay(10).GetAwaiter().GetResult();
 
-            var semaphore1 = task1.Result;
-            var semaphore2 = task2.Result;
+            var semaphore1 = task1.GetAwaiter().GetResult();
+            var semaphore2 = task2.GetAwaiter().GetResult();
             Assert.Equal(semaphore1, semaphore2);
             Assert.Single(pool.SemaphoreHolders);
             Assert.Single(pool.AvailableSemaphoreIds);
@@ -54,16 +53,16 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             var task2 = pool.AcquireAsync("2");
             var task3 = pool.AcquireAsync("3");
 
-            var semaphore1 = task1.Result;
-            var semaphore2 = task2.Result;
-            var semaphore3 = task3.Result;
+            var semaphore1 = task1.GetAwaiter().GetResult();
+            var semaphore2 = task2.GetAwaiter().GetResult();
+            var semaphore3 = task3.GetAwaiter().GetResult();
 
             Assert.NotNull(semaphore1);
             Assert.NotNull(semaphore2);
             Assert.NotNull(semaphore3);
 
             var task4 = pool.AcquireAsync("4");
-            Thread.Sleep(5);
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task4.IsCompleted);
 
             Assert.NotEqual(semaphore2, semaphore1);
@@ -79,11 +78,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             var task1 = pool.AcquireAsync("1");
             var task3 = pool.AcquireAsync("1");
 
-            var semaphore1 = task1.Result;
-            var semaphore3 = task3.Result;
+            var semaphore1 = task1.GetAwaiter().GetResult();
+            var semaphore3 = task3.GetAwaiter().GetResult();
 
             var task2 = pool.AcquireAsync("2");
-            Thread.Sleep(5);
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task2.IsCompleted);
 
             Assert.NotNull(semaphore1);
@@ -109,15 +108,15 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             var pool = new SemaphorePool(1, ExceptionHandlingStrategy.THROW);
 
             var task1 = pool.AcquireAsync("1");
-            Thread.Sleep(5);
+            Task.Delay(5).GetAwaiter().GetResult();
             var task2 = pool.AcquireAsync("2");
 
-            var semaphore1 = task1.Result;
+            var semaphore1 = task1.GetAwaiter().GetResult();
             Assert.NotNull(semaphore1);
             Assert.False(task2.IsCompleted);
 
             pool.Release("1");
-            var semaphore2 = task2.Result;
+            var semaphore2 = task2.GetAwaiter().GetResult();
             Assert.Equal(semaphore2, semaphore1);
             Assert.Single(pool.SemaphoreHolders);
             Assert.Single(pool.AvailableSemaphoreIds);
@@ -135,10 +134,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             var task12 = pool.AcquireAsync("1");
             var task13 = pool.AcquireAsync("1");
 
-            var semaphore1 = task11.Result;
+            var semaphore1 = task11.GetAwaiter().GetResult();
             Assert.NotNull(semaphore1);
-            Assert.Equal(semaphore1, task12.Result);
-            Assert.Equal(semaphore1, task13.Result);
+            Assert.Equal(semaphore1, task12.GetAwaiter().GetResult());
+            Assert.Equal(semaphore1, task13.GetAwaiter().GetResult());
             Assert.Single(pool.SemaphoreHolders);
             Assert.Single(pool.AvailableSemaphoreIds);
             Assert.Equal("1", pool.AvailableSemaphoreIds.First());
@@ -146,19 +145,19 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             Assert.Equal(3, pool.SemaphoreHolders[0].UsageCount);
 
             var task2 = pool.AcquireAsync("2");
-            Thread.Sleep(5);
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task2.IsCompleted);
 
             pool.Release("1");
-            Thread.Sleep(5);
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task2.IsCompleted);
 
             pool.Release("1");
-            Thread.Sleep(5);
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task2.IsCompleted);
 
             pool.Release("1");
-            var semaphore2 = task2.Result;
+            var semaphore2 = task2.GetAwaiter().GetResult();
 
             Assert.Equal(semaphore2, semaphore1);
             Assert.Single(pool.SemaphoreHolders);
@@ -169,22 +168,22 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         // TODO this test appears to be unreliable in linux environment
         //[Fact]
-        public void ComplexUsageTest()
+        public void ComplexUsage()
         {
             var pool = new SemaphorePool(2, ExceptionHandlingStrategy.THROW);
 
             var task11 = pool.AcquireAsync("1");
             var task21 = pool.AcquireAsync("2");
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
             var task12 = pool.AcquireAsync("1");
             var task22 = pool.AcquireAsync("2");
             var task3 = pool.AcquireAsync("3");
 
-            Task.Delay(5).Wait();
-            var semaphore11 = task11.Result;
-            var semaphore12 = task12.Result;
-            var semaphore21 = task21.Result;
-            var semaphore22 = task22.Result;
+            Task.Delay(5).GetAwaiter().GetResult();
+            var semaphore11 = task11.GetAwaiter().GetResult();
+            var semaphore12 = task12.GetAwaiter().GetResult();
+            var semaphore21 = task21.GetAwaiter().GetResult();
+            var semaphore22 = task22.GetAwaiter().GetResult();
 
             Assert.NotNull(semaphore11);
             Assert.Equal(semaphore12, semaphore11);
@@ -194,33 +193,33 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             Assert.False(task3.IsCompleted);
 
             pool.Release("1");
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task3.IsCompleted);
 
             pool.Release("1");
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.True(task3.IsCompleted);
 
             var task4 = pool.AcquireAsync("4");
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task4.IsCompleted);
 
             pool.Release("2");
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.False(task4.IsCompleted);
 
             pool.Release("2");
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
             Assert.True(task4.IsCompleted);
 
             pool.Release("3");
             pool.Release("4");
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
 
             var task1 = pool.AcquireAsync("1");
             var task2 = pool.AcquireAsync("2");
 
-            Task.Delay(5).Wait();
+            Task.Delay(5).GetAwaiter().GetResult();
 
             Assert.True(task1.IsCompleted);
             Assert.True(task2.IsCompleted);

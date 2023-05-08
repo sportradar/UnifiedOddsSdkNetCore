@@ -10,6 +10,7 @@ using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Health;
+using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
@@ -137,7 +138,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             return missingCultures.Any()
                        ? missingCultures
-                       : null;
+                       : new List<CultureInfo>();
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
             var description = GetItemFromCache(id, variant);
-            if (GetMissingTranslations(description, cultures) == null)
+            if (GetMissingTranslations(description, cultures).IsNullOrEmpty())
             {
                 return description;
             }
@@ -166,12 +167,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 return null;
             }
 
-            await _semaphore.WaitAsync().ConfigureAwait(false);
-
             try
             {
+                await _semaphore.WaitAsync().ConfigureAwait(false);
+
                 description = GetItemFromCache(id, variant);
-                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, description?.FetchedLanguages).ToList();
+                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, description?.FetchedLanguages);
 
                 if (!missingLanguages.Any())
                 {

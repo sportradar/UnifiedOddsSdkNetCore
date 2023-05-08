@@ -4,17 +4,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -23,36 +16,16 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities
 {
-    public class MapBetSettlementTests
+    public class MapBetSettlementTests : MapEntityTestBase
     {
-        private static IFeedMessageMapper Mapper;
-
-        private static readonly IDeserializer<FeedMessage> Deserializer = new Deserializer<FeedMessage>();
-
         private bet_settlement _record;
 
         private IBetSettlement<ICompetition> _entity;
 
+        /// <inheritdoc />
         public MapBetSettlementTests(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
-            var nameProviderFactoryMock = new Mock<INameProviderFactory>();
-            var nameProviderMock = new Mock<INameProvider>();
-            nameProviderFactoryMock.Setup(m => m.BuildNameProvider(It.IsAny<ICompetition>(), It.IsAny<int>(), It.IsAny<IReadOnlyDictionary<string, string>>())).Returns(nameProviderMock.Object);
-
-            var voidReasonCache = new NamedValueCache(new NamedValueDataProvider(TestData.RestXmlPath + @"\void_reasons.xml", new TestDataFetcher(), "void_reason"), ExceptionHandlingStrategy.THROW);
-
-            var namedValuesProviderMock = new Mock<INamedValuesProvider>();
-            namedValuesProviderMock.Setup(x => x.VoidReasons).Returns(voidReasonCache);
-
-            Mapper = new FeedMessageMapper(
-                new TestSportEntityFactory(outputHelper),
-                nameProviderFactoryMock.Object,
-                new Mock<IMarketMappingProviderFactory>().Object,
-                namedValuesProviderMock.Object,
-                ExceptionHandlingStrategy.THROW,
-                TestProducerManager.Create(),
-                new Mock<IMarketCacheProvider>().Object,
-                voidReasonCache);
         }
 
         [Fact]

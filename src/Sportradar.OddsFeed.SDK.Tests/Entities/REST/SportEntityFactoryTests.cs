@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
         public SportEntityFactoryTests(ITestOutputHelper outputHelper)
         {
-            _sef = new TestSportEntityFactoryBuilder(outputHelper);
+            _sef = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
         }
 
         private async Task InitializeSportEntities()
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportEventTest()
+        public async Task SportEvent()
         {
             await InitializeSportEntities();
             Assert.NotNull(_sef.Competition);
@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportTest()
+        public async Task Sport()
         {
             await InitializeSportEntities();
             ValidateSport(_sef.Sport, TestData.SportId, 122);
@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportsTest()
+        public async Task Sports()
         {
             await InitializeSportEntities();
             Assert.NotNull(_sef.Sports);
@@ -75,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task TournamentTest()
+        public async Task Tournament()
         {
             await InitializeSportEntities();
 
@@ -101,7 +101,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SeasonTest()
+        public async Task Season()
         {
             await InitializeSportEntities();
 
@@ -161,7 +161,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
         //TODO: maybe strangly behaves in pipeline - to be checked
         //[Fact]
-        public async Task MultiThreadInvokesEventOnTournamentReceivedTest()
+        public async Task MultiThreadInvokesEventOnTournamentReceived()
         {
             await InitializeSportEntities();
 

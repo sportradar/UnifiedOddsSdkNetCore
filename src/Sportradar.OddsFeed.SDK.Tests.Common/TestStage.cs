@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -10,9 +11,21 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 {
     public class TestStage : IStage
     {
+        private List<ITeamCompetitor> _competitors;
+
         public TestStage(URN id)
         {
             Id = id;
+            _competitors = new List<ITeamCompetitor>()
+                           {
+                               new TestTeamCompetitor(URN.Parse("sr:competitor:1"), "First competitor", new CultureInfo("en")),
+                               new TestTeamCompetitor(URN.Parse("sr:competitor:2"), "Second competitor", new CultureInfo("en"))
+                           };
+        }
+
+        public void SetCompetitors(ICollection<ITeamCompetitor> competitors)
+        {
+            _competitors = competitors.ToList();
         }
 
         public URN Id { get; }
@@ -69,17 +82,23 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public Task<string> GetNameAsync(CultureInfo culture)
         {
-            return Task.FromResult<string>(null);
+            return Task.FromResult($"Stage {Id} name {culture.TwoLetterISOLanguageName}");
         }
 
         public Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
         {
-            return Task.FromResult<IEnumerable<ICompetitor>>(null);
+            return Task.FromResult<IEnumerable<ICompetitor>>(_competitors);
         }
 
         public Task<EventStatus?> GetEventStatusAsync()
         {
             return Task.FromResult<EventStatus?>(null);
+        }
+
+        /// <inheritdoc />
+        public Task<IEnumerable<URN>> GetCompetitorIdsAsync()
+        {
+            return Task.FromResult(_competitors.Select(s => s.Id));
         }
 
         public Task<ISportSummary> GetSportAsync()

@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new ReadOnlyDictionary<string, string>(new Dictionary<string, string> { { Specifier, "0" } });
             var expression = new MinusNameExpression(_operandFactory.BuildOperand(specifiers, Specifier));
 
-            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).Result;
+            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).GetAwaiter().GetResult();
             Assert.Equal("0", name);
         }
 
@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new ReadOnlyDictionary<string, string>(new Dictionary<string, string> { { Specifier, "-0" } });
             var expression = new MinusNameExpression(_operandFactory.BuildOperand(specifiers, Specifier));
 
-            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).Result;
+            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).GetAwaiter().GetResult();
             Assert.Equal("0", name);
         }
 
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new ReadOnlyDictionary<string, string>(new Dictionary<string, string> { { Specifier, "2" } });
             var expression = new MinusNameExpression(_operandFactory.BuildOperand(specifiers, Specifier));
 
-            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).Result;
+            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).GetAwaiter().GetResult();
             Assert.Equal("-2", name);
         }
 
@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new ReadOnlyDictionary<string, string>(new Dictionary<string, string> { { Specifier, "-3" } });
             var expression = new MinusNameExpression(_operandFactory.BuildOperand(specifiers, Specifier));
 
-            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).Result;
+            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).GetAwaiter().GetResult();
             Assert.Equal("+3", name);
         }
 
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new ReadOnlyDictionary<string, string>(new Dictionary<string, string> { { Specifier, "2.5" } });
             var expression = new MinusNameExpression(_operandFactory.BuildOperand(specifiers, Specifier));
 
-            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).Result;
+            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).GetAwaiter().GetResult();
             Assert.Equal("-2.5", name);
         }
 
@@ -72,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
             var specifiers = new ReadOnlyDictionary<string, string>(new Dictionary<string, string> { { Specifier, "-3.25" } });
             var expression = new MinusNameExpression(_operandFactory.BuildOperand(specifiers, Specifier));
 
-            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).Result;
+            var name = expression.BuildNameAsync(CultureInfo.InvariantCulture).GetAwaiter().GetResult();
             Assert.Equal("+3.25", name);
         }
     }

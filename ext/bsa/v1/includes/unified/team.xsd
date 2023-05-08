@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:include schemaLocation="urn.xsd"/>
     <xs:include schemaLocation="category.xsd"/>
     <xs:include schemaLocation="sport.xsd"/>
     <xs:include schemaLocation="player.xsd"/>
     <xs:complexType name="team">
         <xs:sequence>
-            <xs:element type="competitorReferenceIds" name="reference_ids" minOccurs="0" />
+            <xs:element type="competitorReferenceIds" name="reference_ids" minOccurs="0"/>
             <xs:element type="playerExtendedList" name="players" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="unifiedCompetitorUrn" name="id" use="required"/>
         <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="xs:string" name="abbreviation" use="optional"/>
+        <xs:attribute type="xs:string" name="abbreviation" use="required"/>
         <xs:attribute type="xs:string" name="short_name" use="optional"/>
         <xs:attribute type="xs:string" name="country" use="optional"/>
-        <xs:attribute type="countryCode" name="country_code" use="optional" />
-        <xs:attribute type="xs:boolean" name="virtual" use="optional" />
-        <xs:attribute type="xs:string" name="gender" use="optional" />
-        <xs:attribute type="xs:string" name="age_group" use="optional" />
-        <xs:attribute type="xs:string" name="state" use="optional" />
+        <xs:attribute type="countryCode" name="country_code" use="optional"/>
+        <xs:attribute type="xs:boolean" name="virtual" use="optional"/>
+        <xs:attribute type="xs:string" name="age_group" use="optional"/>
+        <xs:attribute type="xs:string" name="gender" use="optional"/>
+        <xs:attribute type="xs:string" name="state" use="optional"/>
+        <xs:attribute type="xs:int" name="division" use="optional"/>
+        <xs:attribute type="xs:string" name="division_name" use="optional"/>
     </xs:complexType>
     <xs:complexType name="teamExtended">
         <xs:complexContent>
-            <xs:extension base="team" >
+            <xs:extension base="team">
                 <xs:sequence>
-                    <xs:element type="sport" name="sport" minOccurs="0" />
-                    <xs:element type="category" name="category" minOccurs="0" />
+                    <xs:element type="sport" name="sport" minOccurs="0"/>
+                    <xs:element type="category" name="category" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="teamCompetitor">
         <xs:complexContent>
-            <xs:extension base="team" >
+            <xs:extension base="team">
                 <!-- stages don't have qualifiers -->
-                <xs:attribute type="xs:string" name="qualifier" use="optional" />
-                <xs:attribute type="xs:int" name="division" use="optional"/>
+                <xs:attribute type="xs:string" name="qualifier" use="optional"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -50,8 +52,8 @@
         <xs:sequence>
             <xs:element name="reference_id" maxOccurs="unbounded">
                 <xs:complexType>
-                    <xs:attribute name="name" type="xs:string" />
-                    <xs:attribute name="value" type="xs:string" />
+                    <xs:attribute name="name" type="xs:string"/>
+                    <xs:attribute name="value" type="xs:string"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>

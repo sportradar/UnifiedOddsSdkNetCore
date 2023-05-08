@@ -197,12 +197,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     if (LastFixtureChange < DateTime.Now.AddDays(-1))
                     {
                         LogExec.LogInformation("Invoking GetFixtureChanges. After=null");
-                        changes = _sportDataProvider.GetFixtureChangesAsync(_config.DefaultLocale).Result;
+                        changes = _sportDataProvider.GetFixtureChangesAsync(_config.DefaultLocale).GetAwaiter().GetResult();
                     }
                     else
                     {
                         LogExec.LogInformation($"Invoking GetFixtureChanges. After={LastFixtureChange}");
-                        changes = _sportDataProvider.GetFixtureChangesAsync(LastFixtureChange, null, _config.DefaultLocale).Result;
+                        changes = _sportDataProvider.GetFixtureChangesAsync(LastFixtureChange, null, _config.DefaultLocale).GetAwaiter().GetResult();
                     }
 
                     changes = changes.OrderBy(o => o.UpdateTime);
@@ -273,12 +273,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     if (LastResultChange < DateTime.Now.AddDays(-1))
                     {
                         LogExec.LogInformation("Invoking GetResultChanges. After=null");
-                        changes = _sportDataProvider.GetResultChangesAsync(_config.DefaultLocale).Result;
+                        changes = _sportDataProvider.GetResultChangesAsync(_config.DefaultLocale).GetAwaiter().GetResult();
                     }
                     else
                     {
                         LogExec.LogInformation($"Invoking GetResultChanges. After={LastResultChange}");
-                        changes = _sportDataProvider.GetResultChangesAsync(LastResultChange, null, _config.DefaultLocale).Result;
+                        changes = _sportDataProvider.GetResultChangesAsync(LastResultChange, null, _config.DefaultLocale).GetAwaiter().GetResult();
                     }
 
                     changes = changes.OrderBy(o => o.UpdateTime);

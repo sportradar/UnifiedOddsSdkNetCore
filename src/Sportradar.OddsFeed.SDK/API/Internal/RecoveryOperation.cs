@@ -193,7 +193,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 if (after == DateTime.MinValue)
                 {
                     _lastAttempt = TimeProviderAccessor.Current.Now;
-                    _requestId = _recoveryRequestIssuer.RequestFullOddsRecoveryAsync(_producer, _nodeId).Result;
+                    _requestId = _recoveryRequestIssuer.RequestFullOddsRecoveryAsync(_producer, _nodeId).GetAwaiter().GetResult();
                 }
                 else
                 {
@@ -211,7 +211,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     }
 
                     _lastAttempt = TimeProviderAccessor.Current.Now;
-                    _requestId = _recoveryRequestIssuer.RequestRecoveryAfterTimestampAsync(_producer, after, _nodeId).Result;
+                    _requestId = _recoveryRequestIssuer.RequestRecoveryAfterTimestampAsync(_producer, after, _nodeId).GetAwaiter().GetResult();
                 }
             }
             catch (Exception ex)

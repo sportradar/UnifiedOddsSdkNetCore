@@ -14,22 +14,23 @@
 	<RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
 	<PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
 	<PackageProjectUrl>https://sdk.sportradar.com</PackageProjectUrl>
-	<AssemblyVersion>1.30.1.0</AssemblyVersion>
-	<FileVersion>1.30.1.0</FileVersion>
-	<Version>1.30.1</Version>
+	<AssemblyVersion>1.31.0.0</AssemblyVersion>
+	<FileVersion>1.31.0.0</FileVersion>
+	<Version>1.31.0</Version>
 	<UserSecretsId>27ef2334-e9fc-4f05-b88a-a33259c908c3</UserSecretsId>
-	<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+	<CodeAnalysisRuleSet>..\.sonarlint\unifiedfeed_uf-sdk-net-stdcsharp.ruleset</CodeAnalysisRuleSet>
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	<EnableNETAnalyzers>True</EnableNETAnalyzers>
 	<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 	<PackageReadmeFile>Readme.md</PackageReadmeFile>
 	<PackageIcon>uf-ns.png</PackageIcon>
 	<Title>Sportradar.OddsFeed.SDKCore</Title>
+	<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	<DocumentationFile>Sportradar.OddsFeed.SDK.xml</DocumentationFile>
-	<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+	<CodeAnalysisRuleSet>Sportradar.OddsFeed.SDK.Debug.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">

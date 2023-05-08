@@ -16,21 +16,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="wantedCultures">A <see cref="IEnumerable{CultureInfo}"/> containing list of <see cref="CultureInfo"/> we want to get</param>
         /// <param name="alreadyUsedCultures">A <see cref="IEnumerable{CultureInfo}"/> specifying cultures that was already used/fetched</param>
-        /// <returns>A <see cref="IEnumerable{CultureInfo}"/> containing missing cultures or a empty list if no cultures are missing</returns>
-        internal static IEnumerable<CultureInfo> GetMissingCultures(IEnumerable<CultureInfo> wantedCultures, IEnumerable<CultureInfo> alreadyUsedCultures)
+        /// <returns>A <see cref="ICollection{CultureInfo}"/> containing missing cultures or a empty list if no cultures are missing</returns>
+        internal static ICollection<CultureInfo> GetMissingCultures(IEnumerable<CultureInfo> wantedCultures, IEnumerable<CultureInfo> alreadyUsedCultures)
         {
             var wantedCultureInfos = wantedCultures.ToList();
             Guard.Argument(wantedCultureInfos, nameof(wantedCultures)).NotNull();
 
             if (alreadyUsedCultures == null)
             {
-                return wantedCultureInfos.Distinct();
+                return wantedCultureInfos.Distinct().ToList();
             }
 
             var alreadyUsedCultureInfos = alreadyUsedCultures.ToList();
             var missingCultures = wantedCultureInfos.Where(c => !alreadyUsedCultureInfos.Contains(c)).ToList();
 
-            return missingCultures.Distinct();
+            return missingCultures.Distinct().ToList();
         }
 
         /// <summary>

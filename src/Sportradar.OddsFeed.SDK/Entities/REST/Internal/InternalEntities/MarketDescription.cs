@@ -23,11 +23,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 
         public string OutcomeType { get; }
 
-        public IEnumerable<IOutcomeDescription> Outcomes { get; internal set; }
+        public IEnumerable<IOutcomeDescription> Outcomes { get; private set; }
 
-        public IEnumerable<ISpecifier> Specifiers { get; internal set; }
+        public IEnumerable<ISpecifier> Specifiers { get; private set; }
 
-        public IEnumerable<IMarketMappingData> Mappings { get; internal set; }
+        public IEnumerable<IMarketMappingData> Mappings { get; private set; }
 
         public IEnumerable<IMarketAttribute> Attributes { get; }
 

@@ -70,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void SdkLoggerFactoryTest()
+        public void SdkLoggerFactoryInitialization()
         {
             PrintLogManagerStatus();
 

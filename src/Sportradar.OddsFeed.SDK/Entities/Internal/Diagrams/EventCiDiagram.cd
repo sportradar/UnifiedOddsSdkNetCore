@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events.ICompetitionCI">
-    <Position X="1.25" Y="4.25" Width="2" />
+    <Position X="1" Y="4.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAIDABIAAAEAQAQAAAEAAIAAIAAAAAAEAAAIAAAAAA=</HashCode>
       <FileName>Entities\REST\Internal\Caching\Events\ICompetitionCI.cs</FileName>

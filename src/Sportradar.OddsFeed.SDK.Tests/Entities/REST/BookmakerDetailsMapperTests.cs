@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
                 dataFetcher,
                 deserializer,
                 mapperFactory);
-            _entity = dataProvider.GetDataAsync("", TestData.Culture.TwoLetterISOLanguageName).Result;
+            _entity = dataProvider.GetDataAsync("", TestData.Culture.TwoLetterISOLanguageName).GetAwaiter().GetResult();
 
             object[] args =
             {
@@ -51,16 +51,16 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void MappingTest()
+        public void Mapping()
         {
             var details = new BookmakerDetails(_entity);
             ValidateBookmakerDetailsFromXml(details);
         }
 
         [Fact]
-        public void WhoAmITest()
+        public void WhoAmI()
         {
-            var details = _bookmakerDetailsFetcher.WhoAmIAsync().Result;
+            var details = _bookmakerDetailsFetcher.WhoAmIAsync().GetAwaiter().GetResult();
             ValidateBookmakerDetailsFromXml(details);
         }
 

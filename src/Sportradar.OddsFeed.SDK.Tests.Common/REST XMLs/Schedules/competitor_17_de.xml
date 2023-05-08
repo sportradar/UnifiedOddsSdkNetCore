@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <competitor_profile xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:12:07+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <competitor id="sr:competitor:17" name="Manchester City" abbreviation="MCI" short_name="Man City" country="England" country_code="ENG" gender="male">
+      <sport id="sr:sport:1" name="Fußball"/>
+      <category id="sr:category:1" name="England" country_code="ENG"/>
+    </competitor>
+    <venue id="sr:venue:606" name="Etihad Stadium" capacity="53400" city_name="Manchester" country_name="England" country_code="ENG" map_coordinates="53.484592,-2.202695"/>
+    <jerseys>
+      <jersey type="home" base="5badff" sleeve="5badff" number="000000" stripes="false" horizontal_stripes="false" squares="false" split="false" shirt_type="short_sleeves" sleeve_detail="ff0000"/>
+      <jersey type="away" base="e82d38" sleeve="000000" number="b0a321" stripes="false" horizontal_stripes="false" squares="false" split="false" shirt_type="short_sleeves"/>
+      <jersey type="goalkeeper" base="5f0ca5" sleeve="999999" number="ffffff" stripes="false" horizontal_stripes="false" squares="false" split="false" shirt_type="short_sleeves"/>
+      <jersey type="third" base="d2fd60" sleeve="dbe628" number="757474" stripes="false" horizontal_stripes="true" horizontal_stripes_color="0a0909" squares="false" split="false" shirt_type="short_sleeves"/>
+    </jerseys>
+    <manager id="sr:player:53463" name="Guardiola, Pep" nationality="Spanien" country_code="ESP"/>
+    <players>
+      <player type="defender" date_of_birth="1990-05-28" nationality="England" country_code="ENG" height="178" weight="70" jersey_number="2" full_name="Kyle Andrew Walker" gender="male" id="sr:player:44614" name="Walker, Kyle"/>
+      <player type="defender" date_of_birth="1997-05-14" nationality="Portugal" country_code="PRT" height="187" weight="83" jersey_number="3" full_name="Ruben Santos Gato Alves Dias" gender="male" id="sr:player:318941" name="Dias, Ruben"/>
+      <player type="midfielder" date_of_birth="1995-12-02" nationality="England" country_code="ENG" height="178" weight="72" jersey_number="4" full_name="Kalvin Mark Phillips" gender="male" id="sr:player:790679" name="Phillips, Kalvin"/>
+      <player type="defender" date_of_birth="1994-05-28" nationality="England" country_code="ENG" height="188" weight="70" jersey_number="5" full_name="John Stones" gender="male" id="sr:player:152077" name="Stones, John"/>
+      <player type="defender" date_of_birth="1995-02-18" nationality="Niederlande" country_code="NLD" height="180" weight="75" jersey_number="6" full_name="Nathan Benjamin Ake" gender="male" id="sr:player:149663" name="Aké, Nathan"/>
+      <player type="midfielder" date_of_birth="1990-10-24" nationality="Deutschland" country_code="DEU" height="180" weight="79" jersey_number="8" full_name="Ilkay Gundogan" gender="male" id="sr:player:45853" name="Gündogan, Ilkay"/>
+      <player type="forward" date_of_birth="2000-07-21" nationality="Norwegen" country_code="NOR" height="194" weight="88" jersey_number="9" full_name="Erling Braut Haaland" gender="male" id="sr:player:991181" name="Haaland, Erling"/>
+      <player type="midfielder" date_of_birth="1995-09-10" nationality="England" country_code="ENG" height="175" weight="68" jersey_number="10" full_name="Jack Peter Grealish" gender="male" id="sr:player:189061" name="Grealish, Jack"/>
+      <player type="defender" date_of_birth="1994-05-27" nationality="Spanien" country_code="ESP" height="189" weight="87" jersey_number="14" full_name="Aymeric Laporte Fevre" gender="male" id="sr:player:149734" name="Laporte, Aymeric"/>
+      <player type="midfielder" date_of_birth="1996-06-22" nationality="Spanien" country_code="ESP" height="190" weight="78" jersey_number="16" full_name="Rodrigo Hernandez Cascante" gender="male" id="sr:player:844073" name="Rodri"/>
+      <player type="midfielder" date_of_birth="1991-06-28" nationality="Belgien" country_code="BEL" height="181" weight="68" jersey_number="17" full_name="Kevin De Bruyne" gender="male" id="sr:player:70996" name="De Bruyne, Kevin"/>
+      <player type="goalkeeper" date_of_birth="1992-11-06" nationality="Deutschland" country_code="DEU" height="185" weight="88" jersey_number="18" full_name="Stefan Ortega Moreno" gender="male" id="sr:player:125274" name="Ortega, Stefan"/>
+      <player type="forward" date_of_birth="2000-01-31" nationality="Argentinien" country_code="ARG" height="170" weight="71" jersey_number="19" full_name="Julian Alvarez" gender="male" id="sr:player:1630398" name="Alvarez, Julian"/>
+      <player type="midfielder" date_of_birth="1994-08-10" nationality="Portugal" country_code="PRT" height="173" weight="64" jersey_number="20" full_name="Bernardo Mota Veiga de Carvalho Silva" gender="male" id="sr:player:331209" name="Silva, Bernardo"/>
+      <player type="midfielder" date_of_birth="2000-09-04" nationality="Spanien" country_code="ESP" height="171" weight="68" jersey_number="21" full_name="Sergio Gomez Martin" gender="male" id="sr:player:1051087" name="Gómez, Sergio"/>
+      <player type="defender" date_of_birth="1995-07-19" nationality="Schweiz" country_code="CHE" height="186" weight="90" jersey_number="25" full_name="Manuel Obafemi Akanji" gender="male" id="sr:player:383560" name="Akanji, Manuel"/>
+      <player type="forward" date_of_birth="1991-02-21" nationality="Algerien" country_code="DZA" height="179" weight="62" jersey_number="26" full_name="Riyad Karim Mahrez" gender="male" id="sr:player:158213" name="Mahrez, Riyad"/>
+      <player type="goalkeeper" date_of_birth="1993-08-17" nationality="Brasilien" country_code="BRA" height="188" weight="86" jersey_number="31" full_name="Ederson Santana de Moraes" gender="male" id="sr:player:254491" name="Ederson"/>
+      <player type="midfielder" date_of_birth="2003-01-07" nationality="Argentinien" country_code="ARG" height="178" weight="64" jersey_number="32" full_name="Maximo Perrone" gender="male" id="sr:player:2101874" name="Perrone, Maximo"/>
+      <player type="goalkeeper" date_of_birth="1985-09-03" nationality="England" country_code="ENG" height="190" weight="76" jersey_number="33" full_name="Scott Paul Carson" gender="male" id="sr:player:716" name="Carson, Scott"/>
+      <player type="midfielder" date_of_birth="2000-05-28" nationality="England" country_code="ENG" height="180" weight="70" jersey_number="47" full_name="Philip Walter Foden" gender="male" id="sr:player:1047129" name="Foden, Phil"/>
+      <player type="defender" date_of_birth="2003-11-05" nationality="Nordirland" country_code="NIR" jersey_number="62" full_name="Shea Emmanuel Charles" gender="male" id="sr:player:2229702" name="Charles, Shea"/>
+      <player type="midfielder" date_of_birth="2002-05-06" nationality="England" country_code="ENG" height="182" jersey_number="80" full_name="Cole Jermaine Palmer" gender="male" id="sr:player:1737609" name="Palmer, Cole"/>
+      <player type="defender" date_of_birth="2004-11-21" nationality="England" country_code="ENG" jersey_number="82" full_name="Rico Lewis" gender="male" id="sr:player:2246775" name="Lewis, Rico"/>
+      <player type="midfielder" date_of_birth="2003-04-17" nationality="England" country_code="ENG" jersey_number="93" full_name="Alexander Sean Pablo Robertson" gender="male" id="sr:player:2180616" name="Robertson, Alex"/>
+      <player type="midfielder" date_of_birth="2002-06-14" nationality="England" country_code="ENG" jersey_number="96" full_name="Benjamin Knight" gender="male" id="sr:player:1643606" name="Knight, Benjamin"/>
+    </players>
+  </competitor_profile>

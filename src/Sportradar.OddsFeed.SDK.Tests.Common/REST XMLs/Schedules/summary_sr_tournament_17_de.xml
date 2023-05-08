@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <tournament_info xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-23T13:42:37+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <tournament id="sr:tournament:17" name="Premier League">
+      <sport id="sr:sport:1" name="Fußball"/>
+      <category id="sr:category:1" name="England" country_code="ENG"/>
+      <current_season start_date="2022-08-05" end_date="2023-05-28" year="22/23" id="sr:season:93741" name="Premier League 22/23"/>
+    </tournament>
+    <season start_date="2022-08-05" end_date="2023-05-28" year="22/23" tournament_id="sr:tournament:17" id="sr:season:93741" name="Premier League 22/23"/>
+    <round type="group" number="28"/>
+    <season_coverage_info season_id="sr:season:93741" scheduled="396" played="298" max_coverage_level="platinum" max_covered="270" min_coverage_level="bronze"/>
+    <coverage_info live_coverage="true"/>
+    <groups>
+      <group>
+        <competitor id="sr:competitor:60" name="AFC Bournemouth" abbreviation="BRN" short_name="Bournemouth" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="7007384"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:42" name="Arsenal FC" abbreviation="ARS" short_name="Arsenal" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4871"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:40" name="Aston Villa" abbreviation="AVL" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4879"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:50" name="Brentford FC" abbreviation="BRE" short_name="Brentford" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="13241732"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:30" name="Brighton &amp; Hove Albion" abbreviation="BHA" short_name="Brighton" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="6601990"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:38" name="Chelsea FC" abbreviation="CFC" short_name="Chelsea" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4870"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:7" name="Crystal Palace" abbreviation="CRY" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="342002"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:48" name="Everton FC" abbreviation="EVE" short_name="Everton" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4867"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:43" name="FC Fulham" abbreviation="FUL" short_name="Fulham" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="26511"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:34" name="Leeds United" abbreviation="LEE" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4860"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:31" name="Leicester City" abbreviation="LEI" short_name="Leicester" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4876"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:44" name="Liverpool FC" abbreviation="LFC" short_name="Liverpool" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4878"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:17" name="Manchester City" abbreviation="MCI" short_name="Man City" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4861"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:35" name="Manchester United" abbreviation="MUN" short_name="Man Utd" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4862"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:39" name="Newcastle United" abbreviation="NEW" short_name="Newcastle" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4873"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:14" name="Nottingham Forest" abbreviation="NOT" short_name="Nottingham" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="912229"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:45" name="Southampton FC" abbreviation="SOU" short_name="Southampton" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4869"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:33" name="Tottenham Hotspur" abbreviation="TOT" short_name="Tottenham" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="5187"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:37" name="West Ham United" abbreviation="WHU" short_name="West Ham" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="4865"/>
+          </reference_ids>
+        </competitor>
+        <competitor id="sr:competitor:3" name="Wolverhampton Wanderers" abbreviation="WOL" short_name="Wolverhampton" country="England" country_code="ENG" gender="male">
+          <reference_ids>
+            <reference_id name="betradar" value="176942"/>
+          </reference_ids>
+        </competitor>
+      </group>
+    </groups>
+  </tournament_info>

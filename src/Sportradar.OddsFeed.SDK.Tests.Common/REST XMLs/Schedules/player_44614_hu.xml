@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <player_profile xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:19:47+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <player type="D" date_of_birth="1990-05-28" nationality="Anglia" country_code="ENG" height="178" weight="70" full_name="Kyle Andrew Walker" gender="male" id="sr:player:44614" name="Walker, Kyle"/>
+  </player_profile>

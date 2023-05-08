@@ -76,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 }
                 try
                 {
-                    var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, _cultures, true).Result;
+                    var marketDescription = _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, _cultures, true).GetAwaiter().GetResult();
                     if (marketDescription?.Outcomes == null || !marketDescription.Outcomes.Any())
                     {
                         return null;

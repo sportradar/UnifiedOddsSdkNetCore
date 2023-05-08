@@ -13,7 +13,6 @@ using App.Metrics;
 using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Json.Extensions;
 using App.Metrics.Scheduling;
-using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -678,6 +677,8 @@ namespace Sportradar.OddsFeed.SDK.API
                 return;
             }
 
+            _opened = 0;
+
             if (_connectionFactory != null)
             {
                 DetachFromConnectionEvents();
@@ -799,7 +800,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
         private void LogInit()
         {
-            var msg = "UF SDK .NET Core initialization. Version: " + SdkInfo.GetVersion();
+            var msg = "UF SDK .NET Std initialization. Version: " + SdkInfo.GetVersion();
             var logger = SdkLoggerFactory.GetLoggerForExecution(typeof(Feed));
             if (logger == null)
             {
@@ -843,9 +844,8 @@ namespace Sportradar.OddsFeed.SDK.API
             var result = Encoding.UTF8.GetString(stream.ToArray());
             _metricsLogger.LogInformation(result);
 
-            // call all report runners defined by user
             var tasks = MetricsRoot.ReportRunner.RunAllAsync();
-            Task.WhenAll(tasks);
+            Task.WhenAll(tasks).GetAwaiter().GetResult();
 
             return Task.FromResult(true);
         }

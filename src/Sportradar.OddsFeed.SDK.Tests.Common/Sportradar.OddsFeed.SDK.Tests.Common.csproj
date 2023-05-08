@@ -7,8 +7,11 @@
   <ItemGroup>
     <None Remove="REST XMLs\betstop_reasons.xml" />
     <None Remove="REST XMLs\betting_status.xml" />
+    <None Remove="REST XMLs\booking_response.xml" />
+    <None Remove="REST XMLs\booking_response_notexists.xml" />
     <None Remove="REST XMLs\bookmaker_details.xml" />
     <None Remove="REST XMLs\CustomBet\available_selections.xml" />
+    <None Remove="REST XMLs\CustomBet\available_selections_notfound.xml" />
     <None Remove="REST XMLs\CustomBet\calculate_filter_response.xml" />
     <None Remove="REST XMLs\CustomBet\calculate_request.xml" />
     <None Remove="REST XMLs\CustomBet\calculate_response.xml" />
@@ -79,6 +82,49 @@
     <None Remove="REST XMLs\schedule.en.xml" />
     <None Remove="REST XMLs\schedule.hu.xml" />
     <None Remove="REST XMLs\schedule.nl.xml" />
+    <None Remove="REST XMLs\Schedules\competitor_17_de.xml" />
+    <None Remove="REST XMLs\Schedules\competitor_17_en.xml" />
+    <None Remove="REST XMLs\Schedules\competitor_17_hu.xml" />
+    <None Remove="REST XMLs\Schedules\competitor_37_de.xml" />
+    <None Remove="REST XMLs\Schedules\competitor_37_en.xml" />
+    <None Remove="REST XMLs\Schedules\competitor_37_hu.xml" />
+    <None Remove="REST XMLs\Schedules\fixture_sr_match_34152237_de.xml" />
+    <None Remove="REST XMLs\Schedules\fixture_sr_match_34152237_en.xml" />
+    <None Remove="REST XMLs\Schedules\fixture_sr_match_34152237_hu.xml" />
+    <None Remove="REST XMLs\Schedules\player_1372516_de.xml" />
+    <None Remove="REST XMLs\Schedules\player_1372516_en.xml" />
+    <None Remove="REST XMLs\Schedules\player_1372516_hu.xml" />
+    <None Remove="REST XMLs\Schedules\player_15479_de.xml" />
+    <None Remove="REST XMLs\Schedules\player_15479_en.xml" />
+    <None Remove="REST XMLs\Schedules\player_15479_hu.xml" />
+    <None Remove="REST XMLs\Schedules\player_318941_de.xml" />
+    <None Remove="REST XMLs\Schedules\player_318941_en.xml" />
+    <None Remove="REST XMLs\Schedules\player_318941_hu.xml" />
+    <None Remove="REST XMLs\Schedules\player_44614_de.xml" />
+    <None Remove="REST XMLs\Schedules\player_44614_en.xml" />
+    <None Remove="REST XMLs\Schedules\player_44614_hu.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.cs.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.da.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.de.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.en.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.es.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.et.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.hr.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.hu.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.nl.xml" />
+    <None Remove="REST XMLs\Schedules\schedule_for_date.zh.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_match_34152237_de.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_match_34152237_en.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_match_34152237_hu.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_season_93741_de.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_season_93741_en.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_season_93741_hu.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_tournament_17_de.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_tournament_17_en.xml" />
+    <None Remove="REST XMLs\Schedules\summary_sr_tournament_17_hu.xml" />
+    <None Remove="REST XMLs\Schedules\timeline_sr_match_34152237_de.xml" />
+    <None Remove="REST XMLs\Schedules\timeline_sr_match_34152237_en.xml" />
+    <None Remove="REST XMLs\Schedules\timeline_sr_match_34152237_hu.xml" />
     <None Remove="REST XMLs\schedule_de.xml" />
     <None Remove="REST XMLs\schedule_en.xml" />
     <None Remove="REST XMLs\schedule_hu.xml" />
@@ -235,10 +281,19 @@
     <EmbeddedResource Include="REST XMLs\betstop_reasons.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\booking_response.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\booking_response_notexists.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="REST XMLs\bookmaker_details.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="REST XMLs\CustomBet\available_selections.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\CustomBet\available_selections_notfound.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="REST XMLs\CustomBet\calculate_filter_response.xml">
@@ -341,6 +396,135 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="REST XMLs\race_summary_giro.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\competitor_17_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\competitor_17_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\competitor_17_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\competitor_37_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\competitor_37_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\competitor_37_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\fixture_sr_match_34152237_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\fixture_sr_match_34152237_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\fixture_sr_match_34152237_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_1372516_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_1372516_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_1372516_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_15479_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_15479_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_15479_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_318941_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_318941_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_318941_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_44614_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_44614_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\player_44614_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.cs.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.da.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.es.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.et.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.hr.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.nl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\schedule_for_date.zh.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_season_93741_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_season_93741_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_season_93741_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_match_34152237_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_match_34152237_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_match_34152237_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\timeline_sr_match_34152237_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\timeline_sr_match_34152237_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\timeline_sr_match_34152237_hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_tournament_17_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_tournament_17_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REST XMLs\Schedules\summary_sr_tournament_17_hu.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="REST XMLs\schedule_de.xml">

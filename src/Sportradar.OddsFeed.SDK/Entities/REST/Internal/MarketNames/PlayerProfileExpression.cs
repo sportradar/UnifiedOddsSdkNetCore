@@ -52,13 +52,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             string name = null;
             if (urn.Type == "player")
             {
-                var profile = await _profileCache.GetPlayerProfileAsync(urn, new[] { culture }).ConfigureAwait(false);
-                name = profile?.GetName(culture);
+                name = await _profileCache.GetPlayerNameAsync(urn, culture, true).ConfigureAwait(false);
             }
             else if (urn.Type == "competitor")
             {
-                var profile = await _profileCache.GetCompetitorProfileAsync(urn, new[] { culture }).ConfigureAwait(false);
-                name = profile?.GetName(culture);
+                name = await _profileCache.GetCompetitorNameAsync(urn, culture, true).ConfigureAwait(false);
             }
             return name;
         }

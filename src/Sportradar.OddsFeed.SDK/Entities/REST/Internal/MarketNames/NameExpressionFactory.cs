@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// A regex pattern used to detect '{$competitor1} expression operands
         /// </summary>
-        private const string SequencedCompetitorOperandRegexPatter = @"\Acompetitor[12]";
+        private const string SequencedCompetitorOperandRegexPattern = @"\Acompetitor[12]";
 
         /// <summary>
         /// A <see cref="IOperandFactory"/> used to build <see cref="IOperand"/> instances required by name expressions
@@ -68,13 +68,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
 
             // expression {$competitor(1-2)} indicates we need to get the name of the competitor from the sport event
-            if (Regex.IsMatch(operand, SequencedCompetitorOperandRegexPatter))
+            if (Regex.IsMatch(operand, SequencedCompetitorOperandRegexPattern, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1)))
             {
-                return new EntityNameExpression(operand, sportEvent);
+                return new EntityNameExpression(operand, sportEvent, _profileCache);
             }
             if (operand.Equals("event", StringComparison.InvariantCultureIgnoreCase))
             {
-                return new EntityNameExpression(operand, sportEvent);
+                return new EntityNameExpression(operand, sportEvent, _profileCache);
             }
 
             throw new ArgumentException($"operand:{operand} is not a valid operand for $ operator. Valid operators are: 'competitor1', 'competitor2', 'event'", nameof(operand));

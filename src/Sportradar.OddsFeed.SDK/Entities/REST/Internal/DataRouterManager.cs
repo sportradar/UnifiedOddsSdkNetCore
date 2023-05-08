@@ -14,6 +14,7 @@ using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
@@ -536,19 +537,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             }
             catch (Exception e)
             {
-                restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                var message = e.InnerException?.Message ?? e.Message;
-                _executionLog.LogError(e.InnerException ?? e, $"Error getting all tournaments for all sports for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
-                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
-                {
-                    throw;
-                }
+                restCallTime = HandleExceptionForSportList("all tournaments for all sports", culture, (int)t.Elapsed.TotalMilliseconds, e);
             }
 
-            if (result != null && result.Items.Any())
-            {
-                await _cacheManager.SaveDtoAsync(URN.Parse($"sr:sports:{result.Items.Count()}", true), result, culture, DtoType.SportList, null).ConfigureAwait(false);
-            }
+            await DistributeSportList(result, culture).ConfigureAwait(false);
             WriteLog($"Executing GetAllTournamentsForAllSportAsync for culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
         }
 
@@ -608,19 +600,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             }
             catch (Exception e)
             {
-                restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                var message = e.InnerException?.Message ?? e.Message;
-                _executionLog.LogError(e.InnerException ?? e, $"Error getting all sports for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
-                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
-                {
-                    throw;
-                }
+                restCallTime = HandleExceptionForSportList("all sports", culture, (int)t.Elapsed.TotalMilliseconds, e);
             }
 
-            if (result != null && result.Items.Any())
-            {
-                await _cacheManager.SaveDtoAsync(URN.Parse($"sr:sports:{result.Items.Count()}", true), result, culture, DtoType.SportList, null).ConfigureAwait(false);
-            }
+            await DistributeSportList(result, culture).ConfigureAwait(false);
             WriteLog($"Executing GetAllSportsAsync for culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
         }
 
@@ -632,41 +615,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public async Task<IEnumerable<Tuple<URN, URN>>> GetLiveSportEventsAsync(CultureInfo culture)
         {
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetLiveSportEventsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}"))
+            using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{culture.TwoLetterISOLanguageName}");
+            WriteLog($"Executing GetLiveSportEventsAsync for culture={culture.TwoLetterISOLanguageName}.", true);
+
+            EntityList<SportEventSummaryDTO> apiData = null;
+            int restCallTime;
+            try
             {
-                WriteLog($"Executing GetLiveSportEventsAsync for culture={culture.TwoLetterISOLanguageName}.", true);
-
-                EntityList<SportEventSummaryDTO> result = null;
-                int restCallTime;
-                try
+                apiData = await _sportEventsForDateProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+            }
+            catch (Exception e)
+            {
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                var message = e.InnerException?.Message ?? e.Message;
+                _executionLog.LogError(e.InnerException ?? e, $"Error getting live sport events and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
+                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
-                    result = await _sportEventsForDateProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
-                    restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                }
-                catch (Exception e)
-                {
-                    restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                    var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.LogError(e.InnerException ?? e, $"Error getting live sport events and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
-                    if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
-                    {
-                        throw;
-                    }
-                }
-
-                if (result != null && result.Items.Any())
-                {
-                    await _cacheManager.SaveDtoAsync(URN.Parse($"sr:sportevents:{result.Items.Count()}", true), result, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
-                    var urns = new List<Tuple<URN, URN>>();
-                    foreach (var item in result.Items)
-                    {
-                        urns.Add(new Tuple<URN, URN>(item.Id, item.SportId));
-                    }
-                    WriteLog($"Executing GetLiveSportEventsAsync for culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
-                    return urns;
+                    throw;
                 }
             }
-            return null;
+
+            var logMsg = $"Executing GetLiveSportEventsAsync for culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}";
+            var result = await FilterEventSportFromSportEventSummaryList(apiData, culture, logMsg).ConfigureAwait(false);
+
+            return result;
         }
 
         /// <summary>
@@ -678,48 +651,38 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public async Task<IEnumerable<Tuple<URN, URN>>> GetSportEventsForDateAsync(DateTime date, CultureInfo culture)
         {
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetSportEventsForDateAsync", MeasurementUnit = Unit.Requests };
-            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{date.Date} [{culture.TwoLetterISOLanguageName}]"))
+            using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{date.Date} [{culture.TwoLetterISOLanguageName}]");
+            WriteLog($"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName}.", true);
+
+            EntityList<SportEventSummaryDTO> apiData = null;
+            var dateId = date.ToString("yyyy-MM-dd");
+            int restCallTime;
+            try
             {
-                WriteLog($"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName}.", true);
-
-                EntityList<SportEventSummaryDTO> result = null;
-                var dateId = date.ToString("yyyy-MM-dd");
-                int restCallTime;
-                try
+                apiData = await _sportEventsForDateProvider.GetDataAsync(dateId, culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("No events scheduled", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    result = await _sportEventsForDateProvider.GetDataAsync(dateId, culture.TwoLetterISOLanguageName).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                    WriteLog($"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms. No results.");
+                    return new List<Tuple<URN, URN>>();
                 }
-                catch (Exception e)
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                var message = e.InnerException?.Message ?? e.Message;
+                _executionLog.LogError(e.InnerException ?? e, $"Error getting sport events for date {dateId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
+                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
-                    if (e.Message.Contains("No events scheduled", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                        WriteLog($"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms. No results.");
-                        return new List<Tuple<URN, URN>>();
-                    }
-                    restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                    var message = e.InnerException?.Message ?? e.Message;
-                    _executionLog.LogError(e.InnerException ?? e, $"Error getting sport events for date {dateId} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
-                    if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
-                    {
-                        throw;
-                    }
-                }
-
-                if (result != null && result.Items.Any())
-                {
-                    await _cacheManager.SaveDtoAsync(URN.Parse($"sr:sportevents:{result.Items.Count()}", true), result, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
-                    var urns = new List<Tuple<URN, URN>>();
-                    foreach (var item in result.Items)
-                    {
-                        urns.Add(new Tuple<URN, URN>(item.Id, item.SportId));
-                    }
-                    WriteLog($"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
-                    return urns;
+                    throw;
                 }
             }
-            return null;
+
+            var logMsg = $"Executing GetSportEventsForDateAsync for date={date.ToShortDateString()} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}";
+            var result = await FilterEventSportFromSportEventSummaryList(apiData, culture, logMsg).ConfigureAwait(false);
+
+            return result;
         }
 
         /// <summary>
@@ -1344,23 +1307,37 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 result = await _availableSelectionsProvider.GetDataAsync(id.ToString()).ConfigureAwait(false);
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
             }
+            catch (CommunicationException e)
+            {
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                var message = e.InnerException?.Message ?? e.Message;
+                var filteredResponse = SdkInfo.ExtractHttpResponseMessage(message);
+                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                {
+                    throw new CommunicationException(filteredResponse, e.Url, e.ResponseCode, null);
+                }
+                _executionLog.LogError($"Error getting available selections for id={id}. Message={filteredResponse}");
+            }
             catch (Exception e)
             {
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 var message = e.InnerException?.Message ?? e.Message;
-                _executionLog.LogError(e.InnerException ?? e, $"Error getting available selections for id={id}. Message={message}");
+                var filteredResponse = SdkInfo.ExtractHttpResponseMessage(message);
                 if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
                 }
+                _executionLog.LogError(e.InnerException ?? e, $"Error getting available selections for id={id}. Message={filteredResponse}");
             }
 
+            AvailableSelections availableSelections = null;
             if (result != null)
             {
                 await _cacheManager.SaveDtoAsync(id, result, _defaultLocale, DtoType.AvailableSelections, null).ConfigureAwait(false);
+                availableSelections = new AvailableSelections(result);
             }
             WriteLog($"Executing GetAvailableSelectionsAsync for id={id} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
-            return new AvailableSelections(result);
+            return availableSelections;
         }
 
         public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
@@ -1377,19 +1354,36 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 result = await _calculateProbabilityProvider.GetDataAsync(enumerable).ConfigureAwait(false);
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
             }
+            catch (CommunicationException e)
+            {
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                var message = e.InnerException?.Message ?? e.Message;
+                var filteredResponse = SdkInfo.ExtractHttpResponseMessage(message);
+                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                {
+                    throw new CommunicationException(filteredResponse, e.Url, e.ResponseCode, null);
+                }
+                _executionLog.LogError($"Error calculating probabilities. Message={filteredResponse}");
+            }
             catch (Exception e)
             {
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 var message = e.InnerException?.Message ?? e.Message;
-                _executionLog.LogError(e.InnerException ?? e, $"Error calculating probabilities. Message={message}");
+                var filteredResponse = SdkInfo.ExtractHttpResponseMessage(message);
                 if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
                 }
+                _executionLog.LogError(e.InnerException ?? e, $"Error calculating probabilities. Message={filteredResponse}");
             }
 
+            Calculation calculation = null;
+            if (result != null)
+            {
+                calculation = new Calculation(result);
+            }
             WriteLog($"Executing CalculateProbability took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
-            return new Calculation(result);
+            return calculation;
         }
 
         public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections)
@@ -1406,19 +1400,36 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 result = await _calculateProbabilityFilteredProvider.GetDataAsync(enumerable).ConfigureAwait(false);
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
             }
+            catch (CommunicationException e)
+            {
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                var message = e.InnerException?.Message ?? e.Message;
+                var filteredResponse = SdkInfo.ExtractHttpResponseMessage(message);
+                if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                {
+                    throw new CommunicationException(filteredResponse, e.Url, e.ResponseCode, null);
+                }
+                _executionLog.LogError($"Error calculating probabilities (filtered). Message={filteredResponse}");
+            }
             catch (Exception e)
             {
                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 var message = e.InnerException?.Message ?? e.Message;
-                _executionLog.LogError(e.InnerException ?? e, $"Error calculating probabilities (filtered). Message={message}");
+                var filteredResponse = SdkInfo.ExtractHttpResponseMessage(message);
                 if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                 {
                     throw;
                 }
+                _executionLog.LogError(e.InnerException ?? e, $"Error calculating probabilities (filtered). Message={filteredResponse}");
             }
 
+            CalculationFilter calculation = null;
+            if (result != null)
+            {
+                calculation = new CalculationFilter(result);
+            }
             WriteLog($"Executing CalculateProbabilityFiltered took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
-            return new CalculationFilter(result);
+            return calculation;
         }
 
         /// <summary>
@@ -1472,49 +1483,39 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public async Task<IEnumerable<Tuple<URN, URN>>> GetListOfSportEventsAsync(int startIndex, int limit, CultureInfo culture)
         {
             var timerOptionsGetSportEventSummaryAsync = new TimerOptions { Context = MetricsContext, Name = "GetListOfSportEventsAsync", MeasurementUnit = Unit.Requests };
-            using (var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{startIndex}+{limit} [{culture.TwoLetterISOLanguageName}]"))
+            using var t = _metricsRoot.Measure.Timer.Time(timerOptionsGetSportEventSummaryAsync, $"{startIndex}+{limit} [{culture.TwoLetterISOLanguageName}]");
+            WriteLog($"Executing GetListOfSportEventsAsync with startIndex={startIndex}, limit={limit} and culture={culture.TwoLetterISOLanguageName}.", true);
+
+            EntityList<SportEventSummaryDTO> apiData = null;
+            int restCallTime;
+            try
             {
-                WriteLog($"Executing GetListOfSportEventsAsync with startIndex={startIndex}, limit={limit} and culture={culture.TwoLetterISOLanguageName}.", true);
-
-                EntityList<SportEventSummaryDTO> result = null;
-                int restCallTime;
-                try
+                apiData = await _listSportEventProvider.GetDataAsync(culture.TwoLetterISOLanguageName, startIndex.ToString(), limit.ToString()).ConfigureAwait(false);
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+            }
+            catch (Exception e)
+            {
+                restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                if (e.Message.Contains("NotFound"))
                 {
-                    result = await _listSportEventProvider.GetDataAsync(culture.TwoLetterISOLanguageName, startIndex.ToString(), limit.ToString()).ConfigureAwait(false);
-                    restCallTime = (int)t.Elapsed.TotalMilliseconds;
+                    var message = e.InnerException?.Message ?? e.Message;
+                    _executionLog.LogDebug(e.InnerException ?? e, $"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
                 }
-                catch (Exception e)
+                else
                 {
-                    restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                    if (e.Message.Contains("NotFound"))
+                    var message = e.InnerException?.Message ?? e.Message;
+                    _executionLog.LogError(e.InnerException ?? e, $"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
+                    if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
                     {
-                        var message = e.InnerException?.Message ?? e.Message;
-                        _executionLog.LogDebug(e.InnerException ?? e, $"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
+                        throw;
                     }
-                    else
-                    {
-                        var message = e.InnerException?.Message ?? e.Message;
-                        _executionLog.LogError(e.InnerException ?? e, $"Error getting list of sport events for startIndex={startIndex}, limit={limit} and lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
-                        if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
-                        {
-                            throw;
-                        }
-                    }
-                }
-
-                if (result != null && result.Items.Any())
-                {
-                    await _cacheManager.SaveDtoAsync(URN.Parse($"sr:sportevents:{result.Items.Count()}", true), result, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
-                    var urns = new List<Tuple<URN, URN>>();
-                    foreach (var item in result.Items)
-                    {
-                        urns.Add(new Tuple<URN, URN>(item.Id, item.SportId));
-                    }
-                    WriteLog($"Executing ListOfSportEventsAsync with startIndex={startIndex}, limit={limit} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
-                    return urns;
                 }
             }
-            return null;
+
+            var logMsg = $"Executing ListOfSportEventsAsync with startIndex={startIndex}, limit={limit} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}";
+            var result = await FilterEventSportFromSportEventSummaryList(apiData, culture, logMsg).ConfigureAwait(false);
+
+            return result;
         }
 
         /// <summary>
@@ -1672,6 +1673,42 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             WriteLog($"Executing GetPeriodSummaryAsync for event id={id} and culture={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
 
             return result;
+        }
+
+        private int HandleExceptionForSportList(string name, CultureInfo culture, int elapsedMs, Exception e)
+        {
+            var message = e.InnerException?.Message ?? e.Message;
+            _executionLog.LogError(e.InnerException ?? e, $"Error getting {name} for lang:[{culture.TwoLetterISOLanguageName}]. Message={message}");
+            if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+            {
+                throw e;
+            }
+            return elapsedMs;
+        }
+
+        private async Task DistributeSportList(EntityList<SportDTO> sports, CultureInfo culture)
+        {
+            if (sports != null && sports.Items.Any())
+            {
+                await _cacheManager.SaveDtoAsync(URN.Parse($"sr:sports:{sports.Items.Count()}", true), sports, culture, DtoType.SportList, null).ConfigureAwait(false);
+            }
+        }
+
+        private async Task<List<Tuple<URN, URN>>> FilterEventSportFromSportEventSummaryList(EntityList<SportEventSummaryDTO> eventSummaries, CultureInfo culture, string logMsg)
+        {
+            if (eventSummaries != null && eventSummaries.Items.Any())
+            {
+                await _cacheManager.SaveDtoAsync(URN.Parse($"sr:sportevents:{eventSummaries.Items.Count()}", true), eventSummaries, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
+                var urns = new List<Tuple<URN, URN>>();
+                foreach (var item in eventSummaries.Items)
+                {
+                    urns.Add(new Tuple<URN, URN>(item.Id, item.SportId));
+                }
+                WriteLog(logMsg);
+                return urns;
+            }
+
+            return null;
         }
 
         private string GetChangesQueryString(DateTime? after, URN sportId)

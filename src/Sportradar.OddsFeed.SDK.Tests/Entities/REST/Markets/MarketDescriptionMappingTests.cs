@@ -26,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         public MarketDescriptionMappingTests(ITestOutputHelper outputHelper)
         {
             var cacheManager = new CacheManager();
-            IDataRouterManager dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
+            var dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
 
             var variantMemoryCache = new MemoryCache("VariantCache");
             var invariantMemoryCache = new MemoryCache("InVariantCache");
@@ -40,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task InVariantMarketDescriptionCacheGetMarketMappingsTest()
+        public async Task InVariantMarketDescriptionCacheGetMarketMappings()
         {
             var market1 = await _inVariantMdCache.GetMarketDescriptionAsync(399, null, new[] { TestData.Culture });
             var market2 = await _variantMdCache.GetMarketDescriptionAsync(10030, "lcoo:markettext:33421", new[] { TestData.Culture });
@@ -54,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public async Task InVariantMarketWithSpecifiersDescriptionCacheGetMarketMappingsTest()
+        public async Task InVariantMarketWithSpecifiersDescriptionCacheGetMarketMappings()
         {
             var market1 = await _inVariantMdCache.GetMarketDescriptionAsync(203, null, TestData.Cultures3);
 

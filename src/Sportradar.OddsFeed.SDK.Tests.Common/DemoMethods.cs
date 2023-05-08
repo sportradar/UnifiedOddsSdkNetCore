@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public int DemoLongLastingMethodAsyncCaller(int seed, int steps)
         {
-            return DemoLongLastingMethodAsync(seed, steps).Result;
+            return DemoLongLastingMethodAsync(seed, steps).GetAwaiter().GetResult();
         }
 
         public async Task<int> DemoLongLastingMethodAsync(int seed, int steps)
@@ -45,17 +45,13 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public void DemoLongLastingVoidMethod(int sleep)
         {
-            Task.Delay(sleep).Wait();
+            Task.Delay(sleep).GetAwaiter().GetResult();
         }
 
         public async Task<int> DemoLongLastingSleepMethodAsync(int sleep)
         {
-            return await Task.Run(async () =>
-                                  {
-                                      await Task.Delay(sleep).ConfigureAwait(false);
-                                      return sleep;
-                                  }
-            );
+            await Task.Delay(sleep).ConfigureAwait(false);
+            return sleep;
         }
 
         public async Task<int> DemoMethodWithTaskThrowsExceptionAsync(int sleep)
@@ -72,12 +68,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         [Log(LoggerType.RestTraffic)]
         public async Task<DemoMethods> DemoCustomMethodAsync(int sleep)
         {
-            return await Task.Run(async () =>
-                                  {
-                                      await Task.Delay(sleep).ConfigureAwait(false);
-                                      return new DemoMethods();
-                                  }
-            );
+            await Task.Delay(sleep).ConfigureAwait(false);
+            return new DemoMethods();
         }
 
         public override string ToString()

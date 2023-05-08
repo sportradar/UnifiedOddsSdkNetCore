@@ -35,6 +35,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         Task<IEnumerable<URN>> GetCompetitorsIdsAsync(IEnumerable<CultureInfo> cultures);
 
         /// <summary>
+        /// Asynchronously gets a list of <see cref="CompetitorCI"/> ids providing information about competitors competing in a sport event
+        /// </summary>
+        /// <param name="culture">A languages to which the returned instance should be translated</param>
+        /// <returns>A <see cref="Task{TResult}"/> representing an async operation</returns>
+        Task<IEnumerable<URN>> GetCompetitorsIdsAsync(CultureInfo culture);
+
+        /// <summary>
         /// Asynchronously gets a <see cref="CurrentSeasonInfoCI"/> providing information about current season
         /// </summary>
         /// <returns>A <see cref="Task{TResult}"/> representing an async operation</returns>

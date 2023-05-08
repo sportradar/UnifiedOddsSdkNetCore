@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <summary>
         /// The competitors
         /// </summary>
-        protected IEnumerable<URN> Competitors;
+        public IEnumerable<URN> Competitors;
         /// <summary>
         /// The reference identifier
         /// </summary>

@@ -213,7 +213,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return null;
             }
 
-            var ids = tasks.First().Result.ToList();
+            var ids = tasks.First().GetAwaiter().GetResult().ToList();
             if (ids.IsNullOrEmpty())
             {
                 return new List<ICompetition>();
@@ -253,7 +253,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return null;
             }
 
-            var ids = tasks.First().Result.ToList();
+            var ids = tasks.First().GetAwaiter().GetResult().ToList();
             if (ids.IsNullOrEmpty())
             {
                 return new List<ICompetition>();
@@ -282,7 +282,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var sportEventCI = _sportEventCache.GetEventCacheItem(id);
 
             var result = _sportEntityFactory.BuildSportEvent<ILongTermEvent>(id,
-                                                                             sportEventCI?.GetSportIdAsync().Result,
+                                                                             sportEventCI?.GetSportIdAsync().GetAwaiter().GetResult(),
                                                                              culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture },
                                                                              _exceptionStrategy);
 
@@ -308,7 +308,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             if (sportId == null && id.TypeGroup.Equals(ResourceTypeGroup.MATCH))
             {
-                sportId = _sportEventCache.GetEventSportIdAsync(id).Result;
+                sportId = _sportEventCache.GetEventSportIdAsync(id).GetAwaiter().GetResult();
             }
 
             var result = _sportEntityFactory.BuildSportEvent<ICompetition>(id,
@@ -344,7 +344,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             if (sportId == null && id.TypeGroup.Equals(ResourceTypeGroup.MATCH))
             {
-                sportId = _sportEventCache.GetEventSportIdAsync(id).Result;
+                sportId = _sportEventCache.GetEventSportIdAsync(id).GetAwaiter().GetResult();
             }
 
             var result = _sportEntityFactory.BuildSportEvent<ISportEvent>(id,
@@ -359,7 +359,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         internal ISportEvent GetSportEventForEventChange(URN id)
         {
             var result = _sportEntityFactory.BuildSportEvent<ISportEvent>(id,
-                id.TypeGroup == ResourceTypeGroup.MATCH ? _sportEventCache.GetEventSportIdAsync(id).Result : null,
+                id.TypeGroup == ResourceTypeGroup.MATCH ? _sportEventCache.GetEventSportIdAsync(id).GetAwaiter().GetResult() : null,
                 _defaultCultures.ToList(),
                 _exceptionStrategy);
 
@@ -410,7 +410,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             LogInt.LogInformation($"Invoked GetCompetitorAsync: [Id={id}, Cultures={s}]");
             try
             {
-                var cacheItem = await _profileCache.GetCompetitorProfileAsync(id, cs).ConfigureAwait(false);
+                var cacheItem = await _profileCache.GetCompetitorProfileAsync(id, cs, false).ConfigureAwait(false);
                 return cacheItem == null
                            ? null
                            : _sportEntityFactory.BuildCompetitor(cacheItem, cs, (ICompetitionCI)null, _exceptionStrategy);
@@ -441,7 +441,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             LogInt.LogInformation($"Invoked GetPlayerProfileAsync: [Id={id}, Cultures={s}]");
             try
             {
-                var cacheItem = await _profileCache.GetPlayerProfileAsync(id, cs).ConfigureAwait(false);
+                var cacheItem = await _profileCache.GetPlayerProfileAsync(id, cs, false).ConfigureAwait(false);
                 return cacheItem == null
                            ? null
                            : new PlayerProfile(cacheItem, cs.ToList());
@@ -511,9 +511,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <param name="limit">How many records to return (max: 1000)</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
-#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
         public async Task<IEnumerable<ICompetition>> GetListOfSportEventsAsync(int startIndex, int limit, CultureInfo culture = null)
-#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
             if (startIndex < 0)
             {
@@ -563,7 +561,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             {
                 await _sportDataCache.LoadAllTournamentsForAllSportsAsync().ConfigureAwait(false);
                 var tours = await _sportEventCache.GetActiveTournamentsAsync(cul).ConfigureAwait(false);
-                return tours?.Select(t => _sportEntityFactory.BuildSportEvent<ISportEvent>(t.Id, t.GetSportIdAsync().Result, new[] { cul }, _exceptionStrategy));
+                return tours?.Select(t => _sportEntityFactory.BuildSportEvent<ISportEvent>(t.Id, t.GetSportIdAsync().GetAwaiter().GetResult(), new[] { cul }, _exceptionStrategy));
             }
             catch (Exception e)
             {

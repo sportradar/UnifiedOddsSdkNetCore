@@ -59,12 +59,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
             var tourDataProvider = new DataProvider<tournamentInfoEndpoint, TournamentInfoDTO>(TestData.RestXmlPath + TourInfoXml, dataFetcher, deserializer, mapperFactory);
             _tourApiData = deserializer.Deserialize(dataFetcher.GetData(new Uri(string.Format(TestData.RestXmlPath + TourInfoXml))));
-            _tourDtoData = tourDataProvider.GetDataAsync("", "en").Result;
+            _tourDtoData = tourDataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
             _tourCiData = (TournamentInfoCI)sportEventCache.GetEventCacheItem(URN.Parse("sr:tournament:40"));
 
             var seasonDataProvider = new DataProvider<tournamentInfoEndpoint, TournamentInfoDTO>(TestData.RestXmlPath + SeasonInfoXml, dataFetcher, deserializer, mapperFactory);
             _seasonApiData = deserializer.Deserialize(dataFetcher.GetData(new Uri(string.Format(TestData.RestXmlPath + SeasonInfoXml))));
-            _seasonDtoData = seasonDataProvider.GetDataAsync("", "en").Result;
+            _seasonDtoData = seasonDataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
             _seasonCiData = (TournamentInfoCI)sportEventCache.GetEventCacheItem(URN.Parse("sr:season:80242"));
         }
 
@@ -87,13 +87,13 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             Assert.Equal(TestData.Cultures3.Count, _tourCiData.LoadedSummaries.Count);
             Assert.Equal(TestData.Cultures3.Count, _seasonCiData.LoadedSummaries.Count);
 
-            VerifyTournamentGroups(_tourApiData.groups, _tourCiData.GetGroupsAsync(_cultures).Result);
+            VerifyTournamentGroups(_tourApiData.groups, _tourCiData.GetGroupsAsync(_cultures).GetAwaiter().GetResult());
 
-            VerifyTournamentCompetitors(_tourApiData.competitors, _tourApiData.groups, _tourCiData.GetCompetitorsIdsAsync(_cultures).Result);
+            VerifyTournamentCompetitors(_tourApiData.competitors, _tourApiData.groups, _tourCiData.GetCompetitorsIdsAsync(_cultures).GetAwaiter().GetResult());
 
-            VerifyTournamentGroups(_seasonApiData.groups, _seasonCiData.GetGroupsAsync(_cultures).Result);
+            VerifyTournamentGroups(_seasonApiData.groups, _seasonCiData.GetGroupsAsync(_cultures).GetAwaiter().GetResult());
 
-            VerifyTournamentCompetitors(_seasonApiData.competitors, _seasonApiData.groups, _seasonCiData.GetCompetitorsIdsAsync(_cultures).Result);
+            VerifyTournamentCompetitors(_seasonApiData.competitors, _seasonApiData.groups, _seasonCiData.GetCompetitorsIdsAsync(_cultures).GetAwaiter().GetResult());
         }
 
         [Fact]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -10,9 +11,21 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 {
     public class TestMatch : IMatch
     {
+        private List<ITeamCompetitor> _competitors;
+
         public TestMatch(URN id)
         {
             Id = id;
+            _competitors = new List<ITeamCompetitor>()
+            {
+                new TestTeamCompetitor(URN.Parse("sr:competitor:1"), "First competitor", new CultureInfo("en")),
+                new TestTeamCompetitor(URN.Parse("sr:competitor:2"), "Second competitor", new CultureInfo("en"))
+            };
+        }
+
+        public void SetCompetitors(ICollection<ITeamCompetitor> competitors)
+        {
+            _competitors = competitors.ToList();
         }
 
         public URN Id { get; }
@@ -84,12 +97,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
         {
-            var competitors = new List<ICompetitor>()
-                              {
-                                  new TestCompetitor(URN.Parse("sr:competitor:1"), "First competitor", new CultureInfo("en")),
-                                  new TestCompetitor(URN.Parse("sr:competitor:2"), "Second competitor", new CultureInfo("en"))
-                              };
-            return Task.FromResult<IEnumerable<ICompetitor>>(competitors);
+            return Task.FromResult<IEnumerable<ICompetitor>>(_competitors);
         }
 
         public Task<EventStatus?> GetEventStatusAsync()
@@ -97,19 +105,25 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             return Task.FromResult<EventStatus?>(null);
         }
 
+        /// <inheritdoc />
+        public Task<IEnumerable<URN>> GetCompetitorIdsAsync()
+        {
+            return Task.FromResult(_competitors.Select(s => s.Id));
+        }
+
         public Task<string> GetNameAsync(CultureInfo culture)
         {
-            return Task.FromResult<string>(null);
+            return Task.FromResult($"Match {Id} name {culture.TwoLetterISOLanguageName}");
         }
 
         public Task<ITeamCompetitor> GetHomeCompetitorAsync()
         {
-            return Task.FromResult<ITeamCompetitor>(null);
+            return Task.FromResult(_competitors.First());
         }
 
         public Task<ITeamCompetitor> GetAwayCompetitorAsync()
         {
-            return Task.FromResult<ITeamCompetitor>(null);
+            return Task.FromResult(_competitors.Skip(1).First());
         }
 
         Task<ISeasonInfo> IMatch.GetSeasonAsync()

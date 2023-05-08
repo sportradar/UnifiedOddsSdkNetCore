@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Timer;
-using Dawn;
+using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -67,6 +67,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         private readonly ExceptionHandlingStrategy _exceptionStrategy;
 
+        private readonly string _cacheName;
+
         /// <summary>
         /// A <see cref="object"/> used to synchronize access to <see cref="_namedValues"/>
         /// </summary>
@@ -77,23 +79,48 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// </summary>
         private bool _isDisposed;
 
+        private readonly TimerOptions _timerOptions;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ILocalizedNamedValueCache"/> class.
         /// </summary>
         /// <param name="dataProvider">A <see cref="IDataProvider{T}"/> to retrieve match status descriptions</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how potential exceptions should be handled</param>
-        public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, ICollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
+        /// <param name="cacheName">A name of the cache or the name of the values contained in this cache</param>
+        /// <param name="sdkTimer">A <see cref="SdkTimer"/> to schedule load of initial values</param>
+        public LocalizedNamedValueCache(IDataProvider<EntityList<NamedValueDTO>> dataProvider, ICollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy, string cacheName, SdkTimer sdkTimer)
         {
-            Guard.Argument(dataProvider, nameof(dataProvider)).NotNull();
-            Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
+            if (cultures.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException(nameof(cultures));
+            }
+            if (cacheName.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException(nameof(cacheName));
+            }
+            if (sdkTimer == null)
+            {
+                throw new ArgumentNullException(nameof(sdkTimer));
+            }
 
-            _dataProvider = dataProvider;
+            _dataProvider = dataProvider ?? throw new ArgumentNullException(nameof(dataProvider));
             _defaultCultures = cultures;
             _exceptionStrategy = exceptionStrategy;
+            _cacheName = cacheName;
 
             _namedValues = new ConcurrentDictionary<int, IDictionary<CultureInfo, string>>();
             _loadedCultures = new List<CultureInfo>();
+
+            _timerOptions = new TimerOptions { Context = $"LocalizedNamedValueCache-{_cacheName}", Name = "FetchAndMerge", MeasurementUnit = Unit.Requests };
+
+            sdkTimer.Elapsed += LoadInitialValues;
+            sdkTimer.FireOnce(sdkTimer.DueTime);
+        }
+
+        private void LoadInitialValues(object sender, EventArgs e)
+        {
+            GetAsync(0, _defaultCultures).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -103,11 +130,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
         /// <returns>A <see cref="Task" /> representing the retrieval operation</returns>
         private async Task FetchAndMerge(CultureInfo culture)
         {
-            Guard.Argument(culture, nameof(culture)).NotNull();
+            if (culture == null)
+            {
+                throw new ArgumentNullException(nameof(culture));
+            }
 
             EntityList<NamedValueDTO> record;
-            var timerOptions = new TimerOptions { Context = "LocalizedNamedValueCache", Name = "GetAsync", MeasurementUnit = Unit.Requests };
-            using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(timerOptions, $"{culture.TwoLetterISOLanguageName}"))
+            using (SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOptions, $"{culture.TwoLetterISOLanguageName}"))
             {
                 record = await _dataProvider.GetDataAsync(culture.TwoLetterISOLanguageName).ConfigureAwait(false);
             }
@@ -128,7 +157,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
                 }
                 _loadedCultures.Add(culture);
             }
-            CacheLog.LogDebug($"LocalizedNamedValueCache: {record.Items.Count()} items retrieved for locale '{culture.TwoLetterISOLanguageName}'.");
+            CacheLog.LogInformation($"{_cacheName}: {record.Items.Count()} items retrieved for locale '{culture.TwoLetterISOLanguageName}'.");
         }
 
         /// <summary>
@@ -145,11 +174,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             catch (FeedSdkException ex)
             {
-                ExecutionLog.LogWarning(ex, $"An exception occurred while attempting to retrieve match statuses.");
+                ExecutionLog.LogWarning(ex, $"{_cacheName}: An exception occurred while attempting to retrieve match statuses.");
             }
             catch (ObjectDisposedException ex)
             {
-                ExecutionLog.LogWarning($"GetMarketDescriptionsAsync failed because the instance {ex.ObjectName} is being disposed.");
+                ExecutionLog.LogWarning($"{_cacheName}: failed because the instance {ex.ObjectName} is being disposed.");
             }
         }
 
@@ -186,7 +215,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             _semaphore.Wait(-1);
             if (!_loadedCultures.Any())
             {
-                GetInternalAsync(new[] { _defaultCultures.First() }).RunSynchronously();
+                GetInternalAsync(new[] { _defaultCultures.First() }).GetAwaiter().GetResult();
             }
             var exists = _namedValues.ContainsKey(id);
             if (!_isDisposed)
@@ -235,7 +264,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             }
             catch (ObjectDisposedException)
             {
-                ExecutionLog.LogWarning($"Retrieval of item with id={id} failed because the cache is being disposed");
+                ExecutionLog.LogWarning($"{_cacheName}: Retrieval of item with id={id} failed because the cache is being disposed");
             }
             finally
             {
@@ -249,7 +278,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching
             {
                 if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
                 {
-                    throw new ArgumentOutOfRangeException($"Match status missing for id={id}.");
+                    throw new ArgumentOutOfRangeException($"{_cacheName}: item missing for id={id}.");
                 }
 
                 return new LocalizedNamedValue(id, null, null);

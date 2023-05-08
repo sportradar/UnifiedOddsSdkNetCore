@@ -2,17 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
-using System.Globalization;
 using System.Linq;
-using System.Runtime.Caching;
 using System.Threading.Tasks;
 using Moq;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 using Xunit.Abstractions;
@@ -21,137 +18,470 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
 {
     public class NameProviderPlayerProfileTests
     {
-        private readonly ITestOutputHelper _outputHelper;
-        private readonly MemoryCache _memoryCache;
-        private readonly TestDataRouterManager _dataRouterManager;
-        private readonly IProfileCache _profileCache;
-        private INameProvider _nameProvider;
+        private readonly INameProvider _nameProvider;
+        private readonly TestSportEntityFactoryBuilder _sportEntityFactoryBuilder;
+        private readonly ScheduleData _scheduleData;
 
         public NameProviderPlayerProfileTests(ITestOutputHelper outputHelper)
         {
-            _outputHelper = outputHelper;
-            _memoryCache = new MemoryCache("cache");
-            var cacheManager = new CacheManager();
-            _dataRouterManager = new TestDataRouterManager(cacheManager, _outputHelper);
-            _profileCache = new ProfileCache(_memoryCache, _dataRouterManager, cacheManager);
-
-            _nameProvider = new NameProvider(
-                new Mock<IMarketCacheProvider>().Object,
-                _profileCache,
-                new Mock<INameExpressionFactory>().Object,
-                new Mock<ISportEvent>().Object,
-                1,
-                null,
-                ExceptionHandlingStrategy.THROW);
+            _scheduleData = new ScheduleData(new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3), outputHelper);
+            _sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
+            var match = _sportEntityFactoryBuilder.SportEntityFactory.BuildSportEvent<IMatch>(ScheduleData.MatchId, ScheduleData.MatchSportId, ScheduleData.Cultures3, _sportEntityFactoryBuilder.ThrowingStrategy);
+            _nameProvider = new NameProvider(new Mock<IMarketCacheProvider>().Object,
+                                             _sportEntityFactoryBuilder.ProfileCache,
+                                             new Mock<INameExpressionFactory>().Object,
+                                             match,
+                                             1,
+                                             null,
+                                             ExceptionHandlingStrategy.THROW);
         }
 
         [Fact]
-        public async Task Id_for_one_player_profiles_gets_correct_name()
+        public void OutcomeIdWithWrongPlayerIdThrows()
         {
-            var name = await _nameProvider.GetOutcomeNameAsync("sr:player:2", new CultureInfo("en"));
-            Assert.Equal("Cole, Ashley", name);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player2", ScheduleData.CultureEn));
+            Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:customplayer:2", ScheduleData.CultureEn));
         }
 
         [Fact]
-        public async Task Composite_id_for_two_player_profiles_gets_correct_name()
+        public void CompositeOutcomeIdWithWrongDelimiterThrows()
         {
-            var name = await _nameProvider.GetOutcomeNameAsync("sr:player:1,sr:player:2", new CultureInfo("en"));
-            Assert.Equal("van Persie, Robin,Cole, Ashley", name);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player:2, sr:competitor:1", ScheduleData.CultureEn));
+            Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player:2;sr:competitor:1", ScheduleData.CultureEn));
         }
 
         [Fact]
-        public async Task Player_profile_is_called_only_once()
+        public async Task OutcomeIdWithSinglePlayerIdGetsCorrectValue()
         {
-            const string callType = "GetPlayerProfileAsync";
-            Assert.Empty(_memoryCache);
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType));
-            var name = await _nameProvider.GetOutcomeNameAsync("sr:player:2", TestData.Cultures.First());
-            Assert.Equal("Cole, Ashley", name);
-            Assert.Single(_memoryCache);
-            Assert.Equal(1, _dataRouterManager.GetCallCount(callType));
+            var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId1.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor1Player1.Names[ScheduleData.CultureEn], name);
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.PlayerProfileMarketPrefix)));
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public async Task Competitor_and_player_profile_is_called_correctly()
+        public async Task CompositeOutcomeIdForTwoPlayerIdsSameCompetitorGetsCorrectValue()
         {
-            const string callType1 = "GetPlayerProfileAsync";
-            const string callType2 = "GetCompetitorAsync";
-            Assert.Empty(_memoryCache);
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType1));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType2));
-            var name = await _nameProvider.GetOutcomeNameAsync("sr:player:1,sr:competitor:1", TestData.Cultures.First());
-            Assert.Equal("van Persie, Robin,Queens Park Rangers", name);
-            Assert.Equal(35, _memoryCache.Count());
-            Assert.Equal(1, _dataRouterManager.GetCallCount(callType1));
-            Assert.Equal(1, _dataRouterManager.GetCallCount(callType2));
+            var outcomeId = $"{ScheduleData.MatchCompetitor1PlayerId1},{ScheduleData.MatchCompetitor1PlayerId2}";
+            var expectedName = $"{_scheduleData.MatchCompetitor1Player1.GetName(ScheduleData.CultureEn)},{_scheduleData.MatchCompetitor1Player2.GetName(ScheduleData.CultureEn)}";
+
+            var name = await _nameProvider.GetOutcomeNameAsync(outcomeId, ScheduleData.CultureEn);
+            Assert.Equal(expectedName, name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public async Task Player_profile_is_called_only_once_per_culture()
+        public async Task CompositeOutcomeIdForTwoPlayerIdsDifferentCompetitorGetsCorrectValue()
         {
-            const string callType = "GetPlayerProfileAsync";
-            Assert.Empty(_memoryCache);
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType));
-            foreach (var cultureInfo in TestData.Cultures)
+            var outcomeId = $"{ScheduleData.MatchCompetitor1PlayerId1},{ScheduleData.MatchCompetitor2PlayerId2}";
+            var expectedName = $"{_scheduleData.MatchCompetitor1Player1.GetName(ScheduleData.CultureEn)},{_scheduleData.MatchCompetitor2Player2.GetName(ScheduleData.CultureEn)}";
+
+            var name = await _nameProvider.GetOutcomeNameAsync(outcomeId, ScheduleData.CultureEn);
+            Assert.Equal(expectedName, name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task CompositeOutcomeIdForTwoCompetitorIdsGetsCorrectValue()
+        {
+            var outcomeId = $"{ScheduleData.MatchCompetitorId1},{ScheduleData.MatchCompetitorId2}";
+            var expectedName = $"{_scheduleData.MatchCompetitor1.GetName(ScheduleData.CultureEn)},{_scheduleData.MatchCompetitor2.GetName(ScheduleData.CultureEn)}";
+
+            var name = await _nameProvider.GetOutcomeNameAsync(outcomeId, ScheduleData.CultureEn);
+            Assert.Equal(expectedName, name);
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task PreloadedPlayerDataAndOutcomeIdWithSinglePlayerIdGetsCorrectValue()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetPlayerProfileAsync(ScheduleData.MatchCompetitor1PlayerId1, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+
+            var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId1.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor1Player1.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(1, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task PreloadedCompetitorDataAndOutcomeIdWithSinglePlayerIdGetsCorrectValue()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId1, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+
+            var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId2.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor1Player2.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + 1, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        [Fact]
+        public async Task WhenMissingDataPlayerProfileIsCalledOnlyOnce()
+        {
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId2.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor2Player2.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId2.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor2Player2.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task CompositeOutcomeIdWithCompetitorAndPlayerIsCalledCorrectly()
+        {
+            var outcomeId = $"{ScheduleData.MatchCompetitorId1},{ScheduleData.MatchCompetitor1PlayerId2}";
+            var expectedName = $"{_scheduleData.MatchCompetitor1.GetName(ScheduleData.CultureEn)},{_scheduleData.MatchCompetitor1Player2.GetName(ScheduleData.CultureEn)}";
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            var name = await _nameProvider.GetOutcomeNameAsync(outcomeId, ScheduleData.CultureEn);
+            Assert.Equal(expectedName, name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task CompositeOutcomeIdWithPlayerAndCompetitorIsCalledCorrectly()
+        {
+            var outcomeId = $"{ScheduleData.MatchCompetitor1PlayerId2},{ScheduleData.MatchCompetitorId1}";
+            var expectedName = $"{_scheduleData.MatchCompetitor1Player2.GetName(ScheduleData.CultureEn)},{_scheduleData.MatchCompetitor1.GetName(ScheduleData.CultureEn)}";
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            var name = await _nameProvider.GetOutcomeNameAsync(outcomeId, ScheduleData.CultureEn);
+            Assert.Equal(expectedName, name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task WhenNoDataPlayerProfileIsCalledOnlyOncePerCulture()
+        {
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
             {
-                var name = await _nameProvider.GetOutcomeNameAsync("sr:player:2", cultureInfo);
-                Assert.Equal("Cole, Ashley", name);
+                var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId2.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1Player2.GetName(cultureInfo), name);
+                Assert.False(string.IsNullOrEmpty(name));
             }
-            Assert.Single(_memoryCache);
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(7, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(6, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public async Task Competitor_profile_is_called_only_once()
+        public async Task CompetitorDataIsLoadedFromMatchSummary()
         {
-            const string callType = "GetCompetitorAsync";
-            Assert.Empty(_memoryCache);
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType));
-            var name = await _nameProvider.GetOutcomeNameAsync("sr:competitor:1", TestData.Cultures.First());
-            Assert.Equal("Queens Park Rangers", name);
-            Assert.Equal(35, _memoryCache.Count());
-            Assert.Equal(1, _dataRouterManager.GetCallCount(callType));
-        }
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
 
-        [Fact]
-        public async Task Competitor_profile_is_called_only_once_per_culture()
-        {
-            const string callType = "GetCompetitorAsync";
-            Assert.Empty(_memoryCache);
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType));
-            foreach (var cultureInfo in TestData.Cultures)
+            foreach (var cultureInfo in ScheduleData.Cultures3)
             {
-                var name = await _nameProvider.GetOutcomeNameAsync("sr:competitor:1", cultureInfo);
-                Assert.Equal("Queens Park Rangers", name);
+                var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name);
             }
-            Assert.Equal(35, _memoryCache.Count());
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public async Task Competitor_profile_is_called_when_wanted_player_profile()
+        public async Task CompetitorProfileIsCalledOnlyOnce()
         {
-            var match = new TestSportEntityFactory(_outputHelper).BuildSportEvent<IMatch>(URN.Parse("sr:match:1"), URN.Parse("sr:sport:5"), TestData.Cultures.ToList(), ExceptionHandlingStrategy.THROW);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
 
-            _nameProvider = new NameProvider(
-                                            new Mock<IMarketCacheProvider>().Object,
-                                            _profileCache,
-                                            new Mock<INameExpressionFactory>().Object,
-                                            match,
-                                            1,
-                                            null,
-                                            ExceptionHandlingStrategy.THROW);
+            var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor2.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
 
-            const string callType1 = "GetPlayerProfileAsync";
-            const string callType2 = "GetCompetitorAsync";
-            Assert.Empty(_memoryCache);
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType1));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType2));
-            var name = await _nameProvider.GetOutcomeNameAsync("sr:player:1", TestData.Cultures.First());
-            Assert.Equal("van Persie, Robin", name);
-            Assert.Equal(61 + 2, _memoryCache.Count());
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType1));
-            Assert.Equal(2, _dataRouterManager.GetCallCount(callType2));
+            name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor2.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task CompetitorProfileIsLoadedFromSummaryOnlyOncePerCulture()
+        {
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
+            {
+                var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name);
+                Assert.False(string.IsNullOrEmpty(name));
+            }
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task PreloadedMatchDataAndOutcomeIdWithSingleCompetitorIdGetsCorrectValue()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+
+            var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor1.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+        }
+
+        [Fact]
+        public async Task CompetitorProfileIsCalledWhenWantedPlayerProfileLinkedToCompetitor()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId2, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            Assert.Equal(ScheduleData.MatchCompetitor2PlayerCount + 1, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId1.ToString(), ScheduleData.CultureEn);
+            Assert.Equal(_scheduleData.MatchCompetitor2Player1.GetName(ScheduleData.CultureEn), name);
+            Assert.Equal(ScheduleData.MatchCompetitor2PlayerCount + 1, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId1.ToString(), ScheduleData.CultureHu);
+            Assert.Equal(_scheduleData.MatchCompetitor2Player1.GetName(ScheduleData.CultureHu), name);
+            Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(4, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task CompetitorDataIsLoadedFromTournamentSummary()
+        {
+            var tournament = _sportEntityFactoryBuilder.SportEntityFactory.BuildSportEvent<ITournament>(ScheduleData.MatchTournamentId, ScheduleData.MatchSportId, ScheduleData.Cultures3, _sportEntityFactoryBuilder.ThrowingStrategy);
+            var nameProvider = new NameProvider(new Mock<IMarketCacheProvider>().Object,
+                                                _sportEntityFactoryBuilder.ProfileCache,
+                                             new Mock<INameExpressionFactory>().Object,
+                                             tournament,
+                                             1,
+                                             null,
+                                             ExceptionHandlingStrategy.THROW);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
+            {
+                var name1 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name1);
+                var name2 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
+            }
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task CompetitorDataIsLoadedFromSeasonSummary()
+        {
+            var season = _sportEntityFactoryBuilder.SportEntityFactory.BuildSportEvent<ISeason>(ScheduleData.MatchSeasonId, ScheduleData.MatchSportId, ScheduleData.Cultures3, _sportEntityFactoryBuilder.ThrowingStrategy);
+            var nameProvider = new NameProvider(new Mock<IMarketCacheProvider>().Object,
+                                             _sportEntityFactoryBuilder.ProfileCache,
+                                             new Mock<INameExpressionFactory>().Object,
+                                             season,
+                                             1,
+                                             null,
+                                             ExceptionHandlingStrategy.THROW);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
+            {
+                var name1 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name1);
+                var name2 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
+            }
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task MatchDataOverridesCompetitorAssociatedEventIdOverTournamentData()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchTournamentId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
+            {
+                var name1 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name1);
+                var name2 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
+            }
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("tournament")));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("match")));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task TournamentDataDoesNotOverridesCompetitorAssociatedEventIdOverMatchData()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchTournamentId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
+            {
+                var name1 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name1);
+                var name2 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
+            }
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("tournament")));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("match")));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task MatchDataOverridesCompetitorAssociatedEventIdOverSeasonData()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchSeasonId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
+            {
+                var name1 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name1);
+                var name2 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
+            }
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("season")));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("match")));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public async Task SeasonDataDoesNotOverridesCompetitorAssociatedEventIdOverMatchData()
+        {
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
+            await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchSeasonId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+
+            foreach (var cultureInfo in ScheduleData.Cultures3)
+            {
+                var name1 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name1);
+                var name2 = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), cultureInfo);
+                Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
+            }
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count(c => c.Key.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("season")));
+            Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("match")));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
     }
 }

@@ -86,7 +86,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Countries = new ReadOnlyDictionary<CultureInfo, string>(cultures.Where(c => ci.GetCountry(c) != null).ToDictionary(c => c, ci.GetCountry));
             CountryCode = ci.CountryCode;
             State = ci.State;
-            Course = ci.Course.IsNullOrEmpty() ? new List<Hole>() : ci.Course.Select(s => new Hole(s)).ToList();
+            //TODO: need to be changed from hole to course
+            Course = ci.Courses.IsNullOrEmpty() ? new List<Hole>() : ci.Courses.First().Holes.Select(s => new Hole(s)).ToList();
         }
 
         /// <summary>

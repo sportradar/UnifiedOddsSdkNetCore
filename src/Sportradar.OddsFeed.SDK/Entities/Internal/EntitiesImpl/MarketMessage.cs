@@ -29,14 +29,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         /// <param name="timestamp">The value specifying timestamps related to the message (in the milliseconds since EPOCH UTC)</param>
         /// <param name="producer">The <see cref="IProducer" /> specifying the producer / service which dispatched the current <see cref="Message" /> message</param>
-        /// <param name="competition">An <see cref="ICompetition" /> derived instance representing the sport event associated with the current <see cref="EventMessage{T}" /></param>
+        /// <param name="sportEvent">An <see cref="ICompetition" /> derived instance representing the sport event associated with the current <see cref="EventMessage{T}" /></param>
         /// <param name="requestId">The id of the request which triggered the current <see cref="EventMessage{T}" /> message or a null reference</param>
         /// <param name="markets">An <see cref="IEnumerable{IMarket}" /> describing markets associated with the current <see cref="IMarketMessage{T, R}" /></param>
         /// <param name="rawMessage">The raw message</param>
-        protected MarketMessage(IMessageTimestamp timestamp, IProducer producer, T1 competition, long? requestId, IEnumerable<T> markets, byte[] rawMessage)
-            : base(timestamp, producer, competition, requestId, rawMessage)
+        protected MarketMessage(IMessageTimestamp timestamp, IProducer producer, T1 sportEvent, long? requestId, IEnumerable<T> markets, byte[] rawMessage)
+            : base(timestamp, producer, sportEvent, requestId, rawMessage)
         {
-            Guard.Argument(competition, nameof(competition)).Require(competition != null);
+            Guard.Argument(sportEvent, nameof(sportEvent)).Require(sportEvent != null);
 
             _markets = markets == null ? null : new ReadOnlyCollection<T>(markets.ToList());
         }

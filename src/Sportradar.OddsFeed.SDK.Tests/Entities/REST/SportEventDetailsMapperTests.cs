@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task MappingTest()
+        public async Task Mapping()
         {
             await Initialise();
 

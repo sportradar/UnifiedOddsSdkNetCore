@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response response_code="BAD_REQUEST">
+	<action>Request for booking an event : sr:match:1234 from bookmaker: 22020 received</action>
+	<message>ERROR. Bad Request: The match is not offered within our live betting services</message>
+</response>

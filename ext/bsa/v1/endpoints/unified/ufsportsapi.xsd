@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  targetNamespace="http://schemas.sportradar.com/sportsapi/v1/unified"
+  xmlns="http://schemas.sportradar.com/sportsapi/v1/unified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="competitor_profile.xsd"/>
+  <xs:include schemaLocation="error_response.xsd"/>
+  <xs:include schemaLocation="fixture_changes.xsd"/>
+  <xs:include schemaLocation="fixtures_fixture.xsd"/>
+  <xs:include schemaLocation="match_summary.xsd"/>
+  <xs:include schemaLocation="match_timeline.xsd"/>
+  <xs:include schemaLocation="player_profile.xsd"/>
+  <xs:include schemaLocation="race_schedule.xsd"/>
+  <xs:include schemaLocation="race_standings.xsd"/>
+  <xs:include schemaLocation="race_summary.xsd"/>
+  <xs:include schemaLocation="result_changes.xsd"/>
+  <xs:include schemaLocation="results.xsd"/>
+  <xs:include schemaLocation="result.xsd"/>
+  <xs:include schemaLocation="schedule.xsd"/>
+  <xs:include schemaLocation="sport_categories.xsd"/>
+  <xs:include schemaLocation="sports.xsd"/>
+  <xs:include schemaLocation="sport_tournaments.xsd"/>
+  <xs:include schemaLocation="tournament_info.xsd"/>
+  <xs:include schemaLocation="tournament_schedule.xsd"/>
+  <xs:include schemaLocation="tournament_seasons.xsd"/>
+  <xs:include schemaLocation="tournaments.xsd"/>
+  <xs:include schemaLocation="venue_summary.xsd"/>
+</xs:schema>

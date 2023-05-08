@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response response_code="OK">
+	<action>Request for booking an event : sr:match:34152237 from bookmaker: 12345 received</action>
+	<message>OK.</message>
+</response>

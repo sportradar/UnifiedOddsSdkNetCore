@@ -25,12 +25,6 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
     /// </summary>
     public class CacheExportTests
     {
-        private const string AllTournaments = "GetAllTournamentsForAllSportAsync";
-        private const string AllSports = "GetAllSportsAsync";
-        private const string SportEventSummary = "GetSportEventSummaryAsync";
-        private const string Competitor = "GetCompetitorAsync";
-        private const string PlayerProfile = "GetPlayerProfileAsync";
-
         private readonly SportDataCache _sportDataCache;
         private readonly SportEventCache _sportEventCache;
         private readonly ProfileCache _profileCache;
@@ -59,11 +53,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
             _sportDataCache = new SportDataCache(_dataRouterManager, timer, TestData.Cultures, _sportEventCache, cacheManager);
             _profileMemoryCache = new MemoryCache("profileCache");
-            _profileCache = new ProfileCache(_profileMemoryCache, _dataRouterManager, cacheManager);
+            _profileCache = new ProfileCache(_profileMemoryCache, _dataRouterManager, cacheManager, _sportEventCache);
         }
 
         [Fact]
-        public async Task SportDataCacheStatusTest()
+        public async Task SportDataCacheStatus()
         {
             var status = _sportDataCache.CacheStatus();
             Assert.Equal(0, status["SportCI"]);
@@ -78,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportDataCacheEmptyExportTest()
+        public async Task SportDataCacheEmptyExport()
         {
             var export = (await _sportDataCache.ExportAsync()).ToList();
             export.Count.Should().Be(0);
@@ -89,18 +83,18 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportDataCacheFullExportTest()
+        public async Task SportDataCacheFullExport()
         {
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             var sports = await _sportDataCache.GetSportsAsync(TestData.Cultures); // initial load
             Assert.NotNull(sports);
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             var export = (await _sportDataCache.ExportAsync()).ToList();
             Assert.Equal(TestData.CacheSportCount + TestData.CacheCategoryCountPlus, export.Count);
@@ -114,9 +108,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             Assert.Equal(TestData.CacheCategoryCountPlus, _sportDataCache.Categories.Count);
 
             // No calls to the data router manager
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllTournaments));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(AllSports));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllTournamentsForAllSport));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointAllSports));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             var exportString = SerializeExportables(export);
             var secondExportString = SerializeExportables(await _sportDataCache.ExportAsync());
@@ -124,19 +118,19 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task ProfileCacheStatusTest()
+        public async Task ProfileCacheStatus()
         {
             var status = _profileCache.CacheStatus();
             Assert.Equal(0, status["TeamCompetitorCI"]);
             Assert.Equal(0, status["CompetitorCI"]);
             Assert.Equal(0, status["PlayerProfileCI"]);
 
-            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:1"), TestData.Cultures);
-            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:2"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:1"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:2"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:1"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:2"), TestData.Cultures);
+            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:1"), TestData.Cultures, false);
+            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:2"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:1"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:2"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:1"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:2"), TestData.Cultures, false);
 
             status = _profileCache.CacheStatus();
             Assert.Equal(0, status["TeamCompetitorCI"]);
@@ -146,7 +140,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task ProfileCacheEmptyExportTest()
+        public async Task ProfileCacheEmptyExport()
         {
             var export = (await _profileCache.ExportAsync()).ToList();
             export.Count.Should().Be(0);
@@ -156,20 +150,20 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task ProfileCacheFullExportTest()
+        public async Task ProfileCacheFullExport()
         {
-            Assert.Equal(0, _dataRouterManager.GetCallCount(Competitor));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(PlayerProfile));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
 
-            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:1"), TestData.Cultures);
-            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:2"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:1"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:2"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:1"), TestData.Cultures);
-            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:2"), TestData.Cultures);
+            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:1"), TestData.Cultures, false);
+            await _profileCache.GetPlayerProfileAsync(URN.Parse("sr:player:2"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:1"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:competitor:2"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:1"), TestData.Cultures, false);
+            await _profileCache.GetCompetitorProfileAsync(URN.Parse("sr:simpleteam:2"), TestData.Cultures, false);
 
-            Assert.Equal(TestData.Cultures.Count * 4, _dataRouterManager.GetCallCount(Competitor));
-            Assert.Equal(TestData.Cultures.Count * 2, _dataRouterManager.GetCallCount(PlayerProfile));
+            Assert.Equal(TestData.Cultures.Count * 4, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(TestData.Cultures.Count * 2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
 
             var export = (await _profileCache.ExportAsync()).ToList();
             Assert.Equal(_profileMemoryCache.GetCount(), export.Count);
@@ -180,8 +174,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             Assert.Equal(export.Count, _profileMemoryCache.GetCount());
 
             // No calls to the data router manager
-            Assert.Equal(TestData.Cultures.Count * 4, _dataRouterManager.GetCallCount(Competitor));
-            Assert.Equal(TestData.Cultures.Count * 2, _dataRouterManager.GetCallCount(PlayerProfile));
+            Assert.Equal(TestData.Cultures.Count * 4, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(TestData.Cultures.Count * 2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
 
             var exportString = SerializeExportables(export);
             var secondExportString = SerializeExportables(await _profileCache.ExportAsync());
@@ -189,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportEventCacheStatusTest()
+        public async Task SportEventCacheStatus()
         {
             var status = _sportEventCache.CacheStatus();
             Assert.Equal(0, status["SportEventCI"]);
@@ -209,7 +203,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportEventCacheEmptyExportTest()
+        public async Task SportEventCacheEmptyExport()
         {
             var export = (await _sportEventCache.ExportAsync()).ToList();
             export.Count.Should().Be(0);
@@ -219,12 +213,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public async Task SportEventCacheFullExportTest()
+        public async Task SportEventCacheFullExport()
         {
-            var tournaments = _sportEventCache.GetActiveTournamentsAsync().Result; // initial load
+            var tournaments = _sportEventCache.GetActiveTournamentsAsync().GetAwaiter().GetResult(); // initial load
             Assert.NotNull(tournaments);
 
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             var export = (await _sportEventCache.ExportAsync()).ToList();
             Assert.Equal(1187, export.Count);
@@ -235,7 +229,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             Assert.Equal(1187, _sportEventCache.Cache.GetCount());
 
             // No calls to the data router manager
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
             var exportString = SerializeExportables(export);
             var secondExportString = SerializeExportables(await _sportEventCache.ExportAsync());

@@ -13,7 +13,7 @@
     <RootNamespace>Sportradar.OddsFeed.SDK.Docs</RootNamespace>
     <Name>Sportradar.OddsFeed.SDK.Docs</Name>
     <!-- SHFB properties -->
-    <FrameworkVersion>Cross-platform (.NET Core/.NET Standard)</FrameworkVersion>
+    <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>Odds Feed SDK Std Documentation</HtmlHelpName>
     <Language>en-US</Language>
@@ -39,7 +39,7 @@
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <HelpTitle>Odds Feed SDK Std Documentation</HelpTitle>
-    <HelpFileVersion>1.30.1</HelpFileVersion>
+    <HelpFileVersion>1.31.0</HelpFileVersion>
     <NamingMethod>MemberName</NamingMethod>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <RootNamespaceContainer>False</RootNamespaceContainer>

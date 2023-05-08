@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
-using Moq;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
@@ -31,10 +28,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
     public static class MessageFactorySdk
     {
         private static ITestOutputHelper OutputHelper;
+        private static TestSportEntityFactoryBuilder SportEntityFactoryBuilder;
 
         public static void SetOutputHelper(ITestOutputHelper outputHelper)
         {
             OutputHelper = outputHelper;
+            SportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(OutputHelper, ScheduleData.Cultures3.ToList());
         }
 
         private static Dictionary<CultureInfo, string> GetNames(List<CultureInfo> cultures)
@@ -65,7 +64,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public static ICompetitor GetCompetitor(int id = 0, int playerCount = 0)
         {
-            return new Competitor(new CompetitorCI(new CompetitorDTO(MFR.GetTeam(id)), TestData.Culture, null), null, TestData.Cultures3.ToList(), new TestSportEntityFactory(OutputHelper), ExceptionHandlingStrategy.THROW, (ICompetitionCI)null);
+            return new Competitor(new CompetitorCI(new CompetitorDTO(MFR.GetTeam(id)), ScheduleData.CultureEn, SportEntityFactoryBuilder.DataRouterManager),
+                                  SportEntityFactoryBuilder.ProfileCache,
+                                  ScheduleData.Cultures3.ToList(),
+                                  SportEntityFactoryBuilder.SportEntityFactory,
+                                  ExceptionHandlingStrategy.THROW,
+                                  (ICompetitionCI)null);
         }
 
         internal static ICoverageInfo GetCoverageInfo(int subItemCount = 0)
@@ -94,12 +98,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public static IGroup GetGroup()
         {
-            return new Group(new GroupCI(new GroupDTO(MFR.GetGroup()), TestData.Culture), TestData.Cultures3, new TestSportEntityFactory(OutputHelper), ExceptionHandlingStrategy.THROW, null);
+            return new Group(new GroupCI(new GroupDTO(MFR.GetGroup()), TestData.Culture), TestData.Cultures3, SportEntityFactoryBuilder.SportEntityFactory, ExceptionHandlingStrategy.THROW, null);
         }
 
         public static IGroup GetGroupWithCompetitors()
         {
-            return new Group(new GroupCI(new GroupDTO(MFR.GetTournamentGroup()), TestData.Culture), TestData.Cultures3, new TestSportEntityFactory(OutputHelper), ExceptionHandlingStrategy.THROW, null);
+            return new Group(new GroupCI(new GroupDTO(MFR.GetTournamentGroup()), TestData.Culture), TestData.Cultures3, SportEntityFactoryBuilder.SportEntityFactory, ExceptionHandlingStrategy.THROW, null);
         }
 
         public static IPeriodScore GetPeriodScore()
@@ -212,20 +216,20 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         public static ITeamCompetitor GetTeamCompetitor(int id = 0)
         {
             return new TeamCompetitor(new TeamCompetitorCI(new TeamCompetitorDTO(MFR.GetTeamCompetitor(id)),
-                                                           TestData.Culture,
-                                                           new TestDataRouterManager(new CacheManager(), OutputHelper)),
-                                      TestData.Cultures3.ToList(),
-                                      new TestSportEntityFactory(OutputHelper),
+                                                           ScheduleData.CultureEn,
+                                                           SportEntityFactoryBuilder.DataRouterManager),
+                                      ScheduleData.Cultures3.ToList(),
+                                      SportEntityFactoryBuilder.SportEntityFactory,
                                       ExceptionHandlingStrategy.THROW,
-                                      null,
+                                      SportEntityFactoryBuilder.ProfileCache,
                                       null);
         }
 
         public static ITournament GetTournament(int id = 0)
         {
-            var sef = new TestSportEntityFactoryBuilder(OutputHelper);
-            sef.InitializeSportEntities().Wait();
-            sef.LoadTournamentMissingValues().Wait();
+            var sef = new TestSportEntityFactoryBuilder(OutputHelper, ScheduleData.Cultures3);
+            sef.InitializeSportEntities().GetAwaiter().GetResult();
+            sef.LoadTournamentMissingValues().GetAwaiter().GetResult();
             return (Tournament)sef.GetNewTournament();
         }
 
@@ -246,9 +250,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public static List<ITournament> GetTournamentList(int count)
         {
-            var sef = new TestSportEntityFactoryBuilder(OutputHelper);
-            sef.InitializeSportEntities().Wait();
-            sef.LoadTournamentMissingValues().Wait();
+            var sef = new TestSportEntityFactoryBuilder(OutputHelper, ScheduleData.Cultures3);
+            sef.InitializeSportEntities().GetAwaiter().GetResult();
+            sef.LoadTournamentMissingValues().GetAwaiter().GetResult();
 
             var tours = new List<ITournament>();
             for (var i = 0; i < count; i++)
@@ -260,34 +264,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
 
         public static List<ITournament> GetTournamentListStatic(int count)
         {
-            var timer = new TestTimer(false);
-            var cacheManager = new CacheManager();
-            var dataRouterManager = new TestDataRouterManager(cacheManager, OutputHelper);
             var semaphorePool = new SemaphorePool(20, ExceptionHandlingStrategy.THROW);
             var fixtureMemoryCache = new MemoryCache("fixtureMemoryCache");
-            var eventMemoryCache = new MemoryCache("EventCache");
-            var profilesCache = new MemoryCache("ProfileCache");
-            var statusMemoryCache = new MemoryCache("StatusCache");
-            var ignoreTimelineMemoryCache = new MemoryCache("IgnoreTimeline");
-            var sportEventCacheItemFactory = new SportEventCacheItemFactory(
-                                                                            dataRouterManager,
-                                                                            new SemaphorePool(5, ExceptionHandlingStrategy.THROW),
-                                                                            TestData.Culture,
-                                                                            new MemoryCache("FixtureTimestampCache"));
-
-            var profileCache = new ProfileCache(profilesCache, dataRouterManager, cacheManager);
-
-            var sportEventCache = new SportEventCache(eventMemoryCache, dataRouterManager, sportEventCacheItemFactory, timer, TestData.Cultures3, cacheManager);
-
-            var sportDataCache = new SportDataCache(dataRouterManager, timer, TestData.Cultures3, sportEventCache, cacheManager);
-
-            var sportEventStatusCache = TestLocalizedNamedValueCache.CreateMatchStatusCache(TestData.Cultures3, ExceptionHandlingStrategy.THROW);
-            var namedValuesProviderMock = new Mock<INamedValuesProvider>();
-            namedValuesProviderMock.Setup(args => args.MatchStatuses).Returns(sportEventStatusCache);
-
-            var eventStatusCache = new SportEventStatusCache(statusMemoryCache, new SportEventStatusMapperFactory(), sportEventCache, cacheManager, ignoreTimelineMemoryCache);
-
-            var sportEntityFactory = new SportEntityFactory(sportDataCache, sportEventCache, eventStatusCache, sportEventStatusCache, profileCache, SdkInfo.SoccerSportUrns);
 
             var tours = new List<ITournament>();
             for (var i = 0; i < count; i++)
@@ -297,12 +275,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
                 if (tour != null)
                 {
                     var tourDto = new TournamentInfoDTO(tour);
-                    var tourCI = new TournamentInfoCI(tourDto, dataRouterManager, semaphorePool, TestData.Culture, TestData.Culture, fixtureMemoryCache);
+                    var tourCI = new TournamentInfoCI(tourDto, SportEntityFactoryBuilder.DataRouterManager, semaphorePool, ScheduleData.CultureEn, ScheduleData.CultureEn, fixtureMemoryCache);
                     var tourEntity = new Tournament(tourCI.Id,
-                                                    tourCI.GetSportIdAsync().Result,
-                                                    sportEntityFactory,
-                                                    sportEventCache,
-                                                    sportDataCache,
+                                                    tourCI.GetSportIdAsync().GetAwaiter().GetResult(),
+                                                    SportEntityFactoryBuilder.SportEntityFactory,
+                                                    SportEntityFactoryBuilder.SportEventCache,
+                                                    SportEntityFactoryBuilder.SportDataCache,
                                                     TestData.Cultures.ToList(),
                                                     ExceptionHandlingStrategy.THROW);
                     tours.Add(tourEntity);

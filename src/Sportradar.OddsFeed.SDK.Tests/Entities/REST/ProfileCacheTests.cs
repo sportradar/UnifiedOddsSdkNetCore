@@ -2,14 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
@@ -19,17 +14,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 {
     public class ProfileCacheTests
     {
-        private readonly ICacheManager _cacheManager;
-        private readonly MemoryCache _memoryCache;
-        private readonly IProfileCache _profileCache;
-        private readonly TestDataRouterManager _dataRouterManager;
+        private readonly TestSportEntityFactoryBuilder _sportEntityFactoryBuilder;
 
         public ProfileCacheTests(ITestOutputHelper outputHelper)
         {
-            _memoryCache = new MemoryCache("test");
-            _cacheManager = new CacheManager();
-            _dataRouterManager = new TestDataRouterManager(_cacheManager, outputHelper);
-            _profileCache = new ProfileCache(_memoryCache, _dataRouterManager, _cacheManager);
+            _sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3.ToList());
         }
 
         private static URN CreatePlayerUrn(int playerId)
@@ -42,188 +31,474 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             return new URN("sr", "competitor", competitorId);
         }
 
-        private static URN CreateSimpleTeamUrn(int competitorId)
-        {
-            return new URN("sr", "simple_team", competitorId);
-        }
-
         [Fact]
         public void PlayerProfileGetsCached()
         {
-            const string callType = "GetPlayerProfileAsync";
-            Assert.Equal(0, _dataRouterManager.GetCallCount(callType));
-            Assert.True(!_memoryCache.Any());
-            var player = _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures).Result;
-            Assert.NotNull(player);
-            Assert.Single(_memoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            var player = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            ValidatePlayer(player, TestData.Culture);
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
 
             //if we call again, should not fetch again
-            player = _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures).Result;
-            Assert.NotNull(player);
-            Assert.Single(_memoryCache);
+            player = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            ValidatePlayer(player, TestData.Culture);
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public void NumberOfPlayerProfileProviderCallsMatchIsCorrect()
+        public void PlayerProfileFetchesOnlyMissingCultures()
         {
-            const string callType = "GetPlayerProfileAsync";
-            var player1 = _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures).Result;
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            var player = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), new[] { TestData.Culture }, true).GetAwaiter().GetResult();
+            ValidatePlayer(player, TestData.Culture);
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            //if we call again, should fetch only missing cultures
+            player = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            ValidatePlayer(player, TestData.Culture);
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public void NumberOfPlayerProfileEndpointCallsIsCorrect()
+        {
+            var player1 = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
             Assert.NotNull(player1);
+            ValidatePlayer(player1, TestData.Culture);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
-
-            var player2 = _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(2), TestData.Cultures).Result;
-            Assert.NotNull(player2);
+            var player2 = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(2), TestData.Cultures, true).GetAwaiter().GetResult();
+            ValidatePlayer(player2, TestData.Culture);
 
             Assert.NotEqual(player1.Id, player2.Id);
-            Assert.Equal(TestData.Cultures.Count * 2, _dataRouterManager.GetCallCount(callType));
+            Assert.Equal(TestData.Cultures.Count * 2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count * 2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public void PreloadedFromCompetitorPlayerProfileEndpointCallsIsCorrect()
+        {
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            var player = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(player);
+            Assert.Equal("Smithies, Alex", player.GetName(TestData.Culture));
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        [Fact]
+        public void PartiallyPreloadedFromCompetitorPlayerProfileEndpointCallsCompetitorProfileInsteadOfPlayers()
+        {
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), new[] { TestData.Culture }, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            var player = _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(player);
+            Assert.Equal("Smithies, Alex", player.GetName(TestData.Culture));
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
         public void CompetitorProfileGetsCached()
         {
-            const string callType = "GetCompetitorAsync";
-            Assert.NotNull(_memoryCache);
-            Assert.True(!_memoryCache.Any());
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
 
-            var competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures).Result;
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
 
-            Assert.NotNull(competitor);
-            Assert.Equal(35, _memoryCache.Count());
-
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            Assert.NotNull(competitorNames);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
 
             //if we call again, should not fetch again
-            competitor = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures).Result;
-            Assert.NotNull(competitor);
-            Assert.Equal(35, _memoryCache.Count());
+            competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        [Fact]
+        public void CompetitorProfileFetchesOnlyMissingCultures()
+        {
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), new[] { TestData.Culture }, true).GetAwaiter().GetResult();
+
+            Assert.NotNull(competitorNames);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            //if we call again, should not fetch again
+            competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
         }
 
         [Fact]
         public void NumberOfCompetitorProfileProviderCallsMatchIsCorrect()
         {
-            const string callType = "GetCompetitorAsync";
-            var competitor1 = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures).Result;
-            Assert.NotNull(competitor1);
+            var competitorNames1 = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames1);
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
 
-            var competitor2 = _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(2), TestData.Cultures).Result;
-            Assert.NotNull(competitor2);
+            var competitorNames2 = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(2), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames2);
 
-            Assert.NotEqual(competitor1.Id, competitor2.Id);
-            Assert.Equal(TestData.Cultures.Count * 2, _dataRouterManager.GetCallCount(callType));
+            Assert.NotEqual(competitorNames1.Id, competitorNames2.Id);
+            Assert.Equal(TestData.Cultures.Count * 2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count * 2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
         }
 
         [Fact]
-        public void SimpleTeamProfileGetsCached()
+        public void PreloadedFromMatchCompetitorProfileProviderCallsIsCorrect()
         {
-            const string callType = "GetCompetitorAsync";
-            Assert.NotNull(_memoryCache);
-            Assert.True(!_memoryCache.Any());
+            var matchId = URN.Parse("sr:match:1");
+            var cultures = TestData.Cultures3.ToList();
+            _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(matchId, cultures[0], null).GetAwaiter().GetResult();
+            _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(matchId, cultures[1], null).GetAwaiter().GetResult();
+            _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(matchId, cultures[2], null).GetAwaiter().GetResult();
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-            var competitor = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(1), TestData.Cultures).Result;
-
-            Assert.NotNull(competitor);
-            Assert.Single(_memoryCache);
-
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
-
-            //if we call again, should not fetch again
-            competitor = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(1), TestData.Cultures).Result;
-            Assert.NotNull(competitor);
-            Assert.Single(_memoryCache);
-
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
+            var competitorNames1 = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames1);
+            Assert.Equal(TestData.Cultures.Count * 2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
         }
 
         [Fact]
-        public void NumberOfSimpleTeamProviderCallsMatchIsCorrect()
+        public void PartiallyPreloadedFromMatchCompetitorProfileProviderCallsIsCorrect()
         {
-            const string callType = "GetCompetitorAsync";
-            var competitor1 = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(1), TestData.Cultures).Result;
-            Assert.NotNull(competitor1);
+            var matchId = URN.Parse("sr:match:1");
+            var cultures = TestData.Cultures3.ToList();
+            _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(matchId, cultures[0], null).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(callType));
-
-            var competitor2 = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(2), TestData.Cultures).Result;
-            Assert.NotNull(competitor2);
-
-            Assert.NotEqual(competitor1.Id, competitor2.Id);
-            Assert.Equal(TestData.Cultures.Count * 2, _dataRouterManager.GetCallCount(callType));
+            var competitorNames1 = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames1);
+            Assert.Equal(TestData.Cultures.Count + 1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
         }
 
         [Fact]
-        public void SimpleTeamIsCachedWithoutBetradarId()
+        public void MissingPlayerNameForAllCulturesWhenSetToFetchIfMissingFetchesMissingPlayerProfiles()
         {
-            Assert.Empty(_memoryCache);
-            var competitorCI = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(1), TestData.Cultures).Result;
-            Assert.NotNull(competitorCI);
-            Assert.NotNull(competitorCI.ReferenceId);
-            Assert.NotNull(competitorCI.ReferenceId.ReferenceIds);
-            Assert.True(competitorCI.ReferenceId.ReferenceIds.Any());
-            Assert.Equal(1, competitorCI.ReferenceId.ReferenceIds.Count);
-            Assert.Equal(1, competitorCI.ReferenceId.BetradarId);
+            var cultures = TestData.Cultures3.ToList();
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            var playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.NotEqual(string.Empty, playerNames[cultures[0]]);
+            Assert.NotEqual(string.Empty, playerNames[cultures[1]]);
+            Assert.NotEqual(string.Empty, playerNames[cultures[2]]);
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(cultures.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public void SimpleTeamIsCachedWithoutReferenceIds()
+        public void MissingPlayerNameForOneCultureWhenSetToFetchIfMissingFetchesOneMissingPlayerProfile()
         {
-            Assert.Empty(_memoryCache);
-            var simpleTeamDto = CacheSimpleTeam(1, null);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
 
-            var competitorCI = _profileCache.GetCompetitorProfileAsync(simpleTeamDto.Competitor.Id, TestData.Cultures).Result;
-            Assert.NotNull(competitorCI);
-            Assert.Equal(simpleTeamDto.Competitor.Id, competitorCI.Id);
-            Assert.NotNull(competitorCI.ReferenceId);
-            Assert.NotNull(competitorCI.ReferenceId.ReferenceIds);
-            Assert.True(competitorCI.ReferenceId.ReferenceIds.Any());
-            Assert.Equal(1, competitorCI.ReferenceId.ReferenceIds.Count);
-            Assert.Equal(simpleTeamDto.Competitor.Id.Id, competitorCI.ReferenceId.BetradarId);
+            var playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures1.First()]);
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public void SimpleTeamIsCachedWithBetradarId()
+        public void MissingPlayerNameForAllCulturesWhenSetNotToFetchIfMissingDoesNotFetchesMissingPlayerProfiles()
         {
-            Assert.Empty(_memoryCache);
-            var competitorCI = _profileCache.GetCompetitorProfileAsync(CreateSimpleTeamUrn(2), TestData.Cultures).Result;
-            Assert.NotNull(competitorCI);
-            Assert.NotNull(competitorCI.ReferenceId);
-            Assert.NotNull(competitorCI.ReferenceId.ReferenceIds);
-            Assert.True(competitorCI.ReferenceId.ReferenceIds.Any());
-            Assert.Equal(2, competitorCI.ReferenceId.ReferenceIds.Count);
-            Assert.Equal("555", competitorCI.ReferenceId.BetradarId.ToString());
+            var cultures = TestData.Cultures3.ToList();
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            var playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), cultures, false).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.True(playerNames.All(a => string.IsNullOrEmpty(a.Value)));
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
         [Fact]
-        public void SimpleTeamCanBeRemovedFromCache()
+        public void MissingPlayerNameForAllCultureWhenSetNotToFetchIfMissingDoesNotFetchesMissingPlayerProfile()
         {
-            Assert.Empty(_memoryCache);
-            var simpleTeamDto = CacheSimpleTeam(654321, null);
+            _sportEntityFactoryBuilder.ProfileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
 
-            Assert.Single(_memoryCache);
-            var cacheItem = _memoryCache.GetCacheItem(simpleTeamDto.Competitor.Id.ToString());
-            Assert.NotNull(cacheItem);
-            Assert.Equal(simpleTeamDto.Competitor.Id.ToString(), cacheItem.Key);
-
-            _cacheManager.RemoveCacheItem(simpleTeamDto.Competitor.Id, CacheItemType.Competitor, "Test");
-            Assert.Empty(_memoryCache);
-            cacheItem = _memoryCache.GetCacheItem(simpleTeamDto.Competitor.Id.ToString());
-            Assert.Null(cacheItem);
+            var playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), TestData.Cultures, false).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.First()]);
+            Assert.Equal(string.Empty, playerNames[TestData.Cultures3.Skip(1).First()]);
+            Assert.Equal(string.Empty, playerNames[TestData.Cultures3.Skip(2).First()]);
+            Assert.Single(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
         }
 
-        private SimpleTeamProfileDTO CacheSimpleTeam(int id, IDictionary<string, string> referenceIds)
+        [Fact]
+        public void PopulatedFromCompetitorMissingPlayerNameForAllCultureWhenSetToFetchIfMissingFetchesMissingCompetitorProfile()
         {
-            var simpleTeam = MessageFactoryRest.GetSimpleTeamCompetitorProfileEndpoint(id, referenceIds);
-            var simpleTeamDto = new SimpleTeamProfileDTO(simpleTeam);
-            _cacheManager.SaveDto(simpleTeamDto.Competitor.Id, simpleTeamDto, CultureInfo.CurrentCulture, DtoType.SimpleTeamProfile, null);
-            return simpleTeamDto;
+            _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            var playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.First()]);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.Skip(1).First()]);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public void PopulatedFromCompetitorMissingPlayerNameForAllCultureWhenSetNotToFetchIfMissingDoesNotFetchesMissingProfile()
+        {
+            _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            var playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), TestData.Cultures, false).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.First()]);
+            Assert.Equal(string.Empty, playerNames[TestData.Cultures3.Skip(1).First()]);
+            Assert.Equal(string.Empty, playerNames[TestData.Cultures3.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public void MissingPlayerNameForAllCultureWhenSetNotToFetchIfMissingDoesNotOverridePlayerProfile()
+        {
+            _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            var playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), TestData.Cultures, false).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.First()]);
+            Assert.Equal(string.Empty, playerNames[TestData.Cultures3.Skip(1).First()]);
+            Assert.Equal(string.Empty, playerNames[TestData.Cultures3.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+
+            playerNames = _sportEntityFactoryBuilder.ProfileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(playerNames);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.First()]);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.Skip(1).First()]);
+            Assert.NotEqual(string.Empty, playerNames[TestData.Cultures3.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        }
+
+        [Fact]
+        public void MissingCompetitorNameForAllCulturesWhenSetToFetchIfMissingFetchesMissingCompetitorProfiles()
+        {
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures3, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures3.First()]);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures3.Skip(1).First()]);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures3.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(TestData.Cultures3.Count, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(TestData.Cultures3.Count, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        [Fact]
+        public void MissingCompetitorNameForOneCultureWhenSetToFetchIfMissingFetchesOneMissingCompetitorProfile()
+        {
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures1.First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        [Fact]
+        public void MissingCompetitorNameForAllCulturesWhenSetNotToFetchIfMissingDoesNotFetchesMissingCompetitorProfiles()
+        {
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures3, false).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.True(competitorNames.All(a => string.IsNullOrEmpty(a.Value)));
+            Assert.Empty(_sportEntityFactoryBuilder.ProfileMemoryCache);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        [Fact]
+        public void MissingCompetitorNameForAllCultureWhenSetNotToFetchIfMissingDoesNotFetchesMissingCompetitorProfile()
+        {
+            _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures, false).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures3.First()]);
+            Assert.Equal(string.Empty, competitorNames[TestData.Cultures3.Skip(1).First()]);
+            Assert.Equal(string.Empty, competitorNames[TestData.Cultures3.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        [Fact]
+        public void PopulatedFromMatchMissingCompetitorNameForAllCultureWhenSetToFetchIfMissingFetchesMissingSummaryEndpoint()
+        {
+            _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(URN.Parse("sr:match:1"), TestData.Culture, null).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.First()]);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.Skip(1).First()]);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.Skip(2).First()]);
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+        }
+
+        [Fact]
+        public void PopulatedFromMatchMissingCompetitorNameForAllCultureWhenSetNotToFetchIfMissingDoesNotFetchesMissingCompetitorProfile()
+        {
+            _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(URN.Parse("sr:match:1"), TestData.Culture, null).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures, false).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.First()]);
+            Assert.Equal(string.Empty, competitorNames[TestData.Cultures.Skip(1).First()]);
+            Assert.Equal(string.Empty, competitorNames[TestData.Cultures.Skip(2).First()]);
+            Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+        }
+
+        [Fact]
+        public void MissingCompetitorNameForAllCultureWhenSetNotToFetchIfMissingDoesNotOverrideProfile()
+        {
+            _sportEntityFactoryBuilder.ProfileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), TestData.Cultures1, true).GetAwaiter().GetResult();
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+
+            var competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures, false).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.First()]);
+            Assert.Equal(string.Empty, competitorNames[TestData.Cultures.Skip(1).First()]);
+            Assert.Equal(string.Empty, competitorNames[TestData.Cultures.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+
+            competitorNames = _sportEntityFactoryBuilder.ProfileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), TestData.Cultures, true).GetAwaiter().GetResult();
+            Assert.NotNull(competitorNames);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.First()]);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.Skip(1).First()]);
+            Assert.NotEqual(string.Empty, competitorNames[TestData.Cultures.Skip(2).First()]);
+            Assert.Equal(35, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
+            Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        }
+
+        private static void ValidatePlayer(PlayerProfileCI player, CultureInfo culture)
+        {
+            Assert.NotNull(player);
+            if (player.Id.Id == 1)
+            {
+                Assert.Equal("van Persie, Robin", player.GetName(culture));
+                Assert.Equal("Netherlands", player.GetNationality(culture));
+                Assert.Null(player.Gender);
+                Assert.Equal("forward", player.Type);
+                Assert.Equal(183, player.Height);
+                Assert.Equal(71, player.Weight);
+                Assert.Equal("NLD", player.CountryCode);
+                Assert.NotNull(player.DateOfBirth);
+                Assert.Equal("1983-08-06", player.DateOfBirth.Value.ToString("yyyy-MM-dd"));
+            }
+            else if (player.Id.Id == 2)
+            {
+                Assert.Equal("Cole, Ashley", player.GetName(culture));
+                Assert.Equal("England", player.GetNationality(culture));
+                Assert.Null(player.Gender);
+                Assert.Equal("defender", player.Type);
+                Assert.Equal(176, player.Height);
+                Assert.Equal(67, player.Weight);
+                Assert.Equal("ENG", player.CountryCode);
+                Assert.NotNull(player.DateOfBirth);
+                Assert.Equal("1980-12-20", player.DateOfBirth.Value.ToString("yyyy-MM-dd"));
+            }
         }
     }
 }

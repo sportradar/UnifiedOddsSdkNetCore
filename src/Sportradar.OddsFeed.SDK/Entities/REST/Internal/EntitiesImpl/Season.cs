@@ -302,7 +302,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 
             var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
-            return tasks.Select(s => s.Result);
+            return tasks.Select(s => s.GetAwaiter().GetResult());
         }
 
         /// <summary>
@@ -316,13 +316,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             {
                 var tasks = Cultures.Select(s => _sportEventCache.GetEventIdsAsync(Id, s)).ToList();
                 await Task.WhenAll(tasks).ConfigureAwait(false);
-                sportEventIds = tasks.First().Result;
+                sportEventIds = tasks.First().GetAwaiter().GetResult();
             }
             else
             {
                 var tasks = Cultures.Select(s => new Func<URN, CultureInfo, Task<IEnumerable<Tuple<URN, URN>>>>(_sportEventCache.GetEventIdsAsync).SafeInvokeAsync(Id, s, ExecutionLog, GetFetchErrorMessage("Schedule"))).ToList();
                 await Task.WhenAll(tasks).ConfigureAwait(false);
-                sportEventIds = tasks.First().Result;
+                sportEventIds = tasks.First().GetAwaiter().GetResult();
             }
 
             return sportEventIds?.Select(i => _sportEntityFactory.BuildSportEvent<ICompetition>(i.Item1, i.Item2 ?? SportId, Cultures.ToList(), ExceptionStrategy)).ToList();

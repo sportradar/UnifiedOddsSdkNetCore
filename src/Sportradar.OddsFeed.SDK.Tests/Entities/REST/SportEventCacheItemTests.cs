@@ -18,9 +18,6 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 {
     public class SportEventCacheItemTests
     {
-        private const string SportEventSummary = "GetSportEventSummaryAsync";
-        private const string SportEventFixture = "GetSportEventFixtureAsync";
-
         private readonly SportEventCache _sportEventCache;
         private readonly TestDataRouterManager _dataRouterManager;
 
@@ -60,8 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetFixtureAsync(TestData.Cultures);
             await cacheItem.GetReferenceIdsAsync();
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -74,8 +71,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetConditionsAsync(cultures);
             await cacheItem.GetConditionsAsync(cultures);
 
-            Assert.Equal(cultures.Length, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(cultures.Length, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -86,8 +83,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetBookingStatusAsync();
             await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
 
-            Assert.Equal(1, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(1, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -98,8 +95,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetBookingStatusAsync();
             await cacheItem.GetVenueAsync(TestData.Cultures);
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(1, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -109,8 +106,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
             await cacheItem.GetBookingStatusAsync();
 
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(1, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -120,13 +117,13 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
             await cacheItem.GetBookingStatusAsync();
 
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(1, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
 
             await cacheItem.GetBookingStatusAsync();
 
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(1, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -137,8 +134,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetScheduledAsync();
             await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
 
-            Assert.Equal(2, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -149,8 +146,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetScheduledEndAsync();
             await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
 
-            Assert.Equal(2, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -161,8 +158,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetTournamentIdAsync(TestData.Cultures);
             await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
 
-            Assert.Equal(3, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(3, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -172,8 +169,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
             await cacheItem.GetVenueAsync(TestData.Cultures);
 
-            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(TestData.Cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -185,8 +182,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
             await cacheItem.GetVenueAsync(new[] { new CultureInfo("hu") });
 
-            Assert.Equal(3, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(3, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -198,8 +195,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.FetchSportEventStatusAsync();
             await cacheItem.FetchSportEventStatusAsync();
 
-            Assert.Equal(3, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(0, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(3, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
 
         [Fact]
@@ -211,8 +208,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             await cacheItem.GetFixtureAsync(new[] { new CultureInfo("de") });
             await cacheItem.GetTournamentRoundAsync(new[] { new CultureInfo("hu") });
 
-            Assert.Equal(2, _dataRouterManager.GetCallCount(SportEventSummary));
-            Assert.Equal(1, _dataRouterManager.GetCallCount(SportEventFixture));
+            Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+            Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
         }
     }
 }

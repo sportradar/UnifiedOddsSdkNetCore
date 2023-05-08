@@ -58,7 +58,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerTest()
+        public void Player()
         {
             var sportEntityDTO = new SportEntityDTO("sr:player:1", "Sport Entity Name");
             var playerCI = new SportEntityCI(sportEntityDTO);
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerProfileCreateTest()
+        public void PlayerProfileCreate()
         {
             var playerProfileDTO = new PlayerProfileDTO(_defaultPlayer, DateTime.Now);
             Assert.NotNull(playerProfileDTO);
@@ -80,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerCompetitorCreateTest()
+        public void PlayerCompetitorCreate()
         {
             var playerCompetitorDTO = new PlayerCompetitorDTO(_defaultPlayerCompetitor);
             Assert.NotNull(playerCompetitorDTO);
@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerCompetitorNewCultureTest()
+        public void PlayerCompetitorNewCulture()
         {
             var playerCompetitorDTO = new PlayerCompetitorDTO(_defaultPlayerCompetitor);
             Assert.NotNull(playerCompetitorDTO);
@@ -113,7 +113,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public async Task PlayerCompetitorExportImportTest()
+        public async Task PlayerCompetitorExportImport()
         {
             var playerCompetitorDTO = new PlayerCompetitorDTO(_defaultPlayerCompetitor);
             var playerProfileCI = new PlayerProfileCI(playerCompetitorDTO, _competitorId, _cultureFirst, _dataRouterManager);
@@ -130,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerCompetitorAddProfileTest()
+        public void PlayerCompetitorAddProfile()
         {
             _defaultPlayerCompetitor.nationality = null;
             var playerCompetitorDTO = new PlayerCompetitorDTO(_defaultPlayerCompetitor);
@@ -145,7 +145,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerProfileMergeTest()
+        public void PlayerProfileMerge()
         {
             var playerProfileDTO = new PlayerProfileDTO(_defaultPlayer, DateTime.Now);
             Assert.NotNull(playerProfileDTO);
@@ -169,7 +169,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerProfileMergeNoDataTest()
+        public void PlayerProfileMergeNoData()
         {
             _defaultPlayer.nationality = null;
             _defaultPlayer.nickname = null;
@@ -194,12 +194,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerProfileExportImportCreateTest()
+        public void PlayerProfileExportImportCreate()
         {
             var playerProfileDTO = new PlayerProfileDTO(_defaultPlayer, DateTime.Now);
             var playerProfileCI = new PlayerProfileCI(playerProfileDTO, _competitorId, _cultureFirst, new TestDataRouterManager(new CacheManager(), _outputHelper));
 
-            var exportable = playerProfileCI.ExportAsync().Result;
+            var exportable = playerProfileCI.ExportAsync().GetAwaiter().GetResult();
             Assert.NotNull(exportable);
             var json = JsonConvert.SerializeObject(exportable, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None });
             var importable = JsonConvert.DeserializeObject<ExportablePlayerProfileCI>(json);
@@ -211,12 +211,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerProfileExportImportTest()
+        public void PlayerProfileExportImport()
         {
             var playerProfileDTO = new PlayerProfileDTO(_defaultPlayer, DateTime.Now);
             var playerProfileCI = new PlayerProfileCI(playerProfileDTO, _competitorId, _cultureFirst, new TestDataRouterManager(new CacheManager(), _outputHelper));
 
-            var exportable = (ExportablePlayerProfileCI)playerProfileCI.ExportAsync().Result;
+            var exportable = (ExportablePlayerProfileCI)playerProfileCI.ExportAsync().GetAwaiter().GetResult();
             playerProfileCI.Import(exportable);
             var playerProfileCI2 = new PlayerProfileCI(exportable, _dataRouterManager);
 
@@ -226,7 +226,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
         }
 
         [Fact]
-        public void PlayerProfileExportImportMissingDataTest()
+        public void PlayerProfileExportImportMissingData()
         {
             _defaultPlayer.nationality = null;
             _defaultPlayer.nickname = null;
@@ -236,7 +236,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.CacheItems
             var playerProfileDTO = new PlayerProfileDTO(_defaultPlayer, DateTime.Now);
             var playerProfileCI = new PlayerProfileCI(playerProfileDTO, _competitorId, _cultureFirst, new TestDataRouterManager(new CacheManager(), _outputHelper));
 
-            var exportable = (ExportablePlayerProfileCI)playerProfileCI.ExportAsync().Result;
+            var exportable = (ExportablePlayerProfileCI)playerProfileCI.ExportAsync().GetAwaiter().GetResult();
             playerProfileCI.Import(exportable);
             var playerProfileCI2 = new PlayerProfileCI(exportable, _dataRouterManager);
 

@@ -198,12 +198,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 await _semaphore.WaitAsync().ConfigureAwait(false);
 
                 description = GetItemFromCache(id);
-                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, description?.FetchedLanguages).ToList();
+                var missingLanguages = LanguageHelper.GetMissingCultures(cultures, description?.FetchedLanguages);
 
                 if (missingLanguages.Any())
                 {
                     // dont call for already fetched languages
-                    missingLanguages = LanguageHelper.GetMissingCultures(missingLanguages, _fetchedLanguages).ToList();
+                    missingLanguages = LanguageHelper.GetMissingCultures(missingLanguages, _fetchedLanguages);
                 }
 
                 if (!missingLanguages.Any())

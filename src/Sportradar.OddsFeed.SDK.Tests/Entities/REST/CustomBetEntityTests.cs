@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void AvailableSelectionsMapTest()
+        public void AvailableSelectionsMap()
         {
             var availableSelectionsType = MessageFactoryRest.GetAvailableSelections(URN.Parse("sr:match:1000"));
             var resultAvailableSelections = MessageFactorySdk.GetAvailableSelections(availableSelectionsType);
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void AvailableSelectionsEmptyMapTest()
+        public void AvailableSelectionsEmptyMap()
         {
             var availableSelectionsType = MessageFactoryRest.GetAvailableSelections(URN.Parse("sr:match:1000"), 0);
             Assert.True(availableSelectionsType.@event.markets.IsNullOrEmpty());
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void CalculationEmptyMapTest()
+        public void CalculationEmptyMap()
         {
             var calculationResponseType = MessageFactoryRest.GetCalculationResponse(URN.Parse("sr:match:1000"), 0);
             var calculation = MessageFactorySdk.GetCalculation(calculationResponseType);
@@ -71,7 +71,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void CalculationMapTest()
+        public void CalculationMap()
         {
             var calculationResponseType = MessageFactoryRest.GetCalculationResponse(URN.Parse("sr:match:1000"), 7);
             var calculation = MessageFactorySdk.GetCalculation(calculationResponseType);
@@ -110,7 +110,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void CalculationFilterEmptyMapTest()
+        public void CalculationFilterEmptyMap()
         {
             var calculationResponseType = MessageFactoryRest.GetFilteredCalculationResponse(URN.Parse("sr:match:1000"), 0);
             var calculation = MessageFactorySdk.GetCalculationFilter(calculationResponseType);
@@ -136,7 +136,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void CalculationFilterMapTest()
+        public void CalculationFilterMap()
         {
             var calculationResponseType = MessageFactoryRest.GetFilteredCalculationResponse(URN.Parse("sr:match:1000"), 7);
             var calculation = MessageFactorySdk.GetCalculationFilter(calculationResponseType);
@@ -175,10 +175,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void GetAvailableSelectionsTest()
+        public void GetAvailableSelections()
         {
             var eventId = URN.Parse("sr:match:31561675");
-            var resultAvailableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).Result;
+            var resultAvailableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).GetAwaiter().GetResult();
 
             Assert.NotNull(resultAvailableSelections);
             Assert.Equal(eventId, resultAvailableSelections.Event);
@@ -186,10 +186,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void GetCalculationTest()
+        public void GetCalculation()
         {
             var eventId = URN.Parse("sr:match:31561675");
-            var availableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).Result;
+            var availableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).GetAwaiter().GetResult();
             Assert.NotNull(availableSelections);
 
             var matchSelections = new List<ISelection>();
@@ -200,7 +200,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             selection = _customBetSelectionBuilder.SetEventId(eventId).SetMarketId(market.Id).SetOutcomeId(market.Outcomes.First()).SetSpecifiers(market.Specifiers).Build();
             matchSelections.Add(selection);
 
-            var calculation = _dataRouterManager.CalculateProbabilityAsync(matchSelections).Result;
+            var calculation = _dataRouterManager.CalculateProbabilityAsync(matchSelections).GetAwaiter().GetResult();
 
             Assert.NotNull(calculation);
             Assert.Equal(eventId, calculation.AvailableSelections.First().Event);
@@ -208,10 +208,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void GetCalculationFilterTest()
+        public void GetCalculationFilter()
         {
             var eventId = URN.Parse("sr:match:31561675");
-            var availableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).Result;
+            var availableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).GetAwaiter().GetResult();
             Assert.NotNull(availableSelections);
 
             var matchSelections = new List<ISelection>();
@@ -222,7 +222,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             selection = _customBetSelectionBuilder.SetEventId(eventId).SetMarketId(market.Id).SetOutcomeId(market.Outcomes.First()).SetSpecifiers(market.Specifiers).Build();
             matchSelections.Add(selection);
 
-            var calculation = _dataRouterManager.CalculateProbabilityFilteredAsync(matchSelections).Result;
+            var calculation = _dataRouterManager.CalculateProbabilityFilteredAsync(matchSelections).GetAwaiter().GetResult();
 
             Assert.NotNull(calculation);
             Assert.Equal(eventId, calculation.AvailableSelections.First().Event);

@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,7 +14,9 @@ using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
 using Sportradar.OddsFeed.SDK.Entities.REST.Market;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -69,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Indicates if the competitors was already fetched
         /// </summary>
-        private bool _competitorsAlreadyFetched;
+        private readonly ConcurrentBag<CultureInfo> _competitorProfilesLoaded;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NameProvider"/> class
@@ -81,14 +84,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="marketId">A market identifier of the market associated with the constructed instance</param>
         /// <param name="specifiers">A <see cref="IReadOnlyDictionary{String, String}"/> representing specifiers of the associated market</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> describing the mode in which the SDK is running</param>
-        internal NameProvider(
-            IMarketCacheProvider marketCacheProvider,
-            IProfileCache profileCache,
-            INameExpressionFactory expressionFactory,
-            ISportEvent sportEvent,
-            int marketId,
-            IReadOnlyDictionary<string, string> specifiers,
-            ExceptionHandlingStrategy exceptionStrategy)
+        internal NameProvider(IMarketCacheProvider marketCacheProvider,
+                              IProfileCache profileCache,
+                              INameExpressionFactory expressionFactory,
+                              ISportEvent sportEvent,
+                              int marketId,
+                              IReadOnlyDictionary<string, string> specifiers,
+                              ExceptionHandlingStrategy exceptionStrategy)
         {
             Guard.Argument(marketCacheProvider, nameof(marketCacheProvider)).NotNull();
             Guard.Argument(profileCache, nameof(profileCache)).NotNull();
@@ -102,163 +104,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             _marketId = marketId;
             _specifiers = specifiers;
             _exceptionStrategy = exceptionStrategy;
-            _competitorsAlreadyFetched = false;
-        }
-
-        /// <summary>
-        /// Gets the outcome name from profile
-        /// </summary>
-        /// <param name="outcomeId">The outcome identifier</param>
-        /// <param name="culture">The language of the returned name</param>
-        /// <returns>A <see cref="Task{String}"/> representing the async operation</returns>
-        /// <exception cref="NameExpressionException">The name of the specified outcome could not be generated</exception>
-        private async Task<string> GetOutcomeNameFromProfileAsync(string outcomeId, CultureInfo culture)
-        {
-            var idParts = outcomeId.Split(new[] { SdkInfo.NameProviderCompositeIdSeparator }, StringSplitOptions.RemoveEmptyEntries);
-            var names = new List<string>(idParts.Length);
-
-            foreach (var idPart in idParts)
-            {
-                URN profileId;
-                try
-                {
-                    profileId = URN.Parse(idPart);
-                }
-                catch (FormatException ex)
-                {
-                    throw new NameExpressionException($"OutcomeId={idPart} is not a valid URN", ex);
-                }
-
-                try
-                {
-                    var fetchCultures = new[] { culture };
-                    if (idPart.StartsWith(SdkInfo.PlayerProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        // first try to fetch all the competitors for the sportEvent, so all player profiles are preloaded
-                        if (!_competitorsAlreadyFetched)
-                        {
-                            if (_sportEvent is ICompetition competitionEvent)
-                            {
-                                try
-                                {
-                                    var competitors = await competitionEvent.GetCompetitorsAsync().ConfigureAwait(false);
-                                    var competitorsList = competitors.ToList();
-                                    if (!competitorsList.Any())
-                                    {
-                                        continue;
-                                    }
-                                    var tasks = competitorsList.Select(s => _profileCache.GetCompetitorProfileAsync(s.Id, fetchCultures));
-                                    await Task.WhenAll(tasks).ConfigureAwait(false);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ExecutionLog.LogDebug(ex, "Error fetching all competitor profiles");
-                                }
-                            }
-
-                            _competitorsAlreadyFetched = true;
-                        }
-
-                        var profile = await _profileCache.GetPlayerProfileAsync(profileId, fetchCultures).ConfigureAwait(false);
-                        names.Add(profile.GetName(culture));
-                        continue;
-                    }
-                    if (idPart.StartsWith(SdkInfo.CompetitorProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        var profile = await _profileCache.GetCompetitorProfileAsync(profileId, fetchCultures).ConfigureAwait(false);
-                        names.Add(profile.GetName(culture));
-                        continue;
-                    }
-                }
-                catch (CacheItemNotFoundException ex)
-                {
-                    throw new NameExpressionException("Error occurred while evaluating name expression", ex);
-                }
-
-                throw new ArgumentException($"OutcomeId={idPart} must start with 'sr:player:' or 'sr:competitor'");
-            }
-            return string.Join(SdkInfo.NameProviderCompositeIdSeparator, names);
-        }
-
-        /// <summary>
-        /// Asynchronously gets a <see cref="IMarketDescription"/> instance describing the specified market in the specified language
-        /// </summary>
-        /// <param name="culture">The <see cref="CultureInfo"/> specifying the language of the returned descriptor</param>
-        /// <returns>A <see cref="Task{IMarketDescriptor}"/> representing the asynchronous operation</returns>
-        /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
-        private async Task<IMarketDescription> GetMarketDescriptorAsync(CultureInfo culture)
-        {
-            Guard.Argument(culture, nameof(culture)).NotNull();
-
-            return await _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, new[] { culture }, true).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Handles the error condition occurred during name generation either by logging or throwing an exception - depending on the <see cref="_exceptionStrategy"/>
-        /// </summary>
-        /// <param name="message">The message describing the condition</param>
-        /// <param name="outcomeId">The id of the outcome or a null reference if name was being generated for a market</param>
-        /// <param name="nameDescriptor">The retrieved nameDescriptor or a null reference if name descriptor could not be retrieved</param>
-        /// <param name="culture">The <see cref="CultureInfo"/> specifying the language associated with the generated name</param>
-        /// <param name="innerException">The exception which caused the error condition or a null reference</param>
-        /// <exception cref="NameGenerationException">If so specified by the <see cref="_exceptionStrategy"/> field</exception>
-        private void HandleErrorCondition(string message, string outcomeId, string nameDescriptor, CultureInfo culture, Exception innerException)
-        {
-            Guard.Argument(message, nameof(message)).NotNull().NotEmpty();
-            Guard.Argument(culture, nameof(culture)).NotNull();
-
-            var sb = new StringBuilder("An error occurred while generating the name for item=[");
-            var specifiersString = _specifiers == null ? "null" : string.Join(SdkInfo.SpecifiersDelimiter, _specifiers.Select(k => $"{k.Key}={k.Value}"));
-            sb.Append(" MarketId=").Append(_marketId).Append(" Specifiers=[").Append(specifiersString).Append("]");
-
-            if (outcomeId != null)
-            {
-                sb.Append(" OutcomeId=").Append(outcomeId);
-            }
-            sb.Append("]").Append(" Culture=").Append(culture.TwoLetterISOLanguageName);
-
-            if (nameDescriptor != null)
-            {
-                sb.Append(" Retrieved nameDescriptor=[").Append(nameDescriptor);
-            }
-
-            sb.Append("]. AdditionalMessage=").Append(message);
-
-            ExecutionLog.LogError(innerException, sb.ToString());
-
-            if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
-            {
-                throw new NameGenerationException(message, _marketId, _specifiers, outcomeId, nameDescriptor, culture, innerException);
-            }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="IList{INameExpression}"/> constructed from the provided descriptor
-        /// </summary>
-        /// <param name="nameDescriptor">The name descriptor</param>
-        /// <param name="nameDescriptorFormat">When the call completes, the <c>nameDescriptor</c> replaced with string format placeholders</param>
-        /// <returns>a <see cref="IList{INameExpression}"/> constructed from the provided descriptor</returns>
-        /// <exception cref="FormatException">Provided <c>nameDescriptor</c> couldn't be parsed due to incorrect format</exception>
-        /// <exception cref="ArgumentException">One of the operators specified in the <c>nameDescriptor</c> is not supported</exception>
-        protected IList<INameExpression> GetNameExpressions(string nameDescriptor, out string nameDescriptorFormat)
-        {
-            Guard.Argument(nameDescriptor, nameof(nameDescriptor)).NotNull().NotEmpty();
-
-            var expressionStrings = NameExpressionHelper.ParseDescriptor(nameDescriptor, out nameDescriptorFormat);
-            if (expressionStrings.IsNullOrEmpty())
-            {
-                return new List<INameExpression>();
-            }
-
-            var expressions = new List<INameExpression>(expressionStrings.Count);
-            foreach (var expression in expressionStrings)
-            {
-                // @operator can be null
-                // operand cannot be null
-                NameExpressionHelper.ParseExpression(expression, out var @operator, out var operand);
-                expressions.Add(_expressionFactory.BuildExpression(_sportEvent, _specifiers, @operator, operand));
-            }
-            return expressions;
+            _competitorProfilesLoaded = new ConcurrentBag<CultureInfo>();
         }
 
         /// <summary>
@@ -321,7 +167,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 HandleErrorCondition("Error occurred while evaluating the name expression", null, nameDescription, culture, ex);
                 return null;
             }
-            return string.Format(nameDescriptorFormat, tasks.Select(t => t.Result).Cast<object>().ToArray());
+            return string.Format(nameDescriptorFormat, tasks.Select(t => t.GetAwaiter().GetResult()).Cast<object>().ToArray());
         }
 
         /// <summary>
@@ -405,7 +251,286 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 HandleErrorCondition("Error occurred while evaluating the name expression", outcomeId, nameDescription, culture, ex);
                 return null;
             }
-            return string.Format(nameDescriptionFormat, tasks.Select(t => (object)t.Result).ToArray());
+            return string.Format(nameDescriptionFormat, tasks.Select(t => (object)t.GetAwaiter().GetResult()).ToArray());
+        }
+
+        /// <summary>
+        /// Gets the outcome name from profile
+        /// </summary>
+        /// <param name="outcomeId">The outcome identifier</param>
+        /// <param name="culture">The language of the returned name</param>
+        /// <returns>A <see cref="Task{String}"/> representing the async operation</returns>
+        /// <exception cref="NameExpressionException">The name of the specified outcome could not be generated</exception>
+        private async Task<string> GetOutcomeNameFromProfileAsync(string outcomeId, CultureInfo culture)
+        {
+            var idParts = outcomeId.Split(new[] { SdkInfo.NameProviderCompositeIdSeparator }, StringSplitOptions.RemoveEmptyEntries);
+            var names = new List<string>(idParts.Length);
+
+            foreach (var idPart in idParts)
+            {
+                URN profileId;
+                try
+                {
+                    profileId = URN.Parse(idPart);
+                }
+                catch (FormatException ex)
+                {
+                    throw new NameExpressionException($"OutcomeId={idPart} is not a valid URN", ex);
+                }
+
+                try
+                {
+                    if (idPart.StartsWith(SdkInfo.PlayerProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var cachedPlayerName = await _profileCache.GetPlayerNameAsync(profileId, culture, false).ConfigureAwait(false);
+                        if (!string.IsNullOrEmpty(cachedPlayerName))
+                        {
+                            names.Add(cachedPlayerName);
+                            continue;
+                        }
+
+                        // first try to fetch all the competitors for the sportEvent, so all player profiles are preloaded
+                        if (!_competitorProfilesLoaded.Contains(culture))
+                        {
+                            if (_sportEvent is Competition competition)
+                            {
+                                await LoadPlayerDataFromSportEvent(competition, culture).ConfigureAwait(false);
+                            }
+                            else if (_sportEvent is ITournament tournament)
+                            {
+                                await LoadCompetitorDataFromSportEvent(tournament, culture, true).ConfigureAwait(false);
+                            }
+                            else if (_sportEvent is ISeason season)
+                            {
+                                await LoadCompetitorDataFromSportEvent(season, culture, true).ConfigureAwait(false);
+                            }
+                        }
+
+                        var playerName = await _profileCache.GetPlayerNameAsync(profileId, culture, true).ConfigureAwait(false);
+                        names.Add(playerName);
+                        continue;
+                    }
+                    if (idPart.StartsWith(SdkInfo.CompetitorProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var cachedCompetitorName = await _profileCache.GetCompetitorNameAsync(profileId, culture, false).ConfigureAwait(false);
+                        if (!string.IsNullOrEmpty(cachedCompetitorName))
+                        {
+                            names.Add(cachedCompetitorName);
+                            continue;
+                        }
+
+                        // first try to fetch all the competitors for the sportEvent, so all competitor names are preloaded
+                        if (!_competitorProfilesLoaded.Contains(culture))
+                        {
+                            if (_sportEvent is Competition competition)
+                            {
+                                await LoadCompetitorDataFromSportEvent(competition, culture).ConfigureAwait(false);
+                            }
+                            else if (_sportEvent is IBasicTournament basicTournament)
+                            {
+                                await LoadCompetitorDataFromSportEvent(basicTournament, culture, false).ConfigureAwait(false);
+                            }
+                            else if (_sportEvent is ITournament tournament)
+                            {
+                                await LoadCompetitorDataFromSportEvent(tournament, culture, false).ConfigureAwait(false);
+                            }
+                            else if (_sportEvent is ISeason season)
+                            {
+                                await LoadCompetitorDataFromSportEvent(season, culture, false).ConfigureAwait(false);
+                            }
+                        }
+
+                        var competitorName = await _profileCache.GetCompetitorNameAsync(profileId, culture, true).ConfigureAwait(false);
+                        names.Add(competitorName);
+                        continue;
+                    }
+                }
+                catch (CacheItemNotFoundException ex)
+                {
+                    throw new NameExpressionException("Error occurred while evaluating name expression", ex);
+                }
+
+                throw new ArgumentException($"OutcomeId={idPart} must start with '{SdkInfo.PlayerProfileMarketPrefix}' or '{SdkInfo.CompetitorProfileMarketPrefix}'");
+            }
+            return string.Join(SdkInfo.NameProviderCompositeIdSeparator, names);
+        }
+
+        private async Task LoadPlayerDataFromSportEvent(Competition competition, CultureInfo culture)
+        {
+            try
+            {
+                var competitors = await competition.GetCompetitorIdsAsync().ConfigureAwait(false);
+                var competitorsList = competitors.ToList();
+                if (competitorsList.Any())
+                {
+                    var tasks = competitorsList.Select(s => _profileCache.GetCompetitorProfileAsync(s, new[] { culture }, true));
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+
+                if (!_competitorProfilesLoaded.Contains(culture))
+                {
+                    _competitorProfilesLoaded.Add(culture);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+            }
+        }
+
+        private async Task LoadCompetitorDataFromSportEvent(Competition competition, CultureInfo culture)
+        {
+            try
+            {
+                var competitors = await competition.GetCompetitorIdsAsync(culture).ConfigureAwait(false);
+                var competitorsList = competitors.ToList();
+                if (competitorsList.Any())
+                {
+                    var tasks = competitorsList.Select(s => _profileCache.GetCompetitorNamesAsync(s, new[] { culture }, true));
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+            }
+        }
+
+        private async Task LoadCompetitorDataFromSportEvent(IBasicTournament basicTournament, CultureInfo culture, bool fetchCompetitorNames)
+        {
+            try
+            {
+                var competitors = await basicTournament.GetCompetitorsAsync().ConfigureAwait(false);
+                var listCompetitors = competitors.ToList();
+                if (fetchCompetitorNames && !listCompetitors.IsNullOrEmpty())
+                {
+                    var tasks = listCompetitors.Select(s => _profileCache.GetCompetitorNameAsync(s.Id, culture, true));
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+            }
+        }
+
+        private async Task LoadCompetitorDataFromSportEvent(ITournament tournament, CultureInfo culture, bool fetchCompetitorNames)
+        {
+            try
+            {
+                if (tournament is Tournament tour)
+                {
+                    var competitorIds = tour.GetCompetitorIdsAsync(culture).GetAwaiter().GetResult();
+                    if (fetchCompetitorNames && !competitorIds.IsNullOrEmpty())
+                    {
+                        var tasks = competitorIds.Select(s => _profileCache.GetCompetitorNameAsync(s, culture, true));
+                        await Task.WhenAll(tasks).ConfigureAwait(false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+            }
+        }
+
+        private async Task LoadCompetitorDataFromSportEvent(ISeason season, CultureInfo culture, bool fetchCompetitorNames)
+        {
+            try
+            {
+                var competitors = await season.GetCompetitorsAsync().ConfigureAwait(false);
+                var listCompetitors = competitors.ToList();
+                if (fetchCompetitorNames && !listCompetitors.IsNullOrEmpty())
+                {
+                    var tasks = listCompetitors.Select(s => _profileCache.GetCompetitorNameAsync(s.Id, culture, true));
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously gets a <see cref="IMarketDescription"/> instance describing the specified market in the specified language
+        /// </summary>
+        /// <param name="culture">The <see cref="CultureInfo"/> specifying the language of the returned descriptor</param>
+        /// <returns>A <see cref="Task{IMarketDescriptor}"/> representing the asynchronous operation</returns>
+        /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
+        private async Task<IMarketDescription> GetMarketDescriptorAsync(CultureInfo culture)
+        {
+            Guard.Argument(culture, nameof(culture)).NotNull();
+
+            return await _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, new[] { culture }, true).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Handles the error condition occurred during name generation either by logging or throwing an exception - depending on the <see cref="_exceptionStrategy"/>
+        /// </summary>
+        /// <param name="message">The message describing the condition</param>
+        /// <param name="outcomeId">The id of the outcome or a null reference if name was being generated for a market</param>
+        /// <param name="nameDescriptor">The retrieved nameDescriptor or a null reference if name descriptor could not be retrieved</param>
+        /// <param name="culture">The <see cref="CultureInfo"/> specifying the language associated with the generated name</param>
+        /// <param name="innerException">The exception which caused the error condition or a null reference</param>
+        /// <exception cref="NameGenerationException">If so specified by the <see cref="_exceptionStrategy"/> field</exception>
+        private void HandleErrorCondition(string message, string outcomeId, string nameDescriptor, CultureInfo culture, Exception innerException)
+        {
+            Guard.Argument(message, nameof(message)).NotNull().NotEmpty();
+            Guard.Argument(culture, nameof(culture)).NotNull();
+
+            var sb = new StringBuilder("An error occurred while generating the name for item=[");
+            var specifiersString = _specifiers == null ? "null" : string.Join(SdkInfo.SpecifiersDelimiter, _specifiers.Select(k => $"{k.Key}={k.Value}"));
+            sb.Append(" MarketId=").Append(_marketId).Append(" Specifiers=[").Append(specifiersString).Append("]");
+
+            if (outcomeId != null)
+            {
+                sb.Append(" OutcomeId=").Append(outcomeId);
+            }
+            sb.Append("]").Append(" Culture=").Append(culture.TwoLetterISOLanguageName);
+
+            if (nameDescriptor != null)
+            {
+                sb.Append(" Retrieved nameDescriptor=[").Append(nameDescriptor);
+            }
+
+            sb.Append("]. AdditionalMessage=").Append(message);
+
+            ExecutionLog.LogError(innerException, sb.ToString());
+
+            if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
+            {
+                throw new NameGenerationException(message, _marketId, _specifiers, outcomeId, nameDescriptor, culture, innerException);
+            }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="IList{INameExpression}"/> constructed from the provided descriptor
+        /// </summary>
+        /// <param name="nameDescriptor">The name descriptor</param>
+        /// <param name="nameDescriptorFormat">When the call completes, the <c>nameDescriptor</c> replaced with string format placeholders</param>
+        /// <returns>a <see cref="IList{INameExpression}"/> constructed from the provided descriptor</returns>
+        /// <exception cref="FormatException">Provided <c>nameDescriptor</c> couldn't be parsed due to incorrect format</exception>
+        /// <exception cref="ArgumentException">One of the operators specified in the <c>nameDescriptor</c> is not supported</exception>
+        protected IList<INameExpression> GetNameExpressions(string nameDescriptor, out string nameDescriptorFormat)
+        {
+            Guard.Argument(nameDescriptor, nameof(nameDescriptor)).NotNull().NotEmpty();
+
+            var expressionStrings = NameExpressionHelper.ParseDescriptor(nameDescriptor, out nameDescriptorFormat);
+            if (expressionStrings.IsNullOrEmpty())
+            {
+                return new List<INameExpression>();
+            }
+
+            var expressions = new List<INameExpression>(expressionStrings.Count);
+            foreach (var expression in expressionStrings)
+            {
+                // @operator can be null
+                // operand cannot be null
+                NameExpressionHelper.ParseExpression(expression, out var @operator, out var operand);
+                expressions.Add(_expressionFactory.BuildExpression(_sportEvent, _specifiers, @operator, operand));
+            }
+            return expressions;
         }
 
         private async Task<IMarketDescription> GetMarketDescriptionForOutcomeAsync(string outcomeId, CultureInfo culture, bool firstTime)

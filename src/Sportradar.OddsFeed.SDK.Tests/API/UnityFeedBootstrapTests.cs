@@ -9,6 +9,8 @@ using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -50,10 +52,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
             container.RegisterInstance<IOddsFeedConfiguration>(newConfig, new ContainerControlledLifetimeManager());
             container.RegisterInstance<IOddsFeedConfigurationInternal>(newConfig, new ContainerControlledLifetimeManager());
 
-            container.RegisterTypes(dispatcher, config);
+            container.RegisterTypes(dispatcher, newConfig);
 
             //override
-            container.RegisterType<IProducerManager, ProducerManager>(new ContainerControlledLifetimeManager(), new InjectionConstructor(new TestProducersProvider(), config));
+            container.RegisterType<IProducerManager, ProducerManager>(new ContainerControlledLifetimeManager(), new InjectionConstructor(new TestProducersProvider(), newConfig));
 
             container.RegisterAdditionalTypes();
 
@@ -337,6 +339,62 @@ namespace Sportradar.OddsFeed.SDK.Tests.API
             var ex = Assert.Throws<AggregateException>(() => result = dataFetcher1.GetData(new Uri(fullUrl)));
             Assert.Contains("task was canceled", ex.Message);
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void CustomBetAvailableSelectionsProviderIsResolved()
+        {
+            var availableSelectionProvider = _childContainer1.Resolve<IDataProvider<AvailableSelectionsDto>>();
+            Assert.NotNull(availableSelectionProvider);
+        }
+
+        [Fact]
+        public void CustomBetCalculateProbabilityProviderIsResolved()
+        {
+            var calculateProbabilityProvider = _childContainer1.Resolve<ICalculateProbabilityProvider>();
+            Assert.NotNull(calculateProbabilityProvider);
+        }
+
+        [Fact]
+        public void CustomBetCalculateProbabilityFilteredProviderIsResolved()
+        {
+            var calculateProbabilityProvider = _childContainer1.Resolve<ICalculateProbabilityFilteredProvider>();
+            Assert.NotNull(calculateProbabilityProvider);
+        }
+
+        [Fact]
+        public void CustomBetIsResolved()
+        {
+            var customBetManager = _childContainer1.Resolve<ICustomBetManager>();
+            Assert.NotNull(customBetManager);
+        }
+
+        [Fact]
+        public void WnsDrawSummaryProviderIsResolved()
+        {
+            var wnsDrawProvider = _childContainer1.Resolve<IDataProvider<DrawDTO>>("drawSummaryProvider");
+            Assert.NotNull(wnsDrawProvider);
+        }
+
+        [Fact]
+        public void WnsDrawFixtureProviderIsResolved()
+        {
+            var wnsDrawProvider = _childContainer1.Resolve<IDataProvider<DrawDTO>>("drawFixtureProvider");
+            Assert.NotNull(wnsDrawProvider);
+        }
+
+        [Fact]
+        public void WnsLotteryScheduleProviderIsResolved()
+        {
+            var wnsLotteryScheduleProvider = _childContainer1.Resolve<IDataProvider<LotteryDTO>>("lotteryScheduleProvider");
+            Assert.NotNull(wnsLotteryScheduleProvider);
+        }
+
+        [Fact]
+        public void WnsLotteryListProviderIsResolved()
+        {
+            var wnsLotteryListProvider = _childContainer1.Resolve<IDataProvider<EntityList<LotteryDTO>>>("lotteryListProvider");
+            Assert.NotNull(wnsLotteryListProvider);
         }
     }
 }

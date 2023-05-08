@@ -21,12 +21,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// Value specifying the time between the start of the timer and the first firing of the <see cref="Elapsed"/> event
         /// </summary>
-        private TimeSpan _dueTime;
+        public TimeSpan DueTime { get; private set; }
 
         /// <summary>
         /// Value specifying the time window between the first and subsequent firing of the <see cref="Elapsed"/> event
         /// </summary>
-        private TimeSpan _period;
+        public TimeSpan Period { get; private set; }
 
         /// <summary>
         /// Raised when the timer elapses
@@ -46,11 +46,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public SdkTimer(TimeSpan dueTime, TimeSpan period)
         {
             Guard.Argument(dueTime, nameof(dueTime)).Require(dueTime >= TimeSpan.Zero);
-            Guard.Argument(period, nameof(period)).Require(period > TimeSpan.Zero);
+            //Guard.Argument(period, nameof(period)).Require(period > TimeSpan.Zero);
             // Create the timer which is stopped - pass -1 for dueTime and period
 
-            _dueTime = dueTime;
-            _period = period;
+            DueTime = dueTime;
+            Period = period;
             _timer = new Timer(OnTick, null, -1, -1);
         }
 
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public void Start()
         {
-            _timer.Change(_dueTime, _period);
+            _timer.Change(DueTime, Period);
         }
 
         /// <summary>
@@ -131,10 +131,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             Guard.Argument(dueTime, nameof(dueTime)).Require(dueTime >= TimeSpan.Zero);
             Guard.Argument(period, nameof(period)).Require(period > TimeSpan.Zero);
 
-            _dueTime = dueTime;
-            _period = period;
+            DueTime = dueTime;
+            Period = period;
 
-            _timer?.Change(_dueTime, _period);
+            _timer?.Change(DueTime, Period);
         }
 
         /// <summary>

@@ -60,20 +60,6 @@ namespace Sportradar.OddsFeed.SDK.Tests.Caching
                 _timerMock.Object,
                 _cultures,
                 _cacheManager);
-
-            //var sportDataCache = new SportDataCache(
-            //    _dataRouterManager,
-            //    _timerMock.Object,
-            //    _cultures,
-            //    _sportEventCache,
-            //    _cacheManager);
-
-            //var sportEventStatusCache = new SportEventStatusCache(
-            //    sportEventStatusMemoryCache,
-            //    new SportEventStatusMapperFactory(),
-            //    _sportEventCache,
-            //    _cacheManager,
-            //    ignoreEventsMemoryCache);
         }
 
         public class WhenGetEventSportIdAsyncAndNotInCache : SportEventCacheTests

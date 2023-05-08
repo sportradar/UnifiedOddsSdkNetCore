@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         }
 
         [Fact]
-        public void DecimalToStringTest()
+        public void DecimalToString()
         {
             var nbrString = "0";
             var nbr = decimal.Parse(nbrString);

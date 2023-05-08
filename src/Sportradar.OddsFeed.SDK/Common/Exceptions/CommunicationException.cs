@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         public readonly HttpStatusCode ResponseCode;
 
         /// <summary>
-        /// Gets the <see cref="string"/> representation of the response received from the external source
+        /// Gets the <see cref="string"/> representation of the response received from the external source (actual xml response)
         /// </summary>
         public readonly string Response;
 

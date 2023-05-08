@@ -142,7 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         {
             Guard.Argument(urnString, nameof(urnString)).NotNull().NotEmpty();
 
-            var match = Regex.Match(urnString, RegexPattern);
+            var match = Regex.Match(urnString, RegexPattern, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
             if (!match.Success)
             {
                 throw new FormatException($"Value '{urnString}' is not a valid string representation of the URN");

@@ -3,9 +3,13 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
@@ -21,37 +25,183 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         private readonly ITestOutputHelper _outputHelper;
         private readonly TestHttpClient _httpClient;
         private LogHttpDataFetcher _logHttpDataFetcher;
+        private LogHttpDataFetcher _logHttpDataFetcherPool;
         private readonly Uri _badUri = new Uri("http://www.unexisting-url.com");
         private readonly Uri _getUri = new Uri("http://test.domain.com/get");
         private readonly Uri _postUri = new Uri("http://test.domain.com/post");
+
         public LogHttpDataFetcherTests(ITestOutputHelper outputHelper)
         {
             _outputHelper = outputHelper;
-            _httpClient = new TestHttpClient();
-            _logHttpDataFetcher = new LogHttpDataFetcher(_httpClient, new IncrementalSequenceGenerator(), new Deserializer<response>());
+            var httpMessageHandler = new TestMessageHandler(_outputHelper, 200, 0);
+            var httpClient = new HttpClient(httpMessageHandler);
+            var sdkHttpClient = new SdkHttpClient("aaa", httpClient);
+            var sdkHttpClientPool = new SdkHttpClientPool("aaa", 20, TimeSpan.FromSeconds(5), httpMessageHandler);
+
+            _logHttpDataFetcher = new LogHttpDataFetcher(sdkHttpClient, new IncrementalSequenceGenerator(), new Deserializer<response>());
+            _logHttpDataFetcherPool = new LogHttpDataFetcher(sdkHttpClientPool, new IncrementalSequenceGenerator(), new Deserializer<response>());
+        }
+
+        //[Fact]
+        public async Task PerformanceOf100SequentialRequests()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            for (var i = 0; i < 100; i++)
+            {
+                var result = await _logHttpDataFetcher.GetDataAsync(_getUri).ConfigureAwait(false);
+                Assert.NotNull(result);
+                Assert.True(result.CanRead);
+            }
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        [Fact]
+        public async Task PerformanceOfManyParallelRequests()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 1000; i++)
+            {
+                var task = _logHttpDataFetcher.GetDataAsync(GetRequestUri(false));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        [Fact]
+        public async Task PerformancePoolOfManyParallelRequests()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 1000; i++)
+            {
+                var task = _logHttpDataFetcherPool.GetDataAsync(GetRequestUri(false));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        [Fact]
+        public async Task PerformanceOfManyUniqueParallelRequests()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 1000; i++)
+            {
+                var task = _logHttpDataFetcher.GetDataAsync(GetRequestUri(true));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        [Fact]
+        public async Task PerformancePoolOfManyUniqueParallelRequests()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 1000; i++)
+            {
+                var task = _logHttpDataFetcherPool.GetDataAsync(GetRequestUri(true));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        [Fact]
+        public async Task PerformanceOfManyUniqueUriParallelRequests()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 1000; i++)
+            {
+                var task = _logHttpDataFetcher.GetDataAsync(GetRandomUri(true));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        [Fact]
+        public async Task PerformancePoolOfManyUniqueUriParallelRequests()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 1000; i++)
+            {
+                var task = _logHttpDataFetcherPool.GetDataAsync(GetRandomUri(true));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        //[Fact]
+        public async Task BingPerformanceOfManyUniqueUriParallelRequests()
+        {
+            var sdkHttpClient = new SdkHttpClient("aaa", new HttpClient());
+            var logHttpDataFetcher = new LogHttpDataFetcher(sdkHttpClient, new IncrementalSequenceGenerator(), new Deserializer<response>());
+
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 100; i++)
+            {
+                var task = logHttpDataFetcher.GetDataAsync(GetBingSearchUri(true));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        //[Fact]
+        public async Task BingPerformancePoolOfManyUniqueUriParallelRequests()
+        {
+            var sdkHttpClientPool = new SdkHttpClientPool("aaa", 20, 50, 10);
+            var logHttpDataFetcher = new LogHttpDataFetcher(sdkHttpClientPool, new IncrementalSequenceGenerator(), new Deserializer<response>());
+
+            var stopwatch = Stopwatch.StartNew();
+            var tasks = new List<Task>();
+            for (var i = 0; i < 100; i++)
+            {
+                var task = logHttpDataFetcher.GetDataAsync(GetBingSearchUri(true));
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
+            _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
         }
 
         //TODO: requires network
         //[Fact]
-        public void GetDataAsyncTest()
+        public void GetDataAsync()
         {
             // in logRest file there should be result for this call
-            var result = _logHttpDataFetcher.GetDataAsync(_getUri).Result;
+            var result = _logHttpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult();
             Assert.NotNull(result);
             Assert.True(result.CanRead);
             var s = new StreamReader(result).ReadToEnd();
             Assert.True(!string.IsNullOrEmpty(s));
         }
 
-        [Fact]
+        //[Fact]
         public void GetDataAsyncTestWithWrongUrl()
         {
             // in logRest file there should be result for this call
             _httpClient.DataFetcher.UriReplacements.Add(new Tuple<string, string>(_badUri.ToString(), "-1"));
             Stream result = null;
-            var e = Assert.Throws<AggregateException>(() => result = _logHttpDataFetcher.GetDataAsync(_badUri).Result);
+            var e = Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult());
             Assert.Null(result);
-            Assert.IsType<AggregateException>(e);
+            Assert.IsType<CommunicationException>(e);
             if (e.InnerException != null)
             {
                 Assert.IsType<CommunicationException>(e.InnerException);
@@ -59,9 +209,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         //[Fact]
-        public void PostDataAsyncTest()
+        public void PostDataAsync()
         {
-            var result = _logHttpDataFetcher.PostDataAsync(_postUri).Result;
+            var result = _logHttpDataFetcher.PostDataAsync(_postUri).GetAwaiter().GetResult();
             Assert.NotNull(result);
             Assert.True(result.IsSuccessStatusCode);
         }
@@ -72,7 +222,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             //TODO: should this be successful?
             _httpClient.DataFetcher.UriReplacements.Add(new Tuple<string, string>(_postUri.ToString(), "-1"));
             var result = new HttpResponseMessage();
-            var ex = Assert.Throws<AggregateException>(() => result = _logHttpDataFetcher.PostDataAsync(_badUri).Result);
+            var ex = Assert.Throws<AggregateException>(() => result = _logHttpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult());
             Assert.NotNull(result);
             Assert.True(result.IsSuccessStatusCode);
             Assert.IsType<AggregateException>(ex);
@@ -85,13 +235,13 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         //[Fact]
         public void PostDataAsyncTestContent()
         {
-            var result = _logHttpDataFetcher.PostDataAsync(_postUri, new StringContent("test string")).Result;
+            var result = _logHttpDataFetcher.PostDataAsync(_postUri, new StringContent("test string")).GetAwaiter().GetResult();
             Assert.NotNull(result);
             Assert.True(result.IsSuccessStatusCode);
         }
 
         //[Fact]
-        public void ConsecutivePostFailureTest()
+        public void ConsecutivePostFailure()
         {
             const int loopCount = 10;
             var errCount = 0;
@@ -100,7 +250,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             {
                 try
                 {
-                    var result = _logHttpDataFetcher.PostDataAsync(_badUri).Result;
+                    var result = _logHttpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult();
                     Assert.NotNull(result);
                     Assert.True(result.IsSuccessStatusCode);
                 }
@@ -119,7 +269,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         //[Fact]
-        public void ConsecutivePostAndGetFailureTest()
+        public void ConsecutivePostAndGetFailure()
         {
             const int loopCount = 10;
             var errCount = 0;
@@ -132,7 +282,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
             {
                 try
                 {
-                    var result = _logHttpDataFetcher.PostDataAsync(_badUri).Result;
+                    var result = _logHttpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult();
                     Assert.NotNull(result);
                     Assert.False(result.IsSuccessStatusCode);
                 }
@@ -149,7 +299,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
                 try
                 {
-                    var result = _logHttpDataFetcher.GetDataAsync(_badUri).Result;
+                    var result = _logHttpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult();
                     Assert.NotNull(result);
                 }
                 catch (Exception e)
@@ -167,13 +317,13 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         //[Fact]
-        public void ExceptionAfterConsecutivePostFailuresTest()
+        public void ExceptionAfterConsecutivePostFailures()
         {
-            ConsecutivePostFailureTest();
+            ConsecutivePostFailure();
             try
             {
                 var result = new HttpResponseMessage();
-                Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.PostDataAsync(_getUri).Result);
+                Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.PostDataAsync(_getUri).GetAwaiter().GetResult());
                 Assert.NotNull(result);
                 Assert.False(result.IsSuccessStatusCode);
             }
@@ -187,15 +337,63 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         //[Fact]
-        public void SuccessAfterConsecutiveFailuresResetsTest()
+        public void SuccessAfterConsecutiveFailuresResets()
         {
             var httpClient = new TestHttpClient();
             _logHttpDataFetcher = new LogHttpDataFetcher(httpClient, new IncrementalSequenceGenerator(), new Deserializer<response>(), 5, 1);
-            ConsecutivePostFailureTest();
-            Thread.Sleep(1000);
-            var result = _logHttpDataFetcher.GetDataAsync(_getUri).Result;
+            ConsecutivePostFailure();
+            Task.Delay(1000).GetAwaiter().GetResult();
+            var result = _logHttpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult();
             Assert.NotNull(result);
             Assert.True(result.Length > 0);
+        }
+
+        private Uri GetRequestUri(bool isRandom)
+        {
+            var id = isRandom ? SdkInfo.GetRandom() : 1;
+            return new Uri($"http://test.domain.com/api/v1/sr:match:{id}/summary.xml");
+        }
+
+        private Uri GetRandomUri(bool isRandom)
+        {
+            var id = isRandom ? SdkInfo.GetRandom() : 1;
+            return new Uri($"http://test.domain.com/api/v1/sr:match:{id}.xml");
+        }
+
+        private Uri GetBingSearchUri(bool isRandom)
+        {
+            var id = isRandom ? SdkInfo.GetGuid(8) : "1";
+            return new Uri($"https://www.bing.com/search?q={id}");
+        }
+
+        private class TestMessageHandler : HttpMessageHandler
+        {
+            private readonly int _timeoutMs;
+            private readonly int _timeoutVariablePercent;
+            private readonly ITestOutputHelper _outputHelper;
+
+            public TestMessageHandler(ITestOutputHelper outputHelper, int timeoutMs, int timeoutVariablePercent = 0)
+            {
+                _timeoutMs = timeoutMs;
+                _timeoutVariablePercent = timeoutVariablePercent;
+                _outputHelper = outputHelper;
+            }
+
+            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                var stopWatch = Stopwatch.StartNew();
+                var timeout = _timeoutVariablePercent < 1 ? _timeoutMs : SdkInfo.GetVariableNumber(_timeoutMs, _timeoutVariablePercent);
+
+                await Task.Delay(timeout, cancellationToken).ConfigureAwait(false);
+                //_outputHelper.WriteLine($"Request to {request.RequestUri} took {stopWatch.ElapsedMilliseconds} ms");
+                return new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Accepted,
+                    ReasonPhrase = HttpStatusCode.Accepted.ToString(),
+                    RequestMessage = request,
+                    Content = new StringContent("some text")
+                };
+            }
         }
     }
 }

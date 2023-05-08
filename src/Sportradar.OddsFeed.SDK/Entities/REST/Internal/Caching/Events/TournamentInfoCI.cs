@@ -229,8 +229,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{TResult}" /> representing an async operation</returns>
         public async Task<IEnumerable<URN>> GetCompetitorsIdsAsync(IEnumerable<CultureInfo> cultures)
         {
-            var wantedCultures = cultures as List<CultureInfo> ?? cultures.ToList();
-            wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, LoadedSummaries).ToList();
+            var wantedCultures = cultures as ICollection<CultureInfo> ?? cultures.ToList();
+            wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, LoadedSummaries);
             if (_competitors != null && !wantedCultures.Any())
             {
                 return await PrepareCompetitorList(_competitors, wantedCultures).ConfigureAwait(false);
@@ -240,6 +240,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
             }
             return await PrepareCompetitorList(_competitors, wantedCultures).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get competitors ids as an asynchronous operation
+        /// </summary>
+        /// <param name="culture">A languages to which the returned instance should be translated</param>
+        /// <returns>A <see cref="Task{TResult}" /> representing an async operation</returns>
+        public async Task<IEnumerable<URN>> GetCompetitorsIdsAsync(CultureInfo culture)
+        {
+            return await GetCompetitorsIdsAsync(new[] { culture }).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<URN>> PrepareCompetitorList(IEnumerable<URN> competitors, IEnumerable<CultureInfo> cultures)
@@ -298,7 +308,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{TResult}" /> representing an async operation</returns>
         public async Task<IEnumerable<URN>> GetScheduleAsync(IEnumerable<CultureInfo> cultures)
         {
-            var missingCultures = LanguageHelper.GetMissingCultures(cultures, _loadedSchedules).ToList();
+            var missingCultures = LanguageHelper.GetMissingCultures(cultures, _loadedSchedules);
             if (_scheduleUrns == null && missingCultures.Any())
             {
                 var tasks = missingCultures.Select(s => DataRouterManager.GetSportEventsForTournamentAsync(Id, s, this)).ToList();
@@ -307,9 +317,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 if (tasks.All(a => a.IsCompleted))
                 {
                     _loadedSchedules.AddRange(missingCultures);
-                    if (tasks.First().Result != null)
+                    if (tasks.First().GetAwaiter().GetResult() != null)
                     {
-                        _scheduleUrns = tasks.First().Result.Select(s => s.Item1).ToList();
+                        _scheduleUrns = tasks.First().GetAwaiter().GetResult().Select(s => s.Item1).ToList();
                     }
                 }
             }
@@ -400,7 +410,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         /// <returns>A <see cref="Task{TResult}" /> representing an async operation</returns>
         public async Task<IEnumerable<URN>> GetSeasonsAsync(IEnumerable<CultureInfo> cultures)
         {
-            var missingCultures = LanguageHelper.GetMissingCultures(cultures, _loadedSeasons).ToList();
+            var missingCultures = LanguageHelper.GetMissingCultures(cultures, _loadedSeasons);
             if (_seasons == null && missingCultures.Any())
             {
                 var tasks = missingCultures.Select(s => DataRouterManager.GetSeasonsForTournamentAsync(Id, s, this)).ToList();
@@ -409,7 +419,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
                 if (tasks.All(a => a.IsCompleted))
                 {
                     _loadedSeasons.AddRange(missingCultures);
-                    _seasons = tasks.First().Result;
+                    _seasons = tasks.First().GetAwaiter().GetResult();
                 }
             }
             return _seasons;

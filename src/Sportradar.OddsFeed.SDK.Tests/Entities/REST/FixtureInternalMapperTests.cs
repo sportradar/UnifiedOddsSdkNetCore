@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void MappingTest()
+        public void Mapping()
         {
             Assert.Equal(_entity.Id.ToString(), _record.fixture.id);
 
@@ -53,21 +53,21 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
             TestCompetitors(_entity.Competitors.ToList(), _record.fixture.competitors);
 
-            MappingExtraInfoTest();
+            MappingExtraInfo();
 
-            MappingProductInfoTest();
+            MappingProductInfo();
 
-            MappingTvChannelsTest();
+            MappingTvChannels();
 
-            MappingTournamentTest();
+            MappingTournament();
 
-            MappingTournamentRoundTest();
+            MappingTournamentRound();
 
-            MappingVenueTest();
+            MappingVenue();
         }
 
         [Fact]
-        public void MappingTournamentTest()
+        public void MappingTournament()
         {
             Assert.Equal(_entity.Tournament.Id.ToString(), _record.fixture.tournament.id);
             Assert.Equal(_entity.Tournament.Name, _record.fixture.tournament.name);
@@ -80,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void MappingTournamentRoundTest()
+        public void MappingTournamentRound()
         {
             Assert.Equal(_entity.Round.Name, _record.fixture.tournament_round.name);
             Assert.Equal(_entity.Round.Type, _record.fixture.tournament_round.type);
@@ -90,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void MappingVenueTest()
+        public void MappingVenue()
         {
             if (_record.fixture.venue == null)
             {
@@ -107,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void MappingTvChannelsTest()
+        public void MappingTvChannels()
         {
             if (_record.fixture.tv_channels == null)
             {
@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
         }
 
         [Fact]
-        public void MappingProductInfoTest()
+        public void MappingProductInfo()
         {
             if (_record.fixture.product_info == null)
             {
@@ -153,7 +153,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST
 
         [Fact]
         [SuppressMessage("ReSharper", "RedundantToStringCall")]
-        public void MappingExtraInfoTest()
+        public void MappingExtraInfo()
         {
             Assert.Equal(_entity.ExtraInfo.Count, _record.fixture.extra_info.Length);
             foreach (var ei in _record.fixture.extra_info)

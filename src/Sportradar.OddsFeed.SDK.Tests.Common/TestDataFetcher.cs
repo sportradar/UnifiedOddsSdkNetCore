@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.API.Internal.Replay;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 
@@ -46,6 +47,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         public List<Tuple<string, int, HttpResponseMessage>> DeleteResponses;
 
         /// <summary>
+        /// The list of URI exceptions (to get wanted response when specific url is called)
+        /// </summary>
+        public readonly List<Tuple<string, Exception>> UriExceptions;
+
+        /// <summary>
         /// The list of called urls
         /// </summary>
         public List<string> CalledUrls;
@@ -56,6 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             PostResponses = new List<Tuple<string, int, HttpResponseMessage>>();
             PutResponses = new List<Tuple<string, int, HttpResponseMessage>>();
             DeleteResponses = new List<Tuple<string, int, HttpResponseMessage>>();
+            UriExceptions = new List<Tuple<string, Exception>>();
             CalledUrls = new List<string>();
         }
 
@@ -65,6 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             PostResponses = new List<Tuple<string, int, HttpResponseMessage>>();
             PutResponses = new List<Tuple<string, int, HttpResponseMessage>>();
             DeleteResponses = new List<Tuple<string, int, HttpResponseMessage>>();
+            UriExceptions = new List<Tuple<string, Exception>>();
             CalledUrls = new List<string>();
         }
 
@@ -73,6 +81,15 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             return UriReplacements == null || !UriReplacements.Any()
                 ? path
                 : UriReplacements.Aggregate(path, (current, replacement) => current.Replace(replacement.Item1, replacement.Item2));
+        }
+
+        private void FindUriException(string path)
+        {
+            var replacement = UriExceptions.Where(w => path.Contains(w.Item1)).ToList();
+            if (!replacement.IsNullOrEmpty())
+            {
+                throw replacement.First().Item2;
+            }
         }
 
         public virtual Task<Stream> GetDataAsync(Uri uri)
@@ -90,7 +107,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         public virtual Task<HttpResponseMessage> GetAsync(Uri uri)
         {
             CalledUrls.Add(uri.PathAndQuery);
-            var response = new HttpResponseMessage();
+            FindUriException(uri.PathAndQuery);
+            var response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
             var getResponse = UriReplacements.FirstOrDefault(f => uri.ToString().Contains(f.Item1));
             if (getResponse != null)
             {
@@ -124,7 +142,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         public virtual Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null)
         {
             CalledUrls.Add(uri.PathAndQuery);
-            var response = new HttpResponseMessage();
+            FindUriException(uri.PathAndQuery);
+            var response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
             var postResponse = PostResponses.FirstOrDefault(f => uri.ToString().Contains(f.Item1));
             if (postResponse != null)
             {
@@ -155,7 +174,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         public Task<HttpResponseMessage> PutDataAsync(Uri uri, HttpContent content = null)
         {
             CalledUrls.Add(uri.PathAndQuery);
-            var response = new HttpResponseMessage();
+            FindUriException(uri.PathAndQuery);
+            var response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
             var putResponse = PutResponses.FirstOrDefault(f => uri.ToString().Contains(f.Item1));
             if (putResponse != null)
             {
@@ -185,7 +205,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
         public Task<HttpResponseMessage> DeleteDataAsync(Uri uri)
         {
             CalledUrls.Add(uri.PathAndQuery);
-            var response = new HttpResponseMessage();
+            FindUriException(uri.PathAndQuery);
+            var response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
             var deleteResponse = DeleteResponses.FirstOrDefault(f => uri.ToString().Contains(f.Item1));
             if (deleteResponse != null)
             {

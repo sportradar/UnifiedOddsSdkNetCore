@@ -67,6 +67,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common
             return Task.FromResult<EventStatus?>(null);
         }
 
+        /// <inheritdoc />
+        public Task<IEnumerable<URN>> GetCompetitorIdsAsync()
+        {
+            return Task.FromResult<IEnumerable<URN>>(null);
+        }
+
         public Task<IGroup> GetGroupAsync()
         {
             return Task.FromResult<IGroup>(null);

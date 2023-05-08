@@ -75,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             try
             {
-                var stream = _dataFetcher.GetDataAsync(new Uri("https://ipecho.net/plain")).Result;
+                var stream = _dataFetcher.GetDataAsync(new Uri("https://ipecho.net/plain")).GetAwaiter().GetResult();
                 using var reader = new StreamReader(stream, Encoding.UTF8);
                 data = reader.ReadToEnd();
             }

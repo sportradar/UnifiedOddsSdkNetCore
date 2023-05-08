@@ -258,10 +258,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                     _competitorId = competitorId;
                 }
 
-                if (_fetchedCultures == null)
-                {
-                    _fetchedCultures = new List<CultureInfo>();
-                }
+                _fetchedCultures ??= new List<CultureInfo>();
 
                 if (!_fetchedCultures.Contains(culture))
                 {
@@ -344,8 +341,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
             {
                 if (!_fetchedCultures.Contains(culture))
                 {
-                    var task = Task.Run(async () => await _dataRouterManager.GetPlayerProfileAsync(Id, culture, null).ConfigureAwait(false));
-                    task.Wait();
+                    _dataRouterManager.GetPlayerProfileAsync(Id, culture, null).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
             }
         }

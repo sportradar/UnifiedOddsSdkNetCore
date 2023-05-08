@@ -276,7 +276,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     result = ValidationResult.ProblemsDetected;
                 }
 
-                if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).Result)
+                if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).GetAwaiter().GetResult())
                 {
                     result = ValidationResult.ProblemsDetected;
                 }
@@ -401,7 +401,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     result = ValidationResult.ProblemsDetected;
                 }
 
-                if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).Result)
+                if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).GetAwaiter().GetResult())
                 {
                     result = ValidationResult.ProblemsDetected;
                 }
@@ -490,7 +490,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     result = ValidationResult.ProblemsDetected;
                 }
 
-                if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).Result)
+                if (!CheckSpecifiersAsync(message.ProducerId, market.id, market.Specifiers).GetAwaiter().GetResult())
                 {
                     result = ValidationResult.ProblemsDetected;
                 }

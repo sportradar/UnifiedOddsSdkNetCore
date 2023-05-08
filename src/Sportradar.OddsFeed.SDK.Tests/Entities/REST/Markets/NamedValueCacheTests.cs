@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using FluentAssertions;
 using Moq;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -21,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
         private Uri _betStopReasonsUri;
         private NamedValueCache _cache;
 
-        private void Setup(ExceptionHandlingStrategy exceptionStrategy)
+        private void Setup(ExceptionHandlingStrategy exceptionStrategy, SdkTimer cacheSdkTimer = null)
         {
             var dataFetcher = new TestDataFetcher();
             _fetcherMock = new Mock<IDataFetcher>();
@@ -31,8 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
                 .Returns(dataFetcher.GetDataAsync(_betStopReasonsUri));
 
             var uriFormat = $"{TestData.RestXmlPath}/betstop_reasons.xml";
-            _cache = new NamedValueCache(new NamedValueDataProvider(uriFormat, _fetcherMock.Object, "betstop_reason"),
-                exceptionStrategy);
+            var nameCacheSdkTimer = cacheSdkTimer ?? SdkTimer.Create(TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
+            _cache = new NamedValueCache(new NamedValueDataProvider(uriFormat, _fetcherMock.Object, "betstop_reason"), exceptionStrategy, "BetstopReasons", nameCacheSdkTimer);
 
         }
 

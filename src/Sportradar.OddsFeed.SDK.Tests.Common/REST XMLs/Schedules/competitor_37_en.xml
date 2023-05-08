@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <competitor_profile xmlns="http://schemas.sportradar.com/sportsapi/v1/unified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated_at="2023-03-21T14:13:51+00:00" xsi:schemaLocation="http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd">
+    <competitor id="sr:competitor:37" name="West Ham United" abbreviation="WHU" short_name="West Ham" country="England" country_code="ENG" gender="male">
+      <sport id="sr:sport:1" name="Soccer"/>
+      <category id="sr:category:1" name="England" country_code="ENG"/>
+    </competitor>
+    <venue id="sr:venue:18379" name="London Stadium" capacity="66000" city_name="London" country_name="England" country_code="ENG" map_coordinates="51.54329610000001,-0.0165517"/>
+    <jerseys>
+      <jersey type="home" base="74112e" sleeve="74112e" number="ffffff" stripes="false" horizontal_stripes="false" squares="false" split="false" shirt_type="short_sleeves" sleeve_detail="bbd6e9"/>
+      <jersey type="away" base="000000" sleeve="ff0000" number="ffffff" stripes="false" horizontal_stripes="false" squares="false" split="false" shirt_type="short_sleeves"/>
+      <jersey type="goalkeeper" base="e0f12e" sleeve="76ac20" number="000000" stripes="false" horizontal_stripes="false" squares="false" split="false" shirt_type="short_sleeves"/>
+      <jersey type="third" base="ffffff" sleeve="fda516" number="000000" stripes="false" horizontal_stripes="false" squares="false" split="false" shirt_type="short_sleeves"/>
+    </jerseys>
+    <manager id="sr:player:52950" name="Moyes, David" nationality="Scotland" country_code="SCO"/>
+    <players>
+      <player type="goalkeeper" date_of_birth="1985-04-18" nationality="Poland" country_code="POL" height="190" weight="83" jersey_number="1" full_name="Lukasz Fabianski" gender="male" id="sr:player:15479" name="Fabianski, Lukasz"/>
+      <player type="defender" date_of_birth="2000-01-24" nationality="England" country_code="ENG" height="175" weight="67" jersey_number="2" full_name="Benjamin Anthony Johnson" gender="male" id="sr:player:1372516" name="Johnson, Ben"/>
+      <player type="defender" date_of_birth="1989-12-15" nationality="England" country_code="ENG" height="170" weight="66" jersey_number="3" full_name="Aaron William Cresswell" gender="male" id="sr:player:43443" name="Cresswell, Aaron"/>
+      <player type="defender" date_of_birth="1994-10-27" nationality="France" country_code="FRA" height="190" weight="95" jersey_number="4" full_name="Kurt Zouma" gender="male" id="sr:player:139227" name="Zouma, Kurt"/>
+      <player type="defender" date_of_birth="1992-08-22" nationality="Czech Republic" country_code="CZE" height="174" weight="76" jersey_number="5" full_name="Vladimir Coufal" gender="male" id="sr:player:138024" name="Coufal, Vladimir"/>
+      <player type="forward" date_of_birth="1999-01-01" nationality="Italy" country_code="ITA" height="195" weight="85" jersey_number="7" full_name="Gianluca Scamacca" gender="male" id="sr:player:756562" name="Scamacca, Gianluca"/>
+      <player type="midfielder" date_of_birth="1996-02-22" nationality="Spain" country_code="ESP" height="178" weight="67" jersey_number="8" full_name="Pablo Fornals Malla" gender="male" id="sr:player:912932" name="Fornals, Pablo"/>
+      <player type="forward" date_of_birth="1990-03-28" nationality="Jamaica" country_code="JAM" height="180" weight="82" jersey_number="9" full_name="Michail Gregory Antonio" gender="male" id="sr:player:47772" name="Antonio, Michail"/>
+      <player type="midfielder" date_of_birth="1993-02-15" nationality="Argentina" country_code="ARG" height="167" weight="59" jersey_number="10" full_name="Manuel Lanzini" gender="male" id="sr:player:220315" name="Lanzini, Manuel"/>
+      <player type="midfielder" date_of_birth="1997-08-27" nationality="Brazil" country_code="BRA" height="180" weight="72" jersey_number="11" full_name="Lucas Tolentino Coelho de Lima" gender="male" id="sr:player:991199" name="Paqueta, Lucas"/>
+      <player type="midfielder" date_of_birth="1999-01-20" nationality="England" country_code="ENG" height="173" weight="70" jersey_number="12" full_name="Flynn Downes" gender="male" id="sr:player:1132685" name="Downes, Flynn"/>
+      <player type="goalkeeper" date_of_birth="1993-02-27" nationality="France" country_code="FRA" height="195" weight="94" jersey_number="13" full_name="Alphonse Francis Areola" gender="male" id="sr:player:96531" name="Areola, Alphonse"/>
+      <player type="midfielder" date_of_birth="1996-09-27" nationality="cote d’ivoire" country_code="CIV" height="179" weight="69" jersey_number="14" full_name="Gnaly Maxwel Cornet" gender="male" id="sr:player:280439" name="Cornet, Maxwel"/>
+      <player type="forward" date_of_birth="1992-07-23" nationality="England" country_code="ENG" height="178" weight="73" jersey_number="18" full_name="Daniel William John Ings" gender="male" id="sr:player:130181" name="Ings, Danny"/>
+      <player type="forward" date_of_birth="1996-12-20" nationality="England" country_code="ENG" height="175" weight="70" jersey_number="20" full_name="Jarrod Bowen" gender="male" id="sr:player:552884" name="Bowen, Jarrod"/>
+      <player type="defender" date_of_birth="1988-05-23" nationality="Italy" country_code="ITA" height="191" weight="86" jersey_number="21" full_name="Angelo Obinze Ogbonna" gender="male" id="sr:player:21164" name="Ogbonna, Angelo"/>
+      <player type="forward" date_of_birth="1995-08-10" nationality="Algeria" country_code="DZA" height="172" weight="67" jersey_number="22" full_name="Mohamed Said Benrahma" gender="male" id="sr:player:354808" name="Benrahma, Said"/>
+      <player type="defender" date_of_birth="1996-09-21" nationality="Germany" country_code="DEU" height="186" weight="76" jersey_number="24" full_name="Jan Thilo Kehrer" gender="male" id="sr:player:281277" name="Kehrer, Thilo"/>
+      <player type="defender" date_of_birth="1996-03-30" nationality="Morocco" country_code="MAR" height="190" weight="76" jersey_number="27" full_name="Nayef Aguerd" gender="male" id="sr:player:1117645" name="Aguerd, Nayef"/>
+      <player type="midfielder" date_of_birth="1995-02-27" nationality="Czech Republic" country_code="CZE" height="192" weight="86" jersey_number="28" full_name="Tomas Soucek" gender="male" id="sr:player:359840" name="Soucek, Tomas"/>
+      <player type="defender" date_of_birth="1994-08-03" nationality="Italy" country_code="ITA" height="176" weight="63" jersey_number="33" full_name="Emerson Palmieri dos Santos" gender="male" id="sr:player:155997" name="Emerson"/>
+      <player type="defender" date_of_birth="2002-03-08" nationality="Brazil" country_code="BRA" height="187" weight="80" jersey_number="37" full_name="Luiz Gustavo Oliveira da Silva" gender="male" id="sr:player:2160456" name="Luizao"/>
+      <player type="forward" date_of_birth="2002-03-02" nationality="England" country_code="ENG" jersey_number="40" full_name="Armstrong Echezolachukwu Inya" gender="male" id="sr:player:1707881" name="Oko-Flex, Armstrong"/>
+      <player type="midfielder" date_of_birth="1999-01-14" nationality="England" country_code="ENG" height="185" weight="80" jersey_number="41" full_name="Declan Rice" gender="male" id="sr:player:934552" name="Rice, Declan"/>
+      <player type="goalkeeper" date_of_birth="2002-09-24" nationality="Hungary" country_code="HUN" height="193" jersey_number="47" full_name="Krisztian Hegyi" gender="male" id="sr:player:1641604" name="Hegyi, Krisztian"/>
+      <player type="midfielder" date_of_birth="2003-11-11" nationality="England" country_code="ENG" jersey_number="48" full_name="Jamal Baptiste" gender="male" id="sr:player:2116768" name="Baptiste, Jamal"/>
+      <player type="goalkeeper" date_of_birth="2000-06-08" nationality="England" country_code="ENG" height="183" jersey_number="49" full_name="Joseph Tetteh Anang" gender="male" id="sr:player:1987561" name="Anang, Joseph"/>
+      <player type="defender" date_of_birth="2003-04-12" nationality="England" country_code="ENG" jersey_number="53" full_name="Levi Alexander Laing" gender="male" id="sr:player:2549293" name="Laing, Levi"/>
+      <player type="midfielder" date_of_birth="2002-12-04" nationality="England" country_code="ENG" jersey_number="58" full_name="Kamarai Swyer" gender="male" id="sr:player:2275125" name="Swyer, Kamarai"/>
+      <player type="midfielder" date_of_birth="2001-10-16" nationality="England" country_code="ENG" jersey_number="59" full_name="Keenan Appiah-Forson" gender="male" id="sr:player:2275127" name="Appiah-Forson, Keenan"/>
+      <player type="midfielder" date_of_birth="2003-09-12" nationality="England" country_code="ENG" jersey_number="62" full_name="Freddie Potts" gender="male" id="sr:player:2275129" name="Potts, Freddie"/>
+      <player type="defender" date_of_birth="2004-04-29" nationality="Northern Ireland" country_code="NIR" jersey_number="65" full_name="Michael Forbes" gender="male" id="sr:player:2439759" name="Forbes, Michael"/>
+      <player type="midfielder" date_of_birth="2005-12-12" nationality="England" country_code="ENG" jersey_number="68" full_name="Oliver Scarles" gender="male" id="sr:player:2464763" name="Scarles, Oliver"/>
+      <player type="defender" date_of_birth="2004-10-28" nationality="England" country_code="ENG" height="185" jersey_number="70" full_name="Kaelan Casey" gender="male" id="sr:player:2439761" name="Casey, Kaelan"/>
+      <player type="defender" date_of_birth="2004-11-11" nationality="England" country_code="ENG" jersey_number="71" full_name="Regan Clayton" gender="male" id="sr:player:2439763" name="Clayton, Regan"/>
+      <player type="forward" date_of_birth="2004-10-25" nationality="England" country_code="ENG" height="183" jersey_number="72" full_name="Divin Mubama" gender="male" id="sr:player:2407071" name="Mubama, Divin"/>
+      <player type="midfielder" date_of_birth="2006-02-18" nationality="England" country_code="ENG" jersey_number="75" full_name="Lewis Orford" gender="male" id="sr:player:2488821" name="Orford, Lewis"/>
+    </players>
+  </competitor_profile>

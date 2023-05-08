@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 return null;
             }
 
-            var match = Regex.Match(routingKey, string.Format(RegexPatternFormat, messageTypeName));
+            var match = Regex.Match(routingKey, string.Format(RegexPatternFormat, messageTypeName), RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
             if (!match.Success)
             {
                 throw new FormatException($"The format of string {routingKey} is not correct");
