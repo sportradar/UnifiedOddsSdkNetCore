@@ -276,7 +276,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             container.RegisterType<IMessageDataExtractor, MessageDataExtractor>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEntityTypeMapper, EntityTypeMapper>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IDispatcherStore, DispatcherStore>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDispatcherStore, DispatcherStore>(new HierarchicalLifetimeManager());
             container.RegisterType<ISemaphorePool, SemaphorePool>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(500, config.ExceptionHandlingStrategy));
