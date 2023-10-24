@@ -1,9 +1,5 @@
-# UnifiedOdds Feed SDK .NET library (.NET Standard 2.1)
+# UnifiedOdds Feed SDK .NET library (.NET Standard 2.0)
 
-
-[![pipeline status](https://gitlab.sportradar.ag/unifiedoddssdk/unifiedodds.sdk.netcore/badges/main/pipeline.svg)](https://gitlab.sportradar.ag/unifiedoddssdk/unifiedodds.sdk.netcore/-/commits/main) 
-[![coverage report](https://gitlab.sportradar.ag/unifiedoddssdk/unifiedodds.sdk.netcore/badges/main/coverage.svg)](https://gitlab.sportradar.ag/unifiedoddssdk/unifiedodds.sdk.netcore/-/commits/main) 
-[![Latest Release](https://gitlab.sportradar.ag/unifiedoddssdk/unifiedodds.sdk.netcore/-/badges/release.svg)](https://gitlab.sportradar.ag/unifiedoddssdk/unifiedodds.sdk.netcore/-/releases) 
 
 Notice: before starting DemoProject make sure to enter your bookmaker access token in app.config file and restore nuget packages by right-clicking the solution item and selecting "Restore NuGet Packages".
 
