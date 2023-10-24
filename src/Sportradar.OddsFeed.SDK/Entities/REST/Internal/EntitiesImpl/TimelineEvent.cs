@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class TimelineEvent : ITimelineEvent
     {
@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public int? MatchStatusCode { get; }
         public string MatchClock { get; }
 
-        internal TimelineEvent(TimelineEventCI ci)
+        internal TimelineEvent(TimelineEventCacheItem ci)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
 

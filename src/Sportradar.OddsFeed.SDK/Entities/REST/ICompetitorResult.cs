@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines contract used by classes that provide competitor result information
@@ -11,18 +11,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Get the type
         /// </summary>
-        public string Type { get; }
+        string Type { get; }
 
         /// <summary>
         /// Gets the value
         /// </summary>
         /// <value>The value</value>
-        public string Value { get; }
+        string Value { get; }
 
         /// <summary>
         /// Gets the specifiers
         /// </summary>
         /// <value>The specifiers</value>
-        public string Specifiers { get; }
+        string Specifiers { get; }
     }
 }

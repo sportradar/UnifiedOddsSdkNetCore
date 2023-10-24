@@ -2,8 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
@@ -26,10 +27,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public long? EndTime { get; }
 
         /// <summary>
-        /// If the market was canceled because of a migration from a different sport event, it gets a <see cref="URN"/> specifying the sport event from which the market has migrated
+        /// If the market was canceled because of a migration from a different sport event, it gets a <see cref="Urn"/> specifying the sport event from which the market has migrated
         /// </summary>
         /// <value>The superseded by</value>
-        public URN SupersededBy { get; }
+        public Urn SupersededBy { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BetCancel{T}" /> class
@@ -40,10 +41,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="requestId">The id of the request which triggered the current <see cref="EventMessage{T}" /> message or a null reference</param>
         /// <param name="startTime">a number of milliseconds from UTC epoch representing the start of cancellation period</param>
         /// <param name="endTime">a number of milliseconds from UTC epoch representing the end of cancellation period</param>
-        /// <param name="supersededBy">If the market was canceled because of a migration from a different sport event, a <see cref="T:Sportradar.OddsFeed.SDK.Messages.URN" /> specifying the sport event from which the market has migrated</param>
+        /// <param name="supersededBy">If the market was canceled because of a migration from a different sport event, a <see cref="Urn" /> specifying the sport event from which the market has migrated</param>
         /// <param name="markets">An <see cref="IEnumerable{T}" /> describing markets associated with the current <see cref="IMarketMessage{T, R}" /></param>
         /// <param name="rawMessage">The raw message</param>
-        public BetCancel(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, long? startTime, long? endTime, URN supersededBy, IEnumerable<IMarketCancel> markets, byte[] rawMessage)
+        public BetCancel(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, long? startTime, long? endTime, Urn supersededBy, IEnumerable<IMarketCancel> markets, byte[] rawMessage)
             : base(timestamp, producer, @event, requestId, markets, rawMessage)
         {
             StartTime = startTime;

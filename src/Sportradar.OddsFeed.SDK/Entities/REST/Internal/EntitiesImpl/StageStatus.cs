@@ -4,9 +4,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class StageStatus
@@ -20,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <param name="ci">The cache item</param>
         /// <param name="matchStatusesCache">The match statuses cache</param>
-        public StageStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
+        public StageStatus(SportEventStatusCacheItem ci, ILocalizedNamedValueCache matchStatusesCache)
             : base(ci, matchStatusesCache)
         {
         }
@@ -32,9 +33,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>ILocalizedNamedValue</returns>
         public async Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture)
         {
-            return SportEventStatusCI == null || SportEventStatusCI.MatchStatusId < 0 || MatchStatusCache == null
+            return SportEventStatusCacheItem == null || SportEventStatusCacheItem.MatchStatusId < 0 || MatchStatusCache == null
                        ? null
-                       : await MatchStatusCache.GetAsync(SportEventStatusCI.MatchStatusId, new List<CultureInfo> { culture }).ConfigureAwait(false);
+                       : await MatchStatusCache.GetAsync(SportEventStatusCacheItem.MatchStatusId, new List<CultureInfo> { culture }).ConfigureAwait(false);
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// Provides information about team competitor
     /// </summary>
-    internal class TeamCompetitorDTO : CompetitorDTO
+    internal class TeamCompetitorDto : CompetitorDto
     {
         /// <summary>
         /// Gets the competitor's qualifier
@@ -16,22 +16,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string Qualifier { get; }
 
         /// <summary>
-        /// Gets the division
-        /// </summary>
-        /// <value>The division</value>
-        public int? Division { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TeamCompetitorDTO"/> class
+        /// Initializes a new instance of the <see cref="TeamCompetitorDto"/> class
         /// </summary>
         /// <param name="record">A <see cref="teamCompetitor"/> containing information about the team</param>
-        internal TeamCompetitorDTO(teamCompetitor record)
+        internal TeamCompetitorDto(teamCompetitor record)
             : base(record)
         {
             Qualifier = record.qualifier;
-            Division = record.divisionSpecified
-                           ? record.division
-                           : (int?)null;
         }
     }
 }

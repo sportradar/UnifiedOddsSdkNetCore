@@ -2,16 +2,16 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.Lottery
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="draw_fixtures" /> instances to <see cref="DrawDTO" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="draw_fixtures" /> instances to <see cref="DrawDto" /> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{DrawDTO}" />
-    internal class DrawFixtureMapper : ISingleTypeMapper<DrawDTO>
+    /// <seealso cref="ISingleTypeMapper{DrawDto}" />
+    internal class DrawFixtureMapper : ISingleTypeMapper<DrawDto>
     {
         /// <summary>
         /// A <see cref="draw_fixture"/> containing rest data
@@ -29,9 +29,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
             _drawFixture = drawFixture;
         }
 
-        public DrawDTO Map()
+        public DrawDto Map()
         {
-            return new DrawDTO(_drawFixture);
+            return new DrawDto(_drawFixture);
         }
     }
 }

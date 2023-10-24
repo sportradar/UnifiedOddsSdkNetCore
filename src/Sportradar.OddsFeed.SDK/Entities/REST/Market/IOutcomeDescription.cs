@@ -3,7 +3,7 @@
 */
 using System.Globalization;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Market
 {
     /// <summary>
     /// Defines a contract implemented by classes representing betting outcome description

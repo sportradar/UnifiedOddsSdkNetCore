@@ -3,10 +3,10 @@
 */
 using System;
 using System.Runtime.Serialization;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a race drive profile
@@ -14,29 +14,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     [DataContract]
     internal class RaceDriverProfile : IRaceDriverProfile
     {
-        public RaceDriverProfile(RaceDriverProfileCI raceDriverProfileCI)
+        public RaceDriverProfile(RaceDriverProfileCacheItem raceDriverProfileCacheItem)
         {
-            if (raceDriverProfileCI == null)
+            if (raceDriverProfileCacheItem == null)
             {
-                throw new ArgumentNullException(nameof(raceDriverProfileCI));
+                throw new ArgumentNullException(nameof(raceDriverProfileCacheItem));
             }
 
-            RaceDriverId = raceDriverProfileCI.RaceDriverId;
-            RaceTeamId = raceDriverProfileCI.RaceTeamId;
-            Car = raceDriverProfileCI.Car != null ? new Car(raceDriverProfileCI.Car) : null;
+            RaceDriverId = raceDriverProfileCacheItem.RaceDriverId;
+            RaceTeamId = raceDriverProfileCacheItem.RaceTeamId;
+            Car = raceDriverProfileCacheItem.Car != null ? new Car(raceDriverProfileCacheItem.Car) : null;
         }
 
         /// <summary>
         /// Gets the race driver id
         /// </summary>
         /// <value>The race driver id</value>
-        public URN RaceDriverId { get; }
+        public Urn RaceDriverId { get; }
 
         /// <summary>
         /// Gets the race team id
         /// </summary>
         /// <value>The race team id</value>
-        public URN RaceTeamId { get; }
+        public Urn RaceTeamId { get; }
 
         /// <summary>
         /// Gets the car info

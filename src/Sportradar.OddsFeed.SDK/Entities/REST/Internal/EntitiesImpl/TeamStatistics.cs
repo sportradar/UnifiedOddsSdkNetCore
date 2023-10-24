@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     class TeamStatistics : ITeamStatistics
     {
-        public URN TeamId { get; }
+        public Urn TeamId { get; }
         public string Name { get; }
         public HomeAway? HomeAway { get; }
         public int? Cards { get; }
@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public int? CornerKicks { get; }
         public int? GreenCards { get; }
 
-        public TeamStatistics(TeamStatisticsDTO dto)
+        public TeamStatistics(TeamStatisticsDto dto)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
 

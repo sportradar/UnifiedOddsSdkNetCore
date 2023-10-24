@@ -4,14 +4,14 @@
 using System;
 using System.Net;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-access-object representing a bookmaker details
     /// </summary>
-    internal class BookmakerDetailsDTO
+    internal class BookmakerDetailsDto
     {
         /// <summary>
         /// Gets the bookmaker id
@@ -48,11 +48,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public TimeSpan ServerTimeDifference { get; internal set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BookmakerDetailsDTO"/> class
+        /// Initializes a new instance of the <see cref="BookmakerDetailsDto"/> class
         /// </summary>
         /// <param name="msg">The MSG</param>
         /// <param name="serverTimeDifference">The server time difference</param>
-        public BookmakerDetailsDTO(bookmaker_details msg, TimeSpan serverTimeDifference)
+        public BookmakerDetailsDto(bookmaker_details msg, TimeSpan serverTimeDifference)
         {
             Guard.Argument(msg, nameof(msg)).NotNull();
 

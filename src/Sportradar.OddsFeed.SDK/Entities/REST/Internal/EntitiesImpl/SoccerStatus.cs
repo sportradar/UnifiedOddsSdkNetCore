@@ -1,15 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class SoccerStatus : MatchStatus, ISoccerStatus
     {
         public ISoccerStatistics Statistics { get; }
 
-        public SoccerStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
+        public SoccerStatus(SportEventStatusCacheItem ci, ILocalizedNamedValueCache matchStatusesCache)
             : base(ci, matchStatusesCache)
         {
             if (ci?.SportEventStatistics != null)

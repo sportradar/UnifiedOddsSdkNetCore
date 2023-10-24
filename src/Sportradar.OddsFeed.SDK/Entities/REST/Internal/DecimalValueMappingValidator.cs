@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// A <see cref="IMappingValidator"/> which validates the decimal part of the provided value against a predefined value

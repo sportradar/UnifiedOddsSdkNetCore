@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
 {
     /// <summary>
     /// Implements methods used to provides a probability calculation

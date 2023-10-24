@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
 {
     /// <summary>
     /// Defines a data-transfer-object for draw info
     /// </summary>
-    internal class DrawInfoDTO
+    internal class DrawInfoDto
     {
         public DrawType DrawType { get; }
 
@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
         public string GameType { get; }
 
-        internal DrawInfoDTO(lotteryDraw_info info)
+        internal DrawInfoDto(lotteryDraw_info info)
         {
             Guard.Argument(info, nameof(info)).NotNull();
 

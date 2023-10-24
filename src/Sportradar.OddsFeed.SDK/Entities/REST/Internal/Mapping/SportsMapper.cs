@@ -5,16 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> implementation used to construct <see cref="EntityList{SportDTO}" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> implementation used to construct <see cref="EntityList{SportDto}" /> instances
     /// from <see cref="sportsEndpoint"/> instances
     /// </summary>
-    internal class SportsMapper : ISingleTypeMapper<EntityList<SportDTO>>
+    internal class SportsMapper : ISingleTypeMapper<EntityList<SportDto>>
     {
         /// <summary>
         /// A <see cref="sportsEndpoint"/> instance containing data about available sports
@@ -33,28 +33,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="EntityList{SportDTO}"/>
+        /// Maps it's data to instance of <see cref="EntityList{SportDto}"/>
         /// </summary>
-        /// <returns>The created <see cref="EntityList{SportDTO}"/> instance</returns>
-        public EntityList<SportDTO> Map()
+        /// <returns>The created <see cref="EntityList{SportDto}"/> instance</returns>
+        public EntityList<SportDto> Map()
         {
             if (_data.sport == null || !_data.sport.Any())
             {
                 throw new InvalidOperationException("The provided sportsEndpoint instance contains no sports");
             }
 
-            var sports = _data.sport.Select(x => new SportDTO(x.id, x.name, (IEnumerable<tournamentExtended>)null));
-            return new EntityList<SportDTO>(sports);
+            var sports = _data.sport.Select(x => new SportDto(x.id, x.name, (IEnumerable<tournamentExtended>)null));
+            return new EntityList<SportDto>(sports);
         }
 
         /// <summary>
         /// Constructs and returns a new instance of the <see cref="ISingleTypeMapper{T}"/> instance used to map <see cref="sportsEndpoint"/> instances
-        /// to <see cref="EntityList{SportDTO}"/> instances
+        /// to <see cref="EntityList{SportDto}"/> instances
         /// </summary>
         /// <param name="data">A <see cref="sportsEndpoint"/> instance containing tournaments data</param>
         /// <returns>a new instance of the <see cref="ISingleTypeMapper{T}"/> instance used to map <see cref="sportsEndpoint"/> instances
-        /// to <see cref="EntityList{SportDTO}"/> instances</returns>
-        internal static ISingleTypeMapper<EntityList<SportDTO>> Create(sportsEndpoint data)
+        /// to <see cref="EntityList{SportDto}"/> instances</returns>
+        internal static ISingleTypeMapper<EntityList<SportDto>> Create(sportsEndpoint data)
         {
             return new SportsMapper(data);
         }

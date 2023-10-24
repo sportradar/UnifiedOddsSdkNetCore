@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing a player info within timeline events
     /// </summary>
-    /// <seealso cref="SportEntityDTO" />
-    internal class EventPlayerDTO : SportEntityDTO
+    /// <seealso cref="SportEntityDto" />
+    internal class EventPlayerDto : SportEntityDto
     {
         /// <summary>
         /// Gets the bench value
@@ -27,10 +27,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string Method { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventPlayerDTO"/> class
+        /// Initializes a new instance of the <see cref="EventPlayerDto"/> class
         /// </summary>
         /// <param name="record">A <see cref="eventPlayer"/> containing information about a player</param>
-        internal EventPlayerDTO(eventPlayer record)
+        internal EventPlayerDto(eventPlayer record)
             : base(record.id, record.name)
         {
             Guard.Argument(record, nameof(record)).NotNull();

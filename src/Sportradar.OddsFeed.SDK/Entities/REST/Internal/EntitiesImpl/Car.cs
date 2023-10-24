@@ -3,9 +3,9 @@
 */
 using System;
 using System.Runtime.Serialization;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a car
@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     [DataContract]
     internal class Car : ICar
     {
-        public Car(CarCI car)
+        public Car(CarCacheItem car)
         {
             if (car == null)
             {

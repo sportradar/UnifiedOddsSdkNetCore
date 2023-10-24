@@ -4,15 +4,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
 {
     /// <summary>
     /// Implements methods used to access available selections for the event
     /// </summary>
-    internal class AvailableSelectionsFilter : REST.CustomBet.IAvailableSelectionsFilter
+    internal class AvailableSelectionsFilter : Rest.CustomBet.IAvailableSelectionsFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AvailableSelections"/> class
@@ -29,8 +29,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
             Markets = availableSelections.Markets.Select(m => new MarketFilter(m));
         }
 
-        public URN Event { get; }
+        public Urn Event { get; }
 
-        public IEnumerable<REST.CustomBet.IMarketFilter> Markets { get; }
+        public IEnumerable<Rest.CustomBet.IMarketFilter> Markets { get; }
     }
 }

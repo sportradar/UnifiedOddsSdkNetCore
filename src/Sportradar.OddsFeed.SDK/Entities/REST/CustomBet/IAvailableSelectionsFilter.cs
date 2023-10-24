@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
 {
     /// <summary>
     /// Provides an available selections for a particular event
@@ -12,10 +12,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
     public interface IAvailableSelectionsFilter
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> of the event
+        /// Gets the <see cref="Urn"/> of the event
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
-        URN Event { get; }
+        Urn Event { get; }
 
         /// <summary>
         /// Gets the list of markets for this event

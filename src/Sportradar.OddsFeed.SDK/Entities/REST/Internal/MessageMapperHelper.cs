@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// Defines static methods used when parsing feed messages

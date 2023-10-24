@@ -3,14 +3,14 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representation for tv channel
     /// </summary>
-    internal class TvChannelDTO
+    internal class TvChannelDto
     {
         internal string Name { get; }
 
@@ -19,10 +19,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal string StreamUrl { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TvChannelDTO"/> class
+        /// Initializes a new instance of the <see cref="TvChannelDto"/> class
         /// </summary>
         /// <param name="tvChannel">The <see cref="tvChannel"/> used for creating instance</param>
-        internal TvChannelDTO(tvChannel tvChannel)
+        internal TvChannelDto(tvChannel tvChannel)
         {
             Guard.Argument(tvChannel, nameof(tvChannel)).NotNull();
             Guard.Argument(tvChannel.name, nameof(tvChannel.name)).NotNull().NotEmpty();

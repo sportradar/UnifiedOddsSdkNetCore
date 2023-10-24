@@ -39,15 +39,15 @@
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <HelpTitle>Odds Feed SDK Std Documentation</HelpTitle>
-    <HelpFileVersion>1.31.0</HelpFileVersion>
+    <HelpFileVersion>2.0.0</HelpFileVersion>
     <NamingMethod>MemberName</NamingMethod>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <NamespaceGrouping>False</NamespaceGrouping>
     <MaximumGroupParts>2</MaximumGroupParts>
     <Preliminary>False</Preliminary>
-    <CopyrightHref>http://sdk.sportradar.com/unifiedfeed/netcore</CopyrightHref>
-    <CopyrightText>Copyright &amp;#169%3b 2020-2023, Sportradar AG</CopyrightText>
+    <CopyrightHref>http://sdk.sportradar.com/unifiedfeed/netcore2</CopyrightHref>
+    <CopyrightText>Copyright &amp;#169%3b 2023, Sportradar AG</CopyrightText>
     <FeedbackEMailAddress>sdk%40sportradar.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>SDK Team</FeedbackEMailLinkText>
     <SdkLinkTarget>Top</SdkLinkTarget>
@@ -147,13 +147,17 @@
       <ImageId>RestMessagesDiagram</ImageId>
       <AlternateText>Rest Messages Diagram</AlternateText>
     </Image>
-    <Image Include="media\SportEventHierarchy.png">
-      <ImageId>SportEventHierarchy</ImageId>
-      <AlternateText>Sport Event Hierarchy</AlternateText>
+    <Image Include="media\SportEventHierarchyNet.png">
+      <ImageId>SportEventHierarchyNet</ImageId>
+      <AlternateText>Sport Event Hierarchy Net</AlternateText>
     </Image>
     <Image Include="media\SportEventStatusDiagram.png">
       <ImageId>SportEventStatusDiagram</ImageId>
       <AlternateText>Sport Event Status Diagram</AlternateText>
+    </Image>
+    <Image Include="media\UofConfigurationDiagram.png">
+      <ImageId>UofConfigurationDiagram</ImageId>
+      <AlternateText>Uof Configuration Diagram</AlternateText>
     </Image>
   </ItemGroup>
   <ItemGroup>

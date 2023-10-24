@@ -4,19 +4,19 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
-    /// Class EventResultDTO
+    /// Class EventResultDto
     /// </summary>
-    internal class EventResultDTO
+    internal class EventResultDto
     {
         /// <summary>
         /// Gets the identifier
@@ -125,13 +125,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         /// <value>The results</value>
         /// <remarks>Sportradar</remarks>
-        public IEnumerable<CompetitorResultDTO> CompetitorResults { get; }
+        public IEnumerable<CompetitorResultDto> CompetitorResults { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventResultDTO"/> class
+        /// Initializes a new instance of the <see cref="EventResultDto"/> class
         /// </summary>
         /// <param name="result">The result</param>
-        public EventResultDTO(resultType result)
+        public EventResultDto(resultType result)
         {
             HomeScore = result.home_score;
             AwayScore = result.away_score;
@@ -139,10 +139,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventResultDTO"/> class
+        /// Initializes a new instance of the <see cref="EventResultDto"/> class
         /// </summary>
         /// <param name="result">The result</param>
-        public EventResultDTO(resultScore result)
+        public EventResultDto(resultScore result)
         {
             if (decimal.TryParse(result.home_score, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out var homeScore))
             {
@@ -164,10 +164,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventResultDTO"/> class
+        /// Initializes a new instance of the <see cref="EventResultDto"/> class
         /// </summary>
         /// <param name="stageResultCompetitor">The stage result competitor</param>
-        public EventResultDTO(stageResultCompetitor stageResultCompetitor)
+        public EventResultDto(stageResultCompetitor stageResultCompetitor)
         {
             Guard.Argument(stageResultCompetitor, nameof(stageResultCompetitor)).NotNull();
 
@@ -187,7 +187,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Distance = stageResultCompetitor.distanceSpecified ? stageResultCompetitor.distance : (double?)null;
             if (!stageResultCompetitor.result.IsNullOrEmpty())
             {
-                CompetitorResults = stageResultCompetitor.result.Select(s => new CompetitorResultDTO(s));
+                CompetitorResults = stageResultCompetitor.result.Select(s => new CompetitorResultDto(s));
             }
         }
     }

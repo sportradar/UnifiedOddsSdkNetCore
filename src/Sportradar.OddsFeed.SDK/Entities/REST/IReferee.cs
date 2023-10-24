@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing sport event referee
@@ -13,9 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IReferee : IEntityPrinter
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> used to uniquely identify the current <see cref="IReferee"/> instance
+        /// Gets a <see cref="Urn"/> used to uniquely identify the current <see cref="IReferee"/> instance
         /// </summary>
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Gets the name of the referee represented by the current <see cref="IReferee"/> instance

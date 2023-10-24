@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes providing product information
@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets a value indicating whether the sport event associated with the current instance is available in LiveMatchTracker solution
         /// </summary>
-        bool IsInLiveMatchTracker => false;
+        bool IsInLiveMatchTracker { get; }
 
         /// <summary>
         /// Gets a value indicating whether the sport event associated with the current instance is available in LiveScore solution

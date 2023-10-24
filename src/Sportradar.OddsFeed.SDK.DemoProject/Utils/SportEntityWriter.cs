@@ -5,14 +5,14 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Microsoft.Extensions.Logging;
 using Dawn;
 using log4net;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 {
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// <summary>
         /// A <see cref="ILog"/> used to log sport entities data
         /// </summary>
-        private static ILogger _log;
+        private readonly ILogger _log;
 
         /// <summary>
         /// A <see cref="TaskProcessor"/> used for processing of asynchronous requests
@@ -200,7 +200,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 eventStatus = matchStatus.Status.ToString();
             }
             var fixture = _taskProcessor.GetTaskResult(match.GetFixtureAsync());
-            var tour = _taskProcessor.GetTaskResult(match.GetTournamentAsync());
+            var longTermEvent = _taskProcessor.GetTaskResult(match.GetTournamentAsync());
             var homeRef = homeTeam?.References;
             var awayRef = awayTeam?.References;
             var timelineIds = string.Empty;
@@ -221,36 +221,36 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 .Append(" Season=").Append(season?.Id.ToString() ?? "null")
                 .Append(" Round=").Append(round?.GetName(_culture) ?? "null")
                 .Append(" Fixture=").Append(fixture?.StartTime)
-                .Append(" Tournament=").Append(tour)
+                .Append(" Tournament=").Append(longTermEvent)
                 .Append(" EventStatus=").Append(eventStatus)
                 .Append(" Timeline=[").Append(timelineIds).Append("]")
                 .Append(" PeriodScores=[").Append(periodScores).Append("]")
                 .Append(" EventResults=[").Append(eventResults).Append("]")
                 .Append(" DelayedInfo=").Append(delayedInfo == null ? "null" : $"{delayedInfo.Id}-{delayedInfo.GetDescription(_culture)}");
 
-            if (tour != null)
+            if (longTermEvent != null)
             {
                 try
                 {
-                    if (tour.Id.TypeGroup == ResourceTypeGroup.BASIC_TOURNAMENT)
+                    if (longTermEvent.Id.TypeGroup == ResourceTypeGroup.BasicTournament)
                     {
-                        var basicTournament = tour as IBasicTournament;
+                        var basicTournament = longTermEvent as IBasicTournament;
                         builder.Append(" Tournament=").Append(WriteBasicTournamentData(basicTournament));
                     }
-                    else if (tour.Id.TypeGroup == ResourceTypeGroup.TOURNAMENT)
+                    else if (longTermEvent.Id.TypeGroup == ResourceTypeGroup.Tournament)
                     {
-                        var tournament = tour as ITournament;
+                        var tournament = longTermEvent as ITournament;
                         builder.Append(" Tournament=").Append(WriteTournamentData(tournament));
                     }
-                    else if (tour.Id.TypeGroup == ResourceTypeGroup.SEASON)
+                    else if (longTermEvent.Id.TypeGroup == ResourceTypeGroup.Season)
                     {
-                        var seasonTour = tour as ISeason;
+                        var seasonTour = longTermEvent as ISeason;
                         builder.Append(" Tournament=").Append(WriteSeasonData(seasonTour));
                     }
                 }
                 catch (Exception e)
                 {
-                    _log.LogWarning(e, $"Error obtaining tournament data {tour.Id}.");
+                    _log.LogWarning(e, "Error obtaining tournament data {TournamentId}", longTermEvent.Id);
                 }
             }
 
@@ -578,25 +578,25 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             }
             catch (FeedSdkException)
             {
-                _log.LogError($"Error fetching info for eventId: {entity.Id}.");
+                _log.LogError("Error fetching info for eventId: {EventId}", entity.Id);
             }
             catch (ObjectDisposedException)
             {
-                _log.LogWarning($"Error fetching info for eventId: {entity.Id} due to SDK being disposed.");
+                _log.LogWarning("Error fetching info for eventId: {EventId} due to SDK being disposed", entity.Id);
             }
             catch (AggregateException ex)
             {
                 var communicationException = ex.InnerExceptions.FirstOrDefault(inner => inner is CommunicationException);
                 if (communicationException != null)
                 {
-                    _log.LogWarning(communicationException, $"Communication exception occurred while fetching info for eventId= {entity.Id}.");
+                    _log.LogWarning(communicationException, "Communication exception occurred while fetching info for eventId: {EventId}", entity.Id);
                     return;
                 }
-                _log.LogError(ex, $"An unexpected exception occurred while fetching info for eventId: {entity.Id}");
+                _log.LogError(ex, "An unexpected exception occurred while fetching info for eventId: {EventId}", entity.Id);
             }
             catch (Exception ex)
             {
-                _log.LogError(ex, $"An unhandled exception occurred while fetching info for eventId: {entity.Id}");
+                _log.LogError(ex, "An unhandled exception occurred while fetching info for eventId: {EventId}", entity.Id);
             }
         }
     }

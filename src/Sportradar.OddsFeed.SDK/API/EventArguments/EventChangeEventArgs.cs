@@ -2,10 +2,11 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api.Managers;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
-namespace Sportradar.OddsFeed.SDK.API.EventArguments
+namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
     /// Event arguments for <see cref="IEventChangeManager.FixtureChange"/> and <see cref="IEventChangeManager.ResultChange"/> event
@@ -13,9 +14,9 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
     public class EventChangeEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> specifying the sport event
+        /// Gets the <see cref="Urn"/> specifying the sport event
         /// </summary>
-        public URN SportEventId { get; }
+        public Urn SportEventId { get; }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying the last update time
@@ -30,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <summary>
         /// Initializes a new instance of the <see cref="EventChangeEventArgs"/> class
         /// </summary>
-        public EventChangeEventArgs(URN sportEventId, DateTime updateTime, ISportEvent sportEvent)
+        public EventChangeEventArgs(Urn sportEventId, DateTime updateTime, ISportEvent sportEvent)
         {
             SportEventId = sportEventId;
             UpdateTime = updateTime;

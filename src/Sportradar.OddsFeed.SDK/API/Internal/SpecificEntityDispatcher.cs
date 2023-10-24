@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// An entity dispatcher capable of dispatching sport specific entities
@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         protected override void OnClosing()
         {
-            OnClosed?.Invoke(this, new EventArgs());
+            OnClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

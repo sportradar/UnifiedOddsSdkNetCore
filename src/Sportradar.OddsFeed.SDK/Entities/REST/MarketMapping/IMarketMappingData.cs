@@ -3,9 +3,10 @@
 */
 using System;
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping
 {
     /// <summary>
     /// Represents mapping information used to map markets and outright to the sport / producer to which they belong
@@ -21,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
         /// <summary>
         /// Gets the id of the sport to which the associated market / outright belongs to
         /// </summary>
-        URN SportId { get; }
+        Urn SportId { get; }
 
         /// <summary>
         /// Gets the id of the market associated with the current instance
@@ -57,10 +58,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
         /// Determines whether the current mapping can map market with provided specifiers associated with provided producer and sport
         /// </summary>
         /// <param name="producerId">The id of the <see cref="IProducer"/> associated with the market</param>
-        /// <param name="sportId">The <see cref="URN"/> specifying the sport associated with the market</param>
+        /// <param name="sportId">The <see cref="Urn"/> specifying the sport associated with the market</param>
         /// <param name="specifiers">The market specifiers</param>
         /// <returns>True if the current mapping can be used to map the specified market. False otherwise</returns>
         /// <exception cref="InvalidOperationException">The provided specifiers are not valid</exception>
-        bool CanMap(int producerId, URN sportId, IReadOnlyDictionary<string, string> specifiers);
+        bool CanMap(int producerId, Urn sportId, IReadOnlyDictionary<string, string> specifiers);
     }
 }

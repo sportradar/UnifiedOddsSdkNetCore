@@ -7,19 +7,21 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages.EventArguments;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// An implementation of the <see cref="IDataProvider{T}"/> which fetches the data, deserializes it and than maps / converts it
     /// to the output type
     /// </summary>
-    /// <typeparam name="TIn">Specifies the type of DTO instance which will be mapped to returned instance</typeparam>
+    /// <typeparam name="TIn">Specifies the type of data-transfer-object instance which will be mapped to returned instance</typeparam>
     /// <typeparam name="TOut">Specifies the type of instances provided</typeparam>
     /// <seealso cref="IDataProvider{T}" />
     internal class DataProvider<TIn, TOut> : IDataProvider<TOut> where TIn : RestMessage where TOut : class
@@ -37,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// A <see cref="IDataFetcher"/> used to fetch the data
         /// </summary>
-        private readonly IDataFetcher _fetcher;
+        public IDataFetcher DataFetcher { get; }
 
         /// <summary>
         /// A <see cref="IDeserializer{T}"/> used to deserialize the fetch data
@@ -58,18 +60,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Initializes a new instance of the <see cref="DataProvider{T, T1}" /> class.
         /// </summary>
         /// <param name="uriFormat">The url format specifying the url of the resources fetched by the fetcher</param>
-        /// <param name="fetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
+        /// <param name="dataFetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
         /// <param name="deserializer">A <see cref="IDeserializer{T}" /> used to deserialize the fetch data</param>
         /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{T, T1}" /> used to construct instances of <see cref="ISingleTypeMapper{T}" /></param>
-        public DataProvider(string uriFormat, IDataFetcher fetcher, IDeserializer<TIn> deserializer, ISingleTypeMapperFactory<TIn, TOut> mapperFactory)
+        public DataProvider(string uriFormat, IDataFetcher dataFetcher, IDeserializer<TIn> deserializer, ISingleTypeMapperFactory<TIn, TOut> mapperFactory)
         {
             Guard.Argument(uriFormat, nameof(uriFormat)).NotNull().NotEmpty();
-            Guard.Argument(fetcher, nameof(fetcher)).NotNull();
+            Guard.Argument(dataFetcher, nameof(dataFetcher)).NotNull();
             Guard.Argument(deserializer, nameof(deserializer)).NotNull();
             Guard.Argument(mapperFactory, nameof(mapperFactory)).NotNull();
 
             _uriFormat = uriFormat;
-            _fetcher = fetcher;
+            DataFetcher = dataFetcher;
             _deserializer = deserializer;
             _mapperFactory = mapperFactory;
         }
@@ -87,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var stream = await _fetcher.GetDataAsync(uri).ConfigureAwait(false);
+            var stream = await DataFetcher.GetDataAsync(uri).ConfigureAwait(false);
             var item = _deserializer.Deserialize(stream);
             stopWatch.Stop();
             DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
@@ -107,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var stream = _fetcher.GetData(uri);
+            var stream = DataFetcher.GetData(uri);
             var item = _deserializer.Deserialize(stream);
             stopWatch.Stop();
             DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);

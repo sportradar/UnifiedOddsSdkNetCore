@@ -1,10 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract for classes implementing team statistics
@@ -51,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the team id
         /// </summary>
         /// <value>The team id</value>
-        URN TeamId { get; }
+        Urn TeamId { get; }
 
         /// <summary>
         /// Gets the name

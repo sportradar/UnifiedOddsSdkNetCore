@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines methods implemented by classes representing sport events of stage type
@@ -45,13 +45,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
         /// </summary>
-        /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
-        Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync() => Task.FromResult<IEnumerable<IStage>>(null);
+        /// <returns>A <see cref="Task{StageCacheItem}"/> representing the asynchronous operation</returns>
+        Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync();
 
         /// <summary>
         /// Asynchronously gets a <see cref="IStageStatus"/> containing information about the progress of the stage
         /// </summary>
         /// <returns>A <see cref="Task{IStageStatus}"/> containing information about the progress of the stage</returns>
-        new Task<IStageStatus> GetStatusAsync() => Task.FromResult<IStageStatus>(null);
+        new Task<IStageStatus> GetStatusAsync();
     }
 }

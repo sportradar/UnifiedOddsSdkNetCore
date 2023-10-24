@@ -3,7 +3,7 @@
 */
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// An <see cref="INamedValue"/> implementation

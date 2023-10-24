@@ -3,9 +3,9 @@
 */
 using System;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EventArguments
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EventArguments
 {
     /// <summary>
     /// An event argument used by events raised when a message from the feed is received
@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EventArguments
         /// <summary>
         /// Gets a <see cref="string"/> representing deserialized message
         /// </summary>
-        public TournamentDTO Tournament { get; }
+        public TournamentDto Tournament { get; }
 
         /// <summary>
         /// Culture of the tournament data
@@ -25,9 +25,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EventArguments
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentReceivedEventArgs"/> class
         /// </summary>
-        /// <param name="tournament">a <see cref="TournamentDTO"/> representing the received tournament</param>
+        /// <param name="tournament">a <see cref="TournamentDto"/> representing the received tournament</param>
         /// <param name="culture">Culture of the tournament data</param>
-        public TournamentReceivedEventArgs(TournamentDTO tournament, CultureInfo culture)
+        public TournamentReceivedEventArgs(TournamentDto tournament, CultureInfo culture)
         {
             //Guard.Argument(tournament, nameof()).NotNull();
 

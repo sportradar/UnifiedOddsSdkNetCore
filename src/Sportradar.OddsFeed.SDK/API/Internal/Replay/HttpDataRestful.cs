@@ -7,44 +7,43 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Common.Internal.Log;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
 {
     /// <summary>
     /// A <see cref="IDataRestful"/> which uses the HTTP requests to post/get/put/patch and delete the data
     /// </summary>
-    [Log(LoggerType.RestTraffic)]
     internal class HttpDataRestful : HttpDataFetcher, IDataRestful
     {
-        private static readonly ILogger Log = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(HttpDataRestful));
+        private readonly ILogger _log = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(HttpDataRestful));
 
         /// <summary>
         /// A <see cref="ISdkHttpClient"/> used to invoke HTTP requests
         /// </summary>
-        private readonly ISdkHttpClient _client;
+        private readonly ISdkHttpClient _sdkHttpClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpDataRestful"/> class.
         /// </summary>
-        /// <param name="client">A <see cref="ISdkHttpClient" /> used to invoke HTTP requests</param>
+        /// <param name="sdkHttpClient">A <see cref="ISdkHttpClient" /> used to invoke HTTP requests</param>
         /// <param name="responseDeserializer">The deserializer for unexpected response</param>
         /// <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
         /// <param name="connectionFailureTimeout">indicates the timeout after which comes out of "blocking mode" (in seconds)</param>
-        public HttpDataRestful(ISdkHttpClient client, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15)
-            : base(client, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
+        public HttpDataRestful(ISdkHttpClient sdkHttpClient, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15)
+            : base(sdkHttpClient, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
         {
-            Guard.Argument(client, nameof(client)).NotNull();
-            Guard.Argument(client.DefaultRequestHeaders, nameof(client)).NotNull();
+            Guard.Argument(sdkHttpClient, nameof(sdkHttpClient)).NotNull();
+            Guard.Argument(sdkHttpClient.DefaultRequestHeaders, nameof(sdkHttpClient)).NotNull();
             Guard.Argument(connectionFailureLimit, nameof(connectionFailureLimit)).Positive();
             Guard.Argument(connectionFailureTimeout, nameof(connectionFailureTimeout)).Positive();
 
-            _client = client;
+            _sdkHttpClient = sdkHttpClient;
         }
 
         /// <summary>
@@ -60,8 +59,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             var responseMessage = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             try
             {
-                Log.LogInformation($"PutDataAsync url: {uri.AbsoluteUri}");
-                responseMessage = await _client.PutAsync(uri, content ?? new StringContent(string.Empty)).ConfigureAwait(false);
+                _log.LogInformation($"PutDataAsync url: {uri.AbsoluteUri}");
+                responseMessage = await _sdkHttpClient.PutAsync(uri, content ?? new StringContent(string.Empty)).ConfigureAwait(false);
                 RecordSuccess();
                 return responseMessage;
             }
@@ -88,8 +87,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             var responseMessage = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             try
             {
-                Log.LogInformation($"DeleteDataAsync url: {uri.AbsoluteUri}");
-                responseMessage = await _client.DeleteAsync(uri).ConfigureAwait(false);
+                _log.LogInformation($"DeleteDataAsync url: {uri.AbsoluteUri}");
+                responseMessage = await _sdkHttpClient.DeleteAsync(uri).ConfigureAwait(false);
                 RecordSuccess();
                 return responseMessage;
             }

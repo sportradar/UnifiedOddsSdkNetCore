@@ -8,7 +8,7 @@ using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// Defines static methods used when parsing feed messages

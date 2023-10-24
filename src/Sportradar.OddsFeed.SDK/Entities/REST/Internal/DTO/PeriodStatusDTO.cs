@@ -3,16 +3,16 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
-    /// Class PeriodStatusDTO.
+    /// Class PeriodStatusDto.
     /// </summary>
-    internal class PeriodStatusDTO
+    internal class PeriodStatusDto
     {
         /// <summary>
         /// Gets the number of the specific lap.
@@ -38,9 +38,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the period results
         /// </summary>
         /// <value>The results</value>
-        public ICollection<PeriodCompetitorResultDTO> PeriodResults { get; }
+        public ICollection<PeriodCompetitorResultDto> PeriodResults { get; }
 
-        public PeriodStatusDTO(periodStatus periodStatus)
+        public PeriodStatusDto(periodStatus periodStatus)
         {
             Guard.Argument(periodStatus, nameof(periodStatus)).NotNull();
 
@@ -49,11 +49,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Status = periodStatus.status;
             if (!periodStatus.competitor.IsNullOrEmpty())
             {
-                PeriodResults = periodStatus.competitor.Select(s => new PeriodCompetitorResultDTO(s)).ToList();
+                PeriodResults = periodStatus.competitor.Select(s => new PeriodCompetitorResultDto(s)).ToList();
             }
             else
             {
-                PeriodResults = new List<PeriodCompetitorResultDTO>();
+                PeriodResults = new List<PeriodCompetitorResultDto>();
             }
         }
     }

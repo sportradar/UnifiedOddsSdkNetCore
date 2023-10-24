@@ -3,12 +3,13 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.API.Internal;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.API.EventArguments
+namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
     /// Event arguments for the <see cref="ISessionMessageManager.FeedMessageReceived"/> event

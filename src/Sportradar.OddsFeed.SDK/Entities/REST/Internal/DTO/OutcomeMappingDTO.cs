@@ -2,14 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing a market mapping for outcome
     /// </summary>
-    internal class OutcomeMappingDTO
+    internal class OutcomeMappingDto
     {
         internal string OutcomeId { get; }
 
@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string MarketId { get; }
 
-        internal OutcomeMappingDTO(mappingsMappingMapping_outcome outcome, string marketId)
+        internal OutcomeMappingDto(mappingsMappingMapping_outcome outcome, string marketId)
         {
             Guard.Argument(outcome, nameof(outcome)).NotNull();
             Guard.Argument(marketId, nameof(marketId)).NotNull().NotEmpty();
@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             MarketId = marketId;
         }
 
-        internal OutcomeMappingDTO(variant_mappingsMappingMapping_outcome outcome, string marketId)
+        internal OutcomeMappingDto(variant_mappingsMappingMapping_outcome outcome, string marketId)
         {
             Guard.Argument(outcome, nameof(outcome)).NotNull();
             Guard.Argument(marketId, nameof(marketId)).NotNull().NotEmpty();

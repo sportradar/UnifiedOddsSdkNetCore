@@ -7,13 +7,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 {
     /// <summary>
     /// A class used keep track of the ongoing asynchronous operations
     /// </summary>
-    internal class TaskProcessor
+    public class TaskProcessor
     {
         /// <summary>
         /// The number of currently running tasks
@@ -58,7 +59,11 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             }
             catch (AggregateException ex)
             {
-                throw ex.InnerExceptions.First();
+                if (!ex.InnerExceptions.IsNullOrEmpty())
+                {
+                    throw ex.InnerExceptions.First();
+                }
+                throw;
             }
             finally
             {

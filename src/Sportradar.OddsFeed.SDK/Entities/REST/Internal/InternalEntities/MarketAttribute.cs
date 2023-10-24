@@ -2,10 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
 {
     internal class MarketAttribute : IMarketAttribute
     {

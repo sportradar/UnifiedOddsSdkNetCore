@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     internal static class FlexMarketHelper
     {

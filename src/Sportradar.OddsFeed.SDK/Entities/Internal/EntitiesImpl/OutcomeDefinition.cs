@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
@@ -56,8 +56,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         {
             if (_names.Any())
             {
-                return _names.ContainsKey(culture)
-                           ? _names[culture]
+                return _names.TryGetValue(culture, out var name1)
+                           ? name1
                            : null;
             }
 
@@ -70,8 +70,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             {
                 if (_names.Any())
                 {
-                    return _names.ContainsKey(culture)
-                        ? _names[culture]
+                    return _names.TryGetValue(culture, out var name2)
+                        ? name2
                         : null;
                 }
                 try
@@ -110,22 +110,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 }
                 catch (CacheItemNotFoundException e)
                 {
-                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for market={_marketId} not found. Could not provide the requested translated name ({culture.TwoLetterISOLanguageName})", _outcomeId, e);
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw new CacheItemNotFoundException($"OutcomeDescription in marketDescription for market={_marketId} could not provide the requested translated name ({culture.TwoLetterISOLanguageName})", _outcomeId, ex);
                     }
                 }
             }
 
-            return _names.ContainsKey(culture)
-                       ? _names[culture]
+            return _names.TryGetValue(culture, out var name)
+                       ? name
                        : null;
         }
 

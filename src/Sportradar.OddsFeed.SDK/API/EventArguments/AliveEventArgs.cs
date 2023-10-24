@@ -6,7 +6,7 @@ using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.API.EventArguments
+namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
     /// Event arguments for the alive event

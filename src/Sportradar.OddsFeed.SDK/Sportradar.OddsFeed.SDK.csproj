@@ -1,24 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>netstandard2.1</TargetFramework>
+	<TargetFramework>netstandard2.0</TargetFramework>
+	<LangVersion>7.3</LangVersion>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	<PackageLicenseFile>License.txt</PackageLicenseFile>
 	<PackageId>Sportradar.OddsFeed.SDKCore</PackageId>
 	<Product>Sportradar.OddsFeed.SDKCore</Product>
-	<Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Standard 2.1)</Description>
-	<Copyright>Copyright © Sportradar AG 2022</Copyright>
+	<Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Standard 2.0)</Description>
+	<Copyright>Copyright © Sportradar AG 2023</Copyright>
 	<Authors>Sportradar AG</Authors>
 	<Company>Sportradar AG</Company>
 	<RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
 	<PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
 	<PackageProjectUrl>https://sdk.sportradar.com</PackageProjectUrl>
-	<AssemblyVersion>1.31.0.0</AssemblyVersion>
-	<FileVersion>1.31.0.0</FileVersion>
-	<Version>1.31.0</Version>
+	<AssemblyVersion>2.0.0.0</AssemblyVersion>
+	<FileVersion>2.0.0.0</FileVersion>
+	<Version>2.0.0</Version>
 	<UserSecretsId>27ef2334-e9fc-4f05-b88a-a33259c908c3</UserSecretsId>
-	<CodeAnalysisRuleSet>..\.sonarlint\unifiedfeed_uf-sdk-net-stdcsharp.ruleset</CodeAnalysisRuleSet>
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	<EnableNETAnalyzers>True</EnableNETAnalyzers>
 	<AnalysisMode>AllEnabledByDefault</AnalysisMode>
@@ -37,31 +37,33 @@
 		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Common\Internal\Telemetry\LogExporterMetricsExtensions.cs" />
+	  <Compile Remove="Common\Internal\Telemetry\LogTagTransformer.cs" />
+	  <Compile Remove="Common\Internal\Telemetry\MetricsLogExporter.cs" />
+	</ItemGroup>
+
   <ItemGroup>
-	<PackageReference Include="App.Metrics" Version="3.2.0" />
-	<PackageReference Include="App.Metrics.Abstractions" Version="3.2.0" />
-	<PackageReference Include="App.Metrics.Core" Version="3.2.0" />
-	<PackageReference Include="App.Metrics.Health.Core" Version="3.2.0" />
-	<PackageReference Include="Castle.Core" Version="4.4.0" />
 	<PackageReference Include="Dawn.Guard" Version="1.12.0" />
-	<PackageReference Include="Humanizer" Version="2.8.26" />
-	<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
-	<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-	<PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
-	<PackageReference Include="System.Collections" Version="4.3.0" />
-	<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-	<PackageReference Include="System.Runtime" Version="4.3.1" />
-	<PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
-	<PackageReference Include="System.Threading" Version="4.3.0" />
-	<PackageReference Include="Unity" Version="5.11.3" />
+	<PackageReference Include="Humanizer" Version="2.14.1" />
+	<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.11" />
+	<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+	<PackageReference Include="OpenTelemetry" Version="1.6.0" />
+	<PackageReference Include="OpenTelemetry.Api" Version="1.6.0" />
+	<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.6.0" />
+	<PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+	<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-	<None Update="LICENSE">
+	<None Update="License">
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>
-	<None Update="LICENSE.txt">
+	<None Update="License.txt">
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>
 	<None Update="Readme.md">
@@ -73,7 +75,7 @@
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>
 	</None>
-	<None Include="LICENSE.txt">
+	<None Include="License.txt">
 	  <Pack>True</Pack>
 	  <PackagePath></PackagePath>
 	</None>

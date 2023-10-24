@@ -3,14 +3,14 @@
 */
 using System;
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
 {
     /// <summary>
     /// Implements methods used to access available selections for the market
     /// </summary>
-    internal class Market : REST.CustomBet.IMarket
+    internal class Market : Rest.CustomBet.IMarket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Market"/> class

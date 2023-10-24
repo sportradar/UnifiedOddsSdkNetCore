@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class Jersey : IJersey
     {
@@ -20,8 +20,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public string SplitColor { get; }
         public string ShirtType { get; }
         public string SleeveDetail { get; }
+        public string SquareColor { get; }
+        public string HorizontalStripesColor { get; }
 
-        public Jersey(JerseyCI item)
+        public Jersey(JerseyCacheItem item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 
@@ -37,6 +39,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             SplitColor = item.SplitColor;
             ShirtType = item.ShirtType;
             SleeveDetail = item.SleeveDetail;
+            SquareColor = item.SquareColor;
+            HorizontalStripesColor = item.HorizontalStripesColor;
         }
     }
 }

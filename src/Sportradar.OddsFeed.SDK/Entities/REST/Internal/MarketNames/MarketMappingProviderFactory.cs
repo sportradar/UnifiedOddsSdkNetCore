@@ -3,11 +3,12 @@
 */
 using System.Collections.Generic;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// A factory used to construct <see cref="IMarketMappingProvider"/> instances
@@ -54,7 +55,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="producerId">An id of the <see cref="IProducer"/> of the <see cref="ISportEvent"/></param>
         /// <param name="sportId">A sportId of the <see cref="ISportEvent"/></param>
         /// <returns>Returns an instance of <see cref="IMarketMappingProvider"/></returns>
-        public IMarketMappingProvider BuildMarketMappingProvider(ISportEvent sportEvent, int marketId, IReadOnlyDictionary<string, string> specifiers, int producerId, URN sportId)
+        public IMarketMappingProvider BuildMarketMappingProvider(ISportEvent sportEvent, int marketId, IReadOnlyDictionary<string, string> specifiers, int producerId, Urn sportId)
         {
             return new MarketMappingProvider(_marketCacheProvider, _eventStatusCache, sportEvent, marketId, specifiers, producerId, sportId, _exceptionStrategy);
         }

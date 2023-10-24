@@ -4,28 +4,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object containing data for stage period summary
     /// </summary>
-    internal class PeriodSummaryDTO
+    internal class PeriodSummaryDto
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> specifying the id of the sport event associated with the current instance
+        /// Gets a <see cref="Urn"/> specifying the id of the sport event associated with the current instance
         /// </summary>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the period statuses
         /// </summary>
         /// <value>The period statuses</value>
-        public IEnumerable<PeriodStatusDTO> PeriodStatuses { get; }
+        public IEnumerable<PeriodStatusDto> PeriodStatuses { get; }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying when the associated message was generated (on the server side)
@@ -33,19 +33,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public DateTime? GeneratedAt { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PeriodSummaryDTO"/> class
+        /// Initializes a new instance of the <see cref="PeriodSummaryDto"/> class
         /// </summary>
         /// <param name="stagePeriod">A <see cref="stagePeriodEndpoint"/> containing data</param>
-        internal PeriodSummaryDTO(stagePeriodEndpoint stagePeriod)
+        internal PeriodSummaryDto(stagePeriodEndpoint stagePeriod)
         {
             Guard.Argument(stagePeriod, nameof(stagePeriod)).NotNull();
             Guard.Argument(stagePeriod.sport_event, nameof(stagePeriod.sport_event)).NotNull();
 
-            Id = URN.Parse(stagePeriod.sport_event.id);
-            PeriodStatuses = new List<PeriodStatusDTO>();
+            Id = Urn.Parse(stagePeriod.sport_event.id);
+            PeriodStatuses = new List<PeriodStatusDto>();
             if (!stagePeriod.period_statuses.IsNullOrEmpty())
             {
-                PeriodStatuses = stagePeriod.period_statuses.Select(s => new PeriodStatusDTO(s));
+                PeriodStatuses = stagePeriod.period_statuses.Select(s => new PeriodStatusDto(s));
             }
 
             GeneratedAt = stagePeriod.generated_atSpecified

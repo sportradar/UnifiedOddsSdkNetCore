@@ -5,20 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing a market mapping
     /// </summary>
-    internal class MarketMappingDTO
+    internal class MarketMappingDto
     {
         internal IEnumerable<int> ProducerIds { get; }
 
-        internal URN SportId { get; }
+        internal Urn SportId { get; }
 
         internal int MarketTypeId { get; }
 
@@ -28,11 +28,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string ValidFor { get; }
 
-        internal IEnumerable<OutcomeMappingDTO> OutcomeMappings { get; }
+        internal IEnumerable<OutcomeMappingDto> OutcomeMappings { get; }
 
         internal string OrgMarketId { get; }
 
-        internal MarketMappingDTO(mappingsMapping mapping)
+        internal MarketMappingDto(mappingsMapping mapping)
         {
             Guard.Argument(mapping, nameof(mapping)).NotNull();
             Guard.Argument(mapping.product_id, nameof(mapping.product_id)).Positive();
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)
                 ? new[] { mapping.product_id }
                 : mapping.product_ids.Split(new[] { SdkInfo.MarketMappingProductsDelimiter }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
-            SportId = mapping.sport_id == "all" ? null : URN.Parse(mapping.sport_id);
+            SportId = mapping.sport_id == "all" ? null : Urn.Parse(mapping.sport_id);
             OrgMarketId = null;
             var marketId = mapping.market_id.Split(':'); // legacy
             int.TryParse(marketId[0], out var typeId);
@@ -54,14 +54,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             SovTemplate = mapping.sov_template;
             ValidFor = mapping.valid_for;
 
-            OutcomeMappings = new List<OutcomeMappingDTO>();
+            OutcomeMappings = new List<OutcomeMappingDto>();
             if (mapping.mapping_outcome != null)
             {
-                OutcomeMappings = mapping.mapping_outcome.Select(o => new OutcomeMappingDTO(o, mapping.market_id));
+                OutcomeMappings = mapping.mapping_outcome.Select(o => new OutcomeMappingDto(o, mapping.market_id));
             }
         }
 
-        internal MarketMappingDTO(variant_mappingsMapping mapping)
+        internal MarketMappingDto(variant_mappingsMapping mapping)
         {
             Guard.Argument(mapping, nameof(mapping)).NotNull();
             Guard.Argument(mapping.product_id, nameof(mapping.product_id)).Positive();
@@ -71,7 +71,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)
                 ? new[] { mapping.product_id }
                 : mapping.product_ids.Split(new[] { SdkInfo.MarketMappingProductsDelimiter }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
-            SportId = mapping.sport_id == "all" ? null : URN.Parse(mapping.sport_id);
+            SportId = mapping.sport_id == "all" ? null : Urn.Parse(mapping.sport_id);
             OrgMarketId = mapping.market_id;
             var marketId = string.IsNullOrEmpty(mapping.product_market_id)
                                ? mapping.market_id.Split(':')
@@ -85,10 +85,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             SovTemplate = mapping.sov_template;
             ValidFor = mapping.valid_for;
 
-            OutcomeMappings = new List<OutcomeMappingDTO>();
+            OutcomeMappings = new List<OutcomeMappingDto>();
             if (mapping.mapping_outcome != null)
             {
-                OutcomeMappings = mapping.mapping_outcome.Select(o => new OutcomeMappingDTO(o, string.IsNullOrEmpty(mapping.product_market_id) ? mapping.market_id : mapping.product_market_id));
+                OutcomeMappings = mapping.mapping_outcome.Select(o => new OutcomeMappingDto(o, string.IsNullOrEmpty(mapping.product_market_id) ? mapping.market_id : mapping.product_market_id));
             }
         }
     }

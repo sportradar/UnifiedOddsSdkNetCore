@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// Maps <see cref="matchTimelineEndpoint"/> instances to <see cref="MatchTimelineDTO" /> instance
+    /// Maps <see cref="matchTimelineEndpoint"/> instances to <see cref="MatchTimelineDto" /> instance
     /// </summary>
-    internal class MatchTimelineMapper : ISingleTypeMapper<MatchTimelineDTO>
+    internal class MatchTimelineMapper : ISingleTypeMapper<MatchTimelineDto>
     {
         /// <summary>
         /// A <see cref="matchTimelineEndpoint"/> instance containing match timeline info
@@ -29,12 +29,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="MatchTimelineDTO"/> instance
+        /// Maps it's data to <see cref="MatchTimelineDto"/> instance
         /// </summary>
-        /// <returns>Constructed <see cref="MatchTimelineDTO"/> instance</returns>
-        public MatchTimelineDTO Map()
+        /// <returns>Constructed <see cref="MatchTimelineDto"/> instance</returns>
+        public MatchTimelineDto Map()
         {
-            return new MatchTimelineDTO(_data);
+            return new MatchTimelineDto(_data);
         }
     }
 }

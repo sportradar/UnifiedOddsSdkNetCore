@@ -4,9 +4,9 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing the target(tournament, match, race) of feed messages
@@ -14,9 +14,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface ISportEvent
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> uniquely identifying the sport event associated with the current instance
+        /// Gets a <see cref="Urn"/> uniquely identifying the sport event associated with the current instance
         /// </summary>
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Asynchronously gets the name of the sport event
@@ -26,10 +26,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         Task<string> GetNameAsync(CultureInfo culture);
 
         /// <summary>
-        /// Asynchronously gets a <see cref="URN"/> uniquely identifying the sport associated with the current instance
+        /// Asynchronously gets a <see cref="Urn"/> uniquely identifying the sport associated with the current instance
         /// </summary>
-        /// <returns>Returns a <see cref="URN"/> uniquely identifying the sport associated with the current instance</returns>
-        Task<URN> GetSportIdAsync();
+        /// <returns>Returns a <see cref="Urn"/> uniquely identifying the sport associated with the current instance</returns>
+        Task<Urn> GetSportIdAsync();
 
         /// <summary>
         /// Asynchronously gets a <see cref="DateTime" /> instance specifying for when the sport event associated with the current instance is scheduled or a null reference if the value is not known
@@ -50,9 +50,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         Task<bool?> GetStartTimeTbdAsync();
 
         /// <summary>
-        /// Asynchronously gets a <see cref="URN"/> specifying the replacement sport event for the associated sport event.
+        /// Asynchronously gets a <see cref="Urn"/> specifying the replacement sport event for the associated sport event.
         /// </summary>
-        /// <returns>A <see cref="URN"/> specifying the replacement sport event for the associated sport event.</returns>
-        Task<URN> GetReplacedByAsync();
+        /// <returns>A <see cref="Urn"/> specifying the replacement sport event for the associated sport event.</returns>
+        Task<Urn> GetReplacedByAsync();
     }
 }

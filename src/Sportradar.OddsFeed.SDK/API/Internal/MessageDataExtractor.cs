@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Messages.Internal;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Class used to extract most basic information from raw feed message
@@ -34,15 +36,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         private static readonly Tuple<string, MessageType>[] MessageTypes =
         {
-            new Tuple<string, MessageType>(odds_change.MessageName, MessageType.ODDS_CHANGE),
-            new Tuple<string, MessageType>(bet_settlement.MessageName, MessageType.BET_SETTLEMENT),
-            new Tuple<string, MessageType>(rollback_bet_settlement.MessageName, MessageType.ROLLBACK_BET_SETTLEMENT),
-            new Tuple<string, MessageType>(bet_cancel.MessageName, MessageType.BET_CANCEL),
-            new Tuple<string, MessageType>(rollback_bet_cancel.MessageName, MessageType.ROLLBACK_BET_CANCEL),
-            new Tuple<string, MessageType>(alive.MessageName, MessageType.ALIVE),
-            new Tuple<string, MessageType>(snapshot_complete.MessageName, MessageType.SNAPSHOT_COMPLETE),
-            new Tuple<string, MessageType>(fixture_change.MessageName, MessageType.FIXTURE_CHANGE),
-            new Tuple<string, MessageType>(bet_stop.MessageName, MessageType.BET_STOP)
+            new Tuple<string, MessageType>(odds_change.MessageName, MessageType.OddsChange),
+            new Tuple<string, MessageType>(bet_settlement.MessageName, MessageType.BetSettlement),
+            new Tuple<string, MessageType>(rollback_bet_settlement.MessageName, MessageType.RollbackBetSettlement),
+            new Tuple<string, MessageType>(bet_cancel.MessageName, MessageType.BetCancel),
+            new Tuple<string, MessageType>(rollback_bet_cancel.MessageName, MessageType.RollbackBetCancel),
+            new Tuple<string, MessageType>(alive.MessageName, MessageType.Alive),
+            new Tuple<string, MessageType>(snapshot_complete.MessageName, MessageType.SnapshotComplete),
+            new Tuple<string, MessageType>(fixture_change.MessageName, MessageType.FixtureChange),
+            new Tuple<string, MessageType>(bet_stop.MessageName, MessageType.BetStop)
         };
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     }
                 }
             }
-            return MessageType.UNKNOWN;
+            return MessageType.Unknown;
         }
 
         /// <summary>
@@ -116,7 +118,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (messageData == null || !messageData.Any())
             {
-                return new BasicMessageData(MessageType.UNKNOWN, null, null);
+                return new BasicMessageData(MessageType.Unknown, null, null);
             }
 
             var message = Encoding.UTF8.GetString(messageData);
@@ -139,13 +141,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             var messageTypeName = message.GetType().Name;
             if (messageTypeName.Equals("product_down", StringComparison.InvariantCultureIgnoreCase))
             {
-                messageTypeName = MessageType.PRODUCER_DOWN.ToString();
+                messageTypeName = MessageType.ProducerDown.ToString();
             }
             var tuple = MessageTypes.FirstOrDefault(t => t.Item1 == messageTypeName);
             if (tuple == null)
             {
                 Log.LogWarning($"Message of type={messageTypeName} is not supported.");
-                return MessageType.UNKNOWN;
+                return MessageType.Unknown;
             }
             return tuple.Item2;
         }

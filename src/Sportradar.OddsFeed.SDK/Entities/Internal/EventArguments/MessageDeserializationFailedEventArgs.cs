@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments
 {

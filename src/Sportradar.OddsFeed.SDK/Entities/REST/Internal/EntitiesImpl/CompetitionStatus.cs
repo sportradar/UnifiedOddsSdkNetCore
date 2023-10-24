@@ -4,11 +4,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class CompetitionStatus
@@ -19,13 +20,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// The sport event status dto
         /// </summary>
-        public SportEventStatusCI SportEventStatusCI { get; }
+        public SportEventStatusCacheItem SportEventStatusCacheItem { get; }
 
         /// <summary>
         /// Gets the winner identifier
         /// </summary>
         /// <value>The winner identifier, if available, otherwise null</value>
-        public URN WinnerId { get; }
+        public Urn WinnerId { get; }
 
         /// <summary>
         /// Gets a <see cref="EventStatus" /> describing the high-level status of the associated sport event
@@ -84,12 +85,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <param name="ci">The status cache item</param>
         /// <param name="matchStatusesCache">The <see cref="ILocalizedNamedValueCache"/> used to get match status id and description</param>
-        public CompetitionStatus(SportEventStatusCI ci, ILocalizedNamedValueCache matchStatusesCache)
+        public CompetitionStatus(SportEventStatusCacheItem ci, ILocalizedNamedValueCache matchStatusesCache)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
             Guard.Argument(matchStatusesCache, nameof(matchStatusesCache)).NotNull();
 
-            SportEventStatusCI = ci;
+            SportEventStatusCacheItem = ci;
             if (matchStatusesCache != null)
             {
                 MatchStatusCache = matchStatusesCache;

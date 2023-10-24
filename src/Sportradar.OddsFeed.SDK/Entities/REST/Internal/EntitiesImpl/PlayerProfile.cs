@@ -7,9 +7,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents player's profile information
@@ -18,66 +18,66 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// <seealso cref="IPlayerProfile" />
     internal class PlayerProfile : Player, IPlayerProfile
     {
-        private readonly PlayerProfileCI _playerProfileCI;
+        private readonly PlayerProfileCacheItem _playerProfileCacheItem;
         private readonly IReadOnlyCollection<CultureInfo> _cultures;
 
         /// <summary>
         /// Gets a value describing the type(e.g. forward, defense, ...) of the player represented by current instance
         /// </summary>
-        public string Type => _playerProfileCI.Type;
+        public string Type => _playerProfileCacheItem.Type;
 
         /// <summary>
         /// Gets a <see cref="DateTime" /> specifying the date of birth of the player associated with the current instance
         /// </summary>
-        public DateTime? DateOfBirth => _playerProfileCI.DateOfBirth;
+        public DateTime? DateOfBirth => _playerProfileCacheItem.DateOfBirth;
 
         /// <summary>
         /// Gets the height in centimeters of the player represented by the current instance or a null reference if height is not known
         /// </summary>
-        public int? Height => _playerProfileCI.Height;
+        public int? Height => _playerProfileCacheItem.Height;
 
         /// <summary>
         /// Gets the weight in kilograms of the player represented by the current instance or a null reference if weight is not known
         /// </summary>
-        public int? Weight => _playerProfileCI.Weight;
+        public int? Weight => _playerProfileCacheItem.Weight;
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}" /> containing player nationality in different languages
         /// </summary>
-        public IReadOnlyDictionary<CultureInfo, string> Nationalities => new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => _playerProfileCI.GetNationality(c) != null).ToDictionary(c => c, _playerProfileCI.GetNationality));
+        public IReadOnlyDictionary<CultureInfo, string> Nationalities => new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => _playerProfileCacheItem.GetNationality(c) != null).ToDictionary(c => c, _playerProfileCacheItem.GetNationality));
 
         /// <summary>
         /// Gets the gender
         /// </summary>
-        public string Gender => _playerProfileCI.Gender;
+        public string Gender => _playerProfileCacheItem.Gender;
 
         /// <summary>
         /// Gets the country code
         /// </summary>
-        public string CountryCode => _playerProfileCI.CountryCode;
+        public string CountryCode => _playerProfileCacheItem.CountryCode;
 
         /// <summary>
         /// Gets the full name of the player
         /// </summary>
-        public string FullName => _playerProfileCI.FullName;
+        public string FullName => _playerProfileCacheItem.FullName;
 
         /// <summary>
         /// Gets the nickname of the player
         /// </summary>
-        public string Nickname => _playerProfileCI.Nickname;
+        public string Nickname => _playerProfileCacheItem.Nickname;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerProfile"/> class
         /// </summary>
-        /// <param name="ci">A <see cref="PlayerProfileCI"/> representing cached player profile info</param>
+        /// <param name="ci">A <see cref="PlayerProfileCacheItem"/> representing cached player profile info</param>
         /// <param name="cultures">A <see cref="ICollection{CultureInfo}"/> specifying supported languages of the constructed instance</param>
-        public PlayerProfile(PlayerProfileCI ci, IReadOnlyCollection<CultureInfo> cultures)
+        public PlayerProfile(PlayerProfileCacheItem ci, IReadOnlyCollection<CultureInfo> cultures)
             : base(ci.Id, cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName))
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            _playerProfileCI = ci;
+            _playerProfileCacheItem = ci;
             _cultures = cultures;
         }
 

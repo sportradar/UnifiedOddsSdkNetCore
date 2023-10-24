@@ -3,12 +3,13 @@
 */
 using System;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// A <see cref="IDataProvider{ISportEventsSchedule}"/> used to retrieve sport events scheduled for a specified date
@@ -16,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
     /// </summary>
     /// <seealso cref="DataProvider{scheduleType, EntityList}" />
     /// <seealso cref="IDataProvider{EntityList}" />
-    internal class DateScheduleProvider : DataProvider<scheduleEndpoint, EntityList<SportEventSummaryDTO>>
+    internal class DateScheduleProvider : DataProviderNamed<scheduleEndpoint, EntityList<SportEventSummaryDto>>
     {
         /// <summary>
         /// An address format used to retrieve live sport events
@@ -26,24 +27,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="DateScheduleProvider"/> class.
         /// </summary>
+        /// <param name="name">Name for the date schedule provider</param>
         /// <param name="liveScheduleUriFormat">An address format used to retrieve live sport events</param>
         /// <param name="dateScheduleUriFormat">An address format used to retrieve sport events for a specified date</param>
         /// <param name="fetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
         /// <param name="deserializer">A <see cref="IDeserializer{scheduleType}" /> used to deserialize the fetch data</param>
         /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{scheduleType, EntityList}" /> used to construct instances of <see cref="ISingleTypeMapper{ISportEventsSchedule}" /></param>
-        public DateScheduleProvider(
+        public DateScheduleProvider(string name,
             string liveScheduleUriFormat,
             string dateScheduleUriFormat,
             IDataFetcher fetcher,
             IDeserializer<scheduleEndpoint> deserializer,
-            ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDTO>> mapperFactory)
-            : base(dateScheduleUriFormat, fetcher, deserializer, mapperFactory)
+            ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDto>> mapperFactory)
+            : base(name, dateScheduleUriFormat, fetcher, deserializer, mapperFactory)
         {
             Guard.Argument(liveScheduleUriFormat, nameof(liveScheduleUriFormat)).NotNull().NotEmpty();
             Guard.Argument(dateScheduleUriFormat, nameof(dateScheduleUriFormat)).NotNull().NotEmpty();
-            Guard.Argument(fetcher, nameof(fetcher)).NotNull();
-            Guard.Argument(deserializer, nameof(deserializer)).NotNull();
-            Guard.Argument(mapperFactory, nameof(mapperFactory)).NotNull();
 
             _liveScheduleUriFormat = liveScheduleUriFormat;
         }

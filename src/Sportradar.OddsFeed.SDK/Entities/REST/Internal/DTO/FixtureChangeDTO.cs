@@ -2,20 +2,20 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for fixture change
     /// </summary>
-    internal class FixtureChangeDTO
+    internal class FixtureChangeDto
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> specifying the sport event
+        /// Gets the <see cref="Urn"/> specifying the sport event
         /// </summary>
-        public URN SportEventId { get; }
+        public Urn SportEventId { get; }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying the last update time
@@ -27,14 +27,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         public DateTime? GeneratedAt { get; }
 
-        internal FixtureChangeDTO(fixtureChange fixtureChange, DateTime? generatedAt)
+        internal FixtureChangeDto(fixtureChange fixtureChange, DateTime? generatedAt)
         {
             if (fixtureChange == null)
             {
                 throw new ArgumentNullException(nameof(fixtureChange));
             }
 
-            SportEventId = URN.Parse(fixtureChange.sport_event_id);
+            SportEventId = Urn.Parse(fixtureChange.sport_event_id);
             UpdateTime = fixtureChange.update_time;
             GeneratedAt = generatedAt;
         }

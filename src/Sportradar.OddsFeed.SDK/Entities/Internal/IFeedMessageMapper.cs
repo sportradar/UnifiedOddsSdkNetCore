@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {

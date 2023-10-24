@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes, which represent information about a lottery
@@ -34,12 +34,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously gets the list of ids of associated <see cref="IDraw"/>
         /// </summary>
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
-        Task<IEnumerable<URN>> GetScheduledDrawsAsync();
+        Task<IEnumerable<Urn>> GetScheduledDrawsAsync();
 
         /// <summary>
         /// Asynchronously gets the list of associated <see cref="IDraw"/>
         /// </summary>
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
-        Task<IEnumerable<IDraw>> GetDrawsAsync() => Task.FromResult<IEnumerable<IDraw>>(null);
+        Task<IEnumerable<IDraw>> GetDrawsAsync();
     }
 }

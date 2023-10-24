@@ -8,15 +8,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a season
@@ -47,15 +48,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Tournament"/> class
         /// </summary>
-        /// <param name="id">A <see cref="URN"/> uniquely identifying the tournament associated with the current instance</param>
-        /// <param name="sportId">A <see cref="URN"/> identifying the sport associated with the current instance</param>
+        /// <param name="id">A <see cref="Urn"/> uniquely identifying the tournament associated with the current instance</param>
+        /// <param name="sportId">A <see cref="Urn"/> identifying the sport associated with the current instance</param>
         /// <param name="sportEntityFactory">An instance of a <see cref="ISportEntityFactory"/> used to create <see cref="ISportEvent"/> instances</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> used to retrieve tournament schedule</param>
         /// <param name="sportDataCache">A <see cref="ISportDataCache"/> instance used to retrieve basic tournament information</param>
         /// <param name="cultures">A list of all languages for this instance</param>
         /// <param name="exceptionStrategy">The <see cref="ExceptionHandlingStrategy"/> indicating how to handle potential exceptions thrown during execution</param>
-        public Season(URN id,
-                      URN sportId,
+        public Season(Urn id,
+                      Urn sportId,
                       ISportEntityFactory sportEntityFactory,
                       ISportEventCache sportEventCache,
                       ISportDataCache sportDataCache,
@@ -79,15 +80,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{ISportSummary}"/> representing the asynchronous operation</returns>
         public async Task<ISportSummary> GetSportAsync()
         {
-            var seasonCI = (TournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (TournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var sportId = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetSportIdAsync().ConfigureAwait(false)
-                : await new Func<Task<URN>>(seasonCI.GetSportIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportId")).ConfigureAwait(false);
+            var sportId = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetSportIdAsync().ConfigureAwait(false)
+                : await new Func<Task<Urn>>(seasonCacheItem.GetSportIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportId")).ConfigureAwait(false);
 
             if (sportId == null)
             {
@@ -95,9 +96,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 return null;
             }
 
-            var sportData = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+            var sportData = ExceptionStrategy == ExceptionHandlingStrategy.Throw
                 ? await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false)
-                : await new Func<URN, IReadOnlyCollection<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
+                : await new Func<Urn, IReadOnlyCollection<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
 
             return sportData == null
                 ? null
@@ -111,26 +112,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <value>The <see cref="ITournamentCoverage" /> instance representing the tournament coverage associated with the current instance</value>
         public async Task<ITournamentCoverage> GetTournamentCoverage()
         {
-            var seasonCI = (TournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (TournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var tournamentCoverageCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetTournamentCoverageAsync().ConfigureAwait(false)
-                : await new Func<Task<TournamentCoverageCI>>(seasonCI.GetTournamentCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentCoverage")).ConfigureAwait(false);
+            var tournamentCoverageCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetTournamentCoverageAsync().ConfigureAwait(false)
+                : await new Func<Task<TournamentCoverageCacheItem>>(seasonCacheItem.GetTournamentCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentCoverage")).ConfigureAwait(false);
 
-            return tournamentCoverageCI == null
+            return tournamentCoverageCacheItem == null
                 ? null
-                : new TournamentCoverage(tournamentCoverageCI);
+                : new TournamentCoverage(tournamentCoverageCacheItem);
         }
 
         /// <summary>
-        /// Asynchronously get the list of available team <see cref="ReferenceIdCI"/>
+        /// Asynchronously get the list of available team <see cref="ReferenceIdCacheItem"/>
         /// </summary>
         /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
-        public Task<IDictionary<URN, ReferenceIdCI>> GetCompetitorsReferencesAsync()
+        public Task<IDictionary<Urn, ReferenceIdCacheItem>> GetCompetitorsReferencesAsync()
         {
             throw new NotImplementedException();
         }
@@ -141,19 +142,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{ISeasonCoverage}"/> representing the asynchronous operation</returns>
         public async Task<ISeasonCoverage> GetSeasonCoverageAsync()
         {
-            var seasonCI = (ITournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (ITournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var seasonCoverageCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetSeasonCoverageAsync().ConfigureAwait(false)
-                : await new Func<Task<SeasonCoverageCI>>(seasonCI.GetSeasonCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SeasonCoverage")).ConfigureAwait(false);
+            var seasonCoverageCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetSeasonCoverageAsync().ConfigureAwait(false)
+                : await new Func<Task<SeasonCoverageCacheItem>>(seasonCacheItem.GetSeasonCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SeasonCoverage")).ConfigureAwait(false);
 
-            return seasonCoverageCI == null
+            return seasonCoverageCacheItem == null
                 ? null
-                : new SeasonCoverage(seasonCoverageCI);
+                : new SeasonCoverage(seasonCoverageCacheItem);
         }
 
         /// <summary>
@@ -162,19 +163,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation</returns>
         public async Task<IEnumerable<IGroup>> GetGroupsAsync()
         {
-            var seasonCI = (ITournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (ITournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var groupsCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetGroupsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<GroupCI>>>(seasonCI.GetGroupsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Groups")).ConfigureAwait(false);
+            var groupsCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetGroupsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<GroupCacheItem>>>(seasonCacheItem.GetGroupsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Groups")).ConfigureAwait(false);
 
-            var competitorsReferences = await seasonCI.GetCompetitorsReferencesAsync().ConfigureAwait(false);
+            var competitorsReferences = await seasonCacheItem.GetCompetitorsReferencesAsync().ConfigureAwait(false);
 
-            var groupCis = groupsCI as IList<GroupCI>;
+            var groupCis = groupsCacheItem as IList<GroupCacheItem>;
 
             return groupCis == null || !groupCis.Any()
                 ? null
@@ -187,19 +188,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{IRound}" /> representing the asynchronous operation</returns>
         public async Task<IRound> GetCurrentRoundAsync()
         {
-            var seasonCI = (ITournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (ITournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var currentRoundCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetCurrentRoundAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<RoundCI>>(seasonCI.GetCurrentRoundAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CurrentRound")).ConfigureAwait(false);
+            var currentRoundCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetCurrentRoundAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<RoundCacheItem>>(seasonCacheItem.GetCurrentRoundAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CurrentRound")).ConfigureAwait(false);
 
-            return currentRoundCI == null
+            return currentRoundCacheItem == null
                 ? null
-                : new Round(currentRoundCI, Cultures);
+                : new Round(currentRoundCacheItem, Cultures);
         }
 
         /// <summary>
@@ -207,15 +208,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         public async Task<string> GetYearAsync()
         {
-            var seasonCI = (ITournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (ITournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var year = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetYearAsync().ConfigureAwait(false)
-                : await new Func<Task<string>>(seasonCI.GetYearAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("Year")).ConfigureAwait(false);
+            var year = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetYearAsync().ConfigureAwait(false)
+                : await new Func<Task<string>>(seasonCacheItem.GetYearAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("Year")).ConfigureAwait(false);
 
             return year;
         }
@@ -226,54 +227,54 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{ITournamentInfo}"/> representing the asynchronous operation</returns>
         public async Task<ITournamentInfo> GetTournamentInfoAsync()
         {
-            var seasonCI = (ITournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (ITournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var tournamentInfoBasicCI = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetTournamentInfoAsync().ConfigureAwait(false)
-                : await new Func<Task<TournamentInfoBasicCI>>(seasonCI.GetTournamentInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentInfoBasic")).ConfigureAwait(false);
+            var tournamentInfoBasicCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetTournamentInfoAsync().ConfigureAwait(false)
+                : await new Func<Task<TournamentInfoBasicCacheItem>>(seasonCacheItem.GetTournamentInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentInfoBasic")).ConfigureAwait(false);
 
-            if (tournamentInfoBasicCI == null)
+            if (tournamentInfoBasicCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament info basic for cache item with id={Id}.");
                 return null;
             }
 
-            var categoryId = await seasonCI.GetCategoryIdAsync().ConfigureAwait(false);
+            var categoryId = await seasonCacheItem.GetCategoryIdAsync().ConfigureAwait(false);
             if (categoryId == null)
             {
                 return null;
             }
-            var categoryCI = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
-            var categorySummary = categoryCI == null ? null : new CategorySummary(categoryCI.Id, categoryCI.Names, categoryCI.CountryCode);
+            var categoryCacheItem = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
+            var categorySummary = categoryCacheItem == null ? null : new CategorySummary(categoryCacheItem.Id, categoryCacheItem.Names, categoryCacheItem.CountryCode);
 
-            ITournamentInfoCI currentSeasonCI;
-            if (tournamentInfoBasicCI.CurrentSeason == null)
+            ITournamentInfoCacheItem currentSeasonCacheItem;
+            if (tournamentInfoBasicCacheItem.CurrentSeason == null)
             {
-                currentSeasonCI = null;
+                currentSeasonCacheItem = null;
             }
             else
             {
-                currentSeasonCI = Id.Equals(tournamentInfoBasicCI.CurrentSeason.Id)
-                    ? seasonCI
-                    : (TournamentInfoCI)SportEventCache.GetEventCacheItem(tournamentInfoBasicCI.CurrentSeason.Id);
+                currentSeasonCacheItem = Id.Equals(tournamentInfoBasicCacheItem.CurrentSeason.Id)
+                    ? seasonCacheItem
+                    : (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(tournamentInfoBasicCacheItem.CurrentSeason.Id);
             }
 
             // there is no current season - return empty TournamentInfo
-            if (currentSeasonCI == null)
+            if (currentSeasonCacheItem == null)
             {
-                return new TournamentInfo(tournamentInfoBasicCI, categorySummary, null);
+                return new TournamentInfo(tournamentInfoBasicCacheItem, categorySummary, null);
             }
 
-            var competitorsReferences = await seasonCI.GetCompetitorsReferencesAsync().ConfigureAwait(false);
+            var competitorsReferences = await seasonCacheItem.GetCompetitorsReferencesAsync().ConfigureAwait(false);
 
             //we do have current season, but need to load the correct one
-            var seasonTournamentInfoCurrentSeasonInfo = new CurrentSeasonInfo(currentSeasonCI, Cultures, _sportEntityFactory, ExceptionStrategy, competitorsReferences);
+            var seasonTournamentInfoCurrentSeasonInfo = new CurrentSeasonInfo(currentSeasonCacheItem, Cultures, _sportEntityFactory, ExceptionStrategy, competitorsReferences);
 
-            return new TournamentInfo(tournamentInfoBasicCI, categorySummary, seasonTournamentInfoCurrentSeasonInfo);
+            return new TournamentInfo(tournamentInfoBasicCacheItem, categorySummary, seasonTournamentInfoCurrentSeasonInfo);
         }
 
         /// <summary>
@@ -282,23 +283,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <value>The list of competitors</value>
         public async Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
         {
-            var seasonCI = (ITournamentInfoCI)_sportEventCache.GetEventCacheItem(Id);
-            if (seasonCI == null)
+            var seasonCacheItem = (ITournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(Id);
+            if (seasonCacheItem == null)
             {
                 ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
                 return null;
             }
-            var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await seasonCI.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(seasonCI.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+            var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await seasonCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(seasonCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
-            var competitorsIds = items == null ? new List<URN>() : items.ToList();
+            var competitorsIds = items == null ? new List<Urn>() : items.ToList();
             if (!competitorsIds.Any())
             {
                 return new List<ICompetitor>();
             }
 
-            var competitorsReferences = await seasonCI.GetCompetitorsReferencesAsync().ConfigureAwait(false);
+            var competitorsReferences = await seasonCacheItem.GetCompetitorsReferencesAsync().ConfigureAwait(false);
 
             var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildCompetitorAsync(s, Cultures, competitorsReferences, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -311,8 +312,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation</returns>
         public async Task<IEnumerable<ICompetition>> GetScheduleAsync()
         {
-            IEnumerable<Tuple<URN, URN>> sportEventIds;
-            if (ExceptionStrategy == ExceptionHandlingStrategy.THROW)
+            IEnumerable<Tuple<Urn, Urn>> sportEventIds;
+            if (ExceptionStrategy == ExceptionHandlingStrategy.Throw)
             {
                 var tasks = Cultures.Select(s => _sportEventCache.GetEventIdsAsync(Id, s)).ToList();
                 await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -320,7 +321,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             }
             else
             {
-                var tasks = Cultures.Select(s => new Func<URN, CultureInfo, Task<IEnumerable<Tuple<URN, URN>>>>(_sportEventCache.GetEventIdsAsync).SafeInvokeAsync(Id, s, ExecutionLog, GetFetchErrorMessage("Schedule"))).ToList();
+                var tasks = Cultures.Select(s => new Func<Urn, CultureInfo, Task<IEnumerable<Tuple<Urn, Urn>>>>(_sportEventCache.GetEventIdsAsync).SafeInvokeAsync(Id, s, ExecutionLog, GetFetchErrorMessage("Schedule"))).ToList();
                 await Task.WhenAll(tasks).ConfigureAwait(false);
                 sportEventIds = tasks.First().GetAwaiter().GetResult();
             }

@@ -6,9 +6,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Common;
+using Microsoft.Extensions.DependencyInjection;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Config
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
     /// <summary>
     /// Represents a base class for configuration builders
@@ -17,121 +20,58 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
     internal abstract class ConfigurationBuilderBase<T> : IConfigurationBuilderBase<T> where T : class
     {
         /// <summary>
-        /// The <see cref="IConfigurationSectionProvider"/> containing data read from the config file
+        /// The <see cref="IUofConfigurationSectionProvider"/> containing data read from the config file
         /// </summary>
-        internal readonly IConfigurationSectionProvider SectionProvider;
+        internal readonly IUofConfigurationSectionProvider SectionProvider;
 
-        /// <summary>
-        /// The access token used for authentication
-        /// </summary>
-        internal readonly string AccessToken;
+        internal IBookmakerDetailsProvider BookmakerDetailsProvider;
 
-        /// <summary>
-        /// A list of default cultures / languages
-        /// </summary>
-        protected readonly List<CultureInfo> SupportedLocales = new List<CultureInfo>();
+        internal IProducersProvider ProducersProvider;
 
-        /// <summary>
-        /// The default locale
-        /// </summary>
-        protected CultureInfo DefaultLocale;
-
-        /// <summary>
-        /// The list of disabled producers
-        /// </summary>
-        protected List<int> DisabledProducers;
-
-        /// <summary>
-        /// The node identifier
-        /// </summary>
-        protected ExceptionHandlingStrategy ExceptionHandlingStrategy;
-
-        /// <summary>
-        /// The node identifier
-        /// </summary>
-        protected int NodeId;
-
-        /// <summary>
-        /// Value specifying timeout set for HTTP responses
-        /// </summary>
-        protected int? HttpClientTimeout;
-
-        internal IOddsFeedConfigurationSection Section { get; private set; }
+        internal readonly UofConfiguration UofConfiguration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationBuilderBase{T}"/> class
         /// </summary>
-        /// <param name="accessToken">An access token used to authenticate with the feed</param>
-        /// <param name="sectionProvider">A <see cref="IConfigurationSectionProvider"/> used to access <see cref="IOddsFeedConfigurationSection"/></param>
-        private protected ConfigurationBuilderBase(string accessToken, IConfigurationSectionProvider sectionProvider)
+        /// <param name="configuration">Current <see cref="UofConfiguration"/></param>
+        /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
+        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details (can be null)</param>
+        /// <param name="producersProvider">Provider for available producers</param>
+        private protected ConfigurationBuilderBase(UofConfiguration configuration,
+            IUofConfigurationSectionProvider sectionProvider,
+            IBookmakerDetailsProvider bookmakerDetailsProvider,
+            IProducersProvider producersProvider)
         {
-            Guard.Argument(accessToken, nameof(accessToken)).NotNull().NotEmpty();
-            Guard.Argument(sectionProvider, nameof(sectionProvider)).NotNull();
 
-            AccessToken = accessToken;
-            SectionProvider = sectionProvider;
-            ExceptionHandlingStrategy = ExceptionHandlingStrategy.CATCH;
-            NodeId = 0;
-            DefaultLocale = null;
+            UofConfiguration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            SectionProvider = sectionProvider ?? throw new ArgumentNullException(nameof(sectionProvider));
+            BookmakerDetailsProvider = bookmakerDetailsProvider;
+            ProducersProvider = producersProvider;
         }
 
         /// <summary>
         /// Sets the general configuration properties to values read from configuration file. Only value which can be set
-        /// through <see cref="IConfigurationBuilderBase{T}" /> methods are set.
-        /// Any values already set by methods on the current instance are overridden
+        /// through <see cref="IConfigurationBuilderBase{T}" /> methods are set. Any values already set by methods on the current instance are overridden
         /// </summary>
-        /// <param name="section">A <see cref="IOddsFeedConfigurationSection"/> from which to load the config</param>
-        /// <returns>T.</returns>
-        internal virtual void LoadFromConfigFile(IOddsFeedConfigurationSection section)
+        /// <returns>A <see cref="IConfigurationBuilderBase{T}" /> derived instance used to set general configuration properties</returns>
+        public virtual T LoadFromConfigFile()
         {
-            Guard.Argument(section, nameof(section)).NotNull();
-
-            Section = section;
-
-            if (!string.IsNullOrEmpty(section.SupportedLanguages))
-            {
-                var langCodes = section.SupportedLanguages.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                SetSupportedLanguages(langCodes.Select(langCode => new CultureInfo(langCode.Trim())));
-            }
-
-            if (!string.IsNullOrEmpty(section.DefaultLanguage))
-            {
-                SetDefaultLanguage(new CultureInfo(section.DefaultLanguage.Trim()));
-            }
-            ExceptionHandlingStrategy = section.ExceptionHandlingStrategy;
-            NodeId = section.NodeId;
-            if (!string.IsNullOrEmpty(section.DisabledProducers))
-            {
-                var producerIds = section.DisabledProducers.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                SetDisabledProducers(producerIds.Select(producerId => int.Parse(producerId.Trim())));
-            }
-
-            HttpClientTimeout = section.HttpClientTimeout;
-        }
-
-        /// <summary>
-        /// Sets the general configuration properties to values read from configuration file. Only value which can be set
-        /// through <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1" /> methods are set. Any values already set by methods on the current instance are overridden
-        /// </summary>
-        /// <returns>T.</returns>
-        public T LoadFromConfigFile()
-        {
-            LoadFromConfigFile(SectionProvider.GetSection());
+            UofConfiguration.UpdateFromAppConfigSection(false);
             return this as T;
         }
 
         /// <summary>
         /// Sets the languages in which translatable data is available
         /// </summary>
-        /// <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying languages in which translatable data should be available</param>
-        /// <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1" /> derived instance used to set general configuration properties</returns>
-        public T SetSupportedLanguages(IEnumerable<CultureInfo> cultures)
+        /// <param name="cultures">A list of languages in which translatable data should be available</param>
+        /// <returns>A <see cref="IConfigurationBuilderBase{T}" /> derived instance used to set general configuration properties</returns>
+        public T SetDesiredLanguages(IEnumerable<CultureInfo> cultures)
         {
-            SupportedLocales.Clear();
+            UofConfiguration.Languages.Clear();
 
-            if (cultures != null)
+            if (!cultures.IsNullOrEmpty())
             {
-                SupportedLocales.AddRange(cultures.Distinct());
+                UofConfiguration.Languages.AddRange(cultures.Distinct());
             }
             return this as T;
         }
@@ -140,23 +80,23 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// Sets the default language in which translatable data is available
         /// </summary>
         /// <param name="culture">A default language in which translatable data should be available</param>
-        /// <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1" /> derived instance used to set general configuration properties</returns>
+        /// <returns>A <see cref="IConfigurationBuilderBase{T}" /> derived instance used to set general configuration properties</returns>
         public T SetDefaultLanguage(CultureInfo culture)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            DefaultLocale = culture;
+            UofConfiguration.DefaultLanguage = culture;
             return this as T;
         }
 
         /// <summary>
         /// Sets the value specifying how exceptions thrown in the SDK are handled.
         /// </summary>
-        /// <param name="strategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.ExceptionHandlingStrategy" /> enum specifying how exceptions thrown in the SDK are handled</param>
-        /// <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1" /> derived instance used to set general configuration properties</returns>
+        /// <param name="strategy">A <see cref="ExceptionHandlingStrategy" /> enum specifying how exceptions thrown in the SDK are handled</param>
+        /// <returns>A <see cref="IConfigurationBuilder" /> derived instance used to set general configuration properties</returns>
         public T SetExceptionHandlingStrategy(ExceptionHandlingStrategy strategy)
         {
-            ExceptionHandlingStrategy = strategy;
+            UofConfiguration.ExceptionHandlingStrategy = strategy;
             return this as T;
         }
 
@@ -164,11 +104,11 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// Sets the node id used to separate between SDK instances associated with the same account
         /// </summary>
         /// <param name="nodeId">The node id to be set</param>
-        /// <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IConfigurationBuilderBase`1" /> derived instance used to set general configuration properties</returns>
-        /// <remarks>Use only positive numbers; negative are reserved for internal use</remarks>
+        /// <returns>A <see cref="IConfigurationBuilder" /> derived instance used to set general configuration properties</returns>
+        /// <remarks>Use only positive numbers; negative are reserved for internal use.</remarks>
         public T SetNodeId(int nodeId)
         {
-            NodeId = nodeId;
+            UofConfiguration.NodeId = nodeId;
             return this as T;
         }
 
@@ -176,41 +116,23 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// Specifies the producers which should be disabled (i.e. no recovery, ...)
         /// </summary>
         /// <param name="producerIds">The list of producer ids specifying the producers which should be disabled</param>
-        /// <returns>A <see cref="T:Sportradar.OddsFeed.SDK.API.IRecoveryConfigurationBuilder`1" /> derived instance used to set general configuration properties</returns>
+        /// <returns>A <see cref="IConfigurationBuilder" /> derived instance used to set general configuration properties</returns>
         public T SetDisabledProducers(IEnumerable<int> producerIds)
         {
-            if (DisabledProducers == null)
-            {
-                DisabledProducers = new List<int>();
-            }
-            else
-            {
-                DisabledProducers.Clear();
-            }
+            UofConfiguration.Producer.DisabledProducers.Clear();
 
-            if (producerIds != null)
+            if (!producerIds.IsNullOrEmpty())
             {
-                DisabledProducers.AddRange(producerIds.Distinct().ToList());
+                UofConfiguration.Producer.DisabledProducers.AddRange(producerIds.Distinct().ToList());
             }
             return this as T;
         }
 
         /// <summary>
-        /// Sets the timeout for HTTP responses for this instance of the sdk
+        /// Builds and returns a <see cref="IUofConfiguration" /> instance
         /// </summary>
-        /// <param name="httpClientTimeout">The timeout for HTTP responses</param>
-        /// <returns>A <see cref="IConfigurationBuilderBase{T}"/> derived instance used to set general configuration properties</returns>
-        public T SetHttpClientTimeout(int httpClientTimeout)
-        {
-            HttpClientTimeout = httpClientTimeout;
-            return this as T;
-        }
-
-        /// <summary>
-        /// Builds and returns a <see cref="IOddsFeedConfiguration" /> instance
-        /// </summary>
-        /// <returns>The constructed <see cref="IOddsFeedConfiguration" /> instance</returns>
-        public abstract IOddsFeedConfiguration Build();
+        /// <returns>The constructed <see cref="IUofConfiguration" /> instance</returns>
+        public abstract IUofConfiguration Build();
 
         /// <summary>
         /// Check the properties values before build the configuration and throws an exception is invalid values are found
@@ -218,27 +140,34 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <exception cref="InvalidOperationException">The value of one or more properties is not correct</exception>
         protected virtual void PreBuildCheck()
         {
-            if (DefaultLocale == null && SupportedLocales.Any())
+            UofConfiguration.ValidateMinimumSettings();
+        }
+
+        protected void FetchBookmakerDetails()
+        {
+            if (BookmakerDetailsProvider == null)
             {
-                DefaultLocale = SupportedLocales.First();
-            }
-            if (!SupportedLocales.Contains(DefaultLocale))
-            {
-                SupportedLocales.Insert(0, DefaultLocale);
+                var services = new ServiceCollection();
+                services.AddUofSdkServices(UofConfiguration);
+                var serviceProvider = services.BuildServiceProvider();
+                BookmakerDetailsProvider = serviceProvider.GetRequiredService<IBookmakerDetailsProvider>();
             }
 
-            if (DefaultLocale == null)
+            BookmakerDetailsProvider.LoadBookmakerDetails(UofConfiguration);
+        }
+
+        protected void FetchProducers()
+        {
+            if (ProducersProvider == null)
             {
-                throw new InvalidOperationException("Missing default locale");
+                var services = new ServiceCollection();
+                services.AddUofSdkServices(UofConfiguration);
+                var serviceProvider = services.BuildServiceProvider();
+                ProducersProvider = serviceProvider.GetRequiredService<IProducersProvider>();
             }
-            if (SupportedLocales == null || !SupportedLocales.Any())
-            {
-                throw new InvalidOperationException("Missing supported locales");
-            }
-            if (string.IsNullOrEmpty(AccessToken))
-            {
-                throw new InvalidOperationException("Missing access token");
-            }
+
+            var producers = ProducersProvider.GetProducers();
+            ((UofProducerConfiguration)UofConfiguration.Producer).Producers = producers.ToList();
         }
     }
 }

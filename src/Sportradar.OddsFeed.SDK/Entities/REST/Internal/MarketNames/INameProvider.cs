@@ -4,7 +4,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Defines a contract implemented by classes used to provide names of markets and outcomes

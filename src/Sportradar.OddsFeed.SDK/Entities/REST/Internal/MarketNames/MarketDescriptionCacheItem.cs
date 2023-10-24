@@ -8,11 +8,11 @@ using System.Globalization;
 using System.Linq;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Api.Internal.Config;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     internal class MarketDescriptionCacheItem
     {
@@ -84,15 +84,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="MarketDescriptionCacheItem"/> from the provided DTO
+        /// Constructs and returns a <see cref="MarketDescriptionCacheItem"/> from the provided Dto
         /// </summary>
-        /// <param name="dto">The <see cref="MarketDescriptionDTO"/> containing market description data.</param>
+        /// <param name="dto">The <see cref="MarketDescriptionDto"/> containing market description data.</param>
         /// <param name="factory">The <see cref="IMappingValidatorFactory"/> instance used to build market mapping validators .</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided DTO.</param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided Dto.</param>
         /// <param name="source">The source cache where <see cref="MarketDescriptionCacheItem"/> is built</param>
         /// <returns>The constructed <see cref="MarketDescriptionCacheItem"/>.</returns>
-        /// <exception cref="InvalidOperationException">The cache item could not be build from the provided DTO</exception>
-        public static MarketDescriptionCacheItem Build(MarketDescriptionDTO dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
+        /// <exception cref="InvalidOperationException">The cache item could not be build from the provided Dto</exception>
+        public static MarketDescriptionCacheItem Build(MarketDescriptionDto dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(factory, nameof(factory)).NotNull();
@@ -149,7 +149,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal bool CanBeFetched()
         {
-            return (DateTime.Now - LastDataReceived).TotalSeconds > SdkInfo.MarketDescriptionMinFetchInterval;
+            return (DateTime.Now - LastDataReceived).TotalSeconds > ConfigLimit.MarketDescriptionMinFetchInterval;
         }
 
         public void SetFetchInfo(string source, DateTime lastDataReceived)
@@ -161,7 +161,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             LastDataReceived = lastDataReceived;
         }
 
-        internal void Merge(MarketDescriptionDTO dto, CultureInfo culture)
+        internal void Merge(MarketDescriptionDto dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
@@ -219,7 +219,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             }
         }
 
-        private bool MarketMappingsMatch(MarketMappingCacheItem ci, MarketMappingDTO dto)
+        private bool MarketMappingsMatch(MarketMappingCacheItem ci, MarketMappingDto dto)
         {
             var isMatch = ci.MarketTypeId == dto.MarketTypeId && ci.MarketSubTypeId == dto.MarketSubTypeId;
 
@@ -241,7 +241,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             return isMatch;
         }
 
-        private void ComparePrint(MarketDescriptionDTO dto, CultureInfo culture)
+        private void ComparePrint(MarketDescriptionDto dto, CultureInfo culture)
         {
             var names = _names.Aggregate(string.Empty, (current, name) => current + $", {name.Key.TwoLetterISOLanguageName}-{name.Value}").Substring(2);
             var desc = _descriptions.Aggregate(string.Empty, (current, d) => current + $", {d.Key.TwoLetterISOLanguageName}-{d.Value}");

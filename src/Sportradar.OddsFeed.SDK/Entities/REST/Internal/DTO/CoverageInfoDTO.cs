@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
-    internal class CoverageInfoDTO
+    internal class CoverageInfoDto
     {
         internal string Level { get; }
 
@@ -20,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal CoveredFrom? CoveredFrom { get; }
 
-        internal CoverageInfoDTO(coverageInfo coverageInfo)
+        internal CoverageInfoDto(coverageInfo coverageInfo)
         {
             Guard.Argument(coverageInfo, nameof(coverageInfo)).NotNull();
             Guard.Argument(coverageInfo.level, nameof(coverageInfo.level)).NotNull().NotEmpty();

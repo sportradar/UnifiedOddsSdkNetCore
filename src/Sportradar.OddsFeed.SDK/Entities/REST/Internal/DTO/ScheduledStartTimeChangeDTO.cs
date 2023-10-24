@@ -3,14 +3,14 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for scheduled start time change (used in fixtures)
     /// </summary>
-    internal class ScheduledStartTimeChangeDTO
+    internal class ScheduledStartTimeChangeDto
     {
         /// <summary>
         /// Gets the old time
@@ -31,10 +31,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public DateTime ChangedAt { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScheduledStartTimeChangeDTO"/> class
+        /// Initializes a new instance of the <see cref="ScheduledStartTimeChangeDto"/> class
         /// </summary>
         /// <param name="timeChange">The time change</param>
-        public ScheduledStartTimeChangeDTO(scheduledStartTimeChange timeChange)
+        public ScheduledStartTimeChangeDto(scheduledStartTimeChange timeChange)
         {
             Guard.Argument(timeChange, nameof(timeChange)).NotNull();
 

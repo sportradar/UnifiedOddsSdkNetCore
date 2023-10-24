@@ -5,14 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// A implementation of <see cref="IFixture"/> used to return results to user
@@ -42,13 +42,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets a value indicating whether the start time is to be determent
         /// </summary>
         /// <value><c>null</c> if [start time TBD] contains no value, <c>true</c> if [start time TBD]; otherwise, <c>false</c>.</value>
-        public bool? StartTimeTBD { get; }
+        public bool? StartTimeTbd { get; }
 
         /// <summary>
         /// When sport event is postponed this field indicates with which event it is replaced
         /// </summary>
-        /// <value>The <see cref="URN"/> this event is replaced by</value>
-        public URN ReplacedBy { get; }
+        /// <value>The <see cref="Urn"/> this event is replaced by</value>
+        public Urn ReplacedBy { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{String, String}" /> containing additional information about the
@@ -92,27 +92,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Gets a id of the parent stage associated with the current instance
         /// </summary>
-        public URN ParentStageId { get; }
+        public Urn ParentStageId { get; }
 
         /// <summary>
         /// Gets the list specifying the additional parent ids associated with the current instance
         /// </summary>
-        public IEnumerable<URN> AdditionalParentsIds { get; }
+        public IEnumerable<Urn> AdditionalParentsIds { get; }
 
-        internal Fixture(FixtureDTO fixtureDto)
+        internal Fixture(FixtureDto fixtureDto)
         {
             Guard.Argument(fixtureDto, nameof(fixtureDto)).NotNull();
 
             StartTime = fixtureDto.StartTime;
             NextLiveTime = fixtureDto.NextLiveTime;
             StartTimeConfirmed = fixtureDto.StartTimeConfirmed;
-            StartTimeTBD = fixtureDto.StartTimeTbd;
+            StartTimeTbd = fixtureDto.StartTimeTbd;
             ReplacedBy = fixtureDto.ReplacedBy;
             ExtraInfo = fixtureDto.ExtraInfo;
             TvChannels = new List<ITvChannel>();
             if (!fixtureDto.TvChannels.IsNullOrEmpty())
             {
-                TvChannels = fixtureDto.TvChannels.Select(tvChannelDTO => new TvChannel(tvChannelDTO.Name, tvChannelDTO.StartTime, tvChannelDTO.StreamUrl)).ToList();
+                TvChannels = fixtureDto.TvChannels.Select(tvChannelDto => new TvChannel(tvChannelDto.Name, tvChannelDto.StartTime, tvChannelDto.StreamUrl)).ToList();
             }
             if (fixtureDto.Coverage != null)
             {
@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             }
             if (fixtureDto.ReferenceIds != null)
             {
-                References = new Reference(new ReferenceIdCI(fixtureDto.ReferenceIds));
+                References = new Reference(new ReferenceIdCacheItem(fixtureDto.ReferenceIds));
             }
             ScheduledStartTimeChanges = new List<IScheduledStartTimeChange>();
             if (fixtureDto.ScheduledStartTimeChanges != null)
@@ -135,14 +135,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             {
                 ParentStageId = fixtureDto.ParentStage.Id;
             }
-            AdditionalParentsIds = new List<URN>();
+            AdditionalParentsIds = new List<Urn>();
             if (!fixtureDto.AdditionalParents.IsNullOrEmpty())
             {
                 AdditionalParentsIds = fixtureDto.AdditionalParents.Select(s => s.Id);
             }
         }
 
-        internal Fixture(ExportableFixtureCI exportable)
+        internal Fixture(ExportableFixture exportable)
         {
             if (exportable == null)
             {
@@ -152,16 +152,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             StartTime = exportable.StartTime;
             NextLiveTime = exportable.NextLiveTime;
             StartTimeConfirmed = exportable.StartTimeConfirmed;
-            StartTimeTBD = exportable.StartTimeTBD;
-            ReplacedBy = exportable.ReplacedBy != null ? URN.Parse(exportable.ReplacedBy) : null;
+            StartTimeTbd = exportable.StartTimeTbd;
+            ReplacedBy = exportable.ReplacedBy != null ? Urn.Parse(exportable.ReplacedBy) : null;
             ExtraInfo = exportable.ExtraInfo.IsNullOrEmpty() ? new Dictionary<string, string>() : new Dictionary<string, string>(exportable.ExtraInfo);
             TvChannels = exportable.TvChannels.IsNullOrEmpty() ? new List<TvChannel>() : exportable.TvChannels?.Select(t => new TvChannel(t)).ToList();
             CoverageInfo = exportable.CoverageInfo != null ? new CoverageInfo(exportable.CoverageInfo) : null;
             ProductInfo = exportable.ProductInfo != null ? new ProductInfo(exportable.ProductInfo) : null;
-            References = exportable.References != null ? new Reference(new ReferenceIdCI(exportable.References)) : null;
+            References = exportable.References != null ? new Reference(new ReferenceIdCacheItem(exportable.References)) : null;
             ScheduledStartTimeChanges = exportable.ScheduledStartTimeChanges.IsNullOrEmpty() ? new List<ScheduledStartTimeChange>() : exportable.ScheduledStartTimeChanges?.Select(s => new ScheduledStartTimeChange(s)).ToList();
-            ParentStageId = string.IsNullOrEmpty(exportable.ParentStageId) ? null : URN.Parse(exportable.ParentStageId);
-            AdditionalParentsIds = exportable.AdditionalParentsIds.IsNullOrEmpty() ? new List<URN>() : exportable.AdditionalParentsIds.Select(URN.Parse).ToList();
+            ParentStageId = string.IsNullOrEmpty(exportable.ParentStageId) ? null : Urn.Parse(exportable.ParentStageId);
+            AdditionalParentsIds = exportable.AdditionalParentsIds.IsNullOrEmpty() ? new List<Urn>() : exportable.AdditionalParentsIds.Select(Urn.Parse).ToList();
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected override string PrintC()
         {
             var info = ExtraInfo.IsNullOrEmpty() ? string.Empty : string.Join(", ", ExtraInfo.Keys.Select(k => $"{k}={ExtraInfo[k]}"));
-            return $"StartTime={StartTime}, StartTimeConfirmed={StartTimeConfirmed}, StartTimeTBD={StartTimeTBD}, ReplacedBy={ReplacedBy}, ExtraInfo=[{info}]";
+            return $"StartTime={StartTime}, StartTimeConfirmed={StartTimeConfirmed}, StartTimeTBD={StartTimeTbd}, ReplacedBy={ReplacedBy}, ExtraInfo=[{info}]";
         }
 
         /// <summary>
@@ -207,12 +207,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Asynchronous export item's properties
         /// </summary>
-        /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
-        public async Task<ExportableFixtureCI> ExportAsync()
+        /// <returns>An <see cref="ExportableBase"/> instance containing all relevant properties</returns>
+        public async Task<ExportableFixture> ExportAsync()
         {
             var scheduledTasks = ScheduledStartTimeChanges?.Select(async s => await ((ScheduledStartTimeChange)s).ExportAsync().ConfigureAwait(false));
             var channelTasks = TvChannels?.Select(async c => await ((TvChannel)c).ExportAsync().ConfigureAwait(false));
-            return new ExportableFixtureCI
+            return new ExportableFixture
             {
                 ExtraInfo = ExtraInfo?.ToDictionary(i => i.Key, i => i.Value),
                 CoverageInfo = CoverageInfo != null ? await ((CoverageInfo)CoverageInfo).ExportAsync().ConfigureAwait(false) : null,
@@ -224,7 +224,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 ScheduledStartTimeChanges = scheduledTasks != null ? await Task.WhenAll(scheduledTasks) : null,
                 StartTime = StartTime,
                 TvChannels = channelTasks != null ? await Task.WhenAll(channelTasks) : null,
-                StartTimeTBD = StartTimeTBD,
+                StartTimeTbd = StartTimeTbd,
                 ParentStageId = ParentStageId?.ToString(),
                 AdditionalParentsIds = AdditionalParentsIds?.Select(s => s.ToString()).ToList()
             };

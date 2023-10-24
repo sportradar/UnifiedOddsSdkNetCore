@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// Defines a data-transfer object for season coverage info
     /// </summary>
-    internal class SeasonCoverageDTO
+    internal class SeasonCoverageDto
     {
         /// <summary>
         /// Gets the maximum covered value
@@ -38,16 +38,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public int Scheduled { get; }
 
         /// <summary>
-        /// Gets a <see cref="URN"/> representing the ID of the season
+        /// Gets a <see cref="Urn"/> representing the ID of the season
         /// </summary>
         /// <value>The identifier.</value>
-        public URN SeasonId { get; }
+        public Urn SeasonId { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeasonCoverageDTO"/> class.
+        /// Initializes a new instance of the <see cref="SeasonCoverageDto"/> class.
         /// </summary>
         /// <param name="coverageInfo">The coverage message</param>
-        internal SeasonCoverageDTO(seasonCoverageInfo coverageInfo)
+        internal SeasonCoverageDto(seasonCoverageInfo coverageInfo)
         {
             Guard.Argument(coverageInfo, nameof(coverageInfo)).NotNull();
 
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Scheduled = coverageInfo.scheduled;
             SeasonId = string.IsNullOrEmpty(coverageInfo.season_id)
                 ? null
-                : URN.Parse(coverageInfo.season_id);
+                : Urn.Parse(coverageInfo.season_id);
         }
     }
 }

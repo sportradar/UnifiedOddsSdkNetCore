@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.API.EventArguments
+namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
     /// Event arguments for the EventRecoveryCompleted events
@@ -19,14 +19,14 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// <summary>
         /// The associated event identifier
         /// </summary>
-        private readonly URN _eventId;
+        private readonly Urn _eventId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventRecoveryCompletedEventArgs"/> class
         /// </summary>
         /// <param name="requestId">The identifier of the recovery request</param>
         /// <param name="eventId">The associated event identifier</param>
-        internal EventRecoveryCompletedEventArgs(long requestId, URN eventId)
+        internal EventRecoveryCompletedEventArgs(long requestId, Urn eventId)
         {
             if (eventId == null)
             {
@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.API.EventArguments
         /// Gets the associated event identifier
         /// </summary>
         /// <returns>Returns the associated event identifier</returns>
-        public URN GetEventId()
+        public Urn GetEventId()
         {
             return _eventId;
         }

@@ -2,14 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing a sport category
     /// </summary>
-    internal class CategorySummaryDTO : SportEntityDTO
+    internal class CategorySummaryDto : SportEntityDto
     {
         /// <summary>
         /// The country code
@@ -17,12 +17,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public readonly string CountryCode;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryDTO"/> class
+        /// Initializes a new instance of the <see cref="CategoryDto"/> class
         /// </summary>
         /// <param name="id">The id of the category</param>
         /// <param name="name">The name of the category</param>
         /// <param name="countryCode">A country code</param>
-        internal CategorySummaryDTO(string id, string name, string countryCode)
+        internal CategorySummaryDto(string id, string name, string countryCode)
             : base(id, name)
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
@@ -32,9 +32,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryDTO"/> class
+        /// Initializes a new instance of the <see cref="CategoryDto"/> class
         /// </summary>
-        internal CategorySummaryDTO(category category)
+        internal CategorySummaryDto(category category)
             : base(category.id, category.name)
         {
             Guard.Argument(category, nameof(category)).NotNull();

@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a goal scorer in a sport event
@@ -25,8 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="IGoalScorer"/> class
         /// </summary>
-        /// <param name="data">The <see cref="EventPlayerCI"/> data</param>
-        public GoalScorer(EventPlayerCI data)
+        /// <param name="data">The <see cref="EventPlayerCacheItem"/> data</param>
+        public GoalScorer(EventPlayerCacheItem data)
             : base(data.Id, data.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
             Guard.Argument(data, nameof(data)).NotNull();

@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing sport event conditions

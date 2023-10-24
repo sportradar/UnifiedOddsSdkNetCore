@@ -2,12 +2,12 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Diagnostics;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.API
+namespace Sportradar.OddsFeed.SDK.Api
 {
     /// <summary>
     /// A base class for classes used to dispatch messages
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.API
         }
 
         /// <summary>
-        /// Dispatches the <c>message</c>
+        /// Dispatches the <c>feed message</c>
         /// </summary>
         /// <typeparam name="T">The type of the event arguments</typeparam>
         /// <param name="handler">Event delegate</param>
@@ -37,55 +37,55 @@ namespace Sportradar.OddsFeed.SDK.API
         {
             if (handler == null)
             {
-                Log.LogWarning($"Cannot dispatch message {message.GetType().Name} because no event listeners are attached to associated event handler. Dropping message [{message}]");
+                Log.LogWarning("Cannot dispatch message {MessageType} because no event listeners are attached to associated event handler. Dropping message [{FeedMessage}]", message.GetType().Name, message);
                 return;
             }
 
-            var stopwatch = Stopwatch.StartNew();
-            try
+            using (var tt = new TelemetryTracker(UofSdkTelemetry.DispatchFeedMessage, "msg_type", message.GetType().Name))
             {
-                handler(this, eventArgs);
-                stopwatch.Stop();
-                Log.LogInformation($"Successfully dispatched message[{message}]. Duration: {stopwatch.ElapsedMilliseconds} ms.");
-            }
-            catch (Exception ex)
-            {
-                stopwatch.Stop();
-                Log.LogWarning(ex, $"Event handler throw an exception while processing message [{message}]. Duration: {stopwatch.ElapsedMilliseconds} ms.");
+                try
+                {
+                    handler(this, eventArgs);
+                    Log.LogInformation("Successfully dispatched message[{FeedMessage}]. Duration: {Elapsed} ms", message, tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWarning(ex, "Event handler throw an exception while processing message [{FeedMessage}]. Duration: {Elapsed} ms", message, tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+                }
             }
         }
 
         /// <summary>
-        /// Raises the specified event
+        /// Raises the specified sdk event (ProducerUp, ProducerDown, ...)
         /// </summary>
         /// <typeparam name="T">The type of the event arguments</typeparam>
         /// <param name="handler">A <see cref="EventHandler{T}"/> representing the event</param>
         /// <param name="eventArgs">Event arguments</param>
-        /// <param name="messageName">The name of the event</param>
+        /// <param name="eventHandlerName">The name of the event</param>
         /// <param name="producerId">The producer id</param>
-        protected void Dispatch<T>(EventHandler<T> handler, T eventArgs, string messageName, int producerId)
+        protected void Dispatch<T>(EventHandler<T> handler, T eventArgs, string eventHandlerName, int producerId)
         {
             if (handler == null)
             {
                 var args = eventArgs == null
                                ? string.Empty
                                : eventArgs.GetType().Name;
-                Log.LogWarning($"Cannot dispatch message {messageName} because no listeners are attached to associated event handler. EventArgs: {args}.");
+                Log.LogWarning("Cannot invoke event {EventHandler} because no listeners are attached to associated event handler. EventArgs: {Args}", eventHandlerName, args);
                 return;
             }
 
-            var stopwatch = Stopwatch.StartNew();
-            try
+            using (var tt = new TelemetryTracker(UofSdkTelemetry.DispatchSdkMessage))
             {
-                handler(this, eventArgs);
-                stopwatch.Stop();
-                var prod = producerId == 0 ? string.Empty : $" for producer {producerId}";
-                Log.LogInformation($"Successfully dispatched message {messageName}{prod}. Duration: {stopwatch.ElapsedMilliseconds} ms.");
-            }
-            catch (Exception ex)
-            {
-                stopwatch.Stop();
-                Log.LogWarning(ex, $"Event handler throw an exception while processing message {messageName}. Duration: {stopwatch.ElapsedMilliseconds} ms.");
+                try
+                {
+                    handler(this, eventArgs);
+                    var prod = producerId == 0 ? string.Empty : $" for producer {producerId.ToString()}";
+                    Log.LogInformation("Successfully invoked event {EventHandler}{ProducerInfo}. Duration: {Elapsed} ms", eventHandlerName, prod, tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWarning(ex, "Event handler {EventHandler} throw an exception. Duration: {Elapsed} ms", eventHandlerName, tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+                }
             }
         }
     }

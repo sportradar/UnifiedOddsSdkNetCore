@@ -6,9 +6,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a sport
@@ -26,11 +26,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Sport"/> class
         /// </summary>
-        /// <param name="id">a <see cref="URN"/> uniquely identifying the sport represented by the current instance</param>
+        /// <param name="id">a <see cref="Urn"/> uniquely identifying the sport represented by the current instance</param>
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated sport names</param>
         /// <param name="categories"> a <see cref="IEnumerable{ICategory}"/> representing categories
         /// which belong to the sport represented by the current instance</param>
-        public Sport(URN id, IReadOnlyDictionary<CultureInfo, string> names, IEnumerable<ICategory> categories)
+        public Sport(Urn id, IReadOnlyDictionary<CultureInfo, string> names, IEnumerable<ICategory> categories)
            : base(id, names)
         {
             Guard.Argument(names, nameof(names)).NotNull().NotEmpty();

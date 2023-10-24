@@ -3,7 +3,7 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {

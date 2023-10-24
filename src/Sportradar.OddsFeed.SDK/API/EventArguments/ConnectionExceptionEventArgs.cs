@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.API.EventArguments
+namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
     /// Event arguments for the ConnectionException events

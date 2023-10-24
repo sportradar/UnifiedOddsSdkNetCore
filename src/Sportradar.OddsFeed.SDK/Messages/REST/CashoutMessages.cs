@@ -20,7 +20,7 @@ using System.Diagnostics.CodeAnalysis;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 // ReSharper disable InconsistentNaming
 
-namespace Sportradar.OddsFeed.SDK.Messages.REST
+namespace Sportradar.OddsFeed.SDK.Messages.Rest
 {
 
     /// <remarks/>

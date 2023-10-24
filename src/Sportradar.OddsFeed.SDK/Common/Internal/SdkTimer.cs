@@ -4,6 +4,7 @@
 using System;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Timer = System.Threading.Timer;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
@@ -11,8 +12,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// <summary>
     /// A timer used for invocation of period tasks
     /// </summary>
-    internal sealed class SdkTimer : ITimer
+    internal sealed class SdkTimer : ISdkTimer
     {
+        public string TimerName { get; }
+
         /// <summary>
         /// Internally used <see cref="Timer"/> instance
         /// </summary>
@@ -41,14 +44,17 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="SdkTimer"/> class.
         /// </summary>
+        /// <param name="name">The name of the timer instance</param>
         /// <param name="dueTime">A <see cref="TimeSpan"/> specifying a time period before the <see cref="Elapsed"/> event will be raised for the first time.</param>
         /// <param name="period">A <see cref="TimeSpan"/> specifying a period between subsequent raises of the <see cref="Elapsed"/> event.</param>
-        public SdkTimer(TimeSpan dueTime, TimeSpan period)
+        public SdkTimer(string name, TimeSpan dueTime, TimeSpan period)
         {
+            Guard.Argument(name, nameof(name)).NotNull();
             Guard.Argument(dueTime, nameof(dueTime)).Require(dueTime >= TimeSpan.Zero);
             //Guard.Argument(period, nameof(period)).Require(period > TimeSpan.Zero);
             // Create the timer which is stopped - pass -1 for dueTime and period
 
+            TimerName = name;
             DueTime = dueTime;
             Period = period;
             _timer = new Timer(OnTick, null, -1, -1);
@@ -65,12 +71,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <summary>
         /// Creates a new instance of the <see cref="SdkTimer"/> class.
         /// </summary>
+        /// <param name="name">The name of the timer instance</param>
         /// <param name="dueTime">A <see cref="TimeSpan"/> specifying a time period before the <see cref="Elapsed"/> event will be raised for the first time.</param>
         /// <param name="period">A <see cref="TimeSpan"/> specifying a period between subsequent raises of the <see cref="Elapsed"/> event.</param>
         /// <returns>New timer instance</returns>
-        public static SdkTimer Create(TimeSpan dueTime, TimeSpan period)
+        public static SdkTimer Create(string name, TimeSpan dueTime, TimeSpan period)
         {
-            return new SdkTimer(dueTime, period);
+            return new SdkTimer(name, dueTime, period);
         }
 
         /// <summary>

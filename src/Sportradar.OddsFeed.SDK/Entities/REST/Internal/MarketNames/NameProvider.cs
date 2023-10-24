@@ -8,20 +8,21 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Provides names of markets and outcomes
@@ -268,14 +269,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             foreach (var idPart in idParts)
             {
-                URN profileId;
+                Urn profileId;
                 try
                 {
-                    profileId = URN.Parse(idPart);
+                    profileId = Urn.Parse(idPart);
                 }
                 catch (FormatException ex)
                 {
-                    throw new NameExpressionException($"OutcomeId={idPart} is not a valid URN", ex);
+                    throw new NameExpressionException($"OutcomeId={idPart} is not a valid urn", ex);
                 }
 
                 try
@@ -498,7 +499,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
             ExecutionLog.LogError(innerException, sb.ToString());
 
-            if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
+            if (_exceptionStrategy == ExceptionHandlingStrategy.Throw)
             {
                 throw new NameGenerationException(message, _marketId, _specifiers, outcomeId, nameDescriptor, culture, innerException);
             }
@@ -557,7 +558,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 if (firstTime)
                 {
                     HandleErrorCondition("Retrieved market descriptor has no outcomes", outcomeId, null, culture, null);
-                    if (((MarketDescription)marketDescriptor).MarketDescriptionCI.CanBeFetched())
+                    if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
                     {
                         HandleErrorCondition("Reloading market description", outcomeId, null, culture, null);
                         await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);
@@ -574,7 +575,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 if (firstTime)
                 {
                     HandleErrorCondition("Retrieved market descriptor is missing outcome", outcomeId, null, culture, null);
-                    if (((MarketDescription)marketDescriptor).MarketDescriptionCI.CanBeFetched())
+                    if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
                     {
                         HandleErrorCondition("Reloading market description", outcomeId, null, culture, null);
                         await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);

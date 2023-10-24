@@ -2,9 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api.Replay;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
 {
     /// <summary>
     /// Represents a replay event
@@ -17,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <param name="id">The id of associated sport event</param>
         /// <param name="position">The position of event in the queue</param>
         /// <param name="startTime">The start time specified when the event was added to the queue</param>
-        public ReplayEvent(URN id, int? position, int? startTime)
+        public ReplayEvent(Urn id, int? position, int? startTime)
         {
             if (id == null)
             {
@@ -29,9 +30,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         }
 
         /// <summary>
-        /// Gets a <see cref="URN"/> specifying the event id
+        /// Gets a <see cref="Urn"/> specifying the event id
         /// </summary>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets a <see cref="int"/> specifying the position

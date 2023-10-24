@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
+using Sportradar.OddsFeed.SDK.Entities.Enums;
 
 namespace Sportradar.OddsFeed.SDK.Entities
 {
@@ -24,12 +25,12 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <summary>
         /// Gets a <see cref="CashoutStatus"/> enum member specifying the availability of cashout, or a null reference
         /// </summary>
-        CashoutStatus? CashoutStatus => null;
+        CashoutStatus? CashoutStatus { get; }
 
         /// <summary>
         /// Gets the market metadata which contains the additional market information
         /// </summary>
         /// <value>The market metadata which contains the additional market information</value>
-        IMarketMetadata MarketMetadata => null;
+        IMarketMetadata MarketMetadata { get; }
     }
 }

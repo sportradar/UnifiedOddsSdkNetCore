@@ -5,29 +5,28 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// An implementation of the <see cref="IDataProvider{T}"/> which fetches the data and deserializes it
     /// </summary>
-    /// <typeparam name="T">Specifies the type of DTO instance which will be obtained by deserialization and returned</typeparam>
+    /// <typeparam name="T">Specifies the type of Dto instance which will be obtained by deserialization and returned</typeparam>
     /// <seealso cref="IDataProvider{T}" />
     internal class NonMappingDataProvider<T> : IDataProvider<T> where T : class
     {
         /// <summary>
         /// Event raised when the data provider receives the api message
         /// </summary>
-#pragma warning disable CS0067
         public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
-#pragma warning restore CS0067
 
         /// <summary>
         /// A <see cref="IDataFetcher"/> used to fetch the data
         /// </summary>
-        private readonly IDataFetcher _fetcher;
+        public IDataFetcher DataFetcher { get; }
 
         /// <summary>
         /// A <see cref="IDeserializer{T}"/> used to deserialize the fetch data
@@ -52,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             Guard.Argument(deserializer, nameof(deserializer)).NotNull();
 
             _uriFormat = uriFormat;
-            _fetcher = fetcher;
+            DataFetcher = fetcher;
             _deserializer = deserializer;
         }
 
@@ -65,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         {
             Guard.Argument(uri, nameof(uri)).NotNull();
 
-            var stream = await _fetcher.GetDataAsync(uri).ConfigureAwait(false);
+            var stream = await DataFetcher.GetDataAsync(uri).ConfigureAwait(false);
             return _deserializer.Deserialize(stream);
         }
 
@@ -78,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         {
             Guard.Argument(uri, nameof(uri)).NotNull();
 
-            var stream = _fetcher.GetData(uri);
+            var stream = DataFetcher.GetData(uri);
             return _deserializer.Deserialize(stream);
         }
 

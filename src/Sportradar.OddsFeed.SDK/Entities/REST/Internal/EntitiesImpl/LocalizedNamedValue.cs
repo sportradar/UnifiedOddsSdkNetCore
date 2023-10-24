@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using Castle.Core.Internal;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Implementation of the <see cref="ILocalizedNamedValue"/>

@@ -3,10 +3,10 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Config
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
     /// <summary>
     /// Class CustomConfigurationBuilder
@@ -16,81 +16,25 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
     internal class CustomConfigurationBuilder : RecoveryConfigurationBuilder<ICustomConfigurationBuilder>, ICustomConfigurationBuilder
     {
         /// <summary>
-        /// Specifies the host name of the message broker
-        /// </summary>
-        private string _messagingHost;
-
-        /// <summary>
-        /// Specifies the port of the message broker
-        /// </summary>
-        private int? _messagingPort;
-
-        /// <summary>
-        /// Specifies the user name used for authentication with messaging broker
-        /// </summary>
-        private string _messagingUsername;
-
-        /// <summary>
-        /// Specifies the password used for authentication with messaging broker
-        /// </summary>
-        private string _messagingPassword;
-
-        /// <summary>
-        /// Specifies the virtual host of the messaging broker
-        /// </summary>
-        private string _virtualHost;
-
-        /// <summary>
-        /// The host name of the Sports API
-        /// </summary>
-        private string _apiHost;
-
-        /// <summary>
-        /// Value specifying whether SSL should be used when connecting to messaging broker
-        /// </summary>
-        private bool _useMessagingSsl;
-
-        /// <summary>
-        /// Value specifying whether SSL should be used when connecting to Sports API
-        /// </summary>
-        private bool _useApiSsl;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CustomConfigurationBuilder"/> class.
         /// </summary>
-        /// <param name="accessToken"></param>
-        /// <param name="sectionProvider"></param>
-        internal CustomConfigurationBuilder(string accessToken, IConfigurationSectionProvider sectionProvider)
-            : base(accessToken, sectionProvider)
+        /// <param name="configuration">Current <see cref="UofConfiguration"/></param>
+        /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
+        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
+        /// <param name="producersProvider">Provider for available producers</param>
+        internal CustomConfigurationBuilder(UofConfiguration configuration,
+            IUofConfigurationSectionProvider sectionProvider,
+            IBookmakerDetailsProvider bookmakerDetailsProvider,
+            IProducersProvider producersProvider)
+            : base(configuration, sectionProvider, bookmakerDetailsProvider, producersProvider)
         {
-            _useMessagingSsl = true;
-            _useApiSsl = true;
-        }
+            //populate connection settings and then override only needed
+            UofConfiguration.UpdateSdkEnvironment(SdkEnvironment.Integration);
 
-        /// <summary>
-        /// Check the properties values before build the configuration and throws an exception is invalid values are found
-        /// </summary>
-        /// <exception cref="InvalidOperationException">The value of one or more properties is not correct</exception>
-        protected override void PreBuildCheck()
-        {
-            base.PreBuildCheck();
+            UofConfiguration.UpdateSdkEnvironment(SdkEnvironment.Custom);
 
-            if (string.IsNullOrEmpty(_messagingHost))
-            {
-                throw new InvalidOperationException("MessagingHost is missing");
-            }
-            if (_messagingHost.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || _messagingHost.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidOperationException($"messagingHost must not contain protocol specification. Value={_messagingHost}");
-            }
-            if (string.IsNullOrEmpty(_apiHost))
-            {
-                throw new InvalidOperationException("ApiHost is missing");
-            }
-            if (_apiHost.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || _apiHost.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidOperationException($"apiHost must not contain protocol specification. Value={_apiHost}");
-            }
+            UseMessagingSsl(true);
+            UseApiSsl(true);
         }
 
         /// <summary>
@@ -102,7 +46,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         {
             Guard.Argument(host, nameof(host)).NotNull().NotEmpty();
 
-            _messagingHost = host;
+            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.Host = host;
+            UofConfiguration.Rabbit = rabbitConfig;
             return this;
         }
 
@@ -113,7 +59,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder SetMessagingPort(int port)
         {
-            _messagingPort = port;
+            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.Port = port;
+            UofConfiguration.Rabbit = rabbitConfig;
             return this;
         }
 
@@ -126,7 +74,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         {
             Guard.Argument(username, nameof(username)).NotNull().NotEmpty();
 
-            _messagingUsername = username;
+            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.Username = username;
+            UofConfiguration.Rabbit = rabbitConfig;
             return this;
         }
 
@@ -139,7 +89,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         {
             Guard.Argument(password, nameof(password)).NotNull().NotEmpty();
 
-            _messagingPassword = password;
+            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.Password = password;
+            UofConfiguration.Rabbit = rabbitConfig;
             return this;
         }
 
@@ -152,7 +104,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         {
             Guard.Argument(virtualHost, nameof(virtualHost)).NotNull().NotEmpty();
 
-            _virtualHost = virtualHost;
+            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.VirtualHost = virtualHost;
+            UofConfiguration.Rabbit = rabbitConfig;
             return this;
         }
 
@@ -163,7 +117,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder UseMessagingSsl(bool useMessagingSsl)
         {
-            _useMessagingSsl = useMessagingSsl;
+            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.UseSsl = useMessagingSsl;
+            UofConfiguration.Rabbit = rabbitConfig;
             return this;
         }
 
@@ -176,7 +132,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         {
             Guard.Argument(apiHost, nameof(apiHost)).NotNull().NotEmpty();
 
-            _apiHost = apiHost;
+            var apiConfig = (UofApiConfiguration)UofConfiguration.Api;
+            apiConfig.Host = apiHost;
+            UofConfiguration.Api = apiConfig;
             return this;
         }
 
@@ -187,7 +145,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         public ICustomConfigurationBuilder UseApiSsl(bool useApiSsl)
         {
-            _useApiSsl = useApiSsl;
+            var apiConfig = (UofApiConfiguration)UofConfiguration.Api;
+            apiConfig.UseSsl = useApiSsl;
+            UofConfiguration.Api = apiConfig;
             return this;
         }
 
@@ -196,72 +156,83 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// through <see cref="ICustomConfigurationBuilder" /> methods are set.
         /// Any values already set by methods on the current instance are overridden
         /// </summary>
-        /// <param name="section">A <see cref="IOddsFeedConfigurationSection"/> from which to load the config</param>
         /// <returns>T.</returns>
-        internal override void LoadFromConfigFile(IOddsFeedConfigurationSection section)
+        public override ICustomConfigurationBuilder LoadFromConfigFile()
         {
-            base.LoadFromConfigFile(section);
+            var section = SectionProvider.GetSection();
+            base.LoadFromConfigFile();
 
-            if (!string.IsNullOrEmpty(section.Host))
+            if (!string.IsNullOrEmpty(section.RabbitHost))
             {
-                _messagingHost = section.Host;
+                SetMessagingHost(section.RabbitHost);
             }
-            if (section.Port > 0)
+            if (section.RabbitPort > 0)
             {
-                _messagingPort = section.Port;
+                SetMessagingPort(section.RabbitPort);
             }
-            if (!string.IsNullOrEmpty(section.Username))
+            if (!string.IsNullOrEmpty(section.RabbitUsername))
             {
-                _messagingUsername = section.Username;
+                SetMessagingUsername(section.RabbitUsername);
             }
-            if (!string.IsNullOrEmpty(section.Password))
+            if (!string.IsNullOrEmpty(section.RabbitPassword))
             {
-                _messagingPassword = section.Password;
+                SetMessagingPassword(section.RabbitPassword);
             }
-            if (!string.IsNullOrEmpty(section.VirtualHost))
+            if (!string.IsNullOrEmpty(section.RabbitVirtualHost))
             {
-                _virtualHost = section.VirtualHost;
+                SetVirtualHost(section.RabbitVirtualHost);
             }
             if (!string.IsNullOrEmpty(section.ApiHost))
             {
-                _apiHost = section.ApiHost;
+                SetApiHost(section.ApiHost);
             }
-            _useMessagingSsl = section.UseSSL;
-            _useApiSsl = section.UseApiSSL;
+            UseMessagingSsl(section.RabbitUseSsl);
+            UseApiSsl(section.ApiUseSsl);
+
+            return this;
         }
 
         /// <summary>
-        /// Builds and returns a <see cref="IOddsFeedConfiguration" /> instance
+        /// Check the properties values before build the configuration and throws an exception is invalid values are found
         /// </summary>
-        /// <returns>The constructed <see cref="IOddsFeedConfiguration" /> instance</returns>
-        public override IOddsFeedConfiguration Build()
+        /// <exception cref="InvalidOperationException">The value of one or more properties is not correct</exception>
+        protected override void PreBuildCheck()
+        {
+            base.PreBuildCheck();
+
+            if (string.IsNullOrEmpty(UofConfiguration.Rabbit.Host))
+            {
+                throw new InvalidOperationException("MessagingHost is missing");
+            }
+            if (UofConfiguration.Rabbit.Host.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || UofConfiguration.Rabbit.Host.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException($"messagingHost must not contain protocol specification. Value={UofConfiguration.Rabbit.Host}");
+            }
+            if (string.IsNullOrEmpty(UofConfiguration.Api.Host))
+            {
+                throw new InvalidOperationException("ApiHost is missing");
+            }
+            if (UofConfiguration.Api.Host.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || UofConfiguration.Api.Host.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException($"apiHost must not contain protocol specification. Value={UofConfiguration.Api.Host}");
+            }
+        }
+
+        /// <summary>
+        /// Builds and returns a <see cref="IUofConfiguration" /> instance
+        /// </summary>
+        /// <returns>The constructed <see cref="IUofConfiguration" /> instance</returns>
+        public override IUofConfiguration Build()
         {
             PreBuildCheck();
 
-            var config = new OddsFeedConfiguration(AccessToken,
-                                                   SdkEnvironment.Custom,
-                                                   DefaultLocale,
-                                                   SupportedLocales,
-                                                   _messagingHost,
-                                                   _virtualHost,
-                                                   _messagingPort ?? (_useMessagingSsl ? EnvironmentManager.DefaultMqHostPort : EnvironmentManager.DefaultMqHostPort + 1),
-                                                   string.IsNullOrEmpty(_messagingUsername) ? AccessToken : _messagingUsername,
-                                                   _messagingPassword,
-                                                   _apiHost,
-                                                   _useMessagingSsl,
-                                                   _useApiSsl,
-                                                   InactivitySeconds ?? SdkInfo.MinInactivitySeconds,
-                                                   MaxRecoveryTimeInSeconds ?? SdkInfo.MaxRecoveryExecutionInSeconds,
-                                                   MinIntervalBetweenRecoveryRequests ?? SdkInfo.DefaultIntervalBetweenRecoveryRequests,
-                                                   NodeId,
-                                                   DisabledProducers,
-                                                   ExceptionHandlingStrategy,
-                                                   AdjustAfterAge ?? false,
-                                                   HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout,
-                                                   RecoveryHttpClientTimeout ?? HttpClientTimeout ?? SdkInfo.DefaultHttpClientTimeout,
-                                                   Section);
+            UofConfiguration.Environment = SdkEnvironment.Custom;
 
-            return config;
+            FetchBookmakerDetails();
+
+            FetchProducers();
+
+            return UofConfiguration;
         }
     }
 }

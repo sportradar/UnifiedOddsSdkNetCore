@@ -3,26 +3,25 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
-    class PeriodStatistics : IPeriodStatistics
+    internal class PeriodStatistics : IPeriodStatistics
     {
         public string PeriodName { get; }
         public IEnumerable<ITeamStatistics> TeamStatistics { get; }
 
-        public PeriodStatistics(PeriodStatisticsDTO dto)
+        public PeriodStatistics(PeriodStatisticsDto dto)
         {
             PeriodName = dto.PeriodName;
-            TeamStatistics = dto.TeamStatisticsDTOs?.Select(s => new TeamStatistics(s));
+            TeamStatistics = dto.TeamStatisticsDtos?.Select(s => new TeamStatistics(s));
         }
 
-        // ReSharper disable once InconsistentNaming
-        public PeriodStatistics(string periodName, IEnumerable<TeamStatisticsDTO> teamStatisticsDTOs)
+        public PeriodStatistics(string periodName, IEnumerable<TeamStatisticsDto> teamStatisticsDtos)
         {
             PeriodName = periodName;
-            TeamStatistics = teamStatisticsDTOs?.Select(s => new TeamStatistics(s));
+            TeamStatistics = teamStatisticsDtos?.Select(s => new TeamStatistics(s));
         }
 
         /// <summary>Returns a string that represents the current object.</summary>

@@ -2,16 +2,16 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="matchSummaryEndpoint" /> instances to <see cref="MatchDTO" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="matchSummaryEndpoint" /> instances to <see cref="MatchDto" /> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{MatchDTO}" />
-    internal class MatchSummaryMapper : ISingleTypeMapper<MatchDTO>
+    /// <seealso cref="ISingleTypeMapper{MatchDto}" />
+    internal class MatchSummaryMapper : ISingleTypeMapper<MatchDto>
     {
         /// <summary>
         /// A <see cref="matchSummaryEndpoint"/> containing sport event data
@@ -30,12 +30,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="SportEventSummaryDTO" />
+        /// Maps it's data to instance of <see cref="SportEventSummaryDto" />
         /// </summary>
-        /// <returns>The created <see cref="SportEventSummaryDTO" /> instance</returns>
-        public MatchDTO Map()
+        /// <returns>The created <see cref="SportEventSummaryDto" /> instance</returns>
+        public MatchDto Map()
         {
-            return new MatchDTO(_data);
+            return new MatchDto(_data);
         }
     }
 }

@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// Represents a list or collection of sport related entities

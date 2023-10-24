@@ -2,11 +2,11 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
 {
     /// <summary>
     /// Implements methods used to provides an requested selection
@@ -16,11 +16,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
         /// <summary>
         /// Initializes a new instance of the <see cref="Selection"/> class
         /// </summary>
-        /// <param name="eventId">a <see cref="URN"/> representing the event id</param>
+        /// <param name="eventId">a <see cref="Urn"/> representing the event id</param>
         /// <param name="marketId">a value representing the market id</param>
         /// <param name="outcomeId">a value representing the outcome id</param>
         /// <param name="specifiers">a value representing the specifiers</param>
-        internal Selection(URN eventId, int marketId, string outcomeId, string specifiers)
+        internal Selection(Urn eventId, int marketId, string outcomeId, string specifiers)
         {
             EventId = eventId ?? throw new ArgumentNullException(nameof(eventId));
             MarketId = marketId > 0 ? marketId : throw new ArgumentException("Missing marketId", nameof(marketId));
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
         /// <summary>
         /// Gets the event id.
         /// </summary>
-        public URN EventId { get; }
+        public Urn EventId { get; }
 
         /// <summary>
         /// Gets the market id.

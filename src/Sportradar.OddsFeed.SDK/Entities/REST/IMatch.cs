@@ -4,7 +4,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing sport events of match type
@@ -67,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <param name="culture">The languages to which the returned instance should be translated</param>
         /// <remarks>Recommended to be used when only <see cref="IEventTimeline"/> is needed for this <see cref="IMatch"/></remarks>
         /// <returns>A <see cref="Task{IEventTimeline}"/> representing the retrieval operation</returns>
-        Task<IEventTimeline> GetEventTimelineAsync(CultureInfo culture) => Task.FromResult<IEventTimeline>(null);
+        Task<IEventTimeline> GetEventTimelineAsync(CultureInfo culture);
 
         /// <summary>
         /// Asynchronously gets the associated delayed info
@@ -79,6 +79,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously gets the associated coverage info
         /// </summary>
         /// <returns>A <see cref="Task{ICoverageInfo}"/> representing the retrieval operation</returns>
-        Task<ICoverageInfo> GetCoverageInfoAsync() => Task.FromResult<ICoverageInfo>(null);
+        Task<ICoverageInfo> GetCoverageInfoAsync();
     }
 }

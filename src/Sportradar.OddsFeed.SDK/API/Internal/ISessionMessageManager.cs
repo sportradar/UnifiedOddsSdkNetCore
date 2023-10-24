@@ -3,9 +3,8 @@
 */
 using System;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     ///  Defines a contract implemented by classes capable of processing feed messages and stashing them. Only 1 per session should be used.

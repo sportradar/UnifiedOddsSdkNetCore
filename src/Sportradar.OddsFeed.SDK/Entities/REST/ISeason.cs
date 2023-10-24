@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing a tournament season

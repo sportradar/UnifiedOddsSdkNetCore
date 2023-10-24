@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing a sport event venue
@@ -13,9 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IVenue : IEntityPrinter
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> uniquely identifying the current <see cref="IVenue"/> instance
+        /// Gets a <see cref="Urn"/> uniquely identifying the current <see cref="IVenue"/> instance
         /// </summary>
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing venue's names in different languages
@@ -75,9 +75,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string State { get; }
 
         /// <summary>
-        /// Gets the course
+        /// Gets the list of courses
         /// </summary>
-        /// <value>The course</value>
-        IEnumerable<IHole> Course => new List<IHole>();
+        /// <value>The list of courses</value>
+        IEnumerable<ICourse> Courses { get; }
     }
 }

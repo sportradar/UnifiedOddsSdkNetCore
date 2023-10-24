@@ -4,30 +4,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representation for sport event status statistics. The status can be receiver through messages or fetched from the API
     /// </summary>
-    internal class SportEventStatisticsDTO
+    internal class SportEventStatisticsDto
     {
-        public IEnumerable<TeamStatisticsDTO> TotalStatisticsDtos { get; internal set; }
+        public IEnumerable<TeamStatisticsDto> TotalStatisticsDtos { get; internal set; }
 
-        public IEnumerable<PeriodStatisticsDTO> PeriodStatisticsDtos { get; internal set; }
+        public IEnumerable<PeriodStatisticsDto> PeriodStatisticsDtos { get; internal set; }
 
         // from feed
-        public SportEventStatisticsDTO(statisticsType result)
+        public SportEventStatisticsDto(statisticsType result)
         {
             Guard.Argument(result, nameof(result)).NotNull();
 
-            TotalStatisticsDtos = new List<TeamStatisticsDTO>
+            TotalStatisticsDtos = new List<TeamStatisticsDto>
                                   {
-                                      new TeamStatisticsDTO(
+                                      new TeamStatisticsDto(
                                                             null,
                                                             null,
                                                             HomeAway.Home,
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                                                             result.corners?.home,
                                                             result.green_cards?.home
                                                            ),
-                                      new TeamStatisticsDTO(
+                                      new TeamStatisticsDto(
                                                             null,
                                                             null,
                                                             HomeAway.Away,
@@ -53,11 +53,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         // from API
-        public SportEventStatisticsDTO(matchStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
+        public SportEventStatisticsDto(matchStatistics statistics, IDictionary<HomeAway, Urn> homeAwayCompetitors)
         {
             Guard.Argument(statistics, nameof(statistics)).NotNull();
 
-            var teamStats = new List<TeamStatisticsDTO>();
+            var teamStats = new List<TeamStatisticsDto>();
             if (statistics.totals?.Any() == true)
             {
                 // can here be more then 1 sub-array? 
@@ -65,7 +65,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 {
                     foreach (var teamStatistics in total)
                     {
-                        teamStats.Add(new TeamStatisticsDTO(teamStatistics, homeAwayCompetitors));
+                        teamStats.Add(new TeamStatisticsDto(teamStatistics, homeAwayCompetitors));
                     }
                 }
 
@@ -74,10 +74,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (statistics.periods != null)
             {
-                var periodStats = new List<PeriodStatisticsDTO>();
+                var periodStats = new List<PeriodStatisticsDto>();
                 foreach (var period in statistics.periods)
                 {
-                    periodStats.Add(new PeriodStatisticsDTO(period, homeAwayCompetitors));
+                    periodStats.Add(new PeriodStatisticsDto(period, homeAwayCompetitors));
                 }
                 PeriodStatisticsDtos = periodStats;
             }

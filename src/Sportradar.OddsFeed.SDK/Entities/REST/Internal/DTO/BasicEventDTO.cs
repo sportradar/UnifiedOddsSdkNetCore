@@ -6,16 +6,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
-    /// A data-transfer-object for <see cref="basicEvent"/> used in <see cref="MatchTimelineDTO"/>
+    /// A data-transfer-object for <see cref="basicEvent"/> used in <see cref="MatchTimelineDto"/>
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "DTO is allowed solution wide")]
-    internal class BasicEventDTO
+    internal class BasicEventDto
     {
         public readonly int Id;
         public decimal? HomeScore;
@@ -31,13 +30,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public int? X;
         public int? Y;
         public DateTime Time;
-        public readonly IEnumerable<EventPlayerAssistDTO> Assists;
-        public readonly EventPlayerDTO GoalScorer;
-        public readonly EventPlayerDTO Player;
+        public readonly IEnumerable<EventPlayerAssistDto> Assists;
+        public readonly EventPlayerDto GoalScorer;
+        public readonly EventPlayerDto Player;
         public int? MatchStatusCode;
         public readonly string MatchClock;
 
-        internal BasicEventDTO(basicEvent item)
+        internal BasicEventDto(basicEvent item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 
@@ -61,15 +60,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Time = item.time;
             if (item.assist != null && item.assist.Length > 0)
             {
-                Assists = item.assist.Select(s => new EventPlayerAssistDTO(s));
+                Assists = item.assist.Select(s => new EventPlayerAssistDto(s));
             }
             if (item.goal_scorer != null)
             {
-                GoalScorer = new EventPlayerDTO(item.goal_scorer);
+                GoalScorer = new EventPlayerDto(item.goal_scorer);
             }
             if (item.player != null)
             {
-                Player = new EventPlayerDTO(item.player);
+                Player = new EventPlayerDto(item.player);
             }
             MatchStatusCode = item.match_status_codeSpecified ? (int?)item.match_status_code : null;
             MatchClock = item.match_clock;

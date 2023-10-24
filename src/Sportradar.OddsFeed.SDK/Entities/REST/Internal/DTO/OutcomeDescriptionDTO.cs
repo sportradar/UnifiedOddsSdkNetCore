@@ -2,14 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for outcome description
     /// </summary>
-    internal class OutcomeDescriptionDTO
+    internal class OutcomeDescriptionDto
     {
         internal string Id { get; }
 
@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string Description { get; }
 
-        internal OutcomeDescriptionDTO(desc_outcomesOutcome outcome)
+        internal OutcomeDescriptionDto(desc_outcomesOutcome outcome)
         {
             Guard.Argument(outcome, nameof(outcome)).NotNull();
             Guard.Argument(outcome.id, nameof(outcome.id)).NotNull().NotEmpty();
@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Description = outcome.description;
         }
 
-        internal OutcomeDescriptionDTO(desc_variant_outcomesOutcome outcome)
+        internal OutcomeDescriptionDto(desc_variant_outcomesOutcome outcome)
         {
             Guard.Argument(outcome, nameof(outcome)).NotNull();
             Guard.Argument(outcome.id, nameof(outcome.id)).NotNull().NotEmpty();

@@ -2,107 +2,72 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Microsoft.Extensions.Logging;
 using Dawn;
-using Microsoft.Extensions.Logging.Abstractions;
-using Sportradar.OddsFeed.SDK.API;
-using Sportradar.OddsFeed.SDK.API.EventArguments;
-using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.REST;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
     /// <summary>
     /// A Multi-Session example demonstrating using two sessions for Low and High priority messages
     /// </summary>
-    public class MultiSession
+    public class MultiSession : ExampleBase
     {
-        private readonly ILogger _log;
-        private readonly ILoggerFactory _loggerFactory;
-
-        public MultiSession(ILoggerFactory loggerFactory = null)
+        public MultiSession(ILogger<MultiSession> logger)
+        : base(logger)
         {
-            _loggerFactory = loggerFactory;
-            _log = _loggerFactory?.CreateLogger(typeof(MultiSession)) ?? new NullLogger<MultiSession>();
         }
 
-        public void Run()
+        public override void Run()
         {
-            _log.LogInformation("Running the OddsFeed SDK Multi-Session example");
+            Log.LogInformation("Running the Multi-Session example");
 
-            var configuration = Feed.GetConfigurationBuilder().BuildFromConfigFile();
-            var oddsFeed = new Feed(configuration, _loggerFactory);
-            AttachToFeedEvents(oddsFeed);
+            var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+            var uofSdk = RegisterServicesAndGetUofSdk(configuration);
+            AttachToGlobalEvents(uofSdk);
 
-            _log.LogInformation("Creating IOddsFeedSessions");
+            Log.LogInformation("Creating IUofSessions");
 
-             var sessionHigh = oddsFeed.CreateBuilder()
-                    .SetMessageInterest(MessageInterest.HighPriorityMessages)
-                    .Build();
-            var sessionLow = oddsFeed.CreateBuilder()
+            var sessionHigh = uofSdk.GetSessionBuilder()
+                   .SetMessageInterest(MessageInterest.HighPriorityMessages)
+                   .Build();
+            var sessionLow = uofSdk.GetSessionBuilder()
                     .SetMessageInterest(MessageInterest.LowPriorityMessages)
                     .Build();
 
-            _log.LogInformation("Attaching to events for session with message interest 'HighPriorityMessages'");
+            Log.LogInformation("Attaching to events for session with message interest 'HighPriorityMessages'");
             AttachToSessionHighEvents(sessionHigh);
-            _log.LogInformation("Attaching to events for session with message interest 'LowPriorityMessages'");
+            Log.LogInformation("Attaching to events for session with message interest 'LowPriorityMessages'");
             AttachToSessionLowEvents(sessionLow);
 
-            _log.LogInformation("Opening the feed instance");
-            oddsFeed.Open();
-            _log.LogInformation("Example successfully started. Hit <enter> to quit");
+            Log.LogInformation("Opening the sdk instance");
+            uofSdk.Open();
+            Log.LogInformation("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
             Console.ReadLine();
 
-            _log.LogInformation("Closing / disposing the feed");
-            oddsFeed.Close();
+            Log.LogInformation("Closing / disposing the sdk instance");
+            uofSdk.Close();
 
-            DetachFromFeedEvents(oddsFeed);
+            DetachFromGlobalEvents(uofSdk);
             DetachFromSessionHighEvents(sessionHigh);
             DetachFromSessionLowEvents(sessionLow);
 
-            _log.LogInformation("Stopped");
+            Log.LogInformation("Stopped");
         }
 
         /// <summary>
-        /// Attaches to events raised by <see cref="IOddsFeed"/>
+        /// Attaches to events raised by <see cref="IUofSession"/>
         /// </summary>
-        /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance </param>
-        private void AttachToFeedEvents(IOddsFeed oddsFeed)
-        {
-            Guard.Argument(oddsFeed, nameof(oddsFeed)).NotNull();
-
-            _log.LogInformation("Attaching to feed events");
-            oddsFeed.ProducerUp += OnProducerUp;
-            oddsFeed.ProducerDown += OnProducerDown;
-            oddsFeed.Disconnected += OnDisconnected;
-            oddsFeed.Closed += OnClosed;
-        }
-
-        /// <summary>
-        /// Detaches from events defined by <see cref="IOddsFeed"/>
-        /// </summary>
-        /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance</param>
-        private void DetachFromFeedEvents(IOddsFeed oddsFeed)
-        {
-            Guard.Argument(oddsFeed, nameof(oddsFeed)).NotNull();
-
-            _log.LogInformation("Detaching from feed events");
-            oddsFeed.ProducerUp -= OnProducerUp;
-            oddsFeed.ProducerDown -= OnProducerDown;
-            oddsFeed.Disconnected -= OnDisconnected;
-            oddsFeed.Closed -= OnClosed;
-        }
-
-        /// <summary>
-        /// Attaches to events raised by <see cref="IOddsFeedSession"/>
-        /// </summary>
-        /// <param name="session">A <see cref="IOddsFeedSession"/> instance </param>
-        private void AttachToSessionHighEvents(IOddsFeedSession session)
+        /// <param name="session">A <see cref="IUofSession"/> instance </param>
+        private void AttachToSessionHighEvents(IUofSession session)
         {
             Guard.Argument(session, nameof(session)).NotNull();
 
-            _log.LogInformation("Attaching to session (high) events");
+            Log.LogInformation("Attaching to session events (High)");
             session.OnUnparsableMessageReceived += SessionHighOnUnparsableMessageReceived;
             session.OnBetCancel += SessionHighOnBetCancel;
             session.OnBetSettlement += SessionHighOnBetSettlement;
@@ -114,14 +79,14 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Detaches from events defined by <see cref="IOddsFeedSession"/>
+        /// Detaches from events defined by <see cref="IUofSession"/>
         /// </summary>
-        /// <param name="session">A <see cref="IOddsFeedSession"/> instance</param>
-        private void DetachFromSessionHighEvents(IOddsFeedSession session)
+        /// <param name="session">A <see cref="IUofSession"/> instance</param>
+        private void DetachFromSessionHighEvents(IUofSession session)
         {
             Guard.Argument(session, nameof(session)).NotNull();
 
-            _log.LogInformation("Detaching from session (high) events");
+            Log.LogInformation("Detaching from session events (High)");
             session.OnUnparsableMessageReceived -= SessionHighOnUnparsableMessageReceived;
             session.OnBetCancel -= SessionHighOnBetCancel;
             session.OnBetSettlement -= SessionHighOnBetSettlement;
@@ -133,14 +98,14 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Attaches to events raised by <see cref="IOddsFeedSession"/>
+        /// Attaches to events raised by <see cref="IUofSession"/>
         /// </summary>
-        /// <param name="session">A <see cref="IOddsFeedSession"/> instance </param>
-        private void AttachToSessionLowEvents(IOddsFeedSession session)
+        /// <param name="session">A <see cref="IUofSession"/> instance </param>
+        private void AttachToSessionLowEvents(IUofSession session)
         {
             Guard.Argument(session, nameof(session)).NotNull();
 
-            _log.LogInformation("Attaching to session (low) events");
+            Log.LogInformation("Attaching to session events (Low)");
             session.OnUnparsableMessageReceived += SessionLowOnUnparsableMessageReceived;
             session.OnBetCancel += SessionLowOnBetCancel;
             session.OnBetSettlement += SessionLowOnBetSettlement;
@@ -152,14 +117,14 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         }
 
         /// <summary>
-        /// Detaches from events defined by <see cref="IOddsFeedSession"/>
+        /// Detaches from events defined by <see cref="IUofSession"/>
         /// </summary>
-        /// <param name="session">A <see cref="IOddsFeedSession"/> instance</param>
-        private void DetachFromSessionLowEvents(IOddsFeedSession session)
+        /// <param name="session">A <see cref="IUofSession"/> instance</param>
+        private void DetachFromSessionLowEvents(IUofSession session)
         {
             Guard.Argument(session, nameof(session)).NotNull();
 
-            _log.LogInformation("Detaching from session (low) events");
+            Log.LogInformation("Detaching from session events (Low)");
             session.OnUnparsableMessageReceived -= SessionLowOnUnparsableMessageReceived;
             session.OnBetCancel -= SessionLowOnBetCancel;
             session.OnBetSettlement -= SessionLowOnBetSettlement;
@@ -170,148 +135,110 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             session.OnRollbackBetSettlement -= SessionLowOnRollbackBetSettlement;
         }
 
-        private void SessionHighOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
-        {
-            var baseEntity = rollbackBetSettlementEventArgs.GetBetSettlementRollback();
-            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event);
-        }
-
-        private void SessionHighOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
-        {
-            var baseEntity = rollbackBetCancelEventArgs.GetBetCancelRollback();
-            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event);
-        }
-
         private void SessionHighOnOddsChange(object sender, OddsChangeEventArgs<ISportEvent> oddsChangeEventArgs)
         {
             var baseEntity = oddsChangeEventArgs.GetOddsChange();
-            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionHighOnFixtureChange(object sender, FixtureChangeEventArgs<ISportEvent> fixtureChangeEventArgs)
         {
             var baseEntity = fixtureChangeEventArgs.GetFixtureChange();
-            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionHighOnBetStop(object sender, BetStopEventArgs<ISportEvent> betStopEventArgs)
         {
             var baseEntity = betStopEventArgs.GetBetStop();
-            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionHighOnBetSettlement(object sender, BetSettlementEventArgs<ISportEvent> betSettlementEventArgs)
         {
             var baseEntity = betSettlementEventArgs.GetBetSettlement();
-            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionHighOnBetCancel(object sender, BetCancelEventArgs<ISportEvent> betCancelEventArgs)
         {
             var baseEntity = betCancelEventArgs.GetBetCancel();
-            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionHighOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.LogInformation($"PREMATCH: {unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+            Log.LogInformation("[HIGH] {MessageType} message came for event {EventId}", unparsableMessageEventArgs.MessageType.GetType().Name, unparsableMessageEventArgs.EventId);
         }
 
-        private void SessionLowOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
+        private void SessionHighOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
         {
             var baseEntity = rollbackBetSettlementEventArgs.GetBetSettlementRollback();
-            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
-        private void SessionLowOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
+        private void SessionHighOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
         {
             var baseEntity = rollbackBetCancelEventArgs.GetBetCancelRollback();
-            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteHighSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionLowOnOddsChange(object sender, OddsChangeEventArgs<ISportEvent> oddsChangeEventArgs)
         {
             var baseEntity = oddsChangeEventArgs.GetOddsChange();
-            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionLowOnFixtureChange(object sender, FixtureChangeEventArgs<ISportEvent> fixtureChangeEventArgs)
         {
             var baseEntity = fixtureChangeEventArgs.GetFixtureChange();
-            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionLowOnBetStop(object sender, BetStopEventArgs<ISportEvent> betStopEventArgs)
         {
             var baseEntity = betStopEventArgs.GetBetStop();
-            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionLowOnBetSettlement(object sender, BetSettlementEventArgs<ISportEvent> betSettlementEventArgs)
         {
             var baseEntity = betSettlementEventArgs.GetBetSettlement();
-            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionLowOnBetCancel(object sender, BetCancelEventArgs<ISportEvent> betCancelEventArgs)
         {
             var baseEntity = betCancelEventArgs.GetBetCancel();
-            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event);
+            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
         private void SessionLowOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.LogInformation($"PREMATCH: {unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+            Log.LogInformation("[LOW] {MessageType} message came for event {EventId}", unparsableMessageEventArgs.MessageType.GetType().Name, unparsableMessageEventArgs.EventId);
         }
 
-        /// <summary>
-        /// Invoked when the connection to the feed is lost
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="eventArgs">The event arguments</param>
-        private void OnDisconnected(object sender, EventArgs eventArgs)
+        private void SessionLowOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
         {
-            _log.LogWarning("Connection to the feed lost");
+            var baseEntity = rollbackBetSettlementEventArgs.GetBetSettlementRollback();
+            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
-        /// <summary>
-        /// Invoked when the feed is closed
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnClosed(object sender, FeedCloseEventArgs e)
+        private void SessionLowOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
         {
-            _log.LogWarning($"The feed is closed with the reason: {e.GetReason()}");
+            var baseEntity = rollbackBetCancelEventArgs.GetBetCancelRollback();
+            WriteLowSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.RequestId);
         }
 
-        /// <summary>
-        /// Invoked when a product associated with the feed goes down
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnProducerDown(object sender, ProducerStatusChangeEventArgs e)
+        private void WriteHighSportEntity(string msgType, ISportEvent message, long? requestId)
         {
-            _log.LogWarning($"Producer {e.GetProducerStatusChange().Producer} is down");
+            var msgRequestId = requestId.HasValue ? $" ({requestId.Value})" : string.Empty;
+            Log.LogInformation("[HIGH] {MsgType} message for eventId: {EventId}{RequestId}", msgType.Replace("`1", string.Empty), message.Id, msgRequestId);
         }
 
-        /// <summary>
-        /// Invoked when a product associated with the feed goes up
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
+        private void WriteLowSportEntity(string msgType, ISportEvent message, long? requestId)
         {
-            _log.LogInformation($"Producer {e.GetProducerStatusChange().Producer} is up");
-        }
-
-        private void WriteHighSportEntity(string msgType, ISportEvent message)
-        {
-            _log.LogInformation($"HIGH: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
-        }
-
-        private void WriteLowSportEntity(string msgType, ISportEvent message)
-        {
-            _log.LogInformation($"LOW: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
+            var msgRequestId = requestId.HasValue ? $" ({requestId.Value})" : string.Empty;
+            Log.LogInformation("[LOW]  {MsgType} message for eventId: {EventId}{RequestId}", msgType.Replace("`1", string.Empty), message.Id, msgRequestId);
         }
     }
 }

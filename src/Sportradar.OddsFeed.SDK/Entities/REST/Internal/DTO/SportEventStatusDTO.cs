@@ -7,17 +7,17 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representation for sport event status (primarily received via feed message)
     /// </summary>
-    internal class SportEventStatusDTO
+    internal class SportEventStatusDto
     {
         private const string ThrowProperty = "Throw";
         private const string TryProperty = "Try";
@@ -75,7 +75,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the winner identifier
         /// </summary>
         /// <value>The winner identifier</value>
-        public URN WinnerId { get; }
+        public Urn WinnerId { get; }
 
         /// <summary>
         /// Gets the period of ladder.
@@ -92,31 +92,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <summary>
         /// Gets the period scores
         /// </summary>
-        public IEnumerable<PeriodScoreDTO> PeriodScores { get; }
+        public IEnumerable<PeriodScoreDto> PeriodScores { get; }
 
         /// <summary>
         /// Gets the event clock
         /// </summary>
         /// <value>The event clock</value>
-        public EventClockDTO EventClock { get; }
+        public EventClockDto EventClock { get; }
 
         /// <summary>
         /// Gets the event results
         /// </summary>
         /// <value>The event results</value>
-        public IEnumerable<EventResultDTO> EventResults { get; }
+        public IEnumerable<EventResultDto> EventResults { get; }
 
         /// <summary>
         /// Gets the sport event statistics
         /// </summary>
         /// <value>The sport event statistics</value>
-        public SportEventStatisticsDTO SportEventStatistics { get; internal set; }
+        public SportEventStatisticsDto SportEventStatistics { get; internal set; }
 
         /// <summary>
         /// Gets the indicator for competitors if there are home or away
         /// </summary>
         /// <value>The indicator for competitors if there are home or away</value>
-        public IDictionary<HomeAway, URN> HomeAwayCompetitors { get; }
+        public IDictionary<HomeAway, Urn> HomeAwayCompetitors { get; }
 
         /// <summary>
         /// Gets the penalty score of the home competitor competing on the associated sport event (for Ice Hockey)
@@ -134,11 +134,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public bool? DecidedByFed { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SportEventStatusDTO"/> class
+        /// Initializes a new instance of the <see cref="SportEventStatusDto"/> class
         /// </summary>
         /// <param name="ses">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
         /// <param name="homeAwayCompetitors">The list of competitors with the indicator if it is a home or away team</param>
-        public SportEventStatusDTO(sportEventStatus ses, IDictionary<HomeAway, URN> homeAwayCompetitors)
+        public SportEventStatusDto(sportEventStatus ses, IDictionary<HomeAway, Urn> homeAwayCompetitors)
         {
             Guard.Argument(ses, nameof(ses)).NotNull();
 
@@ -200,10 +200,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (ses.period_scores != null && ses.period_scores.Any())
             {
-                var periodScores = new List<PeriodScoreDTO>();
+                var periodScores = new List<PeriodScoreDto>();
                 foreach (var periodScore in ses.period_scores)
                 {
-                    periodScores.Add(new PeriodScoreDTO(periodScore));
+                    periodScores.Add(new PeriodScoreDto(periodScore));
                     ApplyPropertyValue(true, $"PeriodScore{periodScore.number}_Number", periodScore.number, tempProperties);
                     ApplyPropertyValue(true, $"PeriodScore{periodScore.number}_HomeScore", periodScore.home_score, tempProperties);
                     ApplyPropertyValue(true, $"PeriodScore{periodScore.number}_AwayScore", periodScore.away_score, tempProperties);
@@ -214,7 +214,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (ses.clock != null)
             {
-                EventClock = new EventClockDTO(ses.clock.match_time,
+                EventClock = new EventClockDto(ses.clock.match_time,
                                                ses.clock.stoppage_time,
                                                ses.clock.stoppage_time_announced,
                                                ses.clock.remaining_time,
@@ -270,17 +270,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (ses.results != null)
             {
-                var eventResults = new List<EventResultDTO>();
+                var eventResults = new List<EventResultDto>();
                 foreach (var result in ses.results)
                 {
-                    eventResults.Add(new EventResultDTO(result));
+                    eventResults.Add(new EventResultDto(result));
                 }
                 EventResults = eventResults;
             }
 
             if (ses.statistics != null)
             {
-                SportEventStatistics = new SportEventStatisticsDTO(ses.statistics);
+                SportEventStatistics = new SportEventStatisticsDto(ses.statistics);
             }
 
             if (ses.home_penalty_scoreSpecified)
@@ -297,12 +297,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 try
                 {
-                    foreach (var periodScoreDTO in PeriodScores)
+                    foreach (var periodScoreDto in PeriodScores)
                     {
-                        if (periodScoreDTO.Type.HasValue && periodScoreDTO.Type.Value == PeriodType.Penalties)
+                        if (periodScoreDto.Type.HasValue && periodScoreDto.Type.Value == PeriodType.Penalties)
                         {
-                            HomePenaltyScore = (int)periodScoreDTO.HomeScore;
-                            AwayPenaltyScore = (int)periodScoreDTO.AwayScore;
+                            HomePenaltyScore = (int)periodScoreDto.HomeScore;
+                            AwayPenaltyScore = (int)periodScoreDto.AwayScore;
                         }
                     }
                 }
@@ -314,12 +314,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SportEventStatusDTO"/> class.
+        /// Initializes a new instance of the <see cref="SportEventStatusDto"/> class.
         /// </summary>
         /// <param name="restSes">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
         /// <param name="statistics"></param>
         /// <param name="homeAwayCompetitors"></param>
-        public SportEventStatusDTO(restSportEventStatus restSes, matchStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
+        public SportEventStatusDto(restSportEventStatus restSes, matchStatistics statistics, IDictionary<HomeAway, Urn> homeAwayCompetitors)
         {
             Guard.Argument(restSes, nameof(restSes)).NotNull();
 
@@ -341,10 +341,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ApplyPropertyValue(restSes.periodSpecified, "Period", restSes.period, tempProperties);
             if (restSes.period_scores != null && restSes.period_scores.Any())
             {
-                var periodScores = new List<PeriodScoreDTO>();
+                var periodScores = new List<PeriodScoreDto>();
                 foreach (var periodScore in restSes.period_scores)
                 {
-                    periodScores.Add(new PeriodScoreDTO(periodScore));
+                    periodScores.Add(new PeriodScoreDto(periodScore));
                     if (periodScore.numberSpecified)
                     {
                         ApplyPropertyValue(periodScore.numberSpecified, $"PeriodScore{periodScore.number}_Number", periodScore.number, tempProperties);
@@ -412,7 +412,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (!string.IsNullOrEmpty(restSes.winner_id))
             {
-                WinnerId = URN.Parse(restSes.winner_id);
+                WinnerId = Urn.Parse(restSes.winner_id);
             }
 
             PeriodOfLadder = null;
@@ -424,17 +424,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             EventResults = null;
             if (restSes.results != null)
             {
-                var eventResults = new List<EventResultDTO>();
+                var eventResults = new List<EventResultDto>();
                 foreach (var result in restSes.results)
                 {
-                    eventResults.Add(new EventResultDTO(result));
+                    eventResults.Add(new EventResultDto(result));
                 }
                 EventResults = eventResults;
             }
 
             if (statistics != null)
             {
-                SportEventStatistics = new SportEventStatisticsDTO(statistics, HomeAwayCompetitors);
+                SportEventStatistics = new SportEventStatisticsDto(statistics, HomeAwayCompetitors);
             }
 
             DecidedByFed = restSes.decided_by_fedSpecified ? restSes.decided_by_fed : (bool?)null;
@@ -444,12 +444,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 try
                 {
-                    foreach (var periodScoreDTO in PeriodScores)
+                    foreach (var periodScoreDto in PeriodScores)
                     {
-                        if (periodScoreDTO.Type.HasValue && periodScoreDTO.Type.Value == PeriodType.Penalties)
+                        if (periodScoreDto.Type.HasValue && periodScoreDto.Type.Value == PeriodType.Penalties)
                         {
-                            HomePenaltyScore = (int)periodScoreDTO.HomeScore;
-                            AwayPenaltyScore = (int)periodScoreDTO.AwayScore;
+                            HomePenaltyScore = (int)periodScoreDto.HomeScore;
+                            AwayPenaltyScore = (int)periodScoreDto.AwayScore;
                         }
                     }
                 }
@@ -461,16 +461,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SportEventStatusDTO"/> class.
+        /// Initializes a new instance of the <see cref="SportEventStatusDto"/> class.
         /// </summary>
         /// <param name="stageSes">A <see cref="restSportEventStatus" /> instance containing status data about the associated sport event</param>
-        public SportEventStatusDTO(stageSportEventStatus stageSes)
+        public SportEventStatusDto(stageSportEventStatus stageSes)
         {
             Guard.Argument(stageSes, nameof(stageSes)).NotNull();
 
             var tempProperties = new Dictionary<string, object>();
 
-            var eventResults = new List<EventResultDTO>();
+            var eventResults = new List<EventResultDto>();
             if (stageSes.results?.competitor != null && stageSes.results.competitor.Any())
             {
                 var i = 0;
@@ -488,7 +488,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     ApplyPropertyValue(true, $"Result{i}_Time", resultType.time, tempProperties);
                     ApplyPropertyValue(true, $"Result{i}_TimeRanking", resultType.time_ranking, tempProperties);
 
-                    eventResults.Add(new EventResultDTO(resultType));
+                    eventResults.Add(new EventResultDto(resultType));
                 }
                 EventResults = eventResults;
             }
@@ -503,7 +503,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             MatchStatusId = -1;
 
-            WinnerId = !string.IsNullOrEmpty(stageSes.winner_id) ? URN.Parse(stageSes.winner_id) : null;
+            WinnerId = !string.IsNullOrEmpty(stageSes.winner_id) ? Urn.Parse(stageSes.winner_id) : null;
 
             PeriodOfLadder = stageSes.period_of_leaderSpecified ? stageSes.period_of_leader : (int?)null;
 

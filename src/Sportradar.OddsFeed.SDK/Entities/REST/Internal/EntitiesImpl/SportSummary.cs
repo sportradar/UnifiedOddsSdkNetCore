@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// A implementation of <see cref="ISportSummary"/>
@@ -16,9 +16,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Creates new instance of sport summary
         /// </summary>
-        /// <param name="id">a <see cref="URN"/> uniquely identifying the sport represented by the constructed instance</param>
+        /// <param name="id">a <see cref="Urn"/> uniquely identifying the sport represented by the constructed instance</param>
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated sport names</param>
-        public SportSummary(URN id, IReadOnlyDictionary<CultureInfo, string> names)
+        public SportSummary(Urn id, IReadOnlyDictionary<CultureInfo, string> names)
             : base(id, names)
         {
             Guard.Argument(id, nameof(id)).NotNull();

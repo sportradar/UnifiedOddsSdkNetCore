@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
 {
     internal class MarketMapping : IMarketMappingData
     {
@@ -28,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// <summary>
         /// Gets the id of the sport to which the associated market / outright belongs to
         /// </summary>
-        public URN SportId { get; }
+        public Urn SportId { get; }
 
         /// <summary>
         /// Gets the id of the market associated with the current instance
@@ -88,11 +89,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         /// Determines whether the current mapping can map market with provided specifiers associated with provided producer and sport
         /// </summary>
         /// <param name="producerId">The id of the <see cref="IProducer" /> associated with the market</param>
-        /// <param name="sportId">The <see cref="URN" /> specifying the sport associated with the market</param>
+        /// <param name="sportId">The <see cref="Urn" /> specifying the sport associated with the market</param>
         /// <param name="specifiers">The market specifiers</param>
         /// <returns>True if the current mapping can be used to map the specified market. False otherwise</returns>
         /// <exception cref="InvalidOperationException">The provided specifiers are not valid</exception>
-        public bool CanMap(int producerId, URN sportId, IReadOnlyDictionary<string, string> specifiers)
+        public bool CanMap(int producerId, Urn sportId, IReadOnlyDictionary<string, string> specifiers)
         {
             if (!ProducerIds.Contains(producerId) || (SportId != null && !SportId.Equals(sportId)))
             {

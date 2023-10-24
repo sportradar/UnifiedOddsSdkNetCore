@@ -2,12 +2,12 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Linq;
-using Microsoft.Extensions.Logging;
 using Dawn;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Sportradar.OddsFeed.SDK.API;
-using Sportradar.OddsFeed.SDK.API.EventArguments;
-using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 {
@@ -23,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private readonly ILogger _log;
 
         /// <summary>
-        /// A <see cref="IEntityDispatcher{ISportEvent}"/> used to obtain SDK messages
+        /// A <see cref="IEntityDispatcher{T}"/> used to obtain SDK messages
         /// </summary>
         private readonly IEntityDispatcher<T> _dispatcher;
 
@@ -41,29 +41,17 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         /// Initializes a new instance of the <see cref="IEntityDispatcher{ISportEvent}"/> class
         /// </summary>
         /// <param name="dispatcher">A <see cref="IEntityDispatcher{ISportEvent}" /> whose dispatched entities will be processed by the current instance</param>
-        /// <param name="writer">A <see cref="SportEntityWriter" /> used to output / log the dispatched entities</param>
+        /// <param name="sportEntityWriter">A <see cref="SportEntityWriter" /> used to output / log the dispatched entities</param>
         /// <param name="marketWriter">A <see cref="MarketWriter"/> used to write market and outcome data</param>
         /// <param name="log">A <see cref="ILogger" /> instance used for logging</param>
-        public EntityProcessor(IEntityDispatcher<T> dispatcher, SportEntityWriter writer = null, MarketWriter marketWriter = null, ILogger log = null)
+        public EntityProcessor(IEntityDispatcher<T> dispatcher, SportEntityWriter sportEntityWriter = null, MarketWriter marketWriter = null, ILogger log = null)
         {
             Guard.Argument(dispatcher, nameof(dispatcher)).NotNull();
 
             _dispatcher = dispatcher;
-            _sportEntityWriter = writer;
+            _sportEntityWriter = sportEntityWriter;
             _marketWriter = marketWriter;
             _log = log ?? new NullLogger<EntityProcessor<T>>();
-        }
-
-        /// <summary>
-        /// Invoked when bet stop message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        protected virtual void OnBetStopReceived(object sender, BetStopEventArgs<T> e)
-        {
-            var betstop = e.GetBetStop();
-            _log.LogInformation($"BetStop received. EventId:{betstop.Event.Id} Producer:{betstop.Producer}, Tag:{betstop.Groups}, RequestId:{betstop.RequestId}");
-            _sportEntityWriter?.WriteData(betstop.Event);
         }
 
         /// <summary>
@@ -76,61 +64,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             Guard.Argument(e, nameof(e)).NotNull();
 
             var oddsChange = e.GetOddsChange();
-            _log.LogInformation($"OddsChange received. EventId:{oddsChange.Event.Id} Producer:{oddsChange.Producer} RequestId:{oddsChange.RequestId}");
+            _log.LogInformation("[{ProducerInfo}] OddsChange received for event {EventId}{RequestId}", Helper.GetProducerInfo(oddsChange.Producer), oddsChange.Event.Id, Helper.GetRequestInfo(oddsChange.RequestId));
             _sportEntityWriter?.WriteData(oddsChange.Event);
             _marketWriter?.WriteMarketNamesForEvent(oddsChange.Markets);
-        }
-
-        /// <summary>
-        /// Invoked when bet settlement message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnBetSettlementReceived(object sender, BetSettlementEventArgs<T> e)
-        {
-            var betSettlement = e.GetBetSettlement();
-            _log.LogInformation($"BetSettlement received. EventId:{betSettlement.Event.Id} Producer:{betSettlement.Producer}, RequestId:{betSettlement.RequestId}, Market count:{betSettlement.Markets.Count()}");
-            _sportEntityWriter?.WriteData(betSettlement.Event);
-            _marketWriter?.WriteMarketNamesForEvent(betSettlement.Markets);
-        }
-
-        /// <summary>
-        /// Invoked when rollback bet settlement message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<T> e)
-        {
-            var settlementRollback = e.GetBetSettlementRollback();
-            _log.LogInformation($"RollbackBetSettlement received. Producer:{settlementRollback.Producer}, RequestId:{settlementRollback.RequestId}, MarketCount:{settlementRollback.Markets.Count()}");
-            _sportEntityWriter?.WriteData(settlementRollback.Event);
-            _marketWriter?.WriteMarketNamesForEvent(settlementRollback.Markets);
-        }
-
-        /// <summary>
-        /// Invoked when bet cancel message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnBetCancel(object sender, BetCancelEventArgs<T> e)
-        {
-            var betCancel = e.GetBetCancel();
-            _log.LogInformation($"BetCancel received. Producer:{betCancel.Producer}, RequestId:{betCancel.RequestId}, MarketCount:{betCancel.Markets.Count()}");
-            _sportEntityWriter?.WriteData(betCancel.Event);
-            _marketWriter?.WriteMarketNamesForEvent(betCancel.Markets);
-        }
-
-        /// <summary>
-        /// Invoked when rollback bet cancel message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<T> e)
-        {
-            var cancelRollback = e.GetBetCancelRollback();
-            _log.LogInformation($"RollbackBetCancel received. Producer:{cancelRollback.Producer}, RequestId:{cancelRollback.RequestId}, MarketCount:{cancelRollback.Markets.Count()}");
-            _sportEntityWriter?.WriteData(cancelRollback.Event);
-            _marketWriter?.WriteMarketNamesForEvent(cancelRollback.Markets);
         }
 
         /// <summary>
@@ -141,8 +77,72 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private void OnFixtureChange(object sender, FixtureChangeEventArgs<T> e)
         {
             var fixtureChange = e.GetFixtureChange();
-            _log.LogInformation($"FixtureChange received. Producer:{fixtureChange.Producer}, RequestId:{fixtureChange.RequestId}, EventId:{fixtureChange.Event.Id}");
+            _log.LogInformation("[{ProducerInfo}] FixtureChange received for event {EventId}{RequestId}", Helper.GetProducerInfo(fixtureChange.Producer), fixtureChange.Event.Id, Helper.GetRequestInfo(fixtureChange.RequestId));
             _sportEntityWriter?.WriteData(fixtureChange.Event);
+        }
+
+        /// <summary>
+        /// Invoked when bet stop message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        protected virtual void OnBetStopReceived(object sender, BetStopEventArgs<T> e)
+        {
+            var betStop = e.GetBetStop();
+            _log.LogInformation("[{ProducerInfo}] BetStop received for event {EventId} with groups [{Groups}]{RequestId}", Helper.GetProducerInfo(betStop.Producer), betStop.Event.Id, betStop.Groups, Helper.GetRequestInfo(betStop.RequestId));
+            _sportEntityWriter?.WriteData(betStop.Event);
+        }
+
+        /// <summary>
+        /// Invoked when bet cancel message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnBetCancel(object sender, BetCancelEventArgs<T> e)
+        {
+            var betCancel = e.GetBetCancel();
+            _log.LogInformation("[{ProducerInfo}] BetCancel received for event {EventId} with markets {MarketsCount} {RequestId}", Helper.GetProducerInfo(betCancel.Producer), betCancel.Event.Id, betCancel.Markets.Count(), Helper.GetRequestInfo(betCancel.RequestId));
+            _sportEntityWriter?.WriteData(betCancel.Event);
+            _marketWriter?.WriteMarketNamesForEvent(betCancel.Markets);
+        }
+
+        /// <summary>
+        /// Invoked when bet settlement message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnBetSettlementReceived(object sender, BetSettlementEventArgs<T> e)
+        {
+            var betSettlement = e.GetBetSettlement();
+            _log.LogInformation("[{ProducerInfo}] BetSettlement received for event {EventId} with markets {MarketsCount} {RequestId}", Helper.GetProducerInfo(betSettlement.Producer), betSettlement.Event.Id, betSettlement.Markets.Count(), Helper.GetRequestInfo(betSettlement.RequestId));
+            _sportEntityWriter?.WriteData(betSettlement.Event);
+            _marketWriter?.WriteMarketNamesForEvent(betSettlement.Markets);
+        }
+
+        /// <summary>
+        /// Invoked when rollback bet cancel message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<T> e)
+        {
+            var cancelRollback = e.GetBetCancelRollback();
+            _log.LogInformation("[{ProducerInfo}] RollbackBetCancel received for event {EventId} with markets {MarketsCount} {RequestId}", Helper.GetProducerInfo(cancelRollback.Producer), cancelRollback.Event.Id, cancelRollback.Markets.Count(), Helper.GetRequestInfo(cancelRollback.RequestId));
+            _sportEntityWriter?.WriteData(cancelRollback.Event);
+            _marketWriter?.WriteMarketNamesForEvent(cancelRollback.Markets);
+        }
+
+        /// <summary>
+        /// Invoked when rollback bet settlement message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<T> e)
+        {
+            var settlementRollback = e.GetBetSettlementRollback();
+            _log.LogInformation("[{ProducerInfo}] BetStop received for event {EventId} with markets {MarketsCount} {RequestId}", Helper.GetProducerInfo(settlementRollback.Producer), settlementRollback.Event.Id, settlementRollback.Markets.Count(), Helper.GetRequestInfo(settlementRollback.RequestId));
+            _sportEntityWriter?.WriteData(settlementRollback.Event);
+            _marketWriter?.WriteMarketNamesForEvent(settlementRollback.Markets);
         }
 
         /// <summary>

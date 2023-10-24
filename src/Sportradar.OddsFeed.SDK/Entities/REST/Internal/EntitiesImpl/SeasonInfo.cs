@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class SeasonInfo
@@ -35,19 +35,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets the associated tournament identifier.
         /// </summary>
         /// <value>The associated tournament identifier.</value>
-        public URN TournamentId { get; }
+        public Urn TournamentId { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SeasonInfo"/> class
         /// </summary>
-        /// <param name="seasonCI"></param>
-        public SeasonInfo(SeasonCI seasonCI)
-            : base(seasonCI.Id, seasonCI.Names as IReadOnlyDictionary<CultureInfo, string>)
+        /// <param name="seasonCacheItem"></param>
+        public SeasonInfo(SeasonCacheItem seasonCacheItem)
+            : base(seasonCacheItem.Id, seasonCacheItem.Names as IReadOnlyDictionary<CultureInfo, string>)
         {
-            StartDate = seasonCI.StartDate;
-            EndDate = seasonCI.EndDate;
-            Year = seasonCI.Year;
-            TournamentId = seasonCI.TournamentId;
+            StartDate = seasonCacheItem.StartDate;
+            EndDate = seasonCacheItem.EndDate;
+            Year = seasonCacheItem.Year;
+            TournamentId = seasonCacheItem.TournamentId;
         }
     }
 }

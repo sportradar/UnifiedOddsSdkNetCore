@@ -2,7 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Messages.Internal
 {

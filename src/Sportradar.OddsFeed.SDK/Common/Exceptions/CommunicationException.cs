@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
     public class CommunicationException : FeedSdkException
     {
         /// <summary>
-        /// Gets the <see cref="string"/> representation of the url specifying the resource which was being accessed
+        /// Gets the string representation of the url specifying the resource which was being accessed
         /// </summary>
         /// <value>The URL.</value>
         public string Url { get; }
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         public readonly HttpStatusCode ResponseCode;
 
         /// <summary>
-        /// Gets the <see cref="string"/> representation of the response received from the external source (actual xml response)
+        /// Gets the string representation of the response received from the external source (actual xml response or response message)
         /// </summary>
         public readonly string Response;
 
@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         /// Initializes a new instance of the <see cref="CommunicationException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
-        /// <param name="url">The <see cref="string"/> representation of the url specifying the resource which was being accessed .</param>
+        /// <param name="url">The string representation of the url specifying the resource which was being accessed .</param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
         public CommunicationException(string message, string url, Exception innerException)
             : base(message, innerException)
@@ -55,7 +55,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         /// Initializes a new instance of the <see cref="CommunicationException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
-        /// <param name="url">The <see cref="string"/> representation of the url specifying the resource which was being accessed .</param>
+        /// <param name="url">The string representation of the url specifying the resource which was being accessed .</param>
         /// <param name="responseCode">A <see cref="HttpStatusCode"/> specifying the response code</param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
         public CommunicationException(string message, string url, HttpStatusCode responseCode, Exception innerException)
@@ -69,9 +69,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         /// Initializes a new instance of the <see cref="CommunicationException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
-        /// <param name="url">The <see cref="string"/> representation of the url specifying the resource which was being accessed .</param>
+        /// <param name="url">The string representation of the url specifying the resource which was being accessed .</param>
         /// <param name="responseCode">A <see cref="HttpStatusCode"/> specifying the response code</param>
-        /// <param name="response">A <see cref="string"/> representation of the response received from the external source</param>
+        /// <param name="response">A string representation of the response received from the external source</param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
         public CommunicationException(string message, string url, HttpStatusCode responseCode, string response, Exception innerException)
             : base(message, innerException)

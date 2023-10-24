@@ -4,9 +4,9 @@
 using System;
 using System.Net;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a bookmaker details
@@ -49,8 +49,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="BookmakerDetails"/> class
         /// </summary>
-        /// <param name="dto">A <see cref="BookmakerDetailsDTO"/> to be used for constructing new instance</param>
-        public BookmakerDetails(BookmakerDetailsDTO dto)
+        /// <param name="dto">A <see cref="BookmakerDetailsDto"/> to be used for constructing new instance</param>
+        public BookmakerDetails(BookmakerDetailsDto dto)
         {
             Guard.Argument(dto, nameof(dto)).NotNull().Require(dto.Id > 0);
 
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string"/> containing the id of the current instance</returns>
         protected override string PrintI()
         {
-            return $"Id={BookmakerId}";
+            return $"Id={BookmakerId.ToString()}";
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string"/> containing compacted representation of the current instance</returns>
         protected override string PrintC()
         {
-            return $"Id={BookmakerId}, VirtualHost={VirtualHost}, ExpireAt={ExpireAt}, ResponseCode={ResponseCode}, Message={Message}, ServerTimeDifference={ServerTimeDifference}";
+            return $"Id={BookmakerId.ToString()}, VirtualHost={VirtualHost}, ExpireAt={ExpireAt}, ResponseCode={ResponseCode}, Message={Message}, ServerTimeDifference={ServerTimeDifference}";
         }
 
         /// <summary>
@@ -96,6 +96,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         protected override string PrintJ()
         {
             return PrintJ(GetType(), this);
+        }
+
+        public override string ToString()
+        {
+            return "BookmakerDetails{" + PrintC() + "}";
         }
     }
 }

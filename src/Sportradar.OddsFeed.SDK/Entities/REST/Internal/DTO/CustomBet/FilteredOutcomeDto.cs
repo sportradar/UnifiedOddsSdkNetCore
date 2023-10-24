@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
 {
     /// <summary>
     /// Defines a data-transfer-object for available selections for the filtered outcome

@@ -2,10 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Provides information about result changes
@@ -14,9 +14,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     internal class ResultChange : EntityPrinter, IResultChange
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> specifying the sport event
+        /// Gets the <see cref="Urn"/> specifying the sport event
         /// </summary>
-        public URN SportEventId { get; }
+        public Urn SportEventId { get; }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying the last update time
@@ -26,8 +26,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultChange"/> class
         /// </summary>
-        /// <param name="dto">A <see cref="ResultChangeDTO"/> used to create new instance</param>
-        internal ResultChange(ResultChangeDTO dto)
+        /// <param name="dto">A <see cref="ResultChangeDto"/> used to create new instance</param>
+        internal ResultChange(ResultChangeDto dto)
         {
             SportEventId = dto.SportEventId;
             UpdateTime = dto.UpdateTime;

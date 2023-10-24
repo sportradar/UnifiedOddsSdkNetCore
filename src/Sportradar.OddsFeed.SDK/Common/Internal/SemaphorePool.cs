@@ -3,12 +3,16 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
+using Microsoft.Extensions.Logging.Abstractions;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -17,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// </summary>
     internal class SemaphorePool : ISemaphorePool
     {
-        private readonly ILogger _executionLog = SdkLoggerFactory.GetLogger(typeof(SemaphorePool));
+        private readonly ILogger _executionLog;
 
         /// <summary>
         /// A <see cref="List{T}"/> containing pool's semaphores
@@ -59,19 +63,23 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         /// <param name="count">The number of <see cref="SemaphoreSlim"/> instances to be created in the pool</param>
         /// <param name="exceptionHandlingStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying enum member specifying how instances provided by the current provider will handle exceptions</param>
-        public SemaphorePool(int count, ExceptionHandlingStrategy exceptionHandlingStrategy)
+        /// <param name="logger">The logger</param>
+        public SemaphorePool(int count, ExceptionHandlingStrategy exceptionHandlingStrategy, ILogger<SemaphorePool> logger = null)
         {
             _exceptionHandlingStrategy = exceptionHandlingStrategy;
-            SemaphoreHolders = new List<SemaphoreHolder>();
-            AvailableSemaphoreIds = new List<string>();
+            SemaphoreHolders = new List<SemaphoreHolder>(count);
+            AvailableSemaphoreIds = new List<string>(count);
             for (var i = 0; i < count; i++)
             {
                 SemaphoreHolders.Add(new SemaphoreHolder(new SemaphoreSlim(1)));
             }
             _syncSemaphore = new Semaphore(count, count);
+            _executionLog = logger ?? new NullLogger<SemaphorePool>();
             _spinWait = new SpinWait();
             _syncObject = new object();
-            _executionLog.LogDebug($"SemaphorePool with size {count} created.");
+            _executionLog.LogDebug("SemaphorePool with size {Size} created", count);
+
+            UofSdkTelemetry.DefaultMeter.CreateObservableGauge(UofSdkTelemetry.MetricNameForSemaphorePoolAcquireSize, () => AvailableSemaphoreIds.Count);
         }
 
         /// <summary>
@@ -113,47 +121,50 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
 
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(MetricsSettings.TimerSemaphorePool, id);
-
-            var idFound = false;
-            lock (_syncObject)
+            using (new TelemetryTracker(UofSdkTelemetry.SemaphorePoolAcquire))
             {
-                if (AvailableSemaphoreIds.Contains(id))
-                {
-                    idFound = true;
-                }
-                else
-                {
-                    AvailableSemaphoreIds.Add(id);
-                }
-            }
-
-            if (!idFound)
-            {
-                return Task.Run(() => AcquireInternal(id));
-            }
-
-            while (true)
-            {
+                var idFound = false;
                 lock (_syncObject)
                 {
-                    foreach (var holder in SemaphoreHolders)
+                    if (AvailableSemaphoreIds.Contains(id))
                     {
-                        if (holder.Id != id)
-                        {
-                            continue;
-                        }
-                        holder.Acquire();
-                        return Task.FromResult(holder.Semaphore);
+                        idFound = true;
                     }
-                    if (!AvailableSemaphoreIds.Contains(id))
+                    else
                     {
                         AvailableSemaphoreIds.Add(id);
-                        SdkMetricsFactory.MetricsRoot.Measure.Gauge.SetValue(MetricsSettings.GaugeSemaphorePool, AvailableSemaphoreIds.Count);
-                        return Task.Run(() => AcquireInternal(id));
                     }
                 }
-                _spinWait.SpinOnce();
+
+                if (!idFound)
+                {
+                    return Task.Run(() => AcquireInternal(id));
+                }
+
+                while (true)
+                {
+                    lock (_syncObject)
+                    {
+                        foreach (var holder in SemaphoreHolders)
+                        {
+                            if (holder.Id != id)
+                            {
+                                continue;
+                            }
+
+                            holder.Acquire();
+                            return Task.FromResult(holder.Semaphore);
+                        }
+
+                        if (!AvailableSemaphoreIds.Contains(id))
+                        {
+                            AvailableSemaphoreIds.Add(id);
+                            return Task.Run(() => AcquireInternal(id));
+                        }
+                    }
+
+                    _spinWait.SpinOnce();
+                }
             }
         }
 
@@ -179,7 +190,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     {
                         holder.Acquire();
                         holder.Id = id;
-                        SdkMetricsFactory.MetricsRoot.Measure.Gauge.SetValue(MetricsSettings.GaugeSemaphorePool, AvailableSemaphoreIds.Count);
                         return holder.Semaphore;
                     }
                 }
@@ -213,8 +223,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     }
                     return;
                 }
-                _executionLog.LogWarning($"No semaphores are acquired with Id:{id} (used: {SemaphoreHolders.Where(c => !c.Id.IsNullOrEmpty())}/{SemaphoreHolders.Count})");
-                if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                _executionLog.LogWarning("No semaphores are acquired with Id:{EventId} (used: {Used}/{Max})",
+                    id,
+                    SemaphoreHolders.Count(c => !c.Id.IsNullOrEmpty()).ToString(CultureInfo.InvariantCulture),
+                    SemaphoreHolders.Count.ToString(CultureInfo.InvariantCulture));
+
+                if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw new ArgumentException($"No semaphores are acquired with Id:{id}", nameof(id));
                 }

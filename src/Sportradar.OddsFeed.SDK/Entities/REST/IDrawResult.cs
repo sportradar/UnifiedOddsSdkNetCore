@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract for classes implementing the draw result

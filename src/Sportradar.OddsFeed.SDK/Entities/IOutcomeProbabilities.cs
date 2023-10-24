@@ -22,6 +22,6 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <summary>
         /// Additional probability attributes for markets which potentially will be (partly) refunded
         /// </summary>
-        IAdditionalProbabilities AdditionalProbabilities => null;
+        IAdditionalProbabilities AdditionalProbabilities { get; }
     }
 }

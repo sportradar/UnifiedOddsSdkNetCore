@@ -1,31 +1,27 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using System.Threading.Tasks;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal.Log;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Class used to get the bookmaker details
     /// </summary>
-    [Log(LoggerType.ClientInteraction)]
-    internal class BookmakerDetailsFetcher : MarshalByRefObject
+    internal class BookmakerDetailsFetcher
     {
-        private readonly IDataProvider<BookmakerDetailsDTO> _bookmakerDetailsProvider;
+        private readonly IDataProvider<BookmakerDetailsDto> _bookmakerDetailsProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BookmakerDetailsFetcher"/> class
         /// </summary>
-        /// <param name="bookmakerDetailsProvider">A <see cref="IDataProvider{BookmakerDetailsDTO}"/> used to get <see cref="BookmakerDetailsDTO"/></param>
-        public BookmakerDetailsFetcher(IDataProvider<BookmakerDetailsDTO> bookmakerDetailsProvider)
+        /// <param name="bookmakerDetailsProvider">A <see cref="IDataProvider{BookmakerDetailsDto}"/> used to get <see cref="BookmakerDetailsDto"/></param>
+        public BookmakerDetailsFetcher(IDataProvider<BookmakerDetailsDto> bookmakerDetailsProvider)
         {
             Guard.Argument(bookmakerDetailsProvider, nameof(bookmakerDetailsProvider)).NotNull();
 

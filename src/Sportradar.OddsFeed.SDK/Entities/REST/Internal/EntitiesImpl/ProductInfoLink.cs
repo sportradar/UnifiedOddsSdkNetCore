@@ -3,9 +3,9 @@
 */
 using System;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a product info link
@@ -36,8 +36,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductInfoLink"/> class.
         /// </summary>
-        /// <param name="exportable">A <see cref="ExportableProductInfoLinkCI"/> representing the current item</param>
-        public ProductInfoLink(ExportableProductInfoLinkCI exportable)
+        /// <param name="exportable">A <see cref="ExportableProductInfoLink"/> representing the current item</param>
+        public ProductInfoLink(ExportableProductInfoLink exportable)
         {
             if (exportable == null)
             {
@@ -81,10 +81,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Asynchronous export item's properties
         /// </summary>
-        /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
-        public Task<ExportableProductInfoLinkCI> ExportAsync()
+        /// <returns>An <see cref="ExportableBase"/> instance containing all relevant properties</returns>
+        public Task<ExportableProductInfoLink> ExportAsync()
         {
-            return Task.FromResult(new ExportableProductInfoLinkCI
+            return Task.FromResult(new ExportableProductInfoLink
             {
                 Name = _name,
                 Reference = _reference

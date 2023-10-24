@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports
 {
     /// <summary>
     /// Contains sport related entity (sport, category, tournament) data
@@ -14,9 +14,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
     internal abstract class SportEntityData
     {
         /// <summary>
-        /// Gets <see cref="URN"/> specifying the id of the associated entity.
+        /// Gets <see cref="Urn"/> specifying the id of the associated entity.
         /// </summary>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated entity name
@@ -26,9 +26,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEntityData"/> class.
         /// </summary>
-        /// <param name="id">a <see cref="URN"/> specifying the id of the associated entity</param>
+        /// <param name="id">a <see cref="Urn"/> specifying the id of the associated entity</param>
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated entity name</param>
-        protected SportEntityData(URN id, IReadOnlyDictionary<CultureInfo, string> names)
+        protected SportEntityData(Urn id, IReadOnlyDictionary<CultureInfo, string> names)
         {
             Guard.Argument(id, nameof(id)).NotNull();
             Guard.Argument(names, nameof(names)).NotNull().NotEmpty();

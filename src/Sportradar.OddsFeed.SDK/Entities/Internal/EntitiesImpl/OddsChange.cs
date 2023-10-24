@@ -3,9 +3,10 @@
 */
 using System.Collections.Generic;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Entities.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
@@ -37,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public OddsChangeReason? ChangeReason { get; }
 
         /// <summary>
-        /// Gets the <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.INamedValue" /> specifying the reason for betting being stopped, or a null reference if the reason is not known
+        /// Gets the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue" /> specifying the reason for betting being stopped, or a null reference if the reason is not known
         /// </summary>
         /// <value>The bet stop reason.</value>
         public INamedValue BetStopReason => _betStopReason == null
@@ -45,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             : _namedValueProvider.BetStopReasons.GetNamedValue(_betStopReason.Value);
 
         /// <summary>
-        /// Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.INamedValue" /> indicating the odds change was triggered by a possible event
+        /// Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue" /> indicating the odds change was triggered by a possible event
         /// </summary>
         /// <value>The betting status</value>
         public INamedValue BettingStatus => _bettingStatus == null

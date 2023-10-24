@@ -3,10 +3,10 @@
 */
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes, which represent information about a lottery draw
@@ -14,10 +14,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IDraw : ISportEvent
     {
         /// <summary>
-        /// Asynchronously gets a <see cref="URN"/> representing id of the associated <see cref="ILottery"/>
+        /// Asynchronously gets a <see cref="Urn"/> representing id of the associated <see cref="ILottery"/>
         /// </summary>
         /// <returns>The id of the associated lottery</returns>
-        Task<URN> GetLotteryIdAsync();
+        Task<Urn> GetLotteryIdAsync();
 
         /// <summary>
         /// Asynchronously gets <see cref="DrawStatus"/> associated with the current instance

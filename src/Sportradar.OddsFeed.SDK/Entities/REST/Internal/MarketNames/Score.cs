@@ -4,7 +4,7 @@
 using System;
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Represents a match score

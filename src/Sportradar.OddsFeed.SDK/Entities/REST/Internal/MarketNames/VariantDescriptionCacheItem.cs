@@ -8,11 +8,11 @@ using System.Globalization;
 using System.Linq;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Api.Internal.Config;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     internal class VariantDescriptionCacheItem
     {
@@ -49,15 +49,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="VariantDescriptionCacheItem"/> from the provided DTO
+        /// Constructs and returns a <see cref="VariantDescriptionCacheItem"/> from the provided Dto
         /// </summary>
-        /// <param name="dto">The <see cref="VariantDescriptionDTO"/> containing variant description data</param>
+        /// <param name="dto">The <see cref="VariantDescriptionDto"/> containing variant description data</param>
         /// <param name="factory">The <see cref="IMappingValidatorFactory"/> instance used to build market mapping validators</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided DTO</param>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided Dto</param>
         /// <param name="source">The source cache where <see cref="MarketDescriptionCacheItem"/> is built</param>
         /// <returns>The constructed <see cref="VariantDescriptionCacheItem"/></returns>
-        /// <exception cref="InvalidOperationException">The cache item could not be build from the provided DTO</exception>
-        public static VariantDescriptionCacheItem Build(VariantDescriptionDTO dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
+        /// <exception cref="InvalidOperationException">The cache item could not be build from the provided Dto</exception>
+        public static VariantDescriptionCacheItem Build(VariantDescriptionDto dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(factory, nameof(factory)).NotNull();
@@ -81,10 +81,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal bool CanBeFetched()
         {
-            return (DateTime.Now - LastDataReceived).TotalSeconds > SdkInfo.MarketDescriptionMinFetchInterval;
+            return (DateTime.Now - LastDataReceived).TotalSeconds > ConfigLimit.MarketDescriptionMinFetchInterval;
         }
 
-        internal void Merge(VariantDescriptionDTO dto, CultureInfo culture)
+        internal void Merge(VariantDescriptionDto dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();

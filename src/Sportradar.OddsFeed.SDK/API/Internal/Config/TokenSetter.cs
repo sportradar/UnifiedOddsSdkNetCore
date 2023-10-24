@@ -2,15 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Api.Config;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Config
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
     /// <summary>
     /// Class TokenSetter
@@ -19,19 +14,29 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
     internal class TokenSetter : ITokenSetter
     {
         /// <summary>
-        /// A <see cref="IConfigurationSectionProvider"/> instance used to access <see cref="IOddsFeedConfigurationSection"/>
+        /// A <see cref="IUofConfigurationSectionProvider"/> instance used to access <see cref="IUofConfigurationSection"/>
         /// </summary>
-        private readonly IConfigurationSectionProvider _configurationSectionProvider;
+        private readonly IUofConfigurationSectionProvider _uofConfigurationSectionProvider;
+
+        private readonly IBookmakerDetailsProvider _bookmakerDetailsProvider;
+        private readonly IProducersProvider _producersProvider;
+
+        private readonly UofConfiguration _configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenSetter"/> class
         /// </summary>
-        /// <param name="configurationSectionProvider">A <see cref="IConfigurationSectionProvider"/> instance used to access <see cref="IOddsFeedConfigurationSection"/></param>
-        internal TokenSetter(IConfigurationSectionProvider configurationSectionProvider)
+        /// <param name="uofConfigurationSectionProvider">A <see cref="IUofConfigurationSectionProvider"/> instance used to access <see cref="IUofConfigurationSection"/></param>
+        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
+        /// <param name="producersProvider">Provider for available producers</param>
+        internal TokenSetter(IUofConfigurationSectionProvider uofConfigurationSectionProvider, IBookmakerDetailsProvider bookmakerDetailsProvider, IProducersProvider producersProvider)
         {
-            Guard.Argument(configurationSectionProvider, nameof(configurationSectionProvider)).NotNull();
+            Guard.Argument(uofConfigurationSectionProvider, nameof(uofConfigurationSectionProvider)).NotNull();
 
-            _configurationSectionProvider = configurationSectionProvider;
+            _uofConfigurationSectionProvider = uofConfigurationSectionProvider;
+            _bookmakerDetailsProvider = bookmakerDetailsProvider;
+            _producersProvider = producersProvider;
+            _configuration = new UofConfiguration(_uofConfigurationSectionProvider);
         }
 
         /// <summary>
@@ -46,7 +51,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
             {
                 throw new ArgumentException("Value cannot be a null reference or empty string", nameof(accessToken));
             }
-            return new EnvironmentSelector(accessToken, _configurationSectionProvider);
+            _configuration.AccessToken = accessToken;
+            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider);
         }
 
         /// <summary>
@@ -55,90 +61,22 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
         /// <returns>The <see cref="IEnvironmentSelector" /> instance allowing the selection of target environment</returns>
         public IEnvironmentSelector SetAccessTokenFromConfigFile()
         {
-            return new EnvironmentSelector(_configurationSectionProvider.GetSection().AccessToken, _configurationSectionProvider);
+            var section = _uofConfigurationSectionProvider.GetSection();
+            if (section == null)
+            {
+                throw new InvalidOperationException("Missing configuration section");
+            }
+            return SetAccessToken(section.AccessToken);
         }
 
         /// <inheritdoc />
-        public IOddsFeedConfiguration BuildFromConfigFile()
+        public IUofConfiguration BuildFromConfigFile()
         {
-            var section = _configurationSectionProvider.GetSection();
-            if (string.IsNullOrEmpty(section.AccessToken))
-            {
-                throw new ConfigurationErrorsException("Missing access token");
-            }
+            _configuration.UpdateFromAppConfigSection(true);
 
-            var sdkEnvironment = SdkEnvironment.GlobalIntegration;
-            if (section.UfEnvironment != null)
-            {
-                sdkEnvironment = section.UfEnvironment.Value;
-            }
-#pragma warning disable CS0618
-            else if (!section.UseIntegrationEnvironment)
-#pragma warning restore CS0618
-            {
-                sdkEnvironment = SdkEnvironment.Production;
-            }
-
-            var supportedLanguages = new List<CultureInfo>();
-            if (!string.IsNullOrEmpty(section.SupportedLanguages))
-            {
-                var langCodes = section.SupportedLanguages.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                supportedLanguages = langCodes.Select(langCode => new CultureInfo(langCode.Trim())).ToList();
-            }
-
-            var defaultLanguage = supportedLanguages.Any() ? supportedLanguages.First() : null;
-            if (!string.IsNullOrEmpty(section.DefaultLanguage))
-            {
-                defaultLanguage = new CultureInfo(section.DefaultLanguage);
-                if (!supportedLanguages.Contains(defaultLanguage))
-                {
-                    supportedLanguages.Insert(0, defaultLanguage);
-                }
-            }
-
-            if (supportedLanguages == null || !supportedLanguages.Any())
-            {
-                throw new InvalidOperationException("Missing supported languages");
-            }
-
-            var disabledProducers = new List<int>();
-            if (!string.IsNullOrEmpty(section.DisabledProducers))
-            {
-                var producerIds = section.DisabledProducers.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                disabledProducers = producerIds.Select(producerId => int.Parse(producerId.Trim())).ToList();
-            }
-
-            var mqHost = string.IsNullOrEmpty(section.Host)
-                            ? EnvironmentManager.GetMqHost(sdkEnvironment)
-                            : section.Host;
-            var apiHost = string.IsNullOrEmpty(section.ApiHost)
-                             ? EnvironmentManager.GetApiHost(sdkEnvironment)
-                             : section.ApiHost;
-
-            var config = new OddsFeedConfiguration(section.AccessToken,
-                                                   sdkEnvironment,
-                                                   defaultLanguage,
-                                                   supportedLanguages,
-                                                   mqHost,
-                                                   section.VirtualHost,
-                                                   EnvironmentManager.DefaultMqHostPort,
-                                                   section.Username,
-                                                   section.Password,
-                                                   apiHost,
-                                                   section.UseSSL,
-                                                   section.UseApiSSL,
-                                                   section.InactivitySeconds > 0 ? section.InactivitySeconds : SdkInfo.MinInactivitySeconds,
-                                                   section.MaxRecoveryTime > 0 ? section.MaxRecoveryTime : SdkInfo.MaxRecoveryExecutionInSeconds,
-                                                   section.MinIntervalBetweenRecoveryRequests > 0 ? section.MinIntervalBetweenRecoveryRequests : SdkInfo.DefaultIntervalBetweenRecoveryRequests,
-                                                   section.NodeId,
-                                                   disabledProducers,
-                                                   section.ExceptionHandlingStrategy,
-                                                   section.AdjustAfterAge,
-                                                   section.HttpClientTimeout != SdkInfo.DefaultHttpClientTimeout ? section.HttpClientTimeout : SdkInfo.DefaultHttpClientTimeout,
-                                                   section.RecoveryHttpClientTimeout != SdkInfo.DefaultHttpClientTimeout ? section.RecoveryHttpClientTimeout : SdkInfo.DefaultHttpClientTimeout,
-                                                   section);
-
-            return config;
+            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider)
+                .SelectEnvironment(_configuration.Environment)
+                .Build();
         }
     }
 }

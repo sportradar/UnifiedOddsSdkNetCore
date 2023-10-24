@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Represents a team competing in a sport event
@@ -109,18 +109,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets associated sport
         /// </summary>
         /// <returns>The associated sport</returns>
-        Task<ISport> GetSportAsync() => Task.FromResult<ISport>(null);
+        Task<ISport> GetSportAsync();
 
         /// <summary>
         /// Gets associated category
         /// </summary>
         /// <returns>The associated category</returns>
-        Task<ICategorySummary> GetCategoryAsync() => Task.FromResult<ICategorySummary>(null);
+        Task<ICategorySummary> GetCategoryAsync();
 
         /// <summary>
         /// Gets the short name
         /// </summary>
         /// <value>The short name</value>
-        string ShortName => null;
+        string ShortName { get; }
+
+        /// <summary>
+        /// Gets the division
+        /// </summary>
+        IDivision Division { get; }
     }
 }

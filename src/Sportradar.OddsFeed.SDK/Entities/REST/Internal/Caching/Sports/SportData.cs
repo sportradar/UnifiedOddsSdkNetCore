@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports
 {
     /// <summary>
     /// Contains basic information about a sport (soccer, basketball, ...)
@@ -24,10 +24,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         /// <summary>
         /// Initializes a new instance of the <see cref="SportData"/> class.
         /// </summary>
-        /// <param name="id">a <see cref="URN"/> representing the id of the associated sport</param>
+        /// <param name="id">a <see cref="Urn"/> representing the id of the associated sport</param>
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated sport name</param>
         /// <param name="categories">the <see cref="IEnumerable{CategoryData}"/> representing the categories, which belong to the sport</param>
-        public SportData(URN id, IReadOnlyDictionary<CultureInfo, string> names, IEnumerable<CategoryData> categories)
+        public SportData(Urn id, IReadOnlyDictionary<CultureInfo, string> names, IEnumerable<CategoryData> categories)
             : base(id, names)
         {
             if (categories != null)

@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing the status of a sport event

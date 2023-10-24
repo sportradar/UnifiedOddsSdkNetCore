@@ -2,14 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for competitor result
     /// </summary>
-    internal class CompetitorResultDTO
+    internal class CompetitorResultDto
     {
         public string Type { get; }
 
@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public string Specifiers { get; }
 
-        internal CompetitorResultDTO(stageResultCompetitorResult result)
+        internal CompetitorResultDto(stageResultCompetitorResult result)
         {
             if (result == null)
             {
@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Specifiers = result.specifiers;
         }
 
-        internal CompetitorResultDTO(periodStatusCompetitorResult result)
+        internal CompetitorResultDto(periodStatusCompetitorResult result)
         {
             if (result == null)
             {

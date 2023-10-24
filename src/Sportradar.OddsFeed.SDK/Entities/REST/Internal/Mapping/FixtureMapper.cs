@@ -3,16 +3,16 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}"/> implementation used to map <see cref="fixturesEndpoint"/> instances to <see cref="FixtureDTO"/> instances
+    /// A <see cref="ISingleTypeMapper{T}"/> implementation used to map <see cref="fixturesEndpoint"/> instances to <see cref="FixtureDto"/> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{FixtureDTO}" />
-    internal class FixtureMapper : ISingleTypeMapper<FixtureDTO>
+    /// <seealso cref="ISingleTypeMapper{FixtureDto}" />
+    internal class FixtureMapper : ISingleTypeMapper<FixtureDto>
     {
         /// <summary>
         /// A <see cref="fixturesEndpoint"/> instance containing fixture data
@@ -31,12 +31,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="FixtureDTO"/> instance
+        /// Maps it's data to <see cref="FixtureDto"/> instance
         /// </summary>
-        /// <returns>The created <see cref="FixtureDTO"/> instance </returns>
-        public FixtureDTO Map()
+        /// <returns>The created <see cref="FixtureDto"/> instance </returns>
+        public FixtureDto Map()
         {
-            return new FixtureDTO(_data.fixture, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null);
+            return new FixtureDto(_data.fixture, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null);
         }
     }
 }

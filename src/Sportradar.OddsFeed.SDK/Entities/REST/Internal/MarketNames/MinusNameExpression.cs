@@ -7,7 +7,7 @@ using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// A <see cref="INameExpression"/> implementation supporting '-' based expressions (i.e. {-reply_nr})

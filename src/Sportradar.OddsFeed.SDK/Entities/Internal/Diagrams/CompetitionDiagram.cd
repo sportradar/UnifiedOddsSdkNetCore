@@ -1,51 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ICompetition">
-    <Position X="2" Y="1" Width="3.5" />
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition">
+    <Position X="2" Y="3.5" Width="3.5" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.375" Y="3.017" />
+        <Point X="4.375" Y="3.5" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAICABAAAAAAAAQIAAEAAIAAAAAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>Entities\REST\ICompetition.cs</FileName>
+      <FileName>Entities\Rest\ICompetition.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ISoccerEvent">
-    <Position X="4.75" Y="7.25" Width="2.75" />
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent">
+    <Position X="6" Y="10" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\ISoccerEvent.cs</FileName>
+      <FileName>Entities\Rest\ISoccerEvent.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent">
-    <Position X="6" Y="0.5" Width="3" />
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent">
+    <Position X="4" Y="0.5" Width="3" />
     <TypeIdentifier>
       <HashCode>AAACAgAQABAQAAAAAAgAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\ISportEvent.cs</FileName>
+      <FileName>Entities\Rest\ISportEvent.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IStage">
-    <Position X="0.75" Y="4" Width="3.25" />
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.Rest.IStage">
+    <Position X="2" Y="6.5" Width="3.25" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition" FixedFromPoint="true">
+      <Path>
+        <Point X="3.625" Y="6.079" />
+        <Point X="3.625" Y="6.5" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>EAAAAAAIAAAAAAAAEAAAAAIAAAAAAEBAABAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\IStage.cs</FileName>
+      <FileName>Entities\Rest\IStage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IMatch">
-    <Position X="4.25" Y="4" Width="3.75" />
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.Rest.IMatch">
+    <Position X="5.5" Y="6.5" Width="3.75" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition" FixedFromPoint="true">
+      <Path>
+        <Point X="5.125" Y="6.079" />
+        <Point X="5.125" Y="6.26" />
+        <Point X="7.375" Y="6.26" />
+        <Point X="7.375" Y="6.5" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAABgAAAAACAAAQAAAAAIAAAAAAQAAAAACACAAAAA=</HashCode>
-      <FileName>Entities\REST\IMatch.cs</FileName>
+      <FileName>Entities\Rest\IMatch.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.REST.IDraw">
-    <Position X="8.25" Y="3.25" Width="3.25" />
-    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+  <Interface Name="Sportradar.OddsFeed.SDK.Entities.Rest.IDraw">
+    <Position X="6" Y="3.5" Width="3.25" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="8.562" Y="3.017" />
-        <Point X="8.562" Y="3.25" />
+        <Point X="6.562" Y="3.017" />
+        <Point X="6.562" Y="3.5" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAgAAAAAAAAAAgAAAIAAAAAAAAAABAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\IDraw.cs</FileName>
+      <FileName>Entities\Rest\IDraw.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

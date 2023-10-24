@@ -8,9 +8,9 @@ using System.Linq;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Implementation of the <see cref="IProducer"/>
@@ -106,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <inheritdoc />
         public int StatefulRecoveryWindow { get; }
 
-        internal ConcurrentDictionary<long, URN> EventRecoveries { get; }
+        internal ConcurrentDictionary<long, Urn> EventRecoveries { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Producer"/> class
@@ -151,7 +151,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             StatefulRecoveryWindow = statefulRecoveryWindowInMinutes;
 
             IgnoreRecovery = false;
-            EventRecoveries = new ConcurrentDictionary<long, URN>();
+            EventRecoveries = new ConcurrentDictionary<long, Urn>();
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             //Supported formats: C - compact, F - full, I - only id, J - json
             if (format == null)
             {
-                format = "G";
+                format = "c";
             }
             format = format.ToLowerInvariant();
 
@@ -212,13 +212,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                 return formatter.Format(format, this, formatProvider);
             }
 
-            return format switch
+            switch (format)
             {
-                "c" => $"{Id}-{Name}",
-                "f" => $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]",
-                "i" => Id.ToString(),
-                _ => $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]",
-            };
+                case "c":
+                    return $"{Id}-{Name}";
+                case "f":
+                    return $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]";
+                case "i":
+                    return Id.ToString();
+                default:
+                    return $"{Id}({Name}):[IsUp={!IsProducerDown},Timestamp={LastTimestampBeforeDisconnect:dd.MM.yyyy-HH:mm:ss.fff}]";
+            }
         }
 
         /// <summary>

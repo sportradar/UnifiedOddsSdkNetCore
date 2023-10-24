@@ -4,15 +4,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// Maps <see cref="tournamentSchedule"/> instances to <see cref="SportEventSummaryDTO" /> instance
+    /// Maps <see cref="tournamentSchedule"/> instances to <see cref="SportEventSummaryDto" /> instance
     /// </summary>
-    internal class TournamentScheduleMapper : ISingleTypeMapper<EntityList<SportEventSummaryDTO>>
+    internal class TournamentScheduleMapper : ISingleTypeMapper<EntityList<SportEventSummaryDto>>
     {
         /// <summary>
         /// A <see cref="tournamentSchedule"/> instance containing tournament schedule info
@@ -31,17 +31,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="EntityList{SportEventSummaryDTO}"/> instance
+        /// Maps it's data to <see cref="EntityList{SportEventSummaryDto}"/> instance
         /// </summary>
-        /// <returns>Constructed <see cref="EntityList{SportEventSummaryDTO}"/> instance</returns>
-        public EntityList<SportEventSummaryDTO> Map()
+        /// <returns>Constructed <see cref="EntityList{SportEventSummaryDto}"/> instance</returns>
+        public EntityList<SportEventSummaryDto> Map()
         {
             if (_data.sport_events == null || !_data.sport_events.Any())
             {
-                return new EntityList<SportEventSummaryDTO>(new List<SportEventSummaryDTO>());
+                return new EntityList<SportEventSummaryDto>(new List<SportEventSummaryDto>());
             }
             var events = _data.sport_events.Select(RestMapperHelper.MapSportEvent).ToList();
-            return new EntityList<SportEventSummaryDTO>(events);
+            return new EntityList<SportEventSummaryDto>(events);
         }
     }
 }

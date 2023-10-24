@@ -1,9 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class TournamentCoverage
@@ -29,10 +29,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentCoverage"/> class
         /// </summary>
-        /// <param name="tournamentCoverageCI">The tournament coverage ci</param>
-        internal TournamentCoverage(TournamentCoverageCI tournamentCoverageCI)
+        /// <param name="tournamentCoverageCacheItem">The tournament coverage ci</param>
+        internal TournamentCoverage(TournamentCoverageCacheItem tournamentCoverageCacheItem)
         {
-            LiveCoverage = tournamentCoverageCI.LiveCoverage;
+            LiveCoverage = tournamentCoverageCacheItem.LiveCoverage;
         }
     }
 }

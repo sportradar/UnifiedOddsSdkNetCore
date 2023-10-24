@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A helper for mapping of rest data to sdk data-transfer-objects
@@ -17,83 +18,83 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     internal static class RestMapperHelper
     {
         /// <summary>
-        /// Maps the <see cref="sportEvent"/> instance to the one of the derived types of <see cref="SportEventSummaryDTO"/>
+        /// Maps the <see cref="sportEvent"/> instance to the one of the derived types of <see cref="SportEventSummaryDto"/>
         /// </summary>
         /// <param name="item">The item to be mapped</param>
-        /// <returns>A <see cref="SportEventSummaryDTO"/> derived instance</returns>
+        /// <returns>A <see cref="SportEventSummaryDto"/> derived instance</returns>
         /// <exception cref="ArgumentException">id</exception>
-        public static SportEventSummaryDTO MapSportEvent(sportEvent item)
+        public static SportEventSummaryDto MapSportEvent(sportEvent item)
         {
             if (item == null)
             {
                 return null;
             }
-            var id = URN.Parse(item.id);
+            var id = Urn.Parse(item.id);
 
             switch (id.TypeGroup)
             {
-                case ResourceTypeGroup.MATCH:
+                case ResourceTypeGroup.Match:
                     {
-                        return new MatchDTO(item);
+                        return new MatchDto(item);
                     }
-                case ResourceTypeGroup.STAGE:
+                case ResourceTypeGroup.Stage:
                     {
-                        return new StageDTO(item);
+                        return new StageDto(item);
                     }
-                case ResourceTypeGroup.BASIC_TOURNAMENT:
+                case ResourceTypeGroup.BasicTournament:
                     {
-                        return new BasicTournamentDTO(item);
+                        return new BasicTournamentDto(item);
                     }
-                case ResourceTypeGroup.TOURNAMENT:
-                case ResourceTypeGroup.SEASON:
+                case ResourceTypeGroup.Tournament:
+                case ResourceTypeGroup.Season:
                     {
-                        return new TournamentInfoDTO(item);
+                        return new TournamentInfoDto(item);
                     }
-                case ResourceTypeGroup.UNKNOWN:
+                case ResourceTypeGroup.Unknown:
                     {
-                        return new SportEventSummaryDTO(item);
+                        return new SportEventSummaryDto(item);
                     }
 
-                case ResourceTypeGroup.OTHER:
-                case ResourceTypeGroup.DRAW:
-                case ResourceTypeGroup.LOTTERY:
+                case ResourceTypeGroup.Other:
+                case ResourceTypeGroup.Draw:
+                case ResourceTypeGroup.Lottery:
                 default:
                     throw new ArgumentException($"ResourceTypeGroup: {id.TypeGroup} is not supported", nameof(item));
             }
         }
 
         /// <summary>
-        /// Maps the <see cref="tournamentExtended"/> instance to the one of the derived types of <see cref="SportEventSummaryDTO"/>
+        /// Maps the <see cref="tournamentExtended"/> instance to the one of the derived types of <see cref="SportEventSummaryDto"/>
         /// </summary>
         /// <param name="item">The item to be mapped</param>
-        /// <returns>A <see cref="SportEventSummaryDTO"/> derived instance</returns>
+        /// <returns>A <see cref="SportEventSummaryDto"/> derived instance</returns>
         /// <exception cref="ArgumentException">id</exception>
-        public static SportEventSummaryDTO MapSportEvent(tournamentExtended item)
+        public static SportEventSummaryDto MapSportEvent(tournamentExtended item)
         {
             if (item == null)
             {
                 return null;
             }
-            var id = URN.Parse(item.id);
+            var id = Urn.Parse(item.id);
 
             switch (id.TypeGroup)
             {
-                case ResourceTypeGroup.BASIC_TOURNAMENT:
+                case ResourceTypeGroup.BasicTournament:
                     {
-                        return new BasicTournamentDTO(item);
+                        return new BasicTournamentDto(item);
                     }
-                case ResourceTypeGroup.TOURNAMENT:
-                case ResourceTypeGroup.SEASON:
+                case ResourceTypeGroup.Tournament:
+                case ResourceTypeGroup.Season:
                     {
-                        return new TournamentInfoDTO(item);
+                        return new TournamentInfoDto(item);
                     }
 
-                case ResourceTypeGroup.MATCH:
-                case ResourceTypeGroup.STAGE:
-                case ResourceTypeGroup.OTHER:
-                case ResourceTypeGroup.UNKNOWN:
-                case ResourceTypeGroup.DRAW:
-                case ResourceTypeGroup.LOTTERY:
+                case ResourceTypeGroup.Match:
+                case ResourceTypeGroup.Stage:
+                case ResourceTypeGroup.Other:
+                case ResourceTypeGroup.Unknown:
+                case ResourceTypeGroup.Draw:
+                case ResourceTypeGroup.Lottery:
                 default:
                     throw new ArgumentException($"ResourceTypeGroup: {id.TypeGroup} is not supported", nameof(item));
             }
@@ -103,10 +104,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// It checks if there are exactly 2 competitors and one is home and seconds away. If so, it returns dictionary indicating which of team is home and which away; else null
         /// </summary>
         /// <param name="competitors">The competitors to be checked</param>
-        /// <returns>IDictionary&lt;HomeAway, URN&gt;</returns>
-        public static IDictionary<HomeAway, URN> FillHomeAwayCompetitors(IReadOnlyCollection<teamCompetitor> competitors)
+        /// <returns>The dictionary of home and away competitor ids</returns>
+        public static IDictionary<HomeAway, Urn> FillHomeAwayCompetitors(IReadOnlyCollection<teamCompetitor> competitors)
         {
-            var homeAwayCompetitors = new Dictionary<HomeAway, URN>();
+            var homeAwayCompetitors = new Dictionary<HomeAway, Urn>();
             if (competitors == null || competitors.Count != 2)
             {
                 return homeAwayCompetitors;
@@ -117,14 +118,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 return homeAwayCompetitors;
             }
-            homeAwayCompetitors.Add(HomeAway.Home, URN.Parse(team.id));
+            homeAwayCompetitors.Add(HomeAway.Home, Urn.Parse(team.id));
             team = competitors.FirstOrDefault(f => f.qualifier == "away");
             if (team == null)
             {
                 homeAwayCompetitors.Clear();
                 return homeAwayCompetitors;
             }
-            homeAwayCompetitors.Add(HomeAway.Away, URN.Parse(team.id));
+            homeAwayCompetitors.Add(HomeAway.Away, Urn.Parse(team.id));
             return homeAwayCompetitors;
         }
 
@@ -278,12 +279,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <returns>True if the provided <see cref="string"/> was successfully mapped to <see cref="BookingStatus"/>; False otherwise</returns>
         public static bool TryGetBookingStatus(string value, out BookingStatus? result)
         {
-            if (value == null)
-            {
-                result = null;
-                return true;
-            }
-
             switch (value)
             {
                 case "not_available":
@@ -313,11 +308,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <returns>A <see cref="SportEventType"/> member obtained by mapping. A null reference is mapped to null reference</returns>
         public static bool TryGetSportEventType(string value, out SportEventType? result)
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                result = null;
-                return true;
-            }
             switch (value)
             {
                 case "parent":
@@ -338,13 +328,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <param name="value">A <see cref="string"/> representation of the <see cref="SportEventType"/></param>
         /// <param name="result">When invocation completes contains a mapped value if method returned true. Undefined otherwise</param>
         /// <returns>A <see cref="SportEventType"/> member obtained by mapping. A null reference is mapped to null reference</returns>
+        // ReSharper disable once MethodTooLong
         public static bool TryGetStageType(string value, out StageType? result)
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                result = null;
-                return true;
-            }
             switch (value)
             {
                 case "parent":
@@ -393,6 +379,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 case "run":
                     result = StageType.Run;
                     return true;
+                case "sprint_race":
+                    result = StageType.SprintRace;
+                    return true;
                 default:
                     result = null;
                     return false;
@@ -409,11 +398,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <returns>True if the provided <see cref="string"/> was successfully mapped to <see cref="CoveredFrom"/>; False otherwise</returns>
         public static bool TryGetCoveredFrom(string value, out CoveredFrom? result)
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                result = null;
-                return true;
-            }
             switch (value)
             {
                 case "tv":

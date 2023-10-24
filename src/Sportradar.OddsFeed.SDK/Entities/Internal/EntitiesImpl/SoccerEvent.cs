@@ -4,20 +4,19 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
     internal class SoccerEvent : Match, ISoccerEvent
     {
-        public SoccerEvent(URN id,
-                            URN sportId,
+        public SoccerEvent(Urn id,
+                            Urn sportId,
                             ISportEntityFactory sportEntityFactory,
                             ISportEventCache sportEventCache,
                             ISportEventStatusCache sportEventStatusCache,
@@ -32,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         {
             var item = await base.GetStatusAsync().ConfigureAwait(false);
 
-            return item == null ? null : new SoccerStatus(((CompetitionStatus)item).SportEventStatusCI, MatchStatusCache);
+            return item == null ? null : new SoccerStatus(((CompetitionStatus)item).SportEventStatusCacheItem, MatchStatusCache);
         }
     }
 }

@@ -2,14 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
 {
     /// <summary>
     /// Defines a data-transfer-object for draw result
     /// </summary>
-    internal class DrawResultDTO
+    internal class DrawResultDto
     {
         /// <summary>
         /// Gets the value of the draw
@@ -21,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
         /// </summary>
         public string Name { get; }
 
-        internal DrawResultDTO(draw_resultDrawsDraw item)
+        internal DrawResultDto(draw_resultDrawsDraw item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 

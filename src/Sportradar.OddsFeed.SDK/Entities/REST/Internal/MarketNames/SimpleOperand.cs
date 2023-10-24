@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Represents a <see cref="IOperand"/> capable of handling simple operand - i.e. the operand is the name of a specifier

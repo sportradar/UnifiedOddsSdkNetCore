@@ -5,26 +5,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for tournament season
     /// </summary>
-    internal class TournamentSeasonsDTO
+    internal class TournamentSeasonsDto
     {
         /// <summary>
         /// Gets the tournament
         /// </summary>
         /// <value>The tournament</value>
-        public TournamentInfoDTO Tournament { get; }
+        public TournamentInfoDto Tournament { get; }
 
         /// <summary>
         /// Gets the seasons
         /// </summary>
         /// <value>The seasons</value>
-        public IEnumerable<SeasonDTO> Seasons { get; }
+        public IEnumerable<SeasonDto> Seasons { get; }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying when the associated message was generated (on the server side)
@@ -32,18 +32,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public DateTime? GeneratedAt { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentSeasonsDTO"/> class
+        /// Initializes a new instance of the <see cref="TournamentSeasonsDto"/> class
         /// </summary>
         /// <param name="item">The item</param>
-        internal TournamentSeasonsDTO(tournamentSeasons item)
+        internal TournamentSeasonsDto(tournamentSeasons item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 
-            Tournament = new TournamentInfoDTO(item.tournament);
+            Tournament = new TournamentInfoDto(item.tournament);
 
             if (item.seasons != null && item.seasons.Any())
             {
-                Seasons = item.seasons.Select(s => new SeasonDTO(s));
+                Seasons = item.seasons.Select(s => new SeasonDto(s));
             }
 
             GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;

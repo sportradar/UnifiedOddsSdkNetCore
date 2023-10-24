@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {

@@ -6,25 +6,26 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Health;
-using Castle.Core.Internal;
 using Dawn;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// A <see cref="IMarketDescriptionCache" /> implementation used to store market descriptors for variant markets (single - dynamic)
@@ -34,9 +35,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     internal class VariantMarketDescriptionCache : SdkCache, IMarketDescriptionCache
     {
         /// <summary>
-        /// A <see cref="MemoryCache"/> used to store market descriptors
+        /// A <see cref="ICacheStore{T}"/> used to store market descriptors
         /// </summary>
-        private readonly MemoryCache _cache;
+        private readonly ICacheStore<string> _cache;
 
         /// <summary>
         /// The <see cref="IDataRouterManager"/> used to obtain data via REST request
@@ -70,11 +71,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Initializes a new instance of the <see cref="VariantMarketDescriptionCache"/> class
         /// </summary>
-        /// <param name="cache">A <see cref="MemoryCache"/> used to store market descriptors</param>
+        /// <param name="cache">A <see cref="ICacheStore{T}"/> used to store market descriptors</param>
         /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to fetch data</param>
         /// <param name="mappingValidatorFactory">A <see cref="IMappingValidatorFactory"/> used to construct <see cref="IMappingValidator"/> instances for market mappings</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
-        public VariantMarketDescriptionCache(MemoryCache cache,
+        public VariantMarketDescriptionCache(ICacheStore<string> cache,
                                              IDataRouterManager dataRouterManager,
                                              IMappingValidatorFactory mappingValidatorFactory,
                                              ICacheManager cacheManager)
@@ -99,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             Guard.Argument(variant, nameof(variant)).NotNull().NotEmpty();
 
-            return $"{id}_{variant}";
+            return $"{id.ToString()}_{variant}";
         }
 
         /// <summary>
@@ -113,9 +114,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Guard.Argument(variant, nameof(variant)).NotNull().NotEmpty();
 
             _semaphoreCacheMerge.Wait();
-            var cacheItem = _cache.GetCacheItem(GetCacheKey(id, variant));
+            var cacheItem = _cache.Get(GetCacheKey(id, variant));
             _semaphoreCacheMerge.ReleaseSafe();
-            return (MarketDescriptionCacheItem)cacheItem?.Value;
+            return (MarketDescriptionCacheItem)cacheItem;
         }
 
         /// <summary>
@@ -187,9 +188,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 var cultureTaskDictionary = missingLanguages.ToDictionary(c => c, c => _dataRouterManager.GetVariantMarketDescriptionAsync(id, variant, c));
                 await Task.WhenAll(cultureTaskDictionary.Values).ConfigureAwait(false);
 
-                var cachedItem = _cache.GetCacheItem(GetCacheKey(id, variant));
+                var cachedItem = _cache.Get(GetCacheKey(id, variant));
 
-                description = (MarketDescriptionCacheItem)cachedItem?.Value;
+                description = (MarketDescriptionCacheItem)cachedItem;
 
                 //sometimes it may be null (aka Not Found), but we still do not to re-fetch immediately
                 foreach (var cultureInfo in missingLanguages)
@@ -285,22 +286,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Registers the health check which will be periodically triggered
-        /// </summary>
-        public void RegisterHealthCheck()
-        {
-            //HealthChecks.RegisterHealthCheck("VariantMarketDescriptorCache", new Func<HealthCheckResult>(StartHealthCheck));
-        }
-
-        /// <summary>
-        /// Starts the health check and returns <see cref="HealthCheckResult"/>
-        /// </summary>
-        public HealthCheckResult StartHealthCheck()
-        {
-            return _cache.Any() ? HealthCheckResult.Healthy($"Cache has {_cache.Count()} items.") : HealthCheckResult.Healthy("Cache is empty.");
-        }
-
-        /// <summary>
         /// Set the list of <see cref="DtoType"/> in the this cache
         /// </summary>
         public override void SetDtoTypes()
@@ -314,13 +299,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Deletes the item from cache
         /// </summary>
-        /// <param name="id">A <see cref="URN" /> representing the id of the item in the cache to be deleted</param>
+        /// <param name="id">A <see cref="Urn" /> representing the id of the item in the cache to be deleted</param>
         /// <param name="cacheItemType">A cache item type</param>
-        public override void CacheDeleteItem(URN id, CacheItemType cacheItemType)
+        public override void CacheDeleteItem(Urn id, CacheItemType cacheItemType)
         {
             if (id != null && (cacheItemType == CacheItemType.All || cacheItemType == CacheItemType.MarketDescription))
             {
-                CacheLog.LogDebug($"Delete variant market: {id}");
+                CacheLog.LogDebug("Delete variant market: {MarketId}", id);
                 _cache.Remove(id.Id.ToString());
             }
         }
@@ -346,12 +331,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogWarning(e, $"Error deleting fetchedVariants for {id}");
+                    ExecutionLog.LogWarning(e, "Error deleting fetchedVariants for {MarketId}", id);
                 }
 
                 if (_cache.Contains(id))
                 {
-                    CacheLog.LogDebug($"Delete variant market: {id}");
+                    CacheLog.LogDebug("Delete variant market: {MarketId}", id);
                     _cache.Remove(id);
                 }
             }
@@ -360,10 +345,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Does item exists in the cache
         /// </summary>
-        /// <param name="id">A <see cref="URN" /> representing the id of the item to be checked</param>
+        /// <param name="id">A <see cref="Urn" /> representing the id of the item to be checked</param>
         /// <param name="cacheItemType">A cache item type</param>
         /// <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
-        public override bool CacheHasItem(URN id, CacheItemType cacheItemType)
+        public override bool CacheHasItem(Urn id, CacheItemType cacheItemType)
         {
             if (id != null && (cacheItemType == CacheItemType.All || cacheItemType == CacheItemType.MarketDescription))
             {
@@ -389,7 +374,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <inheritdoc />
-        protected override async Task<bool> CacheAddDtoItemAsync(URN id, object item, CultureInfo culture, DtoType dtoType, ISportEventCI requester)
+        protected override async Task<bool> CacheAddDtoItemAsync(Urn id, object item, CultureInfo culture, DtoType dtoType, ISportEventCacheItem requester)
         {
             if (_isDisposed)
             {
@@ -410,14 +395,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case DtoType.Fixture:
                     break;
                 case DtoType.MarketDescription:
-                    if (item is MarketDescriptionDTO marketDescription)
+                    if (item is MarketDescriptionDto marketDescription)
                     {
                         await MergeAsync(culture, marketDescription).ConfigureAwait(false);
                         saved = true;
                     }
                     else
                     {
-                        LogSavingDtoConflict(id, typeof(MarketDescriptionDTO), item.GetType(), ExecutionLog);
+                        LogSavingDtoConflict(id, typeof(MarketDescriptionDto), item.GetType(), ExecutionLog);
                     }
                     break;
                 case DtoType.MarketDescriptionList:
@@ -469,7 +454,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case DtoType.Calculation:
                     break;
                 default:
-                    ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
+                    ExecutionLog.LogWarning("Trying to add unchecked dto type: {DtoType} for id: {MarketId}", dtoType, id);
                     break;
             }
             return saved;
@@ -479,8 +464,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// Merges the provided descriptions with those found in cache
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the <c>descriptions</c></param>
-        /// <param name="description">A <see cref="MarketDescriptionDTO"/> containing market description in specified language</param>
-        private async Task MergeAsync(CultureInfo culture, MarketDescriptionDTO description)
+        /// <param name="description">A <see cref="MarketDescriptionDto"/> containing market description in specified language</param>
+        private async Task MergeAsync(CultureInfo culture, MarketDescriptionDto description)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
             Guard.Argument(description, nameof(description)).NotNull();
@@ -494,15 +479,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             {
                 await _semaphoreCacheMerge.WaitAsync().ConfigureAwait(false);
                 var cacheId = GetCacheKey(description.Id, description.Variant);
-                var cachedItem = _cache.GetCacheItem(cacheId);
+                var cachedItem = _cache.Get(cacheId);
                 if (cachedItem == null)
                 {
-                    cachedItem = new CacheItem(cacheId, MarketDescriptionCacheItem.Build(description, _mappingValidatorFactory, culture, CacheName));
-                    _cache.Add(cachedItem, new CacheItemPolicy { SlidingExpiration = OperationManager.VariantMarketDescriptionCacheTimeout });
+                    cachedItem = MarketDescriptionCacheItem.Build(description, _mappingValidatorFactory, culture, CacheName);
+                    _cache.Add(cacheId, cachedItem);
                 }
                 else
                 {
-                    ((MarketDescriptionCacheItem)cachedItem.Value).Merge(description, culture);
+                    ((MarketDescriptionCacheItem)cachedItem).Merge(description, culture);
                 }
             }
             catch (Exception e)
@@ -511,7 +496,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 {
                     throw;
                 }
-                ExecutionLog.LogWarning(e, "Mapping validation for MarketDescriptionCacheItem failed.");
+                ExecutionLog.LogWarning(e, "Mapping validation for MarketDescriptionCacheItem failed");
             }
             finally
             {
@@ -544,7 +529,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 return true;
             }
             var date = _fetchedVariants[key];
-            var result = (DateTime.Now - date).TotalSeconds > SdkInfo.MarketDescriptionMinFetchInterval;
+            var result = (DateTime.Now - date).TotalSeconds > ConfigLimit.MarketDescriptionMinFetchInterval;
 
             ClearFetchedVariants();
 
@@ -553,7 +538,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private static string GetFetchedVariantsKey(int marketId, string variant, CultureInfo culture)
         {
-            return $"{marketId}_{variant}_{culture.TwoLetterISOLanguageName}";
+            return $"{marketId.ToString()}_{variant}_{culture.TwoLetterISOLanguageName}";
         }
 
         private void ClearFetchedVariants()
@@ -563,13 +548,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             {
                 foreach (var variant in _fetchedVariants)
                 {
-                    if ((DateTime.Now - variant.Value).TotalSeconds > SdkInfo.MarketDescriptionMinFetchInterval)
+                    if ((DateTime.Now - variant.Value).TotalSeconds > ConfigLimit.MarketDescriptionMinFetchInterval)
                     {
                         _fetchedVariants.TryRemove(variant.Key, out _);
                     }
                 }
                 _lastTimeFetchedVariantsWereCleared = DateTime.Now;
             }
+        }
+
+        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Task.FromResult(HealthCheckResult.Healthy($"Cache has {_cache.Count().ToString()} items"));
         }
     }
 }

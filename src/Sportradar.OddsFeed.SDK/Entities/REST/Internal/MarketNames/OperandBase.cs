@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Represents a base class for <see cref="IOperand"/> implementations which deal with market specifiers

@@ -3,17 +3,16 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
-using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-access-object representing a venue
     /// </summary>
-    /// <seealso cref="SportEntityDTO" />
-    internal class VenueDTO : SportEntityDTO
+    /// <seealso cref="SportEntityDto" />
+    internal class VenueDto : SportEntityDto
     {
         /// <summary>
         /// Gets the capacity of the represented venue or a null reference if value is not known
@@ -45,22 +44,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// </summary>
         internal string Coordinates { get; }
 
-        //TODO - this was changed
         /// <summary>
         /// Gets the course
         /// </summary>
         /// <value>The course</value>
-        internal ICollection<CourseDTO> Courses { get; }
+        internal ICollection<CourseDto> Courses { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VenueDTO"/> class
+        /// Initializes a new instance of the <see cref="VenueDto"/> class
         /// </summary>
         /// <param name="venue">A <see cref="venue"/> instance containing venue related information</param>
-        internal VenueDTO(venue venue)
+        internal VenueDto(venue venue)
             : base(venue.id, venue.name)
         {
-            Guard.Argument(venue, nameof(venue)).NotNull();
-
             Capacity = venue.capacitySpecified
                 ? (int?)venue.capacity
                 : null;
@@ -70,8 +66,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             State = venue.state;
             Coordinates = venue.map_coordinates;
             Courses = venue.course.IsNullOrEmpty()
-                ? new List<CourseDTO>()
-                : venue.course.Select(s => new CourseDTO(s)).ToList();
+                ? new List<CourseDto>()
+                : venue.course.Select(s => new CourseDto(s)).ToList();
         }
     }
 }

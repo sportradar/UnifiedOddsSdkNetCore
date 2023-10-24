@@ -2,16 +2,16 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}"/> implementation used to map <see cref="competitorProfileEndpoint"/> instances to <see cref="CompetitorProfileDTO"/> instances
+    /// A <see cref="ISingleTypeMapper{T}"/> implementation used to map <see cref="competitorProfileEndpoint"/> instances to <see cref="CompetitorProfileDto"/> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{CompetitorProfileDTO}" />
-    internal class CompetitorProfileMapper : ISingleTypeMapper<CompetitorProfileDTO>
+    /// <seealso cref="ISingleTypeMapper{CompetitorProfileDto}" />
+    internal class CompetitorProfileMapper : ISingleTypeMapper<CompetitorProfileDto>
     {
         /// <summary>
         /// A <see cref="competitorProfileEndpoint"/> instance containing competitor profile data
@@ -30,12 +30,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="CompetitorProfileDTO"/> instance
+        /// Maps it's data to <see cref="CompetitorProfileDto"/> instance
         /// </summary>
-        /// <returns>The created <see cref="CompetitorProfileDTO"/> instance </returns>
-        public CompetitorProfileDTO Map()
+        /// <returns>The created <see cref="CompetitorProfileDto"/> instance </returns>
+        public CompetitorProfileDto Map()
         {
-            return new CompetitorProfileDTO(_data);
+            return new CompetitorProfileDto(_data);
         }
     }
 }

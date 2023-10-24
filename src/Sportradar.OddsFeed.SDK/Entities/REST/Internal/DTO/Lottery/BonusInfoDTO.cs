@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
 {
     /// <summary>
     /// Defines a data-transfer-object for bonus info
     /// </summary>
-    internal class BonusInfoDTO
+    internal class BonusInfoDto
     {
         /// <summary>
         /// Gets the bonus balls
@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
         /// <value>The bonus range</value>
         public string BonusRange { get; }
 
-        internal BonusInfoDTO(lotteryBonus_info info)
+        internal BonusInfoDto(lotteryBonus_info info)
         {
             Guard.Argument(info, nameof(info)).NotNull();
 

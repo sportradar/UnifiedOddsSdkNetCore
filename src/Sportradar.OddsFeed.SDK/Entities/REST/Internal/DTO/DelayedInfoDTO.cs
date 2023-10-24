@@ -1,13 +1,13 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// Represents a delayed info for sport event
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "DTO is allowed")]
-    internal class DelayedInfoDTO
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Dto is allowed")]
+    internal class DelayedInfoDto
     {
         /// <summary>
         /// Gets a identifier
@@ -22,11 +22,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string Description { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DelayedInfoDTO"/> class
+        /// Initializes a new instance of the <see cref="DelayedInfoDto"/> class
         /// </summary>
         /// <param name="id">a identifier</param>
         /// <param name="description">the description of the represented sport entity</param>
-        internal DelayedInfoDTO(int id, string description)
+        internal DelayedInfoDto(int id, string description)
         {
             Id = id;
             Description = description;
@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (!(obj is DelayedInfoDTO other))
+            if (!(obj is DelayedInfoDto other))
             {
                 return false;
             }

@@ -3,16 +3,16 @@
 <examples>
 	<item id="Startup#Basic">
 		<sampleCode language="CSharp">
-var config = Feed.GetConfigurationBuilder().BuildFromConfigFile();
+var config = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
 
-var oddsFeed = new Feed(config);
+var uofSdk = new UofSdk(config);
 
-var session = oddsFeed.CreateBuilder().SetMessageInterest(MessageInterest.AllMessages).Build();
+var session = uofSdk.GetSessionBuilder().SetMessageInterest(MessageInterest.AllMessages).Build();
 
-oddsFeed.ProducerUp += OnProducerUp;
-oddsFeed.ProducerDown += OnProducerDown;
-oddsFeed.Disconnected += OnDisconnected;
-oddsFeed.Closed += OnClosed;
+uofSdk.ProducerUp += OnProducerUp;
+uofSdk.ProducerDown += OnProducerDown;
+uofSdk.Disconnected += OnDisconnected;
+uofSdk.Closed += OnClosed;
 
 session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
 session.OnBetCancel += SessionOnBetCancel;
@@ -23,44 +23,44 @@ session.OnOddsChange += SessionOnOddsChange;
 session.OnRollbackBetCancel += SessionOnRollbackBetCancel;
 session.OnRollbackBetSettlement += SessionOnRollbackBetSettlement;
 
-oddsFeed.Open();
+uofSdk.Open();
 		</sampleCode>
 	</item>
 
 	<item id="Startup#Advanced">
 		<sampleCode language="CSharp">
-var config = Feed.GetConfigurationBuilder().BuildFromConfigFile();
+var config = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
 
-var oddsFeed = new Feed(config);
+var uofSdk = new UofSdk(config);
 
-AttachToFeedEvents(oddsFeed);
+AttachToFeedEvents(uofSdk);
 
-var sessionLive = oddsFeed.CreateBuilder().SetMessageInterest(MessageInterest.LiveMessagesOnly).Build();
-var sessionPre = oddsFeed.CreateBuilder().SetMessageInterest(MessageInterest.PrematchMessagesOnly).Build();
+var sessionLive = uofSdk.GetSessionBuilder().SetMessageInterest(MessageInterest.LiveMessagesOnly).Build();
+var sessionPre = uofSdk.GetSessionBuilder().SetMessageInterest(MessageInterest.PrematchMessagesOnly).Build();
 
 AttachToSessionEvents(sessionLive);
 AttachToSessionEvents(sessionPre);
 
-oddsFeed.Open();
+uofSdk.Open();
 		</sampleCode>
 	</item>
 
 	<item id="Startup#AddTimestampBeforeDisconnect">
 		<sampleCode language="CSharp">
-oddsFeed.ProducerManager.AddTimestampBeforeDisconnect(1, DateTime.Now.AddMinutes(-10));
-oddsFeed.ProducerManager.AddTimestampBeforeDisconnect(3, DateTime.Now.AddMinutes(-10));
+uofSdk.ProducerManager.AddTimestampBeforeDisconnect(1, DateTime.Now.AddMinutes(-10));
+uofSdk.ProducerManager.AddTimestampBeforeDisconnect(3, DateTime.Now.AddMinutes(-10));
 		</sampleCode>
 	</item>
 
 	<item id="Startup#DisableProducer">
 		<sampleCode language="CSharp">
-oddsFeed.ProducerManager.DisableProducer(1);
+uofSdk.ProducerManager.DisableProducer(1);
 		</sampleCode>
 	</item>
 
 	<item id="SportDataProvider#GetSportEvent">
 		<sampleCode language="CSharp">
-var sportEvent = oddsFeed.SportDataProvider.GetSportEvent(URN.Parse("sr:match:123456"));
+var sportEvent = uofSdk.SportDataProvider.GetSportEvent(Urn.Parse("sr:match:123456"));
 if (sportEvent is IMatch match)
 {
 
@@ -70,7 +70,7 @@ if (sportEvent is IMatch match)
 
 	<item id="SportDataProvider#GetTournament">
 		<sampleCode language="CSharp">
-var longTermEvent = oddsFeed.SportDataProvider.GetTournament(URN.Parse("sr:tournament:1234"));
+var longTermEvent = uofSdk.SportDataProvider.GetTournament(Urn.Parse("sr:tournament:1234"));
 if (longTermEvent is ITournament tournament)
 {
 
@@ -80,7 +80,7 @@ if (longTermEvent is ITournament tournament)
 
 	<item id="SportDataProvider#GetLiveSportEvents">
 		<sampleCode language="CSharp">
-var competitions = await oddsFeed.SportDataProvider.GetLiveSportEventsAsync().ConfigureAwait(false);
+var competitions = await uofSdk.SportDataProvider.GetLiveSportEventsAsync().ConfigureAwait(false);
 foreach (var competition in competitions)
 {
 	if (competition is IMatch match)
@@ -93,7 +93,7 @@ foreach (var competition in competitions)
 
 	<item id="SportDataProvider#GetSportEventsByDate">
 		<sampleCode language="CSharp">
-var competitions = await oddsFeed.SportDataProvider.GetSportEventsByDateAsync(DateTime.Now.AddDays(1)).ConfigureAwait(false);
+var competitions = await uofSdk.SportDataProvider.GetSportEventsByDateAsync(DateTime.Now.AddDays(1)).ConfigureAwait(false);
 foreach (var competition in competitions)
 {
 	if (competition is IMatch match)

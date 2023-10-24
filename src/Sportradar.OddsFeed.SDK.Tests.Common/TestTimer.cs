@@ -5,55 +5,57 @@
 using System;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common
+namespace Sportradar.OddsFeed.SDK.Tests.Common;
+
+public class TestTimer : ISdkTimer
 {
-    public class TestTimer : ITimer
+    private readonly bool _raiseEventOnStart;
+
+    public string TimerName { get; }
+
+    public event EventHandler Elapsed;
+
+    public TestTimer(bool raiseEventOnStart)
     {
-        private readonly bool _raiseEventOnStart;
+        _raiseEventOnStart = raiseEventOnStart;
+        TimerName = raiseEventOnStart.ToString();
+    }
 
-        public event EventHandler Elapsed;
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+    }
 
-        public TestTimer(bool raiseEventOnStart)
+    public void Start()
+    {
+        if (!_raiseEventOnStart)
         {
-            _raiseEventOnStart = raiseEventOnStart;
+            return;
         }
 
-        public void Dispose()
-        {
+        var handler = Elapsed;
+        handler?.Invoke(this, EventArgs.Empty);
+    }
 
+    public void Start(TimeSpan dueTime, TimeSpan period)
+    {
+        if (!_raiseEventOnStart)
+        {
+            return;
         }
 
-        public void Start()
-        {
-            if (!_raiseEventOnStart)
-            {
-                return;
-            }
+        var handler = Elapsed;
+        handler?.Invoke(this, EventArgs.Empty);
+    }
 
-            var handler = Elapsed;
-            handler?.Invoke(this, EventArgs.Empty);
-        }
+    public void FireOnce(TimeSpan dueTime)
+    {
+        var handler = Elapsed;
+        handler?.Invoke(this, EventArgs.Empty);
+    }
 
-        public void Start(TimeSpan dueTime, TimeSpan period)
-        {
-            if (!_raiseEventOnStart)
-            {
-                return;
-            }
+    public void Stop()
+    {
 
-            var handler = Elapsed;
-            handler?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void FireOnce(TimeSpan dueTime)
-        {
-            var handler = Elapsed;
-            handler?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void Stop()
-        {
-
-        }
     }
 }

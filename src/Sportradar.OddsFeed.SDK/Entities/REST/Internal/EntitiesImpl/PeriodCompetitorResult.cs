@@ -3,12 +3,12 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class PeriodCompetitorResult : IPeriodCompetitorResult
     {
@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Gets the competitor id
         /// </summary>
         /// <value>The competitor id</value>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the competitor results
@@ -24,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <value>The results</value>
         public IEnumerable<ICompetitorResult> CompetitorResults { get; }
 
-        public PeriodCompetitorResult(PeriodCompetitorResultDTO periodCompetitorResult)
+        public PeriodCompetitorResult(PeriodCompetitorResultDto periodCompetitorResult)
         {
             Guard.Argument(periodCompetitorResult, nameof(periodCompetitorResult)).NotNull();
 

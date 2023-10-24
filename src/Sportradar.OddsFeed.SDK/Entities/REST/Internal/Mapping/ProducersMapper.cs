@@ -4,16 +4,16 @@
 using System;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> implementation used to construct <see cref="EntityList{ProducerDTO}" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> implementation used to construct <see cref="EntityList{T}" /> instances
     /// from <see cref="producers"/> instances
     /// </summary>
-    internal class ProducersMapper : ISingleTypeMapper<EntityList<ProducerDTO>>
+    internal class ProducersMapper : ISingleTypeMapper<EntityList<ProducerDto>>
     {
         /// <summary>
         /// A <see cref="producers"/> instance containing data about available producers
@@ -32,28 +32,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="EntityList{ProducerDTO}"/>
+        /// Maps it's data to instance of <see cref="EntityList{ProducerDto}"/>
         /// </summary>
-        /// <returns>The created <see cref="EntityList{ProducerDTO}"/> instance</returns>
-        public EntityList<ProducerDTO> Map()
+        /// <returns>The created <see cref="EntityList{ProducerDto}"/> instance</returns>
+        public EntityList<ProducerDto> Map()
         {
             if (_data == null || !_data.producer.Any())
             {
                 throw new InvalidOperationException("The provided producers instance contains no sports");
             }
 
-            var producers = _data.producer.Select(x => new ProducerDTO(x));
-            return new EntityList<ProducerDTO>(producers);
+            var producers = _data.producer.Select(x => new ProducerDto(x));
+            return new EntityList<ProducerDto>(producers);
         }
 
         /// <summary>
         /// Constructs and returns a new instance of the <see cref="ISingleTypeMapper{T}"/> instance used to map <see cref="producers"/> instances
-        /// to <see cref="EntityList{ProducerDTO}"/> instances
+        /// to <see cref="EntityList{ProducerDto}"/> instances
         /// </summary>
         /// <param name="data">A <see cref="producers"/> instance containing tournaments data</param>
         /// <returns>a new instance of the <see cref="ISingleTypeMapper{T}"/> instance used to map <see cref="producers"/> instances
-        /// to <see cref="EntityList{ProducerDTO}"/> instances</returns>
-        internal static ISingleTypeMapper<EntityList<ProducerDTO>> Create(producers data)
+        /// to <see cref="EntityList{ProducerDto}"/> instances</returns>
+        internal static ISingleTypeMapper<EntityList<ProducerDto>> Create(producers data)
         {
             return new ProducersMapper(data);
         }

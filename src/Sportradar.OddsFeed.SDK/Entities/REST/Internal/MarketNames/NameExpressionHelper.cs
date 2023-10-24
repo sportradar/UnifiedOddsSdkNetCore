@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Linq;
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Contains various helper methods for parsing of name descriptors

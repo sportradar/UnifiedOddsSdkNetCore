@@ -4,10 +4,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
 {
     internal class OutcomeMapping : IOutcomeMappingData
     {

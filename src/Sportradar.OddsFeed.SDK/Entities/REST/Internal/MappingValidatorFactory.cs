@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// A factory used to build <see cref="IMappingValidator"/> from their string definition

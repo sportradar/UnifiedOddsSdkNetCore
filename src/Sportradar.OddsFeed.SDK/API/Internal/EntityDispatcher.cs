@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using Dawn;
-using Sportradar.OddsFeed.SDK.API.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Class used to dispatch SDK non-global messages
@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
     internal abstract class EntityDispatcher<T> : EntityDispatcherBase, IEntityDispatcherInternal, IEntityDispatcher<T> where T : ISportEvent
     {
         /// <summary>
-        /// A value used to store information whether the current <see cref="OddsFeedSession"/> is opened
+        /// A value used to store information whether the current <see cref="UofSession"/> is opened
         /// 0 indicate closed, 1 indicate opened
         /// </summary>
         private long _isOpened;
@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         protected readonly IEnumerable<CultureInfo> DefaultCultures;
 
         /// <summary>
-        /// Gets a value indicating whether the current <see cref="OddsFeedSession"/> is opened
+        /// Gets a value indicating whether the current <see cref="UofSession"/> is opened
         /// </summary>
         public bool IsOpened => Interlocked.Read(ref _isOpened) == 1;
 
@@ -227,20 +227,20 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         protected abstract void OnClosing();
 
         /// <summary>
-        /// Opens the current <see cref="IOddsFeedSession"/> instance so it will start delivering messages from the feed
+        /// Opens the current <see cref="IUofSession"/> instance so it will start delivering messages from the feed
         /// </summary>
         public void Open()
         {
             if (Interlocked.CompareExchange(ref _isOpened, 1, 0) == 1)
             {
-                throw new InvalidOperationException("Current OddsFeedSession is already opened");
+                throw new InvalidOperationException("Current session is already opened");
             }
 
             OnOpening();
         }
 
         /// <summary>
-        /// Closes the current <see cref="IOddsFeedSession"/> so it will no longer deliver messages
+        /// Closes the current <see cref="IUofSession"/> so it will no longer deliver messages
         /// </summary>
         /// <remarks>The <see cref="Close"/> method does not dispose resources associated with the current instance so the instance can be re-opened by calling the <see cref="Open"/> method. In order to dispose resources associated
         /// with the current instance you must call the <see cref="IDisposable.Dispose"/> method. Once the instance is disposed it can no longer be opened.</remarks>
@@ -248,7 +248,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             if (Interlocked.CompareExchange(ref _isOpened, 0, 1) == 0)
             {
-                throw new InvalidOperationException("Current OddsFeedSession is already closed");
+                throw new InvalidOperationException("Current session is already closed");
             }
 
             OnClosing();

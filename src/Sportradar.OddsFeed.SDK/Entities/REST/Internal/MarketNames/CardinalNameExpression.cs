@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// A <see cref="INameExpression"/> implementation supporting cardinal expressions (i.e. {period_nr})

@@ -5,51 +5,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
 {
     /// <summary>
     /// Defines a data-transfer-object for lottery
     /// </summary>
-    internal class LotteryDTO : SportEventSummaryDTO
+    internal class LotteryDto : SportEventSummaryDto
     {
         /// <summary>
         /// Gets the sport
         /// </summary>
         /// <value>The sport</value>
-        public SportDTO Sport { get; }
+        public SportDto Sport { get; }
 
         /// <summary>
         /// Gets the category
         /// </summary>
         /// <value>The category</value>
-        public CategorySummaryDTO Category { get; }
+        public CategorySummaryDto Category { get; }
 
         /// <summary>
         /// Gets the bonus information
         /// </summary>
         /// <value>The bonus information</value>
-        public BonusInfoDTO BonusInfo { get; }
+        public BonusInfoDto BonusInfo { get; }
 
         /// <summary>
         /// Gets the draw information
         /// </summary>
         /// <value>The draw information</value>
-        public DrawInfoDTO DrawInfo { get; }
+        public DrawInfoDto DrawInfo { get; }
 
         /// <summary>
         /// Gets the draw events
         /// </summary>
         /// <value>The draw events</value>
-        public IEnumerable<DrawDTO> DrawEvents { get; }
+        public IEnumerable<DrawDto> DrawEvents { get; }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying when the associated message was generated (on the server side)
         /// </summary>
         public DateTime? GeneratedAt { get; }
 
-        internal LotteryDTO(lottery item)
+        internal LotteryDto(lottery item)
             : base(new sportEvent
             {
                 id = item == null ? "wns:lottery:1" : item.id,
@@ -71,30 +71,30 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
             if (item.sport != null)
             {
-                Sport = new SportDTO(item.sport.id, item.sport.name, (IEnumerable<tournamentExtended>)null);
+                Sport = new SportDto(item.sport.id, item.sport.name, (IEnumerable<tournamentExtended>)null);
             }
             if (item.category != null)
             {
-                Category = new CategorySummaryDTO(item.category);
+                Category = new CategorySummaryDto(item.category);
             }
             if (item.bonus_info != null)
             {
-                BonusInfo = new BonusInfoDTO(item.bonus_info);
+                BonusInfo = new BonusInfoDto(item.bonus_info);
             }
             if (item.draw_info != null)
             {
-                DrawInfo = new DrawInfoDTO(item.draw_info);
+                DrawInfo = new DrawInfoDto(item.draw_info);
             }
         }
 
-        internal LotteryDTO(lottery_schedule item)
+        internal LotteryDto(lottery_schedule item)
             : this(item.lottery)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 
             if (item.draw_events != null && item.draw_events.Any())
             {
-                DrawEvents = item.draw_events.Select(draw => new DrawDTO(draw)).ToList();
+                DrawEvents = item.draw_events.Select(draw => new DrawDto(draw)).ToList();
             }
 
             GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;

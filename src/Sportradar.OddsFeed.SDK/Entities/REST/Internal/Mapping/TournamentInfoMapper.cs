@@ -2,12 +2,12 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
-    internal class TournamentInfoMapper : ISingleTypeMapper<TournamentInfoDTO>
+    internal class TournamentInfoMapper : ISingleTypeMapper<TournamentInfoDto>
     {
         /// <summary>
         /// A <see cref="tournamentInfoEndpoint"/> instance containing detailed tournament info
@@ -26,12 +26,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="TournamentInfoDTO"/>
+        /// Maps it's data to instance of <see cref="TournamentInfoDto"/>
         /// </summary>
-        /// <returns>The created <see cref="TournamentInfoDTO"/> instance</returns>
-        TournamentInfoDTO ISingleTypeMapper<TournamentInfoDTO>.Map()
+        /// <returns>The created <see cref="TournamentInfoDto"/> instance</returns>
+        TournamentInfoDto ISingleTypeMapper<TournamentInfoDto>.Map()
         {
-            return new TournamentInfoDTO(_data);
+            return new TournamentInfoDto(_data);
         }
     }
 }

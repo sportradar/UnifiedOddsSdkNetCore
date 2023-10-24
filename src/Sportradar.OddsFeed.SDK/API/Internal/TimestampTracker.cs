@@ -7,12 +7,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Class used to track the timestamp and times of incoming messages in order to determine

@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class CompetitorResult : ICompetitorResult
     {
@@ -25,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <value>The specifiers</value>
         public string Specifiers { get; }
 
-        internal CompetitorResult(CompetitorResultDTO result)
+        internal CompetitorResult(CompetitorResultDto result)
         {
             if (result == null)
             {

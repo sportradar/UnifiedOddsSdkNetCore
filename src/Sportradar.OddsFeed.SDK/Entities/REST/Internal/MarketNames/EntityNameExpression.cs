@@ -5,13 +5,13 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// A <see cref="INameExpression"/> implementation supporting '$' (i.e. {$competitor1} ) name expressions
@@ -40,6 +40,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             "competitor2"
         };
 
+        private readonly string _supportedOperandsString;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityNameExpression"/> class
         /// </summary>
@@ -55,28 +57,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             _propertyName = propertyName;
             _sportEvent = sportEvent;
             _profileCache = profileCache;
-        }
 
-        /// <summary>
-        /// Asynchronous invokes the specified method and wraps potential exception into <see cref="NameExpressionException"/>.
-        /// </summary>
-        /// <typeparam name="T">The type returned by provided async method</typeparam>
-        /// <param name="method">A <see cref="Func{TResult}"/> representing async method to invoke.</param>
-        /// <returns>A <see cref="Task{T}"/> representing the async method.</returns>
-        private static async Task<T> InvokeAndWrapAsync<T>(Func<Task<T>> method)
-        {
-            try
-            {
-                return await method.Invoke().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                if (ex is CommunicationException || ex is DeserializationException || ex is MappingException)
-                {
-                    throw new NameExpressionException("Error occurred while evaluating name expression", ex);
-                }
-                throw;
-            }
+            _supportedOperandsString = string.Join(", ", SupportedOperands);
         }
 
         /// <summary>
@@ -89,16 +71,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         {
             if (_propertyName.Equals("event"))
             {
-                if (_sportEvent is IMatch)
-                {
-                    var homeCompetitor = await GetHomeCompetitor(culture).ConfigureAwait(false);
-                    var awayCompetitor = await GetAwayCompetitor(culture).ConfigureAwait(false);
-                    return $"{homeCompetitor} vs {awayCompetitor}";
-                }
-
-                return await _sportEvent.GetNameAsync(culture).ConfigureAwait(false);
+                return await BuildEventNameAsync(culture).ConfigureAwait(false);
             }
 
+            return await BuildOperandNameAsync(culture).ConfigureAwait(false);
+        }
+
+        private async Task<string> BuildEventNameAsync(CultureInfo culture)
+        {
+            if (_sportEvent is IMatch)
+            {
+                var homeCompetitor = await GetHomeCompetitor(culture).ConfigureAwait(false);
+                var awayCompetitor = await GetAwayCompetitor(culture).ConfigureAwait(false);
+                return $"{homeCompetitor} vs {awayCompetitor}";
+            }
+
+            return await _sportEvent.GetNameAsync(culture).ConfigureAwait(false);
+        }
+
+        private async Task<string> BuildOperandNameAsync(CultureInfo culture)
+        {
             switch (Array.IndexOf(SupportedOperands, _propertyName))
             {
                 case 0:
@@ -106,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 case 1:
                     return await GetAwayCompetitor(culture).ConfigureAwait(false);
                 default:
-                    throw new NameExpressionException($"Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {string.Join(", ", SupportedOperands)}", null);
+                    throw new NameExpressionException($"No valid operand found. Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {_supportedOperandsString}", null);
             }
         }
 
@@ -128,7 +120,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 }
             }
 
-            throw new NameExpressionException($"Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {string.Join(",", SupportedOperands)}", null);
+            throw new NameExpressionException($"No home competitor found. Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {_supportedOperandsString}", null);
         }
 
         private async Task<string> GetAwayCompetitor(CultureInfo culture)
@@ -149,7 +141,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 }
             }
 
-            throw new NameExpressionException($"Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {string.Join(",", SupportedOperands)}", null);
+            throw new NameExpressionException($"No away competitor found. Operand {_propertyName} is not supported [{_sportEvent.Id}]. Supported operands are: {_supportedOperandsString}", null);
         }
     }
 }

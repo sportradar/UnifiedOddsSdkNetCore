@@ -4,36 +4,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
-    internal class BasicTournamentDTO : SportEventSummaryDTO
+    internal class BasicTournamentDto : SportEventSummaryDto
     {
         /// <summary>
         /// Gets the tournament coverage
         /// </summary>
         /// <value>The tournament coverage</value>
-        public TournamentCoverageDTO TournamentCoverage { get; }
+        public TournamentCoverageDto TournamentCoverage { get; }
 
         /// <summary>
         /// Gets the category
         /// </summary>
         /// <value>The category</value>
-        public URN Category { get; }
+        public Urn Category { get; }
 
         /// <summary>
         /// Gets the competitors
         /// </summary>
         /// <value>The competitors</value>
-        public IEnumerable<CompetitorDTO> Competitors { get; }
+        public IEnumerable<CompetitorDto> Competitors { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicTournamentDTO"/> class.
+        /// Initializes a new instance of the <see cref="BasicTournamentDto"/> class.
         /// </summary>
         /// <param name="sportEvent">The <see cref="sportEvent"/> used for creating instance</param>
-        internal BasicTournamentDTO(sportEvent sportEvent)
+        internal BasicTournamentDto(sportEvent sportEvent)
             : base(sportEvent)
         {
             Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
@@ -41,15 +41,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             TournamentCoverage = null;
             Category = sportEvent.tournament.category == null
                 ? null
-                : URN.Parse(sportEvent.tournament.category.id);
-            Competitors = sportEvent.competitors.Select(s => new CompetitorDTO(s));
+                : Urn.Parse(sportEvent.tournament.category.id);
+            Competitors = sportEvent.competitors.Select(s => new CompetitorDto(s));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicTournamentDTO"/> class.
+        /// Initializes a new instance of the <see cref="BasicTournamentDto"/> class.
         /// </summary>
         /// <param name="tournamentInfo">The <see cref="tournament"/> used for creating instance</param>
-        internal BasicTournamentDTO(tournamentInfoEndpoint tournamentInfo)
+        internal BasicTournamentDto(tournamentInfoEndpoint tournamentInfo)
             : base(new sportEvent
             {
                 id = tournamentInfo.tournament.id,
@@ -64,18 +64,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Guard.Argument(tournamentInfo, nameof(tournamentInfo)).NotNull();
 
-            TournamentCoverage = new TournamentCoverageDTO(tournamentInfo.coverage_info);
+            TournamentCoverage = new TournamentCoverageDto(tournamentInfo.coverage_info);
             Category = tournamentInfo.tournament.category == null
                 ? null
-                : URN.Parse(tournamentInfo.tournament.category.id);
-            Competitors = tournamentInfo.competitors.Select(s => new CompetitorDTO(s));
+                : Urn.Parse(tournamentInfo.tournament.category.id);
+            Competitors = tournamentInfo.competitors.Select(s => new CompetitorDto(s));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicTournamentDTO"/> class.
+        /// Initializes a new instance of the <see cref="BasicTournamentDto"/> class.
         /// </summary>
         /// <param name="tournament">The <see cref="tournamentExtended"/> used for creating instance</param>
-        internal BasicTournamentDTO(tournamentExtended tournament)
+        internal BasicTournamentDto(tournamentExtended tournament)
             : base(new sportEvent
             {
                 id = tournament.id,
@@ -92,8 +92,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             Category = tournament.category == null
                 ? null
-                : URN.Parse(tournament.category.id);
-            Competitors = tournament.competitors.Select(s => new CompetitorDTO(s));
+                : Urn.Parse(tournament.category.id);
+            Competitors = tournament.competitors.Select(s => new CompetitorDto(s));
         }
     }
 }

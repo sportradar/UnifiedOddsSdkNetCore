@@ -6,145 +6,144 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FluentAssertions;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Xunit;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Entities.REST.Markets
+namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.Markets;
+
+[SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+public class NameExpressionHelperTests
 {
-    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-    public class NameExpressionHelperTests
+    [Fact]
+    public void MissingOpeningBracketsThrows()
     {
-        [Fact]
-        public void MissingOpeningBracketsThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("$competitor1}", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+        var action = () => NameExpressionHelper.ParseExpression("$competitor1}", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void MissingClosingBracketsThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("{$competitor1", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+    [Fact]
+    public void MissingClosingBracketsThrows()
+    {
+        var action = () => NameExpressionHelper.ParseExpression("{$competitor1", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void NoBracketsThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("$competitor1", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+    [Fact]
+    public void NoBracketsThrows()
+    {
+        var action = () => NameExpressionHelper.ParseExpression("$competitor1", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void ToShortExpressionThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("{}", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+    [Fact]
+    public void ToShortExpressionThrows()
+    {
+        var action = () => NameExpressionHelper.ParseExpression("{}", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void MissingOpeningBracketInDescriptorThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("Competitor $competitor1} to {score} points", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+    [Fact]
+    public void MissingOpeningBracketInDescriptorThrows()
+    {
+        var action = () => NameExpressionHelper.ParseExpression("Competitor $competitor1} to {score} points", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void MissingClosingBracketInDescriptorThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("Competitor $competitor1} to {score points", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+    [Fact]
+    public void MissingClosingBracketInDescriptorThrows()
+    {
+        var action = () => NameExpressionHelper.ParseExpression("Competitor $competitor1} to {score points", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void MissingOpeningBracketOnBeginningInDescriptorThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("$competitor1} to {score} points", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+    [Fact]
+    public void MissingOpeningBracketOnBeginningInDescriptorThrows()
+    {
+        var action = () => NameExpressionHelper.ParseExpression("$competitor1} to {score} points", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void MissingClosingBracketOnEndInDescriptorThrows()
-        {
-            Action action = () => NameExpressionHelper.ParseExpression("{$competitor1} to {score", out _, out _);
-            action.Should().Throw<FormatException>();
-        }
+    [Fact]
+    public void MissingClosingBracketOnEndInDescriptorThrows()
+    {
+        var action = () => NameExpressionHelper.ParseExpression("{$competitor1} to {score", out _, out _);
+        action.Should().Throw<FormatException>();
+    }
 
-        [Fact]
-        public void ExpressionWithNoOperatorIsParsed()
-        {
-            NameExpressionHelper.ParseExpression("{reply_nr}", out var @operator, out var operand);
+    [Fact]
+    public void ExpressionWithNoOperatorIsParsed()
+    {
+        NameExpressionHelper.ParseExpression("{reply_nr}", out var @operator, out var operand);
 
-            Assert.Null(@operator);
-            Assert.Equal("reply_nr", operand);
-        }
+        Assert.Null(@operator);
+        Assert.Equal("reply_nr", operand);
+    }
 
-        [Fact]
-        public void ExpressionWithOrdinalOperatorIsParsed()
-        {
-            NameExpressionHelper.ParseExpression("{!periodNumber}", out var @operator, out var operand);
+    [Fact]
+    public void ExpressionWithOrdinalOperatorIsParsed()
+    {
+        NameExpressionHelper.ParseExpression("{!periodNumber}", out var @operator, out var operand);
 
-            Assert.Equal("!", @operator);
-            Assert.Equal("periodNumber", operand);
-        }
+        Assert.Equal("!", @operator);
+        Assert.Equal("periodNumber", operand);
+    }
 
-        [Fact]
-        public void ExpressionWithPlusOperatorIsParsed()
-        {
-            NameExpressionHelper.ParseExpression("{+score}", out var @operator, out var operand);
+    [Fact]
+    public void ExpressionWithPlusOperatorIsParsed()
+    {
+        NameExpressionHelper.ParseExpression("{+score}", out var @operator, out var operand);
 
-            Assert.Equal("+", @operator);
-            Assert.Equal("score", operand);
-        }
+        Assert.Equal("+", @operator);
+        Assert.Equal("score", operand);
+    }
 
-        [Fact]
-        public void ExpressionWithMinusOperatorIsParsed()
-        {
-            NameExpressionHelper.ParseExpression("{-corners}", out var @operator, out var operand);
+    [Fact]
+    public void ExpressionWithMinusOperatorIsParsed()
+    {
+        NameExpressionHelper.ParseExpression("{-corners}", out var @operator, out var operand);
 
-            Assert.Equal("-", @operator);
-            Assert.Equal("corners", operand);
-        }
+        Assert.Equal("-", @operator);
+        Assert.Equal("corners", operand);
+    }
 
-        [Fact]
-        public void ExpressionWithEntityNameOperatorIsParsed()
-        {
-            NameExpressionHelper.ParseExpression("{$competitor1}", out var @operator, out var operand);
+    [Fact]
+    public void ExpressionWithEntityNameOperatorIsParsed()
+    {
+        NameExpressionHelper.ParseExpression("{$competitor1}", out var @operator, out var operand);
 
-            Assert.Equal("$", @operator);
-            Assert.Equal("competitor1", operand);
-        }
+        Assert.Equal("$", @operator);
+        Assert.Equal("competitor1", operand);
+    }
 
-        [Fact]
-        public void ExpressionWithPlayerProfileOperatorIsParse()
-        {
-            NameExpressionHelper.ParseExpression("{%player}", out var @operator, out var operand);
+    [Fact]
+    public void ExpressionWithPlayerProfileOperatorIsParse()
+    {
+        NameExpressionHelper.ParseExpression("{%player}", out var @operator, out var operand);
 
-            Assert.Equal("%", @operator);
-            Assert.Equal("player", operand);
-        }
+        Assert.Equal("%", @operator);
+        Assert.Equal("player", operand);
+    }
 
-        [Fact]
-        public void SingleExpressionDescriptorIsParsed()
-        {
-            const string descriptor = "{$competitor1}";
+    [Fact]
+    public void SingleExpressionDescriptorIsParsed()
+    {
+        const string descriptor = "{$competitor1}";
 
-            var expressions = NameExpressionHelper.ParseDescriptor(descriptor, out var format);
+        var expressions = NameExpressionHelper.ParseDescriptor(descriptor, out var format);
 
-            Assert.Single(expressions);
-            Assert.Equal("{0}", format);
-            Assert.Equal(descriptor, expressions.First());
-        }
+        Assert.Single(expressions);
+        Assert.Equal("{0}", format);
+        Assert.Equal(descriptor, expressions.First());
+    }
 
-        [Fact]
-        public void DoubleExpressionDescriptorIsParsed()
-        {
-            var expressions = NameExpressionHelper.ParseDescriptor("{$competitor1} to {score}", out var format);
+    [Fact]
+    public void DoubleExpressionDescriptorIsParsed()
+    {
+        var expressions = NameExpressionHelper.ParseDescriptor("{$competitor1} to {score}", out var format);
 
-            Assert.Equal(2, expressions.Count);
-            Assert.Equal("{0} to {1}", format);
-            Assert.Equal("{$competitor1}", expressions.First());
-            Assert.Equal("{score}", expressions.Last());
-        }
+        Assert.Equal(2, expressions.Count);
+        Assert.Equal("{0} to {1}", format);
+        Assert.Equal("{$competitor1}", expressions.First());
+        Assert.Equal("{score}", expressions.Last());
     }
 }

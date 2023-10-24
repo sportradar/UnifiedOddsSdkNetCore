@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Enums
 {
     /// <summary>
     /// An enumeration of possible stage types
@@ -81,6 +81,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         /// <summary>
         /// The run
         /// </summary>
-        Run
+        Run,
+
+        /// <summary>
+        /// The sprint race
+        /// </summary>
+        SprintRace
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing a match status
@@ -29,13 +29,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the score of the home competitor competing on the associated sport event
         /// </summary>
         /// <value>The score of the home competitor competing on the associated sport event</value>
-        decimal HomeScore { get; }
+        decimal? HomeScore { get; }
 
         /// <summary>
         /// Gets the score of the away competitor competing on the associated sport event
         /// </summary>
         /// <value>The score of the away competitor competing on the associated sport event</value>
-        decimal AwayScore { get; }
+        decimal? AwayScore { get; }
 
         /// <summary>
         /// Asynchronously gets the match status

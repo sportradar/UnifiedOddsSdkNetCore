@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents an assists on a sport event
@@ -22,10 +22,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Assist"/> class.
         /// </summary>
-        /// <param name="id">a <see cref="URN"/> uniquely identifying the current <see cref="ICompetitor" /> instance</param>
+        /// <param name="id">a <see cref="Urn"/> uniquely identifying the current <see cref="ICompetitor" /> instance</param>
         /// <param name="names">A <see cref="IDictionary{CultureInfo, String}"/> containing assist names in different languages</param>
         /// <param name="type">a <see cref="string" /> specifying the type of the assist</param>
-        public Assist(URN id, IDictionary<CultureInfo, string> names, string type)
+        public Assist(Urn id, IDictionary<CultureInfo, string> names, string type)
             : base(id, names)
         {
             Type = type;

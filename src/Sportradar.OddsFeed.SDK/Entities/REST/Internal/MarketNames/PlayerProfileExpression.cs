@@ -4,11 +4,11 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// A <see cref="INameExpression"/> implementation supporting ! based expressions (e.g. {!reply_nr})
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         public async Task<string> BuildNameAsync(CultureInfo culture)
         {
             var urnString = await _operand.GetStringValue().ConfigureAwait(false);
-            var urn = URN.Parse(urnString);
+            var urn = Urn.Parse(urnString);
             string name = null;
             if (urn.Type == "player")
             {

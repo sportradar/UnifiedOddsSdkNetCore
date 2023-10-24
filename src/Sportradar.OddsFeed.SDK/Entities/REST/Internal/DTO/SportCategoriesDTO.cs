@@ -4,32 +4,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for sport categories
     /// </summary>
-    internal class SportCategoriesDTO
+    internal class SportCategoriesDto
     {
         /// <summary>
-        /// Gets the <see cref="SportEntityDTO"/> specifying the parent sport
+        /// Gets the <see cref="SportEntityDto"/> specifying the parent sport
         /// </summary>
-        public SportEntityDTO Sport { get; }
+        public SportEntityDto Sport { get; }
 
         /// <summary>
-        /// Gets the <see cref="CategoryDTO"/> specifying associated categories
+        /// Gets the <see cref="CategoryDto"/> specifying associated categories
         /// </summary>
-        public IEnumerable<CategoryDTO> Categories { get; }
+        public IEnumerable<CategoryDto> Categories { get; }
 
-        internal SportCategoriesDTO(sportCategoriesEndpoint categoriesEndpoint)
+        internal SportCategoriesDto(sportCategoriesEndpoint categoriesEndpoint)
         {
             Guard.Argument(categoriesEndpoint, nameof(categoriesEndpoint)).NotNull();
             Guard.Argument(categoriesEndpoint.sport, nameof(categoriesEndpoint.sport)).NotNull();
 
-            Sport = new SportEntityDTO(categoriesEndpoint.sport.id, categoriesEndpoint.sport.name);
-            Categories = categoriesEndpoint.categories?.Select(c => new CategoryDTO(c.id, c.name, c.country_code, new List<tournamentExtended>())).ToList();
+            Sport = new SportEntityDto(categoriesEndpoint.sport.id, categoriesEndpoint.sport.name);
+            Categories = categoriesEndpoint.categories?.Select(c => new CategoryDto(c.id, c.name, c.country_code, new List<tournamentExtended>())).ToList();
         }
     }
 }

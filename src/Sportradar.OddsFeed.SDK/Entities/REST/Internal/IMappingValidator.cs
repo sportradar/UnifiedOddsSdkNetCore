@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// Defines an interface which validates a market mapping to ensure it can be used to map a specific market

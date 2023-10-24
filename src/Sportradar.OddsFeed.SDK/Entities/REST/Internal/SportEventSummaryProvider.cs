@@ -3,19 +3,20 @@
 */
 using System;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
-    /// A <see cref="IDataProvider{SportEventSummaryDTO}"/> used to retrieve sport event summary
+    /// A <see cref="IDataProvider{SportEventSummaryDto}"/> used to retrieve sport event summary
     /// </summary>
     /// <seealso cref="DataProvider{RestMessage, EntityList}" />
     /// <seealso cref="IDataProvider{EntityList}" />
-    internal class SportEventSummaryProvider : DataProvider<RestMessage, EntityList<SportEventSummaryDTO>>
+    internal class SportEventSummaryProvider : DataProvider<RestMessage, EntityList<SportEventSummaryDto>>
     {
         /// <summary>
         /// An address format used to retrieve sport event summary
@@ -33,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             string sportEventSummaryUriFormat,
             IDataFetcher fetcher,
             IDeserializer<RestMessage> deserializer,
-            ISingleTypeMapperFactory<RestMessage, EntityList<SportEventSummaryDTO>> mapperFactory)
+            ISingleTypeMapperFactory<RestMessage, EntityList<SportEventSummaryDto>> mapperFactory)
             : base(sportEventSummaryUriFormat, fetcher, deserializer, mapperFactory)
         {
             Guard.Argument(sportEventSummaryUriFormat, nameof(sportEventSummaryUriFormat)).NotNull().NotEmpty();

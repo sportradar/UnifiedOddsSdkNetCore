@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Implementation of <see cref="ICategorySummary"/>
@@ -19,10 +19,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Creates new instance of category summary
         /// </summary>
-        /// <param name="id"> a <see cref="URN"/> uniquely identifying the category represented by the current instance</param>
+        /// <param name="id"> a <see cref="Urn"/> uniquely identifying the category represented by the current instance</param>
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated category name</param>
         /// <param name="countryCode">a country code</param>
-        public CategorySummary(URN id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode)
+        public CategorySummary(Urn id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode)
             : base(id, names)
         {
             Guard.Argument(id, nameof(id)).NotNull();

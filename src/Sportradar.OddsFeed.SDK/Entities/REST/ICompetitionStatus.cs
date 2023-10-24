@@ -2,10 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing the status of a <see cref="ICompetition"/>
@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the winner identifier
         /// </summary>
         /// <value>The winner identifier, if available, otherwise null</value>
-        URN WinnerId { get; }
+        Urn WinnerId { get; }
 
         /// <summary>
         /// Gets a <see cref="EventStatus"/> describing the high-level status of the associated sport event
@@ -52,6 +52,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the period of ladder
         /// </summary>
         /// <value>The period of ladder</value>
-        int? PeriodOfLadder => null;
+        int? PeriodOfLadder { get; }
     }
 }

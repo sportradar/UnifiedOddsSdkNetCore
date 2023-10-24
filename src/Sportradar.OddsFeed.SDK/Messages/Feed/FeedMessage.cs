@@ -4,11 +4,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Serialization;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
-#pragma warning disable 1591
+// ReSharper disable All
 
-// ReSharper disable InconsistentNaming
 namespace Sportradar.OddsFeed.SDK.Messages.Feed
 {
     /// <summary>
@@ -17,21 +18,21 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
     public abstract class FeedMessage
     {
         /// <summary>
-        /// Gets or sets a <see cref="URN"/> representing the id of the sport associated with the current <see cref="FeedMessage"/> instance
+        /// Gets or sets a <see cref="Urn"/> representing the id of the sport associated with the current <see cref="FeedMessage"/> instance
         /// </summary>
         [XmlIgnore]
-        public URN SportId
+        public Urn SportId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// When overridden in derived class, it gets a <see cref="URN"/> specifying the id of the associated sport event
+        /// When overridden in derived class, it gets a <see cref="Urn"/> specifying the id of the associated sport event
         /// </summary>
         /// <value>The event urn</value>
         [XmlIgnore]
-        public URN EventURN
+        public Urn EventUrn
         {
             get;
             set;
@@ -129,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.FORBBIDEN;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Forbidden;
 
         public override bool IsStateful => false;
 
@@ -156,7 +157,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_id;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.REQUIRED;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Required;
 
         public override bool IsStateful => false;
 
@@ -183,7 +184,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_idSpecified ? (long?)request_id : null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Optional;
 
         public override bool IsStateful => false;
 
@@ -210,7 +211,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_idSpecified ? (long?)request_id : null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Optional;
 
         public override bool IsStateful => false;
 
@@ -237,7 +238,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_idSpecified ? (long?)request_id : null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Optional;
 
         public override bool IsStateful => true;
 
@@ -264,7 +265,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_idSpecified ? (long?)request_id : null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Optional;
 
         public override bool IsStateful => true;
 
@@ -291,7 +292,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_idSpecified ? (long?)request_id : null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Optional;
 
         public override bool IsStateful => true;
 
@@ -318,7 +319,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_idSpecified ? (long?)request_id : null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Optional;
 
         public override bool IsStateful => true;
 
@@ -345,7 +346,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long? RequestId => request_idSpecified ? (long?)request_id : null;
 
-        public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Optional;
 
         public override bool IsStateful => false;
 

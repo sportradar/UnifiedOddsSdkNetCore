@@ -4,15 +4,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class EventTimeline : IEventTimeline
     {
         public IEnumerable<ITimelineEvent> TimelineEvents { get; }
 
-        public EventTimeline(EventTimelineCI ci)
+        public EventTimeline(EventTimelineCacheItem ci)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
 

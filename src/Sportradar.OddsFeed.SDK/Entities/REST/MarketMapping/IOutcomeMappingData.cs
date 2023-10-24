@@ -3,7 +3,7 @@
 */
 using System.Globalization;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping
 {
     /// <summary>
     /// Represents mapping information used to map market outcomes

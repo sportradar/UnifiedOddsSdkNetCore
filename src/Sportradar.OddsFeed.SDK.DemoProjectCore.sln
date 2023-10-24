@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.DemoProject", "Sportradar.OddsFeed.SDK.DemoProject\Sportradar.OddsFeed.SDK.DemoProject.csproj", "{B689976D-76DA-4CCA-B6E2-3AC792DC103E}"
 EndProject
@@ -26,9 +26,10 @@ Global
 		UpdateAssemblyVersion = True
 		UpdateAssemblyFileVersion = True
 		UpdateAssemblyInfoVersion = True
-		AssemblyVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.DeltaDayStamp
-		AssemblyFileVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.DeltaDayStamp
-		AssemblyInfoVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.DeltaDayStamp
+		ShouldCreateLogs = True
+		AssemblyVersionSettings = IncrementOnDemand.IncrementOnDemandWithResetOnIncrease.YearStamp.MMddStamp
+		AssemblyFileVersionSettings = IncrementOnDemand.IncrementOnDemandWithResetOnIncrease.YearStamp.MMddStamp
+		AssemblyInfoVersionSettings = IncrementOnDemand.IncrementOnDemandWithResetOnIncrease.YearStamp.MMddStamp
 		UpdatePackageVersion = False
 		AssemblyInfoVersionType = SettingsVersion
 		InheritWinAppVersionFrom = None

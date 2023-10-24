@@ -7,11 +7,11 @@ using System.Globalization;
 using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a competition group
@@ -61,16 +61,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class
         /// </summary>
-        /// <param name="ci">A <see cref="GroupCI"/> used to create new instance</param>
-        /// <param name="cultures">A culture of the current instance of <see cref="GroupDTO"/></param>
+        /// <param name="ci">A <see cref="GroupCacheItem"/> used to create new instance</param>
+        /// <param name="cultures">A culture of the current instance of <see cref="GroupDto"/></param>
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to retrieve <see cref="IPlayerProfile"/></param>
         /// <param name="exceptionStrategy">The exception strategy</param>
-        /// <param name="competitorsReferenceIds">A list of <see cref="ReferenceIdCI"/> for all competitors</param>
-        public Group(GroupCI ci,
+        /// <param name="competitorsReferenceIds">A list of <see cref="ReferenceIdCacheItem"/> for all competitors</param>
+        public Group(GroupCacheItem ci,
                      IReadOnlyCollection<CultureInfo> cultures,
                      ISportEntityFactory sportEntityFactory,
                      ExceptionHandlingStrategy exceptionStrategy,
-                     IDictionary<URN, ReferenceIdCI> competitorsReferenceIds)
+                     IDictionary<Urn, ReferenceIdCacheItem> competitorsReferenceIds)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
 

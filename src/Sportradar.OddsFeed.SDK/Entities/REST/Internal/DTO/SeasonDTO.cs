@@ -3,17 +3,17 @@
 */
 using System;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-access-object representing a competition season
     /// </summary>
-    /// <seealso cref="SportEntityDTO" />
-    internal class SeasonDTO : SportEntityDTO
+    /// <seealso cref="SportEntityDto" />
+    internal class SeasonDto : SportEntityDto
     {
         /// <summary>
         /// Gets a <see cref="DateTime"/> specifying the start date of the represented season
@@ -34,13 +34,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the associated tournament identifier.
         /// </summary>
         /// <value>The associated tournament identifier.</value>
-        internal URN TournamentId { get; }
+        internal Urn TournamentId { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeasonDTO"/> class
+        /// Initializes a new instance of the <see cref="SeasonDto"/> class
         /// </summary>
         /// <param name="season">A <see cref="seasonExtended"/> containing information about a season.</param>
-        internal SeasonDTO(seasonExtended season)
+        internal SeasonDto(seasonExtended season)
             : base(season.id, season.name)
         {
             Guard.Argument(season, nameof(season)).NotNull();
@@ -59,16 +59,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (!string.IsNullOrEmpty(season.tournament_id))
             {
-                URN.TryParse(season.tournament_id, out var tId);
+                Urn.TryParse(season.tournament_id, out var tId);
                 TournamentId = tId;
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeasonDTO"/> class
+        /// Initializes a new instance of the <see cref="SeasonDto"/> class
         /// </summary>
         /// <param name="season">A <see cref="seasonExtended"/> containing information about a season.</param>
-        internal SeasonDTO(currentSeason season)
+        internal SeasonDto(currentSeason season)
             : base(season.id, season.name)
         {
             Guard.Argument(season, nameof(season)).NotNull();
@@ -88,7 +88,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (!string.IsNullOrEmpty(season.tournament_id))
             {
-                URN.TryParse(season.tournament_id, out var tId);
+                Urn.TryParse(season.tournament_id, out var tId);
                 TournamentId = tId;
             }
         }

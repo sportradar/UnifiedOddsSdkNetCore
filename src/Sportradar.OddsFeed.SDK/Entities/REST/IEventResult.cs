@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines methods used by classes that provide event result information
@@ -111,12 +111,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the distance
         /// </summary>
         /// <value>The distance</value>
-        double? Distance => null;
+        double? Distance { get; }
 
         /// <summary>
         /// Gets the competitor results
         /// </summary>
         /// <value>The results</value>
-        IEnumerable<ICompetitorResult> CompetitorResults => new List<ICompetitorResult>();
+        IEnumerable<ICompetitorResult> CompetitorResults { get; }
     }
 }

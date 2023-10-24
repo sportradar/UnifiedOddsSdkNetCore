@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a sport event venue
@@ -18,9 +18,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     internal class Venue : EntityPrinter, IVenue
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> uniquely identifying the current <see cref="IVenue" /> instance
+        /// Gets a <see cref="Urn"/> uniquely identifying the current <see cref="IVenue" /> instance
         /// </summary>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the capacity of the venue associated with current <see cref="IVenue" /> instance, or a null
@@ -62,17 +62,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         public string State { get; }
 
         /// <summary>
-        /// Gets the course
+        /// Gets the list of courses
         /// </summary>
-        /// <value>The course</value>
-        public IEnumerable<IHole> Course { get; }
+        /// <value>The list of courses</value>
+        public IEnumerable<ICourse> Courses { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Venue"/> class.
         /// </summary>
-        /// <param name="ci">A <see cref="VenueCI"/> used to create new instance</param>
-        /// <param name="cultures">A culture of the current instance of <see cref="VenueCI"/></param>
-        public Venue(VenueCI ci, IReadOnlyCollection<CultureInfo> cultures)
+        /// <param name="ci">A <see cref="VenueCacheItem"/> used to create new instance</param>
+        /// <param name="cultures">A culture of the current instance of <see cref="VenueCacheItem"/></param>
+        public Venue(VenueCacheItem ci, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
@@ -81,13 +81,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Coordinates = ci.Coordinates;
             Capacity = ci.Capacity;
 
-            Names = new ReadOnlyDictionary<CultureInfo, string>(cultures.Where(c => ci.GetName(c) != null).ToDictionary(c => c, ci.GetName));
-            Cities = new ReadOnlyDictionary<CultureInfo, string>(cultures.Where(c => ci.GetCity(c) != null).ToDictionary(c => c, ci.GetCity));
-            Countries = new ReadOnlyDictionary<CultureInfo, string>(cultures.Where(c => ci.GetCountry(c) != null).ToDictionary(c => c, ci.GetCountry));
+            Names = new ReadOnlyDictionary<CultureInfo, string>(cultures.ToDictionary(c => c, ci.GetName));
+            Cities = new ReadOnlyDictionary<CultureInfo, string>(cultures.ToDictionary(c => c, ci.GetCity));
+            Countries = new ReadOnlyDictionary<CultureInfo, string>(cultures.ToDictionary(c => c, ci.GetCountry));
             CountryCode = ci.CountryCode;
             State = ci.State;
-            //TODO: need to be changed from hole to course
-            Course = ci.Courses.IsNullOrEmpty() ? new List<Hole>() : ci.Courses.First().Holes.Select(s => new Hole(s)).ToList();
+            Courses = ci.Courses.IsNullOrEmpty() ? new List<Course>() : ci.Courses.Select(s => new Course(s, cultures)).ToList();
         }
 
         /// <summary>
@@ -105,12 +104,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string" /> containing compacted representation of the current instance.</returns>
         protected override string PrintC()
         {
-            var defaultCulture = new CultureInfo("en");
-            var name = Names.ContainsKey(defaultCulture)
-                ? Names[defaultCulture]
-                : Names.Values.FirstOrDefault();
-
-            return $"Id={Id}, Name={name}";
+            return $"Id={Id}, Name[{Names.Keys.First().TwoLetterISOLanguageName}]={Names.Values.First()}";
         }
 
         /// <summary>
@@ -124,9 +118,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             var countryNames = string.Join(", ", Countries.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
 
             var course = string.Empty;
-            if (!Course.IsNullOrEmpty())
+            if (!Courses.IsNullOrEmpty())
             {
-                course = ", Course=[" + string.Join(", ", Course.Select(x => x.Number + "-" + x.Par)) + "]";
+                course = ", Courses=[" + string.Join(", ", Courses.Select(x => x.ToString("f"))) + "]";
             }
 
             return $"Id={Id}, Capacity={Capacity}, Coordinates={Coordinates}, Names=[{names}], Cities=[{cityNames}], Countries=[{countryNames}], CountryCode={CountryCode}, State={State}{course}";

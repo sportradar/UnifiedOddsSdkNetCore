@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {

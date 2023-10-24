@@ -1,9 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
+using Sportradar.OddsFeed.SDK.Common;
+
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
 {
     /// <summary>
     /// Provides an requested selection
@@ -13,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
         /// <summary>
         /// Gets the event id.
         /// </summary>
-        URN EventId { get; }
+        Urn EventId { get; }
 
         /// <summary>
         /// Gets the market id.

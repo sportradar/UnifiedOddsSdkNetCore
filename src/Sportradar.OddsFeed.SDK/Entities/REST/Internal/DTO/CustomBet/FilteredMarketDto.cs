@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
 {
     /// <summary>
     /// Defines a data-transfer-object for available selections for the market

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// A factory used to construct <see cref="IOperand"/> instances

@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Defines a contract implemented by classes used to provide mapping ids of markets and outcomes

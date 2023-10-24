@@ -1,8 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Messages;
+
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Entities
 {
@@ -25,9 +26,9 @@ namespace Sportradar.OddsFeed.SDK.Entities
         long? EndTime { get; }
 
         /// <summary>
-        /// If the market was cancelled because of a migration from a different sport event, it gets a <see cref="URN"/> specifying the sport event from which the market has migrated.
+        /// If the market was cancelled because of a migration from a different sport event, it gets a <see cref="Urn"/> specifying the sport event from which the market has migrated.
         /// </summary>
         /// <value>The superseded by.</value>
-        URN SupersededBy { get; }
+        Urn SupersededBy { get; }
     }
 }

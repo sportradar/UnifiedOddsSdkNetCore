@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing a sport
@@ -13,9 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface ISportSummary : IEntityPrinter
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> uniquely identifying the sport represented by the current instance
+        /// Gets a <see cref="Urn"/> uniquely identifying the sport represented by the current instance
         /// </summary>
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Gets the name of the sport represented by the current instance

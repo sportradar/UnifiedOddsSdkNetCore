@@ -3,10 +3,11 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// A implementation of <see cref="IReference" /> used to return results to user
@@ -44,19 +45,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Reference"/> class
         /// </summary>
-        /// <param name="referenceCI">The reference cache item</param>
-        public Reference(ReferenceIdCI referenceCI)
+        /// <param name="referenceCacheItem">The reference cache item</param>
+        public Reference(ReferenceIdCacheItem referenceCacheItem)
         {
-            if (referenceCI == null)
+            if (referenceCacheItem == null)
             {
                 return;
             }
 
-            References = referenceCI.ReferenceIds;
-            BetradarId = referenceCI.BetradarId;
-            BetfairId = referenceCI.BetfairId;
-            RotationNumber = referenceCI.RotationNumber;
-            AamsId = referenceCI.AamsId;
+            References = referenceCacheItem.ReferenceIds;
+            BetradarId = referenceCacheItem.BetradarId;
+            BetfairId = referenceCacheItem.BetfairId;
+            RotationNumber = referenceCacheItem.RotationNumber;
+            AamsId = referenceCacheItem.AamsId;
         }
 
         /// <summary>

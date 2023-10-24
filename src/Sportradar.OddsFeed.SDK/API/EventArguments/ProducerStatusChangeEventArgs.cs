@@ -5,10 +5,10 @@ using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Entities;
 
-namespace Sportradar.OddsFeed.SDK.API.EventArguments
+namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
-    /// Event arguments for the <see cref="IOddsFeed.ProducerDown"/> events
+    /// Event arguments for the <see cref="IUofSdk.ProducerDown"/> events
     /// </summary>
     public class ProducerStatusChangeEventArgs : EventArgs
     {

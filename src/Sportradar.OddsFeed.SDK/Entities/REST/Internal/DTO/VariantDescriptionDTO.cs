@@ -4,28 +4,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data transfer object for variant description
     /// </summary>
-    internal class VariantDescriptionDTO
+    internal class VariantDescriptionDto
     {
         internal string Id { get; }
 
-        internal IEnumerable<OutcomeDescriptionDTO> Outcomes { get; }
+        internal IEnumerable<OutcomeDescriptionDto> Outcomes { get; }
 
-        internal IEnumerable<MarketMappingDTO> Mappings { get; }
+        internal IEnumerable<MarketMappingDto> Mappings { get; }
 
-        internal VariantDescriptionDTO(desc_variant description)
+        internal VariantDescriptionDto(desc_variant description)
         {
             Guard.Argument(description, nameof(description)).NotNull();
 
             Id = description.id;
-            Outcomes = description.outcomes?.Select(o => new OutcomeDescriptionDTO(o)).ToList();
-            Mappings = description.mappings?.Select(m => new MarketMappingDTO(m)).ToList();
+            Outcomes = description.outcomes?.Select(o => new OutcomeDescriptionDto(o)).ToList();
+            Mappings = description.mappings?.Select(m => new MarketMappingDto(m)).ToList();
         }
     }
 }

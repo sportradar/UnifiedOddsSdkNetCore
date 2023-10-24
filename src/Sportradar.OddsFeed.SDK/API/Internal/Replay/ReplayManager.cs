@@ -7,21 +7,25 @@ using System.Linq;
 using System.Net.Http;
 using System.Xml;
 using Dawn;
+using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Replay;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal.Log;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
 {
     /// <summary>
     /// Implementation of the <see cref="IReplayManager"/> for interaction with xReplay Server for doing integration tests against played matches that are older than 48 hours
     /// </summary>
     /// <seealso cref="IReplayManager" />
-    [Log(LoggerType.ClientInteraction)]
-    internal class ReplayManager : MarshalByRefObject, IReplayManager
+    internal class ReplayManager : IReplayManager
     {
+        private static readonly ILogger LogInt = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(ReplayManager));
+
         private readonly IDataRestful _dataRestful;
 
         private readonly string _apiHost;
@@ -31,31 +35,31 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplayManager"/> class
         /// </summary>
-        /// <param name="replayApiHost">The API host of the Replay Server</param>
+        /// <param name="config">The configuration used to extract replay Api host and node id</param>
         /// <param name="dataRestful">The <see cref="IDataRestful"/> used to make REST requests</param>
-        /// <param name="nodeId">The node id used to connect to replay server</param>
-        public ReplayManager(string replayApiHost, IDataRestful dataRestful, int nodeId)
+        public ReplayManager(IUofConfiguration config, IDataRestful dataRestful)
         {
-            Guard.Argument(replayApiHost, nameof(replayApiHost)).NotNull().NotEmpty();
+            Guard.Argument(config, nameof(config)).NotNull();
             Guard.Argument(dataRestful, nameof(dataRestful)).NotNull();
 
-            _apiHost = replayApiHost;
+            _apiHost = config.Api.ReplayBaseUrl;
             _dataRestful = dataRestful;
-            _nodeId = nodeId;
+            _nodeId = config.NodeId;
         }
 
         /// <summary>
         /// Adds event {eventId} to the end of the replay queue
         /// </summary>
-        /// <param name="eventId">The <see cref="URN" /> of the event</param>
+        /// <param name="eventId">The <see cref="Urn" /> of the event</param>
         /// <param name="startTime">Minutes relative to event start time</param>
         /// <returns>A <see cref="IReplayResponse"/></returns>
-        public IReplayResponse AddMessagesToReplayQueue(URN eventId, int? startTime = null)
+        public IReplayResponse AddMessagesToReplayQueue(Urn eventId, int? startTime = null)
         {
+            LogInt.LogInformation("Invoked AddMessagesToReplayQueue: [Urn={EventId}, StartTime={StartTime}]", eventId, startTime?.ToString());
             var url = $"{_apiHost}/events/{eventId}{BuildNodeIdQuery("?")}";
             if (startTime != null)
             {
-                url = $"{_apiHost}/events/{eventId}?start_time={startTime}{BuildNodeIdQuery("&")}";
+                url = $"{_apiHost}/events/{eventId}?start_time={startTime.ToString()}{BuildNodeIdQuery("&")}";
             }
             var uri = new Uri(url);
 
@@ -67,13 +71,15 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <summary>
         /// Removes the event from replay queue
         /// </summary>
-        /// <param name="eventId">The <see cref="URN"/> of the <see cref="IMatch"/></param>
-        public IReplayResponse RemoveEventFromReplayQueue(URN eventId)
+        /// <param name="eventId">The <see cref="Urn"/> of the <see cref="IMatch"/></param>
+        public IReplayResponse RemoveEventFromReplayQueue(Urn eventId)
         {
-            if (eventId.TypeGroup != ResourceTypeGroup.MATCH)
+            if (eventId.TypeGroup != ResourceTypeGroup.Match)
             {
                 throw new ArgumentException("Wrong type of EventId. Only IMatch supported.");
             }
+
+            LogInt.LogInformation("Invoked RemoveEventFromReplayQueue: [Urn={EventId}]", eventId);
 
             var uri = new Uri($"{_apiHost}/events/{eventId}{BuildNodeIdQuery("?")}");
 
@@ -85,9 +91,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <summary>
         /// Gets the events in replay queue.
         /// </summary>
-        public IEnumerable<URN> GetEventsInQueue()
+        public IEnumerable<Urn> GetEventsInQueue()
         {
-            var result = GetReplayEventsInQueue();
+            LogInt.LogInformation("Invoked GetEventsInQueue");
+            var result = GetReplayEventsInQueueInternal();
             return result?.Select(e => e.Id).ToList();
         }
 
@@ -96,6 +103,16 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// </summary>
         /// <returns>Returns a list of replay events</returns>
         public IEnumerable<IReplayEvent> GetReplayEventsInQueue()
+        {
+            LogInt.LogInformation("Invoked GetReplayEventsInQueue");
+            return GetReplayEventsInQueueInternal();
+        }
+
+        /// <summary>
+        /// Gets list of replay events in queue.
+        /// </summary>
+        /// <returns>Returns a list of replay events</returns>
+        private IEnumerable<IReplayEvent> GetReplayEventsInQueueInternal()
         {
             var uri = new Uri($"{_apiHost}/{BuildNodeIdQuery("?")}");
 
@@ -129,7 +146,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
                 {
                     continue;
                 }
-                if (!URN.TryParse(idAttribute.Value, out var id))
+                if (!Urn.TryParse(idAttribute.Value, out var id))
                 {
                     continue;
                 }
@@ -179,6 +196,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <returns>Returns an <see cref="IReplayResponse"/></returns>
         public IReplayResponse StartReplay(int speed, int maxDelay, int? producerId, bool? rewriteTimestamps, bool? runParallel)
         {
+            LogInt.LogInformation("Invoked StartReplay: [Speed={Speed}, MaxDelay={MaxDelay}, ProducerId={ProducerId}, RewriteTimestamps={RewriteTimestamps}, RunParallel={RunParallel}]", speed, maxDelay, producerId, rewriteTimestamps, runParallel);
+
             var paramProducerId = string.Empty;
             if (producerId != null)
             {
@@ -215,6 +234,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <remarks>Start replay the event from replay queue. Events are played in the order they were played in reality, e.g. if there are some events that were played simultaneously in reality, they will be played in parallel as well here on replay server. If not specified, default values speed = 10 and max_delay = 10000 are used. This means that messages will be sent 10x faster than in reality, and that if there was some delay between messages that was longer than 10 seconds it will be reduced to exactly 10 seconds/10 000 ms (this is helpful especially in pre-match odds where delay can be even a few hours or more). If player is already in play, nothing will happen</remarks>
         public IReplayResponse StartReplayScenario(int scenarioId, int speed = 10, int maxDelay = 10000, int? producerId = null, bool? rewriteTimestamps = null)
         {
+            LogInt.LogInformation("Invoked StartReplayScenario: [ScenarioId={ScenarioId}, Speed={Speed}, MaxDelay={MaxDelay}, ProducerId={ProducerId}, RewriteTimestamps={RewriteTimestamps}]", scenarioId, speed, maxDelay, producerId, rewriteTimestamps);
+
             var paramProducerId = string.Empty;
             if (producerId != null)
             {
@@ -238,6 +259,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// </summary>
         public IReplayResponse StopReplay()
         {
+            LogInt.LogInformation("Invoked StopReplay");
+
             var uri = new Uri($"{_apiHost}/stop{BuildNodeIdQuery("?")}");
 
             var response = _dataRestful.PostDataAsync(uri).GetAwaiter().GetResult();
@@ -250,6 +273,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// </summary>
         public IReplayResponse StopAndClearReplay()
         {
+            LogInt.LogInformation("Invoked StopAndClearReplay");
+
             var uri = new Uri($"{_apiHost}/reset{BuildNodeIdQuery("?")}");
 
             var response = _dataRestful.PostDataAsync(uri).GetAwaiter().GetResult();
@@ -263,6 +288,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <returns>A <see cref="IReplayStatus"/></returns>
         public IReplayStatus GetStatusOfReplay()
         {
+            LogInt.LogInformation("Invoked GetStatusOfReplay");
+
             var uri = new Uri($"{_apiHost}/status{BuildNodeIdQuery("?")}");
 
             var response = _dataRestful.GetDataAsync(uri).GetAwaiter().GetResult();
@@ -287,7 +314,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
             {
                 status = xml.DocumentElement.Attributes["status"].Value;
             }
-            var eventId = string.IsNullOrEmpty(urn) ? null : URN.Parse(urn);
+            var eventId = string.IsNullOrEmpty(urn) ? null : Urn.Parse(urn);
             if (string.IsNullOrEmpty(status))
             {
                 throw new HttpRequestException("Status value missing");
@@ -302,6 +329,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <returns>A list of available replay scenarios</returns>
         public IEnumerable<IReplayScenario> GetAvailableScenarios()
         {
+            LogInt.LogInformation("Invoked GetAvailableScenarios");
+
             var uri = new Uri($"{_apiHost}/scenario{BuildNodeIdQuery("?")}");
 
             var response = _dataRestful.GetDataAsync(uri).GetAwaiter().GetResult();
@@ -335,7 +364,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
                         throw new HttpRequestException("Scenario data missing");
                     }
 
-                    var associatedEventIds = new List<URN>();
+                    var associatedEventIds = new List<Urn>();
                     var xmlEventNodes = replayScenarioNode.SelectNodes("event");
                     if (xmlEventNodes != null)
                     {
@@ -344,7 +373,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
                             if (eventNode.Attributes != null)
                             {
                                 var urn = eventNode.Attributes["id"].Value;
-                                associatedEventIds.Add(URN.Parse(urn));
+                                associatedEventIds.Add(Urn.Parse(urn));
                             }
                         }
                     }

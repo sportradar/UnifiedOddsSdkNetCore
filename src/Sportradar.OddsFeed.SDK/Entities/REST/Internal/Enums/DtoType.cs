@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums
 {
     /// <summary>
     /// The enumeration of types of data-transfer-object obtained via REST requests

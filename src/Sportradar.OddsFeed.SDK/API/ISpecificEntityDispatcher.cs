@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
-namespace Sportradar.OddsFeed.SDK.API
+namespace Sportradar.OddsFeed.SDK.Api
 {
     /// <summary>
     /// Defines a contract implemented by classes capable of dispatching only specific entities

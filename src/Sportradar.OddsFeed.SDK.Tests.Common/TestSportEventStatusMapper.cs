@@ -1,15 +1,15 @@
-﻿using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
+﻿using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common
+namespace Sportradar.OddsFeed.SDK.Tests.Common;
+
+internal class TestSportEventStatusMapper : SportEventStatusMapperBase
 {
-    internal class TestSportEventStatusMapper : SportEventStatusMapperBase
+    public static ISportEventStatus GetTestEventStatus()
     {
-        public static ISportEventStatus GetTestEventStatus()
-        {
-            return new SportEventStatus(new TestSportEventStatusMapper().CreateNotStarted(), TestLocalizedNamedValueCache.CreateMatchStatusCache(TestData.Cultures3, ExceptionHandlingStrategy.THROW));
-        }
+        return new SportEventStatus(new TestSportEventStatusMapper().CreateNotStarted(), TestLocalizedNamedValueCache.CreateMatchStatusCache(TestData.Cultures3, ExceptionHandlingStrategy.Throw));
     }
 }

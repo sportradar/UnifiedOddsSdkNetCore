@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract for classes representing tournament info
@@ -13,9 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface ITournamentInfo
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> uniquely identifying the current season
+        /// Gets a <see cref="Urn"/> uniquely identifying the current season
         /// </summary>
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing names of the season in different languages

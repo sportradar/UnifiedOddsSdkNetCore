@@ -2,17 +2,16 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
-using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representation for round
     /// </summary>
-    internal class RoundDTO
+    internal class RoundDto
     {
         internal string Type { get; }
 
@@ -22,10 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string Group { get; }
 
-        [Obsolete("GroupName was removed from API")]
-        internal string GroupName { get; }
-
-        internal URN GroupId { get; }
+        internal Urn GroupId { get; }
 
         internal string OtherMatchId { get; }
 
@@ -42,10 +38,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal string BetradarName { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RoundDTO"/> class
+        /// Initializes a new instance of the <see cref="RoundDto"/> class
         /// </summary>
         /// <param name="round">The <see cref="matchRound"/> used for creating new instance</param>
-        internal RoundDTO(matchRound round)
+        internal RoundDto(matchRound round)
         {
             Guard.Argument(round, nameof(round)).NotNull();
 
@@ -54,7 +50,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 ? (int?)round.number
                 : null;
             Name = !string.IsNullOrEmpty(round.name) ? round.name : null;
-            GroupName = !string.IsNullOrEmpty(round.group) ? round.group : null;
             PhaseOrGroupLongName = !string.IsNullOrEmpty(round.group_long_name) ? round.group_long_name : null;
             Group = round.group;
             Phase = round.phase;
@@ -64,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             }
             else
             {
-                GroupId = URN.TryParse(round.group_id, out var groupId) ? groupId : null;
+                GroupId = Urn.TryParse(round.group_id, out var groupId) ? groupId : null;
             }
             OtherMatchId = round.other_match_id;
             CupRoundMatches = round.cup_round_matchesSpecified

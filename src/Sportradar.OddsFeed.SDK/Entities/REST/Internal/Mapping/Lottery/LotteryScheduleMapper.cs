@@ -1,16 +1,16 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.Lottery
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="lottery_schedule" /> instances to <see cref="LotteryDTO" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="lottery_schedule" /> instances to <see cref="LotteryDto" /> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{LotteryDTO}" />
-    internal class LotteryScheduleMapper : ISingleTypeMapper<LotteryDTO>
+    /// <seealso cref="ISingleTypeMapper{LotteryDto}" />
+    internal class LotteryScheduleMapper : ISingleTypeMapper<LotteryDto>
     {
         /// <summary>
         /// A <see cref="lottery_schedule"/> containing rest data
@@ -26,13 +26,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
             _lotterySchedule = lotterySchedule;
         }
 
-        public LotteryDTO Map()
+        public LotteryDto Map()
         {
             if (_lotterySchedule == null)
             {
                 return null;
             }
-            return new LotteryDTO(_lotterySchedule);
+            return new LotteryDto(_lotterySchedule);
         }
     }
 }

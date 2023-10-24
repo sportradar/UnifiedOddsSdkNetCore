@@ -3,21 +3,19 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
-    class SoccerStatistics : ISoccerStatistics
+    internal class SoccerStatistics : ISoccerStatistics
     {
         public IEnumerable<ITeamStatistics> TotalStatistics { get; }
         public IEnumerable<IPeriodStatistics> PeriodStatistics { get; }
 
-        // ReSharper disable InconsistentNaming
-        public SoccerStatistics(IEnumerable<TeamStatisticsDTO> totalStatisticsDTOs,
-            IEnumerable<PeriodStatisticsDTO> periodStatisticsDTOs)
+        public SoccerStatistics(IEnumerable<TeamStatisticsDto> totalStatisticsDto, IEnumerable<PeriodStatisticsDto> periodStatisticsDto)
         {
-            TotalStatistics = totalStatisticsDTOs?.Select(s => new TeamStatistics(s));
-            PeriodStatistics = periodStatisticsDTOs?.Select(s => new PeriodStatistics(s));
+            TotalStatistics = totalStatisticsDto?.Select(s => new TeamStatistics(s));
+            PeriodStatistics = periodStatisticsDto?.Select(s => new PeriodStatistics(s));
         }
     }
 }

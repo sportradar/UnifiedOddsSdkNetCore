@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
 {
     /// <summary>
     /// Provides a probability calculation filter

@@ -4,20 +4,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
-    internal class PeriodStatisticsDTO
+    internal class PeriodStatisticsDto
     {
         public string PeriodName { get; }
 
-        // ReSharper disable once InconsistentNaming
-        public IEnumerable<TeamStatisticsDTO> TeamStatisticsDTOs { get; }
+        public IEnumerable<TeamStatisticsDto> TeamStatisticsDtos { get; }
 
-        internal PeriodStatisticsDTO(matchPeriod period, IDictionary<HomeAway, URN> homeAwayCompetitors)
+        internal PeriodStatisticsDto(matchPeriod period, IDictionary<HomeAway, Urn> homeAwayCompetitors)
         {
             Guard.Argument(period, nameof(period)).NotNull();
 
@@ -26,13 +25,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 return;
             }
-            var teams = new List<TeamStatisticsDTO>();
+            var teams = new List<TeamStatisticsDto>();
             foreach (var teamStatistics in period.teams)
             {
-                teams.Add(new TeamStatisticsDTO(teamStatistics, homeAwayCompetitors));
+                teams.Add(new TeamStatisticsDto(teamStatistics, homeAwayCompetitors));
             }
 
-            TeamStatisticsDTOs = teams;
+            TeamStatisticsDtos = teams;
         }
     }
 }

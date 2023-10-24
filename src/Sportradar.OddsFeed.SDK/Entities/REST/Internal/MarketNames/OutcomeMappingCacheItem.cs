@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     internal class OutcomeMappingCacheItem
     {
@@ -18,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         public string MarketId { get; private set; }
 
-        public OutcomeMappingCacheItem(OutcomeMappingDTO dto, CultureInfo culture)
+        public OutcomeMappingCacheItem(OutcomeMappingDto dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
 
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             Merge(dto, culture);
         }
 
-        public void Merge(OutcomeMappingDTO dto, CultureInfo culture)
+        public void Merge(OutcomeMappingDto dto, CultureInfo culture)
         {
             OutcomeId = dto.OutcomeId;
             ProducerOutcomeId = dto.ProducerOutcomeId;

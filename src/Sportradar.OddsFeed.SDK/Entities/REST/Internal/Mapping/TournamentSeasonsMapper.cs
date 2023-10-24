@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// Maps <see cref="tournamentSeasons"/> instances to <see cref="TournamentSeasonsDTO" /> instance
+    /// Maps <see cref="tournamentSeasons"/> instances to <see cref="TournamentSeasonsDto" /> instance
     /// </summary>
-    internal class TournamentSeasonsMapper : ISingleTypeMapper<TournamentSeasonsDTO>
+    internal class TournamentSeasonsMapper : ISingleTypeMapper<TournamentSeasonsDto>
     {
         /// <summary>
         /// A <see cref="tournamentSeasons"/> instance containing tournament seasons
@@ -29,12 +29,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="TournamentSeasonsDTO"/> instance
+        /// Maps it's data to <see cref="TournamentSeasonsDto"/> instance
         /// </summary>
-        /// <returns>Constructed <see cref="TournamentSeasonsDTO"/> instance</returns>
-        public TournamentSeasonsDTO Map()
+        /// <returns>Constructed <see cref="TournamentSeasonsDto"/> instance</returns>
+        public TournamentSeasonsDto Map()
         {
-            return new TournamentSeasonsDTO(_data);
+            return new TournamentSeasonsDto(_data);
         }
     }
 }

@@ -2,6 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
+using Sportradar.OddsFeed.SDK.Entities.Enums;
 
 namespace Sportradar.OddsFeed.SDK.Entities
 {

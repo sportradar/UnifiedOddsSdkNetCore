@@ -1,28 +1,23 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Runtime.Caching;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     internal class FeedMessageHandler : IFeedMessageHandler
     {
-        private readonly MemoryCache _fixtureCache;
+        private readonly ICacheStore<string> _fixtureCache;
 
-        private readonly CacheItemPolicy _cacheItemPolicy;
+        private readonly object _lock = new object();
 
-        private readonly object _lock;
-
-        public FeedMessageHandler(MemoryCache fixtureCache, CacheItemPolicy cacheItemPolicy)
+        public FeedMessageHandler(ICacheStore<string> fixtureCache)
         {
             Guard.Argument(fixtureCache, nameof(fixtureCache)).NotNull();
-            Guard.Argument(cacheItemPolicy, nameof(cacheItemPolicy)).NotNull();
 
             _fixtureCache = fixtureCache;
-            _cacheItemPolicy = cacheItemPolicy;
-            _lock = new object();
         }
 
         /// <summary>
@@ -45,14 +40,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     return true;
                 }
 
-                _fixtureCache.Add(fixtureCacheId, fixtureCacheId, _cacheItemPolicy);
+                _fixtureCache.Add(fixtureCacheId, fixtureCacheId);
                 return false;
             }
         }
 
         private string GenerateFixtureChangeId(fixture_change fixtureChange)
         {
-            return $"{fixtureChange.EventId}_{fixtureChange.ProducerId}_{fixtureChange.GeneratedAt}";
+            return $"{fixtureChange.EventId}_{fixtureChange.ProducerId.ToString()}_{fixtureChange.GeneratedAt.ToString()}";
         }
     }
 }

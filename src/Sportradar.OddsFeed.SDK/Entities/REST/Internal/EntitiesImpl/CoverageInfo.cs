@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Provides coverage information
@@ -57,15 +57,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             _coveredFrom = coveredFrom;
         }
 
-        public CoverageInfo(CoverageInfoCI ci)
+        public CoverageInfo(CoverageInfoCacheItem ci)
             : this(ci.Level, ci.IsLive, ci.Includes, ci.CoveredFrom)
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoverageInfo"/> class.
         /// </summary>
-        /// <param name="exportable">A <see cref="ExportableCoverageInfoCI" /> specifying the current item</param>
-        public CoverageInfo(ExportableCoverageInfoCI exportable)
+        /// <param name="exportable">A <see cref="ExportableCoverageInfo" /> specifying the current item</param>
+        public CoverageInfo(ExportableCoverageInfo exportable)
         {
             if (exportable == null)
             {
@@ -139,10 +139,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Asynchronous export item's properties
         /// </summary>
-        /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
-        public Task<ExportableCoverageInfoCI> ExportAsync()
+        /// <returns>An <see cref="ExportableBase"/> instance containing all relevant properties</returns>
+        public Task<ExportableCoverageInfo> ExportAsync()
         {
-            return Task.FromResult(new ExportableCoverageInfoCI
+            return Task.FromResult(new ExportableCoverageInfo
             {
                 Includes = new List<string>(_includes ?? new List<string>()),
                 IsLive = _isLive,

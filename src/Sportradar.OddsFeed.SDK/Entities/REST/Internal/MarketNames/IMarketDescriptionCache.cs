@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Common.Internal.Metrics;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
-    /// Defines a contract implemented by classes used to cache market descriptions
+    /// Defines a contract implemented by classes used to cache market descriptions, for single variant market description)
     /// </summary>
     internal interface IMarketDescriptionCache : IHealthStatusProvider, IDisposable
     {
@@ -25,12 +25,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <returns>A <see cref="Task{T}" /> representing the async retrieval operation</returns>
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
         Task<IMarketDescription> GetMarketDescriptionAsync(int marketId, string variant, IReadOnlyCollection<CultureInfo> cultures);
-
-        /// <summary>
-        /// Asynchronously loads the list of market descriptions from the Sports API
-        /// </summary>
-        /// <returns>Returns true if the action succeeded</returns>
-        Task<bool> LoadMarketDescriptionsAsync();
 
         /// <summary>
         /// Updates cache item fetch time

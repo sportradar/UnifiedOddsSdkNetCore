@@ -4,18 +4,19 @@
 using System;
 using System.Linq;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
-    /// A <see cref="IDataProvider{BookmakerDetailsDTO}"/> used to retrieve bookmaker details
+    /// A <see cref="IDataProvider{BookmakerDetailsDto}"/> used to retrieve bookmaker details
     /// </summary>
-    /// <seealso cref="DataProvider{bookmaker_details, BookmakerDetailsDTO}" />
-    internal class BookmakerDetailsProvider : DataProvider<bookmaker_details, BookmakerDetailsDTO>
+    /// <seealso cref="DataProvider{bookmaker_details, BookmakerDetailsDto}" />
+    internal class BookmakerDetailsProvider : DataProvider<bookmaker_details, BookmakerDetailsDto>
     {
         /// <summary>
         /// A <see cref="IDataFetcher"/> used to fetch the data
@@ -30,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <summary>
         /// A <see cref="ISingleTypeMapperFactory{T, T1}"/> used to construct instances of <see cref="ISingleTypeMapper{T}"/>
         /// </summary>
-        private readonly ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO> _mapperFactory;
+        private readonly ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto> _mapperFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BookmakerDetailsProvider"/> class
@@ -42,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public BookmakerDetailsProvider(string bookmakerDetailsUriFormat,
                                         IDataFetcher fetcher,
                                         IDeserializer<bookmaker_details> deserializer,
-                                        ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO> mapperFactory)
+                                        ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto> mapperFactory)
             : base(bookmakerDetailsUriFormat, fetcher, deserializer, mapperFactory)
         {
             Guard.Argument(bookmakerDetailsUriFormat, nameof(bookmakerDetailsUriFormat)).NotNull().NotEmpty();
@@ -60,13 +61,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
-        public new virtual BookmakerDetailsDTO GetData(string languageCode)
+        public new virtual BookmakerDetailsDto GetData(string languageCode)
         {
             var uri = GetRequestUri(languageCode);
             var stream = _fetcher.GetData(uri);
-            var bookmakerDetailsDTO = _mapperFactory.CreateMapper(_deserializer.Deserialize(stream)).Map();
+            var bookmakerDetailsDto = _mapperFactory.CreateMapper(_deserializer.Deserialize(stream)).Map();
 
-            bookmakerDetailsDTO.ServerTimeDifference = TimeSpan.Zero;
+            bookmakerDetailsDto.ServerTimeDifference = TimeSpan.Zero;
 
             if (_fetcher is HttpDataFetcher httpDataFetcher)
             {
@@ -75,12 +76,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     var date = SdkInfo.ParseDate(x.FirstOrDefault());
                     if (date != null)
                     {
-                        bookmakerDetailsDTO.ServerTimeDifference = DateTime.Now - date.Value;
+                        bookmakerDetailsDto.ServerTimeDifference = DateTime.Now - date.Value;
                     }
                 }
             }
 
-            return bookmakerDetailsDTO;
+            return bookmakerDetailsDto;
         }
     }
 }

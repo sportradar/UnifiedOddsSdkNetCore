@@ -2,19 +2,20 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// A <see cref="IDataProvider{ITournament}"/> used to retrieve list of sport available tournament
     /// </summary>
     /// <seealso cref="DataProvider{sportTournamentsEndpoint, EntityList}" />
     /// <seealso cref="IDataProvider{EntityList}" />
-    internal class ListSportAvailableTournamentProvider : DataProvider<sportTournamentsEndpoint, EntityList<TournamentInfoDTO>>
+    internal class ListSportAvailableTournamentProvider : DataProvider<sportTournamentsEndpoint, EntityList<TournamentInfoDto>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ListSportAvailableTournamentProvider"/> class
@@ -26,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         public ListSportAvailableTournamentProvider(string baseUriFormat,
                                                     IDataFetcher fetcher,
                                                     IDeserializer<sportTournamentsEndpoint> deserializer,
-                                                    ISingleTypeMapperFactory<sportTournamentsEndpoint, EntityList<TournamentInfoDTO>> mapperFactory)
+                                                    ISingleTypeMapperFactory<sportTournamentsEndpoint, EntityList<TournamentInfoDto>> mapperFactory)
             : base(baseUriFormat, fetcher, deserializer, mapperFactory)
         {
             Guard.Argument(baseUriFormat, nameof(baseUriFormat)).NotNull().NotEmpty();

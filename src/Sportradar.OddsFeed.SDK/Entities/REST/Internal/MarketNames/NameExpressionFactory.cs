@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Factory used to build <see cref="INameExpression"/> instances

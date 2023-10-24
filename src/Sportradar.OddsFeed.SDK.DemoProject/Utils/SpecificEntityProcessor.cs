@@ -1,15 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
+using System.Globalization;
 using System.Linq;
-using App.Metrics;
-using App.Metrics.Timer;
-using Microsoft.Extensions.Logging;
 using Dawn;
-using Sportradar.OddsFeed.SDK.API;
-using Sportradar.OddsFeed.SDK.API.EventArguments;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 {
@@ -40,19 +40,6 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         private readonly MarketWriter _marketWriter;
 
         /// <summary>
-        /// Default context for metrics
-        /// </summary>
-        private const string MetricsContext = "SpecificEntityProcessor";
-        
-        private readonly TimerOptions _timerOnOddsChangeReceived = new TimerOptions { Context = MetricsContext, Name = "OnOddsChangeReceived", MeasurementUnit = Unit.Items };
-        private readonly TimerOptions _timerOnBetStopReceived = new TimerOptions { Context = MetricsContext, Name = "OnBetStopReceived", MeasurementUnit = Unit.Items };
-        private readonly TimerOptions _timerOnBetSettlementReceived = new TimerOptions { Context = MetricsContext, Name = "OnBetSettlementReceived", MeasurementUnit = Unit.Items };
-        private readonly TimerOptions _timerOnRollbackBetSettlement = new TimerOptions { Context = MetricsContext, Name = "OnRollbackBetSettlement", MeasurementUnit = Unit.Items };
-        private readonly TimerOptions _timerOnBetCancel = new TimerOptions { Context = MetricsContext, Name = "OnBetCancel", MeasurementUnit = Unit.Items };
-        private readonly TimerOptions _timerOnRollbackBetCancel = new TimerOptions { Context = MetricsContext, Name = "OnRollbackBetCancel", MeasurementUnit = Unit.Items };
-        private readonly TimerOptions _timerOnFixtureChange = new TimerOptions { Context = MetricsContext, Name = "OnFixtureChange", MeasurementUnit = Unit.Items };
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SpecificEntityProcessor{T}"/> class
         /// </summary>
         /// <param name="dispatcher">A <see cref="ISpecificEntityDispatcher{T}"/> used to obtain SDK messages</param>
@@ -64,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             Guard.Argument(dispatcher, nameof(dispatcher)).NotNull();
             Guard.Argument(log, nameof(log)).NotNull();
 
-            _log = log ?? SdkLoggerFactory.GetLogger(typeof(SpecificEntityProcessor<T>)); // new NullLogger<SpecificEntityProcessor<T>>();
+            _log = log ?? new NullLogger<SpecificEntityProcessor<T>>();
             _dispatcher = dispatcher;
             _sportEntityWriter = sportEntityWriter;
             _marketWriter = marketWriter;
@@ -79,96 +66,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             Guard.Argument(e, nameof(e)).NotNull();
 
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOnOddsChangeReceived, $"{e.GetOddsChange().Event.Id}");
+            using var tt = new TelemetryTracker(TelemetryConfig.OddsChangeReceived);
             var oddsChange = e.GetOddsChange();
-            _log.LogInformation($"OddsChange received. EventId:{oddsChange.Event.Id} Producer:{oddsChange.Producer.Name} RequestId:{oddsChange.RequestId}");
+            _log.LogInformation("[{ProducerInfo}] OddsChange received for event {EventId}{RequestId}", Helper.GetProducerInfo(oddsChange.Producer), oddsChange.Event.Id, Helper.GetRequestInfo(oddsChange.RequestId));
             _sportEntityWriter?.WriteData(oddsChange.Event);
             _marketWriter?.WriteMarketNamesForEvent(oddsChange.Markets);
-            _log.LogInformation($"OddsChange received. EventId:{oddsChange.Event.Id}. Processing took {t.Elapsed.TotalMilliseconds}ms.");
-        }
-
-        /// <summary>
-        /// Invoked when bet stop message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        protected virtual void OnBetStopReceived(object sender, BetStopEventArgs<T> e)
-        {
-            Guard.Argument(e, nameof(e)).NotNull();
-
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOnBetStopReceived, $"{e.GetBetStop().Event.Id}");
-            var betStop = e.GetBetStop();
-            _log.LogInformation($"BetStop received. EventId:{betStop.Event.Id} Producer:{betStop.Producer.Name}, Groups:{betStop.Groups}, RequestId:{betStop.RequestId}");
-            _sportEntityWriter?.WriteData(betStop.Event);
-            _log.LogInformation($"BetStop received. EventId:{betStop.Event.Id}. Processing took {t.Elapsed.TotalMilliseconds}ms.");
-        }
-
-        /// <summary>
-        /// Invoked when bet settlement message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnBetSettlementReceived(object sender, BetSettlementEventArgs<T> e)
-        {
-            Guard.Argument(e, nameof(e)).NotNull();
-
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOnBetSettlementReceived, $"{e.GetBetSettlement().Event.Id}");
-            var betSettlement = e.GetBetSettlement();
-            _log.LogInformation($"BetSettlement received. EventId:{betSettlement.Event.Id} Producer:{betSettlement.Producer.Name}, RequestId:{betSettlement.RequestId}, Market count:{betSettlement.Markets.Count()}");
-            _sportEntityWriter?.WriteData(betSettlement.Event);
-            _marketWriter?.WriteMarketNamesForEvent(betSettlement.Markets);
-            _log.LogInformation($"BetSettlement received. EventId:{betSettlement.Event.Id}. Processing took {t.Elapsed.TotalMilliseconds}ms.");
-        }
-
-        /// <summary>
-        /// Invoked when bet cancel message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnBetCancel(object sender, BetCancelEventArgs<T> e)
-        {
-            Guard.Argument(e, nameof(e)).NotNull();
-
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOnBetCancel, $"{e.GetBetCancel().Event.Id}");
-            var betCancel = e.GetBetCancel();
-            _log.LogInformation($"BetCancel received. Producer:{betCancel.Producer}, RequestId:{betCancel.RequestId}, MarketCount:{betCancel.Markets.Count()}");
-            _sportEntityWriter?.WriteData(betCancel.Event);
-            _marketWriter?.WriteMarketNamesForEvent(betCancel.Markets);
-            _log.LogInformation($"BetCancel received. EventId:{betCancel.Event.Id}. Processing took {t.Elapsed.TotalMilliseconds}ms.");
-        }
-
-        /// <summary>
-        /// Invoked when rollback bet settlement message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<T> e)
-        {
-            Guard.Argument(e, nameof(e)).NotNull();
-
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOnRollbackBetSettlement, $"{e.GetBetSettlementRollback().Event.Id}");
-            var settlementRollback = e.GetBetSettlementRollback();
-            _log.LogInformation($"RollbackBetSettlement received. Producer:{settlementRollback.Producer.Name}, RequestId:{settlementRollback.RequestId}, MarketCount:{settlementRollback.Markets.Count()}");
-            _sportEntityWriter?.WriteData(settlementRollback.Event);
-            _marketWriter?.WriteMarketNamesForEvent(settlementRollback.Markets);
-            _log.LogInformation($"RollbackBetSettlement received. EventId:{settlementRollback.Event.Id}. Processing took {t.Elapsed.TotalMilliseconds}ms.");
-        }
-
-        /// <summary>
-        /// Invoked when rollback bet cancel message is received
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<T> e)
-        {
-            Guard.Argument(e, nameof(e)).NotNull();
-
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOnRollbackBetCancel, $"{e.GetBetCancelRollback().Event.Id}");
-            var cancelRollback = e.GetBetCancelRollback();
-            _log.LogInformation($"RollbackBetCancel received. Producer:{cancelRollback.Producer.Name}, RequestId:{cancelRollback.RequestId}, MarketCount:{cancelRollback.Markets.Count()}");
-            _sportEntityWriter?.WriteData(cancelRollback.Event);
-            _marketWriter?.WriteMarketNamesForEvent(cancelRollback.Markets);
-            _log.LogInformation($"RollbackBetCancel received. EventId:{cancelRollback.Event.Id}. Processing took {t.Elapsed.TotalMilliseconds}ms.");
+            _log.LogInformation("[{ProducerInfo}] OddsChange processing for event {EventId}{RequestId} took {Elapsed} ms", Helper.GetProducerInfo(oddsChange.Producer), oddsChange.Event.Id, Helper.GetRequestInfo(oddsChange.RequestId), tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -180,11 +83,95 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             Guard.Argument(e, nameof(e)).NotNull();
 
-            using var t = SdkMetricsFactory.MetricsRoot.Measure.Timer.Time(_timerOnFixtureChange, $"{e.GetFixtureChange().Event.Id}");
+            using var tt = new TelemetryTracker(TelemetryConfig.FixtureChangeReceived);
             var fixtureChange = e.GetFixtureChange();
-            _log.LogInformation($"FixtureChange received. Producer:{fixtureChange.Producer.Name}, RequestId:{fixtureChange.RequestId}, EventId:{fixtureChange.Event.Id}");
+            _log.LogInformation("[{ProducerInfo}] FixtureChange received for event {EventId}{RequestId}", Helper.GetProducerInfo(fixtureChange.Producer), fixtureChange.Event.Id, Helper.GetRequestInfo(fixtureChange.RequestId));
             _sportEntityWriter?.WriteData(fixtureChange.Event);
-            _log.LogInformation($"FixtureChange received. EventId:{fixtureChange.Event.Id}. Processing took {t.Elapsed.TotalMilliseconds}ms.");
+            _log.LogInformation("[{ProducerInfo}] FixtureChange processing for event {EventId}{RequestId} took {Elapsed} ms", Helper.GetProducerInfo(fixtureChange.Producer), fixtureChange.Event.Id, Helper.GetRequestInfo(fixtureChange.RequestId), tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
+        /// Invoked when bet stop message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        protected virtual void OnBetStopReceived(object sender, BetStopEventArgs<T> e)
+        {
+            Guard.Argument(e, nameof(e)).NotNull();
+
+            using var tt = new TelemetryTracker(TelemetryConfig.BetStopReceived);
+            var betStop = e.GetBetStop();
+            _log.LogInformation("[{ProducerInfo}] BetStop received for event {EventId} with groups [{Groups}]{RequestId}", Helper.GetProducerInfo(betStop.Producer), betStop.Event.Id, betStop.Groups, Helper.GetRequestInfo(betStop.RequestId));
+            _sportEntityWriter?.WriteData(betStop.Event);
+            _log.LogInformation("[{ProducerInfo}] BetStop processing for event {EventId}{RequestId} took {Elapsed} ms", Helper.GetProducerInfo(betStop.Producer), betStop.Event.Id, Helper.GetRequestInfo(betStop.RequestId), tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
+        /// Invoked when bet cancel message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnBetCancel(object sender, BetCancelEventArgs<T> e)
+        {
+            Guard.Argument(e, nameof(e)).NotNull();
+
+            using var tt = new TelemetryTracker(TelemetryConfig.BetCancelReceived);
+            var betCancel = e.GetBetCancel();
+            _log.LogInformation("[{ProducerInfo}] BetCancel received for event {EventId} with markets {MarketsCount} {RequestId}", Helper.GetProducerInfo(betCancel.Producer), betCancel.Event.Id, betCancel.Markets.Count(), Helper.GetRequestInfo(betCancel.RequestId));
+            _sportEntityWriter?.WriteData(betCancel.Event);
+            _marketWriter?.WriteMarketNamesForEvent(betCancel.Markets);
+            _log.LogInformation("[{ProducerInfo}] BetCancel processing for event {EventId}{RequestId} took {Elapsed} ms", Helper.GetProducerInfo(betCancel.Producer), betCancel.Event.Id, Helper.GetRequestInfo(betCancel.RequestId), tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
+        /// Invoked when bet settlement message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnBetSettlementReceived(object sender, BetSettlementEventArgs<T> e)
+        {
+            Guard.Argument(e, nameof(e)).NotNull();
+
+            using var tt = new TelemetryTracker(TelemetryConfig.BetSettlementReceived);
+            var betSettlement = e.GetBetSettlement();
+            _log.LogInformation("[{ProducerInfo}] BetSettlement received for event {EventId} with markets {MarketsCount} {RequestId}", Helper.GetProducerInfo(betSettlement.Producer), betSettlement.Event.Id, betSettlement.Markets.Count(), Helper.GetRequestInfo(betSettlement.RequestId));
+            _sportEntityWriter?.WriteData(betSettlement.Event);
+            _marketWriter?.WriteMarketNamesForEvent(betSettlement.Markets);
+            _log.LogInformation("[{ProducerInfo}] BetSettlement processing for event {EventId}{RequestId} took {Elapsed} ms", Helper.GetProducerInfo(betSettlement.Producer), betSettlement.Event.Id, Helper.GetRequestInfo(betSettlement.RequestId), tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
+        /// Invoked when rollback bet cancel message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<T> e)
+        {
+            Guard.Argument(e, nameof(e)).NotNull();
+
+            using var tt = new TelemetryTracker(TelemetryConfig.RollbackBetCancelReceived);
+            var cancelRollback = e.GetBetCancelRollback();
+            _log.LogInformation("RollbackBetCancel received. EventId:{EventId}, Producer:{Producer}, RequestId:{RequestId}, Market count:{MarketsCount}", cancelRollback.Event.Id, cancelRollback.Producer, cancelRollback.RequestId.ToString(), cancelRollback.Markets.Count().ToString());
+            _sportEntityWriter?.WriteData(cancelRollback.Event);
+            _marketWriter?.WriteMarketNamesForEvent(cancelRollback.Markets);
+            _log.LogInformation("[{ProducerInfo}] RollbackBetCancel processing for event {EventId}{RequestId} took {Elapsed} ms", Helper.GetProducerInfo(cancelRollback.Producer), cancelRollback.Event.Id, Helper.GetRequestInfo(cancelRollback.RequestId), tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
+        /// Invoked when rollback bet settlement message is received
+        /// </summary>
+        /// <param name="sender">The instance raising the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<T> e)
+        {
+            Guard.Argument(e, nameof(e)).NotNull();
+
+            using var tt = new TelemetryTracker(TelemetryConfig.RollbackBetSettlementReceived);
+            var settlementRollback = e.GetBetSettlementRollback();
+            _log.LogInformation("RollbackBetSettlement received. EventId:{EventId}, Producer:{Producer}, RequestId:{RequestId}, Market count:{MarketsCount}", settlementRollback.Event.Id, settlementRollback.Producer, settlementRollback.RequestId.ToString(), settlementRollback.Markets.Count().ToString());
+            _sportEntityWriter?.WriteData(settlementRollback.Event);
+            _marketWriter?.WriteMarketNamesForEvent(settlementRollback.Markets);
+            _log.LogInformation("[{ProducerInfo}] RollbackBetSettlement processing for event {EventId}{RequestId} took {Elapsed} ms", Helper.GetProducerInfo(settlementRollback.Producer), settlementRollback.Event.Id, Helper.GetRequestInfo(settlementRollback.RequestId), tt.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>

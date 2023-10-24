@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing a player profile
@@ -60,18 +60,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the country code
         /// </summary>
         [DataMember]
-        string CountryCode => "";
+        string CountryCode { get; }
 
         /// <summary>
         /// Gets the full name of the player
         /// </summary>
         [DataMember]
-        string FullName => "";
+        string FullName { get; }
 
         /// <summary>
         /// Gets the nickname of the player
         /// </summary>
         [DataMember]
-        string Nickname => "";
+        string Nickname { get; }
     }
 }

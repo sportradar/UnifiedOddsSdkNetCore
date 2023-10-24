@@ -3,16 +3,16 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing player's profile
     /// </summary>
-    internal class PlayerProfileDTO : SportEntityDTO
+    internal class PlayerProfileDto : SportEntityDto
     {
         /// <summary>
         /// Gets a value describing the type(e.g. forward, defense, ...) of the player represented by current instance
@@ -75,11 +75,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public DateTime? GeneratedAt { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerProfileDTO"/> class
+        /// Initializes a new instance of the <see cref="PlayerProfileDto"/> class
         /// </summary>
         /// <param name="record">A <see cref="playerExtended"/> containing information about the player</param>
         /// <param name="generatedAt">The timestamp when the response was created</param>
-        public PlayerProfileDTO(playerExtended record, DateTime? generatedAt)
+        public PlayerProfileDto(playerExtended record, DateTime? generatedAt)
             : base(record.id, record.name)
         {
             Guard.Argument(record, nameof(record)).NotNull();

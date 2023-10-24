@@ -1,7 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
+
+using Sportradar.OddsFeed.SDK.Api.Replay;
+
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
 {
     /// <summary>
     /// Implementation of <see cref="IReplayResponse"/>

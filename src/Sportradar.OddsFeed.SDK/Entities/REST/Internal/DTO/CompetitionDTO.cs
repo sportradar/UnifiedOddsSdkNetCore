@@ -6,24 +6,24 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object containing basic information about a competition
     /// </summary>
-    internal class CompetitionDTO : SportEventSummaryDTO
+    internal class CompetitionDto : SportEventSummaryDto
     {
         /// <summary>
         /// Gets the sport event status
         /// </summary>
         /// <value>The sport event status</value>
-        public SportEventStatusDTO SportEventStatus { get; }
+        public SportEventStatusDto SportEventStatus { get; }
 
         /// <summary>
         /// Gets a <see cref="BookingStatus"/> enum member specifying the booking status of the associated sport event
@@ -34,23 +34,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// <summary>
         /// Gets the venue info
         /// </summary>
-        public VenueDTO Venue { get; internal set; }
+        public VenueDto Venue { get; internal set; }
 
         /// <summary>
         /// Gets the sport event conditions
         /// </summary>
-        public SportEventConditionsDTO Conditions { get; }
+        public SportEventConditionsDto Conditions { get; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> representing the competitors of the associated sport event
         /// </summary>
-        public IEnumerable<TeamCompetitorDTO> Competitors { get; }
+        public IEnumerable<TeamCompetitorDto> Competitors { get; }
 
         /// <summary>
         /// Gets the home away competitors
         /// </summary>
         /// <value>The home away competitors</value>
-        internal IDictionary<HomeAway, URN> HomeAwayCompetitors { get; }
+        internal IDictionary<HomeAway, Urn> HomeAwayCompetitors { get; }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> specifying when the associated message was generated (on the server side)
@@ -78,10 +78,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string LiveOdds { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
+        /// Initializes a new instance of the <see cref="CompetitionDto"/> class
         /// </summary>
         /// <param name="sportEvent">A <see cref="sportEvent"/> instance containing basic information about the sport event</param>
-        internal CompetitionDTO(sportEvent sportEvent)
+        internal CompetitionDto(sportEvent sportEvent)
             : base(sportEvent)
         {
             if (RestMapperHelper.TryGetBookingStatus(sportEvent.liveodds, out var bookingStatus))
@@ -91,21 +91,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (sportEvent.competitors != null && sportEvent.competitors.Any())
             {
-                Competitors = new ReadOnlyCollection<TeamCompetitorDTO>(sportEvent.competitors.Select(c => new TeamCompetitorDTO(c)).ToList());
+                Competitors = new ReadOnlyCollection<TeamCompetitorDto>(sportEvent.competitors.Select(c => new TeamCompetitorDto(c)).ToList());
                 HomeAwayCompetitors = RestMapperHelper.FillHomeAwayCompetitors(sportEvent.competitors);
             }
 
             Conditions = sportEvent.sport_event_conditions == null
                              ? null
-                             : new SportEventConditionsDTO(sportEvent.sport_event_conditions);
+                             : new SportEventConditionsDto(sportEvent.sport_event_conditions);
 
             Venue = sportEvent.sport_event_conditions?.venue == null
                         ? null
-                        : new VenueDTO(sportEvent.sport_event_conditions.venue);
+                        : new VenueDto(sportEvent.sport_event_conditions.venue);
 
             if (Venue == null && sportEvent.venue != null)
             {
-                Venue = new VenueDTO(sportEvent.venue);
+                Venue = new VenueDto(sportEvent.venue);
             }
 
             if (RestMapperHelper.TryGetSportEventType(sportEvent.type, out var type))
@@ -125,29 +125,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
+        /// Initializes a new instance of the <see cref="CompetitionDto"/> class
         /// </summary>
         /// <param name="matchSummary">A <see cref="matchSummaryEndpoint"/> instance containing basic information about the sport event</param>
-        internal CompetitionDTO(matchSummaryEndpoint matchSummary)
+        internal CompetitionDto(matchSummaryEndpoint matchSummary)
             : this(matchSummary.sport_event)
         {
             Guard.Argument(matchSummary, nameof(matchSummary)).NotNull();
 
             Conditions = matchSummary.sport_event_conditions == null
                 ? Conditions
-                : new SportEventConditionsDTO(matchSummary.sport_event_conditions);
+                : new SportEventConditionsDto(matchSummary.sport_event_conditions);
 
             SportEventStatus = matchSummary.sport_event_status == null
                 ? null
-                : new SportEventStatusDTO(matchSummary.sport_event_status, matchSummary.statistics, HomeAwayCompetitors);
+                : new SportEventStatusDto(matchSummary.sport_event_status, matchSummary.statistics, HomeAwayCompetitors);
 
             Venue = matchSummary.sport_event_conditions?.venue == null
                 ? Venue
-                : new VenueDTO(matchSummary.sport_event_conditions.venue);
+                : new VenueDto(matchSummary.sport_event_conditions.venue);
 
             if (Venue == null && matchSummary.venue != null)
             {
-                Venue = new VenueDTO(matchSummary.venue);
+                Venue = new VenueDto(matchSummary.venue);
             }
 
             GeneratedAt = matchSummary.generated_atSpecified
@@ -156,17 +156,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
+        /// Initializes a new instance of the <see cref="CompetitionDto"/> class
         /// </summary>
         /// <param name="stageSummary">A <see cref="stageSummaryEndpoint"/> instance containing basic information about the sport event</param>
-        internal CompetitionDTO(stageSummaryEndpoint stageSummary)
+        internal CompetitionDto(stageSummaryEndpoint stageSummary)
             : this(stageSummary.sport_event)
         {
             Guard.Argument(stageSummary, nameof(stageSummary)).NotNull();
 
             SportEventStatus = stageSummary.sport_event_status == null
                 ? null
-                : new SportEventStatusDTO(stageSummary.sport_event_status);
+                : new SportEventStatusDto(stageSummary.sport_event_status);
 
             GeneratedAt = stageSummary.generated_atSpecified
                               ? stageSummary.generated_at.ToLocalTime()
@@ -174,11 +174,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
+        /// Initializes a new instance of the <see cref="CompetitionDto"/> class
         /// </summary>
         /// <param name="stageSummary">A <see cref="sportEventChildrenSport_event"/> instance containing basic information about the sport event</param>
         /// <remarks>LiveOdds = null</remarks>
-        internal CompetitionDTO(sportEventChildrenSport_event stageSummary)
+        internal CompetitionDto(sportEventChildrenSport_event stageSummary)
             : base(stageSummary)
         {
             if (RestMapperHelper.TryGetSportEventType(stageSummary.type, out var type))
@@ -193,11 +193,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompetitionDTO"/> class
+        /// Initializes a new instance of the <see cref="CompetitionDto"/> class
         /// </summary>
         /// <param name="parentStage">A <see cref="parentStage"/> instance containing basic information about the sport event</param>
         /// <remarks>LiveOdds = null</remarks>
-        protected CompetitionDTO(parentStage parentStage)
+        protected CompetitionDto(parentStage parentStage)
             : base(parentStage)
         {
             if (RestMapperHelper.TryGetSportEventType(parentStage.type, out var type))

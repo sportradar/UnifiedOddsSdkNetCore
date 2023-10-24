@@ -5,22 +5,22 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
-    /// Implementation of <see cref="IBaseEntity"/>, containing Id as <see cref="URN"/> and translatable Name
+    /// Implementation of <see cref="IBaseEntity"/>, containing Id as <see cref="Urn"/> and translatable Name
     /// </summary>
     /// <remarks>Id is required, name(s) can be null</remarks>
     /// <seealso cref="IBaseEntity" />
     internal class BaseEntity : EntityPrinter, IBaseEntity
     {
         /// <summary>
-        /// Gets the <see cref="URN" /> identifying the current instance
+        /// Gets the <see cref="Urn" /> identifying the current instance
         /// </summary>
-        /// <value>The <see cref="URN" /> identifying the current instance</value>
-        public URN Id { get; }
+        /// <value>The <see cref="Urn" /> identifying the current instance</value>
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the list of translated names
@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <param name="id">The identifier</param>
         /// <param name="names">The names</param>
-        public BaseEntity(URN id, IReadOnlyDictionary<CultureInfo, string> names)
+        public BaseEntity(Urn id, IReadOnlyDictionary<CultureInfo, string> names)
         {
             Guard.Argument(id, nameof(id)).NotNull();
 

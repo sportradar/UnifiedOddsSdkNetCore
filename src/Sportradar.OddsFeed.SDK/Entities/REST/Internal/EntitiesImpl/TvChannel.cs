@@ -3,9 +3,9 @@
 */
 using System;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a TV channel
@@ -44,8 +44,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="TvChannel"/> class
         /// </summary>
-        /// <param name="exportable">A <see cref="ExportableTvChannelCI"/> instance specifying the current item</param>
-        public TvChannel(ExportableTvChannelCI exportable)
+        /// <param name="exportable">A <see cref="ExportableTvChannel"/> instance specifying the current item</param>
+        public TvChannel(ExportableTvChannel exportable)
         {
             if (exportable == null)
             {
@@ -113,10 +113,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Asynchronous export item's properties
         /// </summary>
-        /// <returns>An <see cref="ExportableCI"/> instance containing all relevant properties</returns>
-        public Task<ExportableTvChannelCI> ExportAsync()
+        /// <returns>An <see cref="ExportableBase"/> instance containing all relevant properties</returns>
+        public Task<ExportableTvChannel> ExportAsync()
         {
-            return Task.FromResult(new ExportableTvChannelCI
+            return Task.FromResult(new ExportableTvChannel
             {
                 Name = _name,
                 StartTime = _startTime,

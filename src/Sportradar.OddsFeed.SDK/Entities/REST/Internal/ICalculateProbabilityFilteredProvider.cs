@@ -3,10 +3,10 @@
 */
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// Defines a contract implemented by classes used to provide data probability calculations

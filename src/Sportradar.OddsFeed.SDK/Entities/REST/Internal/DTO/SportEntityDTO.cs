@@ -2,20 +2,20 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
-    /// Represents a base class for all DTO's (data-access-objects) representing sport related entities
+    /// Represents a base class for all data-access-objects representing sport related entities
     /// </summary>
-    internal class SportEntityDTO
+    internal class SportEntityDto
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> representing the ID of the represented sport entity
+        /// Gets a <see cref="Urn"/> representing the ID of the represented sport entity
         /// </summary>
         /// <value>The identifier</value>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the name of the represented sport entity
@@ -24,16 +24,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string Name { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SportEntityDTO"/> class
+        /// Initializes a new instance of the <see cref="SportEntityDto"/> class
         /// </summary>
         /// <param name="id">a <see cref="string"/> representing the ID of the represented sport entity</param>
         /// <param name="name">the name of the represented sport entity</param>
-        internal SportEntityDTO(string id, string name)
+        internal SportEntityDto(string id, string name)
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
             //Guard.Argument(name)); // it may happen to receive empty name
 
-            Id = URN.Parse(id);
+            Id = Urn.Parse(id);
             Name = name;
         }
 
@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 return true;
             }
-            var other = obj as SportEntityDTO;
+            var other = obj as SportEntityDto;
             if (other == null)
             {
                 return false;

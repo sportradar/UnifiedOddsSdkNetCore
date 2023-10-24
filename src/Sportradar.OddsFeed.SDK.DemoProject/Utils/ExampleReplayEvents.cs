@@ -3,7 +3,7 @@
 */
 
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 {
@@ -78,12 +78,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             public SampleEvent(string description, string eventId)
             {
-                this.Description = description;
-                this.EventId = URN.Parse(eventId);
+                Description = description;
+                EventId = Urn.Parse(eventId);
             }
 
             public string Description { get; }
-            public URN EventId { get; }
+            public Urn EventId { get; }
 
             public override string ToString()
             {

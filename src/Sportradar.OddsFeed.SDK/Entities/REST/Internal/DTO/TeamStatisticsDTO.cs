@@ -4,15 +4,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
-    internal class TeamStatisticsDTO
+    internal class TeamStatisticsDto
     {
-        public URN TeamId { get; }
+        public Urn TeamId { get; }
 
         public string Name { get; }
 
@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         // from feed
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
-        internal TeamStatisticsDTO(string name, URN teamId, HomeAway? homeAway, int? yellowCards, int? redCards, int? yellowRedCards, int? cornerKicks, int? greenCards)
+        internal TeamStatisticsDto(string name, Urn teamId, HomeAway? homeAway, int? yellowCards, int? redCards, int? yellowRedCards, int? cornerKicks, int? greenCards)
         {
             Name = name; // not available on the AMQP message
             TeamId = teamId; // not available on the AMQP message
@@ -68,19 +68,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         // from API
-        internal TeamStatisticsDTO(teamStatistics statistics, IDictionary<HomeAway, URN> homeAwayCompetitors)
+        internal TeamStatisticsDto(teamStatistics statistics, IDictionary<HomeAway, Urn> homeAwayCompetitors)
         {
             Guard.Argument(statistics, nameof(statistics)).NotNull();
 
             Name = statistics.name;
             TeamId = !string.IsNullOrEmpty(statistics.id)
-                ? URN.Parse(statistics.id)
+                ? Urn.Parse(statistics.id)
                 : null;
 
             HomeOrAway = null;
             if (TeamId != null && homeAwayCompetitors != null)
             {
-                var x = homeAwayCompetitors.Where(w => w.Value.Equals(URN.Parse(statistics.id))).ToList();
+                var x = homeAwayCompetitors.Where(w => w.Value.Equals(Urn.Parse(statistics.id))).ToList();
                 if (x.Any())
                 {
                     HomeOrAway = x.First().Key == HomeAway.Home ? HomeAway.Home : HomeAway.Away;

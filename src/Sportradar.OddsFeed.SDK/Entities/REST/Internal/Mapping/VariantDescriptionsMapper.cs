@@ -3,22 +3,22 @@
 */
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
-    internal class VariantDescriptionsMapper : ISingleTypeMapper<EntityList<VariantDescriptionDTO>>
+    internal class VariantDescriptionsMapper : ISingleTypeMapper<EntityList<VariantDescriptionDto>>
     {
         /// <summary>
-        /// A <see cref="variant_descriptions"/> instance containing data used to construct <see cref="EntityList{VariantDescriptionDTO}"/> instance
+        /// A <see cref="variant_descriptions"/> instance containing data used to construct <see cref="EntityList{VariantDescriptionDto}"/> instance
         /// </summary>
         private readonly variant_descriptions _data;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VariantDescriptionsMapper"/> class
         /// </summary>
-        /// <param name="data">A <see cref="variant_descriptions"/> instance containing data used to construct <see cref="EntityList{VariantDescriptionDTO}"/> instance</param>
+        /// <param name="data">A <see cref="variant_descriptions"/> instance containing data used to construct <see cref="EntityList{VariantDescriptionDto}"/> instance</param>
         internal VariantDescriptionsMapper(variant_descriptions data)
         {
             Guard.Argument(data, nameof(data)).NotNull();
@@ -27,13 +27,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="EntityList{VariantDescriptionDTO}"/> instance
+        /// Maps it's data to <see cref="EntityList{VariantDescriptionDto}"/> instance
         /// </summary>
-        /// <returns>The created<see cref="EntityList{VariantDescriptionDTO}"/> instance</returns>
-        EntityList<VariantDescriptionDTO> ISingleTypeMapper<EntityList<VariantDescriptionDTO>>.Map()
+        /// <returns>The created<see cref="EntityList{VariantDescriptionDto}"/> instance</returns>
+        EntityList<VariantDescriptionDto> ISingleTypeMapper<EntityList<VariantDescriptionDto>>.Map()
         {
-            var descriptions = _data.variant.Select(m => new VariantDescriptionDTO(m)).ToList();
-            return new EntityList<VariantDescriptionDTO>(descriptions);
+            var descriptions = _data.variant.Select(m => new VariantDescriptionDto(m)).ToList();
+            return new EntityList<VariantDescriptionDto>(descriptions);
         }
     }
 }

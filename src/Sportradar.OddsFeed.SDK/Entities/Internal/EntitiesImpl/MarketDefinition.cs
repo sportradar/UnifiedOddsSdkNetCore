@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using Castle.Core.Internal;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <summary>
         /// The associated event sport identifier
         /// </summary>
-        private readonly URN _sportId;
+        private readonly Urn _sportId;
 
         /// <summary>
         /// The id of the producer which generated the associated market
@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="exceptionHandlingStrategy">The exception handling strategy</param>
         internal MarketDefinition(int marketId,
             IMarketCacheProvider marketCacheProvider,
-            URN sportId,
+            Urn sportId,
             int producerId,
             IReadOnlyDictionary<string, string> specifiers,
             IReadOnlyCollection<CultureInfo> cultures,
@@ -167,14 +167,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 }
                 catch (CacheItemNotFoundException ci)
                 {
-                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw new CacheItemNotFoundException($"Market description for market={_marketId}, sport={_sportId} and producer={_producerId} not found.", _marketId.ToString(), ci);
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.THROW)
+                    if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw new CacheItemNotFoundException($"Market description for market={_marketId} not found.", _marketId.ToString(), ex);
                     }

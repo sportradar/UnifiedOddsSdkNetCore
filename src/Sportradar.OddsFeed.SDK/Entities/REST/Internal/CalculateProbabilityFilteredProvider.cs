@@ -10,14 +10,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// An implementation of the <see cref="ICalculateProbabilityFilteredProvider"/> which fetches the data, deserializes it and than maps / converts it to the output type

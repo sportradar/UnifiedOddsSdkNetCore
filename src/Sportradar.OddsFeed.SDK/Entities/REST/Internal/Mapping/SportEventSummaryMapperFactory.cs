@@ -2,23 +2,23 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A factory used to create <see cref="ISingleTypeMapper{SportEventSummaryDTO}"/> instances
+    /// A factory used to create <see cref="ISingleTypeMapper{SportEventSummaryDto}"/> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapperFactory{TOut,TIn}" />
-    internal class SportEventSummaryMapperFactory : ISingleTypeMapperFactory<RestMessage, SportEventSummaryDTO>
+    internal class SportEventSummaryMapperFactory : ISingleTypeMapperFactory<RestMessage, SportEventSummaryDto>
     {
         /// <summary>
-        /// Creates and returns a <see cref="ISingleTypeMapper{SportEventSummaryDTO}" /> instance
+        /// Creates and returns a <see cref="ISingleTypeMapper{SportEventSummaryDto}" /> instance
         /// </summary>
-        /// <param name="data">A <see cref="RestMessage" /> instance which the created <see cref="ISingleTypeMapper{SportEventSummaryDTO}" /> will map</param>
-        /// <returns>New <see cref="ISingleTypeMapper{SportEventSummaryDTO}" /> instance</returns>
-        public ISingleTypeMapper<SportEventSummaryDTO> CreateMapper(RestMessage data)
+        /// <param name="data">A <see cref="RestMessage" /> instance which the created <see cref="ISingleTypeMapper{SportEventSummaryDto}" /> will map</param>
+        /// <returns>New <see cref="ISingleTypeMapper{SportEventSummaryDto}" /> instance</returns>
+        public ISingleTypeMapper<SportEventSummaryDto> CreateMapper(RestMessage data)
         {
             var match = data as matchSummaryEndpoint;
             if (match != null)

@@ -8,13 +8,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
@@ -215,9 +218,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     return false;
                 }
 
-                if (URN.TryParse(message.EventId, out var eventUrn))
+                if (Urn.TryParse(message.EventId, out var eventUrn))
                 {
-                    message.EventURN = eventUrn;
+                    message.EventUrn = eventUrn;
                 }
                 else
                 {
@@ -237,7 +240,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 LogFailure(message, "producer", message.ProducerId);
                 return ValidationResult.ProblemsDetected;
             }
-            var producer = _producerManager.Get(message.ProducerId);
+            var producer = _producerManager.GetProducer(message.ProducerId);
             if (!producer.IsAvailable || producer.IsDisabled)
             {
                 LogFailure(message, "producer", message.ProducerId);
@@ -420,7 +423,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             var result = ValidateMessageWithMarkets(message, message.market);
 
-            if (!string.IsNullOrEmpty(message.superceded_by) && !URN.TryParse(message.superceded_by, out _))
+            if (!string.IsNullOrEmpty(message.superceded_by) && !Urn.TryParse(message.superceded_by, out _))
             {
                 //set the value to null so it will not be processed by the message mapper
                 message.superceded_by = null;
@@ -518,9 +521,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (outcome.teamSpecified)
             {
-                if (message.EventURN.TypeGroup != ResourceTypeGroup.MATCH)
+                if (message.EventUrn.TypeGroup != ResourceTypeGroup.Match)
                 {
-                    LogWarning(message, $"Player outcome=[marketId={market.id}, outcomeId={outcome.id}] cannot be mapped to IPlayerOutcomeOdds because associated event[id={message.EventURN}] is not an match", outcome.team);
+                    LogWarning(message, $"Player outcome=[marketId={market.id}, outcomeId={outcome.id}] cannot be mapped to IPlayerOutcomeOdds because associated event[id={message.EventUrn}] is not an match", outcome.team);
                     currentResult = ValidationResult.ProblemsDetected;
                 }
 
@@ -543,56 +546,39 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             Guard.Argument(message, nameof(message)).NotNull();
 
-            var oddsChange = message as odds_change;
-            if (oddsChange != null)
+            if (message is odds_change oddsChange)
             {
                 return ValidateOddsChange(oddsChange);
             }
-
-            var betStop = message as bet_stop;
-            if (betStop != null)
+            if (message is bet_stop betStop)
             {
                 return ValidateBetStop(betStop);
             }
-
-            var settlement = message as bet_settlement;
-            if (settlement != null)
+            if (message is bet_settlement settlement)
             {
                 return ValidateBetSettlement(settlement);
             }
-
-            var betCancel = message as bet_cancel;
-            if (betCancel != null)
+            if (message is bet_cancel betCancel)
             {
                 return ValidateBetCancel(betCancel);
             }
-
-            var snapshotCompleted = message as snapshot_complete;
-            if (snapshotCompleted != null)
+            if (message is snapshot_complete snapshotCompleted)
             {
                 return ValidateSnapshotCompleted(snapshotCompleted);
             }
-
-            var alive = message as alive;
-            if (alive != null)
+            if (message is alive alive)
             {
                 return ValidateAlive(alive);
             }
-
-            var fixtureChange = message as fixture_change;
-            if (fixtureChange != null)
+            if (message is fixture_change fixtureChange)
             {
                 return ValidateFixtureChange(fixtureChange);
             }
-
-            var rollbackSettlement = message as rollback_bet_settlement;
-            if (rollbackSettlement != null)
+            if (message is rollback_bet_settlement rollbackSettlement)
             {
                 return ValidateMessageWithMarkets(rollbackSettlement, rollbackSettlement.market);
             }
-
-            var rollbackCancel = message as rollback_bet_cancel;
-            if (rollbackCancel != null)
+            if (message is rollback_bet_cancel rollbackCancel)
             {
                 return ValidateMessageWithMarkets(rollbackCancel, rollbackCancel.market);
             }

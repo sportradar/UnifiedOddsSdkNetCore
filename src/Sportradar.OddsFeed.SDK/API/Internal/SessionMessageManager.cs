@@ -6,17 +6,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.API.EventArguments;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EventArguments;
-using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 // ReSharper disable UnusedMember.Local
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Stashes or releases stateful messages based on direction from FeedRecoveryManager
@@ -67,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Guard.Argument(messageMapper, nameof(messageMapper)).NotNull();
 
-            ProcessorId = Guid.NewGuid().ToString()[..4];
+            ProcessorId = Guid.NewGuid().ToString().Substring(0, 4);
 
             _stashedItems = new List<StashedItem>();
             _feedMessageMapper = messageMapper;

@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class Manager
@@ -42,7 +42,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="IManager"/> class
         /// </summary>
         /// <param name="item">The item</param>
-        public Manager(ManagerCI item)
+        public Manager(ManagerCacheItem item)
             : base(item.Id, item.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
             Guard.Argument(item, nameof(item)).NotNull();

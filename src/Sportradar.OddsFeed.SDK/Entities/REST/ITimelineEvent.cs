@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract for classes implementing timeline event

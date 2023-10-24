@@ -3,7 +3,7 @@
 */
 using System;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Defines a contract implemented by classes capable of dispatching entities

@@ -1,15 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Provides basic tournament round information
@@ -35,23 +34,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Gets the name of the current <see cref="IRound" />
         /// </summary>
-        public IDictionary<CultureInfo, string> Name { get; }
-
-        /// <summary>
-        /// Gets the group name of the current <see cref="IRound"/> per language
-        /// </summary>
-        [Obsolete("GroupName was removed from API")]
-        public IDictionary<CultureInfo, string> GroupName { get; }
+        public IDictionary<CultureInfo, string> Names { get; }
 
         /// <summary>
         /// Gets the phase or group long name of the current <see cref="IRound"/> per language
         /// </summary>
-        public IDictionary<CultureInfo, string> PhaseOrGroupLongName { get; }
+        public IDictionary<CultureInfo, string> PhaseOrGroupLongNames { get; }
 
         /// <summary>
         /// Gets the id of the group associated with the current round
         /// </summary>
-        public URN GroupId { get; }
+        public Urn GroupId { get; }
 
         /// <summary>
         /// Gets the id of the other match
@@ -88,9 +81,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Round"/> class
         /// </summary>
-        /// <param name="ci">A <see cref="RoundCI"/> used to create new instance</param>
-        /// <param name="cultures">A cultures of the current instance of <see cref="RoundCI"/></param>
-        public Round(RoundCI ci, IEnumerable<CultureInfo> cultures)
+        /// <param name="ci">A <see cref="RoundCacheItem"/> used to create new instance</param>
+        /// <param name="cultures">A cultures of the current instance of <see cref="RoundCacheItem"/></param>
+        public Round(RoundCacheItem ci, IEnumerable<CultureInfo> cultures)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
 
@@ -101,14 +94,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             OtherMatchId = ci.OtherMatchId;
             CupRoundMatches = ci.CupRoundMatches;
             CupRoundMatchNumber = ci.CupRoundMatchNumber;
-            Name = new Dictionary<CultureInfo, string>();
-            GroupName = new Dictionary<CultureInfo, string>();
-            PhaseOrGroupLongName = new Dictionary<CultureInfo, string>();
+            Names = new Dictionary<CultureInfo, string>();
+            PhaseOrGroupLongNames = new Dictionary<CultureInfo, string>();
             foreach (var c in cultures)
             {
-                Name.Add(c, ci.GetName(c));
-                GroupName.Add(c, ci.GetGroupName(c));
-                PhaseOrGroupLongName.Add(c, ci.GetPhaseOrGroupLongName(c));
+                Names.Add(c, ci.GetName(c));
+                PhaseOrGroupLongNames.Add(c, ci.GetPhaseOrGroupLongName(c));
             }
             BetradarId = ci.BetradarId ?? 0;
             Phase = ci.Phase;
@@ -122,18 +113,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>Return the Name if exists, or null</returns>
         public string GetName(CultureInfo culture)
         {
-            return Name.ContainsKey(culture) ? Name[culture] : null;
-        }
-
-        /// <summary>
-        /// Gets the group name for specific language
-        /// </summary>
-        /// <param name="culture">The cultures</param>
-        /// <returns>Return the Name if exists, or null</returns>
-        [Obsolete("GroupName was removed from API")]
-        public string GetGroupName(CultureInfo culture)
-        {
-            return GroupName.ContainsKey(culture) ? GroupName[culture] : null;
+            return Names.TryGetValue(culture, out var name) ? name : null;
         }
 
         /// <summary>
@@ -143,7 +123,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>Return the phase or group long name if exists, or null</returns>
         public string GetPhaseOrGroupLongName(CultureInfo culture)
         {
-            return PhaseOrGroupLongName.ContainsKey(culture) ? PhaseOrGroupLongName[culture] : null;
+            return PhaseOrGroupLongNames.TryGetValue(culture, out var phaseOrGroupLongName) ? phaseOrGroupLongName : null;
         }
 
         /// <summary>
@@ -152,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string" /> containing the id of the current instance</returns>
         protected override string PrintI()
         {
-            return $"Name={Name.FirstOrDefault()}";
+            return $"Name={Names.FirstOrDefault()}";
         }
 
         /// <summary>
@@ -161,10 +141,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <returns>A <see cref="string" /> containing compacted representation of the current instance</returns>
         protected override string PrintC()
         {
-            var names = string.Join(", ", Name.Keys.Select(k => $"{k}={GetName(k)}"));
-            var groupNames = string.Join(", ", GroupName.Keys.Select(k => $"{k}={GetGroupName(k)}"));
-            var phase = string.Join(", ", PhaseOrGroupLongName.Keys.Select(k => $"{k}={GetPhaseOrGroupLongName(k)}"));
-            return $"Name=[{names}], GroupName=[{groupNames}], PhaseOrGroupLongName={phase}, Type={Type}, Number={Number}, CupRoundMatches={CupRoundMatches}, CupRoundMatchNumber={CupRoundMatchNumber}, BetradarId={BetradarId}, BetradarName={BetradarName}, Phase={Phase}";
+            var names = string.Join(", ", Names.Keys.Select(k => $"{k}={GetName(k)}"));
+            var phase = string.Join(", ", PhaseOrGroupLongNames.Keys.Select(k => $"{k}={GetPhaseOrGroupLongName(k)}"));
+            return $"Name=[{names}], PhaseOrGroupLongName={phase}, Type={Type}, Number={Number}, CupRoundMatches={CupRoundMatches}, CupRoundMatchNumber={CupRoundMatchNumber}, BetradarId={BetradarId}, BetradarName={BetradarName}, Phase={Phase}";
         }
 
         /// <summary>

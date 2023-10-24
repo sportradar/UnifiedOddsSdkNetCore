@@ -1,11 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
@@ -34,16 +33,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             : base(id, nameProvider, mappingProvider, cultures, outcomeDefinition)
         {
             DeadHeatFactor = deadHeatFactor;
-#pragma warning disable CS0618
-            Result = result == 1;
-#pragma warning restore CS0618
             VoidFactor = voidFactor;
-            OutcomeResult = result switch
+            switch (result)
             {
-                0 => OutcomeResult.Lost,
-                1 => OutcomeResult.Won,
-                _ => OutcomeResult.UndecidedYet
-            };
+                case 0:
+                    OutcomeResult = OutcomeResult.Lost;
+                    break;
+                case 1:
+                    OutcomeResult = OutcomeResult.Won;
+                    break;
+                default:
+                    OutcomeResult = OutcomeResult.UndecidedYet;
+                    break;
+            }
         }
 
         /// <summary>
@@ -54,12 +56,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Dead heat rules state that the stake should be divided by the number of competitors involved in the dead heat and then settled at the normal odds
         /// </remarks>
         public double? DeadHeatFactor { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the outcome associated with current <see cref="IOutcomeSettlement" /> is winning - i.e. have the bets placed on this outcome winning or losing.
-        /// </summary>
-        [Obsolete("Results may also include other values. Use OutcomeResult instead.")]
-        public bool Result { get; }
 
         /// <summary>
         /// Gets the <see cref="VoidFactor" /> associated with a current <see cref="IOutcomeSettlement" /> or a null reference.

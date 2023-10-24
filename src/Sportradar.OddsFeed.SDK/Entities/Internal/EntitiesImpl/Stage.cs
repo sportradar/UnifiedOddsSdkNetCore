@@ -8,15 +8,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
@@ -31,8 +32,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
         private readonly ISportEntityFactory _sportEntityFactory;
 
-        public Stage(URN id,
-                    URN sportId,
+        public Stage(Urn id,
+                    Urn sportId,
                     ISportEntityFactory sportEntityFactory,
                     ISportEventCache sportEventCache,
                     ISportDataCache sportDataCache,
@@ -51,56 +52,56 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
         public async Task<ISportSummary> GetSportAsync()
         {
-            var stageCI = (StageCI)SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
+            var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (stageCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
-            var sportId = await stageCI.GetSportIdAsync().ConfigureAwait(false);
+            var sportId = await stageCacheItem.GetSportIdAsync().ConfigureAwait(false);
             if (sportId == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No sportId for stage cache item with id={Id}.");
                 return null;
             }
-            var sportCI = await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false);
-            return sportCI == null ? null : new SportSummary(sportCI.Id, sportCI.Names);
+            var sportCacheItem = await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false);
+            return sportCacheItem == null ? null : new SportSummary(sportCacheItem.Id, sportCacheItem.Names);
         }
 
         public async Task<ICategorySummary> GetCategoryAsync()
         {
-            var stageCI = (StageCI)SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
+            var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (stageCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
-            var categoryId = await stageCI.GetCategoryIdAsync(Cultures).ConfigureAwait(false);
+            var categoryId = await stageCacheItem.GetCategoryIdAsync(Cultures).ConfigureAwait(false);
             if (categoryId == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No categoryId for stage cache item with id={Id}.");
                 return null;
             }
-            var categoryCI = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
-            return categoryCI == null
+            var categoryCacheItem = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
+            return categoryCacheItem == null
                 ? null
-                : new CategorySummary(categoryCI.Id, categoryCI.Names, categoryCI.CountryCode);
+                : new CategorySummary(categoryCacheItem.Id, categoryCacheItem.Names, categoryCacheItem.CountryCode);
         }
 
         public async Task<IStage> GetParentStageAsync()
         {
-            var stageCI = (StageCI)SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
+            var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (stageCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
 
-            var parentStageId = await stageCI.GetParentStageAsync(Cultures).ConfigureAwait(false);
+            var parentStageId = await stageCacheItem.GetParentStageAsync(Cultures).ConfigureAwait(false);
             if (parentStageId != null)
             {
-                //var parentStageCI = (StageCI) SportEventCache.GetEventCacheItem(parentStageId);
-                //if (parentStageCI == null)
+                //var parentStageCacheItem = (StageCacheItem) SportEventCache.GetEventCacheItem(parentStageId);
+                //if (parentStageCacheItem == null)
                 //{
                 //    return new Stage(parentStageId, GetSportAsync().GetAwaiter().GetResult().Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, _matchStatusesCache, Cultures, ExceptionStrategy);
                 //}
@@ -113,15 +114,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
         public async Task<IEnumerable<IStage>> GetStagesAsync()
         {
-            var stageCI = (StageCI)SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
+            var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (stageCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
-            var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await stageCI.GetStagesAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(stageCI.GetStagesAsync)
+            var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await stageCacheItem.GetStagesAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(stageCacheItem.GetStagesAsync)
                     .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ChildStages")).ConfigureAwait(false);
 
             return cacheItems?.Select(c => new Stage(c, GetSportAsync().GetAwaiter().GetResult().Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, MatchStatusCache, Cultures.ToList(), ExceptionStrategy));
@@ -129,30 +130,30 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
         public async Task<StageType?> GetStageTypeAsync()
         {
-            var stageCI = (StageCI)SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
+            var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (stageCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return StageType.Child;
             }
-            return await stageCI.GetStageTypeAsync().ConfigureAwait(false);
+            return await stageCacheItem.GetStageTypeAsync().ConfigureAwait(false);
         }
 
         /// <summary>
         /// Asynchronously gets a list of additional ids of the parent stages of the current instance or a null reference if the represented stage does not have the parent stages
         /// </summary>
-        /// <returns>A <see cref="Task{StageCI}"/> representing the asynchronous operation</returns>
+        /// <returns>A <see cref="Task{StageCacheItem}"/> representing the asynchronous operation</returns>
         public async Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync()
         {
-            var stageCI = (StageCI)SportEventCache.GetEventCacheItem(Id);
-            if (stageCI == null)
+            var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (stageCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
                 return null;
             }
-            var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await stageCI.GetAdditionalParentStagesAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(stageCI.GetAdditionalParentStagesAsync)
+            var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await stageCacheItem.GetAdditionalParentStagesAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(stageCacheItem.GetAdditionalParentStagesAsync)
                     .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("AdditionalParentStages")).ConfigureAwait(false);
 
             return cacheItems?.Select(c => new Stage(c, GetSportAsync().GetAwaiter().GetResult().Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, MatchStatusCache, Cultures.ToList(), ExceptionStrategy));
@@ -165,7 +166,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         public new async Task<IStageStatus> GetStatusAsync()
         {
             var item = await base.GetStatusAsync().ConfigureAwait(false);
-            return item == null ? null : new StageStatus(((CompetitionStatus)item).SportEventStatusCI, MatchStatusCache);
+            return item == null ? null : new StageStatus(((CompetitionStatus)item).SportEventStatusCacheItem, MatchStatusCache);
         }
     }
 }

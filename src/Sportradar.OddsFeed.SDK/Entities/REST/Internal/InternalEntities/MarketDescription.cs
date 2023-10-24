@@ -7,11 +7,11 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
 {
     internal class MarketDescription : IMarketDescription
     {
@@ -34,14 +34,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
         public IEnumerable<string> Groups { get; }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public MarketDescriptionCacheItem MarketDescriptionCI { get; }
+        public MarketDescriptionCacheItem MarketDescriptionCacheItem { get; }
 
         internal MarketDescription(MarketDescriptionCacheItem cacheItem, IReadOnlyCollection<CultureInfo> cultures)
         {
             Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            MarketDescriptionCI = cacheItem;
+            MarketDescriptionCacheItem = cacheItem;
 
             Id = cacheItem.Id;
             _names = new ReadOnlyDictionary<CultureInfo, string>(cultures.ToDictionary(c => c, cacheItem.GetName));
@@ -81,7 +81,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 
         public void SetFetchInfo(string source, DateTime lastDataReceived)
         {
-            MarketDescriptionCI.SetFetchInfo(source, lastDataReceived);
+            MarketDescriptionCacheItem.SetFetchInfo(source, lastDataReceived);
         }
 
         public string GetName(CultureInfo culture)

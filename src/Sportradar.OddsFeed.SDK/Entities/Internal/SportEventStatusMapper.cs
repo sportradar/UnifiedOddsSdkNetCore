@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
     /// </summary>
     /// <seealso cref="ISportEventStatus" />
     /// <seealso cref="ISingleTypeMapper{ISportEventStatus}" />
-    internal class SportEventStatusMapper : ISingleTypeMapper<SportEventStatusDTO>
+    internal class SportEventStatusMapper : ISingleTypeMapper<SportEventStatusDto>
     {
         /// <summary>
         /// A <see cref="sportEventStatus" /> instance containing status data about the associated sport event
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         /// <param name="data">A <see cref="sportEventStatus"/> containing data used to build the <see cref="ISportEventStatus"/> instance</param>
         /// <returns>a new instance of <see cref="ISingleTypeMapper{ISportEventStatus}"/> instance</returns>
-        internal static ISingleTypeMapper<SportEventStatusDTO> Create(sportEventStatus data)
+        internal static ISingleTypeMapper<SportEventStatusDto> Create(sportEventStatus data)
         {
             Guard.Argument(data, nameof(data)).NotNull();
 
@@ -45,11 +45,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="SportEventStatusDTO"/>
+        /// Maps it's data to instance of <see cref="SportEventStatusDto"/>
         /// </summary>
-        public SportEventStatusDTO Map()
+        public SportEventStatusDto Map()
         {
-            return new SportEventStatusDTO(_data, null);
+            return new SportEventStatusDto(_data, null);
         }
     }
 }

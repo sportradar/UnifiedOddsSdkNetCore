@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a player or a racer in a sport event
@@ -17,9 +17,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class
         /// </summary>
-        /// <param name="id">the <see cref="URN"/> uniquely identifying the current <see cref="ICompetitor" /> instance</param>
+        /// <param name="id">the <see cref="Urn"/> uniquely identifying the current <see cref="ICompetitor" /> instance</param>
         /// <param name="names">A <see cref="IDictionary{CultureInfo, String}"/> containing player names in different languages</param>
-        public Player(URN id, IDictionary<CultureInfo, string> names)
+        public Player(Urn id, IDictionary<CultureInfo, string> names)
             : base(id, names as IReadOnlyDictionary<CultureInfo, string>)
         {
             Guard.Argument(id, nameof(id)).NotNull();

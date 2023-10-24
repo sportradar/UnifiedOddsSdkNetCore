@@ -3,12 +3,12 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a competing team
@@ -20,21 +20,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamCompetitor"/> class
         /// </summary>
-        /// <param name="ci">A <see cref="TeamCompetitorCI"/> used to create new instance</param>
-        /// <param name="cultures">A culture of the current instance of <see cref="TeamCompetitorCI"/></param>
+        /// <param name="ci">A <see cref="TeamCompetitorCacheItem"/> used to create new instance</param>
+        /// <param name="cultures">A culture of the current instance of <see cref="TeamCompetitorCacheItem"/></param>
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to retrieve <see cref="IPlayer"/></param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> used in sport entity factory</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> used for fetching profile data</param>
-        /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
-        public TeamCompetitor(TeamCompetitorCI ci,
+        /// <param name="rootCompetitionCacheItem">A root <see cref="CompetitionCacheItem"/> to which this competitor belongs to</param>
+        public TeamCompetitor(TeamCompetitorCacheItem ci,
                               IReadOnlyCollection<CultureInfo> cultures,
                               ISportEntityFactory sportEntityFactory,
                               ExceptionHandlingStrategy exceptionStrategy,
                               IProfileCache profileCache,
-                              ICompetitionCI rootCompetitionCI)
-            : base(ci, profileCache, cultures, sportEntityFactory, exceptionStrategy, rootCompetitionCI)
+                              ICompetitionCacheItem rootCompetitionCacheItem)
+            : base(ci, profileCache, cultures, sportEntityFactory, exceptionStrategy, rootCompetitionCacheItem)
         {
-            Division = ci.Division;
         }
 
         /// <summary>
@@ -50,17 +49,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Gets the division
-        /// </summary>
-        public int? Division { get; }
-
-        /// <summary>
         /// Constructs and return a <see cref="string"/> containing details of the current instance
         /// </summary>
         /// <returns>A <see cref="string"/> containing details of the current instance.</returns>
         protected override string PrintF()
         {
-            var res = base.PrintF() + $", Qualifier={Qualifier}, Division={Division}";
+            var res = base.PrintF() + $", Qualifier={Qualifier}";
             return res;
         }
 

@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing sport events regardless to which sport they belong
@@ -55,28 +55,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Asynchronously gets a <see cref="SportEventType"/> for the associated sport event.
         /// </summary>
         /// <returns>A <see cref="SportEventType"/> for the associated sport event.</returns>
-        Task<SportEventType?> GetSportEventTypeAsync()
-        {
-            return Task.FromResult<SportEventType?>(null);
-        }
+        Task<SportEventType?> GetSportEventTypeAsync();
 
         /// <summary>
         /// Asynchronously gets a liveOdds
         /// </summary>
         /// <returns>A liveOdds</returns>
-        Task<string> GetLiveOddsAsync()
-        {
-            return Task.FromResult<string>(null);
-        }
+        Task<string> GetLiveOddsAsync();
 
         /// <summary>
         /// Asynchronously gets a <see cref="IEnumerable{T}"/> representing competitors in the sport event associated with the current instance
         /// </summary>
         /// <param name="culture">The culture in which we want to return competitor data</param>
         /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
-        Task<IEnumerable<ICompetitor>> GetCompetitorsAsync(CultureInfo culture)
-        {
-            return Task.FromResult<IEnumerable<ICompetitor>>(null);
-        }
+        Task<IEnumerable<ICompetitor>> GetCompetitorsAsync(CultureInfo culture);
     }
 }

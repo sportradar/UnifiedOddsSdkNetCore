@@ -4,15 +4,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// Maps <see cref="resultChangesEndpoint"/> instances to <see cref="IEnumerable{ResultChangeDTO}" /> instance
+    /// Maps <see cref="resultChangesEndpoint"/> instances to <see cref="EntityList{ResultChangeDto}" /> instance
     /// </summary>
-    internal class ResultChangesMapper : ISingleTypeMapper<IEnumerable<ResultChangeDTO>>
+    internal class ResultChangesMapper : ISingleTypeMapper<EntityList<ResultChangeDto>>
     {
         /// <summary>
         /// A <see cref="resultChangesEndpoint"/> instance containing result changes
@@ -29,17 +29,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="IEnumerable{ResultChangeDTO}"/> instance
+        /// Maps it's data to <see cref="EntityList{ResultChangeDto}"/> instance
         /// </summary>
-        /// <returns>Constructed <see cref="IEnumerable{ResultChangeDTO}"/> instance</returns>
-        public IEnumerable<ResultChangeDTO> Map()
+        /// <returns>Constructed <see cref="EntityList{ResultChangeDto}"/> instance</returns>
+        public EntityList<ResultChangeDto> Map()
         {
-            if (_data.result_change == null)
+            var resultChanges = new List<ResultChangeDto>();
+            if (_data.result_change != null)
             {
-                return new List<ResultChangeDTO>();
+                resultChanges = _data.result_change.Select(f => new ResultChangeDto(f, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null)).ToList();
             }
 
-            return _data.result_change.Select(f => new ResultChangeDTO(f, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null)).ToList();
+            return new EntityList<ResultChangeDto>(resultChanges);
         }
     }
 }

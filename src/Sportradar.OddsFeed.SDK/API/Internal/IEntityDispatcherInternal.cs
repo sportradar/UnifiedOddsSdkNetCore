@@ -4,7 +4,7 @@
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Defines a contract implemented by classes used to dispatch entities.

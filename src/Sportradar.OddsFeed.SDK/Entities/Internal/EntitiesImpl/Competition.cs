@@ -6,19 +6,19 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 {
@@ -43,17 +43,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="Competition"/> class
         /// </summary>
         /// <param name="executionLog">A <see cref="ILogger"/> instance used for execution logging</param>
-        /// <param name="id">A <see cref="URN"/> uniquely identifying the sport event associated with the current instance</param>
-        /// <param name="sportId">A <see cref="URN"/> uniquely identifying the sport associated with the current instance</param>
+        /// <param name="id">A <see cref="Urn"/> uniquely identifying the sport event associated with the current instance</param>
+        /// <param name="sportId">A <see cref="Urn"/> uniquely identifying the sport associated with the current instance</param>
         /// <param name="sportEntityFactory">An instance of a <see cref="ISportEntityFactory"/> used to create <see cref="ISportEvent"/> instances</param>
         /// <param name="sportEventStatusCache">A <see cref="ISportEventStatusCache"/> instance containing cache data information about the progress of a sport event associated with the current instance</param>
-        /// <param name="sportEventCache">A <see cref="ISportEventCache"/> instance containing <see cref="CompetitionCI"/></param>
+        /// <param name="sportEventCache">A <see cref="ISportEventCache"/> instance containing <see cref="CompetitionCacheItem"/></param>
         /// <param name="cultures">A <see cref="ICollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the initialized instance will handle potential exceptions</param>
         /// <param name="matchStatusesCache">A <see cref="ILocalizedNamedValueCache"/> cache for fetching match statuses</param>
         protected Competition(ILogger executionLog,
-                              URN id,
-                              URN sportId,
+                              Urn id,
+                              Urn sportId,
                               ISportEntityFactory sportEntityFactory,
                               ISportEventStatusCache sportEventStatusCache,
                               ISportEventCache sportEventCache,
@@ -115,9 +115,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="ICompetitionStatus"/> instance containing information about the progress of the sport event</returns>
         public async Task<ICompetitionStatus> GetStatusAsync()
         {
-            var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
+            var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
                 ? await SportEventStatusCache.GetSportEventStatusAsync(Id).ConfigureAwait(false)
-                : await new Func<URN, Task<SportEventStatusCI>>(SportEventStatusCache.GetSportEventStatusAsync).SafeInvokeAsync(Id, ExecutionLog, GetFetchErrorMessage("EventStatus")).ConfigureAwait(false);
+                : await new Func<Urn, Task<SportEventStatusCacheItem>>(SportEventStatusCache.GetSportEventStatusAsync).SafeInvokeAsync(Id, ExecutionLog, GetFetchErrorMessage("EventStatus")).ConfigureAwait(false);
 
             return item == null
                 ? null
@@ -140,15 +140,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns></returns>
         public async Task<BookingStatus?> GetBookingStatusAsync()
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
-            return ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await competitionCI.GetBookingStatusAsync().ConfigureAwait(false)
-                : await new Func<Task<BookingStatus?>>(competitionCI.GetBookingStatusAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("BookingStatus")).ConfigureAwait(false);
+            return ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await competitionCacheItem.GetBookingStatusAsync().ConfigureAwait(false)
+                : await new Func<Task<BookingStatus?>>(competitionCacheItem.GetBookingStatusAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("BookingStatus")).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -158,15 +158,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{IVenue}"/> representing the retrieval operation</returns>
         public async Task<IVenue> GetVenueAsync()
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
-            var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await competitionCI.GetVenueAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<VenueCI>>(competitionCI.GetVenueAsync).SafeInvokeAsync(Cultures, ExecutionLog, "Venue").ConfigureAwait(false);
+            var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await competitionCacheItem.GetVenueAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<VenueCacheItem>>(competitionCacheItem.GetVenueAsync).SafeInvokeAsync(Cultures, ExecutionLog, "Venue").ConfigureAwait(false);
 
             return item == null
                 ? null
@@ -180,15 +180,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <remarks>A Fixture is a sport event that has been arranged for a particular time and place</remarks>
         public async Task<ISportEventConditions> GetConditionsAsync()
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
-            var item = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await competitionCI.GetConditionsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<SportEventConditionsCI>>(competitionCI.GetConditionsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("EventConditions")).ConfigureAwait(false);
+            var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await competitionCacheItem.GetConditionsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<SportEventConditionsCacheItem>>(competitionCacheItem.GetConditionsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("EventConditions")).ConfigureAwait(false);
 
             return item == null
                 ? null
@@ -201,23 +201,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
         public async Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
-            var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await competitionCI.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(competitionCI.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+            var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await competitionCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(competitionCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
-            var competitorsIds = items == null ? new List<URN>() : items.ToList();
+            var competitorsIds = items == null ? new List<Urn>() : items.ToList();
             if (!competitorsIds.Any())
             {
                 return new List<ICompetitor>();
             }
 
-            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCI, ExceptionStrategy)).ToList();
+            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildTeamCompetitorAsync(s, Cultures, competitionCacheItem, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
             return tasks.Select(s => s.GetAwaiter().GetResult());
         }
@@ -229,25 +229,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
         public async Task<IEnumerable<ICompetitor>> GetCompetitorsAsync(CultureInfo culture)
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
 
             var cultureList = new[] { culture };
-            var items = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                            ? await competitionCI.GetCompetitorsIdsAsync(cultureList).ConfigureAwait(false)
-                            : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<URN>>>(competitionCI.GetCompetitorsIdsAsync).SafeInvokeAsync(cultureList, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+            var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                            ? await competitionCacheItem.GetCompetitorsIdsAsync(cultureList).ConfigureAwait(false)
+                            : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(competitionCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(cultureList, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
-            var competitorsIds = items == null ? new List<URN>() : items.ToList();
+            var competitorsIds = items == null ? new List<Urn>() : items.ToList();
             if (!competitorsIds.Any())
             {
                 return new List<ICompetitor>();
             }
 
-            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildTeamCompetitorAsync(s, cultureList, competitionCI, ExceptionStrategy)).ToList();
+            var tasks = competitorsIds.Select(s => _sportEntityFactory.BuildTeamCompetitorAsync(s, cultureList, competitionCacheItem, ExceptionStrategy)).ToList();
             await Task.WhenAll(tasks).ConfigureAwait(false);
             return tasks.Select(s => s.GetAwaiter().GetResult());
         }
@@ -257,23 +257,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         /// <param name="culture">Optional culture in which we want to fetch competitor data (otherwise default is used)</param>
         /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
-        public async Task<IEnumerable<URN>> GetCompetitorIdsAsync(CultureInfo culture = null)
+        public async Task<IEnumerable<Urn>> GetCompetitorIdsAsync(CultureInfo culture = null)
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
                 return null;
             }
 
-            if (competitionCI.Competitors.IsNullOrEmpty() || culture != null)
+            if (competitionCacheItem.Competitors.IsNullOrEmpty() || culture != null)
             {
                 // force summary request if needed
                 var cultureList = new[] { culture ?? Cultures.First() };
-                await competitionCI.GetNamesAsync(cultureList).ConfigureAwait(false);
+                await competitionCacheItem.GetNamesAsync(cultureList).ConfigureAwait(false);
             }
 
-            var competitorsIds = competitionCI.Competitors == null ? new List<URN>() : competitionCI.Competitors.ToList();
+            var competitorsIds = competitionCacheItem.Competitors == null ? new List<Urn>() : competitionCacheItem.Competitors.ToList();
             return competitorsIds;
         }
 
@@ -283,15 +283,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="SportEventType"/> for the associated sport event.</returns>
         public async Task<SportEventType?> GetSportEventTypeAsync()
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
                 return null;
             }
-            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await competitionCI.GetSportEventTypeAsync().ConfigureAwait(false)
-                : await new Func<Task<SportEventType?>>(competitionCI.GetSportEventTypeAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportEventType")).ConfigureAwait(false);
+            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await competitionCacheItem.GetSportEventTypeAsync().ConfigureAwait(false)
+                : await new Func<Task<SportEventType?>>(competitionCacheItem.GetSportEventTypeAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportEventType")).ConfigureAwait(false);
 
             return liveOdds;
         }
@@ -302,15 +302,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A liveOdds</returns>
         public async Task<string> GetLiveOddsAsync()
         {
-            var competitionCI = (CompetitionCI)SportEventCache.GetEventCacheItem(Id);
-            if (competitionCI == null)
+            var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
+            if (competitionCacheItem == null)
             {
                 ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
                 return null;
             }
-            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.THROW
-                ? await competitionCI.GetLiveOddsAsync().ConfigureAwait(false)
-                : await new Func<Task<string>>(competitionCI.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
+            var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                ? await competitionCacheItem.GetLiveOddsAsync().ConfigureAwait(false)
+                : await new Func<Task<string>>(competitionCacheItem.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
 
             return liveOdds;
         }

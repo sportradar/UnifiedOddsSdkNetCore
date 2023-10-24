@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="57c763f7-d815-483e-be76-45c4ea172117" visible="True" isDefault="true" title="UnifiedFeed SDK .NET Standard 2.1">
+  <Topic id="57c763f7-d815-483e-be76-45c4ea172117" visible="True" isDefault="true" isSelected="true" title="UnifiedFeed SDK .NET Standard 2.0">
     <HelpKeywords>
       <HelpKeyword index="K" term="UF SDK" />
     </HelpKeywords>
@@ -12,7 +12,7 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version, history" />
     </HelpKeywords>
-    <Topic id="7ef79455-5345-4a44-b863-3be519b88248" visible="False" isSelected="true" title="Version 1.0.0.0">
+    <Topic id="7ef79455-5345-4a44-b863-3be519b88248" visible="False" title="Version 1.0.0.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="version, 1.0.0.0" />
       </HelpKeywords>

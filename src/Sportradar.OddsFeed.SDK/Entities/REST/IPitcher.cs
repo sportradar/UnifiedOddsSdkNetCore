@@ -1,10 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing sport event pitcher
@@ -12,9 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IPitcher : IEntityPrinter
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> used to uniquely identify the current <see cref="IPitcher"/> instance
+        /// Gets a <see cref="Urn"/> used to uniquely identify the current <see cref="IPitcher"/> instance
         /// </summary>
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Gets the name of the referee represented by the current <see cref="IPitcher"/> instance

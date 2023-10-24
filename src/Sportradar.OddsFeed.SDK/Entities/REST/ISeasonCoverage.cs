@@ -1,9 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+using Sportradar.OddsFeed.SDK.Common;
+
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines an interface representing season coverage info
@@ -13,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets the identifier of the season
         /// </summary>
-        URN SeasonId { get; }
+        Urn SeasonId { get; }
 
         /// <summary>
         /// Gets the string representation of the maximum coverage available for the season associated with the current instance

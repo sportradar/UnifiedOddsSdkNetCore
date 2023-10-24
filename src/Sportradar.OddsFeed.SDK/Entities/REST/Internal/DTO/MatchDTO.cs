@@ -3,67 +3,67 @@
 */
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object containing basic information about a match
     /// </summary>
-    internal class MatchDTO : CompetitionDTO
+    internal class MatchDto : CompetitionDto
     {
         /// <summary>
-        /// Gets a <see cref="SportEntityDTO"/> instance specifying the season to which the sport event associated with the current instance belongs to.
+        /// Gets a <see cref="SportEntityDto"/> instance specifying the season to which the sport event associated with the current instance belongs to.
         /// </summary>
-        public SeasonDTO Season { get; }
+        public SeasonDto Season { get; }
 
         /// <summary>
-        /// Gets a <see cref="RoundDTO"/> representing the tournament round to which the associated sport event belongs to.
+        /// Gets a <see cref="RoundDto"/> representing the tournament round to which the associated sport event belongs to.
         /// </summary>
-        public RoundDTO Round { get; }
+        public RoundDto Round { get; }
 
         /// <summary>
-        /// Gets a <see cref="TournamentDTO"/> representing the tournament to which the associated sport event belongs to.
+        /// Gets a <see cref="TournamentDto"/> representing the tournament to which the associated sport event belongs to.
         /// </summary>
-        public TournamentDTO Tournament { get; }
+        public TournamentDto Tournament { get; }
 
         /// <summary>
-        /// Gets a <see cref="CoverageInfoDTO"/>
+        /// Gets a <see cref="CoverageInfoDto"/>
         /// </summary>
-        public CoverageInfoDTO Coverage { get; }
+        public CoverageInfoDto Coverage { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MatchDTO"/> class
+        /// Initializes a new instance of the <see cref="MatchDto"/> class
         /// </summary>
         /// <param name="sportEvent">A <see cref="sportEvent"/> instance containing basic information about the sport event</param>
-        internal MatchDTO(sportEvent sportEvent)
+        internal MatchDto(sportEvent sportEvent)
             : base(sportEvent)
         {
             Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
 
             if (sportEvent.season != null)
             {
-                Season = new SeasonDTO(sportEvent.season);
+                Season = new SeasonDto(sportEvent.season);
             }
             if (sportEvent.tournament_round != null)
             {
-                Round = new RoundDTO(sportEvent.tournament_round);
+                Round = new RoundDto(sportEvent.tournament_round);
             }
             if (sportEvent.tournament != null)
             {
                 Guard.Argument(sportEvent.tournament.id, nameof(sportEvent.tournament.id)).NotNull().NotEmpty();
                 Guard.Argument(sportEvent.tournament.name, nameof(sportEvent.tournament.name)).NotNull().NotEmpty();
-                Tournament = new TournamentDTO(sportEvent.tournament);
+                Tournament = new TournamentDto(sportEvent.tournament);
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MatchDTO"/> class
+        /// Initializes a new instance of the <see cref="MatchDto"/> class
         /// </summary>
         /// <param name="matchSummary">A <see cref="matchSummaryEndpoint"/> instance containing basic information about the sport event</param>
-        internal MatchDTO(matchSummaryEndpoint matchSummary)
+        internal MatchDto(matchSummaryEndpoint matchSummary)
             : base(matchSummary)
         {
             Guard.Argument(matchSummary, nameof(matchSummary)).NotNull();
@@ -72,30 +72,30 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 Guard.Argument(matchSummary.sport_event.season.id, nameof(matchSummary.sport_event.season.id)).NotNull().NotEmpty();
                 Guard.Argument(matchSummary.sport_event.season.name, nameof(matchSummary.sport_event.season.name)).NotNull().NotEmpty();
-                Season = new SeasonDTO(matchSummary.sport_event.season);
+                Season = new SeasonDto(matchSummary.sport_event.season);
             }
             if (matchSummary.sport_event.tournament_round != null)
             {
-                Round = new RoundDTO(matchSummary.sport_event.tournament_round);
+                Round = new RoundDto(matchSummary.sport_event.tournament_round);
             }
             if (matchSummary.sport_event.tournament != null)
             {
                 Guard.Argument(matchSummary.sport_event.tournament.id, nameof(matchSummary.sport_event.tournament.id)).NotNull().NotEmpty();
                 Guard.Argument(matchSummary.sport_event.tournament.name, nameof(matchSummary.sport_event.tournament.name)).NotNull().NotEmpty();
-                Tournament = new TournamentDTO(matchSummary.sport_event.tournament);
+                Tournament = new TournamentDto(matchSummary.sport_event.tournament);
             }
             if (matchSummary.coverage_info != null)
             {
-                Coverage = new CoverageInfoDTO(matchSummary.coverage_info);
+                Coverage = new CoverageInfoDto(matchSummary.coverage_info);
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MatchDTO"/> class
+        /// Initializes a new instance of the <see cref="MatchDto"/> class
         /// </summary>
         /// <param name="fixture">A <see cref="fixture"/> instance containing basic information about the sport event</param>
         /// <remarks>Not all properties are filled via fixture (i.e.Venue, Conditions,..)</remarks>
-        internal MatchDTO(fixture fixture)
+        internal MatchDto(fixture fixture)
             : this(new matchSummaryEndpoint
             {
                 sport_event = new sportEvent
@@ -103,6 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                     id = fixture.id,
                     name = fixture.name,
                     type = fixture.type,
+                    stage_type = fixture.stage_type,
                     scheduledSpecified = fixture.scheduledSpecified,
                     scheduled = fixture.scheduled,
                     scheduled_endSpecified = fixture.scheduled_endSpecified,
@@ -139,11 +140,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Venue = fixture.venue == null
                 ? null
-                : new VenueDTO(fixture.venue);
+                : new VenueDto(fixture.venue);
 
             if (fixture.coverage_info != null)
             {
-                Coverage = new CoverageInfoDTO(fixture.coverage_info);
+                Coverage = new CoverageInfoDto(fixture.coverage_info);
             }
         }
     }

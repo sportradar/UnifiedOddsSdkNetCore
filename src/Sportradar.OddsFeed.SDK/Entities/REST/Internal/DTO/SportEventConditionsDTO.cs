@@ -4,30 +4,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representation for sport event conditions
     /// </summary>
-    internal class SportEventConditionsDTO
+    internal class SportEventConditionsDto
     {
         internal string Attendance { get; }
 
         internal string EventMode { get; }
 
-        internal RefereeDTO Referee { get; }
+        internal RefereeDto Referee { get; }
 
-        internal WeatherInfoDTO WeatherInfo { get; }
+        internal WeatherInfoDto WeatherInfo { get; }
 
-        internal IEnumerable<PitcherDTO> Pitchers { get; }
+        internal IEnumerable<PitcherDto> Pitchers { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SportEventConditionsDTO"/> class
+        /// Initializes a new instance of the <see cref="SportEventConditionsDto"/> class
         /// </summary>
         /// <param name="conditions">The <see cref="sportEventConditions"/> used for creating instance</param>
-        internal SportEventConditionsDTO(sportEventConditions conditions)
+        internal SportEventConditionsDto(sportEventConditions conditions)
         {
             Guard.Argument(conditions, nameof(conditions)).NotNull();
 
@@ -35,13 +35,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             EventMode = conditions.match_mode;
             Referee = conditions.referee == null
                 ? null
-                : new RefereeDTO(conditions.referee);
+                : new RefereeDto(conditions.referee);
             WeatherInfo = conditions.weather_info == null
                 ? null
-                : new WeatherInfoDTO(conditions.weather_info);
+                : new WeatherInfoDto(conditions.weather_info);
             Pitchers = conditions.pitchers == null || !conditions.pitchers.Any()
                 ? null
-                : conditions.pitchers.Select(s => new PitcherDTO(s));
+                : conditions.pitchers.Select(s => new PitcherDto(s));
         }
     }
 }

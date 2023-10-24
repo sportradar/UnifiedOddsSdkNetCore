@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
 {
     /// <summary>
     /// Defines a data-transfer-object for available selections for the event
@@ -15,9 +15,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
     internal class AvailableSelectionsDto
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> of the event
+        /// Gets the <see cref="Urn"/> of the event
         /// </summary>
-        public URN Event { get; }
+        public Urn Event { get; }
 
         /// <summary>
         /// Gets the list of markets for this event
@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
                 throw new ArgumentNullException(nameof(availableSelections));
             }
 
-            Event = URN.Parse(availableSelections.@event.id);
+            Event = Urn.Parse(availableSelections.@event.id);
             var markets = availableSelections.@event.markets;
             Markets = markets != null
                 ? markets.Select(m => new MarketDto(m)).ToList()
@@ -51,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
                 throw new ArgumentNullException(nameof(eventType));
             }
 
-            Event = URN.Parse(eventType.id);
+            Event = Urn.Parse(eventType.id);
             Markets = eventType.markets != null
                           ? eventType.markets.Select(m => new MarketDto(m)).ToList()
                           : new List<MarketDto>();

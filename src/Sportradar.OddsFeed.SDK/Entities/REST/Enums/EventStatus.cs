@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Enums
 {
     /// <summary>
     /// Describes a high-level status of the sport event
@@ -11,8 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
         /// <summary>
         /// Indicates that the associated sport event has not yet been started
         /// </summary>
-        // ReSharper disable once InconsistentNaming
-        Not_Started = 0,
+        NotStarted = 0,
 
         /// <summary>
         /// Indicates that the associated sport event is currently live (the match could be over-time, extended time or between periods too)

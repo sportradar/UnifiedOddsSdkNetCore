@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a status of a sport event
@@ -16,15 +17,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     /// <seealso cref="ISportEventStatus" />
     internal class SportEventStatus : EntityPrinter, ISportEventStatus
     {
-        private readonly SportEventStatusCI _cacheItem;
+        private readonly SportEventStatusCacheItem _cacheItem;
         private readonly ILocalizedNamedValueCache _matchStatusCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventStatus"/> class
         /// </summary>
-        /// <param name="cacheItem">A <see cref="SportEventStatusCI"/> containing information about sport event status, which will be used to initialize a new instance</param>
+        /// <param name="cacheItem">A <see cref="SportEventStatusCacheItem"/> containing information about sport event status, which will be used to initialize a new instance</param>
         /// <param name="matchStatusCache">A <see cref="ILocalizedNamedValueCache"/> used to retrieve event status</param>
-        public SportEventStatus(SportEventStatusCI cacheItem, ILocalizedNamedValueCache matchStatusCache)
+        public SportEventStatus(SportEventStatusCacheItem cacheItem, ILocalizedNamedValueCache matchStatusCache)
         {
             Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
             Guard.Argument(matchStatusCache, nameof(matchStatusCache)).NotNull();

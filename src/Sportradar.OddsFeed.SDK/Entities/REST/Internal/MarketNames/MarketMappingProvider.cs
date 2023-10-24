@@ -10,15 +10,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Provides mapping ids of markets and outcomes
@@ -58,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         private readonly int _producerId;
 
-        private readonly URN _sportId;
+        private readonly Urn _sportId;
 
         /// <summary>
         /// A <see cref="IReadOnlyDictionary{TKey,TValue}"/> representing specifiers of the associated market
@@ -96,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                                        int marketId,
                                        IReadOnlyDictionary<string, string> specifiers,
                                        int producerId,
-                                       URN sportId,
+                                       Urn sportId,
                                        ExceptionHandlingStrategy exceptionStrategy)
         {
             Guard.Argument(marketCacheProvider, nameof(marketCacheProvider)).NotNull();
@@ -257,7 +259,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
             sb.Append("]. AdditionalMessage=").Append(message);
 
             ExecutionLog.LogError(innerException, sb.ToString());
-            if (_exceptionStrategy == ExceptionHandlingStrategy.THROW)
+            if (_exceptionStrategy == ExceptionHandlingStrategy.Throw)
             {
                 throw new MappingException(message, propertyName, propertyValue, targetTypeName, innerException);
             }

@@ -2,16 +2,16 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="matchSummaryEndpoint" /> instances to <see cref="MatchDTO" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="matchSummaryEndpoint" /> instances to <see cref="MatchDto" /> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{MatchDTO}" />
-    internal class SportEventSummaryMapper : ISingleTypeMapper<SportEventSummaryDTO>
+    /// <seealso cref="ISingleTypeMapper{MatchDto}" />
+    internal class SportEventSummaryMapper : ISingleTypeMapper<SportEventSummaryDto>
     {
         /// <summary>
         /// A <see cref="matchSummaryEndpoint"/> containing match data
@@ -61,17 +61,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
             _tournamentInfoData = tournamentInfoData;
         }
 
-        public SportEventSummaryDTO Map()
+        public SportEventSummaryDto Map()
         {
             if (_matchSummaryData != null)
             {
-                return new MatchDTO(_matchSummaryData);
+                return new MatchDto(_matchSummaryData);
             }
             if (_stageSummaryData != null)
             {
-                return new StageDTO(_stageSummaryData);
+                return new StageDto(_stageSummaryData);
             }
-            return new TournamentInfoDTO(_tournamentInfoData);
+            return new TournamentInfoDto(_tournamentInfoData);
         }
     }
 }

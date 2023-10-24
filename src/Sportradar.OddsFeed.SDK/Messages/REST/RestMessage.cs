@@ -6,10 +6,11 @@
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
 
-namespace Sportradar.OddsFeed.SDK.Messages.REST
+namespace Sportradar.OddsFeed.SDK.Messages.Rest
 {
     /// <summary>
     /// Represents all messages (entities) received from the feed REST API
@@ -50,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
         /// When overridden in derived class, it gets a value specifying the usage requirements of the <see cref="RequestId" /> property
         /// </summary>
         /// <value>The request identifier usage.</value>
-        public override PropertyUsage RequestIdUsage => PropertyUsage.FORBBIDEN;
+        public override PropertyUsage RequestIdUsage => PropertyUsage.Forbidden;
 
         /// <summary>
         /// When override in derived class, it gets a value indicating whether current message is state-ful

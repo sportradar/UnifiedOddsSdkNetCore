@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing players or racers in a sport event timeline events
@@ -13,9 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IEventPlayer : IEntityPrinter
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> uniquely identifying the current <see cref="IPlayer" /> instance
+        /// Gets the <see cref="Urn"/> uniquely identifying the current <see cref="IPlayer" /> instance
         /// </summary>
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing player names in different languages

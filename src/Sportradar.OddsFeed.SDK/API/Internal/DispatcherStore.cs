@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// A store used to manage <see cref="IEntityDispatcherInternal"/> instances
@@ -108,10 +108,10 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the <see cref="ISpecificEntityDispatcherInternal"/> instance associated with the sport entity associated with provided <c>id</c> and <c>sportId</c>
         /// </summary>
-        /// <param name="id">The <see cref="URN"/> representing the identifier of the sport entity for which to get the dispatcher</param>
-        /// <param name="sportId">The <see cref="URN"/> representing the id of the sport to which the sport entity belongs to.</param>
+        /// <param name="id">The <see cref="Urn"/> representing the identifier of the sport entity for which to get the dispatcher</param>
+        /// <param name="sportId">The <see cref="Urn"/> representing the id of the sport to which the sport entity belongs to.</param>
         /// <returns>IEntityDispatcherInternal used to dispatch the instance specified by <c>id</c> and <c>sportId</c>.</returns>
-        public ISpecificEntityDispatcherInternal Get(URN id, URN sportId)
+        public ISpecificEntityDispatcherInternal Get(Urn id, Urn sportId)
         {
             var entityType = _typeMapper.Map(id, (int)sportId.Id);
             var key = entityType.Name;

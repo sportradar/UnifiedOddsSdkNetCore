@@ -4,9 +4,9 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
 {
     /// <summary>
     /// Defines a contract implemented by classes used REST request to obtain <see cref="HttpResponseMessage"/> instance containing status code and data

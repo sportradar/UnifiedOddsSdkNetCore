@@ -2,9 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api.Replay;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
 {
     /// <summary>
     /// A basic implementation of the <see cref="IReplayScenario"/>
@@ -29,9 +30,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         /// <summary>
         /// Gets the associated event identifiers
         /// </summary>
-        public IEnumerable<URN> AssociatedEventIds { get; }
+        public IEnumerable<Urn> AssociatedEventIds { get; }
 
-        public ReplayScenario(int id, string description, bool runParallel, IEnumerable<URN> associatedEventIds)
+        public ReplayScenario(int id, string description, bool runParallel, IEnumerable<Urn> associatedEventIds)
         {
             Id = id;
             Description = description;

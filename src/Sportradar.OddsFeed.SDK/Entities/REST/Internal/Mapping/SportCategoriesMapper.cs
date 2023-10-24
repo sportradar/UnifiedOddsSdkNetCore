@@ -2,15 +2,15 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// Maps <see cref="sportCategoriesEndpoint"/> instances to <see cref="SportCategoriesDTO" /> instance
+    /// Maps <see cref="sportCategoriesEndpoint"/> instances to <see cref="SportCategoriesDto" /> instance
     /// </summary>
-    internal class SportCategoriesMapper : ISingleTypeMapper<SportCategoriesDTO>
+    internal class SportCategoriesMapper : ISingleTypeMapper<SportCategoriesDto>
     {
         /// <summary>
         /// A <see cref="sportCategoriesEndpoint"/> instance containing sport categories
@@ -30,12 +30,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="SportCategoriesDTO"/> instance
+        /// Maps it's data to <see cref="SportCategoriesDto"/> instance
         /// </summary>
-        /// <returns>Constructed <see cref="SportCategoriesDTO"/> instance</returns>
-        public SportCategoriesDTO Map()
+        /// <returns>Constructed <see cref="SportCategoriesDto"/> instance</returns>
+        public SportCategoriesDto Map()
         {
-            return new SportCategoriesDTO(_data);
+            return new SportCategoriesDto(_data);
         }
     }
 }

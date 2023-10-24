@@ -4,8 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
@@ -59,7 +60,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 return new List<string>
                        {
                            "-.-.-.product_down.#",
-                           $"-.-.-.snapshot_complete.-.-.-.{nodeId}"
+                           $"-.-.-.snapshot_complete.-.-.-.{nodeId.ToString()}"
                        };
             }
 
@@ -283,7 +284,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// </summary>
         /// <param name="eventIds">A <see cref="IEnumerable{Integer}"/> specifying the target events</param>
         /// <returns>A <see cref="MessageInterest"/> indicating an interest in messages associated with specific events</returns>
-        private static IEnumerable<string> SpecificEventsOnly(IEnumerable<URN> eventIds)
+        private static IEnumerable<string> SpecificEventsOnly(IEnumerable<Urn> eventIds)
         {
             var urns = eventIds.ToList();
             if (urns.IsNullOrEmpty())

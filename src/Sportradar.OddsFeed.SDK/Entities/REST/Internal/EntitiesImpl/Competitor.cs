@@ -9,16 +9,17 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a player or a team competing in a sport event
@@ -28,14 +29,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     [DataContract]
     internal class Competitor : Player, ICompetitor
     {
-        private readonly URN _competitorId;
-        private CompetitorCI _competitorCI;
+        private readonly Urn _competitorId;
+        private CompetitorCacheItem _competitorCacheItem;
         private readonly IProfileCache _profileCache;
         private readonly IReadOnlyCollection<CultureInfo> _cultures;
         private readonly ISportEntityFactory _sportEntityFactory;
         private readonly ExceptionHandlingStrategy _exceptionStrategy;
-        private ReferenceIdCI _referenceId;
-        private readonly CompetitionCI _competitionCI;
+        private ReferenceIdCacheItem _referenceId;
+        private readonly CompetitionCacheItem _competitionCacheItem;
         private readonly object _lock = new object();
         protected string TeamQualifier;
         private DateTime _lastCompetitorFetch;
@@ -202,8 +203,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             get
             {
-                var raceDriverProfileCI = GetOrLoadCompetitor()?.RaceDriverProfile;
-                return raceDriverProfileCI == null ? null : new RaceDriverProfile(raceDriverProfileCI);
+                var raceDriverProfileCacheItem = GetOrLoadCompetitor()?.RaceDriverProfile;
+                return raceDriverProfileCacheItem == null ? null : new RaceDriverProfile(raceDriverProfileCacheItem);
             }
         }
 
@@ -255,21 +256,30 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <value>The short name</value>
         public string ShortName => GetOrLoadCompetitor()?.ShortName;
 
+        public IDivision Division
+        {
+            get
+            {
+                var divisionCacheItem = GetOrLoadCompetitor()?.Division;
+                return divisionCacheItem == null ? null : new Division(divisionCacheItem);
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Competitor"/> class
         /// </summary>
-        /// <param name="ci">A <see cref="CompetitorCI"/> used to create new instance</param>
+        /// <param name="ci">A <see cref="CompetitorCacheItem"/> used to create new instance</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> used for fetching profile data</param>
-        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
+        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCacheItem"/></param>
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to retrieve <see cref="IPlayerProfile"/></param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> used in sport entity factory</param>
-        /// <param name="rootCompetitionCI">A root <see cref="CompetitionCI"/> to which this competitor belongs to</param>
-        public Competitor(CompetitorCI ci,
+        /// <param name="rootCompetitionCacheItem">A root <see cref="CompetitionCacheItem"/> to which this competitor belongs to</param>
+        public Competitor(CompetitorCacheItem ci,
             IProfileCache profileCache,
             IReadOnlyCollection<CultureInfo> cultures,
             ISportEntityFactory sportEntityFactory,
             ExceptionHandlingStrategy exceptionStrategy,
-            ICompetitionCI rootCompetitionCI)
+            ICompetitionCacheItem rootCompetitionCacheItem)
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
             Guard.Argument(cultures, nameof(cultures)).NotNull();
@@ -277,30 +287,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Guard.Argument(profileCache, nameof(profileCache)).NotNull();
 
             _competitorId = ci.Id;
-            _competitorCI = ci;
+            _competitorCacheItem = ci;
             _profileCache = profileCache;
             _cultures = cultures;
             _sportEntityFactory = sportEntityFactory;
             _exceptionStrategy = exceptionStrategy;
-            _competitionCI = (CompetitionCI)rootCompetitionCI;
+            if (rootCompetitionCacheItem is CompetitionCacheItem competitionCi)
+            {
+                _competitionCacheItem = competitionCi;
+            }
             _referenceId = null;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Competitor"/> class
         /// </summary>
-        /// <param name="ci">A <see cref="CompetitorCI"/> used to create new instance</param>
+        /// <param name="ci">A <see cref="CompetitorCacheItem"/> used to create new instance</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> used for fetching profile data</param>
-        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
+        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCacheItem"/></param>
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to retrieve <see cref="IPlayerProfile"/></param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> used in sport entity factory</param>
-        /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCI"/> for all competitors</param>
-        public Competitor(CompetitorCI ci,
+        /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCacheItem"/> for all competitors</param>
+        public Competitor(CompetitorCacheItem ci,
             IProfileCache profileCache,
             IReadOnlyCollection<CultureInfo> cultures,
             ISportEntityFactory sportEntityFactory,
             ExceptionHandlingStrategy exceptionStrategy,
-            IDictionary<URN, ReferenceIdCI> competitorsReferences)
+            IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences)
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
@@ -308,12 +321,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Guard.Argument(profileCache, nameof(profileCache)).NotNull();
 
             _competitorId = ci.Id;
-            _competitorCI = ci;
+            _competitorCacheItem = ci;
             _profileCache = profileCache;
             _cultures = cultures;
             _sportEntityFactory = sportEntityFactory;
             _exceptionStrategy = exceptionStrategy;
-            _competitionCI = null;
+            _competitionCacheItem = null;
             _referenceId = null;
 
             if (competitorsReferences != null && competitorsReferences.Any())
@@ -337,16 +350,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <param name="competitorId">A competitor id used to create new instance</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> used for fetching profile data</param>
-        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCI"/></param>
+        /// <param name="cultures">A cultures of the current instance of <see cref="CompetitorCacheItem"/></param>
         /// <param name="sportEntityFactory">A <see cref="ISportEntityFactory"/> used to retrieve <see cref="IPlayerProfile"/></param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> used in sport entity factory</param>
-        /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCI"/> for all competitors</param>
-        public Competitor(URN competitorId,
+        /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCacheItem"/> for all competitors</param>
+        public Competitor(Urn competitorId,
             IProfileCache profileCache,
             IReadOnlyCollection<CultureInfo> cultures,
             ISportEntityFactory sportEntityFactory,
             ExceptionHandlingStrategy exceptionStrategy,
-            IDictionary<URN, ReferenceIdCI> competitorsReferences)
+            IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences)
             : base(competitorId, new Dictionary<CultureInfo, string>())
         {
             Guard.Argument(competitorId, nameof(competitorId)).NotNull();
@@ -355,12 +368,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             Guard.Argument(sportEntityFactory, nameof(sportEntityFactory)).NotNull();
 
             _competitorId = competitorId;
-            _competitorCI = null;
+            _competitorCacheItem = null;
             _profileCache = profileCache;
             _cultures = cultures;
             _sportEntityFactory = sportEntityFactory;
             _exceptionStrategy = exceptionStrategy;
-            _competitionCI = null;
+            _competitionCacheItem = null;
             _referenceId = null;
 
             if (competitorsReferences != null && competitorsReferences.Any() && competitorsReferences.TryGetValue(competitorId, out var q))
@@ -377,18 +390,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             var abbreviations = string.Join(", ", Abbreviations.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
             var associatedPlayersStr = string.Empty;
-            var associatedPlayerIds = _competitorCI?.GetAssociatedPlayerIds()?.ToList();
+            var associatedPlayerIds = _competitorCacheItem?.GetAssociatedPlayerIds()?.ToList();
             if (!associatedPlayerIds.IsNullOrEmpty())
             {
-                associatedPlayersStr = string.Join(", ", associatedPlayerIds!);
+                associatedPlayersStr = string.Join(", ", associatedPlayerIds);
                 associatedPlayersStr = $", AssociatedPlayers=[{associatedPlayersStr}]";
             }
             var reference = string.Empty;
             if (_referenceId != null && !_referenceId.ReferenceIds.IsNullOrEmpty())
             {
                 var stringBuilder = new StringBuilder();
-                stringBuilder.AppendJoin(", ", _referenceId.ReferenceIds.Select(s => $"{s.Key}={s.Value}"));
-                reference = stringBuilder.ToString();
+                foreach (var referenceIdReferenceId in _referenceId.ReferenceIds)
+                {
+                    stringBuilder.Append(", ").Append($"{referenceIdReferenceId.Key}={referenceIdReferenceId.Value}");
+                }
+                reference = stringBuilder.ToString().Substring(2);
             }
             return $"{base.PrintC()}, Gender={Gender}, Reference={reference}, Abbreviations=[{abbreviations}]{associatedPlayersStr}";
         }
@@ -407,10 +423,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 associatedPlayers = string.Join(", ", AssociatedPlayers.Select(s => s.ToString("f")));
                 associatedPlayers = $", AssociatedPlayers=[{associatedPlayers}]";
             }
+            var division = Division == null ? string.Empty : $", Division=[{Division.Id}-{Division.Name}]";
             var reference = References == null
                                 ? string.Empty
                                 : References.ToString("f");
-            return $"{base.PrintF()}, Countries=[{countryNames}], Reference={reference}, Abbreviations=[{abbreviations}], IsVirtual={IsVirtual}{associatedPlayers}";
+            return $"{base.PrintF()}, Countries=[{countryNames}], Reference={reference}, Abbreviations=[{abbreviations}], IsVirtual={IsVirtual}{associatedPlayers}{division}";
         }
 
         protected void FetchEventCompetitorsReferenceIds()
@@ -418,22 +435,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
             GetOrLoadCompetitor();
             lock (_lock)
             {
-                if (_competitionCI != null || _competitorCI != null)
+                if (_competitionCacheItem != null || _competitorCacheItem != null)
                 {
-                    var competitorsReferences = _competitionCI?.GetCompetitorsReferencesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    var competitorsReferences = _competitionCacheItem?.GetCompetitorsReferencesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                     if (competitorsReferences != null && competitorsReferences.Any())
                     {
-                        if (competitorsReferences.TryGetValue(_competitorCI.Id, out var q))
+                        if (competitorsReferences.TryGetValue(_competitorCacheItem.Id, out var q))
                         {
                             _referenceId = q;
                         }
                     }
                     else
                     {
-                        if (_competitorCI.ReferenceId != null)
+                        if (_competitorCacheItem.ReferenceId != null)
                         {
-                            _referenceId = _competitorCI.ReferenceId;
+                            _referenceId = _competitorCacheItem.ReferenceId;
                         }
                     }
                 }
@@ -444,9 +461,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             lock (_lock)
             {
-                var competitorsQualifiers = _competitionCI?.GetCompetitorsQualifiersAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                var competitorsQualifiers = _competitionCacheItem?.GetCompetitorsQualifiersAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                if (competitorsQualifiers != null && competitorsQualifiers.Any() && competitorsQualifiers.TryGetValue(_competitorCI.Id, out var qualifier))
+                if (competitorsQualifiers != null && competitorsQualifiers.Any() && competitorsQualifiers.TryGetValue(_competitorCacheItem.Id, out var qualifier))
                 {
                     TeamQualifier = qualifier;
                 }
@@ -457,36 +474,36 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         {
             lock (_lock)
             {
-                if (_competitionCI == null)
+                if (_competitionCacheItem == null)
                 {
                     return;
                 }
 
-                var competitorsVirtual = _competitionCI.GetCompetitorsVirtualAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                _isVirtual = !competitorsVirtual.IsNullOrEmpty() && competitorsVirtual.Contains(_competitorCI.Id);
+                var competitorsVirtual = _competitionCacheItem.GetCompetitorsVirtualAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                _isVirtual = !competitorsVirtual.IsNullOrEmpty() && competitorsVirtual.Contains(_competitorCacheItem.Id);
             }
         }
 
-        private CompetitorCI GetOrLoadCompetitor()
+        private CompetitorCacheItem GetOrLoadCompetitor()
         {
-            if (_competitorId != null && _competitorCI == null && _profileCache != null)
+            if (_competitorId != null && _competitorCacheItem == null && _profileCache != null)
             {
                 LoadCompetitorProfileInCache();
                 _lastCompetitorFetch = DateTime.Now;
             }
 
-            if (_competitorCI != null && _profileCache != null && _lastCompetitorFetch < DateTime.Now.AddSeconds(-30))
+            if (_competitorCacheItem != null && _profileCache != null && _lastCompetitorFetch < DateTime.Now.AddSeconds(-30))
             {
                 LoadCompetitorProfileInCache();
                 _lastCompetitorFetch = DateTime.Now;
             }
 
-            return _competitorCI;
+            return _competitorCacheItem;
         }
 
         private void LoadCompetitorProfileInCache()
         {
-            _competitorCI = _profileCache.GetCompetitorProfileAsync(_competitorId, _cultures, true).ConfigureAwait(false).GetAwaiter().GetResult();
+            _competitorCacheItem = _profileCache.GetCompetitorProfileAsync(_competitorId, _cultures, true).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }

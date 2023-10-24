@@ -3,15 +3,15 @@
 */
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// Maps <see cref="sportTournamentsEndpoint"/> instances to <see cref="TournamentInfoDTO" /> instance
+    /// Maps <see cref="sportTournamentsEndpoint"/> instances to <see cref="TournamentInfoDto" /> instance
     /// </summary>
-    internal class ListSportAvailableTournamentMapper : ISingleTypeMapper<EntityList<TournamentInfoDTO>>
+    internal class ListSportAvailableTournamentMapper : ISingleTypeMapper<EntityList<TournamentInfoDto>>
     {
         /// <summary>
         /// A <see cref="sportTournamentsEndpoint"/> instance containing schedule info
@@ -30,13 +30,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="EntityList{TournamentInfoDTO}"/> instance
+        /// Maps it's data to <see cref="EntityList{TournamentInfoDto}"/> instance
         /// </summary>
-        /// <returns>Constructed <see cref="EntityList{TournamentInfoDTO}"/> instance</returns>
-        public EntityList<TournamentInfoDTO> Map()
+        /// <returns>Constructed <see cref="EntityList{TournamentInfoDto}"/> instance</returns>
+        public EntityList<TournamentInfoDto> Map()
         {
-            var events = _data.tournaments.Select(s => new TournamentInfoDTO(s)).ToList();
-            return new EntityList<TournamentInfoDTO>(events);
+            var events = _data.tournaments.Select(s => new TournamentInfoDto(s)).ToList();
+            return new EntityList<TournamentInfoDto>(events);
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IMessage">
-    <Position X="11.5" Y="0.5" Width="1.5" />
+    <Position X="3.75" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Entities\IMessage.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IEventMessage&lt;T&gt;">
-    <Position X="9.25" Y="0.5" Width="1.75" />
-    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IMessage" FixedFromPoint="true">
+    <Position X="4" Y="2.25" Width="2" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IMessage" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.5" Y="1.312" />
-        <Point X="11" Y="1.312" />
+        <Point X="4.875" Y="1.796" />
+        <Point X="4.875" Y="2.25" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -20,21 +20,12 @@
       <FileName>Entities\IEventMessage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted">
-    <Position X="15.5" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\ISnapshopCompleted.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IFixtureChange&lt;T&gt;">
-    <Position X="11.5" Y="2.75" Width="1.75" />
+    <Position X="6.75" Y="2.25" Width="2.5" />
     <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IEventMessage&lt;T&gt;" FixedFromPoint="true">
       <Path>
-        <Point X="10.25" Y="2.117" />
-        <Point X="10.25" Y="2.492" />
-        <Point X="12.375" Y="2.492" />
-        <Point X="12.375" Y="2.75" />
+        <Point X="6" Y="3.062" />
+        <Point X="6.75" Y="3.062" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -43,11 +34,11 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IMarketMessage&lt;T, T1&gt;">
-    <Position X="9.25" Y="2.75" Width="2" />
+    <Position X="4" Y="4.25" Width="2" />
     <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IEventMessage&lt;T&gt;" FixedFromPoint="true">
       <Path>
-        <Point X="10.25" Y="2.117" />
-        <Point X="10.25" Y="2.75" />
+        <Point X="5" Y="3.867" />
+        <Point X="5" Y="4.25" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -56,27 +47,40 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IBetCancel&lt;T&gt;">
-    <Position X="14.75" Y="5" Width="1.75" />
+    <Position X="3.5" Y="6.75" Width="2.5" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IMarketMessage&lt;T, T1&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="4.75" Y="5.483" />
+        <Point X="4.75" Y="6.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Entities\IBetCancel.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IBetSettlement&lt;T&gt;">
-    <Position X="10.75" Y="5" Width="1.5" />
+    <Position X="6.5" Y="7.25" Width="2.75" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IMarketMessage&lt;T, T1&gt;" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.625" Y="5.483" />
+        <Point X="5.625" Y="5.723" />
+        <Point X="6.26" Y="5.723" />
+        <Point X="6.26" Y="7.812" />
+        <Point X="6.5" Y="7.812" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
       <FileName>Entities\IBetSettlement.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IBetStop&lt;T&gt;">
-    <Position X="7.25" Y="2.75" Width="1.5" />
-    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IEventMessage&lt;T&gt;" FixedFromPoint="true">
+    <Position X="0.5" Y="2.25" Width="2.25" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IEventMessage&lt;T&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="10.25" Y="2.117" />
-        <Point X="10.25" Y="2.492" />
-        <Point X="8" Y="2.492" />
-        <Point X="8" Y="2.75" />
+        <Point X="4" Y="3" />
+        <Point X="2.75" Y="3" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -85,38 +89,48 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IOddsChange&lt;T&gt;">
-    <Position X="8.75" Y="5" Width="1.75" />
+    <Position X="0.5" Y="6.75" Width="2.75" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IMarketMessage&lt;T, T1&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="4.25" Y="5.483" />
+        <Point X="4.25" Y="6.375" />
+        <Point X="1.875" Y="6.375" />
+        <Point X="1.875" Y="6.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAQAAAAAAAAAACAAAAAAAAAAAAAAAAQAAAQAAA=</HashCode>
       <FileName>Entities\IOddsChange.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel&lt;T&gt;">
-    <Position X="16.75" Y="5" Width="1.75" />
+    <Position X="6.5" Y="5.5" Width="2.75" />
+    <InheritanceLine Type="Sportradar.OddsFeed.SDK.Entities.IMarketMessage&lt;T, T1&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6" Y="5.062" />
+        <Point X="6.3" Y="5.062" />
+        <Point X="6.3" Y="5.377" />
+        <Point X="7.875" Y="5.377" />
+        <Point X="7.875" Y="5.5" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\IRollbackBetCancel.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement&lt;T&gt;">
-    <Position X="12.5" Y="5" Width="2" />
+    <Position X="6.5" Y="4.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\IRollbackBetSettlement.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Sportradar.OddsFeed.SDK.Entities.ICashOutProbabilities&lt;T&gt;">
-    <Position X="6.75" Y="5" Width="1.75" />
+    <Position X="0.5" Y="4.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAQAAA=</HashCode>
       <FileName>Entities\ICashOutProbabilities.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Sportradar.OddsFeed.SDK.Entities.IProducerStatusChange">
-    <Position X="13.25" Y="0.75" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\IProducerStatusChange.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

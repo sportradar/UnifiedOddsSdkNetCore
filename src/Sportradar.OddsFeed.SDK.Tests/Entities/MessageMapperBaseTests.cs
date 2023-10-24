@@ -4,76 +4,78 @@
 
 using System;
 using FluentAssertions;
-using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
+using Sportradar.OddsFeed.SDK.Entities.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Xunit;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Entities
+namespace Sportradar.OddsFeed.SDK.Tests.Entities;
+
+public class MessageMapperBaseTests
 {
-    public class MessageMapperBaseTests
+    [Fact]
+    public void VoidFactorsAreConverted()
     {
-        [Fact]
-        public void VoidFactorsAreConverted()
-        {
-            var voidFactor = MessageMapperHelper.GetVoidFactor(true, 0);
-            Assert.Equal(VoidFactor.Zero, voidFactor);
+        var voidFactor = MessageMapperHelper.GetVoidFactor(true, 0);
+        Assert.Equal(VoidFactor.Zero, voidFactor);
 
-            voidFactor = MessageMapperHelper.GetVoidFactor(true, 0.5);
-            Assert.Equal(VoidFactor.Half, voidFactor);
+        voidFactor = MessageMapperHelper.GetVoidFactor(true, 0.5);
+        Assert.Equal(VoidFactor.Half, voidFactor);
 
-            voidFactor = MessageMapperHelper.GetVoidFactor(true, 1);
-            Assert.Equal(VoidFactor.One, voidFactor);
+        voidFactor = MessageMapperHelper.GetVoidFactor(true, 1);
+        Assert.Equal(VoidFactor.One, voidFactor);
+    }
 
-            voidFactor = MessageMapperHelper.GetVoidFactor(false, 0);
-            Assert.Equal(VoidFactor.Zero, voidFactor);
+    [Theory]
+    [InlineData(0)]
+    [InlineData(0.3)]
+    [InlineData(0.5)]
+    [InlineData(0.7)]
+    [InlineData(1)]
+    public void VoidFactorsNotSpecifiedAllAreConvertedToZero(double factor)
+    {
+        var voidFactor = MessageMapperHelper.GetVoidFactor(false, factor);
+        Assert.Equal(VoidFactor.Zero, voidFactor);
+    }
 
-            voidFactor = MessageMapperHelper.GetVoidFactor(false, 0.5);
-            Assert.Equal(VoidFactor.Zero, voidFactor);
+    [Fact]
+    public void IncorrectVoidFactorsThrow()
+    {
+        Action action = () => MessageMapperHelper.GetVoidFactor(true, 0.7);
+        action.Should().Throw<ArgumentException>();
+    }
 
-            voidFactor = MessageMapperHelper.GetVoidFactor(false, 1);
-            Assert.Equal(VoidFactor.Zero, voidFactor);
-        }
+    [Fact]
+    public void IncorrectVoidFactorsDoNotThrowWhenNotSpecified()
+    {
+        var voidFactor = MessageMapperHelper.GetVoidFactor(false, 0.7);
+        Assert.Equal(VoidFactor.Zero, voidFactor);
+    }
 
-        [Fact]
-        public void IncorrectVoidFactorsThrow()
-        {
-            Action action = () => MessageMapperHelper.GetVoidFactor(true, 0.7);
-            action.Should().Throw<ArgumentException>();
-        }
+    [Fact]
+    public void CorrectEnumValuesForMarketStatusAreResolved()
+    {
+        var active = MessageMapperHelper.GetEnumValue<MarketStatus>(1);
+        Assert.Equal(MarketStatus.Active, active);
 
-        [Fact]
-        public void IncorrectVoidFactorsDoNotThrowWhenNotSpecified()
-        {
-            var voidFactor = MessageMapperHelper.GetVoidFactor(false, 0.7);
-            Assert.Equal(VoidFactor.Zero, voidFactor);
-        }
+        var suspended = MessageMapperHelper.GetEnumValue<MarketStatus>(-1);
+        Assert.Equal(MarketStatus.Suspended, suspended);
 
-        [Fact]
-        public void CorrectEnumValuesAreResolved()
-        {
-            var active = MessageMapperHelper.GetEnumValue<MarketStatus>(1);
-            Assert.Equal(MarketStatus.ACTIVE, active);
+        var deactivated = MessageMapperHelper.GetEnumValue<MarketStatus>(0);
+        Assert.Equal(MarketStatus.Inactive, deactivated);
+    }
 
-            var suspended = MessageMapperHelper.GetEnumValue<MarketStatus>(-1);
-            Assert.Equal(MarketStatus.SUSPENDED, suspended);
+    [Fact]
+    public void DefaultValueIsReturned()
+    {
+        var active = MessageMapperHelper.GetEnumValue(false, 99, MarketStatus.Active);
+        Assert.Equal(MarketStatus.Active, active);
+    }
 
-            var deactivated = MessageMapperHelper.GetEnumValue<MarketStatus>(0);
-            Assert.Equal(MarketStatus.INACTIVE, deactivated);
-        }
-
-        [Fact]
-        public void DefaultValueIsReturned()
-        {
-            var active = MessageMapperHelper.GetEnumValue(false, 99, MarketStatus.ACTIVE);
-            Assert.Equal(MarketStatus.ACTIVE, active);
-        }
-
-        [Fact]
-        public void IncorrectMarketStatusesThrow()
-        {
-            Action action = () => MessageMapperHelper.GetEnumValue<MarketStatus>(2);
-            action.Should().Throw<ArgumentException>();
-        }
+    [Fact]
+    public void IncorrectMarketStatusesThrow()
+    {
+        Action action = () => MessageMapperHelper.GetEnumValue<MarketStatus>(2);
+        action.Should().Throw<ArgumentException>();
     }
 }

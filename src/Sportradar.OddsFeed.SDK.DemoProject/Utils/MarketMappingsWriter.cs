@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 {
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         public MarketMappingsWriter(TaskProcessor taskProcessor, CultureInfo culture, ILogger log)
         {
             _taskProcessor = taskProcessor;
-            _culture = culture; 
+            _culture = culture;
             _log = log ?? new NullLogger<MarketMappingsWriter>();
         }
 
@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogDebug("No Markets for this SportEvent");
                 return;
             }
             foreach (var market in markets)
@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogDebug("No Markets for this SportEvent");
                 return;
             }
             foreach (var market in markets)
@@ -61,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogDebug("No Markets for this SportEvent");
                 return;
             }
             foreach (var market in markets)
@@ -74,7 +74,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
         {
             if (markets == null)
             {
-                _log.LogDebug("No Markets for this SportEvent.");
+                _log.LogDebug("No Markets for this SportEvent");
                 return;
             }
             foreach (var market in markets)
@@ -89,7 +89,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
 
             if (orgIds == null)
             {
-                _log.LogDebug($"No market mapping for marketId:{market.Id}.");
+                _log.LogDebug("No market mapping for marketId:{MarketId}", market.Id);
                 return;
             }
             foreach (var orgId in orgIds)
@@ -97,16 +97,16 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 if (orgId is LcooMarketMapping)
                 {
                     var lcooId = orgId as LcooMarketMapping;
-                    _log.LogDebug($"Market {market.Id} mapping TypeId:{lcooId.TypeId}, Sov:'{lcooId.Sov}'");
+                    _log.LogDebug("Market {MarketId} mapping TypeId:{TypeId}, Sov:'{Sov}'", market.Id, lcooId.TypeId, lcooId.Sov);
                 }
                 else if (orgId is LoMarketMapping)
                 {
                     var loId = orgId as LoMarketMapping;
-                    _log.LogDebug($"Market {market.Id} mapping TypeId:{loId.TypeId}, SubTypeId:{loId.SubTypeId}, Sov:'{loId.Sov}'");
+                    _log.LogDebug("Market {MarketId} mapping TypeId:{TypeId}, SubTypeId:{SubTypeId}, Sov:'{Sov}'", market.Id, loId.TypeId, loId.SubTypeId, loId.Sov);
                 }
                 else
                 {
-                    _log.LogWarning($"Unknown market mapping type for market:{market.Id}. Market mapping TypeId:{orgId.TypeId}, Sov:'{orgId.Sov}'");
+                    _log.LogWarning("Unknown market mapping type for market:{MarketId}. Market mapping TypeId:{TypeId}, Sov:'{Sov}'", market.Id, orgId.TypeId, orgId.Sov);
                 }
             }
         }
@@ -128,7 +128,6 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 foreach (var outcome in market.OutcomeOdds)
                 {
                     WriteMarketOutcomeMappings(market.Id, outcome);
-
                 }
             }
         }
@@ -154,19 +153,19 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
             var mappedOutcomes = _taskProcessor.GetTaskResult(outcome.GetMappedOutcomeIdsAsync());
             if (mappedOutcomes == null)
             {
-                _log.LogDebug($"\tOutcome for market={marketId} and outcomeId={outcome.Id} has no outcome mapping!");
+                _log.LogDebug("\tOutcome for market={MarketId} and outcomeId={OutcomeId} has no outcome mapping", marketId, outcome.Id);
                 return;
             }
 
             var outcomeMappings = mappedOutcomes.ToList();
             if (!outcomeMappings.Any())
             {
-                _log.LogDebug($"\tOutcome for market={marketId} and outcomeId={outcome.Id} has no outcome mapping!");
+                _log.LogDebug("\tOutcome for market={MarketId} and outcomeId={OutcomeId} has no outcome mapping", marketId, outcome.Id);
                 return;
             }
             foreach (var mappedOutcome in outcomeMappings)
             {
-                _log.LogDebug($"\tOutcome for market={marketId} and outcomeId={outcome.Id} is mapped to [Id:{mappedOutcome.Id}, Name:'{mappedOutcome.GetName(_culture)}'].");
+                _log.LogDebug("\tOutcome for market={MarketId} and outcomeId={OutcomeId} is mapped to [Id:{MappedOutcomeId}, Name:'{MappedOutcomeName}']", marketId, outcome.Id, mappedOutcome.Id, mappedOutcome.GetName(_culture));
             }
         }
 

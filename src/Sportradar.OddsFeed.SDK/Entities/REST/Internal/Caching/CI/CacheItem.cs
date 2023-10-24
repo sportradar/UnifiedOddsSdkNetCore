@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
 {
     /// <summary>
     /// Base class for cached representation of the sport hierarchy entity (sport, category, tournament)
@@ -18,9 +18,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
     internal class CacheItem
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> representing id of the related entity
+        /// Gets a <see cref="Urn"/> representing id of the related entity
         /// </summary>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IDictionary{CultureInfo, String}"/> containing translated name of the item
@@ -30,10 +30,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheItem"/> class.
         /// </summary>
-        /// <param name="id">A <see cref="URN"/> representing the id of the item</param>
+        /// <param name="id">A <see cref="Urn"/> representing the id of the item</param>
         /// <param name="name">The name of the item</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided data</param>
-        public CacheItem(URN id, string name, CultureInfo culture)
+        public CacheItem(Urn id, string name, CultureInfo culture)
         {
             // don not check name, since there were tournaments with empty name
             Guard.Argument(id, nameof(id)).NotNull();
@@ -46,24 +46,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheItem"/> class.
         /// </summary>
-        /// <param name="exportable">A <see cref="ExportableCI"/> representing the cache item</param>
-        public CacheItem(ExportableCI exportable)
+        /// <param name="exportable">A <see cref="ExportableBase"/> representing the cache item</param>
+        public CacheItem(ExportableBase exportable)
         {
             if (exportable == null)
             {
                 throw new ArgumentNullException(nameof(exportable));
             }
 
-            Id = URN.Parse(exportable.Id);
-            Name = new Dictionary<CultureInfo, string>(exportable.Name);
+            Id = Urn.Parse(exportable.Id);
+            Name = new Dictionary<CultureInfo, string>(exportable.Names);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheItem"/> class.
         /// </summary>
-        /// <param name="id">A <see cref="URN"/> representing the id of the item</param>
+        /// <param name="id">A <see cref="Urn"/> representing the id of the item</param>
         /// <param name="name">The name of the item</param>
-        protected CacheItem(URN id, IDictionary<CultureInfo, string> name)
+        protected CacheItem(Urn id, IDictionary<CultureInfo, string> name)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -93,11 +93,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
-        /// Merges the specified <see cref="SportEntityDTO"/> into instance
+        /// Merges the specified <see cref="SportEntityDto"/> into instance
         /// </summary>
-        /// <param name="dto">The <see cref="SportEntityDTO"/> used for merge</param>
-        /// <param name="culture">The culture of the input <see cref="SportEntityDTO"/></param>
-        internal void Merge(SportEntityDTO dto, CultureInfo culture)
+        /// <param name="dto">The <see cref="SportEntityDto"/> used for merge</param>
+        /// <param name="culture">The culture of the input <see cref="SportEntityDto"/></param>
+        internal void Merge(SportEntityDto dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Name[culture] = dto.Name;

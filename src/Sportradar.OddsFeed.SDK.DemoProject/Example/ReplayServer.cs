@@ -4,288 +4,129 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using Dawn;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Sportradar.OddsFeed.SDK.API;
-using Sportradar.OddsFeed.SDK.API.EventArguments;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Replay;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
-using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
     /// <summary>
     /// Example displaying interaction with Replay Server with single session, generic dispatcher, basic output
     /// </summary>
-    public class ReplayServer
+    public class ReplayServer : ExampleBase
     {
-        private readonly ILogger _log;
-        private readonly ILoggerFactory _loggerFactory;
-
-        public ReplayServer(ILoggerFactory loggerFactory = null)
+        public ReplayServer(ILogger<ReplayServer> logger)
+            : base(logger)
         {
-            _loggerFactory = loggerFactory;
-            _log = _loggerFactory?.CreateLogger(typeof(ReplayServer)) ?? new NullLogger<ReplayServer>();
         }
 
-        public void Run(MessageInterest messageInterest)
+        public override void Run(MessageInterest messageInterest)
         {
-            _log.LogInformation("Running the OddsFeed SDK Replay Server example");
+            Log.LogInformation("Running the Replay Server example");
 
-            _log.LogInformation("Retrieving configuration from application configuration file");
-            var configuration = Feed.GetConfigurationBuilder().BuildFromConfigFile();
-            //you can also create the IOddsFeedConfiguration instance by providing required values
-            //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
+            Log.LogInformation("Retrieving configuration from application configuration file");
+            var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureLogging((context, logging) =>
+                {
+                    logging.ClearProviders();
+                    logging.AddLog4Net("log4net.config");
+                })
+                .ConfigureServices(configure =>
+                {
+                    configure.AddUofSdk(configuration);
+                })
+                .Build();
 
-            _log.LogInformation("Creating Feed instance");
-            var replayFeed = new ReplayFeed(configuration, _loggerFactory);
+            Log.LogInformation("Creating UofSdk instance");
+            var uofSdkForReplay = new UofSdkForReplay(host.Services);
 
-            _log.LogInformation("Creating IOddsFeedSession");
-            var session = replayFeed.CreateBuilder()
+            Log.LogInformation("Creating IUofSession");
+            var session = uofSdkForReplay.GetSessionBuilder()
                 .SetMessageInterest(messageInterest)
                 .Build();
 
-            _log.LogInformation("Attaching to feed events");
-            AttachToFeedEvents(replayFeed);
+            AttachToGlobalEvents(uofSdkForReplay);
             AttachToSessionEvents(session);
 
-            _log.LogInformation("Opening the feed instance");
-            replayFeed.Open();
+            Log.LogInformation("Opening the sdk instance");
+            uofSdkForReplay.Open();
 
-            ReplayServerInteraction(replayFeed);
+            ReplayServerInteraction(uofSdkForReplay);
 
-            _log.LogInformation("Example successfully started. Hit <enter> to quit");
+            Log.LogInformation("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
             Console.ReadLine();
 
-            _log.LogInformation("Stopping replay");
-            replayFeed.ReplayManager.StopReplay();
+            Log.LogInformation("Stopping replay");
+            uofSdkForReplay.ReplayManager.StopReplay();
 
-            _log.LogInformation("Closing / disposing the feed");
-            replayFeed.Close();
+            Log.LogInformation("Closing / disposing the sdk instance");
+            uofSdkForReplay.Close();
 
-            DetachFromFeedEvents(replayFeed);
+            DetachFromGlobalEvents(uofSdkForReplay);
             DetachFromSessionEvents(session);
 
-            _log.LogInformation("Stopped");
+            Log.LogInformation("Stopped");
         }
 
-        /// <summary>
-        /// Attaches to events raised by <see cref="IOddsFeed"/>
-        /// </summary>
-        /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance </param>
-        private void AttachToFeedEvents(IOddsFeed oddsFeed)
+        private void ReplayServerInteraction(IUofSdkForReplay uofSdkForReplay)
         {
-            Guard.Argument(oddsFeed, nameof(oddsFeed)).NotNull();
-
-            _log.LogInformation("Attaching to feed events");
-            oddsFeed.ProducerUp += OnProducerUp;
-            oddsFeed.ProducerDown += OnProducerDown;
-            oddsFeed.Disconnected += OnDisconnected;
-            oddsFeed.Closed += OnClosed;
-        }
-
-        /// <summary>
-        /// Detaches from events defined by <see cref="IOddsFeed"/>
-        /// </summary>
-        /// <param name="oddsFeed">A <see cref="IOddsFeed"/> instance</param>
-        private void DetachFromFeedEvents(IOddsFeed oddsFeed)
-        {
-            Guard.Argument(oddsFeed, nameof(oddsFeed)).NotNull();
-
-            _log.LogInformation("Detaching from feed events");
-            oddsFeed.ProducerUp -= OnProducerUp;
-            oddsFeed.ProducerDown -= OnProducerDown;
-            oddsFeed.Disconnected -= OnDisconnected;
-            oddsFeed.Closed -= OnClosed;
-        }
-
-        /// <summary>
-        /// Attaches to events raised by <see cref="IOddsFeed"/>
-        /// </summary>
-        /// <param name="session">A <see cref="IOddsFeedSession"/> instance </param>
-        private void AttachToSessionEvents(IOddsFeedSession session)
-        {
-            Guard.Argument(session, nameof(session)).NotNull();
-
-            _log.LogInformation("Attaching to session events");
-            session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
-            session.OnBetCancel += SessionOnBetCancel;
-            session.OnBetSettlement += SessionOnBetSettlement;
-            session.OnBetStop += SessionOnBetStop;
-            session.OnFixtureChange += SessionOnFixtureChange;
-            session.OnOddsChange += SessionOnOddsChange;
-            session.OnRollbackBetCancel += SessionOnRollbackBetCancel;
-            session.OnRollbackBetSettlement += SessionOnRollbackBetSettlement;
-        }
-
-        /// <summary>
-        /// Detaches from events defined by <see cref="IOddsFeed"/>
-        /// </summary>
-        /// <param name="session">A <see cref="IOddsFeedSession"/> instance</param>
-        private void DetachFromSessionEvents(IOddsFeedSession session)
-        {
-            Guard.Argument(session, nameof(session)).NotNull();
-
-            _log.LogInformation("Detaching from session events");
-            session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;
-            session.OnBetCancel -= SessionOnBetCancel;
-            session.OnBetSettlement -= SessionOnBetSettlement;
-            session.OnBetStop -= SessionOnBetStop;
-            session.OnFixtureChange -= SessionOnFixtureChange;
-            session.OnOddsChange -= SessionOnOddsChange;
-            session.OnRollbackBetCancel -= SessionOnRollbackBetCancel;
-            session.OnRollbackBetSettlement -= SessionOnRollbackBetSettlement;
-        }
-
-        private void SessionOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
-        {
-            var baseEntity = rollbackBetSettlementEventArgs.GetBetSettlementRollback();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
-        }
-
-        private void SessionOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
-        {
-            var baseEntity = rollbackBetCancelEventArgs.GetBetCancelRollback();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
-        }
-
-        private void SessionOnOddsChange(object sender, OddsChangeEventArgs<ISportEvent> oddsChangeEventArgs)
-        {
-            var baseEntity = oddsChangeEventArgs.GetOddsChange();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
-        }
-
-        private void SessionOnFixtureChange(object sender, FixtureChangeEventArgs<ISportEvent> fixtureChangeEventArgs)
-        {
-            var baseEntity = fixtureChangeEventArgs.GetFixtureChange();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
-        }
-
-        private void SessionOnBetStop(object sender, BetStopEventArgs<ISportEvent> betStopEventArgs)
-        {
-            var baseEntity = betStopEventArgs.GetBetStop();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
-        }
-
-        private void SessionOnBetSettlement(object sender, BetSettlementEventArgs<ISportEvent> betSettlementEventArgs)
-        {
-            var baseEntity = betSettlementEventArgs.GetBetSettlement();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
-        }
-
-        private void SessionOnBetCancel(object sender, BetCancelEventArgs<ISportEvent> betCancelEventArgs)
-        {
-            var baseEntity = betCancelEventArgs.GetBetCancel();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Timestamps.Created);
-        }
-
-        private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
-        {
-            _log.LogInformation($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
-        }
-
-        /// <summary>
-        /// Invoked when the connection to the feed is lost
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnDisconnected(object sender, EventArgs e)
-        {
-            _log.LogWarning("Connection to the feed lost");
-        }
-
-        /// <summary>
-        /// Invoked when the feed is closed
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnClosed(object sender, FeedCloseEventArgs e)
-        {
-            _log.LogWarning($"The feed is closed with the reason: {e.GetReason()}");
-        }
-
-        /// <summary>
-        /// Invoked when a product associated with the feed goes down
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnProducerDown(object sender, ProducerStatusChangeEventArgs e)
-        {
-            _log.LogWarning($"Producer {e.GetProducerStatusChange().Producer} is down");
-        }
-
-        /// <summary>
-        /// Invoked when a product associated with the feed goes up
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
-        {
-            _log.LogInformation($"Producer {e.GetProducerStatusChange().Producer} is up");
-        }
-
-        private void WriteSportEntity(string msgType, ISportEvent message, long timestamp)
-        {
-            _log.LogDebug($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}. Timestamp={timestamp}.");
-        }
-
-        private void ReplayServerInteraction(ReplayFeed replayFeed)
-        {
-            WriteReplayResponse(replayFeed.ReplayManager.StopAndClearReplay());
-            var replayStatus = replayFeed.ReplayManager.GetStatusOfReplay();
+            WriteReplayResponse(uofSdkForReplay.ReplayManager.StopAndClearReplay());
+            var replayStatus = uofSdkForReplay.ReplayManager.GetStatusOfReplay();
             WriteReplayStatus(replayStatus);
-            var queueEvents = replayFeed.ReplayManager.GetEventsInQueue();
-            _log.LogInformation($"Currently {queueEvents.Count()} items in queue.");
+            WriteReplayQueueSize(uofSdkForReplay);
 
-            // there are two options:
-            // play specific scenario or add specific matches to be replayed
+            // There are two options for replaying matches: play specific scenario with predefined matches or add specific matches to be replayed (uncomment selected option).
 
-            // option 1:
-            PlayScenario(replayFeed);
+            // Option 1:
+            PlayScenario(uofSdkForReplay);
 
-            // option 2:
-            //PlayMatches(replayFeed);
+            // Option 2:
+            //PlayMatches(uofSdkForReplay);
 
-            replayStatus = replayFeed.ReplayManager.GetStatusOfReplay();
+            replayStatus = uofSdkForReplay.ReplayManager.GetStatusOfReplay();
             WriteReplayStatus(replayStatus);
         }
 
-        private void PlayScenario(ReplayFeed replayFeed)
+        private void PlayScenario(IUofSdkForReplay uofSdkForReplay)
         {
-            replayFeed.ReplayManager.StartReplayScenario(1, 10, 1000);
-            Thread.Sleep(1000);
-            var queueEvents = replayFeed.ReplayManager.GetEventsInQueue();
-            _log.LogInformation($"Currently {queueEvents.Count()} items in queue.");
+            uofSdkForReplay.ReplayManager.StartReplayScenario(1, 10, 1000);
+            Task.Delay(1000).GetAwaiter().GetResult();
+            WriteReplayQueueSize(uofSdkForReplay);
         }
 
-        private void PlayMatches(ReplayFeed replayFeed)
+        private void PlayMatches(IUofSdkForReplay uofSdkForReplay)
         {
-            // option 1:
-            // add events from sport data provider
-            //foreach (var urn in SelectEventsFromSportDataProvider(replayFeed))
-            //    WriteReplayResponse(replayFeed.ReplayManager.AddMessagesToReplayQueue(urn));
+            // Add events from sport data provider (uncomment selected option)
+            // Option 1:
+            //foreach (var urn in SelectEventsFromSportDataProvider(uofSdkForReplay))
+            //{
+            //    WriteReplayResponse(uofSdkForReplay.ReplayManager.AddMessagesToReplayQueue(urn));
+            //}
 
-            // option 2:
+            // Option 2:
             // add example events
             foreach (var urn in SelectExampleEvents())
             {
-                WriteReplayResponse(replayFeed.ReplayManager.AddMessagesToReplayQueue(urn));
+                WriteReplayResponse(uofSdkForReplay.ReplayManager.AddMessagesToReplayQueue(urn));
             }
 
-            var queueEvents = replayFeed.ReplayManager.GetEventsInQueue();
-            _log.LogInformation($"Currently {queueEvents.Count()} items in queue.");
+            WriteReplayQueueSize(uofSdkForReplay);
 
-            WriteReplayResponse(replayFeed.ReplayManager.StartReplay(10, 1000));
+            WriteReplayResponse(uofSdkForReplay.ReplayManager.StartReplay(10, 1000));
         }
 
-        private IEnumerable<URN> SelectEventsFromSportDataProvider(ReplayFeed replayFeed)
+        private IEnumerable<Urn> SelectEventsFromSportDataProvider(IUofSdkForReplay uofSdkForReplay)
         {
-            // we can only add matches older then 48 hours
-            var events = replayFeed.SportDataProvider.GetSportEventsByDateAsync(DateTime.Now.AddDays(-5)).Result.ToList();
+            // Only matches older then 48 hours can be replayed
+            var events = uofSdkForReplay.SportDataProvider.GetSportEventsByDateAsync(DateTime.Now.AddDays(-5)).Result.ToList();
             if (events.Count > 10)
             {
                 for (var i = 0; i < 10; i++)
@@ -295,7 +136,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             }
         }
 
-        private IEnumerable<URN> SelectExampleEvents()
+        private IEnumerable<Urn> SelectExampleEvents()
         {
             Console.WriteLine();
             Console.WriteLine("Sample events:");
@@ -328,17 +169,24 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             }
         }
 
+        private void WriteReplayQueueSize(IUofSdkForReplay uofSdkForReplay)
+        {
+
+            var queueEvents = uofSdkForReplay.ReplayManager.GetEventsInQueue();
+            Log.LogInformation("Currently {QueueSize} items in queue", queueEvents.Count().ToString());
+        }
+
         private void WriteReplayStatus(IReplayStatus status)
         {
-            _log.LogInformation($"Status of replay: {status.PlayerStatus}. Last message for event: {status.LastMessageFromEvent}.");
+            Log.LogInformation("Status of replay: {PlayerStatus}. Last message for event: {EventId}", status.PlayerStatus, status.LastMessageFromEvent);
         }
 
         private void WriteReplayResponse(IReplayResponse response)
         {
-            _log.LogInformation($"Response of replay: {response.Success}. Message: {response.Message}");
+            Log.LogInformation("Response of replay: {ResponseSuccess}. Message: {ResponseMessage}", response.Success, response.Message);
             if (!string.IsNullOrEmpty(response.ErrorMessage))
             {
-                _log.LogInformation($"\t{response.ErrorMessage}");
+                Log.LogInformation("\t{ErrorMessage}", response.ErrorMessage);
             }
         }
     }

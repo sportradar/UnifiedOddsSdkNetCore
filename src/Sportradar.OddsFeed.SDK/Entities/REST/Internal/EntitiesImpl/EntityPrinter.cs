@@ -6,7 +6,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Printer used to format ToString display for entities

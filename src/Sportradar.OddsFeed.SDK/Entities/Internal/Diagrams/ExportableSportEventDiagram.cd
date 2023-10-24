@@ -1,66 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableBase">
     <Position X="15" Y="3" Width="3" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableSportEventCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSportEventCacheItem">
     <Position X="12" Y="5" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAEAAABCAAAAEABAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableSportEventCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableSportEventCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableTournamentInfoBasicCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentInfoBasicCacheItem">
     <Position X="16" Y="5" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAACAA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableTournamentInfoBasicCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableTournamentInfoBasicCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableCompetitionCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitionCacheItem">
     <Position X="7.5" Y="8.25" Width="4.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAIIAgAACAADEAAAAAAAAEAAAAAAAAAQAAABA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableCompetitionCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableCompetitionCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableDrawCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDrawCacheItem">
     <Position X="7.5" Y="5" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAiAAACAAABAAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableDrawCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableDrawCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableLotteryCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableLotteryCacheItem">
     <Position X="14.25" Y="8.25" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAgAgAAgAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableLotteryCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableLotteryCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableTournamentInfoCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentInfoCacheItem">
     <Position X="18" Y="8.25" Width="4.75" />
     <TypeIdentifier>
       <HashCode>BAAABEIAJAAEAgAAAAGAAAAAAAAEAAAAAAAAAAIACAE=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableTournamentInfoCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableTournamentInfoCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableMatchCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableMatchCacheItem">
     <Position X="7.5" Y="12.25" Width="3" />
     <TypeIdentifier>
       <HashCode>AAACAAAAASAAAAAAAAAAAAgAAAAEAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableMatchCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableMatchCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable.ExportableStageCI">
+  <Class Name="Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableStageCacheItem">
     <Position X="11" Y="12.25" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAgAAAAAAAAAAAAAEAABAAAAAAAAAAAA=</HashCode>
-      <FileName>Entities\REST\Caching\Exportable\ExportableStageCI.cs</FileName>
+      <FileName>Entities\REST\Caching\Exportable\ExportableStageCacheItem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

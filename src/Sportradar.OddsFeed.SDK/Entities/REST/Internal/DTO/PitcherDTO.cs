@@ -3,16 +3,16 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-access-object representing a pitcher
     /// </summary>
-    /// <seealso cref="SportEntityDTO" />
-    internal class PitcherDTO : SportEntityDTO
+    /// <seealso cref="SportEntityDto" />
+    internal class PitcherDto : SportEntityDto
     {
         /// <summary>
         /// Gets the hand with which player pitches
@@ -27,10 +27,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public HomeAway Competitor { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PitcherDTO"/> class
+        /// Initializes a new instance of the <see cref="PitcherDto"/> class
         /// </summary>
         /// <param name="record">A <see cref="pitcher"/> containing information about a pitcher</param>
-        internal PitcherDTO(pitcher record)
+        internal PitcherDto(pitcher record)
             : base(record.id, record.name)
         {
             Guard.Argument(record, nameof(record)).NotNull();

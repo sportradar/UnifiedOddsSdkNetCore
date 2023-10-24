@@ -2,8 +2,7 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 
-// ReSharper disable InconsistentNaming
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Enums
 {
     /// <summary>
     /// Enumerates values providing information on the booking status of an event

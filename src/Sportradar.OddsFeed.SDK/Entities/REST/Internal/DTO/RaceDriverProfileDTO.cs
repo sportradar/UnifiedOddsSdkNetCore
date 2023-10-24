@@ -2,29 +2,29 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for race driver profile
     /// </summary>
-    internal class RaceDriverProfileDTO
+    internal class RaceDriverProfileDto
     {
-        public URN RaceDriverId { get; }
+        public Urn RaceDriverId { get; }
 
-        public URN RaceTeamId { get; }
+        public Urn RaceTeamId { get; }
 
-        public CarDTO Car { get; }
+        public CarDto Car { get; }
 
-        public RaceDriverProfileDTO(raceDriverProfile item)
+        public RaceDriverProfileDto(raceDriverProfile item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 
-            RaceDriverId = item.race_driver != null ? URN.Parse(item.race_driver.id) : null;
-            RaceTeamId = item.race_team != null ? URN.Parse(item.race_team.id) : null;
-            Car = item.car != null ? new CarDTO(item.car) : null;
+            RaceDriverId = item.race_driver != null ? Urn.Parse(item.race_driver.id) : null;
+            RaceTeamId = item.race_team != null ? Urn.Parse(item.race_team.id) : null;
+            Car = item.car != null ? new CarDto(item.car) : null;
         }
     }
 }

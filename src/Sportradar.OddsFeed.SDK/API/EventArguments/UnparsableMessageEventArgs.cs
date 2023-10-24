@@ -3,14 +3,15 @@
 */
 using System;
 using System.Text;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Sportradar.OddsFeed.SDK.API.EventArguments
+namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
-    /// Event arguments of <see cref="IOddsFeedSession.OnUnparsableMessageReceived"/> event
+    /// Event arguments of <see cref="IUofSession.OnUnparsableMessageReceived"/> event
     /// </summary>
     public class UnparsableMessageEventArgs : EventArgs
     {

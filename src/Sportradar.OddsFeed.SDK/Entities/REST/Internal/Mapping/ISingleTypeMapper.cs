@@ -3,7 +3,7 @@
 */
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
     /// Defines a contract implemented by classes capable of map data to instance of type specified by out parameter

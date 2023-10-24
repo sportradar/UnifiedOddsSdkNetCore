@@ -2,14 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representation for weather info
     /// </summary>
-    internal class WeatherInfoDTO
+    internal class WeatherInfoDto
     {
         internal int? TemperatureCelsius { get; }
 
@@ -22,10 +22,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal string WeatherConditions { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeatherInfoDTO"/> class.
+        /// Initializes a new instance of the <see cref="WeatherInfoDto"/> class.
         /// </summary>
         /// <param name="weatherInfo">The <see cref="weatherInfo"/> used for creating instance</param>
-        internal WeatherInfoDTO(weatherInfo weatherInfo)
+        internal WeatherInfoDto(weatherInfo weatherInfo)
         {
             Guard.Argument(weatherInfo, nameof(weatherInfo)).NotNull();
 

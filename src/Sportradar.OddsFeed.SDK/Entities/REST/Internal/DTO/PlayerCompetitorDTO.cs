@@ -1,16 +1,15 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-access-object representing a player as a member of competitor
     /// </summary>
-    /// <seealso cref="PlayerDTO" />
-    internal class PlayerCompetitorDTO : PlayerDTO
+    /// <seealso cref="PlayerDto" />
+    internal class PlayerCompetitorDto : PlayerDto
     {
         /// <summary>
         /// Gets the abbreviation
@@ -25,14 +24,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string Nationality { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerCompetitorDTO"/> class
+        /// Initializes a new instance of the <see cref="PlayerCompetitorDto"/> class
         /// </summary>
         /// <param name="record">A <see cref="playerCompetitor"/> containing information about a player as a member of competitor</param>
-        internal PlayerCompetitorDTO(playerCompetitor record)
+        internal PlayerCompetitorDto(playerCompetitor record)
             : base(new player { id = record.id, name = record.name })
         {
-            Guard.Argument(record, nameof(record)).NotNull();
-
             Abbreviation = record.abbreviation;
             Nationality = record.nationality;
         }

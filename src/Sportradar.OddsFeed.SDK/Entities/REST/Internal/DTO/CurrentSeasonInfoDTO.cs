@@ -5,17 +5,17 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
-    /// Class CurrentSeasonInfoDTO
+    /// Class CurrentSeasonInfoDto
     /// </summary>
-    /// <seealso cref="SportEntityDTO" />
-    internal class CurrentSeasonInfoDTO : SportEntityDTO
+    /// <seealso cref="SportEntityDto" />
+    internal class CurrentSeasonInfoDto : SportEntityDto
     {
-        //TODO: review if this is needed and maybe can be replaced with SeasonDTO
+        //TODO: review if this is needed and maybe can be replaced with SeasonDto
         /// <summary>
         /// Gets a <see cref="string"/> representation of the current season year
         /// </summary>
@@ -33,40 +33,40 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public DateTime EndDate { get; }
 
         /// <summary>
-        /// Gets the <see cref="SeasonCoverageDTO"/> instance containing information about coverage available for the season associated with the current instance
+        /// Gets the <see cref="SeasonCoverageDto"/> instance containing information about coverage available for the season associated with the current instance
         /// </summary>
-        /// <returns>The <see cref="SeasonCoverageDTO"/> instance containing information about coverage available for the season associated with the current instance</returns>
-        public SeasonCoverageDTO SeasonCoverage { get; }
+        /// <returns>The <see cref="SeasonCoverageDto"/> instance containing information about coverage available for the season associated with the current instance</returns>
+        public SeasonCoverageDto SeasonCoverage { get; }
 
         /// <summary>
-        /// Gets the <see cref="IEnumerable{GroupDTO}"/> specifying groups of tournament associated with the current instance
+        /// Gets the <see cref="IEnumerable{GroupDto}"/> specifying groups of tournament associated with the current instance
         /// </summary>
-        /// <returns>The <see cref="IEnumerable{GroupDTO}"/> specifying groups of tournament associated with the current instance</returns>
-        public IEnumerable<GroupDTO> Groups { get; }
+        /// <returns>The <see cref="IEnumerable{GroupDto}"/> specifying groups of tournament associated with the current instance</returns>
+        public IEnumerable<GroupDto> Groups { get; }
 
         /// <summary>
-        /// Gets the <see cref="RoundDTO"/> specifying the current round of the tournament associated with the current instance
+        /// Gets the <see cref="RoundDto"/> specifying the current round of the tournament associated with the current instance
         /// </summary>
-        /// <returns>The <see cref="RoundDTO"/> specifying the current round of the tournament associated with the current instance</returns>
-        public RoundDTO CurrentRound { get; }
+        /// <returns>The <see cref="RoundDto"/> specifying the current round of the tournament associated with the current instance</returns>
+        public RoundDto CurrentRound { get; }
 
         /// <summary>
         /// Gets the list of competitors
         /// </summary>
         /// <value>The list of competitors</value>
-        public IEnumerable<CompetitorDTO> Competitors { get; }
+        public IEnumerable<CompetitorDto> Competitors { get; }
 
         /// <summary>
-        /// Gets the list of all <see cref="CompetitionDTO"/> that belongs to the season schedule
+        /// Gets the list of all <see cref="CompetitionDto"/> that belongs to the season schedule
         /// </summary>
-        /// <returns>The list of all <see cref="CompetitionDTO"/> that belongs to the season schedule</returns>
-        public IEnumerable<CompetitionDTO> Schedule { get; }
+        /// <returns>The list of all <see cref="CompetitionDto"/> that belongs to the season schedule</returns>
+        public IEnumerable<CompetitionDto> Schedule { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CurrentSeasonInfoDTO"/> class
+        /// Initializes a new instance of the <see cref="CurrentSeasonInfoDto"/> class
         /// </summary>
         /// <param name="season">The season</param>
-        public CurrentSeasonInfoDTO(seasonExtended season)
+        public CurrentSeasonInfoDto(seasonExtended season)
             : base(season.id, season.name)
         {
             Guard.Argument(season, nameof(season)).NotNull();
@@ -85,10 +85,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CurrentSeasonInfoDTO"/> class
+        /// Initializes a new instance of the <see cref="CurrentSeasonInfoDto"/> class
         /// </summary>
         /// <param name="season">The season</param>
-        public CurrentSeasonInfoDTO(SeasonDTO season)
+        public CurrentSeasonInfoDto(SeasonDto season)
             : base(season.Id.ToString(), season.Name)
         {
             Year = season.Year;

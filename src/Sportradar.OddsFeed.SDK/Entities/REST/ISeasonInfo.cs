@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract for classes implementing
@@ -14,10 +14,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface ISeasonInfo
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> identifying the current instance
+        /// Gets the <see cref="Urn"/> identifying the current instance
         /// </summary>
-        /// <value>The <see cref="URN"/> identifying the current instance</value>
-        URN Id { get; }
+        /// <value>The <see cref="Urn"/> identifying the current instance</value>
+        Urn Id { get; }
 
         /// <summary>
         /// Gets the name.
@@ -35,23 +35,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets the start date of the season represented by the current instance
         /// </summary>
-        DateTime StartDate => DateTime.MinValue;
+        DateTime StartDate { get; }
 
         /// <summary>
         /// Gets the end date of the season represented by the current instance
         /// </summary>
         /// <value>The end date.</value>
-        DateTime EndDate => DateTime.MinValue;
+        DateTime EndDate { get; }
 
         /// <summary>
         /// Gets a <see cref="string"/> representation of the current season year
         /// </summary>
-        string Year => null;
+        string Year { get; }
 
         /// <summary>
         /// Gets the associated tournament identifier.
         /// </summary>
         /// <value>The associated tournament identifier.</value>
-        URN TournamentId => null;
+        Urn TournamentId { get; }
     }
 }

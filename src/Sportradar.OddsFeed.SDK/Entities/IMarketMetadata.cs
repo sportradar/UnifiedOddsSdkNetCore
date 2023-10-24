@@ -20,36 +20,36 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// Gets the start time of the event (as epoch timestamp)
         /// </summary>
         /// <value>The start time</value>
-        long? StartTime => null;
+        long? StartTime { get; }
 
         /// <summary>
         /// Gets the end time of the event (as epoch timestamp)
         /// </summary>
         /// <value>The end time</value>
-        long? EndTime => null;
+        long? EndTime { get; }
 
         /// <summary>
         /// Gets date/time when to betstop the associated market. Typically used for outrights and typically is the start-time of the event the market refers to
         /// </summary>
         /// <value>The next betstop</value>
-        DateTime? NextBetstopDate => null;
+        DateTime? NextBetstopDate { get; }
 
         /// <summary>
         /// Gets the start time of the event
         /// </summary>
         /// <value>The start time</value>
-        DateTime? StartTimeDate => null;
+        DateTime? StartTimeDate { get; }
 
         /// <summary>
         /// Gets the end time of the event
         /// </summary>
         /// <value>The end time</value>
-        DateTime? EndTimeDate => null;
+        DateTime? EndTimeDate { get; }
 
         /// <summary>
         /// Gets the Italian AAMS id for this outright
         /// </summary>
         /// <value>The Italian AAMS id for this outright</value>
-        long? AamsId => null;
+        long? AamsId { get; }
     }
 }

@@ -1,22 +1,22 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
     /// Class MarketDescriptionMapperFactory
     /// </summary>
-    internal class MarketDescriptionMapperFactory : ISingleTypeMapperFactory<market_descriptions, MarketDescriptionDTO>
+    internal class MarketDescriptionMapperFactory : ISingleTypeMapperFactory<market_descriptions, MarketDescriptionDto>
     {
         /// <summary>
-        /// Creates and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /> instance
+        /// Creates and returns a <see cref="ISingleTypeMapperFactory{Tin, Tout}" /> instance
         /// </summary>
-        /// <param name="data">A <see cref="!:TIn" /> instance which the created <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /> will map</param>
-        /// <returns>New <see cref="T:Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.ISingleTypeMapper`1" /> instance</returns>
-        public ISingleTypeMapper<MarketDescriptionDTO> CreateMapper(market_descriptions data)
+        /// <param name="data">A <see cref="market_descriptions" /> instance which the created <see cref="ISingleTypeMapperFactory{Tin, Tout}" /> will map</param>
+        /// <returns>New <see cref="ISingleTypeMapperFactory{Tin, Tout}" /> instance</returns>
+        public ISingleTypeMapper<MarketDescriptionDto> CreateMapper(market_descriptions data)
         {
             return new MarketDescriptionMapper(data);
         }

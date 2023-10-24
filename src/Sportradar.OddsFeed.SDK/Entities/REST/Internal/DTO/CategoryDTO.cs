@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing a sport category
     /// </summary>
-    internal class CategoryDTO : CategorySummaryDTO
+    internal class CategoryDto : CategorySummaryDto
     {
         /// <summary>
         /// A <see cref="IEqualityComparer{tournamentExtended}"/> used to compare different <see cref="tournamentExtended"/> instances
@@ -20,18 +20,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         private static readonly IEqualityComparer<tournamentExtended> EqualityComparer = new TournamentByTournamentIdEqualityComparer();
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{TournamentDTO}"/> representing tournaments which belong to the associated category
+        /// Gets a <see cref="IEnumerable{TournamentDto}"/> representing tournaments which belong to the associated category
         /// </summary>
-        public readonly IEnumerable<TournamentDTO> Tournaments;
+        public readonly IEnumerable<TournamentDto> Tournaments;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryDTO"/> class
+        /// Initializes a new instance of the <see cref="CategoryDto"/> class
         /// </summary>
         /// <param name="id">The id of the category</param>
         /// <param name="name">The name of the category</param>
         /// <param name="countryCode">A country code</param>
-        /// <param name="tournaments">A <see cref="ICollection{TournamentDTO}"/> containing tournaments belonging to category</param>
-        internal CategoryDTO(string id, string name, string countryCode, ICollection<tournamentExtended> tournaments)
+        /// <param name="tournaments">A <see cref="ICollection{TournamentDto}"/> containing tournaments belonging to category</param>
+        internal CategoryDto(string id, string name, string countryCode, ICollection<tournamentExtended> tournaments)
             : base(id, name, countryCode)
         {
             Guard.Argument(id, nameof(id)).NotNull().NotEmpty();
@@ -39,9 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Guard.Argument(tournaments, nameof(tournaments)).NotNull();
 
             var recordList = tournaments as List<tournamentExtended> ?? tournaments.ToList();
-            Tournaments = new ReadOnlyCollection<TournamentDTO>(recordList
+            Tournaments = new ReadOnlyCollection<TournamentDto>(recordList
                 .Distinct(EqualityComparer)
-                .Select(t => new TournamentDTO(t)).ToList());
+                .Select(t => new TournamentDto(t)).ToList());
         }
 
         /// <summary>

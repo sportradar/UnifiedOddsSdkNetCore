@@ -3,12 +3,12 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
-    internal class BookmakerDetailsMapper : ISingleTypeMapper<BookmakerDetailsDTO>
+    internal class BookmakerDetailsMapper : ISingleTypeMapper<BookmakerDetailsDto>
     {
         /// <summary>
         /// A <see cref="bookmaker_details"/> instance containing bookmaker details data
@@ -33,16 +33,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
             _serverTimeDifference = serverTimeDifference;
         }
 
-        internal static ISingleTypeMapper<BookmakerDetailsDTO> Create(bookmaker_details data, TimeSpan serverTimeDifference)
+        internal static ISingleTypeMapper<BookmakerDetailsDto> Create(bookmaker_details data, TimeSpan serverTimeDifference)
         {
             Guard.Argument(data, nameof(data)).NotNull();
 
             return new BookmakerDetailsMapper(data, serverTimeDifference);
         }
 
-        BookmakerDetailsDTO ISingleTypeMapper<BookmakerDetailsDTO>.Map()
+        BookmakerDetailsDto ISingleTypeMapper<BookmakerDetailsDto>.Map()
         {
-            return new BookmakerDetailsDTO(_data, _serverTimeDifference);
+            return new BookmakerDetailsDto(_data, _serverTimeDifference);
         }
     }
 }

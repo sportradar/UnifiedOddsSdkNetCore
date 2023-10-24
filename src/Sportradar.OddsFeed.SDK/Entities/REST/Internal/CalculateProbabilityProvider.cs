@@ -11,14 +11,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.CustomBet;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// An implementation of the <see cref="ICalculateProbabilityProvider"/> which fetches the data, deserializes it and than maps / converts it to the output type
@@ -37,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// <param name="uriFormat">The url format specifying the url of the resources fetched by the fetcher</param>
         /// <param name="poster">A <see cref="IDataPoster" /> used to fetch the data</param>
         /// <param name="deserializer">A <see cref="IDeserializer{CalculationResponseType}" /> used to deserialize the fetch data</param>
-        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{CalculationResponseType, CalculationDTO}" /> used to construct instances of <see cref="ISingleTypeMapper{CalculationDTO}" /></param>
+        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{CalculationResponseType, CalculationDto}" /> used to construct instances of <see cref="ISingleTypeMapper{CalculationDto}" /></param>
         public CalculateProbabilityProvider(string uriFormat, IDataPoster poster, IDeserializer<CalculationResponseType> deserializer, ISingleTypeMapperFactory<CalculationResponseType, CalculationDto> mapperFactory)
         {
             if (string.IsNullOrWhiteSpace(uriFormat))
@@ -56,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         /// Asynchronously gets a <see cref="CalculationDto"/> instance
         /// </summary>
         /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be fetched</param>
-        /// <returns>A <see cref="Task{CalculationDTO}"/> representing the probability calculation</returns>
+        /// <returns>A <see cref="Task{CalculationDto}"/> representing the probability calculation</returns>
         public async Task<CalculationDto> GetDataAsync(IEnumerable<ISelection> selections)
         {
             var content = GetContent(new SelectionsType

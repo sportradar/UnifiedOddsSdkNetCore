@@ -1,9 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
+using Sportradar.OddsFeed.SDK.Api.Replay;
+using Sportradar.OddsFeed.SDK.Common;
+
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
 {
     /// <summary>
     /// Implementation of <see cref="IReplayStatus"/>
@@ -17,17 +19,17 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Replay
         public ReplayPlayerStatus PlayerStatus { get; }
 
         /// <summary>
-        /// Gets the <see cref="URN"/> of the event in last message
+        /// Gets the <see cref="Urn"/> of the event in last message
         /// </summary>
         /// <value>The last message from event.</value>
-        public URN LastMessageFromEvent { get; }
+        public Urn LastMessageFromEvent { get; }
 
         /// <summary>
         /// Constructs new instance of <see cref="ReplayStatus"/>
         /// </summary>
         /// <param name="eventId"></param>
         /// <param name="status"></param>
-        public ReplayStatus(URN eventId, ReplayPlayerStatus status)
+        public ReplayStatus(Urn eventId, ReplayPlayerStatus status)
         {
             LastMessageFromEvent = eventId;
             PlayerStatus = status;

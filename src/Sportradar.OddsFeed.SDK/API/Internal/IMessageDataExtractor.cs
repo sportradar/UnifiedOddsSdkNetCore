@@ -1,9 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Messages.Internal;
+
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Defines a contract used to extract most crucial information from the message received from the feed.

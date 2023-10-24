@@ -3,11 +3,11 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class PeriodStatus : IPeriodStatus
     {
@@ -37,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <value>The results</value>
         public IEnumerable<IPeriodCompetitorResult> PeriodResults { get; }
 
-        public PeriodStatus(PeriodStatusDTO periodStatus)
+        public PeriodStatus(PeriodStatusDto periodStatus)
         {
             Guard.Argument(periodStatus, nameof(periodStatus)).NotNull();
 

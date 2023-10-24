@@ -3,20 +3,20 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
-    /// Defines a contract for classes implementing basic entity information, containing Id as <see cref="URN"/> and translatable Name
+    /// Defines a contract for classes implementing basic entity information, containing Id as <see cref="Urn"/> and translatable Name
     /// </summary>
     public interface IBaseEntity : IEntityPrinter
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> identifying the current instance
+        /// Gets the <see cref="Urn"/> identifying the current instance
         /// </summary>
-        /// <value>The <see cref="URN"/> identifying the current instance</value>
-        URN Id { get; }
+        /// <value>The <see cref="Urn"/> identifying the current instance</value>
+        Urn Id { get; }
 
         /// <summary>
         /// Gets the name associated with this instance in specific language

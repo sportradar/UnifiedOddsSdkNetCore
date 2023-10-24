@@ -5,16 +5,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing a sport competitor
     /// </summary>
-    /// <seealso cref="PlayerDTO" />
-    internal class CompetitorDTO : PlayerDTO
+    /// <seealso cref="PlayerDto" />
+    internal class CompetitorDto : PlayerDto
     {
         /// <summary>
         /// Gets the competitor's abbreviation
@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the players
         /// </summary>
         /// <value>The players</value>
-        public IEnumerable<PlayerCompetitorDTO> Players { get; }
+        public IEnumerable<PlayerCompetitorDto> Players { get; }
 
         /// <summary>
         /// Gets the gender
@@ -71,13 +71,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         /// Gets the sport id
         /// </summary>
         /// <value>The sport id</value>
-        public URN SportId { get; }
+        public Urn SportId { get; }
 
         /// <summary>
         /// Gets the category id
         /// </summary>
         /// <value>The category id</value>
-        public URN CategoryId { get; }
+        public Urn CategoryId { get; }
 
         /// <summary>
         /// Gets the short name
@@ -86,10 +86,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string ShortName { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompetitorDTO"/> class from the <see cref="team"/> instance
+        /// Get the division
+        /// </summary>
+        public DivisionDto Division { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompetitorDto"/> class from the <see cref="team"/> instance
         /// </summary>
         /// <param name="record">A <see cref="team"/> containing information about a team</param>
-        internal CompetitorDTO(team record)
+        internal CompetitorDto(team record)
             : base(new player { id = record.id, name = record.name })
         {
             Guard.Argument(record, nameof(record)).NotNull();
@@ -106,7 +111,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (record.players != null && record.players.Any())
             {
-                Players = record.players.Select(s => new PlayerCompetitorDTO(s));
+                Players = record.players.Select(s => new PlayerCompetitorDto(s));
             }
             Gender = record.gender;
             AgeGroup = record.age_group;
@@ -115,15 +120,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 SportId = extended.sport == null
                     ? null
-                    : URN.Parse(extended.sport.id);
+                    : Urn.Parse(extended.sport.id);
                 CategoryId = extended.category == null
                     ? null
-                    : URN.Parse(extended.category.id);
+                    : Urn.Parse(extended.category.id);
             }
 
             if (!string.IsNullOrEmpty(record.short_name))
             {
                 ShortName = record.short_name;
+            }
+
+            if (record.divisionSpecified)
+            {
+                Division = new DivisionDto(record.division, record.division_name);
             }
         }
     }

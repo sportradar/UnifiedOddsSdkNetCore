@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data transfer object for market description
     /// </summary>
-    internal class MarketDescriptionDTO
+    internal class MarketDescriptionDto
     {
         internal long Id { get; private set; }
 
@@ -25,17 +25,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal string OutcomeType { get; }
 
-        internal IEnumerable<OutcomeDescriptionDTO> Outcomes { get; }
+        internal IEnumerable<OutcomeDescriptionDto> Outcomes { get; }
 
-        internal IEnumerable<SpecifierDTO> Specifiers { get; }
+        internal IEnumerable<SpecifierDto> Specifiers { get; }
 
-        internal IEnumerable<MarketMappingDTO> Mappings { get; }
+        internal IEnumerable<MarketMappingDto> Mappings { get; }
 
-        internal IEnumerable<MarketAttributeDTO> Attributes { get; }
+        internal IEnumerable<MarketAttributeDto> Attributes { get; }
 
         internal IEnumerable<string> Groups { get; private set; }
 
-        internal MarketDescriptionDTO(desc_market description)
+        internal MarketDescriptionDto(desc_market description)
         {
             Guard.Argument(description, nameof(description)).NotNull();
             Guard.Argument(description.name, nameof(description.name)).NotNull().NotEmpty();
@@ -43,10 +43,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             Id = description.id;
             Name = description.name;
             Description = description.description;
-            Outcomes = description.outcomes?.Select(o => new OutcomeDescriptionDTO(o)).ToList();
-            Specifiers = description.specifiers?.Select(s => new SpecifierDTO(s)).ToList();
-            Mappings = description.mappings?.Select(m => new MarketMappingDTO(m)).ToList();
-            Attributes = description.attributes?.Select(a => new MarketAttributeDTO(a)).ToList();
+            Outcomes = description.outcomes?.Select(o => new OutcomeDescriptionDto(o)).ToList();
+            Specifiers = description.specifiers?.Select(s => new SpecifierDto(s)).ToList();
+            Mappings = description.mappings?.Select(m => new MarketMappingDto(m)).ToList();
+            Attributes = description.attributes?.Select(a => new MarketAttributeDto(a)).ToList();
             Variant = description.variant;
             OutcomeType = MapOutcomeType(description.outcome_type, description.includes_outcomes_of_type);
             Groups = description.groups?.Split(new[] { SdkInfo.MarketGroupsDelimiter }, StringSplitOptions.RemoveEmptyEntries);
@@ -71,7 +71,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             if (includesOutcomesOfType.StartsWith("sr:", StringComparison.InvariantCultureIgnoreCase))
             {
-                return includesOutcomesOfType[3..];
+                return includesOutcomesOfType.Substring(3);
             }
 
             return null;

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class DelayedInfo
@@ -43,13 +43,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="IDelayedInfo"/>
         /// </summary>
-        /// <param name="delayedInfoCI">The delayed info cache item</param>
-        public DelayedInfo(DelayedInfoCI delayedInfoCI)
+        /// <param name="delayedInfoCacheItem">The delayed info cache item</param>
+        public DelayedInfo(DelayedInfoCacheItem delayedInfoCacheItem)
         {
-            Guard.Argument(delayedInfoCI, nameof(delayedInfoCI)).NotNull();
+            Guard.Argument(delayedInfoCacheItem, nameof(delayedInfoCacheItem)).NotNull();
 
-            Id = delayedInfoCI.Id;
-            Descriptions = delayedInfoCI.Descriptions as IReadOnlyDictionary<CultureInfo, string>;
+            Id = delayedInfoCacheItem.Id;
+            Descriptions = delayedInfoCacheItem.Descriptions as IReadOnlyDictionary<CultureInfo, string>;
         }
 
         /// <summary>

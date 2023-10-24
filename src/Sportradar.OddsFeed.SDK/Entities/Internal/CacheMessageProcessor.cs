@@ -8,13 +8,16 @@ using System.Globalization;
 using System.Linq;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Entities.REST;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
@@ -32,9 +35,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CacheMessageProcessor));
 
         /// <summary>
-        /// A <see cref="ISingleTypeMapperFactory{removeSportEventStatus, SportEventStatusDTO}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDTO}"/> instances
+        /// A <see cref="ISingleTypeMapperFactory{removeSportEventStatus, SportEventStatusDto}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDto}"/> instances
         /// </summary>
-        private readonly ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO> _mapperFactory;
+        private readonly ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDto> _mapperFactory;
 
         /// <summary>
         /// The processor identifier
@@ -59,13 +62,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheMessageProcessor"/> class
         /// </summary>
-        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{removeSportEventStatus, SportEventStatusDTO}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDTO}"/> instances</param>
+        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{removeSportEventStatus, SportEventStatusDto}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDto}"/> instances</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> used to handle <see cref="fixture_change"/></param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
         /// <param name="feedMessageHandler">A <see cref="IFeedMessageHandler"/> for handling special cases</param>
         /// <param name="sportEventStatusCache">A <see cref="ISportEventStatusCache"/> used to save eventId from BetPal to ignore timeline SES</param>
         /// <param name="producerManager">The <see cref="IProducerManager"/> to get 'virtual' producers to ignore for fixture_change_fixture endpoint</param>
-        public CacheMessageProcessor(ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDTO> mapperFactory,
+        public CacheMessageProcessor(ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDto> mapperFactory,
                                      ISportEventCache sportEventCache,
                                      ICacheManager cacheManager,
                                      IFeedMessageHandler feedMessageHandler,
@@ -105,7 +108,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             if (message.IsEventRelated)
             {
-                _sportEventStatusCache.AddEventIdForTimelineIgnore(message.EventURN, message.ProducerId, message.GetType());
+                _sportEventStatusCache.AddEventIdForTimelineIgnore(message.EventUrn, message.ProducerId, message.GetType());
             }
 
             // process odds_change
@@ -113,36 +116,36 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             if (oddsChange?.sport_event_status != null)
             {
                 var status = _mapperFactory.CreateMapper(oddsChange.sport_event_status).Map();
-                _cacheManager.SaveDto(oddsChange.EventURN, status, CultureInfo.CurrentCulture, DtoType.SportEventStatus, null);
+                _cacheManager.SaveDto(oddsChange.EventUrn, status, CultureInfo.CurrentCulture, DtoType.SportEventStatus, null);
             }
 
             var betStop = message as bet_stop;
             if (betStop != null)
             {
                 // draw event is still removed
-                RemoveCacheItem(betStop.EventURN, removeEvent: false, removeSportEventStatus: true);
+                RemoveCacheItem(betStop.EventUrn, removeEvent: false, removeSportEventStatus: true);
             }
 
             var betSettlement = message as bet_settlement;
             if (betSettlement != null)
             {
                 // draw event is still removed
-                RemoveCacheItem(betSettlement.EventURN, removeEvent: false, removeSportEventStatus: false);
+                RemoveCacheItem(betSettlement.EventUrn, removeEvent: false, removeSportEventStatus: false);
             }
 
             // process fixtureChange
             var fixtureChange = message as fixture_change;
             if (fixtureChange != null)
             {
-                RemoveCacheItem(fixtureChange.EventURN, removeEvent: true, removeSportEventStatus: true);
+                RemoveCacheItem(fixtureChange.EventUrn, removeEvent: true, removeSportEventStatus: true);
                 if (!_ignoredProducersForFixtureEndpoint.Contains(fixtureChange.ProducerId))
                 {
-                    _sportEventCache.AddFixtureTimestamp(fixtureChange.EventURN);
+                    _sportEventCache.AddFixtureTimestamp(fixtureChange.EventUrn);
                 }
 
-                if (fixtureChange.EventURN.TypeGroup == ResourceTypeGroup.TOURNAMENT)
+                if (fixtureChange.EventUrn.TypeGroup == ResourceTypeGroup.Tournament)
                 {
-                    HandleTournamentFixtureChange(fixtureChange.EventURN);
+                    HandleTournamentFixtureChange(fixtureChange.EventUrn);
                 }
 
                 if (_feedMessageHandler.StopProcessingFixtureChange(fixtureChange))
@@ -156,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// Fetches sport events for specific tournament (prefetching it - useful for virtual feeds)
         /// </summary>
         /// <param name="urn">The tournament id</param>
-        private void HandleTournamentFixtureChange(URN urn)
+        private void HandleTournamentFixtureChange(Urn urn)
         {
             try
             {
@@ -174,14 +177,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="eventId">The event identifier</param>
         /// <param name="removeEvent">if set to <c>true</c> [remove event]</param>
         /// <param name="removeSportEventStatus">if set to <c>true</c> [sport event status]</param>
-        private void RemoveCacheItem(URN eventId, bool removeEvent, bool removeSportEventStatus)
+        private void RemoveCacheItem(Urn eventId, bool removeEvent, bool removeSportEventStatus)
         {
             if (removeSportEventStatus)
             {
                 _cacheManager.RemoveCacheItem(eventId, CacheItemType.SportEventStatus, ProcessorId);
             }
 
-            if (removeEvent || eventId.TypeGroup == ResourceTypeGroup.DRAW)
+            if (removeEvent || eventId.TypeGroup == ResourceTypeGroup.Draw)
             {
                 _cacheManager.RemoveCacheItem(eventId, CacheItemType.SportEvent, ProcessorId);
             }

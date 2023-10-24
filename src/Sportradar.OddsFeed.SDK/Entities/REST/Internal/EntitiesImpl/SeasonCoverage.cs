@@ -2,10 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Provides information about season coverage
@@ -42,13 +42,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Gets the identifier of the season.
         /// </summary>
-        public URN SeasonId { get; }
+        public Urn SeasonId { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SeasonCoverage"/> class.
         /// </summary>
-        /// <param name="cacheItem">The <see cref="SeasonCoverageCI"/> instance containing information about tournament coverage</param>
-        public SeasonCoverage(SeasonCoverageCI cacheItem)
+        /// <param name="cacheItem">The <see cref="SeasonCoverageCacheItem"/> instance containing information about tournament coverage</param>
+        public SeasonCoverage(SeasonCoverageCacheItem cacheItem)
         {
             Guard.Argument(cacheItem, nameof(cacheItem)).NotNull();
 

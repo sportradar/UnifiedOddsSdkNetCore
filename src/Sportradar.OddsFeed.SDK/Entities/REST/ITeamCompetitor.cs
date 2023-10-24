@@ -1,9 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Runtime.Serialization;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing a competing team
@@ -13,12 +12,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets a qualifier additionally describing the competitor (e.g. home, away, ...)
         /// </summary>
-        [DataMember]
         string Qualifier { get; }
-
-        /// <summary>
-        /// Gets the division
-        /// </summary>
-        int? Division { get; }
     }
 }

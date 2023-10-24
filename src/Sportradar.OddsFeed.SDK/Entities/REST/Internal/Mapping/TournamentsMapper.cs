@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> implementation used to construct <see cref="EntityList{SportDTO}" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> implementation used to construct <see cref="EntityList{SportDto}" /> instances
     /// from <see cref="tournamentsEndpoint"/> instances
     /// </summary>
-    internal class TournamentsMapper : ISingleTypeMapper<EntityList<SportDTO>>
+    internal class TournamentsMapper : ISingleTypeMapper<EntityList<SportDto>>
     {
         /// <summary>
         /// A <see cref="IEqualityComparer{tournamentExtended}"/> used to compare different <see cref="tournamentExtended"/> instances
@@ -39,35 +39,35 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="EntityList{SportDTO}"/>
+        /// Maps it's data to instance of <see cref="EntityList{SportDto}"/>
         /// </summary>
-        /// <returns>The created <see cref="EntityList{SportDTO}"/> instance</returns>
-        public EntityList<SportDTO> Map()
+        /// <returns>The created <see cref="EntityList{SportDto}"/> instance</returns>
+        public EntityList<SportDto> Map()
         {
             if (_data.tournament == null || !_data.tournament.Any())
             {
                 throw new InvalidOperationException("The provided tournamentEndpoint instance contains no tournaments");
             }
 
-            var sports = new List<SportDTO>();
+            var sports = new List<SportDto>();
             foreach (var distinctRecord in _data.tournament.Distinct(EqualityComparer))
             {
-                sports.Add(new SportDTO(
+                sports.Add(new SportDto(
                     distinctRecord.sport.id,
                     distinctRecord.sport.name,
                     _data.tournament.Where(record => record.sport.id == distinctRecord.sport.id)));
             }
-            return new EntityList<SportDTO>(new ReadOnlyCollection<SportDTO>(sports));
+            return new EntityList<SportDto>(new ReadOnlyCollection<SportDto>(sports));
         }
 
         /// <summary>
         /// Constructs and returns a new instance of the <see cref="ISingleTypeMapper{T}"/> instance used to map <see cref="tournamentsEndpoint"/> instances
-        /// to <see cref="EntityList{SportDTO}"/> instances
+        /// to <see cref="EntityList{SportDto}"/> instances
         /// </summary>
         /// <param name="data">A <see cref="tournamentsEndpoint"/> instance containing tournaments data</param>
         /// <returns>a new instance of the <see cref="ISingleTypeMapper{T}"/> instance used to map <see cref="tournamentsEndpoint"/> instances
-        /// to <see cref="EntityList{SportDTO}"/> instances</returns>
-        internal static ISingleTypeMapper<EntityList<SportDTO>> Create(tournamentsEndpoint data)
+        /// to <see cref="EntityList{SportDto}"/> instances</returns>
+        internal static ISingleTypeMapper<EntityList<SportDto>> Create(tournamentsEndpoint data)
         {
             return new TournamentsMapper(data);
         }

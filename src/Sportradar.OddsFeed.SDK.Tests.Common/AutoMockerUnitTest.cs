@@ -1,9 +1,14 @@
 ﻿using Moq.AutoMock;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common
+namespace Sportradar.OddsFeed.SDK.Tests.Common;
+
+/// <summary>
+/// AutoMocker base class
+/// </summary>
+public abstract class AutoMockerUnitTest
 {
-    public abstract class AutoMockerUnitTest
-    {
-        protected readonly AutoMocker Mocker = new AutoMocker();
-    }
+    /// <summary>
+    /// The mocker
+    /// </summary>
+    protected readonly AutoMocker Mocker = new();
 }

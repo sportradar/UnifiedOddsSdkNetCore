@@ -20,15 +20,15 @@
 		 If using <autoOutline />, add an address attribute to identify it
 		 and specify a title so that it can be jumped to with a hyperlink. -->
 	<section address="BasicSetup">
-	  <title>A basic way to use the OddsFeed</title>
+	  <title>A basic way to use the UofSdk</title>
 	  <content>
 		<!-- Uncomment this to create a sub-section outline-->
 		<!--<autoOutline />--> 
-		<para>To receive sdk events/messages subscribe to all <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference> and <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IEntityDispatcher{T}</codeEntityReference> events.
+		<para>To receive sdk events/messages subscribe to all <codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.IUofSdk</codeEntityReference> and <codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.IEntityDispatcher{T}</codeEntityReference> events.
 		</para>
 		<para>
 			  Note that there is one thread handling message reception and calling your event handler per session, so the processing within that method should be as quick as possible to not prevent following messages from being processed. <lineBreak/>
-			  It is recommended that all <codeEntityReference>T:Sportradar.OddsFeed.SDK.Entities.REST.ISportEvent</codeEntityReference> processing is done in separate thread.
+			  It is recommended that all <codeEntityReference>T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent</codeEntityReference> processing is done in separate thread.
 		</para>
 		<para>
 			  Below example is the minimum setup to start receiving messages. Note that you open only once, process messages for as long as you want, and then close the feed.
@@ -54,10 +54,10 @@
 	</section>
 
 	<section address="AdvancedSetup">
-		<title>Advanced way to use the OddsFeed</title>
+		<title>Advanced way to use the UofSdk</title>
 		<content>
 			<para>
-				Another more scalable way of handling feed messages is to have different sessions for different <codeEntityReference>T:Sportradar.OddsFeed.SDK.Entities.MessageInterest</codeEntityReference>.<lineBreak/>
+				Another more scalable way of handling feed messages is to have different sessions for different <codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.Config.MessageInterest</codeEntityReference>.<lineBreak/>
 				If you wish to only process live events in one system and maybe process prematch events in a completely different system, you can do this in a similar manner.
 			</para>
 			<para>
@@ -72,7 +72,7 @@
 		<title>Disabling producers</title>
 		<content>
 			<para>
-				Before opening the <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference> instance, you can setup to receive feed messages only for specific producer by disabling all others.
+				Before opening the <codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.IUofSdk</codeEntityReference> instance, you can setup to receive feed messages only for specific producer by disabling all others.
 			</para>
 			<codeReference>Startup#DisableProducer</codeReference>
 		</content>
@@ -94,7 +94,7 @@
 				If your system crashes or if you take down/restart your system you need to provide the timestamp of the last processed message per producer, so the SDK performs the recovery for the missed messages (the max time from the last processed message varies per producer; i.e. for prematch producer can not be more than 3 days).
 			</para>
 			<para>
-				You can do this through the ProducerManager available on the <codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference> instance. 
+				You can do this through the ProducerManager available on the <codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.IUofSdk</codeEntityReference> instance. 
 				If the last processed message timestamp is not provided, the SDK will perform a full recovery.<lineBreak/>
 				<ui>Beware:</ui> with a full recovery you do not recover any lost BetSettlement messages.
 			</para>
@@ -103,9 +103,9 @@
 	</section>
 
 	<relatedTopics>
-		<codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeed</codeEntityReference>
-		<codeEntityReference>T:Sportradar.OddsFeed.SDK.API.IOddsFeedSession</codeEntityReference>
-		<codeEntityReference>T:Sportradar.OddsFeed.SDK.Entities.MessageInterest</codeEntityReference>
+		<codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.IUofSdk</codeEntityReference>
+		<codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.IUofSession</codeEntityReference>
+		<codeEntityReference>T:Sportradar.OddsFeed.SDK.Api.Config.MessageInterest</codeEntityReference>
 	</relatedTopics>
   </developerConceptualDocument>
 </topic>

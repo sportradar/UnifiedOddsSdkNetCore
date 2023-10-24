@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a player in a sport event timeline event
@@ -25,8 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="IEventPlayer"/> class
         /// </summary>
-        /// <param name="data">The <see cref="EventPlayerCI"/> data</param>
-        public EventPlayer(EventPlayerCI data)
+        /// <param name="data">The <see cref="EventPlayerCacheItem"/> data</param>
+        public EventPlayer(EventPlayerCacheItem data)
             : base(data.Id, data.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
             Guard.Argument(data, nameof(data)).NotNull();

@@ -1,52 +1,87 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
-using Sportradar.OddsFeed.SDK.API;
-using Sportradar.OddsFeed.SDK.Entities;
-using Sportradar.OddsFeed.SDK.Entities.REST.Caching.Exportable;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
     /// <summary>
     /// Basic cache export/import example
     /// </summary>
-    public class CacheExportImport
+    public class CacheExportImport : ExampleBase
     {
-        private readonly ILogger _log;
-        private readonly ILoggerFactory _loggerFactory;
-
-        public CacheExportImport(ILoggerFactory loggerFactory = null)
+        public CacheExportImport(ILogger<CacheExportImport> logger)
+        : base(logger)
         {
-            _loggerFactory = loggerFactory;
-            _log = _loggerFactory?.CreateLogger(typeof(CacheExportImport)) ?? new NullLogger<CacheExportImport>();
         }
 
-        public void Run(MessageInterest messageInterest)
+        public override void Run(MessageInterest messageInterest)
         {
-            _log.LogInformation("Running the OddsFeed SDK Export/import example");
+            Log.LogInformation("Running the Cache export/import example");
 
-            _log.LogInformation("Retrieving configuration from application configuration file");
-            var configuration = Feed.GetConfigurationBuilder().BuildFromConfigFile();
-            //you can also create the IOddsFeedConfiguration instance by providing required values
-            //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
+            Log.LogInformation("Retrieving configuration from application configuration file");
+            var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
 
-            _log.LogInformation("Creating Feed instance");
-            var oddsFeed = new Feed(configuration, _loggerFactory);
-            
+            var uofSdk = RegisterServicesAndGetUofSdk(configuration);
+
+            LimitRecoveryRequests(uofSdk);
+
+            Log.LogInformation("Creating IUofSession");
+            var session = uofSdk.GetSessionBuilder()
+                .SetMessageInterest(messageInterest)
+                .Build();
+
+            AttachToGlobalEvents(uofSdk);
+            AttachToSessionEvents(session);
+
+            Log.LogInformation("Opening the sdk instance");
+            uofSdk.Open();
+
+            Log.LogInformation("Example successfully started. Waiting 60 seconds to populate");
+            Task.Delay(TimeSpan.FromSeconds(60)).GetAwaiter().GetResult();
+
+            ExportItems(uofSdk);
+
+            ImportItems(uofSdk);
+
+            Log.LogInformation("Closing / disposing the sdk instance");
+            uofSdk.Close();
+
+            DetachFromSessionEvents(session);
+            DetachFromGlobalEvents(uofSdk);
+
+            Log.LogInformation("Stopped");
+        }
+
+        private void ExportItems(IUofSdk uofSdk)
+        {
+            Log.LogInformation("Exporting cache items");
+            var cacheItems = uofSdk.SportDataProvider.CacheExportAsync(CacheType.All).GetAwaiter().GetResult().ToList();
+            File.WriteAllText("cache.json", JsonConvert.SerializeObject(cacheItems, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
+            Log.LogInformation("Exporting {Size} cache items finished", cacheItems.Count);
+        }
+
+        private void ImportItems(IUofSdk uofSdk)
+        {
             if (File.Exists("cache.json"))
             {
-                _log.LogInformation("Importing cache items");
-                var items = JsonConvert.DeserializeObject(File.ReadAllText("cache.json"), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-                oddsFeed.SportDataProvider.CacheImportAsync(items as IEnumerable<ExportableCI>).Wait();
+                Log.LogInformation("Importing cache items");
+                var items = (IEnumerable<ExportableBase>)JsonConvert.DeserializeObject(File.ReadAllText("cache.json"), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+                var exportableBases = items?.ToList();
+                if (!exportableBases.IsNullOrEmpty())
+                {
+                    uofSdk.SportDataProvider.CacheImportAsync(exportableBases).GetAwaiter().GetResult();
+                    Log.LogInformation("Importing {Size} cache items finished", exportableBases.Count());
+                }
             }
-
-            var sports = oddsFeed.SportDataProvider.GetSportsAsync().Result;
-            _log.LogInformation("Exporting cache items");
-            var cacheItems = oddsFeed.SportDataProvider.CacheExportAsync(CacheType.All).Result.ToList();
-            File.WriteAllText("cache.json", JsonConvert.SerializeObject(cacheItems, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Provides information about pitcher
@@ -14,9 +15,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
     internal class Pitcher : EntityPrinter, IPitcher
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> used to uniquely identify the current <see cref="IPitcher"/> instance
+        /// Gets a <see cref="Urn"/> used to uniquely identify the current <see cref="IPitcher"/> instance
         /// </summary>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the name of the pitcher represented by the current <see cref="IPitcher"/> instance
@@ -38,8 +39,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Pitcher"/> class
         /// </summary>
-        /// <param name="cacheItem">A <see cref="PitcherCI"/> used to create new instance</param>
-        internal Pitcher(PitcherCI cacheItem)
+        /// <param name="cacheItem">A <see cref="PitcherCacheItem"/> used to create new instance</param>
+        internal Pitcher(PitcherCacheItem cacheItem)
         {
             Id = cacheItem.Id;
             Name = cacheItem.Name;

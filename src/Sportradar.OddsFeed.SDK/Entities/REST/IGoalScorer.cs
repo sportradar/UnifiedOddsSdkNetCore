@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing goal scorer in a sport event
@@ -14,10 +14,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
     public interface IGoalScorer : IEntityPrinter
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> uniquely identifying the current <see cref="IPlayer" /> instance
+        /// Gets the <see cref="Urn"/> uniquely identifying the current <see cref="IPlayer" /> instance
         /// </summary>
         [DataMember]
-        URN Id { get; }
+        Urn Id { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing player names in different languages
@@ -37,6 +37,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The method value</value>
         /// <remarks>The attribute can assume values such as 'penalty' and 'own goal'. In case the attribute is not inserted, then the goal is not own goal neither penalty.</remarks>
-        string Method => null;
+        string Method { get; }
     }
 }

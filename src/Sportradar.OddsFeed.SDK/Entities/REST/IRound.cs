@@ -1,12 +1,11 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes providing basic tournament round information
@@ -36,18 +35,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets the name of the current <see cref="IRound"/> per language
         /// </summary>
-        IDictionary<CultureInfo, string> Name { get; }
-
-        /// <summary>
-        /// Gets the group name of the current <see cref="IRound"/> per language
-        /// </summary>
-        [Obsolete("GroupName was removed from API")]
-        IDictionary<CultureInfo, string> GroupName { get; }
+        IDictionary<CultureInfo, string> Names { get; }
 
         /// <summary>
         /// Gets the phase or group long name of the current <see cref="IRound"/> per language
         /// </summary>
-        IDictionary<CultureInfo, string> PhaseOrGroupLongName { get; }
+        IDictionary<CultureInfo, string> PhaseOrGroupLongNames { get; }
 
         /// <summary>
         /// Gets a value specifying the number of matches in the current cup round or a null reference
@@ -74,17 +67,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         string GetName(CultureInfo culture);
 
         /// <summary>
-        /// Gets the group name for specific language
-        /// </summary>
-        /// <param name="culture">The culture</param>
-        /// <returns>Return the group name if exists, or null</returns>
-        [Obsolete("GroupName was removed from API")]
-        string GetGroupName(CultureInfo culture)
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Gets the phase or group long name for specific language
         /// </summary>
         /// <param name="culture">The culture</param>
@@ -94,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets the id of the group associated with the current round
         /// </summary>
-        URN GroupId { get; }
+        Urn GroupId { get; }
 
         /// <summary>
         /// Gets the phase of the associated round

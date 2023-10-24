@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// A <see cref="IMappingValidator"/> which checks the specified market specifier against specific value

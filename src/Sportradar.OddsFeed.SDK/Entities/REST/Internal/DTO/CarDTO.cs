@@ -2,14 +2,14 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object for manager
     /// </summary>
-    internal class CarDTO
+    internal class CarDto
     {
         public string Name { get; }
 
@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         public string EngineName { get; }
 
-        public CarDTO(car item)
+        public CarDto(car item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 

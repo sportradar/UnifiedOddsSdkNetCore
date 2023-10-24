@@ -1,7 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Market
 {
     /// <summary>
     /// Represents market attribute used to provide additional information about a market

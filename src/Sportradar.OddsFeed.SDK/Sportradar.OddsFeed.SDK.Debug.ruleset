@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="SonarQube - UF SDK Net Std Sonar way" ToolsVersion="17.0">
-  <Include Path="..\.sonarlint\unifiedfeed_uf-sdk-net-stdcsharp.ruleset" Action="Default" />
   <Include Path=".roslynatorconfig" Action="Default" />
 </RuleSet>

@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class TournamentInfo
@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <param name="cacheItem">The cache item</param>
         /// <param name="categorySummary">The category summary</param>
         /// <param name="currentSeasonInfo">The full current season info</param>
-        public TournamentInfo(TournamentInfoBasicCI cacheItem, ICategorySummary categorySummary, ICurrentSeasonInfo currentSeasonInfo)
+        public TournamentInfo(TournamentInfoBasicCacheItem cacheItem, ICategorySummary categorySummary, ICurrentSeasonInfo currentSeasonInfo)
             : base(cacheItem.Id, cacheItem.Name as IReadOnlyDictionary<CultureInfo, string>)
         {
             Category = categorySummary;

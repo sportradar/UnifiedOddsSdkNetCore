@@ -1,9 +1,10 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Messages;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal
+using Sportradar.OddsFeed.SDK.Common;
+
+namespace Sportradar.OddsFeed.SDK.Api.Internal
 {
     /// <summary>
     /// Defines a contract implemented by classes used to hold user registered dispatchers
@@ -19,9 +20,9 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the <see cref="ISpecificEntityDispatcherInternal"/> instance associated with the sport entity associated with provided <c>id</c> and <c>sportId</c>
         /// </summary>
-        /// <param name="id">The <see cref="URN"/> representing the identifier of the sport entity for which to get the dispatcher</param>
-        /// <param name="sportId">The <see cref="URN"/> representing the id of the sport to which the sport entity belongs to.</param>
+        /// <param name="id">The <see cref="Urn"/> representing the identifier of the sport entity for which to get the dispatcher</param>
+        /// <param name="sportId">The <see cref="Urn"/> representing the id of the sport to which the sport entity belongs to.</param>
         /// <returns>IEntityDispatcherInternal used to dispatch the instance specified by <c>id</c> and <c>sportId</c>.</returns>
-        ISpecificEntityDispatcherInternal Get(URN id, URN sportId);
+        ISpecificEntityDispatcherInternal Get(Urn id, Urn sportId);
     }
 }

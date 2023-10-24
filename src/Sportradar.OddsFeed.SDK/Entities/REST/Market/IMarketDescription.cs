@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping;
+using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Market
 {
     /// <summary>
     /// Defines a contract implemented by classes representing market description

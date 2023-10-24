@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representation for product info
     /// </summary>
-    internal class ProductInfoDTO
+    internal class ProductInfoDto
     {
         internal bool IsAutoTraded { get; }
 
@@ -24,11 +24,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
         internal bool IsInLiveScore { get; }
 
-        internal IEnumerable<ProductInfoLinkDTO> ProductInfoLinks { get; }
+        internal IEnumerable<ProductInfoLinkDto> ProductInfoLinks { get; }
 
-        internal IEnumerable<StreamingChannelDTO> StreamingChannels { get; }
+        internal IEnumerable<StreamingChannelDto> StreamingChannels { get; }
 
-        internal ProductInfoDTO(productInfo productInfo)
+        internal ProductInfoDto(productInfo productInfo)
         {
             Guard.Argument(productInfo, nameof(productInfo)).NotNull();
 
@@ -39,11 +39,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             IsInLiveScore = productInfo.is_in_live_score != null;
 
             ProductInfoLinks = productInfo.links != null && productInfo.links.Any()
-                ? new ReadOnlyCollection<ProductInfoLinkDTO>(productInfo.links.Select(p => new ProductInfoLinkDTO(p)).ToList())
+                ? new ReadOnlyCollection<ProductInfoLinkDto>(productInfo.links.Select(p => new ProductInfoLinkDto(p)).ToList())
                 : null;
 
             StreamingChannels = productInfo.streaming != null && productInfo.streaming.Any()
-                ? new ReadOnlyCollection<StreamingChannelDTO>(productInfo.streaming.Select(s => new StreamingChannelDTO(s)).ToList())
+                ? new ReadOnlyCollection<StreamingChannelDto>(productInfo.streaming.Select(s => new StreamingChannelDto(s)).ToList())
                 : null;
         }
     }

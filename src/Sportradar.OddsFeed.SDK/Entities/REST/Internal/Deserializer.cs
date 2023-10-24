@@ -11,12 +11,13 @@ using System.Xml;
 using System.Xml.Serialization;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
     /// A <see cref="IDeserializer{T}" /> implementation which uses <see cref="XmlElement.LocalName" /> property to determine to

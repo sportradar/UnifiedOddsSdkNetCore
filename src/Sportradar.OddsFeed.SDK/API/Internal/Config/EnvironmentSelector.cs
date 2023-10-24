@@ -1,10 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 
-namespace Sportradar.OddsFeed.SDK.API.Internal.Config
+namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
     /// <summary>
     /// Class EnvironmentSelector
@@ -12,70 +14,62 @@ namespace Sportradar.OddsFeed.SDK.API.Internal.Config
     /// <seealso cref="IEnvironmentSelector" />
     internal class EnvironmentSelector : IEnvironmentSelector
     {
-        /// <summary>
-        /// An access token used to authenticate with the feed
-        /// </summary>
-        private readonly string _accessToken;
+        private readonly IUofConfigurationSectionProvider _sectionProvider;
 
-        /// <summary>
-        /// A <see cref="IConfigurationSectionProvider"/> used to access <see cref="IOddsFeedConfigurationSection"/>
-        /// </summary>
-        private readonly IConfigurationSectionProvider _sectionProvider;
+        private readonly IBookmakerDetailsProvider _bookmakerDetailsProvider;
+
+        private readonly IProducersProvider _producersProvider;
+
+        private readonly UofConfiguration _configuration;
 
         /// <summary>
         /// Constructs a new instance of the <see cref="EnvironmentSelector"/> class
         /// </summary>
-        /// <param name="accessToken">An access token used to authenticate with the feed</param>
-        /// <param name="sectionProvider">A <see cref="IConfigurationSectionProvider"/> used to access <see cref="IOddsFeedConfigurationSection"/></param>
-        internal EnvironmentSelector(string accessToken, IConfigurationSectionProvider sectionProvider)
+        /// <param name="configuration">Current <see cref="UofConfiguration"/></param>
+        /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
+        /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
+        /// <param name="producersProvider">Provider for available producers</param>
+        internal EnvironmentSelector(UofConfiguration configuration,
+            IUofConfigurationSectionProvider sectionProvider,
+            IBookmakerDetailsProvider bookmakerDetailsProvider,
+            IProducersProvider producersProvider)
         {
-            Guard.Argument(accessToken, nameof(accessToken)).NotNull().NotEmpty();
+            Guard.Argument(configuration, nameof(configuration)).NotNull();
             Guard.Argument(sectionProvider, nameof(sectionProvider)).NotNull();
 
-            _accessToken = accessToken;
+            _configuration = configuration;
             _sectionProvider = sectionProvider;
+            _bookmakerDetailsProvider = bookmakerDetailsProvider;
+            _producersProvider = producersProvider;
         }
 
-        /// <summary>
-        /// Returns a <see cref="IConfigurationBuilder" /> with properties set to values needed to access integration environment
-        /// </summary>
-        /// <returns>A <see cref="IConfigurationBuilder" /> with properties set to values needed to access integration environment</returns>
-        public IConfigurationBuilder SelectIntegration()
+        public IConfigurationBuilder SelectReplay()
         {
-            return new ConfigurationBuilder(_accessToken, _sectionProvider, SdkEnvironment.Integration);
+            return new ConfigurationBuilder(_configuration, _sectionProvider, SdkEnvironment.Replay, _bookmakerDetailsProvider, _producersProvider);
         }
 
-        /// <summary>
-        /// Returns a <see cref="IConfigurationBuilder" /> with properties set to values needed to access production environment
-        /// </summary>
-        /// <returns>A <see cref="IConfigurationBuilder" /> with properties set to values needed to access production environment</returns>
-        public IConfigurationBuilder SelectProduction()
-        {
-            return new ConfigurationBuilder(_accessToken, _sectionProvider, SdkEnvironment.Production);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="IReplayConfigurationBuilder" /> with properties set to values needed to access replay server
-        /// </summary>
-        /// <returns>A <see cref="IReplayConfigurationBuilder" /> with properties set to values needed to access replay server</returns>
-        public IReplayConfigurationBuilder SelectReplay()
-        {
-            return new ReplayConfigurationBuilder(_accessToken, _sectionProvider);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="ICustomConfigurationBuilder" /> allowing the properties to be set to custom values (useful for testing with non-standard AMQP)
-        /// </summary>
-        /// <returns>A <see cref="ICustomConfigurationBuilder" /> with properties set to values needed to access replay server</returns>
         public ICustomConfigurationBuilder SelectCustom()
         {
-            return new CustomConfigurationBuilder(_accessToken, _sectionProvider);
+            return new CustomConfigurationBuilder(_configuration, _sectionProvider, _bookmakerDetailsProvider, _producersProvider);
         }
 
-        /// <inheritdoc />
         public IConfigurationBuilder SelectEnvironment(SdkEnvironment ufEnvironment)
         {
-            return new ConfigurationBuilder(_accessToken, _sectionProvider, ufEnvironment);
+            if (ufEnvironment == SdkEnvironment.Custom)
+            {
+                throw new InvalidOperationException("Use SelectCustom() for custom environment.");
+            }
+            return new ConfigurationBuilder(_configuration, _sectionProvider, ufEnvironment, _bookmakerDetailsProvider, _producersProvider);
+        }
+
+        public IConfigurationBuilder SelectEnvironmentFromConfigFile()
+        {
+            var section = _sectionProvider.GetSection();
+            if (section == null)
+            {
+                throw new InvalidOperationException("Missing configuration section");
+            }
+            return SelectEnvironment(section.Environment);
         }
     }
 }

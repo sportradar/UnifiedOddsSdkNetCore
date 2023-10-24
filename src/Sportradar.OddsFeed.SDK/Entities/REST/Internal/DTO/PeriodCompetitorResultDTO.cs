@@ -3,39 +3,39 @@
 */
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
-    /// Class PeriodCompetitorResultDTO.
+    /// Class PeriodCompetitorResultDto.
     /// </summary>
-    internal class PeriodCompetitorResultDTO
+    internal class PeriodCompetitorResultDto
     {
         /// <summary>
         /// Gets the competitor id
         /// </summary>
         /// <value>The competitor id</value>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the competitor results
         /// </summary>
         /// <value>The results</value>
-        public ICollection<CompetitorResultDTO> CompetitorResults { get; }
+        public ICollection<CompetitorResultDto> CompetitorResults { get; }
 
-        public PeriodCompetitorResultDTO(periodStatusCompetitor periodStatusCompetitor)
+        public PeriodCompetitorResultDto(periodStatusCompetitor periodStatusCompetitor)
         {
             Guard.Argument(periodStatusCompetitor, nameof(periodStatusCompetitor)).NotNull();
 
-            Id = URN.Parse(periodStatusCompetitor.id);
-            CompetitorResults = new List<CompetitorResultDTO>();
+            Id = Urn.Parse(periodStatusCompetitor.id);
+            CompetitorResults = new List<CompetitorResultDto>();
             if (!periodStatusCompetitor.result.IsNullOrEmpty())
             {
-                CompetitorResults = periodStatusCompetitor.result.Select(s => new CompetitorResultDTO(s)).ToList();
+                CompetitorResults = periodStatusCompetitor.result.Select(s => new CompetitorResultDto(s)).ToList();
             }
         }
     }

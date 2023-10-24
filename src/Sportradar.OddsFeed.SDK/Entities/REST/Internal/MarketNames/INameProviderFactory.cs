@@ -3,7 +3,7 @@
 */
 using System.Collections.Generic;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Defines a contract implemented by factories used to construct <see cref="INameProvider"/> instances

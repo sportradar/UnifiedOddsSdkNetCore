@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract for classes implementing tournament information
@@ -34,6 +34,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// Gets the list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule
         /// </summary>
         /// <returns>The list of all <see cref="ICompetition"/> that belongs to the basic tournament schedule</returns>
-        Task<IEnumerable<ISportEvent>> GetScheduleAsync() => Task.FromResult<IEnumerable<ISportEvent>>(null);
+        Task<IEnumerable<ISportEvent>> GetScheduleAsync();
     }
 }

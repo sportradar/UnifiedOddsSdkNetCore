@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class EventResult
@@ -135,7 +135,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
                 : await _matchStatusesCache.GetAsync(_matchStatusCode, new List<CultureInfo> { culture }).ConfigureAwait(false);
         }
 
-        internal EventResult(EventResultDTO dto, ILocalizedNamedValueCache matchStatusesCache)
+        internal EventResult(EventResultDto dto, ILocalizedNamedValueCache matchStatusesCache)
         {
             _matchStatusesCache = matchStatusesCache;
 

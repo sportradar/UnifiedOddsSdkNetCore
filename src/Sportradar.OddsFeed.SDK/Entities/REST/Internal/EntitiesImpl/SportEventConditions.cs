@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Provides information about sport event conditions
@@ -44,9 +44,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="SportEventConditions"/> class
         /// </summary>
-        /// <param name="ci">A <see cref="SportEventConditionsCI"/> used to create new instance</param>
+        /// <param name="ci">A <see cref="SportEventConditionsCacheItem"/> used to create new instance</param>
         /// <param name="cultures">A <see cref="ICollection{CultureInfo}"/> specifying the supported languages of the constructed instance</param>
-        public SportEventConditions(SportEventConditionsCI ci, ICollection<CultureInfo> cultures)
+        public SportEventConditions(SportEventConditionsCacheItem ci, ICollection<CultureInfo> cultures)
         {
             Guard.Argument(ci, nameof(ci)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();

@@ -2,9 +2,9 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     internal class MarketSpecifierCacheItem
     {
@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal string Type { get; }
 
-        internal MarketSpecifierCacheItem(SpecifierDTO dto)
+        internal MarketSpecifierCacheItem(SpecifierDto dto)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
 
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 
         internal string Description { get; }
 
-        internal MarketAttributeCacheItem(MarketAttributeDTO dto)
+        internal MarketAttributeCacheItem(MarketAttributeDto dto)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
 

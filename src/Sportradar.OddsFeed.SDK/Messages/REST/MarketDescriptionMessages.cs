@@ -22,7 +22,7 @@ using System.Diagnostics.CodeAnalysis;
 // ReSharper disable PartialTypeWithSinglePart
 #pragma warning disable CS1591
 
-namespace Sportradar.OddsFeed.SDK.Messages.REST
+namespace Sportradar.OddsFeed.SDK.Messages.Rest
 {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]

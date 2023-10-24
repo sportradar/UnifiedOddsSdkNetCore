@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a sport event referee
@@ -19,7 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Gets a value used to uniquely identify the current <see cref="IReferee" /> instance
         /// </summary>
-        public URN Id { get; }
+        public Urn Id { get; }
 
         /// <summary>
         /// Gets the name of the referee represented by the current <see cref="IReferee" /> instance
@@ -34,9 +34,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="Referee"/> class.
         /// </summary>
-        /// <param name="ci">A <see cref="RefereeCI"/> used to create new instance</param>
+        /// <param name="ci">A <see cref="RefereeCacheItem"/> used to create new instance</param>
         /// <param name="cultures">A cultures of the current instance of <see cref="Referee"/></param>
-        internal Referee(RefereeCI ci, IEnumerable<CultureInfo> cultures)
+        internal Referee(RefereeCacheItem ci, IEnumerable<CultureInfo> cultures)
         {
             var cultureList = cultures as IList<CultureInfo> ?? cultures.ToList();
 

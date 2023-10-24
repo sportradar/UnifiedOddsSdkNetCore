@@ -1,7 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Market
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Market
 {
     /// <summary>
     /// Defines a contract implemented by classes representing market / outright / outcome specifiers

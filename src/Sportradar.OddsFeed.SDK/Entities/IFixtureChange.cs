@@ -1,7 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST;
+
+using Sportradar.OddsFeed.SDK.Entities.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Entities
 {
@@ -14,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <summary>
         /// Gets a <see cref="FixtureChangeType"/> indicating how the fixture was changed (added, re-scheduled, ...)
         /// </summary>
-        /// <remarks>If not specified in message, returns <see cref="FixtureChangeType.NA"/></remarks>
+        /// <remarks>If not specified in message, returns <see cref="FixtureChangeType.NotAvailable"/></remarks>
         FixtureChangeType ChangeType { get; }
 
         /// <summary>

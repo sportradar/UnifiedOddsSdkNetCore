@@ -3,9 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract implemented by classes representing a fixture
@@ -30,8 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets a value indicating whether the start time is yet to be determent
         /// </summary>
-        // ReSharper disable once InconsistentNaming
-        bool? StartTimeTBD { get; }
+        bool? StartTimeTbd { get; }
 
         /// <summary>
         /// Gets a <see cref="DateTime"/> specifying the live time in case the fixture represented by current
@@ -42,8 +41,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// When sport event is postponed this field indicates with which event it is replaced
         /// </summary>
-        /// <value>The <see cref="URN"/> this event is replaced by</value>
-        URN ReplacedBy { get; }
+        /// <value>The <see cref="Urn"/> this event is replaced by</value>
+        Urn ReplacedBy { get; }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{String, String}"/> containing additional information about the
@@ -84,11 +83,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// <summary>
         /// Gets an id of the parent stage associated with the current instance
         /// </summary>
-        public URN ParentStageId => null;
+        Urn ParentStageId { get; }
 
         /// <summary>
         /// Gets the list specifying the additional parent ids associated with the current instance
         /// </summary>
-        public IEnumerable<URN> AdditionalParentsIds => new List<URN>();
+        IEnumerable<Urn> AdditionalParentsIds { get; }
     }
 }

@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Specifies a contract implemented by classes representing values with localized / translatable descriptions

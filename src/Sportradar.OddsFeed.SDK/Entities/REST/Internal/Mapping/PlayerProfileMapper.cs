@@ -3,16 +3,16 @@
 */
 using System;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}"/> implementation used to map <see cref="playerProfileEndpoint"/> instances to <see cref="PlayerProfileDTO"/> instances
+    /// A <see cref="ISingleTypeMapper{T}"/> implementation used to map <see cref="playerProfileEndpoint"/> instances to <see cref="PlayerProfileDto"/> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{PlayerProfileDTO}" />
-    internal class PlayerProfileMapper : ISingleTypeMapper<PlayerProfileDTO>
+    /// <seealso cref="ISingleTypeMapper{PlayerProfileDto}" />
+    internal class PlayerProfileMapper : ISingleTypeMapper<PlayerProfileDto>
     {
         /// <summary>
         /// A <see cref="playerProfileEndpoint"/> instance containing player profile data
@@ -31,12 +31,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="PlayerProfileDTO"/> instance
+        /// Maps it's data to <see cref="PlayerProfileDto"/> instance
         /// </summary>
-        /// <returns>The created <see cref="PlayerProfileDTO"/> instance </returns>
-        public PlayerProfileDTO Map()
+        /// <returns>The created <see cref="PlayerProfileDto"/> instance </returns>
+        public PlayerProfileDto Map()
         {
-            return new PlayerProfileDTO(_data.player, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null);
+            return new PlayerProfileDto(_data.player, _data.generated_atSpecified ? _data.generated_at : (DateTime?)null);
         }
     }
 }

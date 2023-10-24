@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Class DrawResult
@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="DrawResult"/> class
         /// </summary>
         /// <param name="item">The item</param>
-        public DrawResult(DrawResultCI item)
+        public DrawResult(DrawResultCacheItem item)
         {
             Guard.Argument(item, nameof(item)).NotNull();
 

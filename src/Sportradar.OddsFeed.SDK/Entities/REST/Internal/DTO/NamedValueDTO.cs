@@ -3,12 +3,12 @@
 */
 using Dawn;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-access-object representing a named value
     /// </summary>
-    internal class NamedValueDTO
+    internal class NamedValueDto
     {
         /// <summary>
         /// Gets the id of the match status
@@ -21,9 +21,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public string Description { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NamedValueDTO"/> class.
+        /// Initializes a new instance of the <see cref="NamedValueDto"/> class.
         /// </summary>
-        internal NamedValueDTO(int id, string description)
+        internal NamedValueDto(int id, string description)
         {
             Guard.Argument(id, nameof(id)).NotNegative();
 

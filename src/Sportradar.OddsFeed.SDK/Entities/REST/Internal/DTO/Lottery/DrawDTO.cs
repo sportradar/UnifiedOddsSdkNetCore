@@ -5,21 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
 {
     /// <summary>
     /// Defines a data-transfer-object for lottery draw
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "DTO is allowed")]
-    internal class DrawDTO : SportEventSummaryDTO
+    internal class DrawDto : SportEventSummaryDto
     {
         /// <summary>
-        /// Gets the <see cref="LotteryDTO"/>
+        /// Gets the <see cref="LotteryDto"/>
         /// </summary>
-        public LotteryDTO Lottery { get; }
+        public LotteryDto Lottery { get; }
 
         /// <summary>
         /// Gets the status of the draw
@@ -36,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
         /// Gets the results
         /// </summary>
         /// <value>The results</value>
-        public IEnumerable<DrawResultDTO> Results { get; }
+        public IEnumerable<DrawResultDto> Results { get; }
 
         /// <summary>
         /// Gets the display identifier
@@ -49,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
         /// </summary>
         public DateTime? GeneratedAt { get; }
 
-        internal DrawDTO(draw_summary item)
+        internal DrawDto(draw_summary item)
             : base(new sportEvent
             {
                 id = item.draw_fixture == null
@@ -74,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
             {
                 if (item.draw_fixture.id != null && item.draw_fixture.lottery != null)
                 {
-                    Lottery = new LotteryDTO(item.draw_fixture.lottery);
+                    Lottery = new LotteryDto(item.draw_fixture.lottery);
                 }
                 Status = RestMapperHelper.MapDrawStatus(item.draw_fixture.status, item.draw_fixture.statusSpecified);
 
@@ -91,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
                 if (item.draw_result.draws.draw != null)
                 {
-                    var res = item.draw_result.draws.draw.Select(draw => new DrawResultDTO(draw)).ToList();
+                    var res = item.draw_result.draws.draw.Select(draw => new DrawResultDto(draw)).ToList();
                     Results = res;
                 }
             }
@@ -99,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
             GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;
         }
 
-        internal DrawDTO(draw_fixtures item)
+        internal DrawDto(draw_fixtures item)
             : base(new sportEvent
             {
                 id = item == null ? "wns:draw:1" : item.draw_fixture?.id,
@@ -123,7 +122,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
 
             if (fixture.lottery != null)
             {
-                Lottery = new LotteryDTO(fixture.lottery);
+                Lottery = new LotteryDto(fixture.lottery);
             }
             Status = RestMapperHelper.MapDrawStatus(fixture.status, fixture.statusSpecified);
 
@@ -134,7 +133,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery
             GeneratedAt = item.generated_atSpecified ? item.generated_at : (DateTime?)null;
         }
 
-        internal DrawDTO(draw_event item)
+        internal DrawDto(draw_event item)
             : base(new sportEvent
             {
                 id = item == null ? "wns:draw:1" : item.id,

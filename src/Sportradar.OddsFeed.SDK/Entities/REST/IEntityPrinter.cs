@@ -3,7 +3,7 @@
 */
 using System;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// A contract for implementing entity printer

@@ -4,14 +4,18 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Entities.REST.Market;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
@@ -78,34 +82,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string PlayerMarketOutcomeType = "player";
         /// <summary>
-        /// The minimum inactivity seconds
-        /// </summary>
-        public const int MinInactivitySeconds = 20;
-        /// <summary>
-        /// The maximum inactivity seconds
-        /// </summary>
-        public const int MaxInactivitySeconds = 180;
-        /// <summary>
-        /// The minimum recovery execution in seconds
-        /// </summary>
-        public const int MinRecoveryExecutionInSeconds = 600;
-        /// <summary>
-        /// The maximum recovery execution in seconds
-        /// </summary>
-        public const int MaxRecoveryExecutionInSeconds = 3600;
-        /// <summary>
-        /// The minimal interval between recovery requests initiated by alive messages (seconds)
-        /// </summary>
-        public const int MinIntervalBetweenRecoveryRequests = 20;
-        /// <summary>
-        /// The maximum interval between recovery requests initiated by alive messages (seconds)
-        /// </summary>
-        public const int MaxIntervalBetweenRecoveryRequests = 180;
-        /// <summary>
-        /// The default interval between recovery requests initiated by alive messages (seconds)
-        /// </summary>
-        public const int DefaultIntervalBetweenRecoveryRequests = 30;
-        /// <summary>
         /// Defines the beginning of the outcome id for player outcomes
         /// </summary>
         public const string PlayerProfileMarketPrefix = "sr:player:";
@@ -122,43 +98,17 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string NameProviderCompositeIdSeparator = ",";
         /// <summary>
-        /// The iso8601 24h short format
+        /// The Iso8601 24h short format
         /// </summary>
-        // ReSharper disable once InconsistentNaming
-        public const string ISO8601_24H_Format = "yyyy-MM-dd’T’HH:mm:ss";
+        public const string Iso860124HFormat = "yyyy-MM-dd’T’HH:mm:ss";
         /// <summary>
-        /// The iso8601 24h full format
+        /// The Iso8601 24h full format
         /// </summary>
-        // ReSharper disable once InconsistentNaming
-        public const string ISO8601_24H_FullFormat = "yyyy-MM-dd’T’HH:mm:ssXXX";
-        /// <summary>
-        /// The market description minimum fetch interval in seconds
-        /// </summary>
-        public const int MarketDescriptionMinFetchInterval = 30;
-        /// <summary>
-        /// The minimum HTTP timeout
-        /// </summary>
-        public const int DefaultHttpClientTimeout = 30;
-        /// <summary>
-        /// The minimum HTTP timeout
-        /// </summary>
-        public const int MinHttpClientTimeout = 10;
-        /// <summary>
-        /// The maximum HTTP timeout
-        /// </summary>
-        public const int MaxHttpClientTimeout = 100;
-        /// <summary>
-        /// The rest connection failure limit
-        /// </summary>
-        public const int RestConnectionFailureLimit = 5;
-        /// <summary>
-        /// The rest connection failure timeout in sec
-        /// </summary>
-        public const int RestConnectionFailureTimeoutInSec = 15;
+        public const string Iso860124HFullFormat = "yyyy-MM-dd’T’HH:mm:ssXXX";
         /// <summary>
         /// The soccer sport urns
         /// </summary>
-        public static readonly IReadOnlyCollection<URN> SoccerSportUrns = new[] { URN.Parse("sr:sport:1"), URN.Parse("sr:sport:137") };
+        public static readonly IReadOnlyCollection<Urn> SoccerSportUrns = new[] { Urn.Parse("sr:sport:1"), Urn.Parse("sr:sport:137") };
         /// <summary>
         /// The date when it was created
         /// </summary>
@@ -171,6 +121,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The regex pattern to extract response message from failed API requests
         /// </summary>
         public const string ApiResponseMessagePattern = @"<message>([a-zA-Z0-9 -_\:.]*)<\/message>";
+        /// <summary>
+        /// The semaphore pool size
+        /// </summary>
+        public const int SemaphorePoolSize = 600;
 
         /// <summary>
         /// Gets the assembly version number
@@ -190,7 +144,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             if (log != null)
             {
                 log.LogInformation("=============================");
-                log.LogInformation($"    UF SDK .NET ({GetVersion()}) ");
+                log.LogInformation("    UF SDK .NET ({UofSdkVersion}) ", GetVersion());
                 log.LogInformation("=============================");
             }
         }
@@ -283,12 +237,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return date;
             }
 
-            if (DateTime.TryParseExact(input, ISO8601_24H_FullFormat, new DateTimeFormatInfo(), DateTimeStyles.None, out date))
+            if (DateTime.TryParseExact(input, Iso860124HFullFormat, new DateTimeFormatInfo(), DateTimeStyles.None, out date))
             {
                 return date;
             }
 
-            if (DateTime.TryParseExact(input, ISO8601_24H_Format, new DateTimeFormatInfo(), DateTimeStyles.None, out date))
+            if (DateTime.TryParseExact(input, Iso860124HFormat, new DateTimeFormatInfo(), DateTimeStyles.None, out date))
             {
                 return date;
             }
@@ -327,13 +281,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         }
 
         /// <summary>
-        /// Dictionaries to string of key-value pairs
+        /// Specifiers dictionary to string of key-value pairs
         /// </summary>
         /// <param name="specifiers">The specifiers.</param>
         /// <returns>System.String.</returns>
-        public static string DictionaryToString(IDictionary<string, string> specifiers)
+        public static string SpecifiersDictionaryToString(IDictionary<string, string> specifiers)
         {
-            if (specifiers == null || !specifiers.Any())
+            if (specifiers.IsNullOrEmpty())
             {
                 return string.Empty;
             }
@@ -387,10 +341,22 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             var specs = specifiers.Split('|');
             foreach (var spec in specs)
             {
-                var specKeyValue = spec.Split("=");
+                var specKeyValue = spec.Split('=');
                 result.Add(specKeyValue[0], specKeyValue[1]);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Dictionary to comma-delimited string of key-value pairs
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The comma-delimited string</returns>
+        public static string DictionaryToString(IDictionary<string, string> values)
+        {
+            return values.IsNullOrEmpty()
+                ? string.Empty
+                : string.Join(", ", values.Select(keyValuePair => keyValuePair.Key + "=" + keyValuePair.Value));
         }
 
         /// <summary>
@@ -471,6 +437,18 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <param name="baseValue">The base value</param>
         /// <param name="variablePercent">The max percent to deviate from base value</param>
         /// <returns>The new value within min-max</returns>
+        public static TimeSpan GetVariableNumber(TimeSpan baseValue, int variablePercent = 5)
+        {
+            var newValue = GetVariableNumber(Convert.ToInt32(baseValue.TotalMilliseconds), variablePercent);
+            return TimeSpan.FromMilliseconds(newValue);
+        }
+
+        /// <summary>
+        /// Get new value based on input and variable percent (up or down)
+        /// </summary>
+        /// <param name="baseValue">The base value</param>
+        /// <param name="variablePercent">The max percent to deviate from base value</param>
+        /// <returns>The new value within min-max</returns>
         public static int GetVariableNumber(int baseValue, int variablePercent = 5)
         {
             if (baseValue < 1 || variablePercent == 0)
@@ -490,15 +468,15 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         }
 
         /// <summary>
-        /// Get new value based on input and variable percent (up or down)
+        /// Get new value based on input and variable percent (up only)
         /// </summary>
         /// <param name="baseValue">The base value</param>
         /// <param name="variablePercent">The max percent to deviate from base value</param>
-        /// <returns>The new value within min-max</returns>
-        public static TimeSpan GetVariableNumber(TimeSpan baseValue, int variablePercent = 5)
+        /// <returns>The new value within base-max</returns>
+        public static TimeSpan AddVariableNumber(TimeSpan baseValue, int variablePercent = 5)
         {
-            var newValue = GetVariableNumber(Convert.ToInt32(baseValue.TotalSeconds), variablePercent);
-            return TimeSpan.FromSeconds(newValue);
+            var newValue = AddVariableNumber(Convert.ToInt32(baseValue.TotalMilliseconds), variablePercent);
+            return TimeSpan.FromMilliseconds(newValue);
         }
 
         /// <summary>
@@ -522,18 +500,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             var end = (100 + variablePercent) / (double)100 * baseValue;
 
             return GetRandom(baseValue, (int)end);
-        }
-
-        /// <summary>
-        /// Get new value based on input and variable percent (up only)
-        /// </summary>
-        /// <param name="baseValue">The base value</param>
-        /// <param name="variablePercent">The max percent to deviate from base value</param>
-        /// <returns>The new value within base-max</returns>
-        public static TimeSpan AddVariableNumber(TimeSpan baseValue, int variablePercent = 5)
-        {
-            var newValue = AddVariableNumber(Convert.ToInt32(baseValue.TotalSeconds), variablePercent);
-            return TimeSpan.FromSeconds(newValue);
         }
 
         /// <summary>
@@ -570,16 +536,24 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
         public static int GetRandom(int maxValue = int.MaxValue)
         {
-            return RandomNumberGenerator.GetInt32(maxValue);
+            return GetRandom(0, maxValue);
         }
 
         public static int GetRandom(int minValue, int maxValue)
         {
-            if (minValue > maxValue)
+            if (minValue >= maxValue)
             {
-                throw new ArgumentOutOfRangeException(nameof(minValue), $"{minValue} not valid. Must be less then {maxValue}.");
+                throw new ArgumentOutOfRangeException(nameof(minValue), $"MinValue [{minValue}] not valid. Must be less then MaXValue [{maxValue}].");
             }
-            return RandomNumberGenerator.GetInt32(minValue, maxValue);
+
+            using (var generator = RandomNumberGenerator.Create())
+            {
+                var bytes = new byte[4];
+                var range = maxValue - minValue;
+                generator.GetBytes(bytes);
+                var generatedNumber = BitConverter.ToInt32(bytes, 0);
+                return Math.Abs(generatedNumber % range) + minValue;
+            }
         }
 
         public static int GetMidValue(int initialValue, int minValue = 0, int maxValue = int.MaxValue)
@@ -618,6 +592,88 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return errorMatch.Success ? $"{messageMatch.Groups[1].Value} (detail: {errorMatch.Groups[1].Value})" : messageMatch.Groups[1].Value;
             }
             return responseContent;
+        }
+
+        /// <summary>
+        /// Calculates the length in bytes of an object and returns the size 
+        /// </summary>
+        /// <param name="serializableObject">Object to get size</param>
+        /// <returns>The size in bytes</returns>
+        public static int GetObjectSize(object serializableObject)
+        {
+            if (serializableObject == null)
+            {
+                return 0;
+            }
+            if (!serializableObject.GetType().IsSerializable)
+            {
+                return 0;
+            }
+            var bf = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                bf.Serialize(ms, serializableObject);
+                var array = ms.ToArray();
+                return array.Length;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the length in bytes of an object and returns the size 
+        /// </summary>
+        /// <param name="serializableObject">Object to get size</param>
+        /// <returns>The size in bytes</returns>
+        public static int TryGetObjectSize(object serializableObject)
+        {
+            try
+            {
+                return GetObjectSize(serializableObject);
+            }
+            catch
+            {
+                return serializableObject == null ? 0 : 1;
+            }
+        }
+
+        /// <summary>
+        /// Convert list of CultureInfo to comma delimited string
+        /// </summary>
+        /// <param name="cultures"></param>
+        /// <returns></returns>
+        public static string ConvertCultures(ICollection<CultureInfo> cultures)
+        {
+            return cultures.IsNullOrEmpty()
+                ? string.Empty
+                : string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
+        }
+
+        /// <summary>
+        /// Get the DateTime.UtcNow formatted as string
+        /// </summary>
+        /// <returns>The DateTime.UtcNow formatted as string</returns>
+        public static string UtcNowString()
+        {
+            return DateTime.UtcNow.ToString("yyyyMMddHHmm", CultureInfo.InvariantCulture);
+        }
+
+        public static IReadOnlyDictionary<CultureInfo, string> GetOrCreateReadOnlyNames(IDictionary<CultureInfo, string> availableNames, IReadOnlyList<CultureInfo> wantedCultures)
+        {
+            return GetOrCreateReadOnlyNames(availableNames, wantedCultures as IReadOnlyCollection<CultureInfo>);
+        }
+
+        public static IReadOnlyDictionary<CultureInfo, string> GetOrCreateReadOnlyNames(IDictionary<CultureInfo, string> availableNames, IReadOnlyCollection<CultureInfo> wantedCultures)
+        {
+            if (wantedCultures.IsNullOrEmpty())
+            {
+                return new Dictionary<CultureInfo, string>();
+            }
+
+            if (availableNames.IsNullOrEmpty())
+            {
+                return wantedCultures.ToDictionary(s => s, s => string.Empty);
+            }
+
+            return wantedCultures.ToDictionary(s => s, s => availableNames.TryGetValue(s, out var name) ? name : string.Empty);
         }
     }
 }

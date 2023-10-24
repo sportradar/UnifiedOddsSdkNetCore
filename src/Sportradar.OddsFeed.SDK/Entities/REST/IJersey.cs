@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Defines a contract for classes implementing jersey
@@ -79,5 +79,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST
         /// </summary>
         /// <value>The sleeve detail of the jersey</value>
         string SleeveDetail { get; }
+
+        /// <summary>
+        /// Gets the square color of the jersey
+        /// </summary>
+        /// <value>The square color of the jersey</value>
+        string SquareColor { get; }
+
+        /// <summary>
+        /// Gets the horizontal stripes color of the jersey
+        /// </summary>
+        /// <value>The horizontal stripes color of the jersey</value>
+        string HorizontalStripesColor { get; }
     }
 }

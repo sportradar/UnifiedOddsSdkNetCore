@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Represents a score of a sport event period
@@ -49,7 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// </summary>
         /// <param name="dto">The data-transfer-object for period score</param>
         /// <param name="matchStatusesCache">The match statuses cache</param>
-        public PeriodScore(PeriodScoreDTO dto, ILocalizedNamedValueCache matchStatusesCache)
+        public PeriodScore(PeriodScoreDto dto, ILocalizedNamedValueCache matchStatusesCache)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
 

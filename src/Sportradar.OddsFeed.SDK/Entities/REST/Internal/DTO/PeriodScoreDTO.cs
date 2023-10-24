@@ -4,16 +4,16 @@
 using System;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
-    /// Class PeriodScoreDTO
+    /// Class PeriodScoreDto
     /// </summary>
-    internal class PeriodScoreDTO
+    internal class PeriodScoreDto
     {
         /// <summary>
         /// Gets the home score
@@ -46,10 +46,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         public PeriodType? Type { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PeriodScoreDTO"/> class
+        /// Initializes a new instance of the <see cref="PeriodScoreDto"/> class
         /// </summary>
         /// <param name="periodScore">The period score</param>
-        public PeriodScoreDTO(periodScoreType periodScore)
+        public PeriodScoreDto(periodScoreType periodScore)
         {
             HomeScore = periodScore.home_score;
             AwayScore = periodScore.away_score;
@@ -59,10 +59,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PeriodScoreDTO"/> class
+        /// Initializes a new instance of the <see cref="PeriodScoreDto"/> class
         /// </summary>
         /// <param name="periodScore">The period score</param>
-        public PeriodScoreDTO(periodScore periodScore)
+        public PeriodScoreDto(periodScore periodScore)
         {
             if (decimal.TryParse(periodScore.home_score, out var homeScore))
             {

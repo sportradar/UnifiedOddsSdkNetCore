@@ -1,7 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping
 {
     /// <summary>
     /// Implementation of the <see cref="IMarketMapping"/> for the LiveOdds feed

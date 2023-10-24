@@ -4,14 +4,14 @@
 using System;
 using System.Collections.Generic;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     /// <summary>
     /// A data-transfer-object representing producer info returned by Sports API
     /// </summary>
-    internal class ProducerDTO
+    internal class ProducerDto
     {
         /// <summary>
         /// Gets the Id of the associated producer
@@ -50,10 +50,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         internal int StatefulRecoveryWindow { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProducerDTO"/> class
+        /// Initializes a new instance of the <see cref="ProducerDto"/> class
         /// </summary>
         /// <param name="producer">A <see cref="producer"/> containing deserialized response from 'available producers' endpoint</param>
-        internal ProducerDTO(producer producer)
+        internal ProducerDto(producer producer)
         {
             Guard.Argument(producer, nameof(producer)).NotNull();
 

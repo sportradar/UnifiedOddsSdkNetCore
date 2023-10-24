@@ -3,17 +3,17 @@
 */
 using System.Linq;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.Lottery;
-using Sportradar.OddsFeed.SDK.Messages.REST;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.Lottery
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="lotteries" /> instances to <see cref="EntityList{LotteryDTO}" /> instances
+    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="lotteries" /> instances to <see cref="EntityList{T}" /> instances
     /// </summary>
-    /// <seealso cref="ISingleTypeMapper{LotteryDTO}" />
-    internal class LotteriesMapper : ISingleTypeMapper<EntityList<LotteryDTO>>
+    /// <seealso cref="ISingleTypeMapper{LotteryDto}" />
+    internal class LotteriesMapper : ISingleTypeMapper<EntityList<LotteryDto>>
     {
         /// <summary>
         /// A <see cref="lotteries"/> containing rest data
@@ -31,10 +31,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping.Lottery
             _data = lotteries;
         }
 
-        public EntityList<LotteryDTO> Map()
+        public EntityList<LotteryDto> Map()
         {
-            var items = _data.lottery.Select(s => new LotteryDTO(s)).ToList();
-            return new EntityList<LotteryDTO>(items);
+            var items = _data.lottery.Select(s => new LotteryDto(s)).ToList();
+            return new EntityList<LotteryDto>(items);
         }
     }
 }

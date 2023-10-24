@@ -2,9 +2,10 @@
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System.Collections.Generic;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     /// <summary>
     /// Defines a contract implemented by factories used to construct <see cref="IMarketMappingProvider"/> instances
@@ -20,6 +21,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <param name="producerId">An id of the <see cref="IProducer"/> of the <see cref="ISportEvent"/></param>
         /// <param name="sportId">A sportId of the <see cref="ISportEvent"/></param>
         /// <returns>Returns an instance of <see cref="IMarketMappingProvider"/></returns>
-        IMarketMappingProvider BuildMarketMappingProvider(ISportEvent sportEvent, int marketId, IReadOnlyDictionary<string, string> specifiers, int producerId, URN sportId);
+        IMarketMappingProvider BuildMarketMappingProvider(ISportEvent sportEvent, int marketId, IReadOnlyDictionary<string, string> specifiers, int producerId, Urn sportId);
     }
 }

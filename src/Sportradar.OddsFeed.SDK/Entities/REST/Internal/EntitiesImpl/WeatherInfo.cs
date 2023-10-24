@@ -1,9 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     /// <summary>
     /// Provides information about weather conditions
@@ -14,8 +14,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         /// <summary>
         /// Initializes a new instance of the <see cref="WeatherInfo"/> class
         /// </summary>
-        /// <param name="cacheItem">A <see cref="WeatherInfoCI"/> used to create new instance</param>
-        internal WeatherInfo(WeatherInfoCI cacheItem)
+        /// <param name="cacheItem">A <see cref="WeatherInfoCacheItem"/> used to create new instance</param>
+        internal WeatherInfo(WeatherInfoCacheItem cacheItem)
         {
             Pitch = cacheItem.Pitch;
             Temperature = cacheItem.TemperatureCelsius;

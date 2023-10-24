@@ -3,9 +3,9 @@
 */
 using System.Collections.Generic;
 using System.Globalization;
-using Sportradar.OddsFeed.SDK.Messages;
+using Sportradar.OddsFeed.SDK.Common;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports
 {
     /// <summary>
     /// Contains basic information about a sport tournament
@@ -14,9 +14,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
     internal class CategoryData : SportEntityData
     {
         /// <summary>
-        /// Gets the <see cref="IEnumerable{URN}"/> representing the ids of tournaments, which belong to category represented by the current instance
+        /// Gets the <see cref="IEnumerable{Urn}"/> representing the ids of tournaments, which belong to category represented by the current instance
         /// </summary>
-        public readonly IEnumerable<URN> Tournaments;
+        public readonly IEnumerable<Urn> Tournaments;
 
         /// <summary>
         /// Gets the country code
@@ -27,11 +27,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryData"/> class.
         /// </summary>
-        /// <param name="id">a <see cref="URN"/> specifying the id of the associated category</param>
+        /// <param name="id">a <see cref="Urn"/> specifying the id of the associated category</param>
         /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated entity name</param>
         /// <param name="countryCode">the country code</param>
-        /// <param name="tournaments">the <see cref="IEnumerable{URN}"/> representing the tournaments, which belong to the category</param>
-        public CategoryData(URN id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode, IEnumerable<URN> tournaments)
+        /// <param name="tournaments">the <see cref="IEnumerable{Urn}"/> representing the tournaments, which belong to the category</param>
+        public CategoryData(Urn id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode, IEnumerable<Urn> tournaments)
             : base(id, names)
         {
             //Guard.Argument(tournaments, nameof()).NotNull(); // on WNSs there is no tournament
@@ -39,7 +39,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
 
             CountryCode = countryCode;
 
-            Tournaments = tournaments as IReadOnlyCollection<URN>;
+            Tournaments = tournaments as IReadOnlyCollection<Urn>;
         }
     }
 }

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration">
+    <Position X="2.25" Y="0.5" Width="2" />
+    <AssociationLine Name="Producer" Type="Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="2.625" />
+        <Point X="5.406" Y="2.625" />
+        <Point X="5.406" Y="3.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAiCAAAAAAAAAIAAAAEFCAQCAAAAAAAAAAhAAA=</HashCode>
+      <FileName>Api\Config\IUofConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Producer" />
+      <Property Name="Rabbit" />
+      <Property Name="Additional" />
+      <Property Name="Cache" />
+      <Property Name="Api" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration">
+    <Position X="5" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAABAQAAAgkAAAAAIAAAA=</HashCode>
+      <FileName>Api\Config\IUofProducerConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Api.Config.IUofRabbitConfiguration">
+    <Position X="0.5" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EIAAAIAAAAAIAAAAAQAAAAAACAAACAACAAAAAAAAAAA=</HashCode>
+      <FileName>Api\Config\IUofRabbitConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Api.Config.IUofAdditionalConfiguration">
+    <Position X="6.25" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Api\Config\IUofAdditionalConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Api.Config.IUofCacheConfiguration">
+    <Position X="7.25" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAASAAAAIABAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Api\Config\IUofCacheConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Api.Config.IUofApiConfiguration">
+    <Position X="2.75" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAQBgCAAAAAABAAACAAggAAAAAAAAAA=</HashCode>
+      <FileName>Api\Config\IUofApiConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sportradar.OddsFeed.SDK.Api.Internal.Config.IUofConfigurationSection">
+    <Position X="0.5" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAACAAAAgAAAAAAAAAQNCAAAAgIgAAAgEABAQA=</HashCode>
+      <FileName>Api\Internal\Config\IUofConfigurationSection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

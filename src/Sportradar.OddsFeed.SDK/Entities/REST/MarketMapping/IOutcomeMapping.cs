@@ -3,7 +3,7 @@
 */
 using System.Globalization;
 
-namespace Sportradar.OddsFeed.SDK.Entities.REST.MarketMapping
+namespace Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping
 {
     /// <summary>
     /// Defines a contract implemented by classes representing mapping id of outcome
