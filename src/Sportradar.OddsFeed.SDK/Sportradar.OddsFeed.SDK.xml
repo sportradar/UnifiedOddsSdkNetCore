@@ -10211,7 +10211,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1.Deserialize(System.IO.Stream)">
             <summary>
-            Deserialize the provided byte array to a <see cref="!:T"/> instance
+            Deserialize the provided <see cref="T:System.Byte"/> array to a <see cref="!:T"/> instance
             </summary>
             <param name="stream">A <see cref="T:System.IO.Stream"/> instance containing data to be deserialized </param>
             <returns>The <c>data</c> deserialized to <see cref="!:T"/> instance</returns>
@@ -10219,7 +10219,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1.Deserialize``1(System.IO.Stream)">
             <summary>
-            Deserialize the provided byte array to a <see cref="!:T"/> instance
+            Deserialize the provided <see cref="T:System.Byte"/> array to a <see cref="!:T"/> instance
             </summary>
             <typeparam name="T1">Specifies the type to which to deserialize the data</typeparam>
             <param name="stream">A <see cref="T:System.IO.Stream"/> instance containing data to be deserialized </param>
