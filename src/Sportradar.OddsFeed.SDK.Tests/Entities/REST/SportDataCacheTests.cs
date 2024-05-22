@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +18,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -28,6 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 /// For testing functionality of <see cref="SportDataCache"/>
 /// <remarks>DataProvider calls GET "All available tournaments for all sports" for all requests</remarks>
 /// </summary>
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class SportDataCacheTests
 {
     private readonly SportDataCache _sportDataCache;
@@ -51,6 +52,7 @@ public class SportDataCacheTests
 
     public SportDataCacheTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
         _cacheManager = testCacheStoreManager.CacheManager;
         _dataRouterManager = new TestDataRouterManager(_cacheManager, outputHelper);
@@ -66,9 +68,10 @@ public class SportDataCacheTests
                 testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
             _timer,
             TestData.Cultures,
-            _cacheManager);
+            _cacheManager,
+            loggerFactory);
 
-        _sportDataCache = new SportDataCache(_dataRouterManager, _timer, TestData.Cultures, _sportEventCache, _cacheManager);
+        _sportDataCache = new SportDataCache(_dataRouterManager, _timer, TestData.Cultures, _sportEventCache, _cacheManager, loggerFactory);
     }
 
     [Fact]
@@ -172,13 +175,13 @@ public class SportDataCacheTests
         for (var i = 0; i < 3; i++)
         {
             _sportDataCache.FetchedCultures.Clear();
-            var sports = await _sportDataCache.GetSportsAsync(TestData.Cultures).ConfigureAwait(false);
-            var sport = await _sportDataCache.GetSportAsync(TestData.SportId, TestData.Cultures).ConfigureAwait(false);
-            var tournamentSport = await _sportDataCache.GetSportForTournamentAsync(Urn.Parse("sr:tournament:146"), TestData.Cultures).ConfigureAwait(false);
+            var sports = await _sportDataCache.GetSportsAsync(TestData.Cultures);
+            var sport = await _sportDataCache.GetSportAsync(TestData.SportId, TestData.Cultures);
+            var tournamentSport = await _sportDataCache.GetSportForTournamentAsync(Urn.Parse("sr:tournament:146"), TestData.Cultures);
 
-            var tournamentEvents = await _sportEventCache.GetEventIdsAsync(TestData.TournamentId, _cultureEn).ConfigureAwait(false);
+            var tournamentEvents = await _sportEventCache.GetEventIdsAsync(TestData.TournamentId, _cultureEn);
             var tournament = (TournamentInfoCacheItem)_sportEventCache.GetEventCacheItem(TestData.TournamentId);
-            var dateEvents = await _sportEventCache.GetEventIdsAsync(DateTime.Now, _cultureEn).ConfigureAwait(false);
+            var dateEvents = await _sportEventCache.GetEventIdsAsync(DateTime.Now, _cultureEn);
 
             Assert.NotNull(sports);
             // ReSharper disable once PossibleMultipleEnumeration
@@ -220,7 +223,7 @@ public class SportDataCacheTests
     [Fact]
     public async Task GetSportsAsyncReturnsCorrectlyForBaseLocale()
     {
-        var sports = await _sportDataCache.GetSportsAsync(TestData.Cultures).ConfigureAwait(false); // initial load
+        var sports = await _sportDataCache.GetSportsAsync(TestData.Cultures); // initial load
         foreach (var s in sports.ToList())
         {
             BaseSportDataValidation(s);
@@ -253,7 +256,7 @@ public class SportDataCacheTests
     [Fact]
     public async Task GetSportAsyncReturnKnownId()
     {
-        var sports = await _sportDataCache.GetSportsAsync(TestData.Cultures).ConfigureAwait(false); // initial load
+        var sports = await _sportDataCache.GetSportsAsync(TestData.Cultures); // initial load
         var sportsList = sports.ToList();
         var data = await _sportDataCache.GetSportAsync(SportId, TestData.Cultures);
 
@@ -300,7 +303,7 @@ public class SportDataCacheTests
         SportData dataNl; // with NL locale
         SportData data01; // without locale
 
-        await _sportDataCache.GetSportsAsync(TestData.Cultures).ConfigureAwait(false); // initial load
+        await _sportDataCache.GetSportsAsync(TestData.Cultures); // initial load
         dataNl = await _sportDataCache.GetSportAsync(SportId, new[] { _cultureNl }); // add new locale
         data01 = await _sportDataCache.GetSportAsync(SportId, TestData.Cultures); // get all translations
 
@@ -322,7 +325,7 @@ public class SportDataCacheTests
     {
         //loads tournaments.xml for new locale
 
-        await _sportDataCache.GetSportsAsync(TestData.Cultures).ConfigureAwait(false); // initial load
+        await _sportDataCache.GetSportsAsync(TestData.Cultures); // initial load
         var dataNl = await _sportDataCache.GetSportForTournamentAsync(TournamentId, new[] { _cultureNl }); //add new locale - with NL locale
         var data01 = await _sportDataCache.GetSportForTournamentAsync(TournamentId, TestData.Cultures); // get all translations - without locale
         Assert.NotNull(dataNl);

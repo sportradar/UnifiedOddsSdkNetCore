@@ -1,6 +1,5 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
@@ -121,10 +120,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             Id = Urn.Parse(childStage.id);
             Scheduled = childStage.scheduledSpecified
-                            ? (DateTime?)childStage.scheduled.ToLocalTime()
+                            ? (DateTime?)childStage.scheduled
                             : null;
             ScheduledEnd = childStage.scheduled_endSpecified
-                               ? (DateTime?)childStage.scheduled_end.ToLocalTime()
+                               ? (DateTime?)childStage.scheduled_end
                                : null;
             Name = childStage.name;
             if (!string.IsNullOrEmpty(childStage.replaced_by) && Urn.TryParse(childStage.replaced_by, out var replacedBy))

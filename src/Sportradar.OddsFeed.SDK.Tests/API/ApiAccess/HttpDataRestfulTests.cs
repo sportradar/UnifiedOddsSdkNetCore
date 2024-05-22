@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using Sportradar.OddsFeed.SDK.Api.Internal.Replay;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
@@ -18,7 +20,7 @@ public class HttpDataRestfulTests
 
     public HttpDataRestfulTests()
     {
-        var config = TestConfiguration.GetConfig();
+        _ = TestConfiguration.GetConfig();
 
         _httpDataRestful = new HttpDataRestful(new TestHttpClient(), new Deserializer<response>());
     }

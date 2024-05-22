@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -36,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         private readonly object _lockAdd = new object();
 
         /// <summary>
-        /// A <see cref="IDictionary{CultureInfo, String}"/> containing player name in different languages
+        /// A <see cref="IDictionary{CultureInfo,String}"/> containing player name in different languages
         /// </summary>
         public IDictionary<CultureInfo, string> Names;
 

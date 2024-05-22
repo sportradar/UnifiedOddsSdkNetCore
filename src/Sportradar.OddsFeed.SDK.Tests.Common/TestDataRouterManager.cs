@@ -1,6 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+/*
+ * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+ */
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +21,6 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
@@ -68,8 +69,10 @@ internal class TestDataRouterManager : IDataRouterManager
     private const string SportsXml = "sports_{culture}.xml";
     private const string MatchDetailsXml = "event_details_{culture}.xml";
     private const string TournamentScheduleXml = "tournaments_{culture}.xml";
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Allowed for future reference")]
     private const string PlayerProfileXml = "player_1_{culture}.xml";
+
     private const string SimpleTeamProfileXml = "simpleteam_1_{culture}.xml";
 
     private readonly ICacheManager _cacheManager;
@@ -82,6 +85,7 @@ internal class TestDataRouterManager : IDataRouterManager
     /// The list of URI replacements (to get wanted response when specific url is called)
     /// </summary>
     public readonly List<Tuple<string, string>> UriReplacements;
+
     /// <summary>
     /// The list of URI exceptions (to get wanted response when specific url is called)
     /// </summary>
@@ -93,7 +97,7 @@ internal class TestDataRouterManager : IDataRouterManager
 
     public readonly List<string> RestUrlCalls;
 
-    private readonly object _lock = new object();
+    private readonly object _lock = new();
 
     private readonly ITestOutputHelper _outputHelper;
 
@@ -119,6 +123,7 @@ internal class TestDataRouterManager : IDataRouterManager
         {
             defaultPath = path;
         }
+
         var replacement = UriReplacements.Where(w => w.Item1.Equals(path)).ToList();
         return replacement.IsNullOrEmpty() ? defaultPath : replacement[0].Item2.Replace("culture", cultureIso);
     }
@@ -129,6 +134,7 @@ internal class TestDataRouterManager : IDataRouterManager
         {
             return;
         }
+
         var replacement = UriExceptions.Where(w => w.Item1.Equals(path)).ToList();
         if (!replacement.IsNullOrEmpty())
         {
@@ -143,11 +149,13 @@ internal class TestDataRouterManager : IDataRouterManager
         {
             filePath = FileHelper.FindFile(template.Replace("{culture}", TestData.Culture.TwoLetterISOLanguageName));
         }
+
         var fi = new FileInfo(filePath);
         if (fi.Exists)
         {
             return fi.FullName;
         }
+
         return string.Empty;
     }
 
@@ -176,6 +184,7 @@ internal class TestDataRouterManager : IDataRouterManager
                 RestMethodCalls.Clear();
                 return;
             }
+
             if (RestMethodCalls.ContainsKey(callType))
             {
                 RestMethodCalls[callType] = 0;
@@ -196,10 +205,12 @@ internal class TestDataRouterManager : IDataRouterManager
             {
                 return TotalRestCalls;
             }
+
             if (!RestMethodCalls.ContainsKey(callType))
             {
                 return 0;
             }
+
             RestMethodCalls.TryGetValue(callType, out var value);
             return value;
         }
@@ -225,6 +236,7 @@ internal class TestDataRouterManager : IDataRouterManager
             {
                 return;
             }
+
             if (_delayPercent < 100)
             {
                 var percent = StaticRandom.I100;
@@ -233,11 +245,13 @@ internal class TestDataRouterManager : IDataRouterManager
                     return;
                 }
             }
+
             var delayMs = (int)_delay.TotalMilliseconds;
             if (_delayVariable)
             {
                 delayMs = StaticRandom.I(delayMs);
             }
+
             _outputHelper.WriteLine($"DRM - executing delay for {id} and {culture.TwoLetterISOLanguageName}: {delayMs} ms START");
             await Task.Delay(delayMs).ConfigureAwait(false);
             _outputHelper.WriteLine($"DRM - executing delay for {id} and {culture.TwoLetterISOLanguageName}: {delayMs} ms END");
@@ -249,6 +263,8 @@ internal class TestDataRouterManager : IDataRouterManager
         RecordMethodCall(EndpointSportEventSummary);
 
         await ExecuteDelayAsync(id, culture).ConfigureAwait(false);
+
+        FindUriException("summary.xml");
 
         var mapper = new SportEventSummaryMapperFactory();
 
@@ -291,6 +307,8 @@ internal class TestDataRouterManager : IDataRouterManager
         RecordMethodCall(EndpointSportEventFixture);
 
         await ExecuteDelayAsync(id, culture).ConfigureAwait(false);
+
+        FindUriException("fixture.xml");
 
         var restDeserializer = new Deserializer<fixturesEndpoint>();
         var mapper = new FixtureMapperFactory();
@@ -439,6 +457,7 @@ internal class TestDataRouterManager : IDataRouterManager
                 {
                     urns.Add(new Tuple<Urn, Urn>(item.Id, item.SportId));
                 }
+
                 return urns.AsEnumerable();
             }
         }
@@ -470,6 +489,7 @@ internal class TestDataRouterManager : IDataRouterManager
                 {
                     urns.Add(new Tuple<Urn, Urn>(item.Id, item.SportId));
                 }
+
                 return urns.AsEnumerable();
             }
         }
@@ -486,6 +506,7 @@ internal class TestDataRouterManager : IDataRouterManager
             {
                 urns.Add(new Tuple<Urn, Urn>(item.Id, item.SportId));
             }
+
             return urns.AsEnumerable();
         }
 
@@ -533,6 +554,7 @@ internal class TestDataRouterManager : IDataRouterManager
             {
                 urns.Add(new Tuple<Urn, Urn>(item.Id, item.SportId));
             }
+
             return urns.AsEnumerable();
         }
 
@@ -543,11 +565,14 @@ internal class TestDataRouterManager : IDataRouterManager
     {
         RecordMethodCall(EndpointPlayerProfile);
 
+        FindUriException("player.xml");
+
         var resourceName = $"player_{id?.Id ?? 1}_{culture.TwoLetterISOLanguageName}.xml";
         if (!FileHelper.ResourceExists(resourceName))
         {
             resourceName = "player_1_de.xml";
         }
+
         await using var stream = FileHelper.GetResource(resourceName);
 
         if (stream != null)
@@ -580,6 +605,8 @@ internal class TestDataRouterManager : IDataRouterManager
 
         await ExecuteDelayAsync(id, culture).ConfigureAwait(false);
 
+        FindUriException("competitor.xml");
+
         var resourceName = $"competitor_{id?.Id ?? 1}_{culture.TwoLetterISOLanguageName}.xml";
         await using var stream = FileHelper.GetResource(resourceName);
         RestUrlCalls.Add(resourceName);
@@ -599,12 +626,15 @@ internal class TestDataRouterManager : IDataRouterManager
         {
             await LogSaveDtoAsync(id, dto, culture, DtoType.CompetitorProfile, requester).ConfigureAwait(false);
         }
+
         _outputHelper.WriteLine($"DRM-GetCompetitorProfileAsync for {id} and culture {culture.TwoLetterISOLanguageName} - END");
     }
 
     private async Task GetSimpleTeamProfileAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester)
     {
         await ExecuteDelayAsync(id, culture).ConfigureAwait(false);
+
+        FindUriException("simpleteam.xml");
 
         var restDeserializer = new Deserializer<simpleTeamProfileEndpoint>();
         var mapper = new SimpleTeamProfileMapperFactory();
@@ -658,6 +688,7 @@ internal class TestDataRouterManager : IDataRouterManager
                 {
                     urns.Add(item.Id);
                 }
+
                 return urns.AsEnumerable();
             }
         }
@@ -696,10 +727,15 @@ internal class TestDataRouterManager : IDataRouterManager
 
         await ExecuteDelayAsync("market_description", culture).ConfigureAwait(false);
 
+        var resourceName = $"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
+        FindUriException("invariant_market_descriptions.xml");
+        FindUriException(resourceName);
+
+        resourceName = FindUriReplacement(resourceName, culture.TwoLetterISOLanguageName);
+
         var restDeserializer = new Deserializer<market_descriptions>();
         var mapper = new MarketDescriptionsMapperFactory();
 
-        var resourceName = $"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
         await using var stream = FileHelper.GetResource(resourceName);
 
         if (stream != null)
@@ -717,7 +753,12 @@ internal class TestDataRouterManager : IDataRouterManager
     {
         RecordMethodCall(EndpointVariantMarketDescription);
 
-        await ExecuteDelayAsync($"sr:variant:{id}", culture).ConfigureAwait(false);
+        var variantId = $"sr:variant:{id}";
+
+        await ExecuteDelayAsync(variantId, culture).ConfigureAwait(false);
+
+        FindUriException("single_variant_description.xml");
+        FindUriException(variantId);
 
         var restDeserializer = new Deserializer<market_descriptions>();
         var mapper = new MarketDescriptionMapperFactory();
@@ -732,7 +773,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse("sr:variant:" + result.Id), result, culture, DtoType.MarketDescription, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse(variantId), result, culture, DtoType.MarketDescription, null).ConfigureAwait(false);
             }
         }
     }
@@ -743,10 +784,15 @@ internal class TestDataRouterManager : IDataRouterManager
 
         await ExecuteDelayAsync("variant_description", culture).ConfigureAwait(false);
 
+        var resourceName = $"variant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
+        FindUriException("variant_market_descriptions.xml");
+        FindUriException(resourceName);
+
+        resourceName = FindUriReplacement(resourceName, culture.TwoLetterISOLanguageName);
+
         var restDeserializer = new Deserializer<variant_descriptions>();
         var mapper = new VariantDescriptionsMapperFactory();
 
-        var resourceName = $"variant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
         await using var stream = FileHelper.GetResource(resourceName);
 
         if (stream != null)
@@ -860,6 +906,7 @@ internal class TestDataRouterManager : IDataRouterManager
                 {
                     urns.Add(new Tuple<Urn, Urn>(item.Id, item.SportId));
                 }
+
                 return urns.AsEnumerable();
             }
         }

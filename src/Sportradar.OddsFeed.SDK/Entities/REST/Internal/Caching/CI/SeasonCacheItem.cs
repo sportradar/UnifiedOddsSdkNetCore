@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         internal Urn Id { get; private set; }
 
         /// <summary>
-        /// A <see cref="IDictionary{CultureInfo, String}"/> containing season names in different languages
+        /// A <see cref="IDictionary{CultureInfo,String}"/> containing season names in different languages
         /// </summary>
         internal readonly IDictionary<CultureInfo, string> Names;
 

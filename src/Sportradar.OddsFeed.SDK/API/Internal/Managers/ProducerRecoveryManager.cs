@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -170,6 +168,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             //The snapshot message not for us
             if (!_recoveryOperation.IsRunning || !_recoveryOperation.RequestId.HasValue || _recoveryOperation.RequestId.Value != snapshotCompleted.RequestId)
             {
+                ExecutionLog.LogInformation("Received unknown SnapshotComplete[requestId={RequestId}] for producer {ProducerId} on session {SessionName}", snapshotCompleted.request_id, Producer.Id, interest.Name);
                 return null;
             }
 

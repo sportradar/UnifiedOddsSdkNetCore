@@ -1,21 +1,21 @@
-﻿// /*
-// * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-// */
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -28,6 +28,7 @@ public class NameProviderFlexMarketsCacheTests
 
     public NameProviderFlexMarketsCacheTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
         var variantMarketDescriptionMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache);
         var variantMarketDescriptionListMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantDescriptionListCache);
@@ -46,12 +47,12 @@ public class NameProviderFlexMarketsCacheTests
         IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
 
         timer = new TestTimer(true);
-        IMarketDescriptionCache variantMdCache = new VariantMarketDescriptionCache(variantMarketDescriptionMemoryCache, _dataRouterManager, mappingValidatorFactory, testCacheStoreManager.CacheManager);
-        IMarketDescriptionsCache inVariantMdCache = new InvariantMarketDescriptionCache(invariantMarketDescriptionMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager);
-        IVariantDescriptionsCache variantsMdCache = new VariantDescriptionListCache(variantMarketDescriptionListMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager);
+        IMarketDescriptionCache variantMdCache = new VariantMarketDescriptionCache(variantMarketDescriptionMemoryCache, _dataRouterManager, mappingValidatorFactory, testCacheStoreManager.CacheManager, loggerFactory);
+        IMarketDescriptionsCache inVariantMdCache = new InvariantMarketDescriptionCache(invariantMarketDescriptionMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager, loggerFactory);
+        IVariantDescriptionsCache variantsMdCache = new VariantDescriptionListCache(variantMarketDescriptionListMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager, loggerFactory);
 
         _nameProvider = new NameProvider(
-            new MarketCacheProvider(inVariantMdCache, variantMdCache, variantsMdCache),
+            new MarketCacheProvider(inVariantMdCache, variantMdCache, variantsMdCache, loggerFactory.CreateLogger<MarketCacheProvider>()),
             new Mock<IProfileCache>().Object,
             new Mock<INameExpressionFactory>().Object,
             new Mock<ISportEvent>().Object,
@@ -92,7 +93,7 @@ public class NameProviderFlexMarketsCacheTests
     [InlineData("166", "1:7")]
     public async Task OutcomeNamesForFlexMarketAreCorrect(string outcomeId, string expected)
     {
-        var result = await _nameProvider.GetOutcomeNameAsync(outcomeId, TestData.Culture).ConfigureAwait(false);
+        var result = await _nameProvider.GetOutcomeNameAsync(outcomeId, TestData.Culture);
         result.Should().Be(expected);
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));

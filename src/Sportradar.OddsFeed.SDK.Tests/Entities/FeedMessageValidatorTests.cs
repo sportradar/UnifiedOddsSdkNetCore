@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -17,6 +16,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -30,6 +30,7 @@ public class FeedMessageValidatorTests
 
     public FeedMessageValidatorTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
         var variantMarketDescriptionMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache);
         var variantDescriptionMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantDescriptionListCache);
@@ -38,9 +39,9 @@ public class FeedMessageValidatorTests
 
         var timer = new SdkTimer("variantMarketCacheTimer", _timerInterval, _timerInterval);
         IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
-        IMarketDescriptionsCache inVariantMdCache = new InvariantMarketDescriptionCache(invariantMarketDescriptionMemoryCache, dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager);
-        IMarketDescriptionCache variantMdCache = new VariantMarketDescriptionCache(variantMarketDescriptionMemoryCache, dataRouterManager, mappingValidatorFactory, testCacheStoreManager.CacheManager);
-        IVariantDescriptionsCache variantDescriptionListCache = new VariantDescriptionListCache(variantDescriptionMemoryCache, dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager);
+        IMarketDescriptionsCache inVariantMdCache = new InvariantMarketDescriptionCache(invariantMarketDescriptionMemoryCache, dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager, loggerFactory);
+        IMarketDescriptionCache variantMdCache = new VariantMarketDescriptionCache(variantMarketDescriptionMemoryCache, dataRouterManager, mappingValidatorFactory, testCacheStoreManager.CacheManager, loggerFactory);
+        IVariantDescriptionsCache variantDescriptionListCache = new VariantDescriptionListCache(variantDescriptionMemoryCache, dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager, loggerFactory);
 
         var dataFetcher = new TestDataFetcher();
 
@@ -53,7 +54,7 @@ public class FeedMessageValidatorTests
         namedValueProviderMock.Setup(x => x.BettingStatuses).Returns(bettingStatusCache);
 
         _validator = new FeedMessageValidator(
-            new MarketCacheProvider(inVariantMdCache, variantMdCache, variantDescriptionListCache),
+            new MarketCacheProvider(inVariantMdCache, variantMdCache, variantDescriptionListCache, loggerFactory.CreateLogger<MarketCacheProvider>()),
             TestData.Culture,
             namedValueProviderMock.Object,
             TestProducerManager.Create());

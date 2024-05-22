@@ -1,6 +1,4 @@
-﻿// /*
-// * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-// */
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +12,8 @@ using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -36,6 +34,7 @@ public class CacheExportTests
     public CacheExportTests(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
 
         var cacheManager = testCacheStoreManager.CacheManager;
@@ -54,11 +53,12 @@ public class CacheExportTests
                 testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
             timer,
             TestData.Cultures,
-            cacheManager);
+            cacheManager,
+            loggerFactory);
 
-        _sportDataCache = new SportDataCache(_dataRouterManager, timer, TestData.Cultures, _sportEventCache, cacheManager);
+        _sportDataCache = new SportDataCache(_dataRouterManager, timer, TestData.Cultures, _sportEventCache, cacheManager, loggerFactory);
         _profileMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForProfileCache);
-        _profileCache = new ProfileCache(_profileMemoryCache, _dataRouterManager, cacheManager, _sportEventCache);
+        _profileCache = new ProfileCache(_profileMemoryCache, _dataRouterManager, cacheManager, _sportEventCache, loggerFactory);
     }
 
     [Fact]
@@ -181,7 +181,7 @@ public class CacheExportTests
         Assert.Empty(_profileMemoryCache.GetKeys());
         Assert.Empty(_profileMemoryCache.GetValues());
 
-        await _profileCache.ImportAsync(export).ConfigureAwait(false);
+        await _profileCache.ImportAsync(export);
 
         _outputHelper.WriteLine("All keys imported");
         foreach (var key in _profileMemoryCache.GetKeys())
@@ -232,7 +232,7 @@ public class CacheExportTests
     [Fact]
     public async Task SportEventCacheFullExport()
     {
-        var tournaments = _sportEventCache.GetActiveTournamentsAsync().GetAwaiter().GetResult(); // initial load
+        var tournaments = await _sportEventCache.GetActiveTournamentsAsync(); // initial load
         Assert.NotNull(tournaments);
 
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));

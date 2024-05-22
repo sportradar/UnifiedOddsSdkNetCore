@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -21,7 +24,9 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.Caching;
 
@@ -37,14 +42,16 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     private readonly IDataRouterManager _dataRouterManager;
     private readonly ISportEventCacheItemFactory _sportEventCacheItemFactory;
     private readonly Mock<ISdkTimer> _timerMock = new Mock<ISdkTimer>();
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly CultureInfo _culture = CultureInfo.CurrentCulture;
     private readonly CultureInfo[] _cultures = { CultureInfo.CurrentCulture };
 
     private readonly Mock<IDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock = new Mock<IDataProvider<SportEventSummaryDto>>();
     private readonly Mock<IDataProvider<FixtureDto>> _fixtureProviderMock = new Mock<IDataProvider<FixtureDto>>();
 
-    protected SportEventCacheTests()
+    protected SportEventCacheTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
         _sportEventMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache);
 
@@ -61,12 +68,17 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
             _sportEventCacheItemFactory,
             _timerMock.Object,
             _cultures,
-            _cacheManager);
+            _cacheManager,
+            loggerFactory);
     }
 
     public class WhenGetEventSportIdAsyncAndNotInCache : SportEventCacheTests
     {
         private readonly Urn _eventId = new Urn("sr", "match", 12345678L);
+
+        public WhenGetEventSportIdAsyncAndNotInCache(ITestOutputHelper outputHelper) : base(outputHelper)
+        {
+        }
 
         [Fact]
         public async Task Then_event_is_retrieved_from_provider_and_added_to_cache()
@@ -93,6 +105,10 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     public class WhenGetMatchEventAndNotInCache : SportEventCacheTests
     {
         private readonly Urn _eventId = new Urn("sr", "match", 12345678L);
+
+        public WhenGetMatchEventAndNotInCache(ITestOutputHelper outputHelper) : base(outputHelper)
+        {
+        }
 
         [Fact]
         public async Task Then_event_is_retrieved_from_provider_and_added_to_cache()
@@ -128,6 +144,10 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     public class WhenGetEventSportIdAsyncAndAlreadyInCache : SportEventCacheTests
     {
         private readonly Urn _eventId = new Urn("sr", "match", 12345678L);
+
+        public WhenGetEventSportIdAsyncAndAlreadyInCache(ITestOutputHelper outputHelper) : base(outputHelper)
+        {
+        }
 
         [Fact]
         public async Task Then_event_is_retrieved_from_the_cache()

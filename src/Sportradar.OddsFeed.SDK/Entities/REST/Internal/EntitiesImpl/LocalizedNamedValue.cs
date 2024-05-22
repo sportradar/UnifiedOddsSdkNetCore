@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     internal class LocalizedNamedValue : NamedValue, ILocalizedNamedValue
     {
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}" /> containing translated descriptions
+        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo,String}" /> containing translated descriptions
         /// </summary>
         public IReadOnlyDictionary<CultureInfo, string> Descriptions { get; }
 

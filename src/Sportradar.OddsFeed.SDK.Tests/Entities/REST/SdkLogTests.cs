@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.IO;
@@ -11,18 +9,26 @@ using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
-public class SdkLogTests
+[CollectionDefinition("SdkLogTests", DisableParallelization = true)]
+public class SdkLogTests : IDisposable
 {
     public SdkLogTests()
     {
         var services = new ServiceCollection();
-        services.AddLogging(configure => configure.AddLog4Net("log4net.sdk.config"));
+        services.AddLogging(configure => configure.AddLog4Net("log4net.sdk.config").SetMinimumLevel(LogLevel.Debug));
         var servicesProvider = services.BuildServiceProvider();
         var loggerFactory = servicesProvider.GetService<ILoggerFactory>();
         SdkLoggerFactory.SetLoggerFactory(loggerFactory);
+    }
+
+    public void Dispose()
+    {
+        SdkLoggerFactory.SetLoggerFactory(null);
+        GC.SuppressFinalize(this);
     }
 
     private static void PrintLogManagerStatus()
@@ -59,7 +65,7 @@ public class SdkLogTests
         LogPrint(logStatsTraffic);
     }
 
-    private static void LogPrint(Microsoft.Extensions.Logging.ILogger log)
+    private static void LogPrint(ILogger log)
     {
         log.LogInformation("info message");
         log.LogError(new InvalidDataException("just testing").Message);

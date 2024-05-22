@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
@@ -55,12 +54,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Market
         /// Gets the name of the market description in the language specified by the passed <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the retrieved name</param>
+        /// <returns>Returns the name in specific language</returns>
         string GetName(CultureInfo culture);
 
         /// <summary>
         /// Gets the description of the market description in the language specified by the passed <c>culture</c>
         /// </summary>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the retrieved description</param>
+        /// <returns>Returns the description of the market description in the language specified by the passed <c>culture</c></returns>
         string GetDescription(CultureInfo culture);
     }
 }

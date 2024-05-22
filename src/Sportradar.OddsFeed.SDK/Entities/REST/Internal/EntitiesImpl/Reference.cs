@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 using System.Collections.Generic;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Extensions;

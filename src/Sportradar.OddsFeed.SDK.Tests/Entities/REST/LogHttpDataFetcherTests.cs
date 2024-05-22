@@ -1,10 +1,9 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -25,6 +24,8 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
+[SuppressMessage("Usage", "xUnit1013:Public method should be marked as test")]
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class LogHttpDataFetcherTests
 {
     private readonly ITestOutputHelper _outputHelper;
@@ -76,7 +77,7 @@ public class LogHttpDataFetcherTests
         var stopwatch = Stopwatch.StartNew();
         for (var i = 0; i < 100; i++)
         {
-            var result = await _logHttpDataFetcher.GetDataAsync(_getUri).ConfigureAwait(false);
+            var result = await _logHttpDataFetcher.GetDataAsync(_getUri);
             Assert.NotNull(result);
             Assert.True(result.CanRead);
         }
@@ -93,7 +94,7 @@ public class LogHttpDataFetcherTests
             var task = _logHttpDataFetcher.GetDataAsync(GetRequestUri(false));
             tasks.Add(task);
         }
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
         _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
@@ -109,7 +110,7 @@ public class LogHttpDataFetcherTests
             var task = _logHttpDataFetcherPool.GetDataAsync(GetRequestUri(false));
             tasks.Add(task);
         }
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
         _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
@@ -125,7 +126,7 @@ public class LogHttpDataFetcherTests
             var task = _logHttpDataFetcher.GetDataAsync(GetRequestUri(true));
             tasks.Add(task);
         }
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
         _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
@@ -141,7 +142,7 @@ public class LogHttpDataFetcherTests
             var task = _logHttpDataFetcherPool.GetDataAsync(GetRequestUri(true));
             tasks.Add(task);
         }
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
         _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
@@ -157,7 +158,7 @@ public class LogHttpDataFetcherTests
             var task = _logHttpDataFetcher.GetDataAsync(GetRandomUri(true));
             tasks.Add(task);
         }
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
         _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
@@ -173,7 +174,7 @@ public class LogHttpDataFetcherTests
             var task = _logHttpDataFetcherPool.GetDataAsync(GetRandomUri(true));
             tasks.Add(task);
         }
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
         _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");

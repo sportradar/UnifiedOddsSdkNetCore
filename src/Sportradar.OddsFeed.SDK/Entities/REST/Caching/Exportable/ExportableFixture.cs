@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 
@@ -38,7 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable
         public string ReplacedBy { get; set; }
 
         /// <summary>
-        /// A <see cref="IDictionary{K, V}"/> representation of the extra info
+        /// A <see cref="IDictionary{K,V}"/> representation of the extra info
         /// </summary>
         public IDictionary<string, string> ExtraInfo { get; set; }
 

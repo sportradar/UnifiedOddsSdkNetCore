@@ -1,12 +1,11 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {

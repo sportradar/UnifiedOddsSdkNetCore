@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;

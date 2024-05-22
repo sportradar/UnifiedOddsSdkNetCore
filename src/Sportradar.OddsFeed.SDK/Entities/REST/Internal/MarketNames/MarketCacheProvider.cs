@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,10 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
@@ -25,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
     /// <seealso cref="IMarketDescriptionCache" />
     internal class MarketCacheProvider : IMarketCacheProvider
     {
-        private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(MarketCacheProvider));
+        private readonly ILogger _executionLog;
 
         /// <summary>
         /// A <see cref="IMarketDescriptionCache"/> used to cache market descriptors for invariant markets
@@ -33,9 +32,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         private readonly IMarketDescriptionsCache _invariantMarketsCache;
 
         /// <summary>
-        /// A <see cref="IMarketDescriptionCache"/> used to cache market descriptors for variant markets
+        /// A <see cref="IMarketDescriptionCache"/> used to cache market descriptors for single variant markets
         /// </summary>
-        private readonly IMarketDescriptionCache _variantMarketsCache;
+        private readonly IMarketDescriptionCache _variantDescriptionSingleCache;
 
         /// <summary>
         /// A <see cref="IVariantDescriptionsCache"/> used to cache variant descriptions
@@ -46,19 +45,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// Initializes a new instance of the <see cref="MarketCacheProvider"/> class
         /// </summary>
         /// <param name="invariantMarketsCache">A <see cref="IMarketDescriptionsCache"/> used to cache market descriptors for invariant markets</param>
-        /// <param name="variantMarketsCache">A <see cref="IMarketDescriptionCache"/> used to cache market descriptors for variant markets</param>
+        /// <param name="variantDescriptionSingleCache">A <see cref="IMarketDescriptionCache"/> used to cache market descriptors for variant markets</param>
         /// <param name="variantDescriptionListCache">A <see cref="IVariantDescriptionsCache"/> used to cache variant descriptions</param>
+        /// <param name="logger">The execution logger</param>
         public MarketCacheProvider(IMarketDescriptionsCache invariantMarketsCache,
-                                   IMarketDescriptionCache variantMarketsCache,
-                                   IVariantDescriptionsCache variantDescriptionListCache)
+            IMarketDescriptionCache variantDescriptionSingleCache,
+            IVariantDescriptionsCache variantDescriptionListCache,
+            ILogger<MarketCacheProvider> logger)
         {
             Guard.Argument(invariantMarketsCache, nameof(invariantMarketsCache)).NotNull();
-            Guard.Argument(variantMarketsCache, nameof(variantMarketsCache)).NotNull();
+            Guard.Argument(variantDescriptionSingleCache, nameof(variantDescriptionSingleCache)).NotNull();
             Guard.Argument(variantDescriptionListCache, nameof(variantDescriptionListCache)).NotNull();
+            Guard.Argument(logger, nameof(logger)).NotNull();
 
             _invariantMarketsCache = invariantMarketsCache;
-            _variantMarketsCache = variantMarketsCache;
+            _variantDescriptionSingleCache = variantDescriptionSingleCache;
             _variantDescriptionListCache = variantDescriptionListCache;
+            _executionLog = logger;
         }
 
         /// <summary>
@@ -71,9 +74,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <returns>A <see cref="IMarketDescription" /> instance describing the specified markets</returns>
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
         public async Task<IMarketDescription> GetMarketDescriptionAsync(int marketId,
-                                                                        IReadOnlyDictionary<string, string> specifiers,
-                                                                        IReadOnlyCollection<CultureInfo> cultures,
-                                                                        bool fetchVariantDescriptions)
+            IReadOnlyDictionary<string, string> specifiers,
+            IReadOnlyCollection<CultureInfo> cultures,
+            bool fetchVariantDescriptions)
         {
             IMarketDescription marketDescriptor;
             try
@@ -97,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
             if (variantValue.Equals("null", StringComparison.InvariantCultureIgnoreCase))
             {
-                _executionLog.LogError($"Missing/wrong variant value -> marketId:{marketId}, variantValue: {variantValue}");
+                _executionLog.LogError("Missing/wrong variant value -> marketId:{MdId}, variantValue: {MdVariant}", marketId, variantValue);
                 return marketDescriptor;
             }
 
@@ -124,7 +127,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             return marketDescriptor;
         }
 
-        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription, string variantValue)
+        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription,
+            string variantValue)
         {
             var languages = string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
             try
@@ -153,14 +157,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                     {
                         ((MarketDescription)marketDescription).SetMappings((mappings ?? variantDescription.Mappings) as IReadOnlyCollection<IMarketMappingData>);
                         var variantCacheItem = ((VariantDescription)variantDescription).VariantDescriptionCacheItem;
-                        ((MarketDescription)marketDescription).SetFetchInfo(variantCacheItem.SourceCache, variantCacheItem.LastDataReceived);
+                        ((MarketDescription)marketDescription).SetFetchInfo(variantCacheItem.SourceCache);
                     }
 
                     if (!variantDescription.Outcomes.IsNullOrEmpty())
                     {
                         ((MarketDescription)marketDescription).SetOutcomes(variantDescription.Outcomes as IReadOnlyCollection<IOutcomeDescription>);
                         var variantCacheItem = ((VariantDescription)variantDescription).VariantDescriptionCacheItem;
-                        ((MarketDescription)marketDescription).SetFetchInfo(variantCacheItem.SourceCache, variantCacheItem.LastDataReceived);
+                        ((MarketDescription)marketDescription).SetFetchInfo(variantCacheItem.SourceCache);
                     }
                 }
 
@@ -168,27 +172,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning(e, $"There was an error providing the variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{languages}]");
+                _executionLog.LogWarning(e, "There was an error providing the variant market description -> marketId:{MdId}, variantValue: {MdVariant}, langs: [{Languages}]", marketId, variantValue,
+                    languages);
             }
+
             return null;
         }
 
-        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription, string variantValue)
+        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription,
+            string variantValue)
         {
             IMarketDescription variantDescription = null;
-            var languages = string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
+            var languagesString = string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
             try
             {
-                variantDescription = await _variantMarketsCache.GetMarketDescriptionAsync(marketId, variantValue, cultures).ConfigureAwait(false);
+                variantDescription = await _variantDescriptionSingleCache.GetMarketDescriptionAsync(marketId, variantValue, cultures).ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                _executionLog.LogError(e, $"There was an error providing the explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{languages}]");
+                _executionLog.LogError(e, "There was an error providing the explicit variant market description -> marketId:{MdId}, variantValue: {MdVariant}, langs: [{Languages}]", marketId,
+                    variantValue, languagesString);
             }
 
             if (variantDescription == null)
             {
-                _executionLog.LogError($"There was no explicit variant market description -> marketId:{marketId}, variantValue: {variantValue}, locales: [{languages}]");
+                _executionLog.LogError("There was no explicit variant market description -> marketId:{MdId}, variantValue: {MdVariant}, langs: [{Languages}]", marketId, variantValue, languagesString);
                 return null;
             }
 
@@ -247,16 +255,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                     return await _invariantMarketsCache.LoadMarketDescriptionsAsync().ConfigureAwait(false);
                 }
 
-                _executionLog.LogDebug($"Reloading variant market description for market={marketId} and variant={variantValue}");
-                var variantMarketDescriptionCache = (VariantMarketDescriptionCache)_variantMarketsCache;
-                variantMarketDescriptionCache.CacheDeleteItem(VariantMarketDescriptionCache.GetCacheKey(marketId, variantValue), CacheItemType.MarketDescription);
+                _executionLog.LogDebug("Reloading variant market description for market={MdId} and variant={MdVariant}", marketId, variantValue);
+                var variantMarketDescriptionCache = (VariantMarketDescriptionCache)_variantDescriptionSingleCache;
+                variantMarketDescriptionCache.CacheDeleteItem(VariantMarketDescriptionCache.GenerateCacheKey(marketId, variantValue), CacheItemType.MarketDescription);
                 _executionLog.LogDebug("Reloading variant market description list");
                 _invariantMarketsCache.UpdateCacheItem(marketId, variantValue);
                 return await _variantDescriptionListCache.LoadMarketDescriptionsAsync().ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning(e, "Error reloading market description(s).");
+                _executionLog.LogWarning(e, "Error reloading market description(s)");
                 return false;
             }
         }

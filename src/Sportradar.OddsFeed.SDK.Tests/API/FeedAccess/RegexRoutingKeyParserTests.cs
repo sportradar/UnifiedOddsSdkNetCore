@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using FluentAssertions;
@@ -101,7 +99,6 @@ public class RegexRoutingKeyParserTests
         var sportId = Parser.GetSportId(key, "snapshot_complete");
         Assert.Null(sportId);
     }
-
 
     [Fact]
     public void CustomKey()

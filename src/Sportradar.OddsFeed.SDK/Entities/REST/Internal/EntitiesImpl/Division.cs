@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using Microsoft.Extensions.Logging.Abstractions;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.Api.Config;
@@ -216,7 +218,14 @@ public class ConfiguredConnectionFactoryTests
         Assert.NotNull(configuration);
         Assert.Equal($"UofSdk / {SdkInfo.SdkType}", connectionFactory.ClientProvidedName);
         Assert.Equal(configuration.Rabbit.Username, connectionFactory.UserName);
-        Assert.Equal(configuration.Rabbit.Password, connectionFactory.Password);
+        if (configuration.Rabbit.Password == null)
+        {
+            Assert.Equal(string.Empty, connectionFactory.Password);
+        }
+        else
+        {
+            Assert.Equal(configuration.Rabbit.Password, connectionFactory.Password);
+        }
         Assert.Equal(configuration.Rabbit.VirtualHost, connectionFactory.VirtualHost);
         Assert.Equal(configuration.Rabbit.Heartbeat, connectionFactory.RequestedHeartbeat);
     }

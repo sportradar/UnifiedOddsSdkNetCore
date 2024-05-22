@@ -1,6 +1,4 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Concurrent;
@@ -99,13 +97,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="timer">The timer</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
+        /// <param name="loggerFactory">The logger factory for creating Cache and Execution logs</param>
         public SportEventCache(ICacheStore<string> cache,
                                IDataRouterManager dataRouterManager,
                                ISportEventCacheItemFactory sportEventCacheItemFactory,
                                ISdkTimer timer,
                                IReadOnlyCollection<CultureInfo> cultures,
-                               ICacheManager cacheManager)
-            : base(cacheManager)
+                               ICacheManager cacheManager,
+                               ILoggerFactory loggerFactory)
+            : base(cacheManager, loggerFactory)
         {
             Guard.Argument(cache, nameof(cache)).NotNull();
             Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
@@ -137,10 +137,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         private void OnTimerElapsed(object sender, EventArgs e)
         {
             Task.Run(async () =>
-            {
-                await OnTimerElapsedAsync().ConfigureAwait(false);
-                LockManager.Clean();
-            });
+                     {
+                         await OnTimerElapsedAsync().ConfigureAwait(false);
+                         LockManager.Clean();
+                     });
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// </summary>
         /// <param name="id">A <see cref="Urn"/> specifying the id of the sport event which cached representation to return</param>
         /// <returns>a <see cref="SportEventCacheItem"/> instance representing cached sport event data</returns>
-        public SportEventCacheItem GetEventCacheItem(Urn id)
+        public ISportEventCacheItem GetEventCacheItem(Urn id)
         {
             LockManager.Wait(id.ToString());
             try
@@ -307,8 +307,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             var ci = culture ?? _cultures.FirstOrDefault();
 
             var schedule = date == null
-                ? await _dataRouterManager.GetLiveSportEventsAsync(ci).ConfigureAwait(false)
-                : await _dataRouterManager.GetSportEventsForDateAsync(date.Value, ci).ConfigureAwait(false);
+                               ? await _dataRouterManager.GetLiveSportEventsAsync(ci).ConfigureAwait(false)
+                               : await _dataRouterManager.GetSportEventsForDateAsync(date.Value, ci).ConfigureAwait(false);
 
             return schedule;
         }
@@ -1297,11 +1297,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             LockManager.Release();
 
             var tasks = exportables.Select(e =>
-            {
-                var task = e.ExportAsync();
-                task.ConfigureAwait(false);
-                return task;
-            });
+                                           {
+                                               var task = e.ExportAsync();
+                                               task.ConfigureAwait(false);
+                                               return task;
+                                           });
 
             return await Task.WhenAll(tasks).ConfigureAwait(false);
         }
@@ -1342,9 +1342,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <returns>A <see cref="IReadOnlyDictionary{K, V}"/> containing all cache item types in the cache and their counts</returns>
         public IReadOnlyDictionary<string, int> CacheStatus()
         {
-            var types = new[] {
-                typeof(SportEventCacheItem), typeof(CompetitionCacheItem), typeof(DrawCacheItem), typeof(LotteryCacheItem), typeof(TournamentInfoCacheItem), typeof(MatchCacheItem), typeof(StageCacheItem)
-            };
+            var types = new[]
+                        {
+                            typeof(SportEventCacheItem), typeof(CompetitionCacheItem), typeof(DrawCacheItem), typeof(LotteryCacheItem), typeof(TournamentInfoCacheItem), typeof(MatchCacheItem), typeof(StageCacheItem)
+                        };
 
             IReadOnlyCollection<object> items;
             LockManager.Wait();
@@ -1366,7 +1367,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
         {
             var keys = Cache.GetKeys();
-            var details = $" [Match: {keys.Count(c => c.Contains("match")).ToString()}, Stage: {keys.Count(c => c.Contains("race") || c.Contains("stage")).ToString()}, Season: {keys.Count(c => c.Contains("season")).ToString()}, Tournament: {keys.Count(c => c.Contains("tournament")).ToString()}, Draw: {keys.Count(c => c.Contains("draw")).ToString()}, Lottery: {keys.Count(c => c.Contains("lottery")).ToString()}]";
+            var details =
+                $" [Match: {keys.Count(c => c.Contains("match")).ToString()}, Stage: {keys.Count(c => c.Contains("race") || c.Contains("stage")).ToString()}, Season: {keys.Count(c => c.Contains("season")).ToString()}, Tournament: {keys.Count(c => c.Contains("tournament")).ToString()}, Draw: {keys.Count(c => c.Contains("draw")).ToString()}, Lottery: {keys.Count(c => c.Contains("lottery")).ToString()}]";
             return Task.FromResult(HealthCheckResult.Healthy($"Cache has {Cache.Count().ToString()} items{details}"));
         }
     }

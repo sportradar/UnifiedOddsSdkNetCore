@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
@@ -10,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 {
     internal class CacheStore<T> : ICacheStore<T>
     {
-        private static readonly ILogger LogCache = SdkLoggerFactory.GetLoggerForCache(typeof(CacheStore<T>));
+        private readonly ILogger _logCache;
         private readonly List<T> _cacheStoreKeys;
         private readonly IMemoryCache _memoryCache;
         private readonly TimeSpan _absoluteExpiration;
@@ -20,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
         public string StoreName { get; }
 
-        public CacheStore(string cacheStoreName, IMemoryCache memoryCache, TimeSpan? absoluteExpiration = null, TimeSpan? slidingExpiration = null, int slidingExpirationVariance = 0)
+        public CacheStore(string cacheStoreName, IMemoryCache memoryCache, ILogger logger, TimeSpan? absoluteExpiration = null, TimeSpan? slidingExpiration = null, int slidingExpirationVariance = 0)
         {
             if (slidingExpiration != null && slidingExpiration < TimeSpan.Zero)
             {
@@ -33,6 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
             _cacheStoreKeys = new List<T>();
             StoreName = cacheStoreName;
+            _logCache = logger;
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             _absoluteExpiration = absoluteExpiration ?? TimeSpan.Zero;
             _slidingExpiration = slidingExpiration ?? TimeSpan.Zero;
@@ -174,14 +177,23 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 return;
             }
 
-            LogCache.LogDebug("{cacheName} evicted cache item {cacheItem} with reason {evictionReason}", StoreName, key.ToString(), reason);
-            lock (_storeKeysLock)
+            using (new TelemetryTracker(UofSdkTelemetry.CacheStoreEviction, "cache_name", StoreName))
             {
-                if (_cacheStoreKeys.Contains((T)key))
+                LogCacheItemPostEviction(_logCache, StoreName, key.ToString(), reason, null);
+                lock (_storeKeysLock)
                 {
-                    _cacheStoreKeys.Remove((T)key);
+                    if (_cacheStoreKeys.Contains((T)key))
+                    {
+                        _cacheStoreKeys.Remove((T)key);
+                    }
                 }
             }
         }
+
+        private static readonly Action<ILogger, string, string, EvictionReason, Exception> LogCacheItemPostEviction =
+            LoggerMessage.Define<string, string, EvictionReason>(
+                LogLevel.Debug,
+                new EventId(1, nameof(CacheStore<T>)),
+                "{CacheName}: evicted cache item {CacheItem} with reason: {EvictionReason}");
     }
 }

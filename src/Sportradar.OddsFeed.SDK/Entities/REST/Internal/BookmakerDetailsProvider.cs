@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Linq;
 using Dawn;
@@ -29,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         private readonly IDeserializer<bookmaker_details> _deserializer;
 
         /// <summary>
-        /// A <see cref="ISingleTypeMapperFactory{T, T1}"/> used to construct instances of <see cref="ISingleTypeMapper{T}"/>
+        /// A <see cref="ISingleTypeMapperFactory{T,T1}"/> used to construct instances of <see cref="ISingleTypeMapper{T}"/>
         /// </summary>
         private readonly ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto> _mapperFactory;
 

@@ -1,4 +1,4 @@
-﻿// Ignore Spelling: Uof
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Linq;
 using System.Net.Http;

@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,14 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <summary>
         /// Lists supported operators
         /// </summary>
-        internal static readonly string[] DefinedOperators =
-        {
-            "+",
-            "-",
-            "$",
-            "!",
-            "%"
-        };
+        internal static readonly string[] DefinedOperators = { "+", "-", "$", "!", "%" };
 
         /// <summary>
         /// Parses the market / outcome descriptor and returns a <see cref="IList{String}"/> containing name expressions
@@ -60,8 +52,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                 format = format.Replace(expression, "{" + expressions.Count + "}");
                 expressions.Add(expression);
                 currentIndex = endIndex == descriptor.Length
-                    ? endIndex
-                    : endIndex + 1;
+                                   ? endIndex
+                                   : endIndex + 1;
             }
 
             descriptorFormat = format;
@@ -70,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         }
 
         /// <summary>
-        /// Parses the expression and verifies it's format
+        /// Parses the expression and verifies its format
         /// </summary>
         /// <param name="expression">The name expression.</param>
         /// <param name="operator">When the call returns it specifies the operator parsed from the <c>expression</c></param>

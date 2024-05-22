@@ -1,6 +1,4 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 
@@ -39,6 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// <summary>
         /// Gets a value specifying timeout set for fast failing HTTP requests
         /// </summary>
+        /// <remarks>Applies for API calls to endpoints: summary, competitor and player profile, draw summary, single variant markets</remarks>
         TimeSpan HttpClientFastFailingTimeout { get; }
 
         /// <summary>

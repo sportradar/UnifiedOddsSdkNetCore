@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
@@ -15,6 +14,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
         internal string Type { get; }
 
+        internal string Description { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecifierDto"/> class.
         /// </summary>
@@ -27,6 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             Name = specifier.name;
             Type = specifier.type;
+            Description = specifier.description;
         }
     }
 }

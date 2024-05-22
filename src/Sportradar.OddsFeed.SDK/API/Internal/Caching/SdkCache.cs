@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading.Tasks;
 using Dawn;
@@ -25,18 +24,19 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
         public IEnumerable<DtoType> RegisteredDtoTypes { get; protected set; }
 
-        protected readonly ILogger ExecutionLog;
+        protected internal readonly ILogger ExecutionLog;
 
-        protected readonly ILogger CacheLog;
+        protected internal readonly ILogger CacheLog;
 
         private readonly ICacheManager _cacheManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SdkCache"/> class
         /// </summary>
-        protected SdkCache(ICacheManager cacheManager)
+        protected SdkCache(ICacheManager cacheManager, ILoggerFactory loggerFactory)
         {
             Guard.Argument(cacheManager, nameof(cacheManager)).NotNull();
+            Guard.Argument(loggerFactory, nameof(loggerFactory)).NotNull();
 
             _cacheManager = cacheManager;
 
@@ -44,8 +44,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
             RegisterCache();
 
-            ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(GetType());
-            CacheLog = SdkLoggerFactory.GetLoggerForCache(GetType());
+            ExecutionLog = loggerFactory.CreateLogger(GetType());
+            CacheLog = loggerFactory.CreateLogger(typeof(Cache));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         }
 
         /// <summary>
-        /// Set the list of <see cref="DtoType"/> in the this cache
+        /// Set the list of <see cref="DtoType"/> consumed and cached this cache
         /// </summary>
         public abstract void SetDtoTypes();
 
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         public abstract void CacheDeleteItem(Urn id, CacheItemType cacheItemType);
 
         /// <summary>
-        /// Does item exists in the cache
+        /// Does item exist in the cache
         /// </summary>
         /// <param name="id">A <see cref="Urn" /> representing the id of the item to be checked</param>
         /// <param name="cacheItemType">A cache item type</param>
@@ -118,14 +118,14 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 var urn = Urn.Parse(id);
                 CacheDeleteItem(urn, cacheItemType);
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }
         }
 
         /// <summary>
-        /// Does item exists in the cache
+        /// Does item exist in the cache
         /// </summary>
         /// <param name="id">A string representing the id of the item to be checked</param>
         /// <param name="cacheItemType">A cache item type</param>
@@ -140,7 +140,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 var urn = Urn.Parse(id);
                 return CacheHasItem(urn, cacheItemType);
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }
@@ -156,6 +156,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="dtoType">Type of the dto</param>
         /// <param name="requester">The cache item which invoked request</param>
         /// <returns><c>true</c> if added, <c>false</c> otherwise</returns>
+        [SuppressMessage("ReSharper", "TooManyArguments", Justification = "Allowed here")]
         protected abstract Task<bool> CacheAddDtoItemAsync(Urn id, object item, CultureInfo culture, DtoType dtoType, ISportEventCacheItem requester);
 
         /// <summary>
@@ -164,17 +165,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="id">The identifier.</param>
         /// <param name="expectedType">The expected type.</param>
         /// <param name="receivedType">Type of the received.</param>
-        /// <param name="logger">The logger.</param>
-        protected virtual void LogSavingDtoConflict(Urn id, Type expectedType, Type receivedType, ILogger logger = null)
+        public void LogSavingDtoConflict(Urn id, Type expectedType, Type receivedType)
         {
-            if (logger == null)
-            {
-                ExecutionLog.LogWarning("Invalid data for item id={CacheItemId}. Expecting: {ExpectedType}, received: {ReceivedType}", id, expectedType?.Name, receivedType?.Name);
-            }
-            else
-            {
-                logger.LogWarning("Invalid data for item id={CacheItemId}. Expecting: {ExpectedType}, received: {ReceivedType}", id, expectedType?.Name, receivedType?.Name);
-            }
+            ExecutionLog.LogWarning("Invalid data for item id={CacheItemId}. Expecting: {ExpectedType}, received: {ReceivedType}", id, expectedType?.Name, receivedType?.Name);
         }
     }
 }

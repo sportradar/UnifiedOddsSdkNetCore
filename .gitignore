@@ -43,6 +43,11 @@ XsdSchemaFetcher/SchemaFetcher/packages/*
 
 .nuget/**
 
+**/_doc-site/**
+**/_doc-api/**
+**/_site/**
+**/_api/**
+
 packages/**
 **/Logs
 **/Help

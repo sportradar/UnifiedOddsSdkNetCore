@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -18,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
     internal class ManagerCacheItem : CacheItem
     {
         /// <summary>
-        /// Gets a <see cref="IDictionary{CultureInfo, String}"/> containing translated nationality of the item
+        /// Gets a <see cref="IDictionary{CultureInfo,String}"/> containing translated nationality of the item
         /// </summary>
         public IDictionary<CultureInfo, string> Nationality { get; }
 

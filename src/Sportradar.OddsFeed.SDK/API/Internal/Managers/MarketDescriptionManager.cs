@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -87,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                     throw new ObjectNotFoundException($"Market descriptions({culture}) could not be provided", ex);
                 }
 
-                _executionLog.LogWarning(ex, $"Market descriptions with the {culture} locale could not be provided");
+                _executionLog.LogWarning(ex, "Market descriptions for the {Language} language could not be provided", culture?.TwoLetterISOLanguageName);
                 return null;
             }
         }
@@ -127,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                     throw new ObjectNotFoundException($"Market mappings for {marketId} could not be provided{specifiersMessage}", ex);
                 }
 
-                _executionLog.LogWarning(ex, $"Market mappings for the marketId: {marketId} could not be provided{specifiersMessage}");
+                _executionLog.LogWarning(ex, "Market mappings for the marketId: {MdId} could not be provided{MdSpecifiers}", marketId, specifiersMessage);
                 return null;
             }
 
@@ -159,8 +157,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         /// <param name="variantValue">The variant value</param>
         public void DeleteVariantMarketDescriptionFromCache(int marketId, string variantValue)
         {
-            _executionLog.LogInformation($"Invokes DeleteVariantMarketDescriptionFromCache for market {marketId} and variant {variantValue}");
-            var cacheId = VariantMarketDescriptionCache.GetCacheKey(marketId, variantValue);
+            _executionLog.LogInformation("Invokes DeleteVariantMarketDescriptionFromCache for market {MdId} and variant {MdVariant}", marketId, variantValue);
+            var cacheId = VariantMarketDescriptionCache.GenerateCacheKey(marketId, variantValue);
             ((SdkCache)_variantDescriptionCache).CacheDeleteItem(cacheId, CacheItemType.MarketDescription);
         }
     }

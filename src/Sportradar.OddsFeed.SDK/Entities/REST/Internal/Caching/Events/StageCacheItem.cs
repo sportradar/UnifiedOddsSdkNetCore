@@ -1,8 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -199,7 +199,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// </summary>
         /// <param name="cultures">The cultures</param>
         /// <returns>A <see cref="Task{T}" /> representing the asynchronous operation</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2486:Generic exceptions should not be ignored", Justification = "Some stages just do not have schedule")]
+        [SuppressMessage("Minor Code Smell", "S2486:Generic exceptions should not be ignored", Justification = "Some stages just do not have schedule")]
         public async Task<IEnumerable<Urn>> GetStagesAsync(IEnumerable<CultureInfo> cultures)
         {
             if (_childStages != null)

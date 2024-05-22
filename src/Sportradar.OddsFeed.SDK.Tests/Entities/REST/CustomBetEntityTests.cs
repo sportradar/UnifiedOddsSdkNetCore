@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -17,6 +20,7 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class CustomBetEntityTests
 {
     private readonly IDataRouterManager _dataRouterManager;

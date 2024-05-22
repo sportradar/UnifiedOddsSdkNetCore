@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 // Ignore Spelling: Uof
 
@@ -9,7 +7,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
@@ -142,21 +139,6 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
     public void CacheManagerIsSingleton()
     {
         CheckSingletonType<ICacheManager>();
-    }
-
-    [Fact]
-    public void MemoryCacheIsSingleton()
-    {
-        CheckSingletonType<IMemoryCache>(false);
-    }
-
-    [Fact]
-    public void AllMemoryCachesAreRegistered()
-    {
-        var memoryCaches = ServiceScope1.ServiceProvider.GetServices<IMemoryCache>().ToList();
-        Assert.NotNull(memoryCaches);
-        Assert.NotEmpty(memoryCaches);
-        Assert.Equal(9, memoryCaches.Count);
     }
 
     [Fact]
@@ -583,7 +565,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         Assert.NotNull(healthCheckService);
 
-        var healthStatus = await healthCheckService.CheckHealthAsync().ConfigureAwait(false);
+        var healthStatus = await healthCheckService.CheckHealthAsync();
 
         Assert.Contains(registeredHealthCheck, healthStatus.Entries.Keys);
     }

@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -19,7 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         int Id { get; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{String, String}"/> containing market specifiers
+        /// Gets a <see cref="IReadOnlyDictionary{String,String}"/> containing market specifiers
         /// </summary>
         /// <remarks>Note that the <see cref="Id"/> and <see cref="Specifiers"/> combined uniquely identify the market within the event</remarks>
         IReadOnlyDictionary<string, string> Specifiers { get; }

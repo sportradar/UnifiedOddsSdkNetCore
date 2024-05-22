@@ -1,8 +1,7 @@
-﻿// /*
-// * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-// */
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -15,6 +14,8 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
+[SuppressMessage("Usage", "xUnit1013:Public method should be marked as test")]
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class BookmakerDetailsProviderTests
 {
     private const string InputXml = "whoami.xml";

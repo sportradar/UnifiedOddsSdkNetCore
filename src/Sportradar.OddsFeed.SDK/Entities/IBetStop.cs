@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Entities.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest;

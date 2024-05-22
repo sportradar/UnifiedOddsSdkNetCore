@@ -1,17 +1,15 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
-using Sportradar.OddsFeed.SDK.Api.Managers;
-using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 public class TestCacheStoreManager
 {
-    internal ITestOutputHelper TestOutputHelper { get; }
-
     internal IServiceProvider ServiceProvider { get; }
 
     internal CacheManager CacheManager { get; }
@@ -29,7 +27,7 @@ public class TestCacheStoreManager
         serviceCollection.AddScoped(_ => ProducersProvider);
         ServiceProvider = serviceCollection.BuildServiceProvider();
 
-        CacheManager = (CacheManager)ServiceProvider.GetService<ICacheManager>();
-        UofConfig = (UofConfiguration)ServiceProvider.GetService<IUofConfiguration>();
+        CacheManager = (CacheManager)ServiceProvider.GetRequiredService<ICacheManager>();
+        UofConfig = (UofConfiguration)ServiceProvider.GetRequiredService<IUofConfiguration>();
     }
 }

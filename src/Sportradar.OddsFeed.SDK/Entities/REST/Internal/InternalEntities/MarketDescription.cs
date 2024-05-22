@@ -1,7 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
-using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -79,9 +77,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
             Specifiers = specifiers;
         }
 
-        public void SetFetchInfo(string source, DateTime lastDataReceived)
+        public void SetFetchInfo(string source)
         {
-            MarketDescriptionCacheItem.SetFetchInfo(source, lastDataReceived);
+            MarketDescriptionCacheItem.SetFetchInfo(source);
         }
 
         public string GetName(CultureInfo culture)

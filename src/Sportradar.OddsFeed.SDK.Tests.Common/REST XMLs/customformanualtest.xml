@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<variant_descriptions response_code="OK">
+	<variant id="sr:correct_score:bestof:12">
+		<outcomes>
+			<outcome id="sr:correct_score:bestof:12:192" name="7:0"/>
+			<outcome id="sr:correct_score:bestof:12:193" name="7:1"/>
+			<outcome id="sr:correct_score:bestof:12:194" name="7:2"/>
+			<outcome id="sr:correct_score:bestof:12:195" name="7:3"/>
+			<outcome id="sr:correct_score:bestof:12:196" name="7:4"/>
+			<outcome id="sr:correct_score:bestof:12:197" name="7:5"/>
+			<outcome id="sr:correct_score:bestof:12:198" name="6:6"/>
+			<outcome id="sr:correct_score:bestof:12:199" name="5:7"/>
+			<outcome id="sr:correct_score:bestof:12:200" name="4:7"/>
+			<outcome id="sr:correct_score:bestof:12:201" name="3:7"/>
+			<outcome id="sr:correct_score:bestof:12:202" name="2:7"/>
+			<outcome id="sr:correct_score:bestof:12:203" name="1:7"/>
+			<outcome id="sr:correct_score:bestof:12:204" name="0:7"/>
+		</outcomes>
+		<mappings>
+			<mapping product_id="3" product_ids="3" sport_id="sr:sport:22" market_id="374" product_market_id="455">
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:192" product_outcome_id="33" product_outcome_name="7:0"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:193" product_outcome_id="34" product_outcome_name="7:1"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:194" product_outcome_id="318" product_outcome_name="7:2"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:195" product_outcome_id="320" product_outcome_name="7:3"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:196" product_outcome_id="322" product_outcome_name="7:4"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:197" product_outcome_id="116" product_outcome_name="7:5"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:198" product_outcome_id="602" product_outcome_name="6:6"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:199" product_outcome_id="121" product_outcome_name="5:7"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:200" product_outcome_id="323" product_outcome_name="4:7"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:201" product_outcome_id="321" product_outcome_name="3:7"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:202" product_outcome_id="319" product_outcome_name="2:7"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:203" product_outcome_id="57" product_outcome_name="1:7"/>
+				<mapping_outcome outcome_id="sr:correct_score:bestof:12:204" product_outcome_id="56" product_outcome_name="0:7"/>
+			</mapping>
+		</mappings>
+	</variant>
+	<variant id="sr:decided_by_extra_points:bestof:5">
+		<outcomes>
+			<outcome id="sr:decided_by_extra_points:bestof:5:53" name="0"/>
+			<outcome id="sr:decided_by_extra_points:bestof:5:54" name="1"/>
+			<outcome id="sr:decided_by_extra_points:bestof:5:55" name="2"/>
+			<outcome id="sr:decided_by_extra_points:bestof:5:56" name="3"/>
+			<outcome id="sr:decided_by_extra_points:bestof:5:57" name="4"/>
+			<outcome id="sr:decided_by_extra_points:bestof:5:58" name="5"/>
+		</outcomes>
+		<mappings>
+			<mapping product_id="1" product_ids="1|4" sport_id="sr:sport:20" market_id="239" product_market_id="8:68">
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:53" product_outcome_id="219" product_outcome_name="0"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:54" product_outcome_id="220" product_outcome_name="1"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:55" product_outcome_id="221" product_outcome_name="2"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:56" product_outcome_id="222" product_outcome_name="3"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:57" product_outcome_id="223" product_outcome_name="4"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:58" product_outcome_id="224" product_outcome_name="5"/>
+			</mapping>
+			<mapping product_id="1" product_ids="1|4" sport_id="sr:sport:37" market_id="239" product_market_id="8:68">
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:53" product_outcome_id="219" product_outcome_name="0"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:54" product_outcome_id="220" product_outcome_name="1"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:55" product_outcome_id="221" product_outcome_name="2"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:56" product_outcome_id="222" product_outcome_name="3"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:57" product_outcome_id="223" product_outcome_name="4"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:58" product_outcome_id="224" product_outcome_name="5"/>
+			</mapping>
+			<mapping product_id="3" product_ids="3" sport_id="sr:sport:23" market_id="306" product_market_id="338">
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:53" product_outcome_id="260" product_outcome_name="0 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:54" product_outcome_id="261" product_outcome_name="1 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:55" product_outcome_id="98" product_outcome_name="2 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:56" product_outcome_id="99" product_outcome_name="3 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:57" product_outcome_id="100" product_outcome_name="4 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:58" product_outcome_id="101" product_outcome_name="5 sets"/>
+			</mapping>
+			<mapping product_id="3" product_ids="3" sport_id="sr:sport:37" market_id="239" product_market_id="557">
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:53" product_outcome_id="260" product_outcome_name="0 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:54" product_outcome_id="261" product_outcome_name="1 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:55" product_outcome_id="98" product_outcome_name="2 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:56" product_outcome_id="99" product_outcome_name="3 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:57" product_outcome_id="100" product_outcome_name="4 sets"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:58" product_outcome_id="101" product_outcome_name="5 sets"/>
+			</mapping>
+			<mapping product_id="1" product_ids="1|4" sport_id="sr:sport:23" market_id="306" product_market_id="8:68">
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:53" product_outcome_id="219" product_outcome_name="0"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:54" product_outcome_id="220" product_outcome_name="1"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:55" product_outcome_id="221" product_outcome_name="2"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:56" product_outcome_id="222" product_outcome_name="3"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:57" product_outcome_id="223" product_outcome_name="4"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:58" product_outcome_id="224" product_outcome_name="5"/>
+			</mapping>
+			<mapping product_id="1" product_ids="1|4" sport_id="sr:sport:34" market_id="306" product_market_id="8:68">
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:53" product_outcome_id="219" product_outcome_name="0"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:54" product_outcome_id="220" product_outcome_name="1"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:55" product_outcome_id="221" product_outcome_name="2"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:56" product_outcome_id="222" product_outcome_name="3"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:57" product_outcome_id="223" product_outcome_name="4"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:58" product_outcome_id="224" product_outcome_name="5"/>
+			</mapping>
+			<mapping product_id="1" product_ids="1|4" sport_id="sr:sport:31" market_id="239" product_market_id="8:68">
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:53" product_outcome_id="219" product_outcome_name="0"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:54" product_outcome_id="220" product_outcome_name="1"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:55" product_outcome_id="221" product_outcome_name="2"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:56" product_outcome_id="222" product_outcome_name="3"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:57" product_outcome_id="223" product_outcome_name="4"/>
+				<mapping_outcome outcome_id="sr:decided_by_extra_points:bestof:5:58" product_outcome_id="224" product_outcome_name="5"/>
+			</mapping>
+		</mappings>
+	</variant>
+</variant_descriptions>

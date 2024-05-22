@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
     internal class RefereeCacheItem : SportEntityCacheItem
     {
         /// <summary>
-        /// A <see cref="IDictionary{CultureInfo, String}"/> containing referee nationality in different languages
+        /// A <see cref="IDictionary{CultureInfo,String}"/> containing referee nationality in different languages
         /// </summary>
         private readonly IDictionary<CultureInfo, string> _nationality;
 

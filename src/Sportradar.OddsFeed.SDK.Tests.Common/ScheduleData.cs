@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,6 +27,8 @@ using RestMessage = Sportradar.OddsFeed.SDK.Messages.Rest.RestMessage;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "NotAccessedField.Local")]
 public class ScheduleData
 {
     public static readonly string RestXmlPath = Directory.GetCurrentDirectory() + "/REST XMLs/";
@@ -66,6 +67,7 @@ public class ScheduleData
 
     public readonly TestSportEntityFactoryBuilder SportEntityFactoryBuilder;
     public readonly TestCacheStoreManager TestCacheStoreManager;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly ITestOutputHelper _outputHelper;
     public readonly ExceptionHandlingStrategy ThrowingStrategy;
 
@@ -231,22 +233,24 @@ public class ScheduleData
         return null;
     }
 
-    private static async Task<FixtureDto> XmlParseFixtureAsync(Urn id, CultureInfo culture)
-    {
-        var fileId = id.ToString().Replace(":", "_");
-        var resourceName = $"fixture_{fileId}_{culture.TwoLetterISOLanguageName}.xml";
-        await using var stream = FileHelper.GetResource(resourceName);
-
-        if (stream != null)
+    /*
+        private static async Task<FixtureDto> XmlParseFixtureAsync(Urn id, CultureInfo culture)
         {
-            var restDeserializer = new Deserializer<fixturesEndpoint>();
-            var mapper = new FixtureMapperFactory();
-            var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
-            return result;
-        }
+            var fileId = id.ToString().Replace(":", "_");
+            var resourceName = $"fixture_{fileId}_{culture.TwoLetterISOLanguageName}.xml";
+            await using var stream = FileHelper.GetResource(resourceName);
 
-        return null;
-    }
+            if (stream != null)
+            {
+                var restDeserializer = new Deserializer<fixturesEndpoint>();
+                var mapper = new FixtureMapperFactory();
+                var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
+                return result;
+            }
+
+            return null;
+        }
+    */
 
     private static async Task<CompetitorProfileDto> XmlParseCompetitorAsync(Urn id, CultureInfo culture)
     {

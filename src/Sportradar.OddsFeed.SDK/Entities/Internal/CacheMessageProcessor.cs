@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CacheMessageProcessor));
 
         /// <summary>
-        /// A <see cref="ISingleTypeMapperFactory{removeSportEventStatus, SportEventStatusDto}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDto}"/> instances
+        /// A <see cref="ISingleTypeMapperFactory{removeSportEventStatus,SportEventStatusDto}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDto}"/> instances
         /// </summary>
         private readonly ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDto> _mapperFactory;
 

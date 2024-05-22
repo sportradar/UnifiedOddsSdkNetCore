@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 // Ignore Spelling: Ssl
 
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Api.Config;
@@ -204,12 +203,18 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
     }
 
     [Fact]
+    public void InvalidSectionNodeName()
+    {
+        Assert.Throws<ConfigurationErrorsException>(() => "<customSdkSection accessToken='1234567ab' desiredLanguages='en,de' nodeId='11' environment='Integration' />".ToSection());
+    }
+
+    [Fact]
     public void CustomEnvironmentSetMessagingConfig()
     {
         const string accessToken = "CustomAccessToken";
         const int port = 1234;
         const bool useSsl = false;
-        var section = $"<oddsFeedSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' host='{CustomRabbitHost}' port='{port}' useSsl='{useSsl}' />".ToSection();
+        var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' host='{CustomRabbitHost}' port='{port}' useSsl='{useSsl}' />".ToSection();
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
             .SetAccessTokenFromConfigFile()
             .SelectCustom()
@@ -253,7 +258,7 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
     {
         const string accessToken = "CustomAccessToken";
         const bool useApiSsl = false;
-        var section = $"<oddsFeedSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
+        var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
             .SetAccessTokenFromConfigFile()
             .SelectCustom()
@@ -299,7 +304,7 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
         const int port = 1234;
         const bool useSsl = false;
         const bool useApiSsl = false;
-        var section = $"<oddsFeedSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' host='{CustomRabbitHost}' port='{port}' useSsl='{useSsl}' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
+        var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' host='{CustomRabbitHost}' port='{port}' useSsl='{useSsl}' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
             .SetAccessTokenFromConfigFile()
             .SelectCustom()
@@ -336,6 +341,41 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             true,
             45,
             55);
+    }
+
+    [Fact]
+    public void DirectlyBuildCustomEnvironmentConfigSection()
+    {
+        const string accessToken = "CustomAccessToken";
+        const bool useApiSsl = false;
+        var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' environment='Custom' apiHost='{CustomApiHost}' apiUseSsl='{useApiSsl}' />".ToSection();
+        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider()).BuildFromConfigFile();
+        //var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider()).SetAccessTokenFromConfigFile().SelectCustom().LoadFromConfigFile().Build();
+
+        Assert.Equal(SdkEnvironment.Custom, config.Environment);
+
+        ValidateConfiguration(config,
+            accessToken,
+            SdkEnvironment.Custom,
+            "en",
+            2,
+            EnvironmentManager.GetMqHost(SdkEnvironment.Integration),
+            CustomApiHost,
+            EnvironmentManager.DefaultMqHostPort,
+            accessToken,
+            null,
+            TestData.VirtualHost,
+            true,
+            useApiSsl,
+            ConfigLimit.InactivitySecondsDefault,
+            ConfigLimit.MaxRecoveryTimeDefault,
+            ConfigLimit.MinIntervalBetweenRecoveryRequestDefault,
+            11,
+            0,
+            ExceptionHandlingStrategy.Catch,
+            true,
+            ConfigLimit.HttpClientTimeoutDefault,
+            ConfigLimit.HttpClientRecoveryTimeoutDefault);
     }
 
     // ReSharper disable once TooManyArguments

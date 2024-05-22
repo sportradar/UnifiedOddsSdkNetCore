@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -114,7 +113,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             return GetDataAsync(uri).GetAwaiter().GetResult();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator", "RCS1075:Avoid empty catch clause that catches System.Exception.", Justification = "Ignore all deserialization issues")]
+        [SuppressMessage("Roslynator", "RCS1075:Avoid empty catch clause that catches System.Exception.", Justification = "Ignore all deserialization issues")]
         private async Task<Stream> ProcessGetDataAsync(HttpResponseMessage responseMessage, Uri uri)
         {
             if (!responseMessage.IsSuccessStatusCode)

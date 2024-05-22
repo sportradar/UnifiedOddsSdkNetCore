@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Threading.Tasks;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;

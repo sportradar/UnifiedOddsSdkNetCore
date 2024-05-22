@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -14,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
     public interface ICompetitor : IPlayer
     {
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing competitor's country names in different languages
+        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo,String}"/> containing competitor's country names in different languages
         /// </summary>
         [DataMember]
         IReadOnlyDictionary<CultureInfo, string> Countries { get; }

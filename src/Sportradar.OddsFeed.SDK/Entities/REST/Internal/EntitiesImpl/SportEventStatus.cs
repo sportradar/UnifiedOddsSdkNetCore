@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public decimal? AwayScore => _cacheItem.AwayScore;
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{String, Object}" /> containing additional event status values
+        /// Gets a <see cref="IReadOnlyDictionary{String,Object}" /> containing additional event status values
         /// </summary>
         public IReadOnlyDictionary<string, object> Properties => _cacheItem.Properties;
 

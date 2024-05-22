@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
@@ -12,7 +11,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
     {
         internal string Id { get; }
 
-        private readonly IDictionary<CultureInfo, string> _names;
+        internal readonly IDictionary<CultureInfo, string> Names;
 
         private readonly IDictionary<CultureInfo, string> _descriptions;
 
@@ -21,7 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             Guard.Argument(dto, nameof(dto)).NotNull();
 
             Id = dto.Id;
-            _names = new Dictionary<CultureInfo, string> { { culture, dto.Name } };
+            Names = new Dictionary<CultureInfo, string> { { culture, dto.Name } };
             _descriptions = string.IsNullOrEmpty(dto.Description)
                 ? new Dictionary<CultureInfo, string>()
                 : new Dictionary<CultureInfo, string> { { culture, dto.Description } };
@@ -31,22 +30,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            if (_names.TryGetValue(culture, out var name))
-            {
-                return name;
-            }
-            return null;
+            return Names.TryGetValue(culture, out var name) ? name : null;
         }
 
         internal string GetDescription(CultureInfo culture)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            if (_descriptions.TryGetValue(culture, out var description))
-            {
-                return description;
-            }
-            return null;
+            return _descriptions.TryGetValue(culture, out var description) ? description : null;
         }
 
         internal void Merge(OutcomeDescriptionDto dto, CultureInfo culture)
@@ -54,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            _names[culture] = dto.Name;
+            Names[culture] = dto.Name;
             if (!string.IsNullOrEmpty(dto.Description))
             {
                 _descriptions[culture] = dto.Description;

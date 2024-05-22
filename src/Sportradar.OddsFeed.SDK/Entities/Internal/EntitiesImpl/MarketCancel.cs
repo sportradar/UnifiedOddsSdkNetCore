@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
@@ -34,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="MarketWithSettlement" /> class
         /// </summary>
         /// <param name="id">a <see cref="int" /> value specifying the market type</param>
-        /// <param name="specifiers">a <see cref="IReadOnlyDictionary{String, String}" /> containing additional market specifiers</param>
+        /// <param name="specifiers">a <see cref="IReadOnlyDictionary{String,String}" /> containing additional market specifiers</param>
         /// <param name="additionalInfo">a <see cref="IReadOnlyDictionary{String, String}"/> containing additional market info</param>
         /// <param name="nameProvider">A <see cref="INameProvider"/> instance used to generate the market name(s)</param>
         /// <param name="mappingProvider">A <see cref="IMarketMappingProvider"/> instance used for providing mapped ids of markets and outcomes</param>

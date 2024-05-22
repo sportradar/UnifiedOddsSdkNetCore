@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Globalization;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping
@@ -23,6 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping
         /// <summary>
         /// Gets the name of the producer outcome in specified language
         /// </summary>
+        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the retrieved producer outcome name</param>
+        /// <returns>Returns the producer outcome name in the language specified by the passed <c>culture</c></returns>
         string GetProducerOutcomeName(CultureInfo culture);
 
         /// <summary>

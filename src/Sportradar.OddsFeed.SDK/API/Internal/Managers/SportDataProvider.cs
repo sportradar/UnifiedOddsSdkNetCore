@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +20,6 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 
@@ -97,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
         /// <param name="matchStatusCache">A <see cref="ILocalizedNamedValueCache"/> used to retrieve match statuses</param>
         /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to invoke API requests</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed")]
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed")]
         public SportDataProvider(ISportEntityFactory sportEntityFactory,
                                  ISportEventCache sportEventCache,
                                  ISportEventStatusCache sportEventStatusCache,

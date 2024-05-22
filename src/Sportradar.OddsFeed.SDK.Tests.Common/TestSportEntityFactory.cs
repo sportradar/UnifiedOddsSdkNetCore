@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,9 +17,10 @@ using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit.Abstractions;
+
 // ReSharper disable NotAccessedField.Local
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
@@ -29,14 +29,14 @@ internal class TestSportEntityFactory : ISportEntityFactory
 {
     private readonly ITestOutputHelper _outputHelper;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly ISportDataCache _sportDataCache;
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly ISportEventStatusCache _eventStatusCache;
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly ILocalizedNamedValueCache _matchStatusCache;
     private readonly IProfileCache _profileCache;
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly IReadOnlyCollection<Urn> _soccerSportUrns;
 
     private readonly TestCacheStoreManager _testCacheStoreManager;
@@ -49,6 +49,8 @@ internal class TestSportEntityFactory : ISportEntityFactory
         IProfileCache profileCache = null,
         IReadOnlyCollection<Urn> soccerSportUrns = null)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
+
         _testCacheStoreManager = new TestCacheStoreManager();
         var profileMemoryCache = _testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForProfileCache);
 
@@ -57,7 +59,7 @@ internal class TestSportEntityFactory : ISportEntityFactory
         _eventStatusCache = eventStatusCache;
         _matchStatusCache = matchStatusCache;
         var dataRouterManager = new TestDataRouterManager(_testCacheStoreManager.CacheManager, outputHelper);
-        _profileCache = profileCache ?? new ProfileCache(profileMemoryCache, dataRouterManager, _testCacheStoreManager.CacheManager, sportEventCache);
+        _profileCache = profileCache ?? new ProfileCache(profileMemoryCache, dataRouterManager, _testCacheStoreManager.CacheManager, sportEventCache, loggerFactory);
         _soccerSportUrns = soccerSportUrns ?? SdkInfo.SoccerSportUrns;
     }
 

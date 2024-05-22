@@ -1,8 +1,7 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
@@ -87,7 +86,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Managers
         /// <summary>
         /// Stops scheduled job for fetching fixture and result changes
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
+        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
         void Stop();
     }
 }

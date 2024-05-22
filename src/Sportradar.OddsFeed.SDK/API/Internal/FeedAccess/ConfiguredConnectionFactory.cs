@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -70,8 +68,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             var sslOption = new SslOption
             {
                 Enabled = _config.Rabbit.UseSsl
-                //,Version = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
             };
+
             if (_config.Rabbit.UseSsl)
             {
                 sslOption.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
@@ -92,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
                 HostName = _config.Rabbit.Host,
                 Port = _config.Rabbit.Port,
                 UserName = _config.Rabbit.Username,
-                Password = _config.Rabbit.Password,
+                Password = _config.Rabbit.Password ?? string.Empty,
                 VirtualHost = _config.Rabbit.VirtualHost,
                 AutomaticRecoveryEnabled = true,
                 RequestedHeartbeat = _config.Rabbit.Heartbeat,

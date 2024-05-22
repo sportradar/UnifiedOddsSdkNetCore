@@ -1,10 +1,9 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -20,7 +19,6 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
@@ -35,6 +33,7 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
+[SuppressMessage("ReSharper", "NotAccessedField.Local")]
 internal class TestDataRouterManagerCached : IDataRouterManager
 {
     public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
@@ -69,11 +68,12 @@ internal class TestDataRouterManagerCached : IDataRouterManager
     private const string SportsXml = "sports_{culture}.xml";
     private const string MatchDetailsXml = "event_details_{culture}.xml";
     private const string TournamentScheduleXml = "tournaments_{culture}.xml";
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Allowed for future reference")]
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Allowed for future reference")]
     private const string PlayerProfileXml = "player_1_{culture}.xml";
     private const string SimpleTeamProfileXml = "simpleteam_1_{culture}.xml";
 
     private readonly ICacheManager _cacheManager;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unused private members", Justification = "Allowed for future reference")]
     private readonly IReadOnlyCollection<CultureInfo> _loadCultures;
     private readonly IDeserializer<RestMessage> _restDeserializer = new Deserializer<RestMessage>();
     private TimeSpan _delay = TimeSpan.Zero;
@@ -151,7 +151,7 @@ internal class TestDataRouterManagerCached : IDataRouterManager
         }
     }
 
-    private void ResetMethodCall(string callType)
+    public void ResetMethodCall(string callType)
     {
         lock (_lock)
         {

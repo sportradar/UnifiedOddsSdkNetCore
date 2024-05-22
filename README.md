@@ -3,7 +3,7 @@
 
 Notice: before starting DemoProject make sure to enter your bookmaker access token in app.config file and restore nuget packages by right-clicking the solution item and selecting "Restore NuGet Packages".
 
-The SDK is also available via NuGet package manager. Use the following command in the Package Manager Console to install it along with it's dependencies:
+The SDK is also available via NuGet package manager. Use the following command in the Package Manager Console to install it along with its dependencies:
 
 `Install-Package Sportradar.OddsFeed.SDKCore`
     
@@ -28,6 +28,15 @@ For more information please contact support@sportradar.com or visit https://iodo
 
 # Change Log
 
+## 2024-05-15  2.1.0
+- Improved variant market handling when API call is not received or has some faulty data (i.e. missing outcome name)
+- Fix: custom configuration now respect Ssl setting to rewrite api_url if needed
+- Fix: directly build custom configuration from app.config settings
+- Fix: default debug level to Debug in example project
+
+## 2023-11-17  2.0.1
+- Fix for user apps when they use RabbitMq.Client library v6.6.0
+ 
 ## 2023-10-24  2.0.0
 - New major release
 
@@ -210,7 +219,7 @@ to
 ## 2021-11-18  1.22.0
 - Improvements for connection resilience
 - Added event RecoveryInitiated to IOddsFeed
-- Added RabitConnectionTimeout and RabbitHeartbeat to OperationManager
+- Added RabbitConnectionTimeout and RabbitHeartbeat to OperationManager
 - Improved logging regarding connection and recovery process
 - Changed default UF environment from Integration to GlobalIntegration
 - Extended StageType with Run enum value

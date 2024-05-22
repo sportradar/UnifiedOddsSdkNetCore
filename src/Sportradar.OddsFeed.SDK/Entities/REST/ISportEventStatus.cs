@@ -1,6 +1,5 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
@@ -42,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         object GetPropertyValue(string propertyName);
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{String, Object}"/> containing additional event status values
+        /// Gets a <see cref="IReadOnlyDictionary{String,Object}"/> containing additional event status values
         /// </summary>
         /// <value>a <see cref="IReadOnlyDictionary{String, Object}"/> containing additional event status values</value>
         /// <remarks><para>List of possible keys:</para>

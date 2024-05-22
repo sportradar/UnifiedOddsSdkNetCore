@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Globalization;
@@ -123,7 +121,7 @@ public class RestMessageMappingTests
         Assert.Equal(msg.scheduled, dto.Scheduled);
         Assert.Equal(msg.scheduled_end, dto.ScheduledEnd);
         Assert.Equal(!string.IsNullOrEmpty(msg.replaced_by) ? Urn.Parse(msg.replaced_by) : null, dto.ReplacedBy);
-        Assert.Equal(msg.start_time_tbdSpecified ? (bool?)msg.start_time_tbd : null, dto.StartTimeTbd);
+        Assert.Equal(msg.start_time_tbdSpecified ? msg.start_time_tbd : null, dto.StartTimeTbd);
         Assert.Equal(msg.competitors.Length, dto.Competitors.Count());
 
         for (var i = 0; i < msg.competitors.Length; i++)

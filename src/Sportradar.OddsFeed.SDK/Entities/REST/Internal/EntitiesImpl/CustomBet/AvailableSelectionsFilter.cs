@@ -1,10 +1,10 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to access available selections for the event
     /// </summary>
-    internal class AvailableSelectionsFilter : Rest.CustomBet.IAvailableSelectionsFilter
+    internal class AvailableSelectionsFilter : IAvailableSelectionsFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AvailableSelections"/> class
@@ -31,6 +31,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
 
         public Urn Event { get; }
 
-        public IEnumerable<Rest.CustomBet.IMarketFilter> Markets { get; }
+        public IEnumerable<IMarketFilter> Markets { get; }
     }
 }

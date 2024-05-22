@@ -1,4 +1,6 @@
-﻿namespace Sportradar.OddsFeed.SDK.Api.Config
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+namespace Sportradar.OddsFeed.SDK.Api.Config
 {
     /// <summary>
     /// Defines a contract implemented by classes taking care of the 1st step when building configuration - setting the token

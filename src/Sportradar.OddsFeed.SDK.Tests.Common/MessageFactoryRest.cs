@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -74,7 +72,7 @@ public static class MessageFactoryRest
         var players = new List<playerExtended>();
         for (var j = 0; j < playerCount; j++)
         {
-            players.Add(GetPlayerExtended());
+            players.Add(GetPlayerExtended(j + 1));
         }
 
         var cUrn = id == 0 ? SR.Urn("competitor", 100000) : SR.Urn(id, "competitor");
@@ -90,7 +88,12 @@ public static class MessageFactoryRest
                 virtualSpecified = true,
                 country = SR.S1000,
                 state = "PA",
-                reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id { name = s.Key, value = s.Value }).ToArray()
+                reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id
+                {
+                    name = s.Key,
+                    value = s.Value
+                })
+                                                                 .ToArray()
             },
             generated_at = DateTime.Now,
             generated_atSpecified = true,
@@ -98,7 +101,7 @@ public static class MessageFactoryRest
         };
     }
 
-    public static simpleTeamProfileEndpoint GetSimpleTeamCompetitorProfileEndpoint(int id = 0, IDictionary<string, string> referenceIds = null)
+    public static simpleTeamProfileEndpoint GetSimpleTeamProfileEndpoint(int id = 0, IDictionary<string, string> referenceIds = null)
     {
         return new simpleTeamProfileEndpoint
         {
@@ -111,16 +114,24 @@ public static class MessageFactoryRest
                 virtualSpecified = true,
                 country = SR.S1000,
                 state = "PA",
-                reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id { name = s.Key, value = s.Value }).ToArray()
+                reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id
+                {
+                    name = s.Key,
+                    value = s.Value
+                })
+                                                                 .ToArray()
             },
-            generated_at = DateTime.Today,
-            generated_atSpecified = true,
+            generated_at = DateTime.Now,
+            generated_atSpecified = true
         };
     }
 
     public static coverage GetCoverage()
     {
-        return new coverage { includes = "coverage includes " + SR.S1000 };
+        return new coverage
+        {
+            includes = "coverage includes " + SR.S1000
+        };
     }
 
     public static coverageInfo GetCoverageInfo(int subItemCount = 0)
@@ -355,7 +366,7 @@ public static class MessageFactoryRest
             scheduled_end = new DateTime(DateTime.Now.Year, 2, 18),
             stage_type = "parent",
             type = "parent",
-            name = "Parent stage " + id,
+            name = "Parent stage " + id
         };
     }
 
@@ -448,8 +459,8 @@ public static class MessageFactoryRest
     {
         return new playerExtended
         {
-            name = SR.S1000,
             id = id == 0 ? SR.Urn("player").ToString() : SR.Urn(id, "player").ToString(),
+            name = SR.S1000,
             weight = SR.I(150),
             heightSpecified = true,
             jersey_number = 60,
@@ -462,13 +473,25 @@ public static class MessageFactoryRest
         };
     }
 
+    public static playerCompetitor GetPlayerCompetitor(int id = 0)
+    {
+        var playerId = id == 0 ? SR.Urn("player").ToString() : SR.Urn(id, "player").ToString();
+        return new playerCompetitor
+        {
+            id = playerId,
+            name = "Player " + playerId,
+            abbreviation = "P" + playerId,
+            nationality = "nat " + SR.S1000
+        };
+    }
+
     public static referee GetReferee(int id = 0)
     {
         return new referee
         {
             id = id == 0 ? SR.Urn("player").ToString() : SR.Urn(id, "player").ToString(),
             name = "Name " + SR.S1000,
-            nationality = "Nationality " + SR.S100,
+            nationality = "Nationality " + SR.S100
         };
     }
 
@@ -710,7 +733,7 @@ public static class MessageFactoryRest
             temperature_celsiusSpecified = true,
             weather_conditions = SR.S1000,
             wind_advantage = SR.S1000,
-            wind = SR.S1000,
+            wind = SR.S1000
         };
         return msg;
     }

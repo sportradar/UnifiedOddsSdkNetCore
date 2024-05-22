@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -27,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <param name="uriFormat">The url format specifying the url of the resources fetched by the fetcher</param>
         /// <param name="fetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
         /// <param name="deserializer">A <see cref="IDeserializer{T}" /> used to deserialize the fetch data</param>
-        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{T, T1}" /> used to construct instances of <see cref="ISingleTypeMapper{T}" /></param>
+        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{T,T1}" /> used to construct instances of <see cref="ISingleTypeMapper{T}" /></param>
         public DataProviderNamed(string name, string uriFormat, IDataFetcher fetcher, IDeserializer<TIn> deserializer, ISingleTypeMapperFactory<TIn, TOut> mapperFactory)
             : base(uriFormat, fetcher, deserializer, mapperFactory)
         {

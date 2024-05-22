@@ -1,4 +1,6 @@
-﻿namespace Sportradar.OddsFeed.SDK.Api.Config
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+namespace Sportradar.OddsFeed.SDK.Api.Config
 {
     /// <summary>
     /// Defines a contract implemented by classes used to set recovery related configuration properties
@@ -60,12 +62,14 @@
         /// </summary>
         /// <param name="httpClientFastFailingTimeout">The timeout to be set (in seconds)</param>
         /// <remarks>Between 1 and 30 (default 5s) - set before connection is made.</remarks>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetHttpClientFastFailingTimeout(int httpClientFastFailingTimeout);
 
         /// <summary>
         /// Sets the maximum number of concurrent connections (per server endpoint) allowed by an HttpClient object. (default: int.Max)
         /// </summary>
         /// <param name="maxConnectionsPerServer">The new maximum number of concurrent connections (per server endpoint) allowed by an HttpClient object.</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetMaxConnectionsPerServer(int maxConnectionsPerServer);
 
         /// <summary>
@@ -73,36 +77,42 @@
         /// </summary>
         /// <param name="timeoutInHours">The timeout.</param>
         /// <remarks>Can be between 1 hour and 48 hours - default 12 hours (sliding expiration)</remarks>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetSportEventCacheTimeout(int timeoutInHours);
 
         /// <summary>
         /// Sets the timeout for cache items in SportEventCacheStatus (in minutes)
         /// </summary>
         /// <param name="timeoutInMinutes">The timeout.</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetSportEventStatusCacheTimeout(int timeoutInMinutes);
 
         /// <summary>
         /// Sets the profile cache timeout.
         /// </summary>
         /// <param name="timeoutInHours">The timeout.</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetProfileCacheTimeout(int timeoutInHours);
 
         /// <summary>
         /// Sets the timeout for cache items in  variant market description cache (in hours)
         /// </summary>
         /// <param name="timeoutInHours">The timeout.</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetVariantMarketDescriptionCacheTimeout(int timeoutInHours);
 
         /// <summary>
         /// Sets the ignore BetPal timeline sport event status cache timeout. How long should the event id from BetPal be cached. SportEventStatus from timeline endpoint for these events are ignored.
         /// </summary>
         /// <param name="timeoutInHours">The timeout.</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetIgnoreBetPalTimelineSportEventStatusCacheTimeout(int timeoutInHours);
 
         /// <summary>
         /// Sets the value indicating whether to ignore sport event status from timeline endpoint for sport events on BetPal producer
         /// </summary>
         /// <param name="ignore">if set to <c>true</c> ignore</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetIgnoreBetPalTimelineSportEventStatus(bool ignore);
 
         /// <summary>
@@ -110,6 +120,7 @@
         /// </summary>
         /// <param name="rabbitConnectionTimeout">The rabbit timeout setting for connection attempts (in seconds)</param>
         /// <remarks>Between 10 and 120 (default 30s) - set before connection is made</remarks>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetRabbitConnectionTimeout(int rabbitConnectionTimeout);
 
         /// <summary>
@@ -117,6 +128,7 @@
         /// </summary>
         /// <param name="heartbeatInSeconds">The heartbeat timeout to use when negotiating with the rabbit server (in seconds)</param>
         /// <remarks>Between 10 and 180 (default 60s) - set before connection is made</remarks>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T SetRabbitHeartbeat(int heartbeatInSeconds);
 
         /// <summary>
@@ -131,6 +143,7 @@
         /// Sets the value indicating whether to ignore market mappings when fetching market descriptions from API
         /// </summary>
         /// <param name="omit">if set to <c>true</c> omit, otherwise include market mapping data</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T OmitMarketMappings(bool omit);
     }
 }

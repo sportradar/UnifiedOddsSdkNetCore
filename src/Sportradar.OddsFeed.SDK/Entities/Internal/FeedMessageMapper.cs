@@ -1,8 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dawn;
@@ -70,7 +70,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="producerManager">An <see cref="IProducerManager"/> used to get <see cref="IProducer"/></param>
         /// <param name="marketCacheProvider">The SDK market cache provider used to retrieve market data</param>
         /// <param name="voidReasonCache">A <see cref="INamedValueCache"/> for possible void reasons</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         public FeedMessageMapper(ISportEntityFactory sportEntityFactory,
                                  INameProviderFactory nameProviderFactory,
                                  IMarketMappingProviderFactory mappingProviderFactory,

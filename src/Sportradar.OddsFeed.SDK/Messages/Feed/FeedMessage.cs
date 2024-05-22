@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Serialization;
@@ -8,7 +7,9 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
+
 // ReSharper disable All
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace Sportradar.OddsFeed.SDK.Messages.Feed
 {

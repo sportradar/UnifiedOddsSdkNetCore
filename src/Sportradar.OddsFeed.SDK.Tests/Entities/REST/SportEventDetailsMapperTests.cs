@@ -1,8 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +52,7 @@ public class SportEventDetailsMapperTests
         await Initialise();
 
         Assert.Equal(_entity.Id.ToString(), _record.sport_event.id);
-        Assert.Equal(_entity.Scheduled, _record.sport_event.scheduledSpecified ? (DateTime?)_record.sport_event.scheduled : null);
+        Assert.Equal(_entity.Scheduled, _record.sport_event.scheduledSpecified ? _record.sport_event.scheduled : null);
         Assert.Equal(_entity.Season.Id.ToString(), _record.sport_event.season.id);
         Assert.Equal(_entity.Season.Name, _record.sport_event.season.name);
 
@@ -76,7 +73,7 @@ public class SportEventDetailsMapperTests
         await Initialise();
 
         Assert.Equal(_entityFull.Id.ToString(), _recordFull.sport_event.id);
-        Assert.Equal(_entityFull.Scheduled, _recordFull.sport_event.scheduledSpecified ? (DateTime?)_recordFull.sport_event.scheduled : null);
+        Assert.Equal(_entityFull.Scheduled, _recordFull.sport_event.scheduledSpecified ? _recordFull.sport_event.scheduled : null);
         Assert.Equal(_entityFull.Season.Id.ToString(), _recordFull.sport_event.season.id);
         Assert.Equal(_entityFull.Season.Name, _recordFull.sport_event.season.name);
 
@@ -105,9 +102,9 @@ public class SportEventDetailsMapperTests
     {
         Assert.Equal(dto.Round.Name, record.sport_event.tournament_round.name);
         Assert.Equal(dto.Round.Type, record.sport_event.tournament_round.type);
-        Assert.Equal(dto.Round.CupRoundMatchNumber, record.sport_event.tournament_round.cup_round_match_numberSpecified ? (int?)record.sport_event.tournament_round.cup_round_match_number : null);
-        Assert.Equal(dto.Round.CupRoundMatches, record.sport_event.tournament_round.cup_round_matchesSpecified ? (int?)record.sport_event.tournament_round.cup_round_matches : null);
-        Assert.Equal(dto.Round.Number, record.sport_event.tournament_round.numberSpecified ? (int?)record.sport_event.tournament_round.number : null);
+        Assert.Equal(dto.Round.CupRoundMatchNumber, record.sport_event.tournament_round.cup_round_match_numberSpecified ? record.sport_event.tournament_round.cup_round_match_number : null);
+        Assert.Equal(dto.Round.CupRoundMatches, record.sport_event.tournament_round.cup_round_matchesSpecified ? record.sport_event.tournament_round.cup_round_matches : null);
+        Assert.Equal(dto.Round.Number, record.sport_event.tournament_round.numberSpecified ? record.sport_event.tournament_round.number : null);
     }
 
     private static void MappingVenueTest(MatchDto dto, matchSummaryEndpoint record)
@@ -123,7 +120,7 @@ public class SportEventDetailsMapperTests
         Assert.Equal(dto.Venue.Coordinates, record.sport_event_conditions.venue.map_coordinates);
         Assert.Equal(dto.Venue.Country, record.sport_event_conditions.venue.country_name);
         Assert.Equal(dto.Venue.State, record.sport_event_conditions.venue.state);
-        Assert.Equal(dto.Venue.Capacity, record.sport_event_conditions.venue.capacitySpecified ? (int?)record.sport_event_conditions.venue.capacity : null);
+        Assert.Equal(dto.Venue.Capacity, record.sport_event_conditions.venue.capacitySpecified ? record.sport_event_conditions.venue.capacity : null);
     }
 
     private static void MappingConditionsTest(MatchDto dto, matchSummaryEndpoint record)
@@ -145,7 +142,7 @@ public class SportEventDetailsMapperTests
         Assert.Equal(dto.Conditions.WeatherInfo.WindAdvantage, record.sport_event_conditions.weather_info.wind_advantage);
         Assert.Equal(dto.Conditions.WeatherInfo.TemperatureCelsius,
             record.sport_event_conditions.weather_info.temperature_celsiusSpecified
-                ? (int?)record.sport_event_conditions.weather_info.temperature_celsius
+                ? record.sport_event_conditions.weather_info.temperature_celsius
                 : null);
 
         MappingVenueTest(dto, record);

@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -94,7 +92,7 @@ public class MapFixtureChangeTests : MapEntityTestBase
             ? (int?)record.change_type
             : (int)FixtureChangeType.Other);
         Assert.Equal(entity.NextLiveTime, record.next_live_timeSpecified
-            ? (long?)record.next_live_time
+            ? record.next_live_time
             : null);
         Assert.Equal(entity.StartTime, record.start_time);
     }

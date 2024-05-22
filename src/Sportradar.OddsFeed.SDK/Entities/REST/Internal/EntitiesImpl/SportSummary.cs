@@ -1,6 +1,5 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
@@ -17,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// Creates new instance of sport summary
         /// </summary>
         /// <param name="id">a <see cref="Urn"/> uniquely identifying the sport represented by the constructed instance</param>
-        /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated sport names</param>
+        /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo,String}"/> containing translated sport names</param>
         public SportSummary(Urn id, IReadOnlyDictionary<CultureInfo, string> names)
             : base(id, names)
         {

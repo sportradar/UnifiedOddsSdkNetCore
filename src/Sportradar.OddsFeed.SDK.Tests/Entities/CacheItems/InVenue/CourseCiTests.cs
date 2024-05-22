@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;

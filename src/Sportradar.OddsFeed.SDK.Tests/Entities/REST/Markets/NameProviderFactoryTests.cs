@@ -1,680 +1,100 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Api.Internal.Config;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Common.Extensions;
-using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
-using Sportradar.OddsFeed.SDK.Messages.Rest;
-using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.Markets;
 
 public class NameProviderFactoryTests
 {
-    private readonly ITestOutputHelper _outputHelper;
-    private readonly TestSportEntityFactoryBuilder _sportEntityFactory;
-    private readonly IMarketDescriptionsCache _invariantMarketDescriptionCache;
-    private readonly IVariantDescriptionsCache _variantDescriptionListCache;
-    private readonly IMarketDescriptionCache _variantMarketDescriptionCache;
-    private readonly IMarketCacheProvider _marketCacheProvider;
+    private readonly Mock<IMarketCacheProvider> _marketCacheProviderMock;
+    private readonly Mock<IProfileCache> _profileCacheMock;
+    private readonly Mock<INameExpressionFactory> _nameExpressionFactoryMock;
 
-    private readonly ICacheStore<string> _invariantMarketDescriptionMemoryCache;
-    private readonly ICacheStore<string> _variantMarketDescriptionListMemoryCache;
-    private readonly ICacheStore<string> _variantMarketDescriptionMemoryCache;
-    private readonly INameProviderFactory _nameProviderFactory;
-    private readonly IMatch _match;
-    private readonly ScheduleData _scheduleData;
-
-    public NameProviderFactoryTests(ITestOutputHelper outputHelper)
+    public NameProviderFactoryTests()
     {
-        _outputHelper = outputHelper;
-        _scheduleData = new ScheduleData(new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3), outputHelper);
-        _sportEntityFactory = new TestSportEntityFactoryBuilder(_outputHelper, ScheduleData.Cultures3);
-
-        var testCacheStoreManager = new TestCacheStoreManager();
-        _variantMarketDescriptionMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache);
-        _variantMarketDescriptionListMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantDescriptionListCache);
-        _invariantMarketDescriptionMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForInvariantMarketDescriptionsCache);
-
-        MessageFactorySdk.SetOutputHelper(_outputHelper);
-
-        IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
-
-        var timerVdl = new TestTimer(true);
-        var timerIdl = new TestTimer(true);
-        _invariantMarketDescriptionCache = new InvariantMarketDescriptionCache(_invariantMarketDescriptionMemoryCache, _sportEntityFactory.DataRouterManager, mappingValidatorFactory, timerIdl, _sportEntityFactory.Cultures, _sportEntityFactory.CacheManager);
-        _variantDescriptionListCache = new VariantDescriptionListCache(_variantMarketDescriptionListMemoryCache, _sportEntityFactory.DataRouterManager, mappingValidatorFactory, timerVdl, _sportEntityFactory.Cultures, _sportEntityFactory.CacheManager);
-        _variantMarketDescriptionCache = new VariantMarketDescriptionCache(_variantMarketDescriptionMemoryCache, _sportEntityFactory.DataRouterManager, mappingValidatorFactory, _sportEntityFactory.CacheManager);
-        _marketCacheProvider = new MarketCacheProvider(_invariantMarketDescriptionCache, _variantMarketDescriptionCache, _variantDescriptionListCache);
-
-        _nameProviderFactory = new NameProviderFactory(_marketCacheProvider,
-            _sportEntityFactory.ProfileCache,
-            new NameExpressionFactory(new OperandFactory(), _sportEntityFactory.ProfileCache),
-            testCacheStoreManager.UofConfig);
-
-        _match = _sportEntityFactory.GetMatch(ScheduleData.MatchId.Id, ScheduleData.MatchSportId.Id);
+        _marketCacheProviderMock = new Mock<IMarketCacheProvider>();
+        _profileCacheMock = new Mock<IProfileCache>();
+        _nameExpressionFactoryMock = new Mock<INameExpressionFactory>();
     }
 
     [Fact]
-    public void InitialCallsDone()
+    public void ConstructorInitialized()
     {
-        Assert.NotNull(_outputHelper);
-        Assert.Equal(TestData.InvariantListCacheCount, _invariantMarketDescriptionMemoryCache.Count());
-        Assert.True(_variantMarketDescriptionListMemoryCache.Count() > 0);
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-        Assert.Equal(0, _sportEntityFactory.ProfileMemoryCache.Count());
+        var factory = new NameProviderFactory(_marketCacheProviderMock.Object, _profileCacheMock.Object, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw);
 
-        Assert.NotNull(_invariantMarketDescriptionCache);
-        Assert.NotNull(_variantDescriptionListCache);
-        Assert.NotNull(_variantMarketDescriptionCache);
-        Assert.NotNull(_sportEntityFactory.ProfileCache);
-
-        Assert.NotNull(_marketCacheProvider);
-        Assert.NotNull(_nameProviderFactory);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 2, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-
-        Assert.Equal(TestData.InvariantListCacheCount, _invariantMarketDescriptionMemoryCache.Count());
-        Assert.Equal(TestData.VariantListCacheCount, _variantMarketDescriptionListMemoryCache.Count());
-
-        Assert.NotNull(_match);
-        Assert.Equal(_scheduleData.MatchCompetitor1.Id, _match.GetHomeCompetitorAsync().GetAwaiter().GetResult().Id);
-        Assert.Equal(_scheduleData.MatchCompetitor2.Id, _match.GetAwayCompetitorAsync().GetAwaiter().GetResult().Id);
+        Assert.NotNull(factory);
     }
 
     [Fact]
-    public async Task GetNameFromInvariantMarketDescription()
+    public void ConstructorWhenMissingMarketCacheProviderThrows()
     {
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("milestone=1|maxovers=3"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, 701, specifiers);
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("74", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("yes", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("76", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("no", outcome2);
-
-        outcome1 = await nameProvider.GetOutcomeNameAsync("74", _sportEntityFactory.Cultures[1]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("ja", outcome1);
-        outcome2 = await nameProvider.GetOutcomeNameAsync("76", _sportEntityFactory.Cultures[1]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("nein", outcome2);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 2, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        Assert.Throws<ArgumentNullException>(() => new NameProviderFactory(null, _profileCacheMock.Object, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw));
     }
 
     [Fact]
-    public void GetMarketNameFromNonExistingInvariantMarketDescription()
+    public void ConstructorWhenMissingProfileCacheThrows()
     {
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, 2820, null);
-        string name0 = null;
-        Action action = () => name0 = nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]).GetAwaiter().GetResult();
-        action.Should().Throw<NameGenerationException>();
-        Assert.Null(name0);
+        Assert.Throws<ArgumentNullException>(() => new NameProviderFactory(_marketCacheProviderMock.Object, null, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw));
     }
 
     [Fact]
-    public async Task GetUnExistingOutcomeNameFromExistingInvariantMarketDescription()
+    public void ConstructorWhenMissingNameExpressionFactoryThrows()
     {
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("milestone=4|maxovers=2"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, 701, specifiers);
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        Assert.NotNull(name0);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("74", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("yes", outcome1);
-
-        Action action = () => outcome1 = nameProvider.GetOutcomeNameAsync("75", _sportEntityFactory.Cultures[0]).GetAwaiter().GetResult();
-        action.Should().Throw<NameGenerationException>();
+        Assert.Throws<ArgumentNullException>(() => new NameProviderFactory(_marketCacheProviderMock.Object, _profileCacheMock.Object, null, ExceptionHandlingStrategy.Throw));
     }
 
     [Fact]
-    public async Task GetMarketNamesFromVariantMarketDescriptionFromList()
+    public void BuildNameProviderWhenCallCorrectly()
     {
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("setnr=1|variant=sr:correct_score:bestof:12"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, 374, specifiers);
+        var factory = new NameProviderFactory(_marketCacheProviderMock.Object, _profileCacheMock.Object, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw);
 
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
+        var nameProvider = factory.BuildNameProvider(new Mock<ISportEvent>().Object, 1, new Dictionary<string, string>());
 
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("sr:correct_score:bestof:12:192", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("7:0", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("sr:correct_score:bestof:12:200", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("4:7", outcome2);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 2, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        Assert.NotNull(nameProvider);
     }
 
     [Fact]
-    public async Task GetMarketNamesFromVariantMarketDescriptionFromListMultipleMappings()
+    public void BuildNameProviderWhenMissingSportEventThrows()
     {
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("variant=sr:decided_by_extra_points:bestof:5"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, 239, specifiers);
+        var factory = new NameProviderFactory(_marketCacheProviderMock.Object, _profileCacheMock.Object, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw);
 
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("sr:decided_by_extra_points:bestof:5:53", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("0", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("sr:decided_by_extra_points:bestof:5:58", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("5", outcome2);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 2, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        Assert.Throws<ArgumentNullException>(() => factory.BuildNameProvider(null, 1, new Dictionary<string, string>()));
     }
 
     [Fact]
-    public async Task GetMarketNamesFromVariantMarketDescriptionFromSinglePreOutcomeText()
+    public void BuildNameProviderAcceptZeroMarketId()
     {
-        const int marketId = 534;
-        const string variantSpecifier = "pre:markettext:168883";
-        _sportEntityFactory.DataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_{marketId}_culture.xml"));
+        var factory = new NameProviderFactory(_marketCacheProviderMock.Object, _profileCacheMock.Object, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw);
 
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary($"variant={variantSpecifier}"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
+        var nameProvider = factory.BuildNameProvider(new Mock<ISportEvent>().Object, 0, new Dictionary<string, string>());
 
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.Equal(1, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("pre:outcometext:108719", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("7 Points", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("pre:outcometext:108726", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("1 Point", outcome2);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 3, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        Assert.NotNull(nameProvider);
     }
 
     [Fact]
-    public async Task GetMarketNamesForVariantMarketDescriptionFromSinglePlayerProps()
+    public void BuildNameProviderAcceptNegativeMarketId()
     {
-        const int marketId = 768;
-        const string variantSpecifier = "pre:playerprops:35432179:608000";
-        _sportEntityFactory.DataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_{marketId}_culture.xml"));
+        var factory = new NameProviderFactory(_marketCacheProviderMock.Object, _profileCacheMock.Object, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw);
 
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary($"variant={variantSpecifier}"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
+        var nameProvider = factory.BuildNameProvider(new Mock<ISportEvent>().Object, -1, new Dictionary<string, string>());
 
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.Equal(1, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("pre:playerprops:35432179:608000:10", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("Kyle Anderson 10+", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("pre:playerprops:35432179:608000:20", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("Kyle Anderson 20+", outcome2);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 3, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        Assert.NotNull(nameProvider);
     }
 
     [Fact]
-    public async Task GetMarketNamesForVariantMarketDescriptionFromSingleUnsupportedCompetitorProps()
+    public void BuildNameProviderAcceptNullSpecifiers()
     {
-        const int marketId = 1768;
-        const string variantSpecifier = "pre:competitorprops:35432179:608000";
-        await LoadNewInvariantMarketDescriptionAsync(768, marketId, 1, _sportEntityFactory.Cultures).ConfigureAwait(false);
-        _sportEntityFactory.DataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_{marketId}_cp_culture.xml"));
-        Assert.Equal(TestData.InvariantListCacheCount + 1, _invariantMarketDescriptionMemoryCache.Count());
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
+        var factory = new NameProviderFactory(_marketCacheProviderMock.Object, _profileCacheMock.Object, _nameExpressionFactoryMock.Object, ExceptionHandlingStrategy.Throw);
 
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary($"variant={variantSpecifier}"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
+        var nameProvider = factory.BuildNameProvider(new Mock<ISportEvent>().Object, 1, null);
 
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.Equal(1, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("pre:competitorprops:35432179:608000:10", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("Kyle Anderson 10+", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("pre:competitorprops:35432179:608000:20", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("Kyle Anderson 20+", outcome2);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 3, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public async Task GetMarketNamesForMarketDescriptionForOutcomeTypePlayerForSingleCulture()
-    {
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 2, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        const int marketId = 679;
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("maxovers=20|type=live|inningnr=1"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 2, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-        _sportEntityFactory.DataRouterManager.ResetMethodCall();
-
-        var marketName = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-        Assert.NotNull(marketName);
-        Assert.False(string.IsNullOrEmpty(marketName));
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId1.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal(_scheduleData.MatchCompetitor1Player1.GetName(_sportEntityFactory.Cultures[0]), outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId2.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal(_scheduleData.MatchCompetitor1Player2.GetName(_sportEntityFactory.Cultures[0]), outcome2);
-
-        Assert.Equal(3, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(2, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public async Task GetMarketNamesForMarketDescriptionForOutcomeTypePlayerForSingleCultureWhenCompetitorPreloaded()
-    {
-        await _sportEntityFactory.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId1, _sportEntityFactory.Cultures[0], null).ConfigureAwait(false);
-        await _sportEntityFactory.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId2, _sportEntityFactory.Cultures[0], null).ConfigureAwait(false);
-
-        const int marketId = 679;
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("maxovers=20|type=live|inningnr=1"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        _sportEntityFactory.DataRouterManager.ResetMethodCall();
-
-        var marketName = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-        Assert.NotNull(marketName);
-        Assert.False(string.IsNullOrEmpty(marketName));
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public async Task GetPlayerOutcomeNamesForMarketDescriptionForOutcomeTypePlayerForSingleCultureWhenCompetitorPreloaded()
-    {
-        await _sportEntityFactory.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId1, _sportEntityFactory.Cultures[0], null).ConfigureAwait(false);
-        await _sportEntityFactory.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId2, _sportEntityFactory.Cultures[0], null).ConfigureAwait(false);
-
-        const int marketId = 679;
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("maxovers=20|type=live|inningnr=1"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        _sportEntityFactory.DataRouterManager.ResetMethodCall();
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId2.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal(_scheduleData.MatchCompetitor2Player2.GetName(_sportEntityFactory.Cultures[0]), outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId1.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal(_scheduleData.MatchCompetitor2Player1.GetName(_sportEntityFactory.Cultures[0]), outcome2);
-
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public async Task GetMarketNamesForMarketDescriptionForOutcomeTypePlayer()
-    {
-        const int marketId = 679;
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("maxovers=20|type=live|inningnr=1"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        _sportEntityFactory.DataRouterManager.ResetMethodCall();
-
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId2.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal(_scheduleData.MatchCompetitor2Player2.GetName(_sportEntityFactory.Cultures[0]), outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId2.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal(_scheduleData.MatchCompetitor1Player2.GetName(_sportEntityFactory.Cultures[0]), outcome2);
-
-        Assert.Equal(5, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(3, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(2, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public async Task GetMarketNamesForMarketDescriptionForOutComeTypeCompetitor()
-    {
-        const int marketId = 1109;
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("lapnr=5"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        _sportEntityFactory.DataRouterManager.ResetMethodCall();
-
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal(_scheduleData.MatchCompetitor1.GetName(_sportEntityFactory.Cultures[0]), outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId2.ToString(), _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal(_scheduleData.MatchCompetitor2.GetName(_sportEntityFactory.Cultures[0]), outcome2);
-
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public async Task GetMarketNamesForMarketDescriptionWithCompetitorInOutcomeTemplate()
-    {
-        const int marketId = 303;
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("quarternr=4|hcp=-3.5"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("1714", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal($"{_scheduleData.MatchCompetitor1.GetName(_sportEntityFactory.Cultures[0])} (-3.5)", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("1715", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal($"{_scheduleData.MatchCompetitor2.GetName(_sportEntityFactory.Cultures[0])} (+3.5)", outcome2);
-
-        Assert.Equal((_sportEntityFactory.Cultures.Count * 2) + 1, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public async Task GetMarketNamesForMarketDescriptionWithScoreInNameTemplate()
-    {
-        const int marketId = 41;
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary("score=2:0"));
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        var name0 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]);
-        var name1 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[1]);
-        var name2 = await nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[2]);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.NotNull(name0);
-        Assert.NotNull(name1);
-        Assert.NotNull(name2);
-        Assert.NotEqual(name0, name1);
-        Assert.NotEqual(name0, name2);
-        Assert.NotEqual(name1, name2);
-
-        var outcome1 = await nameProvider.GetOutcomeNameAsync("134", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome1);
-        Assert.Equal("6:1", outcome1);
-        var outcome2 = await nameProvider.GetOutcomeNameAsync("144", _sportEntityFactory.Cultures[0]);
-        Assert.NotNull(outcome2);
-        Assert.Equal("5:2", outcome2);
-
-        Assert.Equal(_sportEntityFactory.Cultures.Count * 2, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    [Fact]
-    public void GetMarketNamesForVariantMarketDescriptionFromSinglePreOutcomeTextInvalidOutcome()
-    {
-        const int marketId = 534;
-        const string variantSpecifier = "pre:markettext:168883";
-        var specifiers = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary($"variant={variantSpecifier}"));
-        _sportEntityFactory.DataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_invalid_{marketId}_culture.xml"));
-
-        var nameProvider = _nameProviderFactory.BuildNameProvider(_match, marketId, specifiers);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        string name0 = null;
-        Action action = () => name0 = nameProvider.GetMarketNameAsync(_sportEntityFactory.Cultures[0]).GetAwaiter().GetResult();
-        action.Should().Throw<NameGenerationException>();
-        Assert.Null(name0);
-
-        Assert.Equal(0, _variantMarketDescriptionMemoryCache.Count());
-
-        Assert.Equal(7, _sportEntityFactory.DataRouterManager.TotalRestCalls);
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_sportEntityFactory.Cultures.Count, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(1, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
-        Assert.Equal(0, _sportEntityFactory.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-    }
-
-    private async Task LoadNewInvariantMarketDescriptionAsync(int existingId, int newId, int doAction, IReadOnlyCollection<CultureInfo> cultures)
-    {
-        foreach (var culture in cultures)
-        {
-            await LoadNewInvariantMarketDescriptionAsync(existingId, newId, doAction, culture).ConfigureAwait(false);
-        }
-    }
-
-    private async Task LoadNewInvariantMarketDescriptionAsync(int existingId, int newId, int doAction, CultureInfo culture)
-    {
-        var restDeserializer = new Deserializer<market_descriptions>();
-        var mapper = new MarketDescriptionsMapperFactory();
-
-        var resourceName = $"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
-        await using var stream = FileHelper.GetResource(resourceName);
-
-        if (stream != null)
-        {
-            var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
-            if (result?.Items.IsNullOrEmpty() == false)
-            {
-                var existingMd = result.Items.First(f => f.Id.Equals(existingId));
-                existingMd.OverrideId(newId);
-                switch (doAction)
-                {
-                    case 1:
-                        {
-                            // switch player_props to unknown competitor_props
-                            var newGroups = existingMd.Groups.Where(s => !s.Contains("player_props")).ToList();
-                            newGroups.Add("competitor_props");
-                            existingMd.OverrideGroups(newGroups);
-                            break;
-                        }
-                    default:
-                        return;
-                }
-
-                var items = new EntityList<MarketDescriptionDto>(new List<MarketDescriptionDto> { existingMd });
-                await _sportEntityFactory.CacheManager.SaveDtoAsync(Urn.Parse("sr:markets:1"), items, culture, DtoType.MarketDescriptionList, null).ConfigureAwait(false);
-            }
-            else
-            {
-                _outputHelper.WriteLine($"No results found for {resourceName}");
-            }
-        }
+        Assert.NotNull(nameProvider);
     }
 }

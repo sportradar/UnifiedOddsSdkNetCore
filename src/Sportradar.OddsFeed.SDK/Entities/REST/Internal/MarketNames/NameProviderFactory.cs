@@ -1,11 +1,9 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using Dawn;
-using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common.Enums;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
@@ -40,18 +38,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <param name="marketCacheProvider">A <see cref="IMarketCacheProvider"/> instance used to retrieve market descriptors</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> instance used to retrieve player and competitor profiles</param>
         /// <param name="expressionFactory">A <see cref="INameExpressionFactory"/> instance used to built <see cref="INameExpression"/> instances</param>
-        /// <param name="configuration">A <see cref="IUofConfiguration"/> to get exception handling strategy specifying how to handle potential exceptions thrown to the user code</param>
-        public NameProviderFactory(IMarketCacheProvider marketCacheProvider, IProfileCache profileCache, INameExpressionFactory expressionFactory, IUofConfiguration configuration)
+        /// <param name="exceptionHandlingStrategy">A <see cref="ExceptionHandlingStrategy"/> to specifying how to handle potential exceptions thrown to the user code</param>
+        public NameProviderFactory(IMarketCacheProvider marketCacheProvider, IProfileCache profileCache, INameExpressionFactory expressionFactory, ExceptionHandlingStrategy exceptionHandlingStrategy)
         {
             Guard.Argument(marketCacheProvider, nameof(marketCacheProvider)).NotNull();
             Guard.Argument(profileCache, nameof(profileCache)).NotNull();
             Guard.Argument(expressionFactory, nameof(expressionFactory)).NotNull();
-            Guard.Argument(configuration, nameof(configuration)).NotNull();
 
             _marketCacheProvider = marketCacheProvider;
             _profileCache = profileCache;
             _expressionFactory = expressionFactory;
-            _exceptionStrategy = configuration.ExceptionHandlingStrategy;
+            _exceptionStrategy = exceptionHandlingStrategy;
         }
 
         /// <summary>

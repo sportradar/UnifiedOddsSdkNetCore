@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Common;
@@ -23,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         string Name { get; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing referee nationality in different languages
+        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo,String}"/> containing referee nationality in different languages
         /// </summary>
         IReadOnlyDictionary<CultureInfo, string> Nationalities { get; }
 

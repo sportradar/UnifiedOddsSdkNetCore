@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
@@ -21,7 +20,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         {
             Guard.Argument(outcome, nameof(outcome)).NotNull();
             Guard.Argument(outcome.id, nameof(outcome.id)).NotNull().NotEmpty();
-            Guard.Argument(outcome.name, nameof(outcome.name)).NotNull().NotEmpty();
 
             Id = outcome.id;
             Name = outcome.name;
@@ -32,7 +30,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         {
             Guard.Argument(outcome, nameof(outcome)).NotNull();
             Guard.Argument(outcome.id, nameof(outcome.id)).NotNull().NotEmpty();
-            Guard.Argument(outcome.name, nameof(outcome.name)).NotNull().NotEmpty();
 
             Id = outcome.id;
             Name = outcome.name;

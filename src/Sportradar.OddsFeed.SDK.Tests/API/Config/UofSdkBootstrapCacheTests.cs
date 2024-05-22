@@ -1,11 +1,10 @@
-﻿// Ignore Spelling: Uof
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Microsoft.Extensions.DependencyInjection;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;

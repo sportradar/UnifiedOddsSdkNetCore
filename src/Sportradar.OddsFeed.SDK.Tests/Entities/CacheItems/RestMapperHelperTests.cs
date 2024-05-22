@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System.Net;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Messages.Rest;

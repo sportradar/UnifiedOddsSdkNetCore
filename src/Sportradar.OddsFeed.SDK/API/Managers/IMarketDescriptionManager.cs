@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,6 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Managers
         /// <summary>
         /// Asynchronously gets a <see cref="IEnumerable{IMarketDescription}"/> of all available static market descriptions
         /// </summary>
+        /// <param name="culture">The language for which to get market descriptions</param>
         /// <returns>A <see cref="IEnumerable{IMarketDescription}"/> of available static market descriptions</returns>
         Task<IEnumerable<IMarketDescription>> GetMarketDescriptionsAsync(CultureInfo culture = null);
 

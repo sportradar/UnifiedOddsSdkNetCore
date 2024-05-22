@@ -1,9 +1,9 @@
 ﻿
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -91,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <param name="producerId">The id of the <see cref="IProducer"/> used to get market/outcome mappings</param>
         /// <param name="sportId">A sportId used to get market/outcome mappings</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> describing the mode in which the SDK is running</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed")]
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed")]
         internal MarketMappingProvider(IMarketCacheProvider marketCacheProvider,
                                        ISportEventStatusCache eventStatusCache,
                                        ISportEvent sportEvent,

@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Globalization;
 using System.Threading.Tasks;
@@ -11,6 +9,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -23,6 +22,7 @@ public class SportEventCacheItemTests
 
     public SportEventCacheItemTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
         var cacheManager = testCacheStoreManager.CacheManager;
         _dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
@@ -38,7 +38,8 @@ public class SportEventCacheItemTests
                 testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
             timer,
             TestData.Cultures,
-            cacheManager);
+            cacheManager,
+            loggerFactory);
     }
 
     [Fact]

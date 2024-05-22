@@ -1,7 +1,6 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common;
@@ -15,10 +14,12 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.Markets;
 
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class EntityNameExpressionTests
 {
     private readonly EntityNameExpression _matchEventEntityNameExpression;
     private readonly EntityNameExpression _stageEventEntityNameExpression;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly EntityNameExpression _tournamentEventEntityNameExpression;
     private readonly IMatch _match;
     private readonly IStage _stage;

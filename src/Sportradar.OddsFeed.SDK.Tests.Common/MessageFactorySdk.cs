@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -238,7 +240,7 @@ public static class MessageFactorySdk
 
     internal static ITvChannel GetTvChannel(bool startTimeSpecified = true)
     {
-        return new TvChannel("Name " + SR.S1000, startTimeSpecified ? DateTime.Now : (DateTime?)null, "Url:" + SR.S10000P);
+        return new TvChannel("Name " + SR.S1000, startTimeSpecified ? DateTime.Now : null, "Url:" + SR.S10000P);
     }
 
     public static IVenue GetVenue(int id = 0)

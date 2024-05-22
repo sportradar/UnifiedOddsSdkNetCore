@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Enums;
@@ -8,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
     /// <summary>
     /// Factory extension for DI
     /// </summary>
-    public static class GenerateClassWithDataFactoryExtension
+    internal static class GenerateClassWithDataFactoryExtension
     {
         /// <summary>
         /// Add sdk http client factory to service collection

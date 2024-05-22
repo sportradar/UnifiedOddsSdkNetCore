@@ -1,8 +1,7 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +20,9 @@ public class TestLocalizedNamedValueCache : ILocalizedNamedValueCache
     public string CacheName { get; }
     private readonly IDictionary<int, IDictionary<CultureInfo, string>> _namedValues;
     private readonly IReadOnlyCollection<CultureInfo> _cultures;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly ICollection<CultureInfo> _loadedCultures;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly ExceptionHandlingStrategy _exceptionStrategy;
 
     public TestLocalizedNamedValueCache(string cacheName, IDictionary<int, IDictionary<CultureInfo, string>> namedValues, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
@@ -32,7 +33,6 @@ public class TestLocalizedNamedValueCache : ILocalizedNamedValueCache
         _exceptionStrategy = exceptionStrategy;
         _loadedCultures = new List<CultureInfo>();
     }
-
 
     public Task<ILocalizedNamedValue> GetAsync(int id, IEnumerable<CultureInfo> cultures = null)
     {

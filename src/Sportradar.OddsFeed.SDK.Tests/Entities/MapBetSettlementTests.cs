@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +62,7 @@ public class MapBetSettlementTests : MapEntityTestBase
         var rProduct = TestProducerManager.Create().GetProducer(record.product);
         Assert.Equal(entity.Producer, rProduct);
         Assert.Equal(entity.RequestId, record.request_idSpecified
-            ? (long?)record.request_id
+            ? record.request_id
             : null);
         Assert.Equal(entity.Timestamps.Created, record.timestamp);
 
@@ -137,7 +135,7 @@ public class MapBetSettlementTests : MapEntityTestBase
                 {
                     Assert.Equal(m.Id, b.id);
                     Assert.Equal(m.DeadHeatFactor, b.dead_heat_factorSpecified
-                        ? (double?)b.dead_heat_factor
+                        ? b.dead_heat_factor
                         : null);
                     Assert.Equal((int)m.OutcomeResult, b.result);
 

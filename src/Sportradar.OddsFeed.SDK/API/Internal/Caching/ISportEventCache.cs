@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// </summary>
         /// <param name="id">A <see cref="Urn"/> representing the id of the sport event which cached representation to return</param>
         /// <returns>a <see cref="SportEventCacheItem"/> instance representing cached sport event data</returns>
-        SportEventCacheItem GetEventCacheItem(Urn id);
+        ISportEventCacheItem GetEventCacheItem(Urn id);
 
         /// <summary>
         /// Asynchronous gets a <see cref="IEnumerable{Urn}"/> containing id's of sport events, which belong to the specified tournament

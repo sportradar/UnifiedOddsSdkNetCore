@@ -1,9 +1,9 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -120,7 +120,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         /// <param name="maxRecoveryTime">The maximum time in seconds in which recovery must be completed</param>
         /// <param name="scope">The scope of the producer</param>
         /// <param name="statefulRecoveryWindowInMinutes">The stateful recovery window in minutes</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         public Producer(int id, string name, string description, string apiUrl, bool active, int maxInactivitySeconds, int maxRecoveryTime, string scope, int statefulRecoveryWindowInMinutes)
         {
             Guard.Argument(id).Positive();

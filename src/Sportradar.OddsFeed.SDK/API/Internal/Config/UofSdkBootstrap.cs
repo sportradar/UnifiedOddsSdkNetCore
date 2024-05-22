@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
@@ -23,7 +21,6 @@ using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
@@ -96,11 +93,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
-            }
-
-            if (services.All(x => x.ServiceType != typeof(ILoggerFactory)))
-            {
-                services.AddLogging();
             }
 
             RegisterServices(services, configuration);
@@ -254,10 +246,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddSingleton<ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto>, BookmakerDetailsMapperFactory>();
 
             services.AddSingleton<IDataProvider<BookmakerDetailsDto>, Entities.Rest.Internal.BookmakerDetailsProvider>(servicesProvider =>
-                new Entities.Rest.Internal.BookmakerDetailsProvider(BookmakerDetailsProviderUrl,
-                    servicesProvider.GetRequiredService<IDataFetcher>(),
-                    servicesProvider.GetRequiredService<IDeserializer<bookmaker_details>>(),
-                    servicesProvider.GetRequiredService<ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto>>()));
+                                                                                                                           new Entities.Rest.Internal.BookmakerDetailsProvider(BookmakerDetailsProviderUrl,
+                                                                                                                                                                          servicesProvider.GetRequiredService<IDataFetcher>(),
+                                                                                                                                                                          servicesProvider.GetRequiredService<IDeserializer<bookmaker_details>>(),
+                                                                                                                                                                          servicesProvider.GetRequiredService<ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto>>()));
 
             services.AddSingleton<IBookmakerDetailsProvider, BookmakerDetailsProvider>();
         }
@@ -314,7 +306,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISportEventCacheItemFactory>(),
                     serviceProvider.GetSdkTimer(TimerForSportEventCache),
                     serviceProvider.GetRequiredService<IUofConfiguration>().Languages,
-                    serviceProvider.GetRequiredService<ICacheManager>()));
+                    serviceProvider.GetRequiredService<ICacheManager>(),
+                    serviceProvider.GetRequiredService<ILoggerFactory>()));
         }
 
         private static void RegisterSportDataCache(IServiceCollection services)
@@ -325,7 +318,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetSdkTimer(TimerForSportDataCache),
                     serviceProvider.GetRequiredService<IUofConfiguration>().Languages,
                     serviceProvider.GetRequiredService<ISportEventCache>(),
-                    serviceProvider.GetRequiredService<ICacheManager>()));
+                    serviceProvider.GetRequiredService<ICacheManager>(),
+                    serviceProvider.GetRequiredService<ILoggerFactory>()));
         }
 
         private static void RegisterSportEventStatusCache(IServiceCollection services)
@@ -339,7 +333,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISportEventCache>(),
                     serviceProvider.GetRequiredService<ICacheManager>(),
                     serviceProvider.GetSdkCacheStore<string>(CacheStoreNameForIgnoreEventsTimelineCache),
-                    serviceProvider.GetRequiredService<IUofConfiguration>()
+                    serviceProvider.GetRequiredService<IUofConfiguration>(),
+                    serviceProvider.GetRequiredService<ILoggerFactory>()
                 ));
         }
 
@@ -848,7 +843,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         {
             services.AddSingleton<IOperandFactory, OperandFactory>();
             services.AddSingleton<INameExpressionFactory, NameExpressionFactory>();
-            services.AddSingleton<INameProviderFactory, NameProviderFactory>();
+            services.AddSingleton<INameProviderFactory, NameProviderFactory>(serviceProvider =>
+                new NameProviderFactory(
+                    serviceProvider.GetRequiredService<IMarketCacheProvider>(),
+                    serviceProvider.GetRequiredService<IProfileCache>(),
+                    serviceProvider.GetRequiredService<INameExpressionFactory>(),
+                    serviceProvider.GetRequiredService<IUofConfiguration>().ExceptionHandlingStrategy
+                ));
             services.AddSingleton<IMarketCacheProvider, MarketCacheProvider>();
 
             services.AddSingleton<IMarketMappingProviderFactory, MarketMappingProviderFactory>(serviceProvider =>
@@ -866,7 +867,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<IMappingValidatorFactory>(),
                     serviceProvider.GetSdkTimer(TimerForInvariantMarketDescriptionsCache),
                     serviceProvider.GetRequiredService<IUofConfiguration>().Languages,
-                    serviceProvider.GetRequiredService<ICacheManager>()
+                    serviceProvider.GetRequiredService<ICacheManager>(),
+                    serviceProvider.GetRequiredService<ILoggerFactory>()
                 ));
 
             // single variant market cache
@@ -875,7 +877,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetSdkCacheStore<string>(CacheStoreNameForVariantMarketDescriptionCache),
                     serviceProvider.GetRequiredService<IDataRouterManager>(),
                     serviceProvider.GetRequiredService<IMappingValidatorFactory>(),
-                    serviceProvider.GetRequiredService<ICacheManager>()
+                    serviceProvider.GetRequiredService<ICacheManager>(),
+                    serviceProvider.GetRequiredService<ILoggerFactory>()
                 ));
 
             // variant market cache for market description list
@@ -886,7 +889,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<IMappingValidatorFactory>(),
                     serviceProvider.GetSdkTimer(TimerForVariantMarketDescriptionListCache),
                     serviceProvider.GetRequiredService<IUofConfiguration>().Languages,
-                    serviceProvider.GetRequiredService<ICacheManager>()
+                    serviceProvider.GetRequiredService<ICacheManager>(),
+                    serviceProvider.GetRequiredService<ILoggerFactory>()
                 ));
 
             // profile cache
@@ -895,7 +899,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetSdkCacheStore<string>(CacheStoreNameForProfileCache),
                     serviceProvider.GetRequiredService<IDataRouterManager>(),
                     serviceProvider.GetRequiredService<ICacheManager>(),
-                    serviceProvider.GetRequiredService<ISportEventCache>()
+                    serviceProvider.GetRequiredService<ISportEventCache>(),
+                    serviceProvider.GetRequiredService<ILoggerFactory>()
                 ));
         }
 

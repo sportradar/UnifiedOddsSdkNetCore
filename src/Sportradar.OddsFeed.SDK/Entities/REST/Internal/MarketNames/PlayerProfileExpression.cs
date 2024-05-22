@@ -1,12 +1,11 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Globalization;
 using System.Threading.Tasks;
 using Dawn;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {

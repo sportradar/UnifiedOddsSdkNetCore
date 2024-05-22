@@ -1,7 +1,10 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
@@ -10,19 +13,22 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Extensions
 {
     internal static class BootstrapExtensions
     {
-        public static void AddSdkCacheStore<T>(this IServiceCollection services, string cacheName, TimeSpan? absoluteExpiration = null, TimeSpan? cacheItemSlidingExpiration = null, int expirationVariance = 0)
+        public static void AddSdkCacheStore<T>(this IServiceCollection services, string cacheStoreName, TimeSpan? absoluteExpiration = null, TimeSpan? cacheItemSlidingExpiration = null, int expirationVariance = 0)
         {
-            var memoryCache = new MemoryCache(new MemoryCacheOptions
+            var memoryCacheOptions = new MemoryCacheOptions
             {
                 TrackStatistics = true,
                 TrackLinkedCacheEntries = true,
                 CompactionPercentage = 0.2,
                 ExpirationScanFrequency = TimeSpan.FromMinutes(10)
-            });
-            services.AddSingleton<IMemoryCache>(memoryCache);
+            };
 
-            var cacheStore = new CacheStore<T>(cacheName, memoryCache, absoluteExpiration, cacheItemSlidingExpiration, expirationVariance);
-            services.AddSingleton<ICacheStore<T>>(cacheStore);
+            services.AddSingleton<ICacheStore<T>>(serviceProvider =>
+            {
+                var storeMemoryCache = new MemoryCache(memoryCacheOptions);
+                var logger = serviceProvider.GetRequiredService<ILogger<Cache>>();
+                return new CacheStore<T>(cacheStoreName, storeMemoryCache, logger, absoluteExpiration, cacheItemSlidingExpiration, expirationVariance);
+            });
         }
 
         public static ICacheStore<T> GetSdkCacheStore<T>(this IServiceProvider serviceProvider, string cacheStoreName)

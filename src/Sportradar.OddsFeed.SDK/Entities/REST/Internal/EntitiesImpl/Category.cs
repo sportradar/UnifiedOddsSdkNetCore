@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="Category"/> class
         /// </summary>
         /// <param name="id">a <see cref="Urn"/> uniquely identifying the current <see cref="ICategory"/> instance</param>
-        /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated category name</param>
+        /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo,String}"/> containing translated category name</param>
         /// <param name="countryCode">a country code</param>
         /// <param name="tournaments">a <see cref="IReadOnlyCollection{ISportEvent}"/> representing the tournaments which belong to the category represented by the current instance </param>
         public Category(Urn id, IReadOnlyDictionary<CultureInfo, string> names, string countryCode, IReadOnlyCollection<ISportEvent> tournaments)

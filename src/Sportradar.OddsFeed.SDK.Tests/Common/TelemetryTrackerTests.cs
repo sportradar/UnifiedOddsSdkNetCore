@@ -1,5 +1,8 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -80,12 +83,12 @@ public class TelemetryTrackerTests
     }
 
     [Fact]
-    public void Dispose_RecordsToHistogram()
+    public async Task Dispose_RecordsToHistogram()
     {
         var hist = _meter.CreateHistogram<long>("some-name");
         using (var tracker = new TelemetryTracker(hist))
         {
-            Task.Delay(TimeSpan.FromMilliseconds(50)).GetAwaiter().GetResult();
+            await Task.Delay(TimeSpan.FromMilliseconds(50));
             Assert.NotNull(tracker);
             Assert.True(tracker.Elapsed.TotalMilliseconds >= 50);
         }
@@ -94,7 +97,7 @@ public class TelemetryTrackerTests
     }
 
     [Fact]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3966:Objects should not be disposed more than once", Justification = "Allowed in this test")]
+    [SuppressMessage("Major Code Smell", "S3966:Objects should not be disposed more than once", Justification = "Allowed in this test")]
     public void DisposeTwice()
     {
         var hist = _meter.CreateHistogram<long>("some-name");

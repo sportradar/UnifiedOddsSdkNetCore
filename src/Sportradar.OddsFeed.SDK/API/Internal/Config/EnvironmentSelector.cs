@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.Config;
@@ -29,6 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <param name="sectionProvider">A <see cref="IUofConfigurationSectionProvider"/> used to access <see cref="IUofConfigurationSection"/></param>
         /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
         /// <param name="producersProvider">Provider for available producers</param>
+        // ReSharper disable once TooManyDependencies
         internal EnvironmentSelector(UofConfiguration configuration,
             IUofConfigurationSectionProvider sectionProvider,
             IBookmakerDetailsProvider bookmakerDetailsProvider,

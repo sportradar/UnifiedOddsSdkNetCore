@@ -1,4 +1,4 @@
-﻿// Ignore Spelling: Uof
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,8 +19,8 @@ public class UofSdkBootstrapBase
 {
     protected readonly IUofConfiguration UofConfig;
     protected readonly IServiceCollection ServiceCollection;
-    protected IServiceScope ServiceScope1;
-    protected IServiceScope ServiceScope2;
+    protected readonly IServiceScope ServiceScope1;
+    protected readonly IServiceScope ServiceScope2;
 
     public UofSdkBootstrapBase()
     {

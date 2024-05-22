@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Configuration;
@@ -16,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <summary>
         /// The name of the section element in the app.config file
         /// </summary>
-        private const string SectionName = "uofSdkSection";
+        internal const string SectionName = "uofSdkSection";
 
         /// <summary>
         /// Gets the access token

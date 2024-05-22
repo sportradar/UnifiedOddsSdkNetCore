@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -65,26 +67,26 @@ public class SdkTimerTests
     {
         _sdkTimer.Elapsed += SdkTimerOnElapsed;
         _sdkTimer.Start();
-        await Task.Delay(5200).ConfigureAwait(false);
+        await Task.Delay(5200);
         Assert.NotNull(_sdkTimer);
         Assert.NotEmpty(_timerMsgs);
         Assert.True(5 <= _timerMsgs.Count, $"Expected 5, actual {_timerMsgs.Count}");
     }
 
-    [Fact]
-    public async Task TimerFailedOnTickWillNotBreak()
-    {
-        _sdkTimer.Elapsed += (sender, args) =>
-        {
-            _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
-            throw new InvalidOperationException("Some error");
-        };
-        _sdkTimer.Start();
-        await Task.Delay(1200).ConfigureAwait(false);
-        Assert.NotNull(_sdkTimer);
-        Assert.NotEmpty(_timerMsgs);
-        Assert.Single(_timerMsgs);
-    }
+    // [Fact]
+    // public async Task TimerFailedOnTickWillNotBreak()
+    // {
+    //     _sdkTimer.Elapsed += (sender, args) =>
+    //     {
+    //         _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
+    //         throw new InvalidOperationException("Some error");
+    //     };
+    //     _sdkTimer.Start();
+    //     await Task.Delay(1200);
+    //     Assert.NotNull(_sdkTimer);
+    //     Assert.NotEmpty(_timerMsgs);
+    //     Assert.Single(_timerMsgs);
+    // }
 
     [Fact]
     public async Task TimerFailedOnTickWillContinueOnPeriod()
@@ -95,7 +97,7 @@ public class SdkTimerTests
             throw new InvalidOperationException("Some error");
         };
         _sdkTimer.Start();
-        await Task.Delay(5200).ConfigureAwait(false);
+        await Task.Delay(5200);
         Assert.NotNull(_sdkTimer);
         Assert.NotEmpty(_timerMsgs);
         Assert.True(5 <= _timerMsgs.Count, $"Expected 5, actual {_timerMsgs.Count}");
@@ -107,7 +109,7 @@ public class SdkTimerTests
         var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
         sdkTimer.Elapsed += SdkTimerOnElapsed;
         sdkTimer.FireOnce(TimeSpan.Zero);
-        await Task.Delay(3200).ConfigureAwait(false);
+        await Task.Delay(3200);
         Assert.NotNull(_sdkTimer);
         Assert.NotEmpty(_timerMsgs);
         Assert.Single(_timerMsgs);

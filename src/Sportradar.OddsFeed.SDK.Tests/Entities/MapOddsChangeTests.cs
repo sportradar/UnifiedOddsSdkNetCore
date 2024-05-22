@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -94,7 +92,7 @@ public class MapOddsChangeTests : MapEntityTestBase
         Assert.Equal(entity.Id, record.id);
         Assert.True(CompareSpecifiers(entity.Specifiers, record.specifiers), "The market specifiers do not match");
         Assert.True(CompareSpecifiers(entity.AdditionalInfo, record.extended_specifiers), "Market additional specifiers do not match");
-        Assert.Equal(entity.CashoutStatus, record.cashout_statusSpecified ? (CashoutStatus?)MessageMapperHelper.GetEnumValue<CashoutStatus>(record.cashout_status) : null);
+        Assert.Equal(entity.CashoutStatus, record.cashout_statusSpecified ? MessageMapperHelper.GetEnumValue<CashoutStatus>(record.cashout_status) : null);
         Assert.Equal(entity.IsFavorite, record.favouriteSpecified && record.favourite == 1);
         Assert.Equal(entity.Status, MessageMapperHelper.GetEnumValue<MarketStatus>(record.status));
 
@@ -118,8 +116,8 @@ public class MapOddsChangeTests : MapEntityTestBase
     {
         Assert.NotNull(entity);
         Assert.Equal(entity.Id, record.id);
-        Assert.Equal(entity.Active, record.activeSpecified ? (bool?)(record.active == 1) : null);
-        Assert.Equal(entity.Probabilities, record.probabilitiesSpecified ? (double?)record.probabilities : null);
+        Assert.Equal(entity.Active, record.activeSpecified ? record.active == 1 : null);
+        Assert.Equal(entity.Probabilities, record.probabilitiesSpecified ? record.probabilities : null);
         Assert.Equal(entity.GetOdds(), record.odds);
         Assert.NotNull(entity.GetOdds(OddsDisplayType.American));
         if (entity.GetOdds(OddsDisplayType.American).HasValue)

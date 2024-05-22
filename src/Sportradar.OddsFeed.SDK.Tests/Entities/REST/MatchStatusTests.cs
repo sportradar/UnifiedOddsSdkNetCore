@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -237,7 +239,7 @@ public class MatchStatusTests
     }
 
     [Fact]
-    public void ConstructorSetsPeriodScoresFromRestData()
+    public async Task ConstructorSetsPeriodScoresFromRestData()
     {
         var periodScores = new periodScoreType
         {
@@ -258,7 +260,8 @@ public class MatchStatusTests
         Assert.Single(matchStatus.PeriodScores);
         Assert.Equal(periodScores.home_score, matchStatus.PeriodScores.First().HomeScore);
         Assert.Equal(periodScores.away_score, matchStatus.PeriodScores.First().AwayScore);
-        Assert.Equal(periodScores.match_status_code, matchStatus.PeriodScores.First().GetMatchStatusAsync(TestData.Culture).GetAwaiter().GetResult().Id);
+        var matchStatusCode = await matchStatus.PeriodScores.First().GetMatchStatusAsync(TestData.Culture);
+        Assert.Equal(periodScores.match_status_code, matchStatusCode.Id);
         Assert.Equal(periodScores.number, matchStatus.PeriodScores.First().Number);
     }
 

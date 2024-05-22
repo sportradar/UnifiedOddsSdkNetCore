@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,6 +9,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
@@ -125,6 +125,14 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// The semaphore pool size
         /// </summary>
         public const int SemaphorePoolSize = 600;
+        /// <summary>
+        /// The regex to check valid market id for within market description market mapping (valid: "5", "5:123")
+        /// </summary>
+        public const string MarketMappingMarketIdValidPattern = @"^-?\d+(:-?\d+)?$";
+        /// <summary>
+        /// The regex to check valid producer_ids attribute for within market description market mapping (valid: "5", "1|3")
+        /// </summary>
+        public const string MarketMappingProducerIdsValidPattern = @"^(\d+(\|\d+)*)?$";
 
         /// <summary>
         /// Gets the assembly version number
@@ -579,6 +587,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             var response = responseContent.ReadAsStringAsync().GetAwaiter().GetResult();
             return ExtractHttpResponseMessage(response);
         }
+
         public static string ExtractHttpResponseMessage(string responseContent)
         {
             if (responseContent.IsNullOrEmpty())
@@ -674,6 +683,71 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             }
 
             return wantedCultures.ToDictionary(s => s, s => availableNames.TryGetValue(s, out var name) ? name : string.Empty);
+        }
+
+        public static string FriendlyTimeSpanTextInHours(TimeSpan timeSpan)
+        {
+            var result = new StringBuilder();
+            //if (timeSpan.Days > 0)
+            //{
+            //    int weeks = timeSpan.Days / 7;
+            //    int days = timeSpan.Days % 7;
+
+            //    if (weeks > 0)
+            //        result.Append($"{weeks}w ");
+            //    if (days > 0)
+            //        result.Append($"{days}d ");
+            //}
+
+            if (timeSpan.TotalHours <= -1 || timeSpan.TotalHours >= 1)
+            {
+                result.Append($"{Convert.ToInt32(timeSpan.TotalHours)}h");
+            }
+
+            if (timeSpan.Minutes != 0)
+            {
+                if (result.Length > 0)
+                {
+                    result.Append(" ");
+                }
+                result.Append($"{timeSpan.Minutes}min");
+            }
+
+            if (timeSpan.Seconds != 0)
+            {
+                if (result.Length > 0)
+                {
+                    result.Append(" ");
+                }
+                result.Append($"{timeSpan.Seconds}sec");
+            }
+            if (result.Length == 0)
+            {
+                result.Append("0sec");
+            }
+
+            return result.ToString().Trim();
+        }
+
+        public static bool IsMarketMappingMarketIdValid(string marketId)
+        {
+            return Regex.IsMatch(marketId, MarketMappingMarketIdValidPattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
+        }
+
+        public static bool IsMarketMappingProducerIdsValid(string producerIds)
+        {
+            if (producerIds.IsNullOrEmpty())
+            {
+                return true;
+            }
+
+            if (Regex.IsMatch(producerIds, MarketMappingProducerIdsValidPattern, RegexOptions.None, TimeSpan.FromMilliseconds(100)))
+            {
+                var producerIdList = producerIds.Split('|');
+                return producerIdList.All(a => int.Parse(a) > 0);
+            }
+
+            return false;
         }
     }
 }

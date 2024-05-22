@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -255,6 +253,7 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
     {
         const string accessToken = "AccessToken";
         var config = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en' />".ToSdkConfiguration();
+
         ValidateConfiguration(config,
             accessToken,
             SdkEnvironment.Integration,
@@ -273,6 +272,7 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
     {
         const string accessToken = "AccessToken";
         var config = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en' environment='ProxyTokyo' />".ToSdkConfiguration();
+
         ValidateConfiguration(config,
             accessToken,
             SdkEnvironment.ProxyTokyo,
@@ -292,6 +292,7 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en' environment='ProxyTokyo' />".ToSection();
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider()).BuildFromConfigFile();
+
         ValidateConfiguration(config,
             accessToken,
             SdkEnvironment.ProxyTokyo,

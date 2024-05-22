@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -123,11 +122,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             lock (_lock)
             {
-                if (_names.ContainsKey(culture))
+                if (string.IsNullOrEmpty(name))
                 {
-                    _names.Remove(culture);
+                    return null;
                 }
-                _names.Add(culture, name);
+                _names[culture] = name;
             }
 
             return name;

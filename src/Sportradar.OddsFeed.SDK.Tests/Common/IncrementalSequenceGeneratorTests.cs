@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -64,7 +62,7 @@ public class IncrementalSequenceGeneratorTests
             tasks.Add(Task.Run(() => generator.GetNext()));
         }
 
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         const int range = max - min;
         const int reminder = iterations % range;

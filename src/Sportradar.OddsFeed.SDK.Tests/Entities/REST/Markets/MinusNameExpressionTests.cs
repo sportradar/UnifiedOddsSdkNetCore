@@ -1,15 +1,15 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.Markets;
 
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class MinusNameExpressionTests
 {
     private const string Specifier = "quarternr";

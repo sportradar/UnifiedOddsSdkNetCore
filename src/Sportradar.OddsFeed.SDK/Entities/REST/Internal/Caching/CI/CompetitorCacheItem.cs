@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
     internal class CompetitorCacheItem : SportEntityCacheItem, IExportableBase
     {
         /// <summary>
-        /// A <see cref="IDictionary{CultureInfo, String}"/> containing competitor names in different languages
+        /// A <see cref="IDictionary{CultureInfo,String}"/> containing competitor names in different languages
         /// </summary>
         public IDictionary<CultureInfo, string> Names;
 

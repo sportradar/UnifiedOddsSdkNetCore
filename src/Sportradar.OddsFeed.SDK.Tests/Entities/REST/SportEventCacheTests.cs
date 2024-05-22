@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -16,6 +14,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -33,6 +32,8 @@ public class SportEventCacheTests
 
     public SportEventCacheTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
+
         var testCacheStoreManager = new TestCacheStoreManager();
         _memoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache);
 
@@ -50,7 +51,8 @@ public class SportEventCacheTests
                 testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
             _timer,
             TestData.Cultures,
-            cacheManager);
+            cacheManager,
+            loggerFactory);
     }
 
     [Fact]
@@ -119,9 +121,9 @@ public class SportEventCacheTests
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventsForDate));
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-        var cons = await item.GetConditionsAsync(TestData.Cultures).ConfigureAwait(false);
-        await item.GetConditionsAsync(TestData.Cultures).ConfigureAwait(false);
-        await item.GetCompetitorsIdsAsync(TestData.Cultures).ConfigureAwait(false);
+        var cons = await item.GetConditionsAsync(TestData.Cultures);
+        await item.GetConditionsAsync(TestData.Cultures);
+        await item.GetCompetitorsIdsAsync(TestData.Cultures);
 
         Assert.NotNull(cons);
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventsForDate));
@@ -184,7 +186,7 @@ public class SportEventCacheTests
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventsForDate));
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
 
-        await _sportEventCache.GetEventIdsAsync(DateTime.Now, TestData.Culture).ConfigureAwait(false);
+        await _sportEventCache.GetEventIdsAsync(DateTime.Now, TestData.Culture);
 
         Assert.Equal(ScheduleEventCount, _memoryCache.Count());
         Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventsForDate));
@@ -233,12 +235,12 @@ public class SportEventCacheTests
     }
 
     [Fact]
-    public void GetScheduleForTournament()
+    public async Task GetScheduleForTournament()
     {
         Assert.Empty(_memoryCache.GetKeys());
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventsForTournament));
 
-        var events = _sportEventCache.GetEventIdsAsync(TestData.TournamentId, TestData.Culture).GetAwaiter().GetResult();
+        var events = await _sportEventCache.GetEventIdsAsync(TestData.TournamentId, TestData.Culture);
         Assert.Equal(TournamentEventCount, _memoryCache.Count());
         Assert.Equal(TournamentEventCount, events.Count());
         Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventsForTournament));

@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Common;
@@ -45,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         Urn ReplacedBy { get; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{String, String}"/> containing additional information about the
+        /// Gets a <see cref="IReadOnlyDictionary{String,String}"/> containing additional information about the
         /// fixture represented by current <see cref="IFixture"/> instance
         /// </summary>
         /// <remarks>The collection may contain deprecated key 'streaming'.</remarks>

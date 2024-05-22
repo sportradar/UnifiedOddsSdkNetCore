@@ -1,8 +1,7 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Xunit;
 
@@ -10,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Api.Config;
 
 //[CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1025:InlineData should be unique within the Theory it belongs to", Justification = "If min value changes, 0 will still not be allowed")]
+[SuppressMessage("Usage", "xUnit1025:InlineData should be unique within the Theory it belongs to", Justification = "If min value changes, 0 will still not be allowed")]
 public class ConfigurationBuilderLimitsTests : ConfigurationBuilderSetup
 {
     [Theory]

@@ -1,4 +1,6 @@
-﻿using Moq.AutoMock;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using Moq.AutoMock;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 

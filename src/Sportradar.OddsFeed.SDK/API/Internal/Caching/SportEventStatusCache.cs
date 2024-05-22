@@ -1,6 +1,4 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -30,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
     internal class SportEventStatusCache : SdkCache, ISportEventStatusCache
     {
         /// <summary>
-        /// A <see cref="ISingleTypeMapperFactory{restSportEventStatus, SportEventStatusDto}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDto}"/> instances
+        /// A <see cref="ISingleTypeMapperFactory{restSportEventStatus,SportEventStatusDto}"/> used to created <see cref="ISingleTypeMapper{SportEventStatusDto}"/> instances
         /// </summary>
         private readonly ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDto> _mapperFactory;
 
@@ -66,13 +64,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
         /// <param name="ignoreEventsTimelineCache">A <see cref="ICacheStore{T}"/> used to cache event ids for which the SES from timeline endpoint should be ignored</param>
         /// <param name="config">The configuration to get IgnoreBetPalTimelineSportEventStatus</param>
+        /// <param name="loggerFactory">The logger factory for creating Cache and Execution logs</param>
         public SportEventStatusCache(ICacheStore<string> sportEventStatusCache,
                                      ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDto> mapperFactory,
                                      ISportEventCache sportEventCache,
                                      ICacheManager cacheManager,
                                      ICacheStore<string> ignoreEventsTimelineCache,
-                                     IUofConfiguration config)
-            : base(cacheManager)
+                                     IUofConfiguration config,
+                                     ILoggerFactory loggerFactory)
+            : base(cacheManager, loggerFactory)
         {
             Guard.Argument(sportEventStatusCache, nameof(sportEventStatusCache)).NotNull();
             Guard.Argument(mapperFactory, nameof(mapperFactory)).NotNull();

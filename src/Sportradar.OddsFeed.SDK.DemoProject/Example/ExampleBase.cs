@@ -34,6 +34,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
                 {
                     logging.ClearProviders();
                     logging.AddLog4Net("log4net.config");
+                    logging.SetMinimumLevel(LogLevel.Debug);
                 })
                 .ConfigureServices(configure => configure.AddUofSdk(uofConfiguration))
                 .Build();

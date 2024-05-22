@@ -1,7 +1,6 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dawn;
@@ -18,6 +17,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
     /// <seealso cref="IProducersProvider" />
     internal class ProducersProvider : IProducersProvider
     {
+        private const string HttpPrefix = "http://";
+        private const string HttpsPrefix = "https://";
+
         /// <summary>
         /// The <see cref="IDataProvider{producers}"/> used to fetch producers
         /// </summary>
@@ -80,6 +82,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private string ReplaceProducerApiUrl(string url)
         {
+            url = ReplaceProducerApiUrlProtocol(url);
+
             if (url.Contains(_config.Api.Host))
             {
                 return url;
@@ -89,6 +93,20 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 return url.Replace(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), _config.Api.Host);
             }
             return url.Replace(EnvironmentManager.GetApiHost(SdkEnvironment.Production), _config.Api.Host);
+        }
+
+        private string ReplaceProducerApiUrlProtocol(string url)
+        {
+            if (_config.Api.UseSsl && url.StartsWith(HttpPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                url = url.Replace(HttpPrefix, HttpsPrefix);
+            }
+            if (!_config.Api.UseSsl && url.StartsWith(HttpsPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                url = url.Replace(HttpsPrefix, HttpPrefix);
+            }
+
+            return url;
         }
     }
 }

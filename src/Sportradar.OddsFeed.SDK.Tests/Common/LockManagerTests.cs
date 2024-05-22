@@ -1,12 +1,16 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
+[SuppressMessage("Usage", "xUnit1013:Public method should be marked as test")]
 public class LockManagerTests
 {
     private readonly LockManager _lockManager;

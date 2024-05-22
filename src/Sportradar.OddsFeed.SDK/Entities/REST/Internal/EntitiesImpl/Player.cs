@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
@@ -18,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// Initializes a new instance of the <see cref="Player"/> class
         /// </summary>
         /// <param name="id">the <see cref="Urn"/> uniquely identifying the current <see cref="ICompetitor" /> instance</param>
-        /// <param name="names">A <see cref="IDictionary{CultureInfo, String}"/> containing player names in different languages</param>
+        /// <param name="names">A <see cref="IDictionary{CultureInfo,String}"/> containing player names in different languages</param>
         public Player(Urn id, IDictionary<CultureInfo, string> names)
             : base(id, names as IReadOnlyDictionary<CultureInfo, string>)
         {

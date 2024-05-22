@@ -1,7 +1,6 @@
-﻿// /*
-// * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-// */
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
@@ -10,6 +9,7 @@ using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -18,6 +18,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 /// <summary>
 /// For testing functionality of various caches handling missing fetches
 /// </summary>
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class SportDataCacheMissTests
 {
     private readonly SportDataCache _sportDataCache;
@@ -26,6 +27,7 @@ public class SportDataCacheMissTests
 
     public SportDataCacheMissTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
         var cacheManager = testCacheStoreManager.CacheManager;
         _dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
@@ -41,9 +43,10 @@ public class SportDataCacheMissTests
                testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
             timer,
             TestData.Cultures,
-            cacheManager);
+            cacheManager,
+            loggerFactory);
 
-        _sportDataCache = new SportDataCache(_dataRouterManager, timer, TestData.Cultures, _sportEventCache, cacheManager);
+        _sportDataCache = new SportDataCache(_dataRouterManager, timer, TestData.Cultures, _sportEventCache, cacheManager, loggerFactory);
     }
 
     [Fact]

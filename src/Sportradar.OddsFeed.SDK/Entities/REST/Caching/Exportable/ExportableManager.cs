@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable
     public class ExportableManager : ExportableBase
     {
         /// <summary>
-        /// A <see cref="IDictionary{K, V}"/> containing translated nationality of the item
+        /// A <see cref="IDictionary{K,V}"/> containing translated nationality of the item
         /// </summary>
         public IDictionary<CultureInfo, string> Nationality { get; set; }
 

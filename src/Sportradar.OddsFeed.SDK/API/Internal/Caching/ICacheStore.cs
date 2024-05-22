@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System.Collections.Generic;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
@@ -54,9 +56,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         int Count();
 
         /// <summary>
-        /// Returns estimated cache size if tracking is enabled and sizes are specified. Otherwise it will return store key count
+        /// Returns estimated cache size if tracking is enabled and sizes are specified, otherwise it will return store key count
         /// </summary>
-        /// <returns>Estimated cache size if tracking is enabled and sizes are specified. Otherwise it will return store key count</returns>
+        /// <returns>Estimated cache size if tracking is enabled and sizes are specified, otherwise it will return store key count</returns>
         long Size();
     }
 }

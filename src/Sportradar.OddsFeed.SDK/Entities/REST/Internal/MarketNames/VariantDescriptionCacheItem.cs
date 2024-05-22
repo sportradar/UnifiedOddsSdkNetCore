@@ -1,39 +1,36 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Api.Internal.Config;
-using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     internal class VariantDescriptionCacheItem
     {
-        private static readonly ILogger Log = SdkLoggerFactory.GetLogger(typeof(VariantDescriptionCacheItem));
-
         internal readonly IList<CultureInfo> FetchedLanguages;
 
         internal string Id { get; }
 
-        internal IEnumerable<MarketMappingCacheItem> Mappings { get; }
+        internal ICollection<MarketMappingCacheItem> Mappings { get; }
 
-        internal IEnumerable<MarketOutcomeCacheItem> Outcomes { get; }
+        internal ICollection<MarketOutcomeCacheItem> Outcomes { get; }
 
         internal DateTime LastDataReceived { get; private set; }
 
         internal string SourceCache { get; }
 
-        protected VariantDescriptionCacheItem(
+        // ReSharper disable once TooManyDependencies
+        private VariantDescriptionCacheItem(
             string id,
-            IEnumerable<MarketOutcomeCacheItem> outcomes,
-            IEnumerable<MarketMappingCacheItem> mappings,
+            ICollection<MarketOutcomeCacheItem> outcomes,
+            ICollection<MarketMappingCacheItem> mappings,
             CultureInfo culture,
             string source)
         {
@@ -57,6 +54,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <param name="source">The source cache where <see cref="MarketDescriptionCacheItem"/> is built</param>
         /// <returns>The constructed <see cref="VariantDescriptionCacheItem"/></returns>
         /// <exception cref="InvalidOperationException">The cache item could not be build from the provided Dto</exception>
+        [SuppressMessage("ReSharper", "TooManyChainedReferences")]
         public static VariantDescriptionCacheItem Build(VariantDescriptionDto dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
@@ -79,51 +77,63 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             return FetchedLanguages.Contains(culture);
         }
 
-        internal bool CanBeFetched()
-        {
-            return (DateTime.Now - LastDataReceived).TotalSeconds > ConfigLimit.MarketDescriptionMinFetchInterval;
-        }
-
-        internal void Merge(VariantDescriptionDto dto, CultureInfo culture)
+        internal MarketMergeResult Merge(VariantDescriptionDto dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            if (dto.Outcomes != null)
-            {
-                foreach (var outcomeDto in dto.Outcomes)
-                {
-                    var existingOutcome = Outcomes?.FirstOrDefault(o => o.Id == outcomeDto.Id);
-                    if (existingOutcome != null)
-                    {
-                        existingOutcome.Merge(outcomeDto, culture);
-                    }
-                    else
-                    {
-                        Log.LogWarning($"Could not merge outcome[Id={outcomeDto.Id}] on variantDescription[Id={dto.Id}] because the specified outcome does not exist on stored variant description");
-                    }
-                }
-            }
+            var mergeResult = new MarketMergeResult();
 
-            if (dto.Mappings != null)
-            {
-                foreach (var mappingDto in dto.Mappings)
-                {
-                    var existingMapping = Mappings?.FirstOrDefault(m => m.MarketTypeId == mappingDto.MarketTypeId && m.MarketSubTypeId == mappingDto.MarketSubTypeId);
-                    if (existingMapping != null)
-                    {
-                        existingMapping.Merge(mappingDto, culture);
-                    }
-                    else
-                    {
-                        Log.LogWarning($"Could not merge mapping[MarketId={mappingDto.MarketTypeId}:{mappingDto.MarketSubTypeId}] on variantDescription[Id={dto.Id}] because the specified mapping does not exist on stored variant description");
-                    }
-                }
-            }
+            MergeOutcomes(dto, culture, mergeResult);
+            MergeMappings(dto, culture, mergeResult);
 
             FetchedLanguages.Add(culture);
 
             LastDataReceived = DateTime.Now;
+
+            return mergeResult;
+        }
+
+        private void MergeOutcomes(VariantDescriptionDto dto, CultureInfo culture, MarketMergeResult mergeResult)
+        {
+            if (dto.Outcomes == null)
+            {
+                return;
+            }
+
+            foreach (var outcomeDto in dto.Outcomes)
+            {
+                var existingOutcome = Outcomes?.FirstOrDefault(o => o.Id == outcomeDto.Id);
+                if (existingOutcome != null)
+                {
+                    existingOutcome.Merge(outcomeDto, culture);
+                }
+                else
+                {
+                    mergeResult.AddOutcomeProblem(outcomeDto.Id);
+                }
+            }
+        }
+
+        private void MergeMappings(VariantDescriptionDto dto, CultureInfo culture, MarketMergeResult mergeResult)
+        {
+            if (dto.Mappings == null)
+            {
+                return;
+            }
+
+            foreach (var mappingDto in dto.Mappings)
+            {
+                var existingMapping = Mappings?.FirstOrDefault(m => m.MarketMappingsMatch(mappingDto));
+                if (existingMapping != null)
+                {
+                    existingMapping.Merge(mappingDto, culture);
+                }
+                else
+                {
+                    mergeResult.AddMappingProblem(mappingDto.GenerateMarketMappingId());
+                }
+            }
         }
     }
 }

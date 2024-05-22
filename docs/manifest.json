@@ -1,0 +1,5118 @@
+{
+  "source_base_path": "/Users/d.hrovat/Github/UnifiedOddsSdkNetCoreTmp/src/Sportradar.OddsFeed.SDK.DocFx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilder.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilderBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IConfigurationBuilderBase-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofAdditionalConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofAdditionalConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofApiConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofApiConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofCacheConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofCacheConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofRabbitConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.IUofRabbitConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.MessageInterest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.MessageInterest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Config.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EntityDispatcherBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EntityDispatcherBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.BetCancelEventArgs-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.BetCancelEventArgs-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.BetSettlementEventArgs-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.BetSettlementEventArgs-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.BetStopEventArgs-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.BetStopEventArgs-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.ConnectionExceptionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.ConnectionExceptionEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.EventChangeEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.EventChangeEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.EventRecoveryCompletedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.EventRecoveryCompletedEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.FeedCloseEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.FeedCloseEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.FixtureChangeEventArgs-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.FixtureChangeEventArgs-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.OddsChangeEventArgs-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.OddsChangeEventArgs-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.ProducerStatusChangeEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.ProducerStatusChangeEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RawApiDataEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RawApiDataEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RawFeedMessageEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RawFeedMessageEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RecoveryInitiatedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RecoveryInitiatedEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RollbackBetCancelEventArgs-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RollbackBetCancelEventArgs-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RollbackBetSettlementEventArgs-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.RollbackBetSettlementEventArgs-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.SnapshotCompleteEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.SnapshotCompleteEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.UnparsableMessageEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.UnparsableMessageEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.EventArguments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Extended.IUofSdkExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Extended.IUofSdkExtended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Extended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Extended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IEntityDispatcher-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IEntityDispatcher-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IProducer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IProducer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IRecoveryInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IRecoveryInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.ISessionBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.ISessionBuilder.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.ISpecificEntityDispatcher-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.ISpecificEntityDispatcher-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSdk.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSdk.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSdkForReplay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSdkForReplay.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSession.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSessionBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.IUofSessionBuilder.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IBookingManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IBookingManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ICashOutProbabilitiesProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ICashOutProbabilitiesProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IEventChangeManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IEventChangeManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IEventRecoveryRequestIssuer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IEventRecoveryRequestIssuer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IMarketDescriptionManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IMarketDescriptionManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ISportDataProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.ISportDataProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Managers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayScenario.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayScenario.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.IReplayStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.ReplayPlayerStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.ReplayPlayerStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.Replay.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.UofSdk.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.UofSdk.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.UofSdkForReplay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.UofSdkForReplay.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Api.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Api.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.CacheType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.CacheType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.LoggerType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.LoggerType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.MessageType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.MessageType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.PropertyUsage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.PropertyUsage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.ResourceTypeGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.ResourceTypeGroup.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.CacheItemNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.CacheItemNotFoundException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.DeserializationException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.DeserializationException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.FeedSdkException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.FeedSdkException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.MappingException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.MappingException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.NameExpressionException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.NameExpressionException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.NameGenerationException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.NameGenerationException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.ObjectNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.ObjectNotFoundException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.RecoveryInitiationException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.RecoveryInitiationException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Exceptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.DependencyInjectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.DependencyInjectionExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.EpochTimeExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.EpochTimeExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.ListExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.ListExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.ProducerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.ProducerExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.StreamExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.StreamExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.IOpenable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.IOpenable.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Urn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.Urn.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Common.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.BetSettlementCertainty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.BetSettlementCertainty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.CashoutStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.CashoutStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.FixtureChangeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.FixtureChangeType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.MarketStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.MarketStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.OddsChangeReason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.OddsChangeReason.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.OddsDisplayType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.OddsDisplayType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IAdditionalProbabilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IAdditionalProbabilities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IBetCancel-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IBetCancel-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IBetSettlement-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IBetSettlement-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IBetStop-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IBetStop-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.ICashOutProbabilities-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.ICashOutProbabilities-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IEventMessage-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IEventMessage-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IFixtureChange-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IFixtureChange-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarket.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketCancel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketCancel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketDefinition.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketMessage-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketMessage-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketWithProbabilities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketWithSettlement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMarketWithSettlement.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMessage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOddsChange-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOddsChange-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOddsGeneration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOddsGeneration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcome.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeDefinition.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeOdds.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IPlayerOutcomeOdds.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IPlayerOutcomeOdds.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IProducerStatusChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IProducerStatusChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableBonusInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableBonusInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCar.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCar.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCategory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCategory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCourse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCourse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCoverageInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCoverageInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCurrentSeasonInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCurrentSeasonInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDelayedInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDelayedInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDivision.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDivision.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDraw.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDraw.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDrawInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDrawInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDrawResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableDrawResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableEventPlayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableEventPlayer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableEventPlayerAssist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableEventPlayerAssist.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableEventTimeline.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableEventTimeline.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableFixture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableFixture.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableGroup.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableHole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableHole.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableJersey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableJersey.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableLottery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableLottery.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableMatch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableMatch.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportablePitcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportablePitcher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportablePlayerProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportablePlayerProfile.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableProductInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableProductInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableProductInfoLink.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableProductInfoLink.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableRaceDriverProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableRaceDriverProfile.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableReferee.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableReferee.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableRound.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableRound.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableScheduledStartTimeChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableScheduledStartTimeChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSeason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSeason.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSeasonCoverage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSeasonCoverage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSport.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSportEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSportEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSportEventConditions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableSportEventConditions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableStage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableStage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableStreamingChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableStreamingChannel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTeamCompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTeamCompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTimelineEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTimelineEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentCoverage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentCoverage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentInfoBasic.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTournamentInfoBasic.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTvChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTvChannel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableVenue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableVenue.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableWeatherInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableWeatherInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarketFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarketFilter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IOutcomeFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IOutcomeFilter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.BonusDrumType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.BonusDrumType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.BookingStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.BookingStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.CoveredFrom.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.CoveredFrom.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.DrawStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.DrawStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.DrawType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.DrawType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EventStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.EventStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.HomeAway.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.HomeAway.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.PeriodType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.PeriodType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.PlayerHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.PlayerHand.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.ReportingStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.ReportingStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.SportEventType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.SportEventType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.StageType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.StageType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.TimeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.TimeType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.VoidFactor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.VoidFactor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IAssist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IAssist.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBaseEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBaseEntity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBasicTournament.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBasicTournament.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBonusInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBonusInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBookmakerDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IBookmakerDetails.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICar.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICar.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICategory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICategory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICategorySummary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICategorySummary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitionStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitionStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitionStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitionStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICourse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICourse.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICoverageInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICoverageInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICurrentSeasonInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ICurrentSeasonInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDelayedInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDelayedInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDivision.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDivision.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDraw.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDraw.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDrawInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDrawInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDrawResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IDrawResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEntityPrinter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEntityPrinter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventClock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventClock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventPlayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventPlayer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventTimeline.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IEventTimeline.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IFixture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IFixture.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IFixtureChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IFixtureChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IGoalScorer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IGoalScorer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IGroup.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IHole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IHole.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IJersey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IJersey.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ILocalizedNamedValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ILocalizedNamedValue.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ILongTermEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ILongTermEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ILottery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ILottery.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatch.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodCompetitorResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodCompetitorResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodScore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodScore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPeriodStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPitcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPitcher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPlayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPlayer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IProductInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IProductInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IProductInfoLink.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IProductInfoLink.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IRaceDriverProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IRaceDriverProfile.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IReferee.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IReferee.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IReference.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IRestMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IRestMessage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IResultChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IResultChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IRound.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IRound.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IScheduledStartTimeChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IScheduledStartTimeChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISeason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISeason.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISeasonCoverage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISeasonCoverage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISeasonInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISeasonInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISport.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportEventConditions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportEventConditions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportEventStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportEventStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportSummary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ISportSummary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IStage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IStage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IStageStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IStageStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IStreamingChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IStreamingChannel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITeamCompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITeamCompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITeamStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITeamStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITimelineEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITimelineEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITournament.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITournament.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITournamentCoverage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITournamentCoverage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITournamentInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITournamentInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITvChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.ITvChannel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IVenue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IVenue.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IWeatherInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IWeatherInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.IMarketAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.IMarketAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.IMarketDescription.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.IMarketDescription.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.IOutcomeDescription.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.IOutcomeDescription.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.ISpecifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.ISpecifier.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.Market.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IMarketMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IMarketMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IMarketMappingData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IMarketMappingData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IOutcomeMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IOutcomeMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IOutcomeMappingData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.IOutcomeMappingData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.LcooMarketMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.LcooMarketMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.LoMarketMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.LoMarketMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.FeedMarket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.FeedMarket.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.alive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.alive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarket.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.bet_stop.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.bet_stop.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.clockType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.clockType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.market.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.market.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarket.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarketOutcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarketOutcome.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.oddsGenerationProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.oddsGenerationProperties.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.odds_change.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.odds_change.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.odds_changeOdds.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.odds_changeOdds.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.periodScoreType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.periodScoreType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.resultType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.resultType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.statisticsScoreType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.statisticsScoreType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.statisticsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.statisticsType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Feed.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.AvailableSelectionsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.AvailableSelectionsType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResponseType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResponseType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResultType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResultType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.EventType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.EventType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResponseType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResponseType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredMarketType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.MarketType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.MarketType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.OutcomeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.OutcomeType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.ResponseType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.ResponseType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.RestMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.RestMessage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.SelectionsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.SelectionsType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.attributesAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.attributesAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.basicEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.basicEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.betstop_reasons_descriptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.betstop_reasons_descriptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.betting_status_descriptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.betting_status_descriptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.car.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.car.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.cashout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.cashout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.cashoutOdds.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.cashoutOdds.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.category.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.category.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.clock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.clock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.competitorProfileEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.competitorProfileEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.competitorReferenceIdsReference_id.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.competitorReferenceIdsReference_id.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.course.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.course.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.coverage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.coverage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.coverageInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.coverageInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.currentSeason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.currentSeason.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.delayedInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.delayedInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_betstop_reason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_betstop_reason.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_betting_status.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_betting_status.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_market.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_market.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_match_status.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_match_status.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_match_statusSports.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_match_statusSports.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_match_statusSportsSport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_match_statusSportsSport.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_outcome_reason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_outcome_reason.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_outcomesOutcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_outcomesOutcome.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_specifiersSpecifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_specifiersSpecifier.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_variant.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_variant.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_variant_outcomesOutcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_variant_outcomesOutcome.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_void_reason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.desc_void_reason.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.drawType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.drawType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_fixture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_fixture.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_fixtures.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_fixtures.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_result.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_result.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_summary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.draw_summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.eventPlayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.eventPlayer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.eventPlayerAssist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.eventPlayerAssist.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixture.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixtureChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixtureChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixtureChangesEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixtureChangesEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixturesEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.fixturesEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.hole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.hole.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.info.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.info.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.jersey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.jersey.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lotteries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lotteries.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lottery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lottery.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lottery_schedule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.lottery_schedule.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.manager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.manager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.mappingsMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.mappingsMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.mappingsMappingMapping_outcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.mappingsMappingMapping_outcome.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.market_descriptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.market_descriptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchPeriod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchPeriod.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchRound.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchRound.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchSummaryEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchSummaryEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchTimelineEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.matchTimelineEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.match_status_descriptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.match_status_descriptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.outcome_reasons_descriptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.outcome_reasons_descriptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.parentStage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.parentStage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodScore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodScore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodScoreBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodScoreBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.pitcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.pitcher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.player.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.player.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerCompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerCompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerExtended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerLineup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerLineup.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerProfileEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerProfileEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerSubstitute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.playerSubstitute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.producer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.producer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.producers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.producers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.productInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.productInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.productInfoItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.productInfoItem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.productInfoLink.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.productInfoLink.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceDriver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceDriver.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceDriverProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceDriverProfile.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceScheduleEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceScheduleEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceTeam.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceTeam.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceTournamentInfoEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.raceTournamentInfoEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.referee.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.referee.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.referenceIdsReference_id.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.referenceIdsReference_id.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.response.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.response.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.response_code.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.response_code.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.restSportEventStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.restSportEventStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.restSportEventStatusBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.restSportEventStatusBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.result.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.result.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultChangesEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultChangesEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultScore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultScore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.scheduleEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.scheduleEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.scheduledStartTimeChange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.scheduledStartTimeChange.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.season.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.season.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.seasonCoverageInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.seasonCoverageInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.seasonExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.seasonExtended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.simpleTeamProfileEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.simpleTeamProfileEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.simpleTournamentInfoEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.simpleTournamentInfoEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sport.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportCategoriesEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportCategoriesEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportEventChildrenSport_event.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportEventChildrenSport_event.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportEventConditions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportEventConditions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportTournamentsEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportTournamentsEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportsEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.sportsEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stagePeriodEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stagePeriodEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageResultCompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageResultCompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageResultCompetitorResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageResultCompetitorResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageSportEventStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageSportEventStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageSummaryEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.stageSummaryEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.standardTournamentInfoEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.standardTournamentInfoEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.streamingChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.streamingChannel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.team.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.team.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamCompetitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamCompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamExtended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamStatisticsStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.teamStatisticsStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.timeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.timeType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournament.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournament.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentExtended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentInfoEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentInfoEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLength.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLength.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLiveCoverageInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLiveCoverageInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentSchedule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentSchedule.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentSeasons.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentSeasons.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentsEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tournamentsEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tvChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.tvChannel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.variant_descriptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.variant_descriptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.variant_mappingsMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.variant_mappingsMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.variant_mappingsMappingMapping_outcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.variant_mappingsMappingMapping_outcome.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.venue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.venue.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.void_reasons_descriptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.void_reasons_descriptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.weatherInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.weatherInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Messages.Rest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "_api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/toc.html"
+        },
+        ".json": {
+          "relative_path": "_api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/CompetitionDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/CompetitionDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/CompetitorDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/CompetitorDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/DtoDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/DtoDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EventCiDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EventCiDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ExportableDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ExportableDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ExportableSportEventDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ExportableSportEventDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/FeedMessagesDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/FeedMessagesDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Help.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Help.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/LongTermEventDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/LongTermEventDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/MarketDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/MarketDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/MessageDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/MessageDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/OutcomeDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/OutcomeDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/RawSportEvent.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/RawSportEvent.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/RestMessagesDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/RestMessagesDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/SdkDataFlow.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/SdkDataFlow.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/SportEventHierarchyNet.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/SportEventHierarchyNet.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/SportEventStatusDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/SportEventStatusDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UofConfigurationDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/UofConfigurationDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/uf-ns-h60.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/uf-ns-h60.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/uf-ns.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/uf-ns.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

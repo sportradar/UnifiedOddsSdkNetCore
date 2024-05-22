@@ -5,11 +5,6 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK", "Sportradar.OddsFeed.SDK\Sportradar.OddsFeed.SDK.csproj", "{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}"
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sportradar.OddsFeed.SDK.Docs", "Sportradar.OddsFeed.SDK.Docs\Sportradar.OddsFeed.SDK.Docs.shfbproj", "{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E} = {FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.Tests.Common", "Sportradar.OddsFeed.SDK.Tests.Common\Sportradar.OddsFeed.SDK.Tests.Common.csproj", "{46E8D805-2EBC-4C3D-ACAE-AA496A5611A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportradar.OddsFeed.SDK.Tests", "Sportradar.OddsFeed.SDK.Tests\Sportradar.OddsFeed.SDK.Tests.csproj", "{D268A55E-3799-420E-8413-56921C0D78D1}"
@@ -29,8 +24,6 @@ Global
 		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD7F45D3-FABA-4AFA-9AD5-65D3EA1F666E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3E8B599-80D2-4ACA-9091-706A07D5EA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46E8D805-2EBC-4C3D-ACAE-AA496A5611A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46E8D805-2EBC-4C3D-ACAE-AA496A5611A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46E8D805-2EBC-4C3D-ACAE-AA496A5611A4}.Release|Any CPU.ActiveCfg = Release|Any CPU

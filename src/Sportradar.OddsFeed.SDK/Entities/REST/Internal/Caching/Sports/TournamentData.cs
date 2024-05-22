@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -30,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports
         /// <param name="id">A <see cref="Urn"/> specifying the id of the associated tournament</param>
         /// <param name="scheduled">a <see cref="DateTime"/> specifying the scheduled start time of the associated tournament or a null reference if start time is not known</param>
         /// <param name="scheduledEnd">a <see cref="DateTime"/> specifying the scheduled end time of the associated tournament or a null reference if end time is not known</param>
-        /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated sport name</param>
+        /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo,String}"/> containing translated sport name</param>
         public TournamentData(Urn id, DateTime? scheduled, DateTime? scheduledEnd, IReadOnlyDictionary<CultureInfo, string> names)
             : base(id, names)
         {

@@ -1,8 +1,7 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -73,7 +72,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// Gets the public IP of the current machine
         /// </summary>
         /// <returns>A <see cref="IPAddress"/> representing the IP of the current machine or a null reference or a null reference if public IP could not be determined.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "Ok")]
+        [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "Ok")]
         public IPAddress GetPublicIp()
         {
             string data;

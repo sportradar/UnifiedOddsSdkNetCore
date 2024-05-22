@@ -1,4 +1,6 @@
-﻿using Sportradar.OddsFeed.SDK.Api.Internal.Config;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 

@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +24,7 @@ public class TestDataFetcher : IDataRestful
     /// <summary>
     /// The list of URI replacements (to get wanted response when specific url is called)
     /// </summary>
-    public List<Tuple<string, string>> UriReplacements;
+    public readonly List<Tuple<string, string>> UriReplacements;
 
     /// <summary>
     /// The list of possible post responses (to get wanted response when specific url is called)
@@ -54,7 +52,7 @@ public class TestDataFetcher : IDataRestful
     /// <summary>
     /// The list of called urls
     /// </summary>
-    public List<string> CalledUrls;
+    public readonly List<string> CalledUrls;
 
     public TestDataFetcher()
     {
@@ -126,6 +124,8 @@ public class TestDataFetcher : IDataRestful
                     response = new HttpResponseMessage(HttpStatusCode.NotFound);
                     response.Content = new StringContent("response not found");
                     break;
+                default:
+                    break;
             }
         }
 
@@ -133,7 +133,7 @@ public class TestDataFetcher : IDataRestful
     }
 
     /// <summary>
-    /// Asynchronously gets a <see cref="HttpResponseMessage" /> as a result of POST request send to the provided <see cref="Uri" />. Will check <see cref="PostResponses"/> for wanted responses. If not found, will also check
+    /// Asynchronously gets an <see cref="HttpResponseMessage" /> as a result of POST request send to the provided <see cref="Uri" />. Will check <see cref="PostResponses"/> for wanted responses. If not found, will also check
     /// </summary>
     /// <param name="uri">The <see cref="Uri" /> of the resource to be send to</param>
     /// <param name="content">A <see cref="HttpContent" /> to be posted to the specific <see cref="Uri" /></param>
@@ -157,6 +157,8 @@ public class TestDataFetcher : IDataRestful
                     break;
                 case 2:
                     response = postResponse.Item3 ?? new HttpResponseMessage(HttpStatusCode.NotFound);
+                    break;
+                default:
                     break;
             }
         }
@@ -190,6 +192,8 @@ public class TestDataFetcher : IDataRestful
                 case 2:
                     response = putResponse.Item3 ?? new HttpResponseMessage(HttpStatusCode.NotFound);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -220,6 +224,8 @@ public class TestDataFetcher : IDataRestful
                     break;
                 case 2:
                     response = deleteResponse.Item3 ?? new HttpResponseMessage(HttpStatusCode.NotFound);
+                    break;
+                default:
                     break;
             }
         }

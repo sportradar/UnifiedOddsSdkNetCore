@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
 using System.Globalization;
 using Dawn;
@@ -16,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     internal class Manager : BaseEntity, IManager
     {
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}" /> containing nationalities in different languages
+        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo,String}" /> containing nationalities in different languages
         /// </summary>
         private IReadOnlyDictionary<CultureInfo, string> Nationalities { get; }
 

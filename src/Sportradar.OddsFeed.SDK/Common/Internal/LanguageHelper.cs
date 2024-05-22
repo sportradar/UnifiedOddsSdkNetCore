@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -45,11 +43,21 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         }
 
         /// <summary>
+        /// Get string representation of collection of cultures
+        /// </summary>
+        /// <param name="cultures">The collection of cultures</param>
+        /// <returns>A string representation of collection of cultures</returns>
+        public static string GetCultureList(ICollection<CultureInfo> cultures)
+        {
+            return cultures.IsNullOrEmpty() ? string.Empty : string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
+        }
+
+        /// <summary>
         /// Get string representation of list of cultures
         /// </summary>
         /// <param name="cultures">The list of cultures</param>
         /// <returns>A string representation of list of cultures</returns>
-        public static string GetCultureList(ICollection<CultureInfo> cultures)
+        public static string GetCultureList(List<CultureInfo> cultures)
         {
             return cultures.IsNullOrEmpty() ? string.Empty : string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
         }

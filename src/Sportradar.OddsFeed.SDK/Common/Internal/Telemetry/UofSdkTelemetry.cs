@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
@@ -19,11 +21,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
         private const string MetricNameForProfileCacheGetPlayerProfile = MetricNamePrefix + "profilecache-getplayerprofile";
         private const string MetricNameForProfileCacheGetCompetitorProfile = MetricNamePrefix + "profilecache-getcompetitorprofile";
         private const string MetricNameForSportEventCacheGetAll = MetricNamePrefix + "sporteventcache-getall";
+        private const string MetricNameForCacheStoreEviction = MetricNamePrefix + "sdkcache-eviction";
         public static readonly Histogram<long> SportDataCacheGetAll = DefaultMeter.CreateHistogram<long>(MetricNameForSportDataCacheGetAll);
         public static readonly Histogram<long> SportEventCacheGetAll = DefaultMeter.CreateHistogram<long>(MetricNameForSportEventCacheGetAll);
         public static readonly Histogram<long> SportEventStatusCacheGetSportEventStatus = DefaultMeter.CreateHistogram<long>(MetricNameForSportEventStatusCacheGetSportEventStatus);
         public static readonly Histogram<long> ProfileCacheGetPlayerProfile = DefaultMeter.CreateHistogram<long>(MetricNameForProfileCacheGetPlayerProfile);
         public static readonly Histogram<long> ProfileCacheGetCompetitorProfile = DefaultMeter.CreateHistogram<long>(MetricNameForProfileCacheGetCompetitorProfile);
+        public static readonly Histogram<long> CacheStoreEviction = DefaultMeter.CreateHistogram<long>(MetricNameForCacheStoreEviction);
 
         private const string MetricNameForFeedExtRawApiDataReceived = MetricNamePrefix + "extended-rawapidatareceived";
         private const string MetricNameForFeedExtRawFeedDataReceived = MetricNamePrefix + "extended-rawfeeddatareceived";
@@ -64,7 +68,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
         private const string MetricNameForDispatchSdkMessage = MetricNamePrefix + "dispatch-sdkmessage";
         public static readonly Histogram<long> DispatchFeedMessage = DefaultMeter.CreateHistogram<long>(MetricNameForDispatchFeedMessage);
         public static readonly Histogram<long> DispatchSdkMessage = DefaultMeter.CreateHistogram<long>(MetricNameForDispatchSdkMessage);
-
 
         private const string MetricNameForLocalizedNamedValueCache = MetricNamePrefix + "localizednamedvaluecache-getall";
         private const string MetricNameForNamedValueCache = MetricNamePrefix + "namedvaluecache-getall";

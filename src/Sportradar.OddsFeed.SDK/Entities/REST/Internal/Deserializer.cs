@@ -1,9 +1,9 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         // ReSharper restore StaticFieldInGenericType
 
         /// <summary>
-        /// A <see cref="IReadOnlyDictionary{String, XmlSerializer}"/> containing serializers for all supported types
+        /// A <see cref="IReadOnlyDictionary{String,XmlSerializer}"/> containing serializers for all supported types
         /// </summary>
         // ReSharper disable StaticFieldInGenericType
         private static readonly IReadOnlyDictionary<string, SerializerWithInfo> Serializers;
@@ -46,7 +46,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <summary>
         /// Initializes the <c>Serializers</c> static field
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3963:\"static\" fields should be initialized inline", Justification = "Allowed")]
+        [SuppressMessage("Minor Code Smell", "S3963:\"static\" fields should be initialized inline", Justification = "Allowed")]
         static Deserializer()
         {
             var serializers = new Dictionary<string, SerializerWithInfo>();

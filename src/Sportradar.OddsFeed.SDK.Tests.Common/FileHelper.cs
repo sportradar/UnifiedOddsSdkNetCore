@@ -1,11 +1,10 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 
@@ -13,6 +12,18 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 public static class FileHelper
 {
+    public static Stream GetStreamForString(string content)
+    {
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream, Encoding.UTF8);
+
+        writer.Write(content);
+        writer.Flush();
+        stream.Position = 0;
+
+        return stream;
+    }
+
     public static Stream GetResource(string name)
     {
         //Debug.WriteLine($"Executing {Assembly.GetExecutingAssembly().FullName}: {Assembly.GetExecutingAssembly().GetManifestResourceNames().Length}");

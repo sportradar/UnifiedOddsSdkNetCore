@@ -1,11 +1,10 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 // ReSharper disable InconsistentNaming
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
@@ -220,19 +219,19 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest
 
     [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "RestMessages defaults")]
     // Classes below are only needed in order for the deserializer to work since the original declarations do not specify XmlRoot attribute
-    [System.Xml.Serialization.XmlRoot("simple_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
+    [XmlRoot("simple_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
     public partial class simpleTournamentInfoEndpoint
     {
     }
 
     [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "RestMessages defaults")]
-    [System.Xml.Serialization.XmlRoot("standard_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
+    [XmlRoot("standard_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
     public partial class standardTournamentInfoEndpoint
     {
     }
 
     [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "RestMessages defaults")]
-    [System.Xml.Serialization.XmlRoot("race_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
+    [XmlRoot("race_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
     public partial class raceTournamentInfoEndpoint
     {
     }

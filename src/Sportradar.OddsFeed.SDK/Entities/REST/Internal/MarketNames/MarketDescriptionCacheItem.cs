@@ -1,77 +1,66 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dawn;
-using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Api.Internal.Config;
-using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 {
     internal class MarketDescriptionCacheItem
     {
-        private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(MarketDescriptionCacheItem));
+        internal long Id { get; }
 
-        private readonly IDictionary<CultureInfo, string> _names;
+        internal readonly IDictionary<CultureInfo, string> Names;
 
-        private readonly IDictionary<CultureInfo, string> _descriptions;
-
-        internal readonly IList<CultureInfo> FetchedLanguages;
+        internal readonly IDictionary<CultureInfo, string> Descriptions;
 
         internal string Variant { get; private set; }
 
-        internal long Id { get; }
-
         internal string OutcomeType { get; private set; }
 
-        internal IEnumerable<MarketMappingCacheItem> Mappings { get; }
+        internal ICollection<MarketMappingCacheItem> Mappings { get; }
 
-        internal IEnumerable<MarketOutcomeCacheItem> Outcomes { get; }
+        internal ICollection<MarketOutcomeCacheItem> Outcomes { get; }
 
-        internal IEnumerable<MarketSpecifierCacheItem> Specifiers { get; }
+        internal ICollection<MarketSpecifierCacheItem> Specifiers { get; }
 
-        internal IEnumerable<MarketAttributeCacheItem> Attributes { get; }
+        internal ICollection<MarketAttributeCacheItem> Attributes { get; }
 
-        internal IEnumerable<string> Groups { get; private set; }
-
-        internal DateTime LastDataReceived { get; private set; }
+        internal ICollection<string> Groups { get; private set; }
 
         internal string SourceCache { get; private set; }
 
-        /// <summary>
-        /// A <see cref="object" /> instance used for thread synchronization
-        /// </summary>
         private readonly object _lock = new object();
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
-        protected MarketDescriptionCacheItem(
-            long id,
-            IDictionary<CultureInfo, string> names,
-            IDictionary<CultureInfo, string> descriptions,
-            string variant,
-            string outcomeType,
-            IEnumerable<MarketOutcomeCacheItem> outcomes,
-            IEnumerable<MarketMappingCacheItem> mappings,
-            IEnumerable<MarketSpecifierCacheItem> specifiers,
-            IEnumerable<MarketAttributeCacheItem> attributes,
-            IEnumerable<string> groups,
-            CultureInfo culture,
-            string source)
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
+        [SuppressMessage("ReSharper", "TooManyDependencies", Justification = "Allowed here")]
+        private MarketDescriptionCacheItem(long id,
+                                           IDictionary<CultureInfo, string> names,
+                                           IDictionary<CultureInfo, string> descriptions,
+                                           string variant,
+                                           string outcomeType,
+                                           ICollection<MarketOutcomeCacheItem> outcomes,
+                                           ICollection<MarketMappingCacheItem> mappings,
+                                           ICollection<MarketSpecifierCacheItem> specifiers,
+                                           ICollection<MarketAttributeCacheItem> attributes,
+                                           ICollection<string> groups,
+                                           CultureInfo culture,
+                                           string source)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
             Guard.Argument(names, nameof(names)).NotNull();
             Guard.Argument(descriptions, nameof(descriptions)).NotNull();
 
             Id = id;
-            _names = names;
-            _descriptions = descriptions;
-            FetchedLanguages = new List<CultureInfo>(new[] { culture });
+            Names = names;
+            Descriptions = descriptions;
             Outcomes = outcomes;
             Mappings = mappings;
             Specifiers = specifiers;
@@ -80,7 +69,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             OutcomeType = outcomeType;
             Groups = groups;
             SourceCache = source;
-            LastDataReceived = DateTime.Now;
         }
 
         /// <summary>
@@ -92,6 +80,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <param name="source">The source cache where <see cref="MarketDescriptionCacheItem"/> is built</param>
         /// <returns>The constructed <see cref="MarketDescriptionCacheItem"/>.</returns>
         /// <exception cref="InvalidOperationException">The cache item could not be build from the provided Dto</exception>
+        [SuppressMessage("ReSharper", "TooManyChainedReferences", Justification = "Are allowed")]
+        [SuppressMessage("ReSharper", "TooManyArguments", Justification = "Allowed here")]
+        [SuppressMessage("ReSharper", "TooManyDeclarations", Justification = "Allowed here")]
         public static MarketDescriptionCacheItem Build(MarketDescriptionDto dto, IMappingValidatorFactory factory, CultureInfo culture, string source)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
@@ -119,7 +110,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                 ? null
                 : new ReadOnlyCollection<MarketAttributeCacheItem>(dto.Attributes.Select(a => new MarketAttributeCacheItem(a)).ToList());
 
-            var groups = dto.Groups == null ? null : new ReadOnlyCollection<string>(dto.Groups.ToList());
+            var groups = dto.Groups == null
+                ? null
+                : new ReadOnlyCollection<string>(dto.Groups.ToList());
 
             return new MarketDescriptionCacheItem(dto.Id, names, descriptions, dto.Variant, dto.OutcomeType, outcomes, mappings, specifiers, attributes, groups, culture, source);
         }
@@ -128,132 +121,133 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            return _names.TryGetValue(culture, out var name) ? name : null;
+            return Names.TryGetValue(culture, out var name) ? name : null;
         }
 
         internal string GetDescription(CultureInfo culture)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
-            if (_descriptions.TryGetValue(culture, out var description))
-            {
-                return description;
-            }
-            return null;
+            return Descriptions.TryGetValue(culture, out var description) ? description : null;
         }
 
         internal bool HasTranslationsFor(CultureInfo culture)
         {
-            return FetchedLanguages.Contains(culture);
+            return culture == null
+                ? throw new ArgumentNullException(nameof(culture))
+                : Names.ContainsKey(culture);
         }
 
-        internal bool CanBeFetched()
-        {
-            return (DateTime.Now - LastDataReceived).TotalSeconds > ConfigLimit.MarketDescriptionMinFetchInterval;
-        }
-
-        public void SetFetchInfo(string source, DateTime lastDataReceived)
+        public void SetFetchInfo(string source)
         {
             if (!string.IsNullOrEmpty(source))
             {
                 SourceCache = source;
             }
-            LastDataReceived = lastDataReceived;
         }
 
-        internal void Merge(MarketDescriptionDto dto, CultureInfo culture)
+        internal MarketMergeResult Merge(MarketDescriptionDto dto, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
-            Guard.Argument(culture, nameof(culture)).NotNull();
 
             lock (_lock)
             {
-                _names[culture] = dto.Name;
+                var mergeResult = new MarketMergeResult();
+                Names[culture] = dto.Name;
                 if (!string.IsNullOrEmpty(dto.Description))
                 {
-                    _descriptions[culture] = dto.Description;
+                    Descriptions[culture] = dto.Description;
                 }
+                MergeOutcomes(dto, culture, mergeResult);
+                MergeMappings(dto, culture, mergeResult);
                 Variant = dto.Variant;
-
-                if (dto.Outcomes != null)
-                {
-                    foreach (var outcomeDto in dto.Outcomes)
-                    {
-                        var existingOutcome = Outcomes?.FirstOrDefault(o => o.Id == outcomeDto.Id);
-                        if (existingOutcome != null)
-                        {
-                            existingOutcome.Merge(outcomeDto, culture);
-                        }
-                        else
-                        {
-                            ExecutionLog.LogWarning($"Could not merge outcome[Id={outcomeDto.Id}] for lang={culture.TwoLetterISOLanguageName} on marketDescription[Id={Id}] because the specified outcome does not exist on stored market description.");
-                            ComparePrint(dto, culture);
-                        }
-                    }
-                }
-
-                if (dto.Mappings != null)
-                {
-                    foreach (var mappingDto in dto.Mappings)
-                    {
-                        var existingMapping = Mappings?.FirstOrDefault(m => MarketMappingsMatch(m, mappingDto));
-                        if (existingMapping != null)
-                        {
-                            existingMapping.Merge(mappingDto, culture);
-                        }
-                        else
-                        {
-                            ExecutionLog.LogWarning($"Could not merge mapping[MarketId={mappingDto.MarketTypeId}:{mappingDto.MarketSubTypeId}] for lang={culture.TwoLetterISOLanguageName} on marketDescription[Id={dto.Id}]because the specified mapping does not exist on stored market description.");
-                            ComparePrint(dto, culture);
-                        }
-                    }
-                }
-
                 OutcomeType = dto.OutcomeType;
-
                 Groups = dto.Groups == null ? null : new ReadOnlyCollection<string>(dto.Groups.ToList());
 
-                FetchedLanguages.Add(culture);
-
-                LastDataReceived = DateTime.Now;
+                return mergeResult;
             }
         }
 
-        private bool MarketMappingsMatch(MarketMappingCacheItem ci, MarketMappingDto dto)
+        private void MergeOutcomes(MarketDescriptionDto dto, CultureInfo culture, MarketMergeResult mergeResult)
         {
-            var isMatch = ci.MarketTypeId == dto.MarketTypeId && ci.MarketSubTypeId == dto.MarketSubTypeId;
-
-            if (isMatch && ci.SportId != null)
+            if (dto.Outcomes.IsNullOrEmpty())
             {
-                isMatch = ci.SportId.Equals(dto.SportId);
+                return;
             }
 
-            if (isMatch && ci.ProducerIds != null)
+            foreach (var outcomeDto in dto.Outcomes)
             {
-                isMatch = ci.ProducerIds.All(a => dto.ProducerIds.Contains(a));
+                var existingOutcome = Outcomes?.FirstOrDefault(o => o.Id == outcomeDto.Id);
+                if (existingOutcome != null)
+                {
+                    existingOutcome.Merge(outcomeDto, culture);
+                }
+                else
+                {
+                    mergeResult.AddOutcomeProblem(outcomeDto.Id);
+                }
             }
-
-            if (isMatch && !string.IsNullOrEmpty(ci.ValidFor))
-            {
-                isMatch = ci.ValidFor.Equals(dto.ValidFor, StringComparison.InvariantCultureIgnoreCase);
-            }
-
-            return isMatch;
         }
 
-        private void ComparePrint(MarketDescriptionDto dto, CultureInfo culture)
+        private void MergeMappings(MarketDescriptionDto dto, CultureInfo culture, MarketMergeResult mergeResult)
         {
-            var names = _names.Aggregate(string.Empty, (current, name) => current + $", {name.Key.TwoLetterISOLanguageName}-{name.Value}").Substring(2);
-            var desc = _descriptions.Aggregate(string.Empty, (current, d) => current + $", {d.Key.TwoLetterISOLanguageName}-{d.Value}");
-            var specs = Specifiers == null ? null : string.Join(", ", Specifiers.Select(s => s.Name));
-            var outcomes = Outcomes == null ? null : string.Join(",", Outcomes.Select(s => s.Id));
-            var maps = Mappings == null ? null : string.Join(",", Mappings.Select(s => s.MarketTypeId));
-            ExecutionLog.LogDebug($"Original Id={Id}, Names=[{names}], Descriptions=[{desc}], Variant=[{Variant}], Specifiers=[{specs}], Outocomes=[{outcomes}], Mappings=[{maps}].");
+            if (dto.Mappings.IsNullOrEmpty())
+            {
+                return;
+            }
 
-            var specsNew = dto.Specifiers == null ? null : string.Join(", ", dto.Specifiers.Select(s => s.Name));
-            var outcomesNew = dto.Outcomes == null ? null : string.Join(",", dto.Outcomes.Select(s => s.Id));
-            var mapsNew = dto.Mappings == null ? null : string.Join(",", dto.Mappings.Select(s => s.MarketTypeId));
-            ExecutionLog.LogDebug($"New Id={dto.Id}, Name=[{culture.TwoLetterISOLanguageName}-{dto.Name}], Descriptions=[{dto.Description}], Variant=[{dto.Variant}], Specifiers=[{specsNew}], Outocomes=[{outcomesNew}], Mappings=[{mapsNew}].");
+            foreach (var mappingDto in dto.Mappings)
+            {
+                var existingMapping = Mappings?.FirstOrDefault(m => m.MarketMappingsMatch(mappingDto));
+                if (existingMapping != null)
+                {
+                    existingMapping.Merge(mappingDto, culture);
+                }
+                else
+                {
+                    mergeResult.AddMappingProblem(mappingDto.GenerateMarketMappingId());
+                }
+            }
+        }
+
+        public ICollection<CultureInfo> GetFaultyLanguages()
+        {
+            ICollection<CultureInfo> faultyLanguages = new List<CultureInfo>();
+
+            foreach (var language in Names.Keys)
+            {
+                if (Names.TryGetValue(language, out var marketName) && marketName.IsNullOrEmpty())
+                {
+                    faultyLanguages.AddUnique(language);
+                    continue;
+                }
+
+                CheckOutcomesNameIsPresent(language, faultyLanguages);
+            }
+
+            return faultyLanguages;
+        }
+
+        private void CheckOutcomesNameIsPresent(CultureInfo checkLanguage, ICollection<CultureInfo> faultyLanguages)
+        {
+            if (Outcomes.IsNullOrEmpty())
+            {
+                return;
+            }
+            foreach (var outcomeNames in Outcomes.Select(s => s.Names))
+            {
+                if (!outcomeNames.ContainsKey(checkLanguage))
+                {
+                    faultyLanguages.AddUnique(checkLanguage);
+                    break;
+                }
+
+                if (outcomeNames.TryGetValue(checkLanguage, out var outcomeName) && outcomeName.IsNullOrEmpty())
+                {
+                    faultyLanguages.AddUnique(checkLanguage);
+                    break;
+                }
+            }
         }
     }
 }

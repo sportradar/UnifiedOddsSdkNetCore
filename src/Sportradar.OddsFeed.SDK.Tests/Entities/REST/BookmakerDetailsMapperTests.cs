@@ -1,8 +1,7 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
@@ -16,6 +15,7 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class BookmakerDetailsMapperTests
 {
     private const string InputXml = "bookmaker_details.xml";

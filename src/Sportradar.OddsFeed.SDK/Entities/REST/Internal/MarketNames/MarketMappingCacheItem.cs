@@ -1,12 +1,12 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
         public IList<OutcomeMappingCacheItem> OutcomeMappings { get; }
 
-        protected MarketMappingCacheItem(MarketMappingDto dto, IMappingValidator validator, CultureInfo culture)
+        private MarketMappingCacheItem(MarketMappingDto dto, IMappingValidator validator, CultureInfo culture)
         {
             Guard.Argument(dto, nameof(dto)).NotNull();
 
@@ -71,22 +71,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
         internal void Merge(MarketMappingDto dto, CultureInfo culture)
         {
-            if (dto.OutcomeMappings == null)
+            if (dto.OutcomeMappings.IsNullOrEmpty())
             {
                 return;
             }
-
-            var shouldHave = OutcomeMappings.Count > 0;
 
             if (string.IsNullOrEmpty(dto.OrgMarketId))
             {
                 OrgMarketId = dto.OrgMarketId;
             }
 
+            if (!OutcomeMappings.IsNullOrEmpty())
+            {
+                MergeMappings(dto, culture);
+            }
+        }
+
+        private void MergeMappings(MarketMappingDto dto, CultureInfo culture)
+        {
             foreach (var outcomeMappingDto in dto.OutcomeMappings)
             {
                 var mapping = OutcomeMappings.FirstOrDefault(f => f.OutcomeId.Equals(outcomeMappingDto.OutcomeId, StringComparison.InvariantCultureIgnoreCase));
-                if (mapping == null && shouldHave)
+                if (mapping == null)
                 {
                     //investigate
                 }

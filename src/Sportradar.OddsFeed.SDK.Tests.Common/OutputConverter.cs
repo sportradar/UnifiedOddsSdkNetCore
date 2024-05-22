@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System.IO;
 using System.Text;
 using Xunit.Abstractions;
 
@@ -6,11 +8,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 public class OutputConverter : TextWriter
 {
-    private readonly ITestOutputHelper _output;
+    private readonly ITestOutputHelper _outputHelper;
 
-    public OutputConverter(ITestOutputHelper output)
+    public OutputConverter(ITestOutputHelper outputHelper)
     {
-        _output = output;
+        _outputHelper = outputHelper;
     }
 
     public override Encoding Encoding
@@ -20,16 +22,16 @@ public class OutputConverter : TextWriter
 
     public override void WriteLine(string value)
     {
-        _output.WriteLine(value);
+        _outputHelper.WriteLine(value);
     }
 
     public override void WriteLine(string format, params object[] arg)
     {
-        _output.WriteLine(format, arg);
+        _outputHelper.WriteLine(format, arg);
     }
 
     public override void Write(char value)
     {
-        _output.WriteLine(value.ToString());
+        _outputHelper.WriteLine(value.ToString());
     }
 }

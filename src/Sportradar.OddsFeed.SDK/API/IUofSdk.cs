@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Api.Managers;
@@ -107,6 +106,7 @@ namespace Sportradar.OddsFeed.SDK.Api
         /// <summary>
         /// Returns an indicator if the feed instance is opened or not
         /// </summary>
+        /// <returns>Returns true if the sdk is opened, otherwise false</returns>
         bool IsOpen();
 
         /// <summary>

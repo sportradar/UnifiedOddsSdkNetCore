@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +21,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         private readonly IEntityTypeMapper _typeMapper;
 
         /// <summary>
-        /// The <see cref="IDictionary{String, ISpecificEntityDispatcherInternal}"/> containing added dispatchers
+        /// The <see cref="IDictionary{String,ISpecificEntityDispatcherInternal}"/> containing added dispatchers
         /// </summary>
         private readonly IDictionary<string, ISpecificEntityDispatcherInternal> _dispatchers = new Dictionary<string, ISpecificEntityDispatcherInternal>();
 

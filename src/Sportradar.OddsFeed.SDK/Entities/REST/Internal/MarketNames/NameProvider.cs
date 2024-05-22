@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -17,9 +17,7 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Profiles;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
@@ -61,7 +59,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         private readonly int _marketId;
 
         /// <summary>
-        /// A <see cref="IReadOnlyDictionary{String, String}"/> representing specifiers of the associated market
+        /// A <see cref="IReadOnlyDictionary{String,String}"/> representing specifiers of the associated market
         /// </summary>
         private readonly IReadOnlyDictionary<string, string> _specifiers;
 
@@ -558,7 +556,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                 if (firstTime)
                 {
                     HandleErrorCondition("Retrieved market descriptor has no outcomes", outcomeId, null, culture, null);
-                    if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
+                    //if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
                     {
                         HandleErrorCondition("Reloading market description", outcomeId, null, culture, null);
                         await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);
@@ -575,7 +573,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                 if (firstTime)
                 {
                     HandleErrorCondition("Retrieved market descriptor is missing outcome", outcomeId, null, culture, null);
-                    if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
+                    //if (((MarketDescription)marketDescriptor).MarketDescriptionCacheItem.CanBeFetched())
                     {
                         HandleErrorCondition("Reloading market description", outcomeId, null, culture, null);
                         await _marketCacheProvider.ReloadMarketDescriptionAsync((int)marketDescriptor.Id, _specifiers).ConfigureAwait(false);

@@ -1,6 +1,6 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System.Diagnostics.CodeAnalysis;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Entities
@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities
         /// <summary>
         /// Gets a <see cref="ISportEvent"/> derived instance representing the sport event associated with the current message
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
+        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
         T Event { get; }
 
         /// <summary>

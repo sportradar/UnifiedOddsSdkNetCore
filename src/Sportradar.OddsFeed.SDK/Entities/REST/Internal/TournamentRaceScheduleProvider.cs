@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -24,7 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <param name="dateScheduleUriFormat">An address format used to retrieve sport events for a specified date</param>
         /// <param name="fetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
         /// <param name="deserializer">A <see cref="IDeserializer{scheduleType}" /> used to deserialize the fetch data</param>
-        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{scheduleType, EntityList}" /> used to construct instances of <see cref="ISingleTypeMapper{ISportEventsSchedule}" /></param>
+        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{scheduleType,EntityList}" /> used to construct instances of <see cref="ISingleTypeMapper{ISportEventsSchedule}" /></param>
         public TournamentRaceScheduleProvider(string dateScheduleUriFormat,
                                               IDataFetcher fetcher,
                                               IDeserializer<raceScheduleEndpoint> deserializer,

@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -179,6 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Managers
         /// Imports provided items into caches
         /// </summary>
         /// <param name="items">Collection of <see cref="ExportableBase"/> containing the items to be imported</param>
+        /// <returns>No return</returns>
         Task CacheImportAsync(IEnumerable<ExportableBase> items);
 
         /// <summary>

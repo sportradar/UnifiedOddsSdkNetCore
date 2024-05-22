@@ -1,9 +1,9 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
@@ -72,6 +72,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <inheritdoc />
         public IUofConfiguration BuildFromConfigFile()
         {
+            if (_uofConfigurationSectionProvider.GetSection()?.Environment == SdkEnvironment.Custom)
+            {
+                return this.SetAccessTokenFromConfigFile().SelectCustom().LoadFromConfigFile().Build();
+            }
+
             _configuration.UpdateFromAppConfigSection(true);
 
             return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider)

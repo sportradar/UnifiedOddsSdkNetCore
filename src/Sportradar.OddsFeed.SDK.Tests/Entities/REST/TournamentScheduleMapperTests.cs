@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Linq;
 using System.Xml.Linq;
@@ -94,7 +92,7 @@ public class TournamentScheduleMapperTests
 
         Assert.Equal(round.Type, element.Attribute("type")?.Value);
         var number = element.Attribute("number")?.Value;
-        Assert.Equal(round.Number, number == null ? (int?)null : int.Parse(number));
+        Assert.Equal(round.Number, number == null ? null : int.Parse(number));
     }
 
     private static void CompareTournament(TournamentDto tournament, XElement element)

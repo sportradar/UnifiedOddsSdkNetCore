@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -305,8 +304,8 @@ namespace Sportradar.OddsFeed.SDK.Api
 
         /// <summary>
         /// Dispatches the information that the exception was thrown in connection loop
-        /// <param name="callbackExceptionEventArgs">The information about the exception</param>
         /// </summary>
+        /// <param name="callbackExceptionEventArgs">The information about the exception</param>
         public void DispatchConnectionException(CallbackExceptionEventArgs callbackExceptionEventArgs)
         {
             Dispatch(ConnectionException, new ConnectionExceptionEventArgs(callbackExceptionEventArgs.Exception, callbackExceptionEventArgs.Detail), "ConnectionException", 0);
@@ -441,7 +440,7 @@ namespace Sportradar.OddsFeed.SDK.Api
                 _log.LogInformation("Producers:");
                 foreach (var p in ProducerManager.Producers.OrderBy(o => o.Id))
                 {
-                    _log.LogInformation("\tProducer {ProducerId}-{ProducerName}\tIsAvailable={ProducerIsAvailable} \tIsEnabled={ProducerIsEnabled}",
+                    _log.LogInformation("Producer {ProducerId}-{ProducerName}  IsAvailable={ProducerIsAvailable} IsEnabled={ProducerIsEnabled}",
                         p.Id.ToString(CultureInfo.InvariantCulture),
                         p.Name.FixedLength(15),
                         p.IsAvailable.ToString(CultureInfo.InvariantCulture),

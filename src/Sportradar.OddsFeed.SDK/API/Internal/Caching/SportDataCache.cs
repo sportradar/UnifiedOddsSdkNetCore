@@ -1,11 +1,10 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -96,12 +95,14 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="cultures">A list of <see cref="CultureInfo"/> of the cached data</param>
         /// <param name="sportEventCache">A <see cref="ISportEventCache"/> containing also tournament data</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
+        /// <param name="loggerFactory">The logger factory for creating Cache and Execution logs</param>
         public SportDataCache(IDataRouterManager dataRouterManager,
                               ISdkTimer timer,
                               IReadOnlyCollection<CultureInfo> cultures,
                               ISportEventCache sportEventCache,
-                              ICacheManager cacheManager)
-            : base(cacheManager)
+                              ICacheManager cacheManager,
+                              ILoggerFactory loggerFactory)
+            : base(cacheManager, loggerFactory)
         {
             Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
             Guard.Argument(timer, nameof(timer)).NotNull();
@@ -215,7 +216,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="cultures">A <see cref="IReadOnlyCollection{CultrureInfo}"/> specifying the languages to which the sport must be translated</param>
         /// <param name="fetchTournamentIfMissing">Indicates if the tournament should be fetched if not obtained via all tournaments request</param>
         /// <returns>A <see cref="SportData"/> representing the requested sport translated into requested languages</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "<Pending>")]
+        [SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "<Pending>")]
         private SportData GetSportForTournamentFromCache(Urn tournamentId, IReadOnlyCollection<CultureInfo> cultures, bool fetchTournamentIfMissing)
         {
             TournamentInfoCacheItem cachedTournament = null;
@@ -900,7 +901,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="id">A <see cref="Urn" /> representing the id of the item to be checked</param>
         /// <param name="cacheItemType">A cache item type</param>
         /// <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "Easy to read")]
+        [SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "Easy to read")]
         public override bool CacheHasItem(Urn id, CacheItemType cacheItemType)
         {
             if (cacheItemType == CacheItemType.Sport || cacheItemType == CacheItemType.All)

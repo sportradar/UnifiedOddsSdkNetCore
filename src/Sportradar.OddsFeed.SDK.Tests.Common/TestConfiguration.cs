@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
@@ -24,11 +22,11 @@ internal static class TestConfiguration
             .SetDesiredLanguages(TestData.Cultures3)
             .SetExceptionHandlingStrategy(exceptionHandlingStrategy);
 
-        var config = (UofConfiguration)configBuilder.Build();
+        var config = configBuilder.Build();
 
         if (dto != null)
         {
-            config.UpdateBookmakerDetails(new BookmakerDetails(dto), config.Api.Host);
+            ((UofConfiguration)config).UpdateBookmakerDetails(new BookmakerDetails(dto), config.Api.Host);
         }
 
         return config;

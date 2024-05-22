@@ -1,7 +1,7 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
@@ -31,7 +31,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         public int? GreenCards { get; }
 
         // from feed
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Allowed here")]
         internal TeamStatisticsDto(string name, Urn teamId, HomeAway? homeAway, int? yellowCards, int? redCards, int? yellowRedCards, int? cornerKicks, int? greenCards)
         {
             Name = name; // not available on the AMQP message

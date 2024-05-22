@@ -1,7 +1,6 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
@@ -16,7 +15,7 @@ public class TournamentDetailsMapperTests
     private const string InputXml = "tournament_info.xml";
 
     [Fact]
-    public void TestInstanceIsNotNull()
+    public async Task TestInstanceIsNotNull()
     {
         var deserializer = new Deserializer<tournamentInfoEndpoint>();
         var dataFetcher = new TestDataFetcher();
@@ -28,7 +27,7 @@ public class TournamentDetailsMapperTests
             deserializer,
             mapperFactory);
 
-        var entity = dataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
+        var entity = await dataProvider.GetDataAsync("", "en");
 
         Assert.NotNull(entity);
     }

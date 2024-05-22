@@ -1,10 +1,9 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.Config;
-using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -12,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Messages.Feed;
 namespace Sportradar.OddsFeed.SDK.Api.EventArguments
 {
     /// <summary>
-    /// Event arguments for the <see cref="ISessionMessageManager.FeedMessageReceived"/> event
+    /// Event arguments for the snapshot complete message received via session message manager
     /// </summary>
     public class SnapshotCompleteEventArgs : EventArgs
     {
@@ -34,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Api.EventArguments
         /// <summary>
         /// The raw message
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Is kept for consistency between different messages event arguments")]
+        [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Is kept for consistency between different messages event arguments")]
         // ReSharper disable once NotAccessedField.Local
         private readonly byte[] _rawMessage;
 

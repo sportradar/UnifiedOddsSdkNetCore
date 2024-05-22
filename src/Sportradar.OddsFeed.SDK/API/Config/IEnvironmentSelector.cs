@@ -1,4 +1,6 @@
-﻿using Sportradar.OddsFeed.SDK.Common.Enums;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using Sportradar.OddsFeed.SDK.Common.Enums;
 
 namespace Sportradar.OddsFeed.SDK.Api.Config
 {

@@ -1,7 +1,8 @@
-﻿using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;

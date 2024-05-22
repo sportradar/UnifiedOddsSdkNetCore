@@ -1,6 +1,5 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
@@ -31,6 +30,9 @@ namespace Sportradar.OddsFeed.SDK.Api.EventArguments
         /// <summary>
         /// Initializes a new instance of the <see cref="EventChangeEventArgs"/> class
         /// </summary>
+        /// <param name="sportEventId">The sport event id</param>
+        /// <param name="updateTime">The update time</param>
+        /// <param name="sportEvent">The sport event object</param>
         public EventChangeEventArgs(Urn sportEventId, DateTime updateTime, ISportEvent sportEvent)
         {
             SportEventId = sportEventId;

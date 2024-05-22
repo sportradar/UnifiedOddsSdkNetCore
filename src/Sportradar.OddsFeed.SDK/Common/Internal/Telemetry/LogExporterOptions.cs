@@ -1,4 +1,6 @@
-﻿namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
 {
     internal class LogExporterOptions
     {

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -16,6 +19,7 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class PlayerProfileCiTests
 {
     private readonly ITestOutputHelper _outputHelper;
@@ -116,7 +120,7 @@ public class PlayerProfileCiTests
         var playerCompetitorDto = new PlayerCompetitorDto(_defaultPlayerCompetitor);
         var playerProfileCacheItem = new PlayerProfileCacheItem(playerCompetitorDto, _competitorId, _cultureFirst, _dataRouterManager);
 
-        var exportable = await playerProfileCacheItem.ExportAsync().ConfigureAwait(false);
+        var exportable = await playerProfileCacheItem.ExportAsync();
 
         Assert.NotNull(exportable);
         var json = JsonConvert.SerializeObject(exportable, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None });

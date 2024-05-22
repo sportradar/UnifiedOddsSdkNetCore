@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -367,5 +369,79 @@ public class SdkInfoTests
         Assert.Single(result);
         Assert.Equal(TestData.Cultures.ElementAt(1), result.Keys.First());
         Assert.Equal(firstName, result.Values.First());
+    }
+
+    [Theory]
+    [InlineData(0, "0sec")]
+    [InlineData(60 * 60, "1h")]
+    [InlineData(-1 * 60 * 60, "-1h")]
+    [InlineData(10 * 60, "10min")]
+    [InlineData(-1 * 10 * 60, "-10min")]
+    [InlineData(10, "10sec")]
+    [InlineData(-10, "-10sec")]
+    [InlineData(24 * 60 * 60, "24h")]
+    [InlineData(36 * 60 * 60, "36h")]
+    [InlineData((36 * 60 * 60) + (10 * 60) + 10, "36h 10min 10sec")]
+    //[InlineData(-1 * ((36 * 60 * 60) + (10 * 60) + 10), "-36h 10min 10sec")]
+    [InlineData((100 * 60 * 60) + (10 * 60) + 10, "100h 10min 10sec")]
+    public void FriendlyTimeSpanTextInHours(int inputInSeconds, string expected)
+    {
+        var result = SdkInfo.FriendlyTimeSpanTextInHours(TimeSpan.FromSeconds(inputInSeconds));
+
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("1:2")]
+    [InlineData("112:2453")]
+    [InlineData("0")]
+    [InlineData("01")]
+    [InlineData("-1")]
+    [InlineData("0:123")]
+    [InlineData("11:0")]
+    [InlineData("1:-2")]
+    [InlineData("-1:-2")]
+    [InlineData("-112:2453")]
+    public void IsMarketMappingMarketIdValid_Valid(string mappingMarketId)
+    {
+        Assert.True(SdkInfo.IsMarketMappingMarketIdValid(mappingMarketId));
+    }
+
+    [Theory]
+
+    [InlineData("2:a")]
+    [InlineData("2|123")]
+    [InlineData("2-245")]
+    public void IsMarketMappingMarketIdValid_NotValid(string mappingMarketId)
+    {
+        Assert.False(SdkInfo.IsMarketMappingMarketIdValid(mappingMarketId));
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("1")]
+    [InlineData("1|2")]
+    [InlineData("1|3|5|6|7|8")]
+    public void IsMarketMappingProducerIdsValid_Valid(string producerIds)
+    {
+        Assert.True(SdkInfo.IsMarketMappingProducerIdsValid(producerIds));
+    }
+
+    [Theory]
+    [InlineData("0")]
+    [InlineData("-1")]
+    [InlineData("1:3")]
+    [InlineData("1|-3")]
+    [InlineData("1|5|-2")]
+    [InlineData("-1:-2")]
+    [InlineData("-112:2453")]
+    [InlineData("2-245")]
+    [InlineData("2|a")]
+    [InlineData("2|123|5|1|-5")]
+    public void IsMarketMappingProducerIdsValid_NotValid(string producerIds)
+    {
+        Assert.False(SdkInfo.IsMarketMappingProducerIdsValid(producerIds));
     }
 }

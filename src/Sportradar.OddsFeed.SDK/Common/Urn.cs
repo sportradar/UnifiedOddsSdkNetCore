@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
@@ -254,6 +252,7 @@ namespace Sportradar.OddsFeed.SDK.Common
         /// <summary>
         /// Determines whether Urn represents a simple team
         /// </summary>
+        /// <param name="urn">The string urn to be checked</param>
         /// <returns><c>true</c> if represents simple team; otherwise, <c>false</c>.</returns>
         public static bool IsSimpleTeam(string urn)
         {

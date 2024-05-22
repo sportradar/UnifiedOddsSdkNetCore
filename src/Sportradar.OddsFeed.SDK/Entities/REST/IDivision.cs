@@ -1,4 +1,6 @@
-﻿namespace Sportradar.OddsFeed.SDK.Entities.Rest
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+namespace Sportradar.OddsFeed.SDK.Entities.Rest
 {
     /// <summary>
     /// Represents a division of associated competitor

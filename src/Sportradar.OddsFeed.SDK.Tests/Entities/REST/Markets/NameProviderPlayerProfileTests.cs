@@ -1,6 +1,4 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -114,7 +112,7 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task PreloadedPlayerDataAndOutcomeIdWithSinglePlayerIdGetsCorrectValue()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetPlayerProfileAsync(ScheduleData.MatchCompetitor1PlayerId1, ScheduleData.CultureEn, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetPlayerProfileAsync(ScheduleData.MatchCompetitor1PlayerId1, ScheduleData.CultureEn, null);
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
 
         var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId1.ToString(), ScheduleData.CultureEn);
@@ -127,7 +125,7 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task PreloadedCompetitorDataAndOutcomeIdWithSinglePlayerIdGetsCorrectValue()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId1, ScheduleData.CultureEn, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId1, ScheduleData.CultureEn, null);
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
 
         var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId2.ToString(), ScheduleData.CultureEn);
@@ -286,7 +284,7 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task PreloadedMatchDataAndOutcomeIdWithSingleCompetitorIdGetsCorrectValue()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureEn, null);
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
 
         var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitorId1.ToString(), ScheduleData.CultureEn);
@@ -298,7 +296,7 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task CompetitorProfileIsCalledWhenWantedPlayerProfileLinkedToCompetitor()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId2, ScheduleData.CultureEn, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetCompetitorAsync(ScheduleData.MatchCompetitorId2, ScheduleData.CultureEn, null);
         Assert.Equal(ScheduleData.MatchCompetitor2PlayerCount + 1, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
@@ -383,8 +381,8 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task MatchDataOverridesCompetitorAssociatedEventIdOverTournamentData()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchTournamentId, ScheduleData.CultureEn, null).ConfigureAwait(false);
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchTournamentId, ScheduleData.CultureEn, null);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null);
         Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
@@ -409,8 +407,8 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task TournamentDataDoesNotOverridesCompetitorAssociatedEventIdOverMatchData()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchTournamentId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchTournamentId, ScheduleData.CultureEn, null);
         Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
@@ -435,8 +433,8 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task MatchDataOverridesCompetitorAssociatedEventIdOverSeasonData()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchSeasonId, ScheduleData.CultureEn, null).ConfigureAwait(false);
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchSeasonId, ScheduleData.CultureEn, null);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null);
         Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
@@ -461,8 +459,8 @@ public class NameProviderPlayerProfileTests
     [Fact]
     public async Task SeasonDataDoesNotOverridesCompetitorAssociatedEventIdOverMatchData()
     {
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null).ConfigureAwait(false);
-        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchSeasonId, ScheduleData.CultureEn, null).ConfigureAwait(false);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchId, ScheduleData.CultureDe, null);
+        await _sportEntityFactoryBuilder.DataRouterManager.GetSportEventSummaryAsync(ScheduleData.MatchSeasonId, ScheduleData.CultureEn, null);
         Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));

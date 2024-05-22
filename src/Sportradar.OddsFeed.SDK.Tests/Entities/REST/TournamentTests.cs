@@ -1,9 +1,8 @@
-﻿/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,11 +20,13 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
+[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class TournamentTests
 {
     private const string TourInfoXml = @"Summarys/summary_sr_tournament_40_en.xml";
@@ -41,6 +42,7 @@ public class TournamentTests
 
     public TournamentTests(ITestOutputHelper outputHelper)
     {
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();
 
         var cacheManager = testCacheStoreManager.CacheManager;
@@ -52,7 +54,8 @@ public class TournamentTests
             new SportEventCacheItemFactory(dataRouterManager, new SemaphorePool(5, ExceptionHandlingStrategy.Throw), testCacheStoreManager.UofConfig, testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
             timer,
             TestData.Cultures3,
-            cacheManager);
+            cacheManager,
+            loggerFactory);
 
         var deserializer = new Deserializer<tournamentInfoEndpoint>();
         var dataFetcher = new TestDataFetcher();
@@ -124,7 +127,7 @@ public class TournamentTests
             Assert.Contains(Urn.Parse(sapiTeam.id), groupCompetitorIds);
         }
 
-        var tourCiDataCompetitors = await _tourCiData.GetCompetitorsIdsAsync(_cultures).ConfigureAwait(false);
+        var tourCiDataCompetitors = await _tourCiData.GetCompetitorsIdsAsync(_cultures);
         VerifyTournamentCompetitors(_tourApiData.competitors, _tourApiData.groups, tourCiDataCompetitors);
     }
 
