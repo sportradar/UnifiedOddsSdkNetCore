@@ -14,7 +14,6 @@ package/
 *.pdb
 *.trx
 src/**/*.dll
-*.zip
 *DotSettings.user
 *.pyc
 *.user
@@ -46,7 +45,6 @@ XsdSchemaFetcher/SchemaFetcher/packages/*
 **/_doc-site/**
 **/_doc-api/**
 **/_site/**
-**/_api/**
 
 packages/**
 **/Logs

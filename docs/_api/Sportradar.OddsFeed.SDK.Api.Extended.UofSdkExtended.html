@@ -1,0 +1,441 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class UofSdkExtended | Sportradar.OddsFeed.SDK </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class UofSdkExtended | Sportradar.OddsFeed.SDK ">
+      
+      <meta name="description" content="A  implementation acting as an entry point to the odds feed service with possibility to get raw feed and api data">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/uf-ns-h60.png" alt="Sportradar.OddsFeed.SDK">
+            Sportradar.OddsFeed.SDK
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended">
+
+
+
+  <h1 id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended" class="text-break">
+Class UofSdkExtended  
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sportradar.html">Sportradar</a>.<a class="xref" href="Sportradar.OddsFeed.html">OddsFeed</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.html">SDK</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.Api.html">Api</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.Api.Extended.html">Extended</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sportradar.OddsFeed.SDK.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A <a class="xref" href="Sportradar.OddsFeed.SDK.Api.IUofSdk.html">IUofSdk</a> implementation acting as an entry point to the odds feed service with possibility to get raw feed and api data</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class UofSdkExtended : UofSdk, IUofSdkExtended, IUofSdk, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Sportradar.OddsFeed.SDK.Api.EntityDispatcherBase.html">EntityDispatcherBase</a></div>
+      <div><a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html">UofSdk</a></div>
+      <div><span class="xref">UofSdkExtended</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Extended.IUofSdkExtended.html">IUofSdkExtended</a></div>
+      <div><a class="xref" href="Sportradar.OddsFeed.SDK.Api.IUofSdk.html">IUofSdk</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_ServiceProvider">UofSdk.ServiceProvider</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_Disconnected">UofSdk.Disconnected</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_Closed">UofSdk.Closed</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_EventRecoveryCompleted">UofSdk.EventRecoveryCompleted</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_RecoveryInitiated">UofSdk.RecoveryInitiated</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_ProducerDown">UofSdk.ProducerDown</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_ProducerUp">UofSdk.ProducerUp</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_ConnectionException">UofSdk.ConnectionException</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_EventRecoveryRequestIssuer">UofSdk.EventRecoveryRequestIssuer</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_SportDataProvider">UofSdk.SportDataProvider</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_ProducerManager">UofSdk.ProducerManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_BookingManager">UofSdk.BookingManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_CashOutProbabilitiesProvider">UofSdk.CashOutProbabilitiesProvider</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_BookmakerDetails">UofSdk.BookmakerDetails</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_MarketDescriptionManager">UofSdk.MarketDescriptionManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_CustomBetManager">UofSdk.CustomBetManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_EventChangeManager">UofSdk.EventChangeManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_Dispose">UofSdk.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_DispatchConnectionException_RabbitMQ_Client_Events_CallbackExceptionEventArgs_">UofSdk.DispatchConnectionException(CallbackExceptionEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_GetConfigurationBuilder">UofSdk.GetConfigurationBuilder()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_GetSessionBuilder">UofSdk.GetSessionBuilder()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_AvailableLanguages">UofSdk.AvailableLanguages()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_IsOpen">UofSdk.IsOpen()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.UofSdk.html#Sportradar_OddsFeed_SDK_Api_UofSdk_Dispose_System_Boolean_">UofSdk.Dispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.EntityDispatcherBase.html#Sportradar_OddsFeed_SDK_Api_EntityDispatcherBase_Dispatch__1_System_EventHandler___0____0_Sportradar_OddsFeed_SDK_Messages_Feed_FeedMessage_">EntityDispatcherBase.Dispatch&lt;T&gt;(EventHandler&lt;T&gt;, T, FeedMessage)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Api.EntityDispatcherBase.html#Sportradar_OddsFeed_SDK_Api_EntityDispatcherBase_Dispatch__1_System_EventHandler___0____0_System_String_System_Int32_">EntityDispatcherBase.Dispatch&lt;T&gt;(EventHandler&lt;T&gt;, T, string, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended__ctor_" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.#ctor*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended__ctor_System_IServiceProvider_" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.#ctor(System.IServiceProvider)">
+  UofSdkExtended(IServiceProvider)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Constructs a new instance of the <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Extended.IUofSdkExtended.html">IUofSdkExtended</a> class</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UofSdkExtended(IServiceProvider serviceProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> instance including UofSdk configuration</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended_Close_" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.Close*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended_Close" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.Close">
+  Close()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Closes the current <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Extended.IUofSdkExtended.html">IUofSdkExtended</a> instance and disposes resources used by it</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Close()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended_Open_" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.Open*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended_Open" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.Open">
+  Open()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Opens the current feed by opening all created sessions</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Open()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></dt>
+    <dd></dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The feed is already opened
+or
+The configuration is not valid</p>
+</dd>
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException.html">CommunicationException</a></dt>
+    <dd><p>Connection to the REST-ful API failed, Probable Reason={Invalid or expired token}
+or
+Connection to the message broker failed, Probable Reason={Invalid or expired token}
+or</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended_RawApiDataReceived" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.RawApiDataReceived">
+  RawApiDataReceived
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when data from Sports API arrives</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;RawApiDataEventArgs&gt; RawApiDataReceived</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Api.EventArguments.RawApiDataEventArgs.html">RawApiDataEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Extended_UofSdkExtended_RawFeedMessageReceived" data-uid="Sportradar.OddsFeed.SDK.Api.Extended.UofSdkExtended.RawFeedMessageReceived">
+  RawFeedMessageReceived
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when any feed message arrives</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;RawFeedMessageEventArgs&gt; RawFeedMessageReceived</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Api.EventArguments.RawFeedMessageEventArgs.html">RawFeedMessageEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2024, Sportradar AG. Send comments or questions to <a href='mailto:sdk%40sportradar.com?Subject=Odds%20Feed%20SDK%20Std%20Documentation: UnifiedFeed SDK .NET Standard 2.0&amp;body=Your%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report%2C%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed%2C%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.'>SDK Team</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

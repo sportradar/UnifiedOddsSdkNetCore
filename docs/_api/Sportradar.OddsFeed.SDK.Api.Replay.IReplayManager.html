@@ -1,0 +1,586 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Interface IReplayManager | Sportradar.OddsFeed.SDK </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Interface IReplayManager | Sportradar.OddsFeed.SDK ">
+      
+      <meta name="description" content="Defines a contract implemented by classes capable of interacting with Replay Server">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/uf-ns-h60.png" alt="Sportradar.OddsFeed.SDK">
+            Sportradar.OddsFeed.SDK
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager">
+
+
+
+  <h1 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager" class="text-break">
+Interface IReplayManager  
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sportradar.html">Sportradar</a>.<a class="xref" href="Sportradar.OddsFeed.html">OddsFeed</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.html">SDK</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.Api.html">Api</a>.<a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.html">Replay</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sportradar.OddsFeed.SDK.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Defines a contract implemented by classes capable of interacting with Replay Server</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IReplayManager</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_AddMessagesToReplayQueue_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.AddMessagesToReplayQueue*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_AddMessagesToReplayQueue_Sportradar_OddsFeed_SDK_Common_Urn_System_Nullable_System_Int32__" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.AddMessagesToReplayQueue(Sportradar.OddsFeed.SDK.Common.Urn,System.Nullable{System.Int32})">
+  AddMessagesToReplayQueue(Urn, int?)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds event {eventId} to the end of the replay queue</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayResponse AddMessagesToReplayQueue(Urn eventId, int? startTime = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eventId</code> <a class="xref" href="Sportradar.OddsFeed.SDK.Common.Urn.html">Urn</a></dt>
+    <dd><p>The <a class="xref" href="Sportradar.OddsFeed.SDK.Common.Urn.html">Urn</a> of the <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.IMatch.html">IMatch</a></p>
+</dd>
+    <dt><code>startTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd><p>The minutes relative to event start time</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetAvailableScenarios_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetAvailableScenarios*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetAvailableScenarios" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetAvailableScenarios">
+  GetAvailableScenarios()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a list of available replay scenarios</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IReplayScenario&gt; GetAvailableScenarios()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayScenario.html">IReplayScenario</a>&gt;</dt>
+    <dd><p>A list of available replay scenarios</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetEventsInQueue_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetEventsInQueue*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetEventsInQueue" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetEventsInQueue">
+  GetEventsInQueue()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the events in replay queue.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;Urn&gt; GetEventsInQueue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Common.Urn.html">Urn</a>&gt;</dt>
+    <dd><p>Returns an array of event ids</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetReplayEventsInQueue_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetReplayEventsInQueue*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetReplayEventsInQueue" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetReplayEventsInQueue">
+  GetReplayEventsInQueue()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets list of replay events in queue.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IReplayEvent&gt; GetReplayEventsInQueue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayEvent.html">IReplayEvent</a>&gt;</dt>
+    <dd><p>Returns a list of replay events</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetStatusOfReplay_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetStatusOfReplay*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_GetStatusOfReplay" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.GetStatusOfReplay">
+  GetStatusOfReplay()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Return the status of player. Possible values are: player is playing, player is stopped, player was never playing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayStatus GetStatusOfReplay()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayStatus.html">IReplayStatus</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_RemoveEventFromReplayQueue_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.RemoveEventFromReplayQueue*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_RemoveEventFromReplayQueue_Sportradar_OddsFeed_SDK_Common_Urn_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.RemoveEventFromReplayQueue(Sportradar.OddsFeed.SDK.Common.Urn)">
+  RemoveEventFromReplayQueue(Urn)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes the event from replay queue</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayResponse RemoveEventFromReplayQueue(Urn eventId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eventId</code> <a class="xref" href="Sportradar.OddsFeed.SDK.Common.Urn.html">Urn</a></dt>
+    <dd><p>The <a class="xref" href="Sportradar.OddsFeed.SDK.Common.Urn.html">Urn</a> of the <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.Rest.IMatch.html">IMatch</a></p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplay_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StartReplay*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplay_System_Int32_System_Int32_System_Nullable_System_Int32__System_Nullable_System_Boolean__" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StartReplay(System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Boolean})">
+  StartReplay(int, int, int?, bool?)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Start replay the event from replay queue. Events are played in the order they were played in reality</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayResponse StartReplay(int speed = 10, int maxDelay = 10000, int? producerId = null, bool? rewriteTimestamps = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>speed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The speed factor of the replay</p>
+</dd>
+    <dt><code>maxDelay</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum delay between messages in milliseconds</p>
+</dd>
+    <dt><code>producerId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd><p>The id of the producer from which we want to get messages, or null for messages from all producers</p>
+</dd>
+    <dt><code>rewriteTimestamps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd><p>Should the timestamp in messages be rewritten with current time</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplay_System_Int32_System_Int32_System_Nullable_System_Int32__System_Nullable_System_Boolean___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Start replay the event from replay queue. Events are played in the order they were played in reality, e.g. if there are some events that were played simultaneously in reality, they will be played in parallel as well here on replay server. If not specified, default values speed = 10 and max_delay = 10000 are used. This means that messages will be sent 10x faster than in reality, and that if there was some delay between messages that was longer than 10 seconds it will be reduced to exactly 10 seconds/10 000 ms (this is helpful especially in pre-match odds where delay can be even a few hours or more). If player is already in play, nothing will happen</p>
+</div>
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplay_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StartReplay*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplay_System_Int32_System_Int32_System_Nullable_System_Int32__System_Nullable_System_Boolean__System_Nullable_System_Boolean__" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StartReplay(System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+  StartReplay(int, int, int?, bool?, bool?)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Start replay the event from replay queue. Events are played in the order they were played in reality</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayResponse StartReplay(int speed, int maxDelay, int? producerId, bool? rewriteTimestamps, bool? runParallel)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>speed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The speed factor of the replay</p>
+</dd>
+    <dt><code>maxDelay</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum delay between messages in milliseconds</p>
+</dd>
+    <dt><code>producerId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd><p>The id of the producer from which we want to get messages, or null for messages from all producers</p>
+</dd>
+    <dt><code>rewriteTimestamps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd><p>Should the timestamp in messages be rewritten with current time</p>
+</dd>
+    <dt><code>runParallel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd><p>Should the events in queue replay independently</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplay_System_Int32_System_Int32_System_Nullable_System_Int32__System_Nullable_System_Boolean__System_Nullable_System_Boolean___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Start replay the event from replay queue. Events are played in the order they were played in reality, e.g. if there are some events that were played simultaneously in reality, they will be played in parallel as well here on replay server. If not specified, default values speed = 10 and max_delay = 10000 are used. This means that messages will be sent 10x faster than in reality, and that if there was some delay between messages that was longer than 10 seconds it will be reduced to exactly 10 seconds/10 000 ms (this is helpful especially in pre-match odds where delay can be even a few hours or more). If player is already in play, nothing will happen</p>
+</div>
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplayScenario_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StartReplayScenario*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplayScenario_System_Int32_System_Int32_System_Int32_System_Nullable_System_Int32__System_Nullable_System_Boolean__" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StartReplayScenario(System.Int32,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Boolean})">
+  StartReplayScenario(int, int, int, int?, bool?)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts playing a predefined scenario</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayResponse StartReplayScenario(int scenarioId, int speed = 10, int maxDelay = 10000, int? producerId = null, bool? rewriteTimestamps = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>scenarioId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The identifier of the scenario that should be played</p>
+</dd>
+    <dt><code>speed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The speed factor of the replay</p>
+</dd>
+    <dt><code>maxDelay</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum delay between messages in milliseconds</p>
+</dd>
+    <dt><code>producerId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd><p>The id of the producer from which we want to get messages, or null for messages from all producers</p>
+</dd>
+    <dt><code>rewriteTimestamps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd><p>Should the timestamp in messages be rewritten with current time</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StartReplayScenario_System_Int32_System_Int32_System_Int32_System_Nullable_System_Int32__System_Nullable_System_Boolean___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Start replay the event from replay queue. Events are played in the order they were played in reality, e.g. if there are some events that were played simultaneously in reality, they will be played in parallel as well here on replay server. If not specified, default values speed = 10 and max_delay = 10000 are used. This means that messages will be sent 10x faster than in reality, and that if there was some delay between messages that was longer than 10 seconds it will be reduced to exactly 10 seconds/10 000 ms (this is helpful especially in pre-match odds where delay can be even a few hours or more). If player is already in play, nothing will happen</p>
+</div>
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StopAndClearReplay_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StopAndClearReplay*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StopAndClearReplay" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StopAndClearReplay">
+  StopAndClearReplay()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stop the player if it is currently playing and clear the replay queue. If player is already stopped, the queue is cleared.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayResponse StopAndClearReplay()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StopReplay_" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StopReplay*"></a>
+
+  <h3 id="Sportradar_OddsFeed_SDK_Api_Replay_IReplayManager_StopReplay" data-uid="Sportradar.OddsFeed.SDK.Api.Replay.IReplayManager.StopReplay">
+  StopReplay()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stop the player if it is currently playing. If player is already stopped, nothing will happen.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReplayResponse StopReplay()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></dt>
+    <dd><p>Returns an <a class="xref" href="Sportradar.OddsFeed.SDK.Api.Replay.IReplayResponse.html">IReplayResponse</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2024, Sportradar AG. Send comments or questions to <a href='mailto:sdk%40sportradar.com?Subject=Odds%20Feed%20SDK%20Std%20Documentation: UnifiedFeed SDK .NET Standard 2.0&amp;body=Your%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report%2C%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed%2C%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.'>SDK Team</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
