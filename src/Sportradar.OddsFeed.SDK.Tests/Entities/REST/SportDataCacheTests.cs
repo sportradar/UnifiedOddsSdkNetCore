@@ -12,13 +12,14 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -570,7 +571,7 @@ public class SportDataCacheTests
         Assert.Equal(TestData.CacheCategoryCount, _sportDataCache.Categories.Count);
         Assert.Null(sportData);
 
-        // adding 
+        // adding
         var tournament = MessageFactoryRest.GetTournament();
         tournament.category.id = categoryId.ToString();
         tournament.sport.id = sportId.ToString();

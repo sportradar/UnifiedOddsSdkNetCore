@@ -7,8 +7,6 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.Config;
 
-//[CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
-
 [SuppressMessage("Usage", "xUnit1025:InlineData should be unique within the Theory it belongs to", Justification = "If min value changes, 0 will still not be allowed")]
 public class ConfigurationBuilderLimitsTests : ConfigurationBuilderSetup
 {

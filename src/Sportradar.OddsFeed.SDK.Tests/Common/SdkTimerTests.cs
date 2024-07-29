@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -113,5 +114,45 @@ public class SdkTimerTests
         Assert.NotNull(_sdkTimer);
         Assert.NotEmpty(_timerMsgs);
         Assert.Single(_timerMsgs);
+    }
+
+    [Fact]
+    public void TimerWhenDisposedThenReturnState()
+    {
+        var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+
+        sdkTimer.Dispose();
+
+        Assert.True(sdkTimer.IsDisposed());
+    }
+
+    [Fact]
+    [SuppressMessage("Major Code Smell", "S3966:Objects should not be disposed more than once", Justification = "Allowed in this test")]
+    public void TimerWhenDisposeTwiceThenReturnState()
+    {
+        var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+
+        sdkTimer.Dispose();
+        sdkTimer.Dispose();
+
+        Assert.True(sdkTimer.IsDisposed());
+    }
+
+    [Fact]
+    public void TimerWhenDisposedThenStartingThrows()
+    {
+        var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+        sdkTimer.Dispose();
+
+        Assert.Throws<ObjectDisposedException>(() => sdkTimer.Start());
+    }
+
+    [Fact]
+    public void TimerWhenDisposedThenStartingWithParamsThrows()
+    {
+        var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+        sdkTimer.Dispose();
+
+        Assert.Throws<ObjectDisposedException>(() => sdkTimer.Start(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)));
     }
 }

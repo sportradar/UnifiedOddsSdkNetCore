@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
@@ -11,6 +12,23 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 /// </summary>
 public static class TestExecutionHelper
 {
+    public static void Sleep(TimeSpan timeSpan)
+    {
+        Sleep((int)timeSpan.TotalMilliseconds);
+    }
+
+    public static void Sleep(int milliseconds)
+    {
+        var mre = new ManualResetEventSlim();
+        Task.Run(async () =>
+        {
+            await Task.Delay(milliseconds);
+            mre.Set();
+        });
+
+        mre.Wait();
+    }
+
     /// <summary>
     /// Try to execute action till success or timeout
     /// </summary>
@@ -32,7 +50,7 @@ public static class TestExecutionHelper
             {
                 // ignored
             }
-            Task.Delay(100).GetAwaiter().GetResult();
+            Sleep(100);
         }
         return finished;
     }
@@ -58,47 +76,7 @@ public static class TestExecutionHelper
             {
                 // ignored
             }
-            Task.Delay(delayMs).GetAwaiter().GetResult();
-        }
-        return finished;
-    }
-
-    /// <summary>
-    /// Try to safely execute action (exception ignored)
-    /// </summary>
-    /// <param name="action">Action to be invoked</param>
-    /// <returns>Indication if the action completed successfully</returns>
-    public static bool Safe(Action action)
-    {
-        var finished = false;
-        try
-        {
-            action.Invoke();
-            finished = true;
-        }
-        catch
-        {
-            // ignored
-        }
-        return finished;
-    }
-
-    /// <summary>
-    /// Try to safely execute action (exception ignored)
-    /// </summary>
-    /// <param name="action">Action to be invoked</param>
-    /// <returns>Indication if the action completed successfully</returns>
-    public static async Task<bool> SafeAsync(Action action)
-    {
-        var finished = false;
-        try
-        {
-            await Task.Run(action).ConfigureAwait(false);
-            finished = true;
-        }
-        catch
-        {
-            // ignored
+            Sleep(delayMs);
         }
         return finished;
     }

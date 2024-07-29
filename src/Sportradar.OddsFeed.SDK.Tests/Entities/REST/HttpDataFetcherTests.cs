@@ -1,7 +1,6 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -21,21 +20,18 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
-[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class HttpDataFetcherTests
 {
-    private readonly ITestOutputHelper _outputHelper;
     private readonly SdkHttpClient _sdkHttpClient;
     private readonly HttpDataFetcher _httpDataFetcher;
-    private readonly Uri _badUri = new("http://www.unexisting-url.com");
-    private readonly Uri _getUri = new("http://test.domain.com/get");
-    private readonly Uri _postUri = new("http://test.domain.com/post");
+    private readonly Uri _badUri = new Uri("http://www.unexisting-url.com");
+    private readonly Uri _getUri = new Uri("http://test.domain.com/get");
+    private readonly Uri _postUri = new Uri("http://test.domain.com/post");
     private readonly StubMessageHandler _stubMessageHandler;
 
     public HttpDataFetcherTests(ITestOutputHelper outputHelper)
     {
-        _outputHelper = outputHelper;
-        _stubMessageHandler = new StubMessageHandler(_outputHelper, 100, 50);
+        _stubMessageHandler = new StubMessageHandler(outputHelper, 100, 50);
         var httpClient = new HttpClient(_stubMessageHandler);
         httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
         httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
@@ -45,31 +41,31 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void Constructor_WithoutSdkHttpClient_Throws()
+    public void ConstructorWhenWithoutSdkHttpClientThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new HttpDataFetcher(null, new Deserializer<response>()));
     }
 
     [Fact]
-    public void Constructor_WithoutDeserializer_Throws()
+    public void ConstructorWhenWithoutDeserializerThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new HttpDataFetcher(_sdkHttpClient, null));
     }
 
     [Fact]
-    public void Constructor_InvalidConnectionFailureLimit_Throws()
+    public void ConstructorWhenInvalidConnectionFailureLimitThenThrows()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new HttpDataFetcher(_sdkHttpClient, new Deserializer<response>(), 0));
     }
 
     [Fact]
-    public void Constructor_InvalidConnectionFailureTimeout_Throws()
+    public void ConstructorWhenInvalidConnectionFailureTimeoutThenThrows()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new HttpDataFetcher(_sdkHttpClient, new Deserializer<response>(), 15, 0));
     }
 
     [Fact]
-    public async Task GetDataAsync_NormalUri()
+    public async Task GetDataAsyncWhenNormalUri()
     {
         var result = await _httpDataFetcher.GetDataAsync(_getUri);
 
@@ -81,15 +77,15 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void ValidateConnection_ConnectionFailureTime()
+    public async Task ValidateConnectionWhenConnectionFailureTime()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.BadGateway));
         var httpDataFetcher = new HttpDataFetcher(_sdkHttpClient, new Deserializer<response>(), 1, 5);
         Stream result = null;
-        Assert.Throws<CommunicationException>(() => result = httpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult());
+        await Assert.ThrowsAsync<CommunicationException>(async () => result = await httpDataFetcher.GetDataAsync(_getUri));
         Assert.Null(result);
 
-        var e = Assert.Throws<CommunicationException>(() => result = httpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult());
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await httpDataFetcher.GetDataAsync(_getUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
@@ -98,29 +94,29 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public async Task ValidateConnection_ConnectionFailureTime_SuccessfulResetAfterTimeout()
+    public async Task ValidateConnectionWhenConnectionFailureTimeThenSuccessfulResetAfterTimeout()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.BadGateway));
         var httpDataFetcher = new HttpDataFetcher(_sdkHttpClient, new Deserializer<response>(), 1, 1);
         Stream result = null;
 
-        Assert.Throws<CommunicationException>(() => result = httpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult());
+        await Assert.ThrowsAsync<CommunicationException>(async () => result = await httpDataFetcher.GetDataAsync(_getUri));
         Assert.Null(result);
 
         _stubMessageHandler.SetWantedResponse(GetSuccessResponseMessage());
         await Task.Delay(TimeSpan.FromSeconds(1));
 
-        result = httpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult();
+        result = await httpDataFetcher.GetDataAsync(_getUri);
         Assert.NotNull(result);
     }
 
     [Fact]
-    public void GetDataAsync_WrongUrl_ReturnsBadGatewayForWrongMessage()
+    public async Task GetDataAsyncWhenWrongUrlThenReturnsBadGatewayForWrongMessage()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.BadGateway));
         Stream result = null;
 
-        var e = Assert.Throws<CommunicationException>(() => result = _httpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult());
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _httpDataFetcher.GetDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
@@ -131,12 +127,12 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void GetDataAsync_WrongUrl_ThrowsHttpRequestException()
+    public async Task GetDataAsyncWhenWrongUrlThenThrowsHttpRequestException()
     {
         _stubMessageHandler.SetWantedResponse(new HttpRequestException("any-message", new SocketException(), HttpStatusCode.BadGateway));
         Stream result = null;
 
-        var e = Assert.Throws<CommunicationException>(() => result = _httpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult());
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _httpDataFetcher.GetDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
@@ -147,7 +143,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void GetData_BadGatewayWithValidContent()
+    public void GetDataWhenBadGatewayWithValidContent()
     {
         _stubMessageHandler.SetWantedResponse(GetSuccessResponseMessage(HttpStatusCode.GatewayTimeout));
         Stream result = null;
@@ -160,7 +156,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void GetData_WrongUrl_ThrowsSocketException()
+    public void GetDataWhenWrongUrlThenThrowsSocketException()
     {
         _stubMessageHandler.SetWantedResponse(new SocketException());
         Stream result = null;
@@ -176,7 +172,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void GetData_ValidContentWithResponseHeaders()
+    public void GetDataWhenValidContentWithResponseHeaders()
     {
         var httpResponseMessage = GetSuccessResponseMessage();
         httpResponseMessage.Headers.Add("any-key", "some-value");
@@ -191,7 +187,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void GetData_ValidContentWithMultipleSameResponseHeaders()
+    public void GetDataWhenValidContentWithMultipleSameResponseHeaders()
     {
         var httpResponseMessage = GetSuccessResponseMessage();
         httpResponseMessage.Headers.Add("any-key", "some-value");
@@ -208,10 +204,10 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void GetData_NullContent_Throws()
+    public void GetDataWhenNullContentThenThrows()
     {
         var httpResponseMessage = GetSuccessResponseMessage();
-        httpResponseMessage.Content = null;
+        httpResponseMessage.Content = null!;
         _stubMessageHandler.SetWantedResponse(httpResponseMessage);
         Stream result = null;
 
@@ -224,7 +220,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public async Task PostDataAsync_NormalUri()
+    public async Task PostDataAsyncWhenNormalUri()
     {
         var result = await _httpDataFetcher.PostDataAsync(_postUri);
 
@@ -233,7 +229,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public async Task PostDataAsync_WithContent()
+    public async Task PostDataAsyncWhenWithContent()
     {
         var result = await _httpDataFetcher.PostDataAsync(_getUri, new StringContent("test string"));
 
@@ -242,7 +238,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public async Task PostDataAsync_EmptyResponseContent()
+    public async Task PostDataAsyncWhenEmptyResponseContent()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.Accepted)
         {
@@ -255,12 +251,12 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void PostDataAsync_TestWithWrongUrl()
+    public async Task PostDataAsyncWhenTestWithWrongUrl()
     {
         _stubMessageHandler.SetWantedResponse(new HttpRequestException("any-message", new SocketException(), HttpStatusCode.BadGateway));
         HttpResponseMessage result = null;
 
-        var ex = Assert.Throws<CommunicationException>(() => result = _httpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult());
+        var ex = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _httpDataFetcher.PostDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(ex);
@@ -271,12 +267,12 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public void PostDataAsync_WrongUrl_ThrowCommunicationException()
+    public async Task PostDataAsyncWhenWrongUrlThenThrowCommunicationException()
     {
         _stubMessageHandler.SetWantedResponse(new CommunicationException("any-message", _badUri.PathAndQuery, HttpStatusCode.BadGateway, null));
         HttpResponseMessage result = null;
 
-        var e = Assert.Throws<CommunicationException>(() => result = _httpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult());
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _httpDataFetcher.PostDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
@@ -284,7 +280,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public async Task PostDataAsync_ValidContentWithResponseHeaders()
+    public async Task PostDataAsyncWhenValidContentWithResponseHeaders()
     {
         var httpResponseMessage = GetSuccessResponseMessage();
         httpResponseMessage.Headers.Add("any-key", "some-value");
@@ -299,7 +295,7 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
-    public async Task PostDataAsync_ValidContentWithMultipleSameResponseHeaders()
+    public async Task PostDataAsyncWhenValidContentWithMultipleSameResponseHeaders()
     {
         var httpResponseMessage = GetSuccessResponseMessage();
         httpResponseMessage.Headers.Add("any-key", "some-value");

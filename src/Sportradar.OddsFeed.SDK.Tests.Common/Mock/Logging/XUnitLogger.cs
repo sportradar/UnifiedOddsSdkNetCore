@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 
 public class XUnitLogger : ILogger
 {
@@ -55,6 +55,10 @@ public class XUnitLogger : ILogger
         try
         {
             _output?.WriteLine(msg);
+            if (exception != null)
+            {
+                _output?.WriteLine(exception.ToString());
+            }
         }
         catch
         {

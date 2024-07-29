@@ -12,7 +12,20 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 public static class FileHelper
 {
-    public static Stream GetStreamForString(string content)
+    public static string GetFileContent(string name)
+    {
+        var stream = GetResource(name);
+        if (stream == null)
+        {
+            return null;
+        }
+
+        using var reader = new StreamReader(stream);
+
+        return reader.ReadToEnd();
+    }
+
+    public static Stream GetStreamFromString(string content)
     {
         var stream = new MemoryStream();
         var writer = new StreamWriter(stream, Encoding.UTF8);

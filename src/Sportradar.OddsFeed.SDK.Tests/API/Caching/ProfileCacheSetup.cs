@@ -15,8 +15,8 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.DslApi;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 

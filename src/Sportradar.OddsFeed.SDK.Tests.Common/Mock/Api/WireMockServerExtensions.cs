@@ -4,7 +4,7 @@ using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.MockApi;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Api;
 
 public static class WireMockServerExtensions
 {
@@ -21,5 +21,10 @@ public static class WireMockServerExtensions
             .Given(Request.Create().WithPath("/myapi").UsingGet())
             .WithTitle(mappingName) // Naming the mapping
             .RespondWith(Response.Create().WithBody("Initial response"));
+    }
+
+    public static void ActivateOnlyLiveProducer(this WireMockServer wireMockServer)
+    {
+        wireMockServer.GetMappingBuilder().WithProducers(options => options.WithProducer(1));
     }
 }

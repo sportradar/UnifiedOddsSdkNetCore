@@ -22,7 +22,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -271,7 +271,7 @@ public class InvariantMarketDescriptionCacheTests
 
         _invariantMarketDescriptionCache.CacheDeleteItem(marketUrn, CacheItemType.All);
 
-        Assert.Empty(logCache.Messages.Where(w => w.Contains("delete invariant market", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.DoesNotContain(logCache.Messages, w => w.Contains("delete invariant market", StringComparison.InvariantCultureIgnoreCase));
         Assert.Empty(logExec.Messages);
     }
 
@@ -333,7 +333,7 @@ public class InvariantMarketDescriptionCacheTests
 
         _invariantMarketDescriptionCache.CacheDeleteItem(nonExistingMarketId, CacheItemType.All);
 
-        Assert.Empty(logCache.Messages.Where(w => w.Contains("delete invariant market", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.DoesNotContain(logCache.Messages, w => w.Contains("delete invariant market", StringComparison.InvariantCultureIgnoreCase));
         Assert.Empty(logExec.Messages);
     }
 
@@ -347,7 +347,7 @@ public class InvariantMarketDescriptionCacheTests
 
         _invariantMarketDescriptionCache.CacheDeleteItem(DefaultMarketId282.ToString(CultureInfo.InvariantCulture), CacheItemType.All);
 
-        Assert.Empty(logCache.Messages.Where(w => w.Contains("delete invariant market", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.DoesNotContain(logCache.Messages, w => w.Contains("delete invariant market", StringComparison.InvariantCultureIgnoreCase));
         Assert.Empty(logExec.Messages);
     }
 
@@ -570,7 +570,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
+        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions), 1000, 30000);
 
         Assert.True(success);
         Assert.Equal(ScheduleData.InvariantListCacheCount, _invariantMarketDescriptionMemoryCache.Count());

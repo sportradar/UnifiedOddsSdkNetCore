@@ -1,7 +1,6 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
@@ -11,32 +10,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
     /// </summary>
     internal static class ExecutionHelper
     {
-        /// <summary>
-        /// Try to execute action till success or timeout
-        /// </summary>
-        /// <param name="action">Action to be invoked</param>
-        /// <param name="timeoutMs">Maximum execution time</param>
-        /// <returns>Indication if the action completed successfully</returns>
-        public static bool WaitToComplete(Action action, int timeoutMs = 10000)
-        {
-            var stopWatch = Stopwatch.StartNew();
-
-            while (stopWatch.ElapsedMilliseconds < timeoutMs)
-            {
-                try
-                {
-                    action.Invoke();
-                    return true;
-                }
-                catch
-                {
-                    // ignored
-                    Task.Delay(100).GetAwaiter().GetResult();
-                }
-            }
-            return false;
-        }
-
         /// <summary>
         /// Try to safely execute action (exception ignored)
         /// </summary>

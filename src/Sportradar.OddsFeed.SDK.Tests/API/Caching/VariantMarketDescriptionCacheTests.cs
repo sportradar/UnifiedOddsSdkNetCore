@@ -20,7 +20,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 

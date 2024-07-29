@@ -14,6 +14,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LocalEnvironment", "LocalEnvironment", "{9ED10CDB-2C38-433D-877E-F9F3F827FE23}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		rabbit.config = rabbit.config
+		LocalEnvReadme.md = LocalEnvReadme.md
+		rabbit-definitions.json = rabbit-definitions.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +43,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9ED10CDB-2C38-433D-877E-F9F3F827FE23} = {E22EBEA8-EF9D-401E-A3D1-6D56D9A87801}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F3F89D5-51AC-4260-A838-8667693E7E25}

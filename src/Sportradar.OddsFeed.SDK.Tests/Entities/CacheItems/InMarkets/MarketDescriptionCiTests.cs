@@ -558,7 +558,7 @@ public class MarketDescriptionCiTests
         Assert.Equal(CacheItemSource, _ciMd.SourceCache);
     }
 
-    [CollectionDefinition("MarketDescriptionCiMergeTests", DisableParallelization = true)]
+    [Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
     public class MergeTests
     {
         private readonly desc_market _apiMd1;

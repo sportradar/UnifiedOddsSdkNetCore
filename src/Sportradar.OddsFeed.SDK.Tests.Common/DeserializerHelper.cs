@@ -10,6 +10,6 @@ public static class DeserializerHelper
     public static T GetDeserializedApiMessage<T>(string xml) where T : RestMessage
     {
         var deserializer = new Deserializer<T>();
-        return deserializer.Deserialize(FileHelper.GetStreamForString(xml));
+        return deserializer.Deserialize(FileHelper.GetStreamFromString(xml));
     }
 }

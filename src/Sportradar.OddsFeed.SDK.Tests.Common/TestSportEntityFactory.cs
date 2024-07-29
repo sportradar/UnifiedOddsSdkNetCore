@@ -18,7 +18,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit.Abstractions;
 
 // ReSharper disable NotAccessedField.Local

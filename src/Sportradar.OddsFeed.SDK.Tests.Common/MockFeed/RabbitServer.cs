@@ -19,6 +19,8 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.MockFeed;
@@ -29,7 +31,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.MockFeed;
 /// <remarks>On rabbit server there should be additional user:testuser/testpass and virtual host: /virtualhost with read/write permission</remarks>
 internal class RabbitServer
 {
-    private const string LocalRabbitIp = "10.27.121.87"; // "192.168.64.100"; //rabbitmq
+    //private const string LocalRabbitIp = "192.168.0.151";  //home
+    private const string LocalRabbitIp = "10.27.121.90"; //office
     public const string SdkRabbitUsername = "testuser";
     public const string SdkRabbitPassword = "testpass";
     private const string UfExchange = "unifiedfeed";
@@ -40,7 +43,7 @@ internal class RabbitServer
     private IModel _channel;
     private bool _isRunning;
     private ISdkTimer _timer;
-    private readonly FeedMessageBuilder _fMessageBuilder;
+    private readonly Dsl.Feed.FeedMessageBuilder _fMessageBuilder;
     private readonly TestProducersProvider _producersProvider;
     private readonly ITestOutputHelper _outputHelper;
 
@@ -66,7 +69,7 @@ internal class RabbitServer
         _outputHelper = outputHelper;
         Messages = new ConcurrentQueue<RabbitMessage>();
         ProducersAlive = new ConcurrentDictionary<int, DateTime>();
-        _fMessageBuilder = new FeedMessageBuilder(1);
+        _fMessageBuilder = new Dsl.Feed.FeedMessageBuilder(1);
         _isRunning = false;
 
         ManagementClient = new ManagementClient(new Uri($"http://{GetRabbitIp()}:15672"), DefaultRabbitUserName, DefaultRabbitPassword);
@@ -295,35 +298,35 @@ internal class RabbitServer
     {
         if (message is alive aliveMsg)
         {
-            return MsgSerializer.Serialize(aliveMsg);
+            return MsgSerializer.SerializeToXml(aliveMsg);
         }
 
         if (message is odds_change oddsChange)
         {
-            return MsgSerializer.Serialize(oddsChange);
+            return MsgSerializer.SerializeToXml(oddsChange);
         }
 
         if (message is bet_stop betStop)
         {
-            return MsgSerializer.Serialize(betStop);
+            return MsgSerializer.SerializeToXml(betStop);
         }
 
         if (message is fixture_change fixtureChange)
         {
-            return MsgSerializer.Serialize(fixtureChange);
+            return MsgSerializer.SerializeToXml(fixtureChange);
         }
 
         if (message is snapshot_complete snapshotComplete)
         {
-            return MsgSerializer.Serialize(snapshotComplete);
+            return MsgSerializer.SerializeToXml(snapshotComplete);
         }
 
         if (message is bet_settlement betSettlement)
         {
-            return MsgSerializer.Serialize(betSettlement);
+            return MsgSerializer.SerializeToXml(betSettlement);
         }
 
-        return MsgSerializer.Serialize(message);
+        return MsgSerializer.SerializeToXml(message);
     }
 
     /// <summary>

@@ -21,7 +21,7 @@ using DateTime = System.DateTime;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 {
-    internal class EventChangeManager : IEventChangeManager
+    internal class EventChangeManager : IEventChangeManager, IDisposable
     {
         private static readonly ILogger LogInt = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(EventChangeManager));
         private static readonly ILogger LogExec = SdkLoggerFactory.GetLoggerForExecution(typeof(EventChangeManager));
@@ -142,6 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
         public void Start()
         {
+            //check if _sportEventCache is disposed
             if (!IsRunning)
             {
                 LogInt.LogInformation("Starting periodical fetching of fixture and result changes");
@@ -384,6 +385,19 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 }
             }
             _isDispatching = false;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _fixtureTimer?.Dispose();
+            _resultTimer?.Dispose();
+            _sportEventCache?.Dispose();
         }
     }
 }

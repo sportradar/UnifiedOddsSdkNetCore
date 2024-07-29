@@ -36,7 +36,7 @@ public class SportListMapperTests
             dataFetcher,
             deserializer,
             mapperFactory);
-        Entity = dataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
+        Entity = dataProvider.GetData("en");
     }
 
     [Fact]

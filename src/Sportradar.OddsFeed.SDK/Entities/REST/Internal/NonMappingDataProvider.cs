@@ -2,6 +2,7 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
@@ -15,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
     /// </summary>
     /// <typeparam name="T">Specifies the type of Dto instance which will be obtained by deserialization and returned</typeparam>
     /// <seealso cref="IDataProvider{T}" />
-    internal class NonMappingDataProvider<T> : IDataProvider<T> where T : class
+    internal sealed class NonMappingDataProvider<T> : IDataProvider<T> where T : class
     {
         /// <summary>
         /// Event raised when the data provider receives the api message
@@ -59,12 +60,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// </summary>
         /// <param name="uri">A <see cref="Uri"/> specifying the data location</param>
         /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
-        protected async Task<T> GetDataAsyncInternal(Uri uri)
+        private async Task<T> GetDataAsyncInternal(Uri uri)
         {
             Guard.Argument(uri, nameof(uri)).NotNull();
 
-            var stream = await DataFetcher.GetDataAsync(uri).ConfigureAwait(false);
-            return _deserializer.Deserialize(stream);
+            using (var stream = await DataFetcher.GetDataAsync(uri))
+            {
+                return _deserializer.Deserialize(stream);
+            }
         }
 
         /// <summary>
@@ -72,12 +75,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// </summary>
         /// <param name="uri">A <see cref="Uri"/> specifying the data location</param>
         /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
-        protected T GetDataInternal(Uri uri)
+        private T GetDataInternal(Uri uri)
         {
             Guard.Argument(uri, nameof(uri)).NotNull();
 
-            var stream = DataFetcher.GetData(uri);
-            return _deserializer.Deserialize(stream);
+            using (var stream = DataFetcher.GetData(uri))
+            {
+                return _deserializer.Deserialize(stream);
+            }
         }
 
         /// <summary>
@@ -85,11 +90,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// </summary>
         /// <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
         /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <c>identifiers</c></returns>
-        protected virtual Uri GetRequestUri(params object[] identifiers)
+        private Uri GetRequestUri(params object[] identifiers)
         {
             Guard.Argument(identifiers, nameof(identifiers)).NotNull();
 
-            if (identifiers.Length == 0)
+            if (identifiers.Length == 0 || identifiers.Any(a => a == null))
             {
                 throw new ArgumentOutOfRangeException(nameof(identifiers));
             }

@@ -5,7 +5,7 @@ using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.MockFeed;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
 
 /// <summary>
 /// Class RabbitMessage

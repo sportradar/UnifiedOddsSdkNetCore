@@ -20,7 +20,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -63,12 +63,12 @@ public class TournamentTests
 
         var tourDataProvider = new DataProvider<tournamentInfoEndpoint, TournamentInfoDto>(TestData.RestXmlPath + TourInfoXml, dataFetcher, deserializer, mapperFactory);
         _tourApiData = deserializer.Deserialize(dataFetcher.GetData(new Uri(string.Format(TestData.RestXmlPath + TourInfoXml))));
-        _tourDtoData = tourDataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
+        _tourDtoData = tourDataProvider.GetDataAsync("en").GetAwaiter().GetResult();
         _tourCiData = (TournamentInfoCacheItem)sportEventCache.GetEventCacheItem(Urn.Parse("sr:tournament:40"));
 
         var seasonDataProvider = new DataProvider<tournamentInfoEndpoint, TournamentInfoDto>(TestData.RestXmlPath + SeasonInfoXml, dataFetcher, deserializer, mapperFactory);
         _seasonApiData = deserializer.Deserialize(dataFetcher.GetData(new Uri(string.Format(TestData.RestXmlPath + SeasonInfoXml))));
-        _seasonDtoData = seasonDataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
+        _seasonDtoData = seasonDataProvider.GetDataAsync("en").GetAwaiter().GetResult();
         _seasonCiData = (TournamentInfoCacheItem)sportEventCache.GetEventCacheItem(Urn.Parse("sr:season:80242"));
     }
 

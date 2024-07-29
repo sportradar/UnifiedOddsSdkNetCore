@@ -1,6 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.MockFeed;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
 
 public class MqUser
 {

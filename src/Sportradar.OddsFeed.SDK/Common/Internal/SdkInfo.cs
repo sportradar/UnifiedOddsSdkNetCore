@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -604,7 +604,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         }
 
         /// <summary>
-        /// Calculates the length in bytes of an object and returns the size 
+        /// Calculates the length in bytes of an object and returns the size
         /// </summary>
         /// <param name="serializableObject">Object to get size</param>
         /// <returns>The size in bytes</returns>
@@ -616,19 +616,21 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             }
             if (!serializableObject.GetType().IsSerializable)
             {
-                return 0;
+                return 1;
             }
-            var bf = new BinaryFormatter();
             using (var ms = new MemoryStream())
             {
-                bf.Serialize(ms, serializableObject);
-                var array = ms.ToArray();
-                return array.Length;
+                var serializer = new DataContractJsonSerializer(serializableObject.GetType());
+                serializer.WriteObject(ms, serializableObject);
+                var jsonString = Encoding.UTF8.GetString(ms.ToArray());
+
+                var bytes = Encoding.UTF8.GetBytes(jsonString);
+                return bytes.Length;
             }
         }
 
         /// <summary>
-        /// Calculates the length in bytes of an object and returns the size 
+        /// Calculates the length in bytes of an object and returns the size
         /// </summary>
         /// <param name="serializableObject">Object to get size</param>
         /// <returns>The size in bytes</returns>

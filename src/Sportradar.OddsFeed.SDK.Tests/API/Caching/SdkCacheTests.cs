@@ -12,7 +12,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -100,15 +100,15 @@ public class SdkCacheTests
     }
 
     [Fact]
-    public void CacheAddDtoWhenNullIdThenThrow()
+    public async Task CacheAddDtoWhenNullIdThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentNullException>(() => _sdkCache.CacheAddDtoAsync(null, new object(), ScheduleData.CultureEn, DtoType.SportEventSummary, null));
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _sdkCache.CacheAddDtoAsync(null, new object(), ScheduleData.CultureEn, DtoType.SportEventSummary, null));
     }
 
     [Fact]
-    public void CacheAddDtoWhenNullObjectThenThrow()
+    public async Task CacheAddDtoWhenNullObjectThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentNullException>(() => _sdkCache.CacheAddDtoAsync(ScheduleData.MatchId, null, ScheduleData.CultureEn, DtoType.SportEventSummary, null));
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _sdkCache.CacheAddDtoAsync(ScheduleData.MatchId, null, ScheduleData.CultureEn, DtoType.SportEventSummary, null));
     }
 
     [Fact]
@@ -140,12 +140,12 @@ public class SdkCacheTests
     }
 
     [Fact]
-    public void CacheAddDtoWhenThrowsThenIsPropagated()
+    public async Task CacheAddDtoWhenThrowsThenIsPropagated()
     {
         var anyDto = new CarDto(new car { name = "some-car-name" });
         var throwSdkCache = new TestSdkCacheWithExceptions(_cacheManager, _loggerFactory);
 
-        _ = Assert.ThrowsAsync<ArgumentNullException>(() => throwSdkCache.CacheAddDtoAsync(ScheduleData.MatchId, anyDto, ScheduleData.CultureEn, DtoType.SportEventSummary, null));
+        _ = await Assert.ThrowsAsync<InvalidOperationException>(() => throwSdkCache.CacheAddDtoAsync(ScheduleData.MatchId, anyDto, ScheduleData.CultureEn, DtoType.SportEventSummary, null));
 
         Assert.True(throwSdkCache.IsAddDtoItemCalled);
     }

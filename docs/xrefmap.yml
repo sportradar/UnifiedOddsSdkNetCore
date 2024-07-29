@@ -14669,6 +14669,38 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatch.GetTournamentRoundAsync
   nameWithType: IMatch.GetTournamentRoundAsync
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics
+  name: IMatchStatistics
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics
+  nameWithType: IMatchStatistics
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.PeriodStatistics
+  name: PeriodStatistics
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatistics_PeriodStatistics
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.PeriodStatistics
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.PeriodStatistics
+  nameWithType: IMatchStatistics.PeriodStatistics
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.PeriodStatistics*
+  name: PeriodStatistics
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatistics_PeriodStatistics_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.PeriodStatistics
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.PeriodStatistics
+  nameWithType: IMatchStatistics.PeriodStatistics
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.TotalStatistics
+  name: TotalStatistics
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatistics_TotalStatistics
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.TotalStatistics
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.TotalStatistics
+  nameWithType: IMatchStatistics.TotalStatistics
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.TotalStatistics*
+  name: TotalStatistics
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatistics_TotalStatistics_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.TotalStatistics
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.TotalStatistics
+  nameWithType: IMatchStatistics.TotalStatistics
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus
   name: IMatchStatus
   href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.html
@@ -14779,6 +14811,25 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.PeriodScores
   nameWithType: IMatchStatus.PeriodScores
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1
+  name: IMatchStatusV1
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1
+  nameWithType: IMatchStatusV1
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
+  name: Statistics
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatusV1_Statistics
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
+  nameWithType: IMatchStatusV1.Statistics
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics*
+  name: Statistics
+  href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatusV1_Statistics_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
+  nameWithType: IMatchStatusV1.Statistics
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue
   name: INamedValue
   href: _api/Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue.html

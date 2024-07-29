@@ -86,14 +86,12 @@ public class TelemetryTrackerTests
     public async Task Dispose_RecordsToHistogram()
     {
         var hist = _meter.CreateHistogram<long>("some-name");
-        using (var tracker = new TelemetryTracker(hist))
-        {
-            await Task.Delay(TimeSpan.FromMilliseconds(50));
-            Assert.NotNull(tracker);
-            Assert.True(tracker.Elapsed.TotalMilliseconds >= 50);
-        }
+        using var tracker = new TelemetryTracker(hist);
+        await Task.Delay(TimeSpan.FromMilliseconds(250));
 
         Assert.NotNull(hist);
+        Assert.NotNull(tracker);
+        Assert.True(tracker.Elapsed.TotalMilliseconds >= 250, $"Expected: {tracker.Elapsed.TotalMilliseconds} >= 250");
     }
 
     [Fact]

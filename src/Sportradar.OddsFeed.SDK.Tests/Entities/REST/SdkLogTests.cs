@@ -13,7 +13,7 @@ using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
-[CollectionDefinition("SdkLogTests", DisableParallelization = true)]
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class SdkLogTests : IDisposable
 {
     public SdkLogTests()

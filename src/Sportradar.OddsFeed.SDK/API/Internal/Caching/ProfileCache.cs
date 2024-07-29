@@ -1078,12 +1078,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 _exportSemaphore.ReleaseSafe();
             }
 
-            var tasks = exportable.Select(e =>
-                                          {
-                                              var task = e.ExportAsync();
-                                              task.ConfigureAwait(false);
-                                              return task;
-                                          });
+            var tasks = exportable.Select(e => e.ExportAsync());
 
             return await Task.WhenAll(tasks).ConfigureAwait(false);
         }
@@ -1099,19 +1094,19 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             {
                 if (exportable is ExportableTeamCompetitor exportableTeamCompetitor)
                 {
-                    var task = Task.Run(() => AddTeamCompetitorAsync(exportableTeamCompetitor).ConfigureAwait(false));
+                    var task = AddTeamCompetitorAsync(exportableTeamCompetitor);
                     tasks.Add(task);
                     continue;
                 }
                 if (exportable is ExportableCompetitor exportableCompetitor)
                 {
-                    var task = Task.Run(() => AddCompetitorAsync(exportableCompetitor).ConfigureAwait(false));
+                    var task = AddCompetitorAsync(exportableCompetitor);
                     tasks.Add(task);
                     continue;
                 }
                 if (exportable is ExportablePlayerProfile exportablePlayerProfile)
                 {
-                    var task = Task.Run(() => AddPlayerProfileAsync(exportablePlayerProfile).ConfigureAwait(false));
+                    var task = AddPlayerProfileAsync(exportablePlayerProfile);
                     tasks.Add(task);
                 }
             }

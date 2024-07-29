@@ -739,6 +739,9 @@
         <EmbeddedResource Include="REST XMLs\variant_market_description_nl.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="REST XMLs\void_reasons.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="REST XMLs\whoami.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>

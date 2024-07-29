@@ -9,15 +9,15 @@
 	<PackageId>Sportradar.OddsFeed.SDKCore</PackageId>
 	<Product>Sportradar.OddsFeed.SDKCore</Product>
 	<Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Standard 2.0)</Description>
-	<Copyright>Copyright © Sportradar AG 2023</Copyright>
+	<Copyright>Copyright © Sportradar AG 2024</Copyright>
 	<Authors>Sportradar AG</Authors>
 	<Company>Sportradar AG</Company>
 	<RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
 	<PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
 	<PackageProjectUrl>https://sdk.sportradar.com</PackageProjectUrl>
-	<AssemblyVersion>2.1.0.0</AssemblyVersion>
-	<FileVersion>2.1.0.0</FileVersion>
-	<Version>2.1.0</Version>
+	<AssemblyVersion>2.2.0.0</AssemblyVersion>
+	<FileVersion>2.2.0.0</FileVersion>
+	<Version>2.2.0</Version>
 	<UserSecretsId>27ef2334-e9fc-4f05-b88a-a33259c908c3</UserSecretsId>
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	<EnableNETAnalyzers>True</EnableNETAnalyzers>

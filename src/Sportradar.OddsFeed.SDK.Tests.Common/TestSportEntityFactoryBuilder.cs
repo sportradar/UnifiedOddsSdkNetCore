@@ -16,7 +16,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit.Abstractions;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -40,6 +40,7 @@ public class TestSportEntityFactoryBuilder
     internal readonly ICacheStore<string> ProfileMemoryCache;
     internal readonly ICacheStore<string> SportEventStatusMemoryCache;
     internal readonly ICacheStore<string> IgnoreTimelineMemoryCache;
+    internal readonly ILocalizedNamedValueCache MatchStatusCache;
     internal readonly ExceptionHandlingStrategy ThrowingStrategy;
     internal readonly XunitLoggerFactory LoggerFactory;
 
@@ -83,11 +84,11 @@ public class TestSportEntityFactoryBuilder
         SportEventCache = new SportEventCache(SportEventMemoryCache, selectedDataRouterManager, sportEventCacheItemFactory, timer, Cultures, CacheManager, LoggerFactory);
         ProfileCache = new ProfileCache(ProfileMemoryCache, selectedDataRouterManager, CacheManager, SportEventCache, LoggerFactory);
         SportDataCache = new SportDataCache(selectedDataRouterManager, timer, Cultures, SportEventCache, CacheManager, LoggerFactory);
-        var sportEventStatusCache = TestLocalizedNamedValueCache.CreateMatchStatusCache(Cultures, ThrowingStrategy);
+        MatchStatusCache = TestLocalizedNamedValueCache.CreateMatchStatusCache(Cultures, ThrowingStrategy);
         var namedValuesProviderMock = new Mock<INamedValuesProvider>();
-        namedValuesProviderMock.Setup(args => args.MatchStatuses).Returns(sportEventStatusCache);
+        namedValuesProviderMock.Setup(args => args.MatchStatuses).Returns(MatchStatusCache);
         EventStatusCache = new SportEventStatusCache(SportEventStatusMemoryCache, new SportEventStatusMapperFactory(), SportEventCache, CacheManager, IgnoreTimelineMemoryCache, TestConfiguration.GetConfig(), LoggerFactory);
-        SportEntityFactory = new SportEntityFactory(SportDataCache, SportEventCache, EventStatusCache, sportEventStatusCache, ProfileCache, SdkInfo.SoccerSportUrns);
+        SportEntityFactory = new SportEntityFactory(SportDataCache, SportEventCache, EventStatusCache, MatchStatusCache, ProfileCache, SdkInfo.SoccerSportUrns);
     }
 
     public async Task InitializeSportEntities()

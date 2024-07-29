@@ -37,11 +37,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
     internal class SportEventCache : SdkCache, ISportEventCache
     {
         /// <summary>
-        /// A <see cref="ILogger"/> instance used for logging
-        /// </summary>
-        private static new readonly ILogger CacheLog = SdkLoggerFactory.GetLoggerForCache(typeof(SportEventCache));
-
-        /// <summary>
         /// The list of dates already automatically loaded by the timer
         /// </summary>
         private readonly List<DateTime> _fetchedDates;
@@ -127,7 +122,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
             SpecialTournaments = new ConcurrentBag<Urn>();
 
-            LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200));
+            LockManager = new LockManager(new ConcurrentDictionary<string, DateTime>(), TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(200), loggerFactory.CreateLogger<LockManager>());
 
             _timer = timer;
             _timer.Elapsed += OnTimerElapsed;
@@ -139,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             Task.Run(async () =>
                      {
                          await OnTimerElapsedAsync().ConfigureAwait(false);
-                         LockManager.Clean();
+                         await LockManager.CleanAsync();
                      });
         }
 
@@ -780,8 +775,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             if (disposing)
             {
                 _timer.Stop();
+                _timer.Dispose();
                 _timerSemaphoreSlim.ReleaseSafe();
                 _timerSemaphoreSlim.Dispose();
+                Cache.Dispose();
             }
             _isDisposed = true;
         }
@@ -1291,17 +1288,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <returns>Collection of <see cref="ExportableBase"/> containing all the items currently in the cache</returns>
         public async Task<IEnumerable<ExportableBase>> ExportAsync()
         {
-            IEnumerable<IExportableBase> exportables;
             LockManager.Wait();
-            exportables = Cache.GetValues().Select(i => (IExportableBase)i);
+            var exportables = Cache.GetValues().Select(i => (IExportableBase)i);
             LockManager.Release();
 
-            var tasks = exportables.Select(e =>
-                                           {
-                                               var task = e.ExportAsync();
-                                               task.ConfigureAwait(false);
-                                               return task;
-                                           });
+            var tasks = exportables.Select(e => e.ExportAsync());
 
             return await Task.WhenAll(tasks).ConfigureAwait(false);
         }
@@ -1332,7 +1323,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             {
                 LockManager.Release();
             }
-
             return Task.CompletedTask;
         }
 

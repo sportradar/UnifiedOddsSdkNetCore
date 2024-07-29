@@ -27,7 +27,7 @@ public class TournamentDetailsMapperTests
             deserializer,
             mapperFactory);
 
-        var entity = await dataProvider.GetDataAsync("", "en");
+        var entity = await dataProvider.GetDataAsync("en");
 
         Assert.NotNull(entity);
     }

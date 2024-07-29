@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="CompetitionStatus" />
     /// <seealso cref="IMatchStatus" />
-    internal class MatchStatus : CompetitionStatus, IMatchStatus
+    internal class MatchStatus : CompetitionStatus, IMatchStatusV1
     {
         /// <summary>
         /// Gets the <see cref="IEventClock" /> instance describing the timings in the current event
@@ -56,6 +56,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public bool? DecidedByFed { get; }
 
         /// <summary>
+        /// Returns match statistics
+        /// </summary>
+        public IMatchStatistics Statistics { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MatchStatus"/> class
         /// </summary>
         /// <param name="ci">The cache item</param>
@@ -76,6 +81,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             HomePenaltyScore = ci.HomePenaltyScore;
             AwayPenaltyScore = ci.AwayPenaltyScore;
             DecidedByFed = ci.DecidedByFed;
+
+            if (ci?.SportEventStatistics != null)
+            {
+                Statistics = new MatchStatistics(ci.SportEventStatistics.TotalStatisticsDtos,
+                                                 ci.SportEventStatistics.PeriodStatisticsDtos);
+            }
         }
 
         /// <summary>

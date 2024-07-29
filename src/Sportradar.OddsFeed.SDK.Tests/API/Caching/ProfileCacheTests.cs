@@ -20,21 +20,21 @@ public class ProfileCacheTests : ProfileCacheSetup
     }
 
     [Fact]
-    public void GetPlayerProfileWhenNullPlayerIdThenThrow()
+    public async Task GetPlayerProfileWhenNullPlayerIdThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetPlayerProfileAsync(null, _cultures, true));
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetPlayerProfileAsync(null, _cultures, true));
     }
 
     [Fact]
-    public void GetPlayerProfileWhenNullLanguagesThenThrow()
+    public async Task GetPlayerProfileWhenNullLanguagesThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), null, true));
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), null, true));
     }
 
     [Fact]
-    public void GetPlayerProfileWhenEmptyLanguagesThenThrow()
+    public async Task GetPlayerProfileWhenEmptyLanguagesThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), Array.Empty<CultureInfo>(), true));
+        _ = await Assert.ThrowsAsync<ArgumentException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), Array.Empty<CultureInfo>(), true));
     }
 
     [Fact]
@@ -262,21 +262,21 @@ public class ProfileCacheTests : ProfileCacheSetup
     }
 
     [Fact]
-    public void GetCompetitorProfileWhenNullPlayerIdThenThrow()
+    public async Task GetCompetitorProfileWhenNullPlayerIdThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetCompetitorProfileAsync(null, _cultures, true));
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetCompetitorProfileAsync(null, _cultures, true));
     }
 
     [Fact]
-    public void GetCompetitorProfileWhenNullLanguagesThenThrow()
+    public async Task GetCompetitorProfileWhenNullLanguagesThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), null, true));
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), null, true));
     }
 
     [Fact]
-    public void GetCompetitorProfileWhenEmptyLanguagesThenThrow()
+    public async Task GetCompetitorProfileWhenEmptyLanguagesThenThrow()
     {
-        _ = Assert.ThrowsAsync<ArgumentException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), Array.Empty<CultureInfo>(), true));
+        _ = await Assert.ThrowsAsync<ArgumentException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), Array.Empty<CultureInfo>(), true));
     }
 
     [Fact]

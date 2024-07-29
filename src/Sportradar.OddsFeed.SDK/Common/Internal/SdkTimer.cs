@@ -96,6 +96,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             }
         }
 
+        public bool IsDisposed()
+        {
+            return _isDisposed;
+        }
+
         /// <summary>
         /// Disposes resources associated with the current instance
         /// </summary>
@@ -107,12 +112,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                 return;
             }
 
+            _isDisposed = true;
+
             if (disposing)
             {
                 _timer.Dispose();
             }
-
-            _isDisposed = true;
         }
 
         /// <summary>
@@ -122,6 +127,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public void Start()
         {
+            if (_isDisposed)
+            {
+                throw new ObjectDisposedException("SdkTimer is disposed");
+            }
             _timer.Change(DueTime, Period);
         }
 
@@ -136,6 +145,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         {
             Guard.Argument(dueTime, nameof(dueTime)).Require(dueTime >= TimeSpan.Zero);
             Guard.Argument(period, nameof(period)).Require(period > TimeSpan.Zero);
+
+            if (_isDisposed)
+            {
+                throw new ObjectDisposedException("SdkTimer is disposed");
+            }
 
             DueTime = dueTime;
             Period = period;

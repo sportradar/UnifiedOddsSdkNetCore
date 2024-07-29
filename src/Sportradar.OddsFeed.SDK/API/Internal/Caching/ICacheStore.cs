@@ -1,11 +1,12 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 {
-    internal interface ICacheStore<T>
+    internal interface ICacheStore<T> : IDisposable
     {
         string StoreName { get; }
 

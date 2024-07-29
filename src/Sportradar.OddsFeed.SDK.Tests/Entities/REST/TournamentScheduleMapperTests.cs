@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
 public class TournamentScheduleMapperTests
 {
-    private const string InputXml = "tournament_schedule_{1}.xml";
+    private const string InputXml = "tournament_schedule_{0}.xml";
 
     private readonly EntityList<SportEventSummaryDto> _entity;
 
@@ -28,8 +28,7 @@ public class TournamentScheduleMapperTests
             dataFetcher,
             deserializer,
             mapperFactory);
-        _entity = dataProvider.GetDataAsync("", "en").GetAwaiter().GetResult();
-
+        _entity = dataProvider.GetData("en");
     }
 
     private static XName GetXName(string localName)
@@ -43,7 +42,7 @@ public class TournamentScheduleMapperTests
         Assert.NotNull(_entity);
         Assert.NotNull(_entity.Items);
 
-        var doc = XDocument.Load(string.Format(TestData.RestXmlPath + InputXml, "1", "en"));
+        var doc = XDocument.Load(string.Format(TestData.RestXmlPath + InputXml, "en"));
 
         var allXmlSportEvents = doc.Descendants(GetXName("sport_event")).ToList();
         Assert.Equal(_entity.Items.Count(), allXmlSportEvents.Count);

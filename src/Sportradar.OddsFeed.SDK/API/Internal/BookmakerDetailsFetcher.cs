@@ -33,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         /// <returns>A <see cref="Task{IBookmakerDetails}"/> representing the asynchronous operation</returns>
         public async Task<IBookmakerDetails> WhoAmIAsync()
         {
-            var detailsDto = await _bookmakerDetailsProvider.GetDataAsync(new string[1]).ConfigureAwait(false);
+            var detailsDto = await _bookmakerDetailsProvider.GetDataAsync().ConfigureAwait(false);
             var bookmakerDetails = new BookmakerDetails(detailsDto);
             return bookmakerDetails;
         }

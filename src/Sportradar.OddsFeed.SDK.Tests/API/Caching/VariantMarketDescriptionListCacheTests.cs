@@ -21,7 +21,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -261,7 +261,7 @@ public class VariantMarketDescriptionListCacheTests
 
         _variantsListCache.CacheDeleteItem(marketUrn, CacheItemType.All);
 
-        Assert.Empty(logCache.Messages.Where(w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.DoesNotContain(logCache.Messages, w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase));
         Assert.Empty(logExec.Messages);
     }
 
@@ -322,7 +322,7 @@ public class VariantMarketDescriptionListCacheTests
 
         _variantsListCache.CacheDeleteItem(nonExistingMarketId, CacheItemType.All);
 
-        Assert.Empty(logCache.Messages.Where(w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.DoesNotContain(logCache.Messages, w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase));
         Assert.Empty(logExec.Messages);
     }
 
@@ -336,7 +336,7 @@ public class VariantMarketDescriptionListCacheTests
 
         _variantsListCache.CacheDeleteItem(DefaultVariantId.ToString(CultureInfo.InvariantCulture), CacheItemType.All);
 
-        Assert.Empty(logCache.Messages.Where(w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.DoesNotContain(logCache.Messages, w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase));
         Assert.Empty(logExec.Messages);
     }
 

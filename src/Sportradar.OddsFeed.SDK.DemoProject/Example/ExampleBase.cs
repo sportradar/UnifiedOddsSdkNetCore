@@ -14,10 +14,10 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 {
     public abstract class ExampleBase
     {
-        protected ILogger Log;
-        protected TaskProcessor TaskProcessor;
+        protected readonly ILogger Log;
+        protected readonly TaskProcessor TaskProcessor;
 
-        public ExampleBase(ILogger log)
+        protected ExampleBase(ILogger log)
         {
             Log = log ?? new NullLogger<ExampleBase>();
             TaskProcessor = new TaskProcessor(TimeSpan.FromSeconds(20));
@@ -27,7 +27,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         public virtual void Run(MessageInterest messageInterest) { }
 
-        public IUofSdk RegisterServicesAndGetUofSdk(IUofConfiguration uofConfiguration)
+        protected IUofSdk RegisterServicesAndGetUofSdk(IUofConfiguration uofConfiguration)
         {
             var host = Host.CreateDefaultBuilder()
                 .ConfigureLogging((context, logging) =>
@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             return new UofSdk(host.Services);
         }
 
-        public void LimitRecoveryRequests(IUofSdk uofSdk)
+        protected void LimitRecoveryRequests(IUofSdk uofSdk)
         {
             for (var i = 1; i < 20; i++)
             {

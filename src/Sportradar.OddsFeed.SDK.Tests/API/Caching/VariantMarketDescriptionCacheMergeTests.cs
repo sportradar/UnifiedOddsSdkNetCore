@@ -17,7 +17,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -358,7 +358,7 @@ public class VariantMarketDescriptionCacheMergeTests
 
         Assert.True(isSuccess);
         Assert.Equal(_apiMdEn.outcomes.Length, mdCacheItem.Outcomes.Count);
-        Assert.Empty(mdCacheItem.Outcomes.Where(w => w.Id.Equals(_apiMdHu.outcomes[0].id, StringComparison.InvariantCultureIgnoreCase)));
+        Assert.DoesNotContain(mdCacheItem.Outcomes, w => w.Id.Equals(_apiMdHu.outcomes[0].id, StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]

@@ -1,8 +1,8 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
@@ -15,7 +15,6 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
-[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class BookmakerDetailsMapperTests
 {
     private const string InputXml = "bookmaker_details.xml";
@@ -33,7 +32,7 @@ public class BookmakerDetailsMapperTests
             dataFetcher,
             deserializer,
             mapperFactory);
-        _entity = dataProvider.GetDataAsync("", TestData.Culture.TwoLetterISOLanguageName).GetAwaiter().GetResult();
+        _entity = dataProvider.GetData();
 
         _bookmakerDetailsFetcher = new BookmakerDetailsFetcher(dataProvider);
     }
@@ -48,13 +47,15 @@ public class BookmakerDetailsMapperTests
     public void Mapping()
     {
         var details = new BookmakerDetails(_entity);
+
         ValidateBookmakerDetailsFromXml(details);
     }
 
     [Fact]
-    public void WhoAmI()
+    public async Task WhoAmI()
     {
-        var details = _bookmakerDetailsFetcher.WhoAmIAsync().GetAwaiter().GetResult();
+        var details = await _bookmakerDetailsFetcher.WhoAmIAsync();
+
         ValidateBookmakerDetailsFromXml(details);
     }
 

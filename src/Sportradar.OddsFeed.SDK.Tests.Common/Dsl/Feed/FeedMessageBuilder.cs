@@ -4,7 +4,7 @@ using System;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.MockFeed;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 
 /// <summary>
 /// Class for building test feed messages
@@ -16,6 +16,11 @@ public class FeedMessageBuilder
     public FeedMessageBuilder(int producerId)
     {
         _producerId = producerId;
+    }
+
+    public static FeedMessageBuilder Create(int producerId)
+    {
+        return new FeedMessageBuilder(producerId);
     }
 
     /// <summary>
@@ -40,6 +45,15 @@ public class FeedMessageBuilder
             timestamp = SdkInfo.ToEpochTime(timestamp ?? TimeProviderAccessor.Current.Now),
             request_id = requestId ?? 0
         };
+    }
+
+    public fixture_change BuildFixtureChange(long? eventId = null, int? product = null, long? requestId = null, DateTime? timestamp = null)
+    {
+        if (eventId is -1)
+        {
+            eventId = StaticRandom.I();
+        }
+        return new fixture_change { event_id = eventId == null ? "sr:match:1000" : $"sr:match:{eventId}", product = product ?? _producerId, timestamp = SdkInfo.ToEpochTime(timestamp ?? TimeProviderAccessor.Current.Now), request_id = requestId ?? 0 };
     }
 
     /// <summary>

@@ -16,6 +16,7 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
@@ -24,7 +25,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -39,7 +40,6 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     private readonly SportEventCache _sportEventCache;
 
     private readonly CacheManager _cacheManager;
-    private readonly IDataRouterManager _dataRouterManager;
     private readonly ISportEventCacheItemFactory _sportEventCacheItemFactory;
     private readonly Mock<ISdkTimer> _timerMock = new Mock<ISdkTimer>();
     [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
@@ -56,15 +56,15 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         _sportEventMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache);
 
         _cacheManager = testCacheStoreManager.CacheManager;
-        _dataRouterManager = BuildDataRouterManager();
-        _sportEventCacheItemFactory = new SportEventCacheItemFactory(_dataRouterManager,
+        IDataRouterManager dataRouterManager = BuildDataRouterManager();
+        _sportEventCacheItemFactory = new SportEventCacheItemFactory(dataRouterManager,
             new SemaphorePool(1, ExceptionHandlingStrategy.Throw),
             testCacheStoreManager.UofConfig,
             testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache));
 
         _sportEventCache = new SportEventCache(
             _sportEventMemoryCache,
-            _dataRouterManager,
+            dataRouterManager,
             _sportEventCacheItemFactory,
             _timerMock.Object,
             _cultures,

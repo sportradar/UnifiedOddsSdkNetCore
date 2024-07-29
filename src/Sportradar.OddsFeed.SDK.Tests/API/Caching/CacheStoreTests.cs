@@ -10,7 +10,7 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -38,6 +38,31 @@ public class CacheStoreTests
     {
         Assert.NotNull(_cacheStoreString);
         VerifyCacheStore(0, (string)null, null);
+    }
+
+    [Fact]
+    public void CacheStoreImplementsDisposable()
+    {
+        Assert.IsAssignableFrom<IDisposable>(_cacheStoreString);
+    }
+
+    [Fact]
+    public void CacheStoreWhenDisposedThenCanNotAdd()
+    {
+        _cacheStoreString.Dispose();
+
+        Assert.Throws<ObjectDisposedException>(() => _cacheStoreString.Add("key", new CacheItem(Urn.Parse("sr:player:1"), "name", CultureInfo.CurrentCulture)));
+    }
+
+    [Fact]
+    public void CacheStoreWhenDisposedThenMemoryCacheObjectIsDisposed()
+    {
+        var memoryCache = new MemoryCache(new MemoryCacheOptions { TrackStatistics = true });
+        var cacheStore = new CacheStore<string>(CacheStoreName, memoryCache, _testLogger, null, TimeSpan.FromHours(1), 20);
+
+        cacheStore.Dispose();
+
+        Assert.Throws<ObjectDisposedException>(() => memoryCache.Set("key", new CacheItem(Urn.Parse("sr:player:1"), "name", CultureInfo.CurrentCulture)));
     }
 
     [Fact]
@@ -268,7 +293,7 @@ public class CacheStoreTests
         _cacheStoreString.Remove(myCacheItem.Id.ToString());
 
         // delay needed for cache cleanup to kick in
-        await Task.Delay(20);
+        await Task.Delay(500);
 
         _ = Assert.Single(_testLogger.Messages);
         _ = Assert.Single(_testLogger.Messages.Where(w => w.Contains("evicted cache item", StringComparison.InvariantCultureIgnoreCase)));

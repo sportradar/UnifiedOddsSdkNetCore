@@ -3,12 +3,20 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using Moq;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 using Xunit;
+#pragma warning disable SYSLIB0050
+
 // ReSharper disable ArrangeRedundantParentheses
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
@@ -114,7 +122,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
+    [SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
     public void GetVariableNumberForIntReturnsVariableBetweenMinMax()
     {
         const int baseValue = 100;
@@ -130,7 +138,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
+    [SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
     public void GetVariableNumberForTimeSpanReturnsVariableBetweenMinMax()
     {
         var baseValue = TimeSpan.FromSeconds(100);
@@ -146,7 +154,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
+    [SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
     public void AddVariableNumberForTimeSpanReturnsVariableBetweenMinMax()
     {
         var baseValue = TimeSpan.FromSeconds(100);
@@ -161,7 +169,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
+    [SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
     public void AddVariableNumberForProfileCacheTimeoutReturnsVariableBetweenMinMax()
     {
         var baseValue = TestConfiguration.GetConfig(null).Cache.ProfileCacheTimeout;
@@ -271,7 +279,7 @@ public class SdkInfoTests
         var size = SdkInfo.GetObjectSize(urn);
 
         Assert.False(urn.GetType().IsSerializable);
-        Assert.Equal(0, size);
+        Assert.Equal(1, size);
     }
 
     [Fact]
@@ -283,6 +291,20 @@ public class SdkInfoTests
 
         Assert.True(serializableObject.GetType().IsSerializable, "Object is not serializable");
         Assert.True(size > 0, "Size is 0");
+    }
+
+    [Fact]
+    public void GetObjectSizeWhenIsCompetitorCacheItemThenReturnValue()
+    {
+        var competitorHelper = new CompetitorHelper();
+        var dataRouterManagerMock = new Mock<IDataRouterManager>();
+        var competitorDto = new CompetitorDto(competitorHelper.GetApiTeamFull());
+        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, dataRouterManagerMock.Object);
+
+        var size = SdkInfo.GetObjectSize(competitorCi);
+
+        Assert.False(competitorCi.GetType().IsSerializable, "Object is not serializable");
+        Assert.Equal(1, size);
     }
 
     [Fact]
@@ -328,7 +350,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetOrCreateReadOnlyNames_EmptyWantedCultures()
+    public void GetOrCreateReadOnlyNamesWhenEmptyWantedCulturesThenReturnEmpty()
     {
         const string firstName = "Name 1";
         var inputNames = new Dictionary<CultureInfo, string> { { TestData.Culture, firstName } };

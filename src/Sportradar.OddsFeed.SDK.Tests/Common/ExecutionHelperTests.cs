@@ -7,51 +7,9 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class ExecutionHelperTests
 {
-    [Fact]
-    public void WaitToCompleteWhenActionSucceedFirstTimeThenReturnTrue()
-    {
-        var result = ExecutionHelper.WaitToComplete(() => { });
-
-        Assert.True(result);
-    }
-
-    [Fact]
-    public void WaitToCompleteWhenActionFailsFewTimesThenRetryUntilSuccess()
-    {
-        var currentAttempt = 0;
-        const int succeedAt = 3;
-
-        var result = ExecutionHelper.WaitToComplete(() =>
-                                                    {
-                                                        currentAttempt++;
-                                                        if (currentAttempt < succeedAt)
-                                                        {
-                                                            throw new InvalidOperationException();
-                                                        }
-                                                    });
-
-        Assert.True(result);
-        Assert.Equal(succeedAt, currentAttempt);
-    }
-
-    [Fact]
-    public void WaitToCompleteWhenActionFailsThenRetryUntilTimeout()
-    {
-        var currentAttempt = 0;
-
-        var result = ExecutionHelper.WaitToComplete(() =>
-                                                    {
-                                                        currentAttempt++;
-                                                        throw new InvalidOperationException();
-                                                    },
-                                                    500);
-
-        Assert.False(result);
-        Assert.Equal(5, currentAttempt);
-    }
-
     [Fact]
     public void SafeWhenActionSucceedThenReturnTrue()
     {

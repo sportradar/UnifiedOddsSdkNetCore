@@ -190,6 +190,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _memoryCache.Dispose();
+        }
+
         private static readonly Action<ILogger, string, string, EvictionReason, Exception> LogCacheItemPostEviction =
             LoggerMessage.Define<string, string, EvictionReason>(
                 LogLevel.Debug,

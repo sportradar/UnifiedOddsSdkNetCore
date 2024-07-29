@@ -37,7 +37,7 @@ public abstract class BookmakerDetailsFetcherTests : AutoMockerUnitTest
         public WhenGetBookmakerDetailsIsSuccessful()
         {
             Mocker.GetMock<IDataProvider<BookmakerDetailsDto>>()
-                .Setup(x => x.GetDataAsync(new string[1]))
+                .Setup(x => x.GetDataAsync())
                 .ReturnsAsync(new BookmakerDetailsDto(_sourceDetails, TimeSpan.Zero));
         }
 

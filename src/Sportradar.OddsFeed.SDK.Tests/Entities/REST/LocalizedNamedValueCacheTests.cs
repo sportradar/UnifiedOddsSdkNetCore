@@ -140,13 +140,14 @@ public class LocalizedNamedValueCacheTests
     {
         Setup(ExceptionHandlingStrategy.Catch, SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
 
-        var finished = ExecutionHelper.WaitToComplete(() =>
+        var finished = TestExecutionHelper.WaitToComplete(() =>
         {
             _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
             _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
             _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
             _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
         }, 15000);
+
         Assert.True(finished);
     }
 

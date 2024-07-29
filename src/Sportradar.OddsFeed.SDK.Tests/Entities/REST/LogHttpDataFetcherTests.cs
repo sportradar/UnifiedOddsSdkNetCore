@@ -25,7 +25,6 @@ using Xunit.Abstractions;
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
 [SuppressMessage("Usage", "xUnit1013:Public method should be marked as test")]
-[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class LogHttpDataFetcherTests
 {
     private readonly ITestOutputHelper _outputHelper;
@@ -33,9 +32,9 @@ public class LogHttpDataFetcherTests
     private readonly SdkHttpClient _sdkHttpClient;
     private LogHttpDataFetcher _logHttpDataFetcher;
     private readonly LogHttpDataFetcher _logHttpDataFetcherPool;
-    private readonly Uri _badUri = new("http://www.unexisting-url.com");
-    private readonly Uri _getUri = new("http://test.domain.com/get");
-    private readonly Uri _postUri = new("http://test.domain.com/post");
+    private readonly Uri _badUri = new Uri("http://www.unexisting-url.com");
+    private readonly Uri _getUri = new Uri("http://test.domain.com/get");
+    private readonly Uri _postUri = new Uri("http://test.domain.com/post");
     private readonly StubMessageHandler _stubMessageHandler;
 
     public LogHttpDataFetcherTests(ITestOutputHelper outputHelper)
@@ -181,20 +180,20 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public void GetDataAsync_NormalUri()
+    public async Task GetDataAsyncWhneNormalUri()
     {
         // in logRest file there should be result for this call
-        var result = _logHttpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult();
+        var result = await _logHttpDataFetcher.GetDataAsync(_getUri);
 
         Assert.NotNull(result);
         Assert.True(result.CanRead);
 
-        var s = new StreamReader(result).ReadToEnd();
+        var s = await new StreamReader(result).ReadToEndAsync();
         Assert.True(!string.IsNullOrEmpty(s));
     }
 
     [Fact]
-    public void GetData_NormalUriOnDebugLog()
+    public void GetDataWhenNormalUriOnDebugLog()
     {
         var mockLocker = new Mock<ILogger>();
         mockLocker.Setup(l => l.IsEnabled(LogLevel.Debug)).Returns(true);
@@ -210,12 +209,12 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public void GetDataAsync_WrongUrl_ReturnsBadGateway()
+    public async Task GetDataAsyncWhenWrongUrlThenReturnsBadGateway()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.BadGateway));
         Stream result = null;
 
-        var e = Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult());
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _logHttpDataFetcher.GetDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
@@ -226,12 +225,12 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public void GetDataAsync_WrongUrl_ThrowsHttpRequestException()
+    public async Task GetDataAsyncWhenWrongUrlThenThrowsHttpRequestException()
     {
         _stubMessageHandler.SetWantedResponse(new HttpRequestException("any-message", new SocketException(), HttpStatusCode.BadGateway));
         Stream result = null;
 
-        var e = Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult());
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _logHttpDataFetcher.GetDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
@@ -242,12 +241,12 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public void GetDataAsync_WrongUrl_ThrowsSocketException()
+    public async Task GetDataAsyncWhenWrongUrlThenThrowsSocketException()
     {
         _stubMessageHandler.SetWantedResponse(new SocketException());
         Stream result = null;
 
-        var e = Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult());
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _logHttpDataFetcher.GetDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
@@ -258,16 +257,16 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public void PostData_NormalUri()
+    public async Task PostDataWhenNormalUri()
     {
-        var result = _logHttpDataFetcher.PostDataAsync(_postUri).GetAwaiter().GetResult();
+        var result = await _logHttpDataFetcher.PostDataAsync(_postUri);
 
         Assert.NotNull(result);
         Assert.True(result.IsSuccessStatusCode);
     }
 
     [Fact]
-    public void PostData_DebugLog()
+    public async Task PostData_DebugLog()
     {
         var httpClient = new HttpClient(_stubMessageHandler);
         httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
@@ -277,41 +276,41 @@ public class LogHttpDataFetcherTests
         mockLocker.Setup(l => l.IsEnabled(LogLevel.Debug)).Returns(true);
         var logHttpDataFetcher = new LogHttpDataFetcher(sdkHttpClient, _incrementalSequenceGenerator, new Deserializer<response>(), mockLocker.Object);
 
-        var result = logHttpDataFetcher.PostDataAsync(_getUri).GetAwaiter().GetResult();
+        var result = await logHttpDataFetcher.PostDataAsync(_getUri);
 
         Assert.NotNull(result);
         Assert.True(result.IsSuccessStatusCode);
     }
 
     [Fact]
-    public void PostData_DebugLogWithContent()
+    public async Task PostDataWhenDebugLogWithContent()
     {
         var mockLocker = new Mock<ILogger>();
         mockLocker.Setup(l => l.IsEnabled(LogLevel.Debug)).Returns(true);
         var logHttpDataFetcher = new LogHttpDataFetcher(_sdkHttpClient, _incrementalSequenceGenerator, new Deserializer<response>(), mockLocker.Object);
 
-        var result = logHttpDataFetcher.PostDataAsync(_getUri, new StringContent("test string")).GetAwaiter().GetResult();
+        var result = await logHttpDataFetcher.PostDataAsync(_getUri, new StringContent("test string"));
 
         Assert.NotNull(result);
         Assert.True(result.IsSuccessStatusCode);
     }
 
     [Fact]
-    public void PostData_DebugLogWithContent_Fails()
+    public async Task PostDataWhenDebugLogWithContentThenFails()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.BadGateway));
         var mockLocker = new Mock<ILogger>();
         mockLocker.Setup(l => l.IsEnabled(LogLevel.Debug)).Returns(true);
         var logHttpDataFetcher = new LogHttpDataFetcher(_sdkHttpClient, _incrementalSequenceGenerator, new Deserializer<response>(), mockLocker.Object);
 
-        var result = logHttpDataFetcher.PostDataAsync(_getUri, new StringContent("test string")).GetAwaiter().GetResult();
+        var result = await logHttpDataFetcher.PostDataAsync(_getUri, new StringContent("test string"));
 
         Assert.NotNull(result);
         Assert.False(result.IsSuccessStatusCode);
     }
 
     [Fact]
-    public void PostData_DebugLogWithContentAndNullUrl_Fails()
+    public async Task PostDataWhenDebugLogWithContentAndNullUrlThenFails()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.BadGateway));
         var mockLocker = new Mock<ILogger>();
@@ -319,32 +318,32 @@ public class LogHttpDataFetcherTests
         var logHttpDataFetcher = new LogHttpDataFetcher(_sdkHttpClient, _incrementalSequenceGenerator, new Deserializer<response>(), mockLocker.Object);
 
         HttpResponseMessage result = null;
-        var ex = Assert.Throws<NullReferenceException>(() => result = logHttpDataFetcher.PostDataAsync(null, new StringContent("test string")).GetAwaiter().GetResult());
+        var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => result = await logHttpDataFetcher.PostDataAsync(null, new StringContent("test string")));
 
         Assert.Null(result);
         Assert.IsType<NullReferenceException>(ex);
     }
 
     [Fact]
-    public void PostData_EmptyResponseContent()
+    public async Task PostDataWhenEmptyResponseContent()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.Accepted)
         {
             Content = new ByteArrayContent(Array.Empty<byte>())
         });
-        var result = _logHttpDataFetcher.PostDataAsync(_postUri).GetAwaiter().GetResult();
+        var result = await _logHttpDataFetcher.PostDataAsync(_postUri);
 
         Assert.NotNull(result);
         Assert.True(result.IsSuccessStatusCode);
     }
 
     [Fact]
-    public void PostDataAsyncTestWithWrongUrl()
+    public async Task PostDataAsyncTestWithWrongUrl()
     {
         _stubMessageHandler.SetWantedResponse(new HttpRequestException("any-message", new SocketException(), HttpStatusCode.BadGateway));
         HttpResponseMessage result = null;
 
-        var ex = Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult());
+        var ex = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _logHttpDataFetcher.PostDataAsync(_badUri));
 
         Assert.Null(result);
         Assert.IsType<CommunicationException>(ex);
@@ -355,16 +354,16 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public void PostDataAsync_WithContent()
+    public async Task PostDataAsyncWhenWithContent()
     {
-        var result = _logHttpDataFetcher.PostDataAsync(_postUri, new StringContent("test string")).GetAwaiter().GetResult();
+        var result = await _logHttpDataFetcher.PostDataAsync(_postUri, new StringContent("test string"));
 
         Assert.NotNull(result);
         Assert.True(result.IsSuccessStatusCode);
     }
 
     //[Fact]
-    public void ConsecutivePostFailure()
+    public async Task ConsecutivePostFailure()
     {
         const int loopCount = 10;
         var errCount = 0;
@@ -374,7 +373,7 @@ public class LogHttpDataFetcherTests
         {
             try
             {
-                var result = _logHttpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult();
+                var result = await _logHttpDataFetcher.PostDataAsync(_badUri);
                 Assert.NotNull(result);
                 Assert.True(result.IsSuccessStatusCode);
             }
@@ -393,7 +392,7 @@ public class LogHttpDataFetcherTests
     }
 
     //[Fact]
-    public void ConsecutivePostAndGetFailure()
+    public async Task ConsecutivePostAndGetFailure()
     {
         const int loopCount = 10;
         var errCount = 0;
@@ -407,7 +406,7 @@ public class LogHttpDataFetcherTests
         {
             try
             {
-                var result = _logHttpDataFetcher.PostDataAsync(_badUri).GetAwaiter().GetResult();
+                var result = await _logHttpDataFetcher.PostDataAsync(_badUri);
                 Assert.NotNull(result);
                 Assert.False(result.IsSuccessStatusCode);
             }
@@ -424,7 +423,7 @@ public class LogHttpDataFetcherTests
 
             try
             {
-                var result = _logHttpDataFetcher.GetDataAsync(_badUri).GetAwaiter().GetResult();
+                var result = await _logHttpDataFetcher.GetDataAsync(_badUri);
                 Assert.NotNull(result);
             }
             catch (Exception e)
@@ -442,13 +441,13 @@ public class LogHttpDataFetcherTests
     }
 
     //[Fact]
-    public void ExceptionAfterConsecutivePostFailures()
+    public async Task ExceptionAfterConsecutivePostFailures()
     {
-        ConsecutivePostFailure();
+        await ConsecutivePostFailure();
         try
         {
             var result = new HttpResponseMessage();
-            Assert.Throws<CommunicationException>(() => result = _logHttpDataFetcher.PostDataAsync(_getUri).GetAwaiter().GetResult());
+            await Assert.ThrowsAsync<CommunicationException>(async () => result = await _logHttpDataFetcher.PostDataAsync(_getUri));
             Assert.NotNull(result);
             Assert.False(result.IsSuccessStatusCode);
         }
@@ -462,24 +461,24 @@ public class LogHttpDataFetcherTests
     }
 
     //[Fact]
-    public void SuccessAfterConsecutiveFailuresResets()
+    public async Task SuccessAfterConsecutiveFailuresResets()
     {
         var httpClient = new TestHttpClient();
         _logHttpDataFetcher = new LogHttpDataFetcher(httpClient, _incrementalSequenceGenerator, new Deserializer<response>(), new NullLogger<LogHttpDataFetcher>(), 5, 1);
-        ConsecutivePostFailure();
-        Task.Delay(1000).GetAwaiter().GetResult();
-        var result = _logHttpDataFetcher.GetDataAsync(_getUri).GetAwaiter().GetResult();
+        await ConsecutivePostFailure();
+        await Task.Delay(1000);
+        var result = await _logHttpDataFetcher.GetDataAsync(_getUri);
         Assert.NotNull(result);
         Assert.True(result.Length > 0);
     }
 
-    private Uri GetRequestUri(bool isRandom)
+    private static Uri GetRequestUri(bool isRandom)
     {
         var id = isRandom ? SdkInfo.GetRandom() : 1;
         return new Uri($"http://test.domain.com/api/v1/sr:match:{id}/summary.xml");
     }
 
-    private Uri GetRandomUri(bool isRandom)
+    private static Uri GetRandomUri(bool isRandom)
     {
         var id = isRandom ? SdkInfo.GetRandom() : 1;
         return new Uri($"http://test.domain.com/api/v1/sr:match:{id}.xml");

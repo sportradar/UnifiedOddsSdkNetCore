@@ -35,19 +35,19 @@ public class NameProviderPlayerProfileTests
     }
 
     [Fact]
-    public void OutcomeIdWithWrongPlayerIdThrows()
+    public async Task OutcomeIdWithWrongPlayerIdThrows()
     {
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
-        Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player2", ScheduleData.CultureEn));
-        Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:customplayer:2", ScheduleData.CultureEn));
+        await Assert.ThrowsAsync<NameGenerationException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player2", ScheduleData.CultureEn));
+        await Assert.ThrowsAsync<NameGenerationException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:customplayer:2", ScheduleData.CultureEn));
     }
 
     [Fact]
-    public void CompositeOutcomeIdWithWrongDelimiterThrows()
+    public async Task CompositeOutcomeIdWithWrongDelimiterThrows()
     {
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
-        Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player:2, sr:competitor:1", ScheduleData.CultureEn));
-        Assert.ThrowsAsync<NameExpressionException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player:2;sr:competitor:1", ScheduleData.CultureEn));
+        await Assert.ThrowsAsync<NameGenerationException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player:2, sr:competitor:1", ScheduleData.CultureEn));
+        await Assert.ThrowsAsync<NameGenerationException>(async () => await _nameProvider.GetOutcomeNameAsync("sr:player:2;sr:competitor:1", ScheduleData.CultureEn));
     }
 
     [Fact]

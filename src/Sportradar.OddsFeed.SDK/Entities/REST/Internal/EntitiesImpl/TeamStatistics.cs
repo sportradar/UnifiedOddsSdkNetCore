@@ -38,7 +38,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"TeamId={TeamId}, Name={Name}, HomeAway={HomeAway}, Cards={Cards}, YellowCards={YellowCards}, RedCards={RedCards}, YellowRedCards={YellowRedCards}, CornerKicks={CornerKicks}";
+            return $"TeamId={TeamId}, Name={Name}, HomeAway={HomeAway}, Cards={Cards}, YellowCards={YellowCards}, RedCards={RedCards}, YellowRedCards={YellowRedCards}, GreenCards={GreenCards}, CornerKicks={CornerKicks}";
         }
     }
 }

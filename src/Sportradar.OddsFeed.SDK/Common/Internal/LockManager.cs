@@ -5,38 +5,29 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal
 {
     internal class LockManager
     {
-        private readonly ILogger _log = SdkLoggerFactory.GetLoggerForExecution(typeof(LockManager));
+        private readonly ILogger _log;
         private readonly ConcurrentDictionary<string, DateTime> _uniqueItems;
         private readonly TimeSpan _lockTimeout;
         private readonly TimeSpan _lockSleep;
         private bool _waitAll;
 
-        public LockManager(ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
+        public LockManager(ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep, ILogger logger)
         {
             _uniqueItems = uniqueItems ?? new ConcurrentDictionary<string, DateTime>();
             _lockTimeout = lockTimeout.TotalSeconds < 1 ? TimeSpan.FromSeconds(60) : lockTimeout;
             _lockSleep = lockSleep.TotalMilliseconds < 10 ? TimeSpan.FromMilliseconds(50) : lockSleep;
             _waitAll = false;
-        }
-
-        public LockManager()
-        {
-            _uniqueItems = new ConcurrentDictionary<string, DateTime>();
-            _lockTimeout = TimeSpan.FromSeconds(60);
-            _lockSleep = TimeSpan.FromMilliseconds(50);
-            _waitAll = false;
+            _log = logger;
         }
 
         public void Wait()
         {
             _waitAll = true;
-            LockInternal("all", _uniqueItems, _lockTimeout, _lockSleep);
         }
 
         public void Wait(string key)
@@ -44,45 +35,14 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             LockInternal(key, _uniqueItems, _lockTimeout, _lockSleep);
         }
 
-        public void Wait(string key, TimeSpan lockTimeout, TimeSpan lockSleep)
+        public async Task WaitAsync(string key)
         {
-            if (lockTimeout == TimeSpan.Zero)
-            {
-                lockTimeout = _lockTimeout;
-            }
-
-            if (lockSleep == TimeSpan.Zero)
-            {
-                lockSleep = _lockSleep;
-            }
-
-            LockInternal(key, _uniqueItems, lockTimeout, lockSleep);
-        }
-
-        public void Wait(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
-        {
-            if (uniqueItems == null)
-            {
-                throw new ArgumentNullException(nameof(uniqueItems));
-            }
-
-            if (lockTimeout == TimeSpan.Zero)
-            {
-                lockTimeout = _lockTimeout;
-            }
-
-            if (lockSleep == TimeSpan.Zero)
-            {
-                lockSleep = _lockSleep;
-            }
-
-            LockInternal(key, uniqueItems, lockTimeout, lockSleep);
+            await LockInternalAsync(key, _uniqueItems, _lockTimeout, _lockSleep);
         }
 
         public void Release()
         {
             _waitAll = false;
-            ReleaseInternal("all", _uniqueItems, _lockTimeout, _lockSleep);
         }
 
         public void Release(string key)
@@ -90,107 +50,127 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             ReleaseInternal(key, _uniqueItems, _lockTimeout, _lockSleep);
         }
 
-        public void Release(string key, TimeSpan lockTimeout, TimeSpan lockSleep)
+        public async Task ReleaseAsync(string key)
         {
-            if (lockTimeout == TimeSpan.Zero)
-            {
-                lockTimeout = _lockTimeout;
-            }
-
-            if (lockSleep == TimeSpan.Zero)
-            {
-                lockSleep = _lockSleep;
-            }
-
-            ReleaseInternal(key, _uniqueItems, lockTimeout, lockSleep);
-        }
-
-        public void Release(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
-        {
-            if (uniqueItems == null)
-            {
-                throw new ArgumentNullException(nameof(uniqueItems));
-            }
-
-            if (lockTimeout == TimeSpan.Zero)
-            {
-                lockTimeout = _lockTimeout;
-            }
-
-            if (lockSleep == TimeSpan.Zero)
-            {
-                lockSleep = _lockSleep;
-            }
-
-            ReleaseInternal(key, uniqueItems, lockTimeout, lockSleep);
+            await ReleaseInternalAsync(key, _uniqueItems, _lockTimeout, _lockSleep);
         }
 
         private void LockInternal(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
         {
+            var stopWatch = Stopwatch.StartNew();
+
+            while (_waitAll && stopWatch.ElapsedMilliseconds < lockTimeout.TotalMilliseconds)
+            {
+                Task.Delay(lockSleep).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+
             if (!uniqueItems.ContainsKey(key))
             {
                 uniqueItems.AddOrUpdate(key, DateTime.Now, UpdateValueFactory);
                 return;
             }
 
-            var stopWatch = Stopwatch.StartNew();
-            while (_waitAll || (uniqueItems.ContainsKey(key) && stopWatch.ElapsedMilliseconds < lockTimeout.TotalMilliseconds))
+            while (_waitAll || uniqueItems.ContainsKey(key) && stopWatch.ElapsedMilliseconds < lockTimeout.TotalMilliseconds)
             {
-                Task.Delay(lockSleep).GetAwaiter().GetResult();
+                Task.Delay(lockSleep).ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             if (stopWatch.ElapsedMilliseconds > lockTimeout.TotalMilliseconds)
             {
-                _log.LogWarning("Waiting for end of processing for key {} took {} ms.", key, stopWatch.ElapsedMilliseconds);
+                _log.LogWarning("Waiting for end of processing for key {} took {} ms", key, stopWatch.ElapsedMilliseconds);
             }
 
             uniqueItems.AddOrUpdate(key, DateTime.Now, UpdateValueFactory);
         }
 
-        private void ReleaseInternal(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
+        private async Task LockInternalAsync(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
         {
             var stopWatch = Stopwatch.StartNew();
-            while (uniqueItems.ContainsKey(key) && stopWatch.ElapsedMilliseconds < lockTimeout.TotalMilliseconds)
+
+            while (_waitAll && stopWatch.ElapsedMilliseconds < lockTimeout.TotalMilliseconds)
+            {
+                await Task.Delay(lockSleep).ConfigureAwait(false);
+            }
+
+            if (!uniqueItems.ContainsKey(key))
+            {
+                uniqueItems.AddOrUpdate(key, DateTime.Now, UpdateValueFactory);
+                return;
+            }
+
+            while ((_waitAll || uniqueItems.ContainsKey(key)) && stopWatch.ElapsedMilliseconds < lockTimeout.TotalMilliseconds)
+            {
+                await Task.Delay(lockSleep).ConfigureAwait(false);
+            }
+
+            if (stopWatch.ElapsedMilliseconds > lockTimeout.TotalMilliseconds)
+            {
+                _log.LogWarning("Waiting for end of processing for key {} took {} ms", key, stopWatch.ElapsedMilliseconds);
+            }
+
+            uniqueItems.AddOrUpdate(key, DateTime.Now, UpdateValueFactory);
+        }
+
+        private static void ReleaseInternal(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
+        {
+            if (lockTimeout == TimeSpan.Zero)
+            {
+                lockTimeout = lockSleep;
+            }
+            var stopWatch = Stopwatch.StartNew();
+            while (uniqueItems.ContainsKey(key) && stopWatch.ElapsedMilliseconds <= lockTimeout.TotalMilliseconds)
             {
                 if (uniqueItems.TryRemove(key, out _))
                 {
                     return;
                 }
-                Task.Delay(lockSleep).GetAwaiter().GetResult();
-            }
-
-            if (stopWatch.ElapsedMilliseconds > lockTimeout.TotalMilliseconds)
-            {
-                _log.LogWarning("Waiting for end of processing release for key {} took {} ms.", key, stopWatch.ElapsedMilliseconds);
+                Task.Delay(lockSleep).ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
 
-        public void Clean()
+        private async Task ReleaseInternalAsync(string key, ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout, TimeSpan lockSleep)
         {
-            Clean(_uniqueItems, _lockTimeout);
+            if (lockTimeout == TimeSpan.Zero)
+            {
+                lockTimeout = lockSleep;
+            }
+            var stopWatch = Stopwatch.StartNew();
+            while (uniqueItems.ContainsKey(key) && stopWatch.ElapsedMilliseconds <= lockTimeout.TotalMilliseconds)
+            {
+                if (uniqueItems.TryRemove(key, out _))
+                {
+                    return;
+                }
+                await Task.Delay(lockSleep).ConfigureAwait(false);
+            }
         }
 
-        public void Clean(ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout)
+        public async Task CleanAsync()
+        {
+            await CleanAsync(_uniqueItems, _lockTimeout);
+        }
+
+        public async Task CleanAsync(ConcurrentDictionary<string, DateTime> uniqueItems, TimeSpan lockTimeout)
         {
             try
             {
                 foreach (var item in uniqueItems)
                 {
-                    if ((DateTime.Now - item.Value).TotalSeconds > lockTimeout.TotalSeconds)
+                    if ((DateTime.Now - item.Value).TotalMilliseconds >= lockTimeout.TotalMilliseconds)
                     {
-                        uniqueItems.TryRemove(item.Key, out _);
+                        await ReleaseInternalAsync(item.Key, uniqueItems, lockTimeout, _lockSleep);
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                _log.LogWarning(e, "Error cleaning ids for locks.");
+                // ignored
             }
         }
 
-        private DateTime UpdateValueFactory(string arg1, DateTime arg2)
+        private static DateTime UpdateValueFactory(string key, DateTime newDateTime)
         {
-            return arg2;
+            return newDateTime;
         }
     }
 }

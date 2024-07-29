@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -17,8 +18,7 @@ using Sportradar.OddsFeed.SDK.Messages.Rest;
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 {
     /// <summary>
-    /// An implementation of the <see cref="IDataProvider{T}"/> which fetches the data, deserializes it and than maps / converts it
-    /// to the output type
+    /// An implementation of the <see cref="IDataProvider{T}" /> which fetches the data, deserializes it and then maps / converts it to the output type
     /// </summary>
     /// <typeparam name="TIn">Specifies the type of data-transfer-object instance which will be mapped to returned instance</typeparam>
     /// <typeparam name="TOut">Specifies the type of instances provided</typeparam>
@@ -26,27 +26,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
     internal class DataProvider<TIn, TOut> : IDataProvider<TOut> where TIn : RestMessage where TOut : class
     {
         /// <summary>
-        /// A <see cref="ILogger"/> used for execution logging
+        /// A <see cref="ILogger" /> used for execution logging
         /// </summary>
         private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLogger(typeof(DataProvider<TIn, TOut>));
 
         /// <summary>
-        /// Event raised when the data provider receives the message
-        /// </summary>
-        public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
-
-        /// <summary>
-        /// A <see cref="IDataFetcher"/> used to fetch the data
-        /// </summary>
-        public IDataFetcher DataFetcher { get; }
-
-        /// <summary>
-        /// A <see cref="IDeserializer{T}"/> used to deserialize the fetch data
+        /// A <see cref="IDeserializer{T}" /> used to deserialize the fetch data
         /// </summary>
         private readonly IDeserializer<TIn> _deserializer;
 
         /// <summary>
-        /// A <see cref="ISingleTypeMapperFactory{T,T1}"/> used to construct instances of <see cref="ISingleTypeMapper{T}"/>
+        /// A <see cref="ISingleTypeMapperFactory{T,T1}" /> used to construct instances of <see cref="ISingleTypeMapper{T}" />
         /// </summary>
         private readonly ISingleTypeMapperFactory<TIn, TOut> _mapperFactory;
 
@@ -61,7 +51,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <param name="uriFormat">The url format specifying the url of the resources fetched by the fetcher</param>
         /// <param name="dataFetcher">A <see cref="IDataFetcher" /> used to fetch the data</param>
         /// <param name="deserializer">A <see cref="IDeserializer{T}" /> used to deserialize the fetch data</param>
-        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{T, T1}" /> used to construct instances of <see cref="ISingleTypeMapper{T}" /></param>
+        /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{T, T1}" /> used to construct instances of
+        /// <see cref="ISingleTypeMapper{T}" />A type mapper</param>
         public DataProvider(string uriFormat, IDataFetcher dataFetcher, IDeserializer<TIn> deserializer, ISingleTypeMapperFactory<TIn, TOut> mapperFactory)
         {
             Guard.Argument(uriFormat, nameof(uriFormat)).NotNull().NotEmpty();
@@ -76,69 +67,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         }
 
         /// <summary>
-        /// Fetches and deserializes the data from the provided <see cref="Uri"/>.
+        /// Event raised when the data provider receives the message
         /// </summary>
-        /// <param name="uri">A <see cref="Uri"/> specifying the data location</param>
-        /// <param name="requestParams">The parameters associated with the request (if present)</param>
-        /// <param name="culture">The language associated with the request</param>
-        /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
-        protected async Task<TOut> GetDataAsyncInternal(Uri uri, string requestParams, string culture)
-        {
-            Guard.Argument(uri, nameof(uri)).NotNull();
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            var stream = await DataFetcher.GetDataAsync(uri).ConfigureAwait(false);
-            var item = _deserializer.Deserialize(stream);
-            stopWatch.Stop();
-            DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
-            return _mapperFactory.CreateMapper(item).Map();
-        }
+        public event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
 
         /// <summary>
-        /// Fetches and deserializes the data from the provided <see cref="Uri"/>.
+        /// A <see cref="IDataFetcher" /> used to fetch the data
         /// </summary>
-        /// <param name="uri">A <see cref="Uri"/> specifying the data location</param>
-        /// <param name="requestParams">The parameters associated with the request (if present)</param>
-        /// <param name="culture">The language associated with the request</param>
-        /// <returns>A <see cref="Task{T}"/> representing the ongoing operation</returns>
-        protected TOut GetDataInternal(Uri uri, string requestParams, string culture)
-        {
-            Guard.Argument(uri, nameof(uri)).NotNull();
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            var stream = DataFetcher.GetData(uri);
-            var item = _deserializer.Deserialize(stream);
-            stopWatch.Stop();
-            DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
-            return _mapperFactory.CreateMapper(item).Map();
-        }
+        public IDataFetcher DataFetcher { get; }
 
         /// <summary>
-        /// Constructs and returns an <see cref="Uri"/> instance used to retrieve resource with specified <c>id</c>
-        /// </summary>
-        /// <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
-        /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <c>identifiers</c></returns>
-        protected virtual Uri GetRequestUri(params object[] identifiers)
-        {
-            Guard.Argument(identifiers, nameof(identifiers)).NotNull();
-            if (identifiers.Length == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(identifiers));
-            }
-
-            return new Uri(string.Format(_uriFormat, identifiers));
-        }
-
-        /// <summary>
-        /// get data as an asynchronous operation.
+        /// Get data as an asynchronous operation.
         /// </summary>
         /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
         /// <exception cref="Common.Exceptions.CommunicationException">Failed to execute http get</exception>
         /// <exception cref="Common.Exceptions.DeserializationException">The deserialization failed</exception>
-        /// <exception cref="Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the SDK</exception>
+        /// <exception cref="Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the
+        /// SDK</exception>
         public async Task<TOut> GetDataAsync(string languageCode)
         {
             var uri = GetRequestUri(languageCode);
@@ -146,13 +92,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         }
 
         /// <summary>
-        /// Asynchronously gets a <typeparamref name="TOut"/> instance specified by the provided identifiersA two letter language code of the <see cref="CultureInfo"/>
+        /// Asynchronously gets a <typeparamref name="TOut" /> instance specified by the provided identifiersA two letter
+        /// language code of the <see cref="CultureInfo" />
         /// </summary>
         /// <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
-        /// <returns>A <see cref="Task{T}"/> representing the async operation</returns>
+        /// <returns>A <see cref="Task{T}" /> representing the async operation</returns>
         /// <exception cref="Common.Exceptions.CommunicationException">Failed to execute http get</exception>
         /// <exception cref="Common.Exceptions.DeserializationException">The deserialization failed</exception>
-        /// <exception cref="Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the SDK</exception>
+        /// <exception cref="Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the
+        /// SDK</exception>
         public async Task<TOut> GetDataAsync(params string[] identifiers)
         {
             var uri = GetRequestUri(identifiers);
@@ -161,22 +109,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             return await GetDataAsyncInternal(uri, requestedId, requestedLang).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
-        /// </summary>
-        /// <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
-        /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
         public TOut GetData(string languageCode)
         {
             var uri = GetRequestUri(languageCode);
             return GetDataInternal(uri, null, languageCode);
         }
 
-        /// <summary>
-        /// Gets a <see cref="!:T" /> instance specified by the provided identifiersA two letter language code of the <see cref="T:System.Globalization.CultureInfo" />
-        /// </summary>
-        /// <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
-        /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
         public TOut GetData(params string[] identifiers)
         {
             var uri = GetRequestUri(identifiers);
@@ -185,9 +123,89 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             return GetDataInternal(uri, requestedId, requestedLang);
         }
 
+        /// <summary>
+        /// Fetches and deserializes the data from the provided <see cref="Uri" />.
+        /// </summary>
+        /// <param name="uri">A <see cref="Uri" /> specifying the data location</param>
+        /// <param name="requestParams">The parameters associated with the request (if present)</param>
+        /// <param name="culture">The language associated with the request</param>
+        /// <returns>A <see cref="Task{T}" /> representing the ongoing operation</returns>
+        private async Task<TOut> GetDataAsyncInternal(Uri uri, string requestParams, string culture)
+        {
+            Guard.Argument(uri, nameof(uri)).NotNull();
+
+            TIn item;
+            var stopWatch = new Stopwatch();
+            try
+            {
+                stopWatch.Start();
+                using (var stream = await DataFetcher.GetDataAsync(uri).ConfigureAwait(false))
+                {
+                    item = _deserializer.Deserialize(stream);
+                }
+            }
+            finally
+            {
+                stopWatch.Stop();
+            }
+
+            DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
+            return _mapperFactory.CreateMapper(item).Map();
+        }
+
+        /// <summary>
+        /// Fetches and deserializes the data from the provided <see cref="Uri" />.
+        /// </summary>
+        /// <param name="uri">A <see cref="Uri" /> specifying the data location</param>
+        /// <param name="requestParams">The parameters associated with the request (if present)</param>
+        /// <param name="culture">The language associated with the request</param>
+        /// <returns>A <see cref="Task{T}" /> representing the ongoing operation</returns>
+        private TOut GetDataInternal(Uri uri, string requestParams, string culture)
+        {
+            Guard.Argument(uri, nameof(uri)).NotNull();
+
+            TIn item;
+            var stopWatch = new Stopwatch();
+            try
+            {
+                stopWatch.Start();
+                using (var stream = DataFetcher.GetData(uri))
+                {
+                    item = _deserializer.Deserialize(stream);
+                }
+            }
+            finally
+            {
+                stopWatch.Stop();
+            }
+
+            DispatchReceivedRawApiData(uri, item, requestParams, TimeSpan.FromMilliseconds(stopWatch.ElapsedMilliseconds), culture);
+
+            return _mapperFactory.CreateMapper(item).Map();
+        }
+
+        /// <summary>
+        /// Constructs and returns an <see cref="Uri" /> instance used to retrieve resource with specified <c>id</c>
+        /// </summary>
+        /// <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
+        /// <returns>an <see cref="Uri" /> instance used to retrieve resource with specified <c>identifiers</c></returns>
+        protected virtual Uri GetRequestUri(params string[] identifiers)
+        {
+            if (identifiers == null || identifiers.Length == 0)
+            {
+                return new Uri(_uriFormat);
+            }
+            if (identifiers.Any(string.IsNullOrEmpty))
+            {
+                throw new ArgumentOutOfRangeException(nameof(identifiers));
+            }
+
+            // ReSharper disable once CoVariantArrayConversion
+            return new Uri(string.Format(CultureInfo.InvariantCulture, _uriFormat, identifiers));
+        }
+
         private void DispatchReceivedRawApiData(Uri uri, RestMessage restMessage, string requestParams, TimeSpan requestTime, string culture)
         {
-            // send RawFeedMessage if needed
             try
             {
                 var args = new RawApiDataEventArgs(uri, restMessage, requestParams, requestTime, culture);
@@ -195,60 +213,65 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             }
             catch (Exception e)
             {
-                ExecutionLog.LogError(e, $"Error dispatching raw message for {uri}");
+                ExecutionLog.LogError(e, "Error dispatching raw message for {Uri}", uri);
             }
-            // continue normal processing
         }
 
         private string GetRequestedId(params string[] identifiers)
         {
-            if (identifiers?.Length > 0)
+            if (!(identifiers?.Length > 0))
             {
-                if (identifiers.Length > 2)
+                return null;
+            }
+            if (identifiers.Length > 2)
+            {
+                return string.Join("-", identifiers);
+            }
+
+            foreach (var identifier in identifiers)
+            {
+                if (identifier == null)
                 {
-                    return string.Join("-", identifiers);
-                }
-                foreach (var identifier in identifiers)
-                {
-                    if (identifier == null)
-                    {
-                        continue;
-                    }
-                    if (SdkInfo.IsNumeric(identifier) || identifier.Contains(":"))
-                    {
-                        return identifier;
-                    }
+                    continue;
                 }
 
-                return identifiers[0];
+                if (SdkInfo.IsNumeric(identifier) || identifier.Contains(":"))
+                {
+                    return identifier;
+                }
             }
-            return null;
+
+            return identifiers[0];
+
         }
 
         private string GetRequestedLanguage(params string[] identifiers)
         {
-            if (identifiers?.Length > 0)
+            if (!(identifiers?.Length > 0))
             {
-                foreach (var identifier in identifiers)
+                return null;
+            }
+            foreach (var identifier in identifiers)
+            {
+                if (identifier.IsNullOrEmpty() || identifier.Length > 3 || SdkInfo.IsNumeric(identifier))
                 {
-                    if (identifier.IsNullOrEmpty() || identifier.Length > 3 || SdkInfo.IsNumeric(identifier))
+                    continue;
+                }
+
+                try
+                {
+                    var c = CultureInfo.GetCultureInfo(identifier);
+                    if (c.TwoLetterISOLanguageName == identifier)
                     {
-                        continue;
-                    }
-                    try
-                    {
-                        var c = CultureInfo.GetCultureInfo(identifier);
-                        if (c.TwoLetterISOLanguageName == identifier)
-                        {
-                            return identifier;
-                        }
-                    }
-                    catch
-                    {
-                        // ignored
+                        return identifier;
                     }
                 }
+                catch
+                {
+                    // ignored
+                }
             }
+
             return null;
         }
     }

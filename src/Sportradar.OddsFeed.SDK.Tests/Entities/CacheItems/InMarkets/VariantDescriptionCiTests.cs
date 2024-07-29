@@ -199,7 +199,7 @@ public class VariantDescriptionCiTests
         Assert.False(_ciMd.HasTranslationsFor(null));
     }
 
-    [CollectionDefinition("VariantDescriptionCiMergeTests", DisableParallelization = true)]
+    [Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
     public class MergeTests
     {
         private readonly desc_variant _apiMd1;

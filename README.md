@@ -28,6 +28,11 @@ For more information please contact support@sportradar.com or visit https://iodo
 
 # Change Log
 
+## 2024-07-29  2.2.0
+
+- Enabled accessing match statistics on MatchStatus received via IMatch.GetStatus object (beside Soccer also supports Kabaddi statistics)
+- Improved memory management and disposal of resources when UofSdk is closed
+
 ## 2024-05-15  2.1.0
 - Improved variant market handling when API call is not received or has some faulty data (i.e. missing outcome name)
 - Fix: custom configuration now respect Ssl setting to rewrite api_url if needed

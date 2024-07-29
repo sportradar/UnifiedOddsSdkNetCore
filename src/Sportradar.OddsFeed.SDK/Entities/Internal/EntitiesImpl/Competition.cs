@@ -114,13 +114,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="ICompetitionStatus"/> instance containing information about the progress of the sport event</returns>
         public async Task<ICompetitionStatus> GetStatusAsync()
         {
-            var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await SportEventStatusCache.GetSportEventStatusAsync(Id).ConfigureAwait(false)
-                : await new Func<Urn, Task<SportEventStatusCacheItem>>(SportEventStatusCache.GetSportEventStatusAsync).SafeInvokeAsync(Id, ExecutionLog, GetFetchErrorMessage("EventStatus")).ConfigureAwait(false);
+            var item = await GetSportEventStatusCacheItem();
 
             return item == null
-                ? null
-                : new CompetitionStatus(item, MatchStatusCache);
+                       ? null
+                       : new CompetitionStatus(item, MatchStatusCache);
+        }
+
+        protected async Task<SportEventStatusCacheItem> GetSportEventStatusCacheItem()
+        {
+            var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
+                           ? await SportEventStatusCache.GetSportEventStatusAsync(Id).ConfigureAwait(false)
+                           : await new Func<Urn, Task<SportEventStatusCacheItem>>(SportEventStatusCache.GetSportEventStatusAsync).SafeInvokeAsync(Id, ExecutionLog, GetFetchErrorMessage("EventStatus")).ConfigureAwait(false);
+            return item;
         }
 
         /// <summary>

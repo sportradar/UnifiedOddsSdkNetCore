@@ -1,6 +1,7 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Globalization;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -51,11 +52,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// </summary>
         /// <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
         /// <returns>an <see cref="Uri"/> instance used to retrieve resource with specified <c>identifiers</c></returns>
-        protected override Uri GetRequestUri(params object[] identifiers)
+        protected override Uri GetRequestUri(params string[] identifiers)
         {
+            // ReSharper disable once CoVariantArrayConversion
             return identifiers.Length == 1
-                ? new Uri(string.Format(_liveScheduleUriFormat, identifiers))
-                : base.GetRequestUri(identifiers);
+                       ? new Uri(string.Format(CultureInfo.InvariantCulture, _liveScheduleUriFormat, identifiers))
+                       : base.GetRequestUri(identifiers);
         }
     }
 }

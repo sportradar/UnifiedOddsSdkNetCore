@@ -11,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using SR = Sportradar.OddsFeed.SDK.Tests.Common.StaticRandom;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.DslApi;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
 
 [SuppressMessage("ReSharper", "UnusedMember.Local")]
 public class SummaryEndpoint

@@ -3957,11 +3957,6 @@
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache" />
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventCache.CacheLog">
-            <summary>
-            A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance used for logging
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventCache._fetchedDates">
             <summary>
             The list of dates already automatically loaded by the timer
@@ -4224,51 +4219,57 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache">
             <summary>
-            Implementation of <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache"/>
+                Implementation of <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache" />
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache" />
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._mapperFactory">
-            <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2"/> used to created <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1"/> instances
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._sportEventStatusCache">
-            <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore`1"/> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEventStatus"/> instances
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._isDisposed">
-            <summary>
-            Value indicating whether the current instance was already disposed
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._fetchSemaphore">
             <summary>
-            A <see cref="T:System.Threading.SemaphoreSlim"/> used to synchronize multi-threaded fetching
+                A <see cref="T:System.Threading.SemaphoreSlim" /> used to synchronize multi-threaded fetching
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._lock">
             <summary>
-            A <see cref="T:System.Object"/> to ensure thread safety when adding items to cache
+                A <see cref="T:System.Object" /> to ensure thread safety when adding items to cache
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._mapperFactory">
+            <summary>
+                A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to created
+                <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /> instances
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._sportEventStatusCache">
+            <summary>
+                A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore`1" /> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEventStatus" /> instances
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache._isDisposed">
+            <summary>
+                Value indicating whether the current instance was already disposed
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore{System.String},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory{Sportradar.OddsFeed.SDK.Messages.Feed.sportEventStatus,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventStatusDto},Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheManager,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore{System.String},Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Microsoft.Extensions.Logging.ILoggerFactory)">
             <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache"/> class
+                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache" /> class
             </summary>
-            <param name="sportEventStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore`1"/> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem"/> instances</param>
-            <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2"/> used to created <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1"/> instances</param>
-            <param name="sportEventCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache"/> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent"/></param>
-            <param name="cacheManager">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheManager"/> used to interact among caches</param>
-            <param name="ignoreEventsTimelineCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore`1"/> used to cache event ids for which the SES from timeline endpoint should be ignored</param>
+            <param name="sportEventStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore`1" /> used to cache
+                <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem" /> instances</param>
+            <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to created
+                <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /> instances</param>
+            <param name="sportEventCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache" /> used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent" /></param>
+            <param name="cacheManager">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheManager" /> used to interact among caches</param>
+            <param name="ignoreEventsTimelineCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore`1" /> used to cache event ids for which the SES from
+                timeline endpoint should be ignored</param>
             <param name="config">The configuration to get IgnoreBetPalTimelineSportEventStatus</param>
             <param name="loggerFactory">The logger factory for creating Cache and Execution logs</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.GetSportEventStatusAsync(Sportradar.OddsFeed.SDK.Common.Urn)">
             <summary>
-            Gets the cached <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem" /> instance associated with the sport event specified by the <c>eventId</c>. If the instance associated
-            with the specified event is not found, it tries to obtain it via API, if still cant, a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem" /> instance indicating a 'not started' event is returned.
+                Gets the cached <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem" /> instance associated with the sport event specified by the
+                <c>eventId</c>. If the instance associated
+                with the specified event is not found, it tries to obtain it via API, if still cant, a
+                <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem" /> instance indicating a 'not started' event is returned.
             </summary>
             <param name="eventId">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn" /> representing the id of the sport event whose status to get</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem" /> representing the status of the specified sport event</returns>
@@ -4276,48 +4277,49 @@
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.AddEventIdForTimelineIgnore(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.Type)">
             <inheritdoc />
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.AddSportEventStatus(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem,System.String,System.String)">
-            <summary>
-            Adds the sport event status to the internal cache
-            </summary>
-            <param name="eventId">The eventId of the sport event status to be cached</param>
-            <param name="sportEventStatus">The sport event status to be cached</param>
-            <param name="statusOnEvent">The sport event status received directly on event level</param>
-            <param name="source">The source of the SES</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.SetDtoTypes">
             <summary>
-            Set the list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.DtoType"/> in the this cache
+                Set the list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.DtoType" /> in the this cache
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.CacheDeleteItem(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.CacheItemType)">
             <summary>
-            Purges item from cache
+                Purges item from cache
             </summary>
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn" /> representing the id of the item in the cache to be purged</param>
             <param name="cacheItemType">A cache item type</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.CacheHasItem(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.CacheItemType)">
             <summary>
-            Does item exists in the cache
+                Does item exists in the cache
             </summary>
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn" /> representing the id of the item to be checked</param>
             <param name="cacheItemType">A cache item type</param>
             <returns><c>true</c> if exists, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.Dispose">
+            <summary>
+                Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.AddSportEventStatus(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem,System.String,System.String)">
+            <summary>
+                Adds the sport event status to the internal cache
+            </summary>
+            <param name="eventId">The eventId of the sport event status to be cached</param>
+            <param name="sportEventStatus">The sport event status to be cached</param>
+            <param name="statusOnEvent">The sport event status received directly on event level</param>
+            <param name="source">The source of the SES</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.CacheAddDtoItemAsync(Sportradar.OddsFeed.SDK.Common.Urn,System.Object,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.DtoType,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.ISportEventCacheItem)">
             <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.Dispose(System.Boolean)">
             <summary>
-            Releases unmanaged and - optionally - managed resources
+                Releases unmanaged and - optionally - managed resources
             </summary>
-            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources
-            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+                unmanaged resources</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusMapperBase">
             <summary>
@@ -10934,14 +10936,6 @@
             Helper for execution actions
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.ExecutionHelper.WaitToComplete(System.Action,System.Int32)">
-            <summary>
-            Try to execute action till success or timeout
-            </summary>
-            <param name="action">Action to be invoked</param>
-            <param name="timeoutMs">Maximum execution time</param>
-            <returns>Indication if the action completed successfully</returns>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.ExecutionHelper.Safe(System.Action)">
             <summary>
             Try to safely execute action (exception ignored)
@@ -11636,14 +11630,14 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.GetObjectSize(System.Object)">
             <summary>
-            Calculates the length in bytes of an object and returns the size 
+            Calculates the length in bytes of an object and returns the size
             </summary>
             <param name="serializableObject">Object to get size</param>
             <returns>The size in bytes</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.TryGetObjectSize(System.Object)">
             <summary>
-            Calculates the length in bytes of an object and returns the size 
+            Calculates the length in bytes of an object and returns the size
             </summary>
             <param name="serializableObject">Object to get size</param>
             <returns>The size in bytes</returns>
@@ -18676,7 +18670,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics">
             <summary>
-            Defines a contract for classes implementing match specific statistics
+                Defines a contract for classes implementing match specific statistics
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitionStatistics" />
         </member>
@@ -18732,6 +18726,11 @@
             Gets the indicator wither the event is decided by fed
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1">
+            <summary>
+            Defines a contract implemented by classes representing sport events of match type
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue">
             <summary>
             Specifies a contract implemented by classes representing values with names / descriptions
@@ -18749,37 +18748,38 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider`1"/> used to retrieve bookmaker details
+                A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider`1" /> used to retrieve bookmaker details
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2" />
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider._fetcher">
-            <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher"/> used to fetch the data
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider._deserializer">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1"/> used to deserialize the fetch data
+                A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider._fetcher">
+            <summary>
+                A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" /> used to fetch the data
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider._mapperFactory">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2"/> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1"/>
+                A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" />
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider.#ctor(System.String,Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Rest.bookmaker_details},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory{Sportradar.OddsFeed.SDK.Messages.Rest.bookmaker_details,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.BookmakerDetailsDto})">
             <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider"/> class
+                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider" /> class
             </summary>
             <param name="bookmakerDetailsUriFormat">An address format used to retrieve sport event summary</param>
             <param name="fetcher">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" /> used to fetch the data</param>
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
-            <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /></param>
+            <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct
+                instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /></param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider.GetData(System.String)">
             <summary>
-            Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
+                Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
             </summary>
             <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
@@ -22858,8 +22858,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2">
             <summary>
-            An implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider`1"/> which fetches the data, deserializes it and than maps / converts it
-            to the output type
+            An implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider`1" /> which fetches the data, deserializes it and then maps / converts it to the output type
             </summary>
             <typeparam name="TIn">Specifies the type of data-transfer-object instance which will be mapped to returned instance</typeparam>
             <typeparam name="TOut">Specifies the type of instances provided</typeparam>
@@ -22867,27 +22866,17 @@
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.ExecutionLog">
             <summary>
-            A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> used for execution logging
-            </summary>
-        </member>
-        <member name="E:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.RawApiDataReceived">
-            <summary>
-            Event raised when the data provider receives the message
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.DataFetcher">
-            <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher"/> used to fetch the data
+            A <see cref="T:Microsoft.Extensions.Logging.ILogger" /> used for execution logging
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2._deserializer">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1"/> used to deserialize the fetch data
+            A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2._mapperFactory">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2"/> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1"/>
+            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" />
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2._uriFormat">
@@ -22902,66 +22891,66 @@
             <param name="uriFormat">The url format specifying the url of the resources fetched by the fetcher</param>
             <param name="dataFetcher">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" /> used to fetch the data</param>
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
-            <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /></param>
+            <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of
+            <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" />A type mapper</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetDataAsyncInternal(System.Uri,System.String,System.String)">
+        <member name="E:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.RawApiDataReceived">
             <summary>
-            Fetches and deserializes the data from the provided <see cref="T:System.Uri"/>.
+            Event raised when the data provider receives the message
             </summary>
-            <param name="uri">A <see cref="T:System.Uri"/> specifying the data location</param>
-            <param name="requestParams">The parameters associated with the request (if present)</param>
-            <param name="culture">The language associated with the request</param>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the ongoing operation</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetDataInternal(System.Uri,System.String,System.String)">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.DataFetcher">
             <summary>
-            Fetches and deserializes the data from the provided <see cref="T:System.Uri"/>.
+            A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" /> used to fetch the data
             </summary>
-            <param name="uri">A <see cref="T:System.Uri"/> specifying the data location</param>
-            <param name="requestParams">The parameters associated with the request (if present)</param>
-            <param name="culture">The language associated with the request</param>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the ongoing operation</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetRequestUri(System.Object[])">
-            <summary>
-            Constructs and returns an <see cref="T:System.Uri"/> instance used to retrieve resource with specified <c>id</c>
-            </summary>
-            <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
-            <returns>an <see cref="T:System.Uri"/> instance used to retrieve resource with specified <c>identifiers</c></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetDataAsync(System.String)">
             <summary>
-            get data as an asynchronous operation.
+            Get data as an asynchronous operation.
             </summary>
             <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
             <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException">Failed to execute http get</exception>
             <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.DeserializationException">The deserialization failed</exception>
-            <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the SDK</exception>
+            <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the
+            SDK</exception>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetDataAsync(System.String[])">
             <summary>
-            Asynchronously gets a <typeparamref name="TOut"/> instance specified by the provided identifiersA two letter language code of the <see cref="T:System.Globalization.CultureInfo"/>
+            Asynchronously gets a <typeparamref name="TOut" /> instance specified by the provided identifiersA two letter
+            language code of the <see cref="T:System.Globalization.CultureInfo" />
             </summary>
             <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the async operation</returns>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
             <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException">Failed to execute http get</exception>
             <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.DeserializationException">The deserialization failed</exception>
-            <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the SDK</exception>
+            <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.MappingException">The deserialized entity could not be mapped to entity used by the
+            SDK</exception>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetData(System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetDataAsyncInternal(System.Uri,System.String,System.String)">
             <summary>
-            Gets a <see cref="!:T" /> instance in language specified by the provided <c>languageCode</c>
+            Fetches and deserializes the data from the provided <see cref="T:System.Uri" />.
             </summary>
-            <param name="languageCode">A two letter language code of the <see cref="T:System.Globalization.CultureInfo" /></param>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
+            <param name="uri">A <see cref="T:System.Uri" /> specifying the data location</param>
+            <param name="requestParams">The parameters associated with the request (if present)</param>
+            <param name="culture">The language associated with the request</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the ongoing operation</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetData(System.String[])">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetDataInternal(System.Uri,System.String,System.String)">
             <summary>
-            Gets a <see cref="!:T" /> instance specified by the provided identifiersA two letter language code of the <see cref="T:System.Globalization.CultureInfo" />
+            Fetches and deserializes the data from the provided <see cref="T:System.Uri" />.
             </summary>
-            <param name="identifiers">A list of identifiers uniquely specifying the instance to fetch</param>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the async operation</returns>
+            <param name="uri">A <see cref="T:System.Uri" /> specifying the data location</param>
+            <param name="requestParams">The parameters associated with the request (if present)</param>
+            <param name="culture">The language associated with the request</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> representing the ongoing operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProvider`2.GetRequestUri(System.String[])">
+            <summary>
+            Constructs and returns an <see cref="T:System.Uri" /> instance used to retrieve resource with specified <c>id</c>
+            </summary>
+            <param name="identifiers">Identifiers uniquely identifying the data to fetch</param>
+            <returns>an <see cref="T:System.Uri" /> instance used to retrieve resource with specified <c>identifiers</c></returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DataProviderNamed`2">
             <summary>
@@ -23006,7 +22995,7 @@
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
             <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /></param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DateScheduleProvider.GetRequestUri(System.Object[])">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.DateScheduleProvider.GetRequestUri(System.String[])">
             <summary>
             Constructs and returns an <see cref="T:System.Uri"/> instance used to retrieve resource with specified <c>id</c>
             </summary>
@@ -27171,6 +27160,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.MatchStatus.DecidedByFed">
             <summary>
             Gets the indicator wither the event is decided by fed
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.MatchStatus.Statistics">
+            <summary>
+            Returns match statistics
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.MatchStatus.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventStatusCacheItem,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ILocalizedNamedValueCache)">
@@ -32172,7 +32166,7 @@
             <param name="deserializer">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer`1" /> used to deserialize the fetch data</param>
             <param name="mapperFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapperFactory`2" /> used to construct instances of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.ISingleTypeMapper`1" /></param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.SportEventSummaryProvider.GetRequestUri(System.Object[])">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.SportEventSummaryProvider.GetRequestUri(System.String[])">
             <summary>
             Constructs and returns an <see cref="T:System.Uri"/> instance used to retrieve resource with specified <c>id</c>
             </summary>

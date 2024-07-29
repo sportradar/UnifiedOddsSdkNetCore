@@ -38,6 +38,15 @@ public class FeedMessageBuilder
         };
     }
 
+    public fixture_change BuildFixtureChange(long? eventId = null, int? product = null, long? requestId = null, DateTime? timestamp = null)
+    {
+        if (eventId is -1)
+        {
+            eventId = StaticRandom.I();
+        }
+        return new fixture_change { event_id = eventId == null ? "sr:match:1000" : $"sr:match:{eventId}", product = product ?? _producerId, timestamp = SdkInfo.ToEpochTime(timestamp ?? TimeProviderAccessor.Current.Now), request_id = requestId ?? 0 };
+    }
+
     /// <summary>
     /// Builds bet_stop message
     /// </summary>

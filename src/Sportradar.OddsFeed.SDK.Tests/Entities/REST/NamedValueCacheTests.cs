@@ -89,7 +89,7 @@ public class NamedValueCacheTests
     public void InitialDataFetchStartedByConstructor()
     {
         Setup(ExceptionHandlingStrategy.Catch, SdkTimer.Create(UofSdkBootstrap.TimerForNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
-        var finished = ExecutionHelper.WaitToComplete(() => _fetcherMock.Verify(x => x.GetDataAsync(_betStopReasonsUri), Times.Once), 15000);
+        var finished = TestExecutionHelper.WaitToComplete(() => _fetcherMock.Verify(x => x.GetDataAsync(_betStopReasonsUri), Times.Once), 15000);
         Assert.True(finished);
     }
 

@@ -1132,12 +1132,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 exportables = Sports.Values.Cast<IExportableBase>().Concat(Categories.Values).ToList();
             }
 
-            var tasks = exportables.Select(e =>
-            {
-                var task = e.ExportAsync();
-                task.ConfigureAwait(false);
-                return task;
-            });
+            var tasks = exportables.Select(e => e.ExportAsync());
 
             return await Task.WhenAll(tasks).ConfigureAwait(false);
         }

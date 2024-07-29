@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.MockLog;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 
 public class XunitLoggerFactory : ILoggerFactory
 {
@@ -28,9 +28,9 @@ public class XunitLoggerFactory : ILoggerFactory
     public ILogger CreateLogger(string categoryName)
     {
         categoryName = FormatLoggerName(categoryName);
-        if (_registeredLoggers.ContainsKey(categoryName))
+        if (_registeredLoggers.TryGetValue(categoryName, out var existingLogger))
         {
-            return _registeredLoggers[categoryName];
+            return existingLogger;
         }
 
         var logger = new XUnitLogger(categoryName, _outputHelper);
@@ -53,7 +53,7 @@ public class XunitLoggerFactory : ILoggerFactory
     {
     }
 
-    private string FormatLoggerName(string start)
+    private static string FormatLoggerName(string start)
     {
         return start.Replace("+", ".");
     }

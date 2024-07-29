@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -70,7 +71,7 @@ internal class TestDataRouterManager : IDataRouterManager
     private const string MatchDetailsXml = "event_details_{culture}.xml";
     private const string TournamentScheduleXml = "tournaments_{culture}.xml";
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Allowed for future reference")]
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Allowed for future reference")]
     private const string PlayerProfileXml = "player_1_{culture}.xml";
 
     private const string SimpleTeamProfileXml = "simpleteam_1_{culture}.xml";
@@ -163,14 +164,10 @@ internal class TestDataRouterManager : IDataRouterManager
     {
         lock (_lock)
         {
-            if (RestMethodCalls.ContainsKey(callType))
+            if (!RestMethodCalls.TryAdd(callType, 1))
             {
                 RestMethodCalls.TryGetValue(callType, out var value);
                 RestMethodCalls[callType] = value + 1;
-            }
-            else
-            {
-                RestMethodCalls.Add(callType, 1);
             }
         }
     }
@@ -362,7 +359,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse($"sr:sports:{result.Items.Count()}"), result, culture, DtoType.SportList, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse($"sr:sports:{result.Items.Count()}", true), result, culture, DtoType.SportList, null).ConfigureAwait(false);
             }
 
             return;
@@ -374,7 +371,7 @@ internal class TestDataRouterManager : IDataRouterManager
         if (result2 != null)
         {
             RestUrlCalls.Add(filePath);
-            await LogSaveDtoAsync(Urn.Parse($"sr:sports:{result2.Items.Count()}"), result2, culture, DtoType.SportList, null).ConfigureAwait(false);
+            await LogSaveDtoAsync(Urn.Parse($"sr:sports:{result2.Items.Count()}", true), result2, culture, DtoType.SportList, null).ConfigureAwait(false);
         }
     }
 
@@ -418,7 +415,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse($"sr:sports:{result.Items.Count()}"), result, culture, DtoType.SportList, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse($"sr:sports:{result.Items.Count()}", true), result, culture, DtoType.SportList, null).ConfigureAwait(false);
             }
 
             return;
@@ -451,7 +448,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result.Items.Count()}"), result, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result.Items.Count()}", true), result, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
                 var urns = new List<Tuple<Urn, Urn>>();
                 foreach (var item in result.Items)
                 {
@@ -483,7 +480,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result.Items.Count()}"), result, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result.Items.Count()}", true), result, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
                 var urns = new List<Tuple<Urn, Urn>>();
                 foreach (var item in result.Items)
                 {
@@ -500,7 +497,7 @@ internal class TestDataRouterManager : IDataRouterManager
         if (result2 != null)
         {
             RestUrlCalls.Add(filePath);
-            await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result2.Items.Count()}"), result2, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
+            await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result2.Items.Count()}", true), result2, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
             var urns = new List<Tuple<Urn, Urn>>();
             foreach (var item in result2.Items)
             {
@@ -531,7 +528,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result.Items.Count()}"), result, culture, DtoType.SportEventSummaryList, requester).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result.Items.Count()}", true), result, culture, DtoType.SportEventSummaryList, requester).ConfigureAwait(false);
                 var urns = new List<Tuple<Urn, Urn>>();
                 foreach (var item in result.Items)
                 {
@@ -548,7 +545,7 @@ internal class TestDataRouterManager : IDataRouterManager
         if (result2 != null)
         {
             RestUrlCalls.Add(filePath);
-            await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result2.Items.Count()}"), result2, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
+            await LogSaveDtoAsync(Urn.Parse($"sr:sport_events:{result2.Items.Count()}", true), result2, culture, DtoType.SportEventSummaryList, null).ConfigureAwait(false);
             var urns = new List<Tuple<Urn, Urn>>();
             foreach (var item in result2.Items)
             {
@@ -744,7 +741,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse("sr:markets:" + result.Items?.Count()), result, culture, DtoType.MarketDescriptionList, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse("sr:markets:" + result.Items?.Count(), true), result, culture, DtoType.MarketDescriptionList, null).ConfigureAwait(false);
             }
         }
     }
@@ -773,7 +770,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse(variantId), result, culture, DtoType.MarketDescription, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse(variantId, true), result, culture, DtoType.MarketDescription, null).ConfigureAwait(false);
             }
         }
     }
@@ -801,7 +798,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse("sr:variants:" + result.Items?.Count()), result, culture, DtoType.VariantDescriptionList, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse("sr:variants:" + result.Items?.Count(), true), result, culture, DtoType.VariantDescriptionList, null).ConfigureAwait(false);
             }
         }
     }
@@ -900,7 +897,7 @@ internal class TestDataRouterManager : IDataRouterManager
             var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
             if (result != null)
             {
-                await LogSaveDtoAsync(Urn.Parse($"sr:lotteries:{result.Items.Count()}"), result, culture, DtoType.LotteryList, null).ConfigureAwait(false);
+                await LogSaveDtoAsync(Urn.Parse($"sr:lotteries:{result.Items.Count()}", true), result, culture, DtoType.LotteryList, null).ConfigureAwait(false);
                 var urns = new List<Tuple<Urn, Urn>>();
                 foreach (var item in result.Items)
                 {
@@ -941,7 +938,7 @@ internal class TestDataRouterManager : IDataRouterManager
 
         if (result != null)
         {
-            await LogSaveDtoAsync(Urn.Parse($"sr:sels:{result.Markets.Count}"), result, CultureInfo.CurrentCulture, DtoType.AvailableSelections, null).ConfigureAwait(false);
+            await LogSaveDtoAsync(Urn.Parse($"sr:sels:{result.Markets.Count}", true), result, CultureInfo.CurrentCulture, DtoType.AvailableSelections, null).ConfigureAwait(false);
             return new AvailableSelections(result);
         }
 
@@ -975,7 +972,7 @@ internal class TestDataRouterManager : IDataRouterManager
 
         if (result != null)
         {
-            await LogSaveDtoAsync(Urn.Parse($"sr:calc:{result.AvailableSelections.Count}"), result, CultureInfo.CurrentCulture, DtoType.Calculation, null).ConfigureAwait(false);
+            await LogSaveDtoAsync(Urn.Parse($"sr:calc:{result.AvailableSelections.Count}", true), result, CultureInfo.CurrentCulture, DtoType.Calculation, null).ConfigureAwait(false);
             return new Calculation(result);
         }
 
@@ -1009,7 +1006,7 @@ internal class TestDataRouterManager : IDataRouterManager
 
         if (result != null)
         {
-            await LogSaveDtoAsync(Urn.Parse($"sr:calcfilt:{result.AvailableSelections.Count}"), result, CultureInfo.CurrentCulture, DtoType.Calculation, null).ConfigureAwait(false);
+            await LogSaveDtoAsync(Urn.Parse($"sr:calcfilt:{result.AvailableSelections.Count}", true), result, CultureInfo.CurrentCulture, DtoType.Calculation, null).ConfigureAwait(false);
             return new CalculationFilter(result);
         }
 

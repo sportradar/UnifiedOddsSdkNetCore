@@ -63,8 +63,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <returns>A <see cref="Task{IMatchStatus}"/> containing information about the progress of the match</returns>
         public new async Task<IMatchStatus> GetStatusAsync()
         {
-            var item = await base.GetStatusAsync().ConfigureAwait(false);
-            return item == null ? null : new MatchStatus(((CompetitionStatus)item).SportEventStatusCacheItem, MatchStatusCache);
+            var item = await GetSportEventStatusCacheItem().ConfigureAwait(false);
+            return item == null ? null : new MatchStatus(item, MatchStatusCache);
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 {
     internal class SoccerStatus : MatchStatus, ISoccerStatus
     {
-        public ISoccerStatistics Statistics { get; }
+        public new ISoccerStatistics Statistics { get; }
 
         public SoccerStatus(SportEventStatusCacheItem ci, ILocalizedNamedValueCache matchStatusesCache)
             : base(ci, matchStatusesCache)

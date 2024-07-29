@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<void_reasons_descriptions response_code="OK">
+    <void_reason id="0" description="OTHER"/>
+    <void_reason id="1" description="NO_GOALSCORER"/>
+    <void_reason id="2" description="CORRECT_SCORE_MISSING"/>
+    <void_reason id="3" description="RESULT_UNVERIFIABLE"/>
+    <void_reason id="4" description="FORMAT_CHANGE"/>
+    <void_reason id="5" description="CANCELLED_EVENT"/>
+    <void_reason id="6" description="MISSING_GOALSCORER"/>
+    <void_reason id="7" description="MATCH_ENDED_IN_WALKOVER"/>
+    <void_reason id="8" description="DEAD_HEAT"/>
+    <void_reason id="9" description="RETIRED_OR_DEFAULTED"/>
+    <void_reason id="10" description="EVENT_ABANDONED"/>
+    <void_reason id="11" description="EVENT_POSTPONED"/>
+    <void_reason id="12" description="INCORRECT_ODDS"/>
+    <void_reason id="13" description="INCORRECT_STATISTICS"/>
+    <void_reason id="14" description="NO_RESULT_ASSIGNABLE"/>
+    <void_reason id="15" description="CLIENT_SIDE_SETTLEMENT_NEEDED"/>
+    <void_reason id="16" description="STARTING_PITCHER_CHANGED"/>
+</void_reasons_descriptions>

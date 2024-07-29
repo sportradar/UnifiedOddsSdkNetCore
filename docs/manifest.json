@@ -2392,10 +2392,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatistics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.yml",
       "output": {
         ".html": {
           "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "_api/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html"
         }
       },
       "version": ""
@@ -5092,6 +5112,36 @@
       "output": {
         ".html": {
           "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/OddsFeedSDKCore.zip",
+      "output": {
+        "resource": {
+          "relative_path": "media/OddsFeedSDKCore.zip"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/OddsFeedSDKCore_2.1.0.zip",
+      "output": {
+        "resource": {
+          "relative_path": "media/OddsFeedSDKCore_2.1.0.zip"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/OddsFeedSDKCore_2.2.0.zip",
+      "output": {
+        "resource": {
+          "relative_path": "media/OddsFeedSDKCore_2.2.0.zip"
         }
       },
       "version": ""
