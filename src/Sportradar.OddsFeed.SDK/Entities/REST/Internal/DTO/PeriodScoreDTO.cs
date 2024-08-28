@@ -69,7 +69,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             }
             else if (!string.IsNullOrEmpty(periodScore.home_score))
             {
-                SdkInfo.ExecutionLog.LogWarning($"PeriodScore - can not parse home score: {periodScore.home_score}");
+                SdkInfo.ExecutionLog.LogWarning("PeriodScore - can not parse home score: {PeriodScoreHomeScore}", periodScore.home_score);
             }
             if (decimal.TryParse(periodScore.away_score, out var awayScore))
             {
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             }
             else if (!string.IsNullOrEmpty(periodScore.away_score))
             {
-                SdkInfo.ExecutionLog.LogWarning($"PeriodScore - can not parse away score: {periodScore.away_score}");
+                SdkInfo.ExecutionLog.LogWarning("PeriodScore - can not parse away score: {PeriodScoreAwayScore}", periodScore.away_score);
             }
             PeriodNumber = periodScore.numberSpecified ? periodScore.number : (int?)null;
             MatchStatusCode = periodScore.match_status_code;

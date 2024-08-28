@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCacheItem = (LotteryCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var sportId = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
 
             if (sportId == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No sportId for lottery cache item with id={Id}.");
+                ExecutionLog.LogDebug("Missing data. No sportId for lottery cache item with id={SportEventId}", Id);
                 return null;
             }
             var sportData = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -98,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCacheItem = (LotteryCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -107,7 +107,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 : await new Func<Task<Urn>>(lotteryCacheItem.GetCategoryIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("CategoryId")).ConfigureAwait(false);
             if (categoryId == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No categoryId for lottery cache item with id={Id}.");
+                ExecutionLog.LogDebug("Missing data. No categoryId for lottery cache item with id={SportEventId}", Id);
                 return null;
             }
             var categoryData = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -137,7 +137,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCacheItem = (LotteryCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -158,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCacheItem = (LotteryCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -179,7 +179,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCacheItem = (LotteryCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -198,7 +198,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var lotteryCacheItem = (LotteryCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (lotteryCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No lottery cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw

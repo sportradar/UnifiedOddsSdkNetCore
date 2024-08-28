@@ -57,25 +57,25 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
             try
             {
-                _clientLog.LogInformation($"Invoking BookingManager.BookLiveOddsEvent({eventId})");
+                _clientLog.LogInformation("Invoking BookingManager.BookLiveOddsEvent({SportEventId})", eventId);
                 var postUrl = string.Format(BookLiveOddsEventUrl, _config.Api.BaseUrl, eventId);
 
                 var response = _dataPoster.PostDataAsync(new Uri(postUrl)).GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    _clientLog.LogInformation($"BookingManager.bookLiveOddsEvent({eventId}) completed, status: {response.StatusCode}.");
+                    _clientLog.LogInformation("BookingManager.bookLiveOddsEvent({SportEventId}) completed, status: {ResponseStatusCode}", eventId, response.StatusCode);
                     _cacheManager.SaveDto(eventId, eventId, CultureInfo.CurrentCulture, DtoType.BookingStatus, null);
                     return true;
                 }
                 _cacheManager.RemoveCacheItem(eventId, CacheItemType.SportEvent, "BookingManager");
                 var filteredResponse = SdkInfo.ExtractHttpResponseMessage(response.Content);
-                _clientLog.LogWarning($"BookingManager.bookLiveOddsEvent({eventId}) completed, status: {response.StatusCode}, message: {filteredResponse}");
+                _clientLog.LogWarning("BookingManager.bookLiveOddsEvent({SportEventId}) completed, status: {ResponseStatusCode}, message: {FilteredResponse}", eventId, response.StatusCode, filteredResponse);
                 throw new CommunicationException($"Failed booking event {eventId}", postUrl, response.StatusCode, filteredResponse, null);
             }
             catch (CommunicationException ce)
             {
-                _executionLog.LogError(ce, $"Event[{eventId}] booking failed. API response code: {ce.ResponseCode}.");
+                _executionLog.LogError(ce, "Event[{SportEventId}] booking failed. API response code: {ErrorResponseCode}", eventId, ce.ResponseCode);
                 if (_config.ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;
@@ -83,7 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             }
             catch (Exception e)
             {
-                _executionLog.LogError(e, $"Event[{eventId}] booking failed.");
+                _executionLog.LogError(e, "Event[{SportEventId}] booking failed", eventId);
                 if (_config.ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;

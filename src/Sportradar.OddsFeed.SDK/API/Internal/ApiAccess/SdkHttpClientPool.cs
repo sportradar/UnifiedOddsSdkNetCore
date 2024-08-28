@@ -48,7 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 _httpClientPool.Add(httpClient);
             }
 
-            SdkLoggerFactory.GetLoggerForExecution(typeof(SdkHttpClientPool)).LogDebug($"SdkHttpClientPool with size {poolSize} and timeout {timeout.TotalSeconds}s created.");
+            SdkLoggerFactory.GetLoggerForExecution(typeof(SdkHttpClientPool)).LogDebug("SdkHttpClientPool with size {PoolSize} and timeout {TimeoutSeconds}s created", poolSize, timeout.TotalSeconds);
             DefaultRequestHeaders = _httpClientPool.First().DefaultRequestHeaders;
             Timeout = TimeSpan.FromSeconds(_httpClientPool.First().Timeout.TotalSeconds);
         }
@@ -68,7 +68,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 _httpClientPool.Add(httpClient);
             }
 
-            SdkLoggerFactory.GetLoggerForExecution(typeof(SdkHttpClientPool)).LogDebug($"SdkHttpClientPool with size {poolSize} and timeout {timeout.TotalSeconds}s created.");
+            SdkLoggerFactory.GetLoggerForExecution(typeof(SdkHttpClientPool)).LogDebug("SdkHttpClientPool with size {PoolSize} and timeout {TimeoutSeconds}s created", poolSize, timeout.TotalSeconds);
             DefaultRequestHeaders = _httpClientPool.First().DefaultRequestHeaders;
         }
 

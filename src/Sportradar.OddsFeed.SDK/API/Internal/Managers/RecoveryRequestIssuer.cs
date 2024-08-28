@@ -109,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 throw new ArgumentException($"Producer {producer} is not available or is disabled", nameof(producer));
             }
 
-            LogInt.LogInformation("Invoked RecoverEventMessagesAsync: [Producer={producerId}, Urn={eventId}]", producer.Id, eventId);
+            LogInt.LogInformation("Invoked RecoverEventMessagesAsync: [Producer={ProducerId}, Urn={SportEventId}]", producer.Id, eventId);
 
             var requestNumber = _sequenceGenerator.GetNext();
             var myProducer = (Producer)producer;
@@ -123,14 +123,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             var responseMessage = await _dataPoster.PostDataAsync(new Uri(url)).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
+                ExecutionLog.LogError("Recovery request of event messages for Event={SportEventId}, RequestId={RequestId}, failed with StatusCode={ResponseStatusCode}", eventId, requestNumber, responseMessage.StatusCode);
                 var message = $"Recovery request of event messages for Event={eventId}, RequestId={requestNumber}, failed with StatusCode={responseMessage.StatusCode}";
-                ExecutionLog.LogError(message);
                 _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, 0, eventId, message));
                 throw new CommunicationException(message, url, responseMessage.StatusCode, null);
             }
 
-            var messageOk = $"Recovery request of event messages for Event={eventId}, RequestId={requestNumber} succeeded.";
-            ExecutionLog.LogInformation(messageOk);
+            ExecutionLog.LogInformation("Recovery request of event messages for Event={SportEventId}, RequestId={RequestId} succeeded", eventId, requestNumber);
             myProducer.EventRecoveries.TryAdd(requestNumber, eventId);
             _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, 0, eventId, string.Empty));
             return requestNumber;
@@ -152,7 +151,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 throw new ArgumentException($"Producer {producer} is disabled in the SDK", nameof(producer));
             }
 
-            LogInt.LogInformation("Invoked RecoverEventStatefulMessagesAsync: [Producer={producerId}, Urn={eventId}]", producer.Id, eventId);
+            LogInt.LogInformation("Invoked RecoverEventStatefulMessagesAsync: [Producer={ProducerId}, Urn={SportEventId}]", producer.Id, eventId);
 
             var requestNumber = _sequenceGenerator.GetNext();
             var myProducer = (Producer)producer;
@@ -166,14 +165,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             var responseMessage = await _dataPoster.PostDataAsync(new Uri(url)).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
+                ExecutionLog.LogError("Recovery of stateful event messages for Event={SportEventId}, RequestId={RequestId}, failed with StatusCode={ResponseStatusCode}", eventId, requestNumber, responseMessage.StatusCode);
                 var message = $"Recovery of stateful event messages for Event={eventId}, RequestId={requestNumber}, failed with StatusCode={responseMessage.StatusCode}";
-                ExecutionLog.LogError(message);
                 _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, 0, eventId, message));
                 throw new CommunicationException(message, url, responseMessage.StatusCode, null);
             }
 
-            var messageOk = $"Recovery of stateful event messages for Event={eventId}, RequestId={requestNumber} succeeded.";
-            ExecutionLog.LogInformation(messageOk);
+            ExecutionLog.LogInformation("Recovery of stateful event messages for Event={SportEventId}, RequestId={RequestId} succeeded", eventId, requestNumber);
             myProducer.EventRecoveries.TryAdd(requestNumber, eventId);
             _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, 0, eventId, string.Empty));
             return requestNumber;
@@ -205,7 +203,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 throw new ArgumentException($"Value of parameter dateAfter is not valid. It can not be older then {producer.MaxAfterAge()}", nameof(dateAfter));
             }
 
-            LogInt.LogInformation("Invoked RequestRecoveryAfterTimestampAsync: [Producer={producerId}, DateAfter={dateAfter}, NodeId={nodeId}]", producer.Id, dateAfter, nodeId);
+            LogInt.LogInformation("Invoked RequestRecoveryAfterTimestampAsync: [Producer={ProducerId}, DateAfter={DateAfter}, NodeId={NodeId}]", producer.Id, dateAfter, nodeId);
 
             var timestampAfter = SdkInfo.ToEpochTime(dateAfter);
             var requestNumber = _sequenceGenerator.GetNext();
@@ -237,14 +235,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
             if (responseMessage == null || !responseMessage.IsSuccessStatusCode)
             {
-                var message = $"Recovery since after timestamp for Producer={producer}, RequestId={requestNumber}, After={dateAfter} failed with StatusCode={responseMessage?.StatusCode}";
-                ExecutionLog.LogError(message);
+                ExecutionLog.LogError("Recovery since after timestamp for Producer={ProducerId}, RequestId={RequestId}, After={DateAfter} failed with StatusCode={ResponseStatusCode}",
+                                      producer.Id,
+                                      requestNumber,
+                                      dateAfter,
+                                      responseMessage?
+                                         .StatusCode);
+                var message = $"Recovery since after timestamp for Producer={producer.Id}, RequestId={requestNumber}, After={dateAfter} failed with StatusCode={responseMessage?.StatusCode}";
                 _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, timestampAfter, null, message));
                 throw new CommunicationException(message, url, responseMessage?.StatusCode ?? 0, null);
             }
 
-            var messageOk = $"Recovery since after timestamp for Producer={producer}, RequestId={requestNumber}, After={dateAfter} succeeded.";
-            ExecutionLog.LogInformation(messageOk);
+            ExecutionLog.LogInformation("Recovery since after timestamp for Producer={Producer}, RequestId={RequestId}, After={DateAfter} succeeded", producer.Id, requestNumber, dateAfter);
             _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, timestampAfter, null, string.Empty));
             return requestNumber;
         }
@@ -266,7 +268,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 throw new ArgumentException($"Producer {producer} is disabled in the SDK", nameof(producer));
             }
 
-            LogInt.LogInformation("Invoked RequestFullOddsRecoveryAsync: [Producer={producerId}, NodeId={nodeId}]", producer.Id, nodeId);
+            LogInt.LogInformation("Invoked RequestFullOddsRecoveryAsync: [Producer={ProducerId}, NodeId={NodeId}]", producer.Id, nodeId);
 
             var requestNumber = _sequenceGenerator.GetNext();
             var url = string.Format(FullOddsRecoveryUrlFormat, ((Producer)producer).ApiUrl, requestNumber);
@@ -296,14 +298,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
             if (responseMessage == null || !responseMessage.IsSuccessStatusCode)
             {
-                var message = $"Full odds recovery for Producer={producer}, RequestId={requestNumber}, failed with StatusCode={responseMessage?.StatusCode}";
-                ExecutionLog.LogError(message);
+                ExecutionLog.LogError("Full odds recovery for Producer={ProducerId}, RequestId={RequestId}, failed with StatusCode={ResponseStatusCode}", producer.Id, requestNumber, responseMessage?.StatusCode);
+                var message = $"Full odds recovery for Producer={producer.Id}, RequestId={requestNumber}, failed with StatusCode={responseMessage?.StatusCode}";
                 _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, 0, null, message));
                 throw new CommunicationException(message, url, responseMessage?.StatusCode ?? 0, null);
             }
 
-            var messageOk = $"Full odds recovery for Producer={producer}, RequestId={requestNumber} succeeded.";
-            ExecutionLog.LogInformation(messageOk);
+            ExecutionLog.LogInformation("Full odds recovery for Producer={ProducerId}, RequestId={RequestId} succeeded", producer.Id, requestNumber);
             _producerManager.InvokeRecoveryInitiated(new RecoveryInitiatedEventArgs(requestNumber, producer.Id, 0, null, string.Empty));
             return requestNumber;
         }

@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 public class CompetitorCiSubClassTests : CompetitorHelper
 {
     [Fact]
-    public void Division_Constructor()
+    public void DivisionWhenConstructor()
     {
         var divisionCi = new DivisionCacheItem(new DivisionDto(1, DefaultDivisionName));
 
@@ -25,19 +25,19 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Division_ConstructorWithNullDto_Throws()
+    public void DivisionWhenConstructorWithNullDtoThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new DivisionCacheItem((DivisionDto)null));
     }
 
     [Fact]
-    public void Division_ConstructorWithNullExportable_Throws()
+    public void DivisionWhenConstructorWithNullExportableThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new DivisionCacheItem((ExportableDivision)null));
     }
 
     [Fact]
-    public void Division_Export()
+    public void DivisionWhenExport()
     {
         var divisionCi = new DivisionCacheItem(new DivisionDto(1, DefaultDivisionName));
 
@@ -49,7 +49,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Division_Import()
+    public void DivisionWhenImport()
     {
         var divisionCi = new DivisionCacheItem(new DivisionDto(1, DefaultDivisionName));
         var exportableDivision = divisionCi.Export();
@@ -62,7 +62,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void RaceDriverProfile_Constructor()
+    public void RaceDriverProfileWhenConstructor()
     {
         var dto = new RaceDriverProfileDto(GetApiRaceDriverProfile(1));
         var ci = new RaceDriverProfileCacheItem(dto);
@@ -77,19 +77,19 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void RaceDriverProfile_ConstructorWithNullDto_Throws()
+    public void RaceDriverProfileWhenConstructorWithNullDtoThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new RaceDriverProfileCacheItem((RaceDriverProfileDto)null));
     }
 
     [Fact]
-    public void RaceDriverProfile_ConstructorWithNullExportable_Throws()
+    public void RaceDriverProfileWhenConstructorWithNullExportableThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new RaceDriverProfileCacheItem((ExportableRaceDriverProfile)null));
     }
 
     [Fact]
-    public async Task RaceDriverProfile_Export()
+    public async Task RaceDriverProfileWhenExport()
     {
         var dto = new RaceDriverProfileDto(GetApiRaceDriverProfile(1));
         var ci = new RaceDriverProfileCacheItem(dto);
@@ -106,7 +106,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task RaceDriverProfile_ExportWhenCarNull()
+    public async Task RaceDriverProfileWhenExportWithCarNull()
     {
         var apiRaceDriver = GetApiRaceDriverProfile(1);
         apiRaceDriver.car = null;
@@ -120,7 +120,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task RaceDriverProfile_Import()
+    public async Task RaceDriverProfileWhenImport()
     {
         var dto = new RaceDriverProfileDto(GetApiRaceDriverProfile(1));
         var ci = new RaceDriverProfileCacheItem(dto);
@@ -138,7 +138,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Car_Constructor()
+    public void CarWhenConstructor()
     {
         var apiCar = GetApiCar();
 
@@ -151,7 +151,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Car_ConstructorWithNull()
+    public void CarWhenConstructorWithNull()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => new CarCacheItem((CarDto)null));
 
@@ -159,7 +159,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Car_ConstructorWithNullExportable()
+    public void CarWhenConstructorWithNullExportable()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => new CarCacheItem((ExportableCar)null));
 
@@ -167,7 +167,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Car_Export()
+    public async Task CarWhenExport()
     {
         var apiCar = GetApiCar();
         var carCi = new CarCacheItem(new CarDto(apiCar));
@@ -181,7 +181,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Car_Import()
+    public async Task CarWhenImport()
     {
         var apiCar = GetApiCar();
         var carCi = new CarCacheItem(new CarDto(apiCar));
@@ -196,7 +196,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Manager_Constructor()
+    public void ManagerWhenConstructor()
     {
         var apiManager = GetApiManager();
 
@@ -211,19 +211,19 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Manager_ConstructorWithNull()
+    public void ManagerWhenConstructorWithNull()
     {
         Assert.Throws<NullReferenceException>(() => new ManagerCacheItem(null, TestData.Culture));
     }
 
     [Fact]
-    public void Manager_ConstructorWithNullExportable()
+    public void ManagerWhenConstructorWithNullExportable()
     {
         Assert.Throws<NullReferenceException>(() => new ManagerCacheItem(null));
     }
 
     [Fact]
-    public void Manager_ConstructorWithoutName()
+    public void ManagerWhenConstructorWithoutName()
     {
         var apiManager = GetApiManager();
         apiManager.name = null;
@@ -238,7 +238,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Manager_Merge()
+    public void ManagerWhenMerge()
     {
         var apiManager1 = GetApiManager();
         var apiManager2 = GetApiManager();
@@ -259,7 +259,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Manager_Export()
+    public async Task ManagerWhenExport()
     {
         var apiManager = GetApiManager();
         var managerCi = new ManagerCacheItem(new ManagerDto(apiManager), TestData.Culture);
@@ -275,7 +275,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Manager_Import()
+    public async Task ManagerWhenImport()
     {
         var apiManager = GetApiManager();
         var managerCi = new ManagerCacheItem(new ManagerDto(apiManager), TestData.Culture);
@@ -292,7 +292,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Manager_Import2Cultures()
+    public async Task ManagerWhenImport2Cultures()
     {
         var apiManager2 = GetApiManager();
         apiManager2.name = "Second name";
@@ -313,7 +313,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_ConstructorDirectValues()
+    public void JerseyWhenConstructorDirectValues()
     {
         var jerseyDto = new JerseyDto(GetApiJersey());
 
@@ -333,7 +333,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_ConstructorSpecifiedValues()
+    public void JerseyWhenConstructorSpecifiedValues()
     {
         var jerseyDto = new JerseyDto(GetApiJersey());
 
@@ -347,7 +347,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_ConstructorWithNull()
+    public void JerseyWhenConstructorWithNull()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => new JerseyCacheItem((JerseyDto)null));
 
@@ -355,7 +355,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_ConstructorWithNullExportable()
+    public void JerseyWhenConstructorWithNullExportable()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => new JerseyCacheItem((ExportableJersey)null));
 
@@ -363,7 +363,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_NotSpecifiedHorizontalStripes()
+    public void JerseyWhenNotSpecifiedHorizontalStripes()
     {
         var apiJersey = GetApiJersey();
         apiJersey.horizontal_stripesSpecified = false;
@@ -374,7 +374,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_NotSpecifiedSplit()
+    public void JerseyWhenNotSpecifiedSplit()
     {
         var apiJersey = GetApiJersey();
         apiJersey.splitSpecified = false;
@@ -385,7 +385,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_NotSpecifiedSquares()
+    public void JerseyWhenNotSpecifiedSquares()
     {
         var apiJersey = GetApiJersey();
         apiJersey.squaresSpecified = false;
@@ -395,7 +395,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
         Assert.Null(jerseyCi.Squares);
     }
     [Fact]
-    public void Jersey_NotSpecifiedStripes()
+    public void JerseyWhenNotSpecifiedStripes()
     {
         var apiJersey = GetApiJersey();
         apiJersey.stripesSpecified = false;
@@ -406,7 +406,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Jersey_Export()
+    public async Task JerseyWhenExport()
     {
         var jerseyCi = new JerseyCacheItem(new JerseyDto(GetApiJersey()));
 
@@ -429,7 +429,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Jersey_Import()
+    public async Task JerseyWhenImport()
     {
         var jerseyCi = new JerseyCacheItem(new JerseyDto(GetApiJersey()));
         var exported = await jerseyCi.ExportAsync();
@@ -453,7 +453,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void ReferenceId_Constructor()
+    public void ReferenceIdWhenConstructor()
     {
         var references = new Dictionary<string, string>
         {
@@ -475,7 +475,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void ReferenceId_ConstructorWithNullDictionary()
+    public void ReferenceIdWhenConstructorWithNullDictionary()
     {
         var referenceCi = new ReferenceIdCacheItem(null);
 
@@ -488,7 +488,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void ReferenceId_ConstructorWithEmptyDictionary()
+    public void ReferenceIdWhenConstructorWithEmptyDictionary()
     {
         var referenceCi = new ReferenceIdCacheItem(new Dictionary<string, string>());
 
@@ -501,7 +501,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void ReferenceId_ConstructorWithAdditionalUnknownValue()
+    public void ReferenceIdWhenConstructorWithAdditionalUnknownValue()
     {
         var references = new Dictionary<string, string>
         {
@@ -520,7 +520,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void ReferenceId_Merge()
+    public void ReferenceIdWhenMerge()
     {
         var references1 = new Dictionary<string, string>
         {
@@ -551,7 +551,7 @@ public class CompetitorCiSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void ReferenceId_MergeWithNull()
+    public void ReferenceIdWhenMergeWithNull()
     {
         var references1 = new Dictionary<string, string>
         {

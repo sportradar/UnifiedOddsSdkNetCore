@@ -145,7 +145,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
             var tuple = MessageTypes.FirstOrDefault(t => t.Item1 == messageTypeName);
             if (tuple == null)
             {
-                Log.LogWarning($"Message of type={messageTypeName} is not supported.");
+                Log.LogWarning("Message of type={MessageTypeName} is not supported", messageTypeName);
                 return MessageType.Unknown;
             }
             return tuple.Item2;

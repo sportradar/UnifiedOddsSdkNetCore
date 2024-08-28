@@ -182,7 +182,14 @@ public class SportEventDetailsMapperTests
             Assert.Equal(m.Name, c.name);
             Assert.Equal(m.Abbreviation, c.abbreviation);
             Assert.Equal(m.CountryName, c.country);
-            Assert.Equal(m.IsVirtual, c.virtualSpecified && c.@virtual);
+            if (c.virtualSpecified)
+            {
+                Assert.Equal(m.IsVirtual, c.@virtual);
+            }
+            else
+            {
+                Assert.Null(m.IsVirtual);
+            }
         }
     }
 }

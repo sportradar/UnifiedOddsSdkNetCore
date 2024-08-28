@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 public class CompetitorDtoSubClassTests : CompetitorHelper
 {
     [Fact]
-    public void Division_Constructor()
+    public void DivisionWhenNormalConstructor()
     {
         var divisionDto = new DivisionDto(1, DefaultDivisionName);
 
@@ -20,7 +20,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Division_ConstructorWithNullId()
+    public void DivisionWhenConstructorWithNullId()
     {
         var divisionDto = new DivisionDto(null, DefaultDivisionName);
 
@@ -30,7 +30,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Division_ConstructorWithNullName()
+    public void DivisionWhenConstructorWithNullName()
     {
         var divisionDto = new DivisionDto(1, null);
 
@@ -40,7 +40,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Division_ConstructorWithNullIdAndName()
+    public void DivisionWhenConstructorWithNullIdAndName()
     {
         var divisionDto = new DivisionDto(null, null);
 
@@ -50,7 +50,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void PlayerCompetitor_Constructor()
+    public void PlayerCompetitorWhenConstructor()
     {
         const int playerId = 123;
         var apiPlayerCompetitor = GetApiPlayerCompetitor(playerId);
@@ -61,13 +61,13 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void PlayerCompetitor_ConstructorWithNull()
+    public void PlayerCompetitorWhenConstructorWithNull()
     {
         Assert.Throws<NullReferenceException>(() => new PlayerCompetitorDto(null));
     }
 
     [Fact]
-    public void PlayerCompetitor_ConstructorWithoutId_Throws()
+    public void PlayerCompetitorWhenConstructorWithoutIdThenThrows()
     {
         var apiPlayerCompetitor = GetApiPlayerCompetitor();
         apiPlayerCompetitor.id = null;
@@ -78,7 +78,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void PlayerCompetitor_ConstructorWithoutName()
+    public void PlayerCompetitorWhenConstructorWithoutName()
     {
         var apiPlayerCompetitor = GetApiPlayerCompetitor();
         apiPlayerCompetitor.name = null;
@@ -89,7 +89,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void PlayerCompetitor_ConstructorWithoutAbbreviation()
+    public void PlayerCompetitorWhenConstructorWithoutAbbreviation()
     {
         var apiPlayerCompetitor = GetApiPlayerCompetitor();
         apiPlayerCompetitor.abbreviation = null;
@@ -100,7 +100,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void PlayerCompetitor_ConstructorWithoutNationality()
+    public void PlayerCompetitorWhenConstructorWithoutNationality()
     {
         var apiPlayerCompetitor = GetApiPlayerCompetitor();
         apiPlayerCompetitor.nationality = null;
@@ -111,7 +111,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void RaceDriverProfile_Constructor()
+    public void RaceDriverProfileWhenNormalConstructor()
     {
         var apiRaceDriverProfile = GetApiRaceDriverProfile();
 
@@ -124,7 +124,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void RaceDriverProfile_ConstructorWithNull()
+    public void RaceDriverProfileWhenConstructorWithNull()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => new RaceDriverProfileDto(null));
 
@@ -132,7 +132,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void RaceDriverProfile_ConstructorWithNullCar()
+    public void RaceDriverProfileWhenConstructorWithNullCar()
     {
         var apiRaceDriverProfile = GetApiRaceDriverProfile();
         apiRaceDriverProfile.car = null;
@@ -146,7 +146,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void RaceDriverProfile_ConstructorWithNullRaceDriverId()
+    public void RaceDriverProfileWhenConstructorWithNullRaceDriverId()
     {
         var apiRaceDriverProfile = GetApiRaceDriverProfile();
         apiRaceDriverProfile.race_driver = null;
@@ -160,7 +160,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void RaceDriverProfile_ConstructorWithNullRaceTeamId()
+    public void RaceDriverProfileWhenConstructorWithNullRaceTeamId()
     {
         var apiRaceDriverProfile = GetApiRaceDriverProfile();
         apiRaceDriverProfile.race_team = null;
@@ -174,7 +174,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Car_Constructor()
+    public void CarWhenNormalConstructor()
     {
         var apiCar = new car { chassis = "some-car-chassis", engine_name = "some-engine-name", name = "some-car-name" };
 
@@ -187,7 +187,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Car_ConstructorWithNull()
+    public void CarWhenConstructorWithNull()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => new CarDto(null));
 
@@ -195,7 +195,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Manager_Constructor()
+    public void ManagerWhenConstructor()
     {
         var apiManager = GetApiManager();
 
@@ -208,13 +208,13 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Manager_ConstructorWithNull()
+    public void ManagerWhenConstructorWithNull()
     {
         Assert.Throws<NullReferenceException>(() => new ManagerDto(null));
     }
 
     [Fact]
-    public void Manager_ConstructorWithNullId()
+    public void ManagerWhenConstructorWithNullId()
     {
         var apiManager = GetApiManager();
         apiManager.id = null;
@@ -225,7 +225,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Manager_ConstructorWithoutName()
+    public void ManagerWhenConstructorWithoutName()
     {
         var apiManager = GetApiManager();
         apiManager.name = null;
@@ -240,7 +240,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_ConstructorDirectValues()
+    public void JerseyWhenConstructorDirectValues()
     {
         var apiJersey = GetApiJersey();
 
@@ -260,7 +260,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_ConstructorSpecifiedValues()
+    public void JerseyWhenConstructorSpecifiedValues()
     {
         var apiJersey = GetApiJersey();
 
@@ -274,7 +274,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_ConstructorWithNull()
+    public void JerseyWhenConstructorWithNull()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => new JerseyDto(null));
 
@@ -282,7 +282,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_NotSpecifiedHorizontalStripes()
+    public void JerseyWhenNotSpecifiedHorizontalStripes()
     {
         var apiJersey = GetApiJersey();
         apiJersey.horizontal_stripesSpecified = false;
@@ -293,7 +293,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_NotSpecifiedSplit()
+    public void JerseyWhenNotSpecifiedSplit()
     {
         var apiJersey = GetApiJersey();
         apiJersey.splitSpecified = false;
@@ -304,7 +304,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
     }
 
     [Fact]
-    public void Jersey_NotSpecifiedSquares()
+    public void JerseyWhenNotSpecifiedSquares()
     {
         var apiJersey = GetApiJersey();
         apiJersey.squaresSpecified = false;
@@ -314,7 +314,7 @@ public class CompetitorDtoSubClassTests : CompetitorHelper
         Assert.Null(jerseyDto.Squares);
     }
     [Fact]
-    public void Jersey_NotSpecifiedStripes()
+    public void JerseyWhenNotSpecifiedStripes()
     {
         var apiJersey = GetApiJersey();
         apiJersey.stripesSpecified = false;

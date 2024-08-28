@@ -15,11 +15,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
 public class CompetitorProfileEndpoint
 {
     public competitorProfileEndpoint Raw { get; } = BuildCompetitorProfileEndpoint(1);
-    internal CompetitorProfileDto Dto => new CompetitorProfileDto(Raw);
+    internal CompetitorProfileDto Dto => new(Raw);
 
-    public static CompetitorProfileEndpoint AsCompetitorProfile => new CompetitorProfileEndpoint();
-    public static ApiPlayerExtended AsPlayerExtended => new ApiPlayerExtended();
-    public static SimpleTeamProfileEndpoint AsSimpleTeam => new SimpleTeamProfileEndpoint();
+    public static CompetitorProfileEndpoint AsCompetitorProfile => new();
+    public static ApiPlayerExtended AsPlayerExtended => new();
+    public static SimpleTeamProfileEndpoint AsSimpleTeam => new();
 
     public CompetitorProfileEndpoint Id(int id)
     {
@@ -38,12 +38,10 @@ public class CompetitorProfileEndpoint
     {
         if (Raw.competitor.players == null)
         {
-            Raw.competitor.players = new[]
-                                     {
-                                         BuildPlayerCompetitor(id)
-                                     };
+            Raw.competitor.players = new[] { BuildPlayerCompetitor(id) };
             return this;
         }
+
         var existingPlayers = Raw.competitor.players.ToList();
         existingPlayers.Add(BuildPlayerCompetitor(id));
         Raw.competitor.players = existingPlayers.ToArray();
@@ -56,6 +54,7 @@ public class CompetitorProfileEndpoint
         {
             AddCompetitorPlayer(i);
         }
+
         return this;
     }
 
@@ -66,10 +65,12 @@ public class CompetitorProfileEndpoint
         {
             player.name += " " + culture.TwoLetterISOLanguageName;
         }
+
         foreach (var player in Raw.players)
         {
             player.name += " " + culture.TwoLetterISOLanguageName;
         }
+
         return this;
     }
 
@@ -88,23 +89,12 @@ public class CompetitorProfileEndpoint
 
         var cUrn = id == 0 ? SR.Urn("competitor", 100000) : SR.Urn(id, "competitor");
 
-        return new competitorProfileEndpoint
-        {
-            competitor = BuildTeamExtended((int)cUrn.Id, referenceIds),
-            generated_at = DateTime.Now,
-            generated_atSpecified = true,
-            players = players.ToArray()
-        };
+        return new competitorProfileEndpoint { competitor = BuildTeamExtended((int)cUrn.Id, referenceIds), generated_at = DateTime.Now, generated_atSpecified = true, players = players.ToArray() };
     }
 
     private static simpleTeamProfileEndpoint BuildSimpleTeamProfileEndpoint(int id = 0, IDictionary<string, string> referenceIds = null)
     {
-        return new simpleTeamProfileEndpoint
-        {
-            competitor = BuildTeam(id, referenceIds),
-            generated_at = DateTime.Now,
-            generated_atSpecified = true
-        };
+        return new simpleTeamProfileEndpoint { competitor = BuildTeam(id, referenceIds), generated_at = DateTime.Now, generated_atSpecified = true };
     }
 
     public static teamExtended BuildTeamExtended(int id = 0, IDictionary<string, string> referenceIds = null)
@@ -112,24 +102,10 @@ public class CompetitorProfileEndpoint
         var teamUrn = id == 0 ? SR.Urn("competitor", 1000) : SR.Urn(id, "competitor");
         return new teamExtended
         {
-            id = teamUrn.ToString(),
-            name = "Team " + teamUrn.Id,
-            abbreviation = "T" + teamUrn.Id,
-            @virtual = true,
-            virtualSpecified = false,
-            country = SR.S1000,
-            state = "PA",
-            reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id
-            {
-                name = s.Key,
-                value = s.Value
-            })
-                                                .ToArray(),
-            sport = new sport
-            {
-                id = "sr:sport:1",
-                name = "Soccer"
-            }
+            id = teamUrn.ToString(), name = "Team " + teamUrn.Id, abbreviation = "T" + teamUrn.Id, @virtual = true,
+            virtualSpecified = false, country = SR.S1000, state = "PA", reference_ids = referenceIds?.Select(s => new competitorReferenceIdsReference_id { name = s.Key, value = s.Value })
+                                                                                                            .ToArray(),
+            sport = new sport { id = "sr:sport:1", name = "Soccer" }
         };
     }
 
@@ -141,34 +117,20 @@ public class CompetitorProfileEndpoint
     public static playerCompetitor BuildPlayerCompetitor(int id = 0)
     {
         var playerUrn = id == 0 ? SR.Urn("player") : SR.Urn(id, "player");
-        return new playerCompetitor
-        {
-            id = playerUrn.ToString(),
-            name = "Player " + playerUrn.Id,
-            abbreviation = "P" + playerUrn.Id,
-            nationality = "nat " + SR.S1000
-        };
+        return new playerCompetitor { id = playerUrn.ToString(), name = "Player " + playerUrn.Id, abbreviation = "P" + playerUrn.Id, nationality = "nat " + SR.S1000 };
     }
 
     private static playerExtended BuildPlayerExtended(int id = 0)
     {
         return new playerExtended
         {
-            id = id == 0 ? SR.Urn("player").ToString() : SR.Urn(id, "player").ToString(),
-            name = SR.S1000,
-            weight = SR.I(150),
-            heightSpecified = true,
-            jersey_number = 60,
-            jersey_numberSpecified = true,
-            nationality = "nat " + SR.S1000,
-            type = SR.S1000,
-            height = SR.I(200),
-            date_of_birth = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-            weightSpecified = true
+            id = id == 0 ? SR.Urn("player").ToString() : SR.Urn(id, "player").ToString(), name = SR.S1000, weight = SR.I(150), heightSpecified = true,
+            jersey_number = 60, jersey_numberSpecified = true, nationality = "nat " + SR.S1000, type = SR.S1000,
+            height = SR.I(200), date_of_birth = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), weightSpecified = true
         };
     }
 
-    public static teamCompetitor BuildTeamCompetitor(int id = 0)
+    public static teamCompetitor BuildTeamCompetitor(int id = 0, bool? isVirtual = null)
     {
         var references = new List<competitorReferenceIdsReference_id>();
         for (var j = 0; j < 5; j++)
@@ -187,18 +149,9 @@ public class CompetitorProfileEndpoint
 
         return new teamCompetitor
         {
-            id = SR.Urn(id, "competitor").ToString(),
-            name = "Competitor " + id,
-            abbreviation = SR.S1000,
-            @virtual = true,
-            country = SR.S1000,
-            virtualSpecified = true,
-            qualifier = SR.S1000,
-            country_code = SR.S1000,
-            reference_ids = references.ToArray(),
-            divisionSpecified = true,
-            division = SR.I100,
-            state = "PA"
+            id = SR.Urn(id, "competitor").ToString(), name = "Competitor " + id, abbreviation = SR.S1000, @virtual = isVirtual ?? false,
+            country = SR.S1000, virtualSpecified = isVirtual.HasValue, qualifier = SR.S1000, country_code = SR.S1000,
+            reference_ids = references.ToArray(), divisionSpecified = true, division = SR.I100, state = "PA"
         };
     }
 
@@ -209,22 +162,19 @@ public class CompetitorProfileEndpoint
         {
             teamCompetitors.Add(BuildTeamCompetitor(i));
         }
+
         return teamCompetitors;
     }
 
     private static competitorReferenceIdsReference_id BuildReferenceCompetitor()
     {
-        return new competitorReferenceIdsReference_id
-        {
-            name = SR.S10000P,
-            value = SR.S10000
-        };
+        return new competitorReferenceIdsReference_id { name = SR.S10000P, value = SR.S10000 };
     }
 
     public class ApiPlayerExtended
     {
         public playerExtended Raw { get; } = BuildPlayerExtended(1);
-        internal PlayerProfileDto Dto => new PlayerProfileDto(Raw, DateTime.Now);
+        internal PlayerProfileDto Dto => new(Raw, DateTime.Now);
 
         public ApiPlayerExtended Id(int id)
         {
@@ -243,7 +193,7 @@ public class CompetitorProfileEndpoint
     public class SimpleTeamProfileEndpoint
     {
         public simpleTeamProfileEndpoint Raw { get; } = BuildSimpleTeamProfileEndpoint(1);
-        internal SimpleTeamProfileDto Dto => new SimpleTeamProfileDto(Raw);
+        internal SimpleTeamProfileDto Dto => new(Raw);
 
         public SimpleTeamProfileEndpoint Id(int id)
         {
@@ -262,12 +212,10 @@ public class CompetitorProfileEndpoint
         {
             if (Raw.competitor.players == null)
             {
-                Raw.competitor.players = new[]
-                                         {
-                                             BuildPlayerCompetitor(id)
-                                         };
+                Raw.competitor.players = new[] { BuildPlayerCompetitor(id) };
                 return this;
             }
+
             var existingPlayers = Raw.competitor.players.ToList();
             existingPlayers.Add(BuildPlayerCompetitor(id));
             Raw.competitor.players = existingPlayers.ToArray();
@@ -280,6 +228,7 @@ public class CompetitorProfileEndpoint
             {
                 AddCompetitorPlayer(i);
             }
+
             return this;
         }
 
@@ -290,6 +239,7 @@ public class CompetitorProfileEndpoint
             {
                 player.name += " " + culture.TwoLetterISOLanguageName;
             }
+
             return this;
         }
     }

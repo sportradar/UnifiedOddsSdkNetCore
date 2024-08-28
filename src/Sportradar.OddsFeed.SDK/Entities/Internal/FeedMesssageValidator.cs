@@ -83,7 +83,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(propertyName, nameof(propertyName)).NotNull().NotEmpty();
 
-            ExecutionLog.LogWarning($"Validation warning: message='{message}', property value {propertyName}={propertyValue} is not expected");
+            ExecutionLog.LogWarning("Validation warning: message='{FeedMessage}', property value {PropertyName}={PropertyValue} is not expected", message, propertyName, propertyValue);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             Guard.Argument(message, nameof(message)).NotNull();
             Guard.Argument(propertyName, nameof(propertyName)).NotNull().NotEmpty();
 
-            ExecutionLog.LogError($"Validation failure: message='{message}', property value {propertyName}={propertyValue} is not supported");
+            ExecutionLog.LogError("Validation failure: message='{FeedMessage}', property value {PropertyName}={PropertyValue} is not supported", message, propertyName, propertyValue);
         }
 
         /// <summary>
@@ -150,25 +150,25 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             }
             catch (CacheItemNotFoundException ex)
             {
-                ExecutionLog.LogInformation($"Check failed. Failed to retrieve market name descriptor market[id={marketId}].", ex);
+                ExecutionLog.LogInformation(ex, "Check failed. Failed to retrieve market name descriptor market[id={MarketId}]", marketId);
                 return false;
             }
             if (marketDescriptor == null)
             {
-                ExecutionLog.LogInformation($"Check failed. Failed to retrieve market name descriptor for market[id={marketId}].");
+                ExecutionLog.LogInformation("Check failed. Failed to retrieve market name descriptor for market[id={MarketId}]", marketId);
                 return false;
             }
 
             var nameDescription = marketDescriptor.GetName(_defaultCulture.First());
             if (nameDescription == null)
             {
-                ExecutionLog.LogInformation($"Check failed. Retrieved market[id={marketId}] descriptor does not contain name descriptor in the specified language");
+                ExecutionLog.LogInformation("Check failed. Retrieved market[id={MarketId}] descriptor does not contain name descriptor in the specified language", marketId);
                 return false;
             }
 
             if (marketDescriptor.Id != marketId)
             {
-                ExecutionLog.LogInformation($"Check failed. Retrieved market descriptor has different marketId. ({marketDescriptor.Id}!={marketId})");
+                ExecutionLog.LogInformation("Check failed. Retrieved market descriptor has different marketId: ({MarketDescriptorId}!={MarketId})", marketDescriptor.Id, marketId);
                 return false;
             }
 
@@ -178,7 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 {
                     var requiredSpecifiers = string.Join(",", marketDescriptor.Specifiers.Select(d => d.Name));
                     var actualSpecifiers = string.Join(",", specifiers.Select(k => k.Key));
-                    ExecutionLog.LogInformation($"Specifiers check failed. Producer={producerId}, market[id={marketId}], Required:{requiredSpecifiers}, Actual:{actualSpecifiers}");
+                    ExecutionLog.LogInformation("Specifiers check failed. Producer={ProducerId}, market[id={MarketId}], Required:{RequiredSpecifiers}, Actual:{ActualSpecifiers}", producerId, marketId, requiredSpecifiers, actualSpecifiers);
                     return false;
                 }
 
@@ -189,7 +189,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     {
                         var requiredSpecifiers = string.Join(",", marketDescriptor.Specifiers.Select(d => d.Name));
                         var actualSpecifiers = string.Join(",", specifiers.Select(k => k.Key));
-                        ExecutionLog.LogInformation($"Specifiers check for market[id={marketId}] failed. Required:{requiredSpecifiers}, Actual:{actualSpecifiers}");
+                        ExecutionLog.LogInformation("Specifiers check for market[id={MarketId}] failed. Required:{RequiredSpecifiers}, Actual:{ActualSpecifiers}", marketId, requiredSpecifiers, actualSpecifiers);
                         return false;
                     }
                 }

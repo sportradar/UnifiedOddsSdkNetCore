@@ -76,11 +76,11 @@ public class SummaryEndpoint
         return msg;
     }
 
-    private static matchSummaryEndpoint BuildMatchSummaryEndpoint(int id = 0, int subItemCount = 2)
+    private static matchSummaryEndpoint BuildMatchSummaryEndpoint(int id = 0, int subItemCount = 2, bool? isVirtual = true)
     {
         var sportEvent = new sportEvent
         {
-            competitors = BuildTeamCompetitorList(subItemCount).ToArray(),
+            competitors = BuildTeamCompetitorList(subItemCount, isVirtual).ToArray(),
             id = id == 0 ? SR.Urn("match", 10000).ToString() : SR.Urn(id, "match").ToString(),
             liveodds = "booked",
             scheduledSpecified = true,
@@ -253,7 +253,10 @@ public class SummaryEndpoint
         return new currentSeason
         {
             id = id == 0 ? SR.Urn("season", 100000).ToString() : SR.Urn(id, "season").ToString(),
-            name = $"Season name {SR.S1000}"
+            name = $"Season name {SR.S1000}",
+            start_date = DateTime.Now.AddDays(-1),
+            end_date = DateTime.Now.AddDays(30),
+            year = DateTime.Now.Year.ToString()
         };
     }
 
@@ -263,9 +266,11 @@ public class SummaryEndpoint
         {
             subItemCount = SR.I(20);
         }
+        var groupId = SR.I1000;
         return new tournamentGroup
         {
-            name = "Group " + SR.S1000,
+            id = groupId.ToString(),
+            name = "Group " + groupId,
             competitor = BuildTeamList(subItemCount).ToArray()
         };
     }
@@ -375,12 +380,12 @@ public class SummaryEndpoint
         return msg;
     }
 
-    public static List<teamCompetitor> BuildTeamCompetitorList(int count)
+    public static List<teamCompetitor> BuildTeamCompetitorList(int count, bool? isVirtual = true)
     {
         var teams = new List<teamCompetitor>();
         for (var j = 0; j < count; j++)
         {
-            var team = CompetitorProfileEndpoint.BuildTeamCompetitor(j + 1);
+            var team = CompetitorProfileEndpoint.BuildTeamCompetitor(j + 1, isVirtual);
             if (teams.Find(i => i.id == team.id) == null)
             {
                 teams.Add(team);
@@ -497,6 +502,7 @@ public class SummaryEndpoint
     public class MatchSummaryEndpoint
     {
         public matchSummaryEndpoint Raw { get; } = BuildMatchSummaryEndpoint(1);
+        public matchSummaryEndpoint MatchWithNonVirtualCompetitors { get; } = BuildMatchSummaryEndpoint(1, 2, false);
         internal MatchDto Dto => new MatchDto(Raw);
     }
 

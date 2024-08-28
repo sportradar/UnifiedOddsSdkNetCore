@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
                 stashedItem = GetStashedItem(producer.Id);
                 if (stashedItem == null || stashedItem.RequestId != requestId)
                 {
-                    _log.LogDebug("StashedItem missing. Nothing to release.");
+                    _log.LogDebug("StashedItem missing. Nothing to release");
                     return;
                 }
                 _stashedItems.Remove(stashedItem);

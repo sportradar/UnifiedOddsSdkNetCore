@@ -826,7 +826,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
 
             if (info == null)
             {
-                ExecutionLog.LogWarning($"Problem exporting {Id} (expected: {typeof(ExportableTournamentInfo)}, actual: {exportable?.GetType().Name})");
+                ExecutionLog.LogWarning("Problem exporting {SportEventId} (expected: {ExpectedType}, actual: {ActualType})", Id, typeof(ExportableTournamentInfo), exportable?.GetType().Name);
                 return exportable;
             }
 

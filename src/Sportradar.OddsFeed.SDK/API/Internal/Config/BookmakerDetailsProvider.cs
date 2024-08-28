@@ -50,7 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, $"Failed to load whoami data. Environment={Enum.GetName(typeof(SdkEnvironment), config.Environment)}");
+                        _logger.LogError(ex, "Failed to load whoami data. Environment={SdkEnvironment}", Enum.GetName(typeof(SdkEnvironment), config.Environment));
 
                         var wantedEnvironment = EnvironmentManager.GetSetting(config.Environment);
                         if (wantedEnvironment != null && !wantedEnvironment.EnvironmentRetryList.IsNullOrEmpty())
@@ -62,15 +62,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                 {
                                     if (newSetting.OnlySsl && !config.Api.UseSsl)
                                     {
-                                        _logger.LogWarning("Configuration set to not use SSL when connecting to API.");
+                                        _logger.LogWarning("Configuration set to not use SSL when connecting to API");
                                     }
                                     var result = LoadWhoamiData(newSetting.ApiHost, config.Api.UseSsl, false, sdkEnvironment, config);
-                                    var message = $"Access denied. The provided access token is not valid for the {sdkEnvironment} environment.";
                                     if (result)
                                     {
-                                        message = $"Access granted. The provided access token is valid for the {sdkEnvironment} environment.";
+                                        _logger.LogInformation("Access granted. The provided access token is valid for the {SdkEnvironment} environment", sdkEnvironment);
                                     }
-                                    _logger.LogWarning(message);
+                                    else
+                                    {
+                                        _logger.LogWarning("Access denied. The provided access token is not valid for the {SdkEnvironment} environment", sdkEnvironment);
+                                    }
                                 }
                             }
                         }
@@ -89,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError(ex, $"Failed to load whoami data. Environment={Enum.GetName(typeof(SdkEnvironment), config.Environment)}");
+                            _logger.LogError(ex, "Failed to load whoami data. Environment={SdkEnvironment}", Enum.GetName(typeof(SdkEnvironment), config.Environment));
                         }
                     }
                 }
@@ -115,26 +117,26 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
             try
             {
-                _logger.LogInformation($"Attempting to retrieve whoami data. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), environment)}");
+                _logger.LogInformation("Attempting to retrieve whoami data. Host URL={HostUrl}, Environment={SdkEnvironment}", hostUrl, Enum.GetName(typeof(SdkEnvironment), environment));
                 var bookmakerDetailsDto = _bookmakerDetailsProvider.GetData(hostUrl);
-                _logger.LogInformation($"Whoami data successfully retrieved. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), environment)}");
+                _logger.LogInformation("Whoami data successfully retrieved. Host URL={HostUrl}, Environment={SdkEnvironment}", hostUrl, Enum.GetName(typeof(SdkEnvironment), environment));
 
                 config.UpdateBookmakerDetails(new BookmakerDetails(bookmakerDetailsDto), hostName);
 
                 if (config.BookmakerDetails.ServerTimeDifference > TimeSpan.FromSeconds(5))
                 {
-                    _logger.LogError($"Machine time is out of sync for {config.BookmakerDetails.ServerTimeDifference.TotalSeconds} sec. It may produce unwanted results with time sensitive operations within sdk.");
+                    _logger.LogError("Machine time is out of sync for {ServerTimeDifference} sec. It may produce unwanted results with time sensitive operations within sdk", config.BookmakerDetails.ServerTimeDifference.TotalSeconds);
                 }
                 else if (config.BookmakerDetails.ServerTimeDifference > TimeSpan.FromSeconds(2))
                 {
-                    _logger.LogWarning($"Machine time is out of sync for {config.BookmakerDetails.ServerTimeDifference.TotalSeconds} sec. It may produce unwanted results with time sensitive operations within sdk.");
+                    _logger.LogWarning("Machine time is out of sync for {ServerTimeDifference} sec. It may produce unwanted results with time sensitive operations within sdk", config.BookmakerDetails.ServerTimeDifference.TotalSeconds);
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"Failed to retrieve whoami data. Host URL={hostUrl}, Environment={Enum.GetName(typeof(SdkEnvironment), environment)}", ex);
+                _logger.LogInformation(ex, "Failed to retrieve whoami data. Host URL={HostUrl}, Environment={SdkEnvironment}", hostUrl, Enum.GetName(typeof(SdkEnvironment), environment));
                 if (rethrow)
                 {
                     throw;

@@ -93,13 +93,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var tournamentInfoCacheItem = (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (tournamentInfoCacheItem == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var sportId = await tournamentInfoCacheItem.GetSportIdAsync().ConfigureAwait(false);
             if (sportId == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No sportId for tournament cache item with id={Id}.");
+                ExecutionLogPrivate.LogDebug("Missing data. No sportId for tournament cache item with id={SportEventId}", Id);
                 return null;
             }
             var sportCacheItem = await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false);
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var tournamentInfoCacheItem = (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (tournamentInfoCacheItem == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var cacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Catch
@@ -136,13 +136,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var tournamentInfoCacheItem = (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (tournamentInfoCacheItem == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var categoryId = await tournamentInfoCacheItem.GetCategoryIdAsync().ConfigureAwait(false);
             if (categoryId == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No categoryId for tournament cache item with id={Id}.");
+                ExecutionLogPrivate.LogDebug("Missing data. No categoryId for tournament cache item with id={SportEventId}", Id);
                 return null;
             }
             var categoryCacheItem = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var tournamentInfoCacheItem = (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (tournamentInfoCacheItem == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -188,7 +188,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var tournamentInfoCacheItem = (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (tournamentInfoCacheItem == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -208,7 +208,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var tournamentInfoCacheItem = (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (tournamentInfoCacheItem == null)
             {
-                ExecutionLogPrivate.LogDebug($"Missing data. No tournament cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw

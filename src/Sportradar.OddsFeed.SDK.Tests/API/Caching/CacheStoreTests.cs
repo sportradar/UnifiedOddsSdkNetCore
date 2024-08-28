@@ -285,15 +285,14 @@ public class CacheStoreTests
     }
 
     [Fact]
-    public async Task CacheStoreWhenRemoveThenLogEvictionMessage()
+    public void CacheStoreWhenRemoveThenLogEvictionMessage()
     {
         var myCacheItem = GenerateCacheItem(1, "Sport Entity Name 1");
         _ = AddCacheItem(1, myCacheItem);
 
         _cacheStoreString.Remove(myCacheItem.Id.ToString());
 
-        // delay needed for cache cleanup to kick in
-        await Task.Delay(500);
+        TestExecutionHelper.WaitToComplete(() => !_testLogger.Messages.IsEmpty);
 
         _ = Assert.Single(_testLogger.Messages);
         _ = Assert.Single(_testLogger.Messages.Where(w => w.Contains("evicted cache item", StringComparison.InvariantCultureIgnoreCase)));

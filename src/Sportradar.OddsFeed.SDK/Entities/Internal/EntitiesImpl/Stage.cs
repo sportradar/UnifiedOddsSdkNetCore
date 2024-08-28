@@ -54,13 +54,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (stageCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var sportId = await stageCacheItem.GetSportIdAsync().ConfigureAwait(false);
             if (sportId == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No sportId for stage cache item with id={Id}.");
+                ExecutionLog.LogDebug("Missing data. No sportId for stage cache item with id={SportEventId}", Id);
                 return null;
             }
             var sportCacheItem = await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false);
@@ -72,13 +72,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (stageCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var categoryId = await stageCacheItem.GetCategoryIdAsync(Cultures).ConfigureAwait(false);
             if (categoryId == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No categoryId for stage cache item with id={Id}.");
+                ExecutionLog.LogDebug("Missing data. No categoryId for stage cache item with id={SportEventId}", Id);
                 return null;
             }
             var categoryCacheItem = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
@@ -92,7 +92,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (stageCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -116,7 +116,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (stageCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -132,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (stageCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                LogMissingCacheItem();
                 return StageType.Child;
             }
             return await stageCacheItem.GetStageTypeAsync().ConfigureAwait(false);
@@ -147,7 +147,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var stageCacheItem = (StageCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (stageCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No stage cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -159,7 +159,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Asynchronously gets a <see cref="IStageStatus"/> containing information about the progress of the stage 
+        /// Asynchronously gets a <see cref="IStageStatus"/> containing information about the progress of the stage
         /// </summary>
         /// <returns>A <see cref="Task{IStageStatus}"/> containing information about the progress of the stage</returns>
         public new async Task<IStageStatus> GetStatusAsync()

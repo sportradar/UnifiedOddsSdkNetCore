@@ -373,7 +373,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+                LogErrorDuringFetching(ex);
             }
         }
 
@@ -391,7 +391,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+                LogErrorDuringFetching(ex);
             }
         }
 
@@ -409,7 +409,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+                LogErrorDuringFetching(ex);
             }
         }
 
@@ -429,7 +429,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+                LogErrorDuringFetching(ex);
             }
         }
 
@@ -447,8 +447,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogDebug(ex, $"Error fetching all competitor profiles for {_sportEvent.Id}");
+                LogErrorDuringFetching(ex);
             }
+        }
+
+        private void LogErrorDuringFetching(Exception ex)
+        {
+            ExecutionLog.LogDebug(ex, "Error fetching all competitor profiles for {SportEventId}", _sportEvent.Id);
         }
 
         /// <summary>
@@ -495,6 +500,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
             sb.Append("]. AdditionalMessage=").Append(message);
 
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
             ExecutionLog.LogError(innerException, sb.ToString());
 
             if (_exceptionStrategy == ExceptionHandlingStrategy.Throw)

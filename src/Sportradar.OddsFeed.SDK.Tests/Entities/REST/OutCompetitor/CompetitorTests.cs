@@ -21,19 +21,19 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.OutCompetitor;
 
 public class CompetitorTests : CompetitorHelper
 {
+    private readonly Mock<ICompetitionCacheItem> _competitionCacheItemMock = new();
+    private readonly Mock<IDataRouterManager> _mockDataRouterManager = new();
     private readonly Mock<IProfileCache> _mockProfileCache = new();
     private readonly Mock<ISportEntityFactory> _mockSportEntityFactory = new();
-    private readonly Mock<IDataRouterManager> _mockDataRouterManager = new();
-    private readonly Mock<ICompetitionCacheItem> _competitionCacheItemMock = new();
 
     [Fact]
-    public void ConstructorWithCompetition_CacheItemIsNull_Throws()
+    public void ConstructorWithCompetitionCacheItemIsNullThrows()
     {
         Assert.Throws<NullReferenceException>(() => new Competitor(null, _mockProfileCache.Object, TestData.Cultures, _mockSportEntityFactory.Object, ExceptionHandlingStrategy.Catch, _competitionCacheItemMock.Object));
     }
 
     [Fact]
-    public void ConstructorWithCompetition_ProfileCacheIsNull_Throws()
+    public void ConstructorWithCompetitionProfileCacheIsNullThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
 
@@ -41,7 +41,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetition_CulturesIsNull_Throws()
+    public void ConstructorWithCompetitionCulturesIsNullThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
 
@@ -49,7 +49,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetition_SportEntityFactoryIsNull_Throws()
+    public void ConstructorWithCompetitionSportEntityFactoryIsNullThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
 
@@ -57,7 +57,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetition_CompetitorCacheItemIsNull_DoesNotThrows()
+    public void ConstructorWithCompetitionCompetitorCacheItemIsNullDoesNotThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
 
@@ -67,7 +67,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorReferences_CacheItemIsNull_Throws()
+    public void ConstructorWithCompetitorReferencesCacheItemIsNullThrows()
     {
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
 
@@ -75,7 +75,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorReferences_ProfileCacheIsNull_Throws()
+    public void ConstructorWithCompetitorReferencesProfileCacheIsNullThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -84,7 +84,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorReferences_CulturesIsNull_Throws()
+    public void ConstructorWithCompetitorReferencesCulturesIsNullThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -93,23 +93,22 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorReferences_SportEntityFactoryIsNull_Throws()
+    public void ConstructorWithCompetitorReferencesSportEntityFactoryIsNullThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
 
         Assert.Throws<ArgumentNullException>(() =>
-            new Competitor(
-                competitorCacheItem,
-                _mockProfileCache.Object,
-                TestData.Cultures,
-                null,
-                ExceptionHandlingStrategy.Catch,
-                referenceDictionary));
+                                                 new Competitor(competitorCacheItem,
+                                                                _mockProfileCache.Object,
+                                                                TestData.Cultures,
+                                                                null,
+                                                                ExceptionHandlingStrategy.Catch,
+                                                                referenceDictionary));
     }
 
     [Fact]
-    public void ConstructorWithCompetitorReferences_CompetitorReferencesIsNull_DoesNotThrows()
+    public void ConstructorWithCompetitorReferencesCompetitorReferencesIsNullDoesNotThrows()
     {
         var competitorCacheItem = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
 
@@ -119,7 +118,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorId_CacheItemIsNull_Throws()
+    public void ConstructorWithCompetitorIdCacheItemIsNullThrows()
     {
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
 
@@ -127,7 +126,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorId_ProfileCacheIsNull_Throws()
+    public void ConstructorWithCompetitorIdProfileCacheIsNullThrows()
     {
         var competitorId = GetCompetitorWithDivision().Id;
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -136,7 +135,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorId_CulturesIsNull_Throws()
+    public void ConstructorWithCompetitorIdCulturesIsNullThrows()
     {
         var competitorId = GetCompetitorWithDivision().Id;
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -145,7 +144,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorId_SportEntityFactoryIsNull_Throws()
+    public void ConstructorWithCompetitorIdSportEntityFactoryIsNullThrows()
     {
         var competitorId = GetCompetitorWithDivision().Id;
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -154,7 +153,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorId_CompetitorReferencesIsNull_DoesNotThrows()
+    public void ConstructorWithCompetitorIdCompetitorReferencesIsNullDoesNotThrows()
     {
         var competitorId = GetCompetitorWithDivision().Id;
 
@@ -164,7 +163,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetition_ValidBaseParameters_InitializeCorrectly()
+    public void ConstructorWithCompetitionValidBaseParametersInitializeCorrectly()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         SetupProfileCacheMockWithCompetitorCi(competitorCi);
@@ -175,7 +174,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorReferences_ValidBaseParameters_InitializeCorrectly()
+    public void ConstructorWithCompetitorReferencesValidBaseParametersInitializeCorrectly()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -187,7 +186,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorId_ValidBaseParameters_InitializeCorrectly()
+    public void ConstructorWithCompetitorIdValidBaseParametersInitializeCorrectly()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -199,7 +198,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetition_WithoutDivision()
+    public void ConstructorWithCompetitionWithoutDivision()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithoutDivision(), TestData.Culture, _mockDataRouterManager.Object);
         SetupProfileCacheMockWithCompetitorCi(competitorCi);
@@ -211,7 +210,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorReferences_WithoutDivision()
+    public void ConstructorWithCompetitorReferencesWithoutDivision()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithoutDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -224,7 +223,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorId_WithoutDivision()
+    public void ConstructorWithCompetitorIdWithoutDivision()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithoutDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -237,7 +236,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void Division_GetOrLoadCompetitorReturnNullCi()
+    public void DivisionGetOrLoadCompetitorReturnNullCi()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -252,7 +251,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void PrintC_WithDivision()
+    public void PrintCWithDivision()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -267,7 +266,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void PrintC_WithoutDivision()
+    public void PrintCWithoutDivision()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithoutDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -282,7 +281,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void PrintF_WithDivision()
+    public void PrintFWithDivision()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -297,7 +296,7 @@ public class CompetitorTests : CompetitorHelper
     }
 
     [Fact]
-    public void PrintF_WithoutDivision()
+    public void PrintFWithoutDivision()
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithoutDivision(), TestData.Culture, _mockDataRouterManager.Object);
         var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
@@ -309,6 +308,48 @@ public class CompetitorTests : CompetitorHelper
         Assert.NotNull(competitor);
         Assert.Null(competitor.Division);
         Assert.DoesNotContain("Division=", print, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    [Theory]
+    [InlineData(true, true)]
+    [InlineData(false, false)]
+    [InlineData(null, false)]
+    public void ConstructorWithCompetitorCacheItemInitializesVirtualFlag(bool? competitorIsVirtual, bool expectedVirtualFlag)
+    {
+        var competitorCi = new CompetitorCacheItem(GetCompetitorWithVirtualFlagSet(competitorIsVirtual), TestData.Culture, _mockDataRouterManager.Object);
+        SetupProfileCacheMockWithCompetitorCi(competitorCi);
+
+        var competitor = new Competitor(competitorCi, _mockProfileCache.Object, TestData.Cultures, _mockSportEntityFactory.Object, ExceptionHandlingStrategy.Catch, _competitionCacheItemMock.Object);
+
+        Assert.Equal(expectedVirtualFlag, competitor.IsVirtual);
+    }
+
+    [Theory]
+    [InlineData(true, true)]
+    [InlineData(false, false)]
+    [InlineData(null, false)]
+    public void ConstructorWithCompetitorCacheItemAndCompetitorsReferencesInitializesVirtualFlag(bool? competitorIsVirtual, bool expectedVirtualFlag)
+    {
+        var competitorCi = new CompetitorCacheItem(GetCompetitorWithVirtualFlagSet(competitorIsVirtual), TestData.Culture, _mockDataRouterManager.Object);
+        SetupProfileCacheMockWithCompetitorCi(competitorCi);
+
+        var competitor = new Competitor(competitorCi, _mockProfileCache.Object, TestData.Cultures, _mockSportEntityFactory.Object, ExceptionHandlingStrategy.Catch, new Dictionary<Urn, ReferenceIdCacheItem>());
+
+        Assert.Equal(expectedVirtualFlag, competitor.IsVirtual);
+    }
+
+    [Theory]
+    [InlineData(true, true)]
+    [InlineData(false, false)]
+    [InlineData(null, false)]
+    public void ConstructorWithProfileCacheInitializesVirtualFlag(bool? competitorIsVirtual, bool expectedVirtualFlag)
+    {
+        var competitorCi = new CompetitorCacheItem(GetCompetitorWithVirtualFlagSet(competitorIsVirtual), TestData.Culture, _mockDataRouterManager.Object);
+        SetupProfileCacheMockWithCompetitorCi(competitorCi);
+
+        var competitor = new Competitor(competitorCi.Id, _mockProfileCache.Object, TestData.Cultures, _mockSportEntityFactory.Object, ExceptionHandlingStrategy.Catch, new Dictionary<Urn, ReferenceIdCacheItem>());
+
+        Assert.Equal(expectedVirtualFlag, competitor.IsVirtual);
     }
 
     private void SetupProfileCacheMockWithCompetitorCi(CompetitorCacheItem competitorCi)
@@ -331,7 +372,6 @@ public class CompetitorTests : CompetitorHelper
         Assert.Single(competitor.Abbreviations);
         Assert.Equal(competitorCi.GetAbbreviation(TestData.Culture), competitor.Abbreviations[TestData.Culture]);
         Assert.Equal(competitorCi.GetAbbreviation(TestData.Culture), competitor.GetAbbreviation(TestData.Culture));
-        Assert.Equal(competitorCi.IsVirtual, competitor.IsVirtual);
         Assert.Equal(competitorCi.CountryCode, competitor.CountryCode);
         Assert.Equal(competitorCi.Gender, competitor.Gender);
         Assert.Equal(competitorCi.AgeGroup, competitor.AgeGroup);
@@ -339,5 +379,13 @@ public class CompetitorTests : CompetitorHelper
         Assert.Equal(competitorCi.ShortName, competitor.ShortName);
         Assert.Equal(competitorCi.Division.Id, competitor.Division.Id);
         Assert.Equal(competitorCi.Division.Name, competitor.Division.Name);
+        if (competitorCi.IsVirtual.HasValue)
+        {
+            Assert.Equal(competitorCi.IsVirtual.Value, competitor.IsVirtual);
+        }
+        else
+        {
+            Assert.False(competitor.IsVirtual);
+        }
     }
 }

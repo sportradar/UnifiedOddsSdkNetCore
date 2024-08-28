@@ -171,7 +171,14 @@ public class FixtureInternalMapperTests
             Assert.Equal(m.Abbreviation, c.abbreviation);
             Assert.Equal(m.CountryName, c.country);
             Assert.Equal(m.State, c.state);
-            Assert.Equal(m.IsVirtual, c.virtualSpecified && c.@virtual);
+            if (c.virtualSpecified)
+            {
+                Assert.Equal(m.IsVirtual, c.@virtual);
+            }
+            else
+            {
+                Assert.Null(m.IsVirtual);
+            }
 
             if (c.divisionSpecified)
             {

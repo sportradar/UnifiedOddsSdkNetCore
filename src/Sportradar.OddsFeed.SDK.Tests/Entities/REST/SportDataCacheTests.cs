@@ -12,7 +12,6 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
-using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;

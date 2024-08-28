@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,39 +25,32 @@ using Xunit.Abstractions;
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
 
 /// <summary>
-/// Management of rabbit server and sending messages
+///     Management of rabbit server and sending messages
 /// </summary>
-/// <remarks>On rabbit server there should be additional user:testuser/testpass and virtual host: /virtualhost with read/write permission</remarks>
+/// <remarks>On rabbit server there should be additional user:testuser/testpass and virtual host: /virtualhost with
+///     read/write permission</remarks>
 public class RabbitManagement
 {
-    //private const string LocalRabbitIp = "192.168.0.151";  //home
-    private const string LocalRabbitIp = "10.27.121.90"; //office
-    public const int DefaultRabbitPort = 5672;
-    public const string SdkRabbitUsername = "testuser";
-    public const string SdkRabbitPassword = "testpass";
-    public const string VirtualHostName = "/virtualhost";
-    private const string UfExchange = "unifiedfeed";
-    private const string DefaultAdminRabbitUserName = "guest";
-    private const string DefaultAdminRabbitPassword = "guest";
-    private IConnection _connection;
+    private readonly ITestOutputHelper _outputHelper;
+    private readonly ProjectConfiguration _projConfig;
     private IModel _channel;
+    private IConnection _connection;
     private bool _isRunning;
     private ISdkTimer _timer;
-    private readonly ITestOutputHelper _outputHelper;
 
     /// <summary>
-    /// Gets the management client for getting and managing connections and channels
+    ///     Gets the management client for getting and managing connections and channels
     /// </summary>
     /// <value>The management client.</value>
     public ManagementClient ManagementClient { get; }
 
     /// <summary>
-    /// Gets the messages to be send
+    ///     Gets the messages to be sent
     /// </summary>
     public ConcurrentQueue<RabbitMessage> Messages { get; }
 
     /// <summary>
-    /// Gets the list of producers for which alive messages should be periodically send
+    ///     Gets the list of producers for which alive messages should be periodically send
     /// </summary>
     public ConcurrentDictionary<int, DateTime> ProducersAlive { get; }
 
@@ -70,73 +61,34 @@ public class RabbitManagement
         ProducersAlive = new ConcurrentDictionary<int, DateTime>();
         _isRunning = false;
 
-        ManagementClient = new ManagementClient(new Uri($"http://{GetRabbitIp()}:15672"), DefaultAdminRabbitUserName, DefaultAdminRabbitPassword);
+        _projConfig = new ProjectConfiguration();
+
+        ManagementClient = new ManagementClient(new Uri($"http://{_projConfig.GetRabbitIp()}:15672"),
+                                                _projConfig.DefaultAdminRabbitUserName,
+                                                _projConfig.DefaultAdminRabbitPassword,
+                                                TimeSpan.FromMinutes(1));
     }
 
     public void ResetRabbit()
     {
         var _ = ManagementClient.GetExchanges();
-
         var rabbitUsers = ManagementClient.GetUsers();
-        if (!rabbitUsers.Any(a => a.Name.Equals(SdkRabbitUsername, StringComparison.OrdinalIgnoreCase)))
+        if (!rabbitUsers.Any(a => a.Name.Equals(_projConfig.SdkRabbitUsername, StringComparison.OrdinalIgnoreCase)))
         {
-            ManagementClient.CreateUser(UserInfo.ByPassword(SdkRabbitUsername, SdkRabbitPassword).AddTag("administrator"));
+            ManagementClient.CreateUser(UserInfo.ByPassword(_projConfig.SdkRabbitUsername, _projConfig.SdkRabbitPassword).AddTag("administrator"));
         }
 
-        var testUser = ManagementClient.GetUser(SdkRabbitUsername);
+        var testUser = ManagementClient.GetUser(_projConfig.SdkRabbitUsername);
 
         var virtualHosts = ManagementClient.GetVhosts();
-        if (!virtualHosts.Any(a => a.Name.Equals(VirtualHostName, StringComparison.OrdinalIgnoreCase)))
+        if (!virtualHosts.Any(a => a.Name.Equals(_projConfig.VirtualHostName, StringComparison.OrdinalIgnoreCase)))
         {
-            ManagementClient.CreateVhost(VirtualHostName);
+            ManagementClient.CreateVhost(_projConfig.VirtualHostName);
         }
 
-        var virtualHost = ManagementClient.GetVhost(VirtualHostName);
+        var virtualHost = ManagementClient.GetVhost(_projConfig.VirtualHostName);
         ManagementClient.CreatePermission(virtualHost, new PermissionInfo(testUser.Name));
-        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(DefaultAdminRabbitUserName));
-    }
-
-    public static string GetRabbitIp()
-    {
-        var envRabbitIp = Environment.GetEnvironmentVariable("RABBITMQ_IP");
-
-        _ = GetLocalIpAddress();
-        return envRabbitIp ?? LocalRabbitIp;
-        //return envRabbitIp ?? localMachineIp ?? LocalRabbitIp;
-    }
-
-    // public static string GetLocalIPAddress()
-    // {
-    //     var host = Dns.GetHostEntry(Dns.GetHostName());
-    //     foreach (var ip in host.AddressList)
-    //     {
-    //         if (ip.AddressFamily == AddressFamily.InterNetwork)
-    //         {
-    //             return ip.ToString();
-    //         }
-    //     }
-    //     throw new Exception("Local IP Address Not Found!");
-    // }
-
-    private static string GetLocalIpAddress()
-    {
-        var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces()
-            .Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
-                          nic.NetworkInterfaceType != NetworkInterfaceType.Loopback);
-
-        foreach (var networkInterface in networkInterfaces)
-        {
-            var ipProperties = networkInterface.GetIPProperties();
-            var ipAddressInfo = ipProperties.UnicastAddresses
-                .FirstOrDefault(ip => ip.Address.AddressFamily == AddressFamily.InterNetwork);
-
-            if (ipAddressInfo != null)
-            {
-                return ipAddressInfo.Address.ToString();
-            }
-        }
-
-        return null;
+        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(_projConfig.DefaultAdminRabbitUserName));
     }
 
     // start the connection for sending messages
@@ -151,12 +103,11 @@ public class RabbitManagement
             ManagementClient.CloseConnection(connection);
         }
 
-        _outputHelper.WriteLine($"Starting connection with HostName={GetRabbitIp()}");
-        // factory uses default user: guest/guest
-        var factory = new ConnectionFactory { HostName = GetRabbitIp(), VirtualHost = VirtualHostName };
+        _outputHelper.WriteLine($"Starting connection with HostName={_projConfig.GetRabbitIp()}");
+        var factory = new ConnectionFactory { HostName = _projConfig.GetRabbitIp(), UserName = _projConfig.DefaultAdminRabbitUserName, Password = _projConfig.DefaultAdminRabbitPassword, VirtualHost = _projConfig.VirtualHostName };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
-        _channel.ExchangeDeclare(UfExchange, ExchangeType.Topic, true);
+        _channel.ExchangeDeclare(_projConfig.UfExchange, ExchangeType.Topic, true);
 
         _timer = new SdkTimer("RabbitCheckAndSend", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
         _timer.Elapsed += TimerCheckAndSend;
@@ -175,10 +126,10 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Sends the message
+    ///     Sends the message
     /// </summary>
     /// <param name="message">The message to be sent</param>
-    /// <param name="routingKey">The routing key to be applied or it will be generated based on message type</param>
+    /// <param name="routingKey">The routing key to be applied, or it will be generated based on message type</param>
     /// <param name="timestamp">The timestamp  to be applied or Now</param>
     public void Send(FeedMessage message, string routingKey = null, long timestamp = 0)
     {
@@ -193,7 +144,7 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Sends the message to the rabbit server
+    ///     Sends the message to the rabbit server
     /// </summary>
     /// <param name="message">The message should be valid xml</param>
     /// <param name="routingKey">The routing key</param>
@@ -210,18 +161,18 @@ public class RabbitManagement
         var basicProperties = _channel.CreateBasicProperties();
         basicProperties.Headers = new Dictionary<string, object> { { "timestamp_in_ms", timestamp } };
 
-        _channel.BasicPublish(UfExchange,
-            routingKey,
-            basicProperties,
-            body);
+        _channel.BasicPublish(_projConfig.UfExchange,
+                              routingKey,
+                              basicProperties,
+                              body);
         _outputHelper.WriteLine($"MQ sent: {timestamp.FromEpochTime().ToLongTimeString()}   {routingKey}   {message}");
     }
 
     /// <summary>
-    /// Adds the producerId for periodically send alive messages. And start immediately.
+    ///     Adds the producerId for periodically send alive messages. And start immediately.
     /// </summary>
     /// <param name="producerId">The producer id</param>
-    /// <param name="periodInMs">The period in ms before next is send</param>
+    /// <param name="periodInMs">The period in ms before next is sent</param>
     public void AddProducersAlive(int producerId, int periodInMs = 0)
     {
         if (!ProducersAlive.ContainsKey(producerId))
@@ -232,7 +183,7 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Removes the producerId for periodically send alive messages. On next iteration will stop.
+    ///     Removes the producerId for periodically send alive messages. On next iteration will stop.
     /// </summary>
     /// <param name="producerId">The producer id</param>
     public void StopProducersAlive(int producerId)
@@ -244,10 +195,10 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Periodically check if there are messages to be send (in Messages queue)
+    ///     Periodically check if there are messages to be sent (in Messages queue)
     /// </summary>
     /// <param name="sender">The sender</param>
-    /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+    /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     private void TimerCheckAndSend(object sender, EventArgs e)
     {
         if (!_isRunning)
@@ -265,10 +216,10 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Sends the periodic alive for producer (if producerId is listed in ProducersAlive).
+    ///     Sends the periodic alive for producer (if producerId is listed in ProducersAlive).
     /// </summary>
     /// <param name="producerId">The producer id</param>
-    /// <param name="periodInMs">The period in ms before next is send</param>
+    /// <param name="periodInMs">The period in ms before next is sent</param>
     private void SendPeriodicAliveForProducer(int producerId, int periodInMs = 0)
     {
         Thread.Sleep(5000);
@@ -284,7 +235,7 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Change rabbit user password / or create new user
+    ///     Change rabbit user password / or create new user
     /// </summary>
     /// <param name="username">The username</param>
     /// <param name="newPassword">The password</param>
@@ -295,7 +246,7 @@ public class RabbitManagement
     public bool RabbitChangeUserPassword(string username, string newPassword)
     {
         // Set MQ server credentials
-        var networkCredential = new NetworkCredential("guest", "guest");
+        var networkCredential = new NetworkCredential("consumer", "consumer");
 
         // Instantiate HttpClientHandler, passing in the NetworkCredential
         var httpClientHandler = new HttpClientHandler { Credentials = networkCredential };
@@ -308,8 +259,8 @@ public class RabbitManagement
         var info = JsonConvert.SerializeObject(mqUser);
         var content = new StringContent(info, Encoding.UTF8, "application/json");
 
-        //HttpContent httpContent = new StringContent($"{{\"password\":\"{newPassword}\",\"tags\":\"administrator\"}}}}", Encoding.UTF8, "application/json");
-        var httpResponseMessage = httpClient.PutAsync($"http://{GetRabbitIp()}:15672/api/users/{username}", content).GetAwaiter().GetResult();
+        //var httpContent = new StringContent($"{{\"password\":\"{newPassword}\",\"tags\":\"administrator\"}}}}", Encoding.UTF8, "application/json");
+        var httpResponseMessage = httpClient.PutAsync($"http://{_projConfig.GetRabbitIp()}:15672/api/users/{username}", content).GetAwaiter().GetResult();
         if (httpResponseMessage != null)
         {
             var responseContent = httpResponseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -323,7 +274,7 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Builds the xml message body from the raw feed message (instance)
+    ///     Builds the xml message body from the raw feed message (instance)
     /// </summary>
     /// <param name="message">The message to be serialized</param>
     /// <returns>Returns xml message body</returns>
@@ -363,7 +314,7 @@ public class RabbitManagement
     }
 
     /// <summary>
-    /// Builds the routing key from the message type
+    ///     Builds the routing key from the message type
     /// </summary>
     /// <param name="message">The message</param>
     /// <returns>Returns the appropriate routing key</returns>
@@ -373,6 +324,7 @@ public class RabbitManagement
         {
             return "-.-.-.alive.-.-.-.-";
         }
+
         if (message.GetType() == typeof(odds_change))
         {
             var oddsChange = (odds_change)message;
@@ -380,6 +332,7 @@ public class RabbitManagement
             var urn = Urn.Parse(oddsChange.event_id);
             return $"hi.{BuildSessionPartOfRoutingKey(oddsChange.product)}.odds_change.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
         }
+
         if (message.GetType() == typeof(bet_stop))
         {
             var betStop = (bet_stop)message;
@@ -387,6 +340,7 @@ public class RabbitManagement
             var urn = Urn.Parse(betStop.event_id);
             return $"hi.{BuildSessionPartOfRoutingKey(betStop.product)}.bet_stop.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
         }
+
         if (message.GetType() == typeof(fixture_change))
         {
             var fixtureChange = (fixture_change)message;
@@ -394,10 +348,12 @@ public class RabbitManagement
             var urn = Urn.Parse(fixtureChange.event_id);
             return $"hi.pre.live.fixture_change.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
         }
+
         if (message.GetType() == typeof(snapshot_complete))
         {
             return "-.-.-.snapshot_complete.-.-.-.-";
         }
+
         if (message.GetType() == typeof(bet_settlement))
         {
             var betSettlement = (bet_settlement)message;

@@ -27,9 +27,8 @@ public class CustomBetManagerTests
     public CustomBetManagerTests(ITestOutputHelper outputHelper)
     {
         _dataRouterManager = new TestDataRouterManager(new CacheManager(), outputHelper);
-        var customBetSelectionBuilder = new CustomBetSelectionBuilder();
-        _customBetManagerThrow = new CustomBetManager(_dataRouterManager, customBetSelectionBuilder, TestConfiguration.GetConfig());
-        _customBetManagerCatch = new CustomBetManager(_dataRouterManager, customBetSelectionBuilder, TestConfiguration.GetConfig(null, ExceptionHandlingStrategy.Catch));
+        _customBetManagerThrow = new CustomBetManager(_dataRouterManager, TestConfiguration.GetConfig(), new CustomBetSelectionBuilderFactory());
+        _customBetManagerCatch = new CustomBetManager(_dataRouterManager, TestConfiguration.GetConfig(null, ExceptionHandlingStrategy.Catch), new CustomBetSelectionBuilderFactory());
     }
 
     [Fact]
@@ -37,6 +36,17 @@ public class CustomBetManagerTests
     {
         Assert.NotNull(_customBetManagerThrow);
         Assert.NotNull(_customBetManagerCatch);
+    }
+
+    [Fact]
+    public void CustomBetSelectionBuilderWhenRequestTwoThenEachIsUnique()
+    {
+        var customBetSelectionBuilder1 = _customBetManagerThrow.CustomBetSelectionBuilder;
+        var customBetSelectionBuilder2 = _customBetManagerThrow.CustomBetSelectionBuilder;
+
+        Assert.NotNull(customBetSelectionBuilder1);
+        Assert.NotNull(customBetSelectionBuilder2);
+        Assert.NotEqual(customBetSelectionBuilder1, customBetSelectionBuilder2);
     }
 
     [Fact]

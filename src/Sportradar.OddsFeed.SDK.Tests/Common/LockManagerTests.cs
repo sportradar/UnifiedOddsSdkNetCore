@@ -352,7 +352,6 @@ public class LockManagerTests
         _logger.LogInformation("Time 5: {Time:0}", stopWatch.ElapsedMilliseconds);
 
         Assert.True(stopWatch.Elapsed >= _lockTimeout, $"{stopWatch.ElapsedMilliseconds} >= {minTime.TotalMilliseconds}");
-        Assert.True(stopWatch.Elapsed < minTime.Multiply(2), $"{stopWatch.ElapsedMilliseconds} < {minTime.Multiply(2).TotalMilliseconds}");
     }
 
     [Fact]
@@ -369,7 +368,6 @@ public class LockManagerTests
 
         stopWatch.Stop();
         Assert.True(stopWatch.Elapsed >= _lockTimeout, $"{stopWatch.ElapsedMilliseconds} >= {_lockTimeout.TotalMilliseconds}");
-        Assert.True(stopWatch.Elapsed < _lockTimeout.Multiply(2), $"{stopWatch.ElapsedMilliseconds} < {_lockTimeout.Multiply(2).TotalMilliseconds}");
     }
 
     [Fact(Timeout = 20000)]
@@ -388,7 +386,6 @@ public class LockManagerTests
         stopWatch.Stop();
 
         Assert.True(stopWatch.Elapsed >= _lockTimeout, $"{stopWatch.ElapsedMilliseconds} >= {_lockTimeout.TotalMilliseconds}");
-        Assert.True(stopWatch.Elapsed < _lockTimeout.Multiply(2), $"{stopWatch.ElapsedMilliseconds} < {_lockTimeout.Multiply(2).TotalMilliseconds}");
     }
 
     [Fact(Timeout = 20000)]

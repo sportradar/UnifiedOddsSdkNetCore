@@ -430,7 +430,7 @@ public class CompetitorHelper
         Assert.Equal(dto.CategoryId, ci.CategoryId);
         Assert.Equal(dto.CountryCode, ci.CountryCode);
         Assert.Equal(dto.Gender, ci.Gender);
-        Assert.Equal(dto.IsVirtual, ci.IsVirtual);
+        Assert.Null(dto.IsVirtual);
         Assert.Equal(dto.ShortName, ci.ShortName);
         Assert.Equal(dto.SportId, ci.SportId);
         Assert.Equal(dto.State, ci.State);
@@ -441,6 +441,15 @@ public class CompetitorHelper
         }
 
         ValidateCompetitorTranslatablePropertiesDtoWithCi(dto, ci, culture);
+    }
+
+    internal CompetitorDto GetCompetitorWithVirtualFlagSet(bool? isVirtual)
+    {
+        var apiTeam = GetApiTeamExtendedFull(1, 0);
+        apiTeam.virtualSpecified = isVirtual.HasValue;
+        apiTeam.@virtual = isVirtual ?? false;
+
+        return new CompetitorDto(apiTeam);
     }
 
     private void ValidateCompetitorTranslatablePropertiesDtoWithCi(CompetitorDto dto, CompetitorCacheItem ci, CultureInfo culture)

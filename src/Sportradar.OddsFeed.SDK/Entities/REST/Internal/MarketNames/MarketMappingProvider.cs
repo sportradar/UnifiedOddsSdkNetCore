@@ -129,7 +129,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                 var marketDescriptor = await _marketCacheProvider.GetMarketDescriptionAsync(_marketId, _specifiers, cultures, true).ConfigureAwait(false);
                 if (marketDescriptor == null)
                 {
-                    ExecutionLog.LogWarning($"An error occurred getting marketDescription for marketId={_marketId}.");
+                    ExecutionLog.LogWarning("An error occurred getting marketDescription for marketId={MarketId}", _marketId);
                 }
                 return marketDescriptor;
             }
@@ -149,7 +149,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
             if (marketDescription.Mappings == null || !marketDescription.Mappings.Any())
             {
-                CacheLog.LogDebug($"MarketDescription for marketId={_marketId} has no mappings.");
+                CacheLog.LogDebug("MarketDescription for marketId={MarketId} has no mappings", _marketId);
                 return new List<IMarketMappingData>();
             }
 
@@ -157,7 +157,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
             if (!mappings.Any())
             {
-                CacheLog.LogDebug($"Market with id:{_marketId}, producer:{_producerId}, sportId:{_sportId} has no mappings.");
+                CacheLog.LogDebug("Market with id:{MarketId}, producer:{ProducerId}, sportId:{SportId} has no mappings", _marketId, _producerId, _sportId);
                 return mappings;
             }
 
@@ -171,11 +171,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                     }
                 }
 
-                CacheLog.LogInformation($"MarketId:{_marketId}, producer:{_producerId}, sportId:{_sportId.Id}, specifiers={SdkInfo.SpecifiersKeysToString(marketDescription.Specifiers)} has multiple mappings [{mappings.Count}].");
+                CacheLog.LogInformation("MarketId:{MarketId}, producer:{ProducerId}, sportId:{SportId}, specifiers={MarketSpecifiers} has multiple mappings [{MappingsCount}]", _marketId, _producerId, _sportId.Id, SdkInfo.SpecifiersKeysToString(marketDescription.Specifiers), mappings.Count);
                 var i = 0;
                 foreach (var mapping in mappings)
                 {
-                    CacheLog.LogDebug($"MarketId:{_marketId}, producer:{_producerId}, sportId:{_sportId.Id} mapping[{i}]: {mapping}.");
+                    CacheLog.LogDebug("MarketId:{MarketId}, producer:{ProducerId}, sportId:{SportId} mapping[{MappingId}]: {Mapping}", _marketId, _producerId, _sportId.Id, i, mapping);
                     i++;
                 }
             }
@@ -258,6 +258,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
             sb.Append("]. AdditionalMessage=").Append(message);
 
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
             ExecutionLog.LogError(innerException, sb.ToString());
             if (_exceptionStrategy == ExceptionHandlingStrategy.Throw)
             {
@@ -368,7 +369,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                         }
                         catch (NameExpressionException ex)
                         {
-                            ExecutionLog.LogError(ex, $"The generation of name for flex score mapped outcome {outcomeId} failed");
+                            ExecutionLog.LogError(ex, "The generation of name for flex score mapped outcome {OutcomeId} failed", outcomeId);
                         }
                     }
 

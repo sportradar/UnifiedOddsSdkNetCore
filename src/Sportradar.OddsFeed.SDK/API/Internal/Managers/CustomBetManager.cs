@@ -25,20 +25,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         private readonly ILogger _executionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(CustomBetManager));
 
         private readonly IDataRouterManager _dataRouterManager;
+        private readonly ICustomBetSelectionBuilderFactory _customBetSelectionBuilderFactory;
         private readonly ExceptionHandlingStrategy _exceptionHandlingStrategy;
 
-        public ICustomBetSelectionBuilder CustomBetSelectionBuilder { get; }
+        public ICustomBetSelectionBuilder CustomBetSelectionBuilder => _customBetSelectionBuilderFactory.CreateBuilder();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CustomBetManager"/> class
-        /// </summary>
-        /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to make custom bet API requests</param>
-        /// <param name="customBetSelectionBuilder">A <see cref="ICustomBetSelectionBuilder"/> used to build selections</param>
-        /// <param name="config">The <see cref="IUofConfiguration"/> to extract <see cref="ExceptionHandlingStrategy"/> used to handle exceptions</param>
-        public CustomBetManager(IDataRouterManager dataRouterManager, ICustomBetSelectionBuilder customBetSelectionBuilder, IUofConfiguration config)
+        public CustomBetManager(IDataRouterManager dataRouterManager, IUofConfiguration config, ICustomBetSelectionBuilderFactory customBetSelectionBuilderFactory)
         {
             _dataRouterManager = dataRouterManager ?? throw new ArgumentNullException(nameof(dataRouterManager));
-            CustomBetSelectionBuilder = customBetSelectionBuilder ?? throw new ArgumentNullException(nameof(customBetSelectionBuilder));
+            _customBetSelectionBuilderFactory = customBetSelectionBuilderFactory ?? throw new ArgumentNullException(nameof(customBetSelectionBuilderFactory));
             _exceptionHandlingStrategy = config.ExceptionHandlingStrategy;
         }
 
@@ -56,12 +51,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         {
             try
             {
-                _clientLog.LogInformation($"Invoking CustomBetManager.GetAvailableSelectionsAsync({eventId})");
+                _clientLog.LogInformation("Invoking CustomBetManager.GetAvailableSelectionsAsync({SportEventId})", eventId);
                 return await _dataRouterManager.GetAvailableSelectionsAsync(eventId).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {
-                _executionLog.LogWarning($"Event[{eventId}] getting available selections failed. API response code: {ce.ResponseCode}, message: {ce.Message}");
+                _executionLog.LogWarning("Event[{SportEventId}] getting available selections failed. API response code: {ErrorResponseCode}, message: {ErrorMessage}", eventId, ce.ResponseCode, ce.Message);
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;
@@ -69,7 +64,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning(e, $"Event[{eventId}] getting available selections failed.");
+                _executionLog.LogWarning(e, "Event[{SportEventId}] getting available selections failed", eventId);
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;
@@ -93,12 +88,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             try
             {
                 var selectionStr = string.Join("|", selections);
-                _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbability({selectionStr})");
+                _clientLog.LogInformation("Invoking CustomBetManager.CalculateProbability({Selections})", selectionStr);
                 return await _dataRouterManager.CalculateProbabilityAsync(selections).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {
-                _executionLog.LogWarning($"Calculating probabilities failed. API response code: {ce.ResponseCode}, message: {ce.Message}");
+                _executionLog.LogWarning("Calculating probabilities failed. API response code: {ErrorResponseCode}, message: {ErrorMessage}", ce.ResponseCode, ce.Message);
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;
@@ -106,7 +101,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning(e, "Calculating probabilities failed.");
+                _executionLog.LogWarning(e, "Calculating probabilities failed");
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;
@@ -131,12 +126,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             try
             {
                 var selectionStr = string.Join("|", selections);
-                _clientLog.LogInformation($"Invoking CustomBetManager.CalculateProbabilityFilter({selectionStr})");
+                _clientLog.LogInformation("Invoking CustomBetManager.CalculateProbabilityFilter({Selections})", selectionStr);
                 return await _dataRouterManager.CalculateProbabilityFilteredAsync(selections).ConfigureAwait(false);
             }
             catch (CommunicationException ce)
             {
-                _executionLog.LogWarning($"Calculating probabilities filtered failed. API response code: {ce.ResponseCode}, message: {ce.Message}");
+                _executionLog.LogWarning("Calculating probabilities filtered failed. API response code: {ErrorResponseCode}, message: {ErrorMessage}", ce.ResponseCode, ce.Message);
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;
@@ -144,7 +139,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning(e, "Calculating probabilities filtered failed.");
+                _executionLog.LogWarning(e, "Calculating probabilities filtered failed");
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {
                     throw;

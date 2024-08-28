@@ -220,7 +220,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
             var fetchedItem = await _dataRouterManager.GetSportEventsForDateAsync(date, culture).ConfigureAwait(false);
 
-            CacheLog.LogInformation($"{fetchedItem.Count()} sport events retrieved for {date.ToShortDateString()} and locale '{culture.TwoLetterISOLanguageName}'.");
+            CacheLog.LogInformation("{ResponseItemCount} sport events retrieved for {Date} and language {Lang}", fetchedItem.Count(), date.ToShortDateString(), culture.TwoLetterISOLanguageName);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             {
                 error = error.Substring(1);
             }
-            ExecutionLog.LogDebug($"Found {tours.Count} tournaments. Errors: {error}");
+            ExecutionLog.LogDebug("Found {ResponseItemCount} tournaments. Errors: {Error}", tours.Count, error);
 
             return tours;
         }
@@ -387,7 +387,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
                 var endCount = Cache.Count();
                 deletedItemsCount = startCount - endCount;
-                ExecutionLog.LogInformation($"Deleted {deletedItemsCount} items from cache (before={before})");
+                ExecutionLog.LogInformation("Deleted {DeletedItemsCount} items from cache (before={Before})", deletedItemsCount, before);
                 return startCount - endCount;
             }
             catch (Exception e)
@@ -707,7 +707,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         }
 
         /// <summary>
-        /// Set the list of <see cref="DtoType"/> in the this cache
+        /// Set the list of <see cref="DtoType"/> in this cache
         /// </summary>
         public override void SetDtoTypes()
         {
@@ -1046,7 +1046,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                     }
                     catch (Exception)
                     {
-                        ExecutionLog.LogDebug($"Merging failed for {id} and item type: {item.GetType().Name} and dto type: {dtoType} for requester: {requester.Id}.");
+                        ExecutionLog.LogDebug("Merging failed for {SportEventId} and item type: {SportEventType} and dto type: {DtoType} for requester: {RequesterId}", id, item.GetType().Name, dtoType, requester.Id);
                     }
                 }
 
@@ -1222,7 +1222,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogError(ex, $"Error adding sport event for id={id}, dto type={item?.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
+                ExecutionLog.LogError(ex, "Error adding sport event for id={SportEventId}, dto type={DtoType} and lang={Lang}", id, item?.GetType().Name, culture.TwoLetterISOLanguageName);
             }
             finally
             {
@@ -1255,7 +1255,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogError(ex, $"Error adding timeline for id={item.SportEvent.Id}, dto type={item.GetType().Name} and lang={culture.TwoLetterISOLanguageName}.");
+                ExecutionLog.LogError(ex, "Error adding timeline for id={SportEventId}, dto type={DtoName} and lang={Lang}", item.SportEvent.Id, item.GetType().Name, culture.TwoLetterISOLanguageName);
             }
             finally
             {

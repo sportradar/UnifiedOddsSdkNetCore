@@ -185,7 +185,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
             else if (timestamp < LastTimestampBeforeDisconnect.AddSeconds(-MaxInactivitySeconds))
             {
                 var logger = SdkLoggerFactory.GetLoggerForExecution(typeof(Producer));
-                logger.LogWarning($"Suspicious feed message timestamp arrived for producer {Id}. Current={LastTimestampBeforeDisconnect}. Arrived={timestamp}");
+                logger.LogWarning("Suspicious feed message timestamp arrived for producer {ProducerId}. Current={LastTimestampBeforeDisconnect}. Arrived={FeedMessageTimestamp}", Id, LastTimestampBeforeDisconnect, timestamp);
             }
         }
 
@@ -244,7 +244,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         /// </summary>
         /// <param name="other">The other</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        protected bool Equals(Producer other)
+        private bool Equals(Producer other)
         {
             if (other == null)
             {

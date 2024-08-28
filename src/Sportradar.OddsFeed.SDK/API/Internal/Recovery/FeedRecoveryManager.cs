@@ -187,7 +187,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
             }
             catch (ObjectDisposedException ex)
             {
-                _executionLog.LogInformation($"Error happened during invoking timer, because the instance {ex.ObjectName} is being disposed.");
+                _executionLog.LogInformation("Error happened during invoking timer, because the instance {DisposedObjectName} is being disposed", ex.ObjectName);
             }
         }
 

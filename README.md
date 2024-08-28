@@ -28,8 +28,12 @@ For more information please contact support@sportradar.com or visit https://iodo
 
 # Change Log
 
-## 2024-07-29  2.2.0
+## 2024-08-28  2.2.1
+- Changed registering of ICustomBetManager to singleton
+- Fix: Information whether competitor is virtual or not can reliably be fetched on all applicable sport events
 
+
+## 2024-07-29  2.2.0
 - Enabled accessing match statistics on MatchStatus received via IMatch.GetStatus object (beside Soccer also supports Kabaddi statistics)
 - Improved memory management and disposal of resources when UofSdk is closed
 

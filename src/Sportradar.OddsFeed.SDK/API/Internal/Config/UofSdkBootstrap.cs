@@ -1,6 +1,7 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,7 @@ using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
+    [SuppressMessage("CodeQuality", "IDE0058:Expression value is never used", Justification = "Allowed for registering services")]
     internal static class UofSdkBootstrap
     {
         internal const string HttpClientDefaultRequestHeaderForAccessToken = "x-access-token";
@@ -437,9 +439,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
             services.AddSingleton<IMarketDescriptionManager, MarketDescriptionManager>();
 
-            services.AddScoped<ICustomBetSelectionBuilder, CustomBetSelectionBuilder>();
+            services.AddTransient<ICustomBetSelectionBuilder, CustomBetSelectionBuilder>();
 
-            services.AddScoped<ICustomBetManager, CustomBetManager>();
+            services.AddSingleton<ICustomBetSelectionBuilderFactory, CustomBetSelectionBuilderFactory>();
+
+            services.AddSingleton<ICustomBetManager, CustomBetManager>();
 
             services.AddSingleton<IEventChangeManager, EventChangeManager>(serviceProvider =>
                 new EventChangeManager(
@@ -522,7 +526,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<IDeserializer<tournamentInfoEndpoint>>(),
                     serviceProvider.GetRequiredService<ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDto>>()));
 
-            // fixtureChangeFixture endpoint provider for tournament info 
+            // fixtureChangeFixture endpoint provider for tournament info
             services.AddSingleton<IDataProviderNamed<TournamentInfoDto>, DataProviderNamed<tournamentInfoEndpoint, TournamentInfoDto>>(serviceProvider =>
                 new DataProviderNamed<tournamentInfoEndpoint, TournamentInfoDto>(DataProviderForFixtureChangeFixtureEndpointForTournamentInfo,
                     fixtureChangeFixtureEndpoint,

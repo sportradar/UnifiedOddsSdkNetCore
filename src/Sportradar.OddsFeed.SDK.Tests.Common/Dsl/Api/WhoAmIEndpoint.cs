@@ -17,7 +17,8 @@ public class WhoAmIEndpoint
 
     public static bookmaker_details CreateForAT()
     {
-        return new WhoAmIEndpoint().WithBookmakerId(1).WithVirtualHost(RabbitManagement.VirtualHostName).WithExpiration(DateTime.Now.AddDays(1)).Build();
+        var projConfig = new ProjectConfiguration();
+        return new WhoAmIEndpoint().WithBookmakerId(1).WithVirtualHost(projConfig.VirtualHostName).WithExpiration(DateTime.Now.AddDays(1)).Build();
     }
 
     public WhoAmIEndpoint WithBookmakerDetails(Action<bookmaker_details> options)

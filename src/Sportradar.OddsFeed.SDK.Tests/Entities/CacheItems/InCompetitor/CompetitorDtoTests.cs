@@ -112,7 +112,7 @@ public class CompetitorDtoTests : CompetitorHelper
 
         var competitorDto = new CompetitorDto(apiTeam);
 
-        Assert.False(competitorDto.IsVirtual);
+        Assert.Null(competitorDto.IsVirtual);
         ValidateTeamWithCompetitor(apiTeam, competitorDto);
     }
 
@@ -125,7 +125,7 @@ public class CompetitorDtoTests : CompetitorHelper
 
         var competitorDto = new CompetitorDto(apiTeam);
 
-        Assert.False(competitorDto.IsVirtual);
+        Assert.Null(competitorDto.IsVirtual);
         ValidateTeamWithCompetitor(apiTeam, competitorDto);
     }
 
@@ -181,7 +181,7 @@ public class CompetitorDtoTests : CompetitorHelper
     [Fact]
     public void ConstructorWithExtendedTeam()
     {
-        var apiTeam = new teamExtended()
+        var apiTeam = new teamExtended
         {
             id = Urn.Parse("sr:competitor:123").ToString(),
             name = "Competitor 123",
@@ -197,13 +197,13 @@ public class CompetitorDtoTests : CompetitorHelper
     }
 
     [Fact]
-    public void Constructor_TeamIsNull_ThrowArgumentNullException()
+    public void ConstructorWhenTeamIsNullThenThrowArgumentNullException()
     {
         Assert.Throws<NullReferenceException>(() => new CompetitorDto(null));
     }
 
     [Fact]
-    public void TeamCompetitor_PropertiesAreSet()
+    public void TeamCompetitorWhenPropertiesAreSet()
     {
         var apiTeamCompetitor = GetApiTeamCompetitorFull();
 
@@ -215,7 +215,7 @@ public class CompetitorDtoTests : CompetitorHelper
     }
 
     [Fact]
-    public void TeamCompetitor_WithoutQualifier()
+    public void TeamCompetitorWhenWithoutQualifier()
     {
         var apiTeamCompetitor = GetApiTeamCompetitorFull();
         apiTeamCompetitor.qualifier = null;

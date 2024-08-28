@@ -47,21 +47,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// <summary>
         /// Initializes new TeamCompetitorCacheItem instance
         /// </summary>
-        /// <param name="competitor">A <see cref="CompetitorDto"/> to be used to construct new instance</param>
-        /// <param name="culture">A culture to be used to construct new instance</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch missing data</param>
-        public TeamCompetitorCacheItem(CompetitorDto competitor, CultureInfo culture, IDataRouterManager dataRouterManager)
-            : base(competitor, culture, dataRouterManager)
-        {
-            Guard.Argument(competitor, nameof(competitor)).NotNull();
-            Guard.Argument(culture, nameof(culture)).NotNull();
-
-            Merge(competitor, culture);
-        }
-
-        /// <summary>
-        /// Initializes new TeamCompetitorCacheItem instance
-        /// </summary>
         /// <param name="exportable">A <see cref="ExportableTeamCompetitor"/> to be used to construct new instance</param>
         /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to fetch missing data</param>
         public TeamCompetitorCacheItem(ExportableTeamCompetitor exportable, IDataRouterManager dataRouterManager)

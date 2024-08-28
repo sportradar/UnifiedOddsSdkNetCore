@@ -94,11 +94,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// </summary>
         /// <returns>A <see cref="StageType"/> for the associated sport event.</returns>
         Task<StageType?> GetStageTypeAsync();
-
-        /// <summary>
-        /// Asynchronously get the list of competitors marked as virtual
-        /// </summary>
-        /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
-        Task<IList<Urn>> GetCompetitorsVirtualAsync();
     }
 }

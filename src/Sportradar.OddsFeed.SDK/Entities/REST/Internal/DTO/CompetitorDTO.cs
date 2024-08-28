@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         /// <summary>
         /// Gets a value indicating whether current competitor is virtual
         /// </summary>
-        public bool IsVirtual { get; }
+        public bool? IsVirtual { get; }
 
         /// <summary>
         /// The reference ids
@@ -100,7 +100,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             Abbreviation = record.abbreviation;
             CountryName = record.country;
-            IsVirtual = record.virtualSpecified && record.@virtual;
+            IsVirtual = record.virtualSpecified ? record.@virtual : (bool?)null;
 
             ReferenceIds = record.reference_ids == null
                 ? null

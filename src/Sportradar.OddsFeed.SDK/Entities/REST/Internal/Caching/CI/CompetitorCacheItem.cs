@@ -43,7 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         private IDictionary<CultureInfo, string> _abbreviations;
 
         private List<Urn> _associatedPlayerIds;
-        private bool _isVirtual;
+        private bool? _isVirtual;
         private ReferenceIdCacheItem _referenceId;
         private List<JerseyCacheItem> _jerseys;
         private string _countryCode;
@@ -139,7 +139,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// <summary>
         /// Gets a value indicating whether represented competitor is virtual
         /// </summary>
-        public bool IsVirtual
+        public bool? IsVirtual
         {
             get
             {
@@ -512,49 +512,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
 
             lock (_lockAdd)
             {
-                _isVirtual = competitor.IsVirtual;
-                Names[culture] = competitor.Name;
-                _countryNames[culture] = competitor.CountryName;
-                _abbreviations[culture] = string.IsNullOrEmpty(competitor.Abbreviation)
-                                              ? SdkInfo.GetAbbreviationFromName(competitor.Name)
-                                              : competitor.Abbreviation;
-                _referenceId = UpdateReferenceIds(competitor.Id, competitor.ReferenceIds);
-                if (!string.IsNullOrEmpty(competitor.CountryCode))
-                {
-                    _countryCode = competitor.CountryCode;
-                }
-                if (!string.IsNullOrEmpty(competitor.State))
-                {
-                    _state = competitor.State;
-                }
-                if (competitor.Players?.IsNullOrEmpty() == false)
-                {
-                    _associatedPlayerIds = competitor.Players.Select(s => s.Id).ToList();
-                }
-                if (!string.IsNullOrEmpty(competitor.Gender))
-                {
-                    _gender = competitor.Gender;
-                }
-                if (!string.IsNullOrEmpty(competitor.AgeGroup))
-                {
-                    _ageGroup = competitor.AgeGroup;
-                }
-                if (competitor.SportId != null)
-                {
-                    _sportId = competitor.SportId;
-                }
-                if (competitor.CategoryId != null)
-                {
-                    _categoryId = competitor.CategoryId;
-                }
-                if (!string.IsNullOrEmpty(competitor.ShortName))
-                {
-                    _shortName = competitor.ShortName;
-                }
-                if (competitor.Division != null)
-                {
-                    Division = new DivisionCacheItem(competitor.Division);
-                }
+                MergeInternalCompetitorDto(competitor, culture);
             }
         }
 
@@ -563,6 +521,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// </summary>
         /// <param name="competitorProfile">A <see cref="CompetitorProfileDto"/> containing information about the competitor</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the passed <c>dto</c></param>
+        // ReSharper disable once CognitiveComplexity
         internal void Merge(CompetitorProfileDto competitorProfile, CultureInfo culture)
         {
             Guard.Argument(competitorProfile, nameof(competitorProfile)).NotNull();
@@ -570,21 +529,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
 
             lock (_lockAdd)
             {
-                _isVirtual = competitorProfile.Competitor.IsVirtual;
-                Names[culture] = competitorProfile.Competitor.Name;
-                _countryNames[culture] = competitorProfile.Competitor.CountryName;
-                _abbreviations[culture] = string.IsNullOrEmpty(competitorProfile.Competitor.Abbreviation)
-                                              ? SdkInfo.GetAbbreviationFromName(competitorProfile.Competitor.Name)
-                                              : competitorProfile.Competitor.Abbreviation;
-                _referenceId = UpdateReferenceIds(competitorProfile.Competitor.Id, competitorProfile.Competitor.ReferenceIds);
-                if (!string.IsNullOrEmpty(competitorProfile.Competitor.CountryCode))
-                {
-                    _countryCode = competitorProfile.Competitor.CountryCode;
-                }
-                if (!string.IsNullOrEmpty(competitorProfile.Competitor.State))
-                {
-                    _state = competitorProfile.Competitor.State;
-                }
+                MergeInternalCompetitorDto(competitorProfile.Competitor, culture);
+
                 if (!competitorProfile.Players.IsNullOrEmpty())
                 {
                     _associatedPlayerIds = competitorProfile.Players.Select(s => s.Id).ToList();
@@ -604,7 +550,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                         _manager.Merge(competitorProfile.Manager, culture);
                     }
                 }
-
                 if (competitorProfile.Venue != null)
                 {
                     if (_venue == null)
@@ -616,33 +561,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                         _venue.Merge(competitorProfile.Venue, culture);
                     }
                 }
-                if (!string.IsNullOrEmpty(competitorProfile.Competitor.Gender))
-                {
-                    _gender = competitorProfile.Competitor.Gender;
-                }
-                if (!string.IsNullOrEmpty(competitorProfile.Competitor.AgeGroup))
-                {
-                    _ageGroup = competitorProfile.Competitor.AgeGroup;
-                }
                 if (competitorProfile.RaceDriverProfile != null)
                 {
                     _raceDriverProfile = new RaceDriverProfileCacheItem(competitorProfile.RaceDriverProfile);
-                }
-                if (competitorProfile.Competitor.SportId != null)
-                {
-                    _sportId = competitorProfile.Competitor.SportId;
-                }
-                if (competitorProfile.Competitor.CategoryId != null)
-                {
-                    _categoryId = competitorProfile.Competitor.CategoryId;
-                }
-                if (!string.IsNullOrEmpty(competitorProfile.Competitor.ShortName))
-                {
-                    _shortName = competitorProfile.Competitor.ShortName;
-                }
-                if (competitorProfile.Competitor.Division != null)
-                {
-                    Division = new DivisionCacheItem(competitorProfile.Competitor.Division);
                 }
                 AddOrUpdateProfileFetchTime(culture);
             }
@@ -660,41 +581,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
 
             lock (_lockAdd)
             {
-                _isVirtual = simpleTeamProfile.Competitor.IsVirtual;
-                Names[culture] = simpleTeamProfile.Competitor.Name;
-                _countryNames[culture] = simpleTeamProfile.Competitor.CountryName;
-                _abbreviations[culture] = string.IsNullOrEmpty(simpleTeamProfile.Competitor.Abbreviation)
-                                              ? SdkInfo.GetAbbreviationFromName(simpleTeamProfile.Competitor.Name)
-                                              : simpleTeamProfile.Competitor.Abbreviation;
-                _referenceId = UpdateReferenceIds(simpleTeamProfile.Competitor.Id, simpleTeamProfile.Competitor.ReferenceIds);
-                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.CountryCode))
-                {
-                    _countryCode = simpleTeamProfile.Competitor.CountryCode;
-                }
-                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.State))
-                {
-                    _state = simpleTeamProfile.Competitor.State;
-                }
-                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.Gender))
-                {
-                    _gender = simpleTeamProfile.Competitor.Gender;
-                }
-                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.AgeGroup))
-                {
-                    _ageGroup = simpleTeamProfile.Competitor.AgeGroup;
-                }
-                if (!simpleTeamProfile.Competitor.Players.IsNullOrEmpty())
-                {
-                    _associatedPlayerIds = simpleTeamProfile.Competitor.Players.Select(s => s.Id).ToList();
-                }
-                if (!string.IsNullOrEmpty(simpleTeamProfile.Competitor.ShortName))
-                {
-                    _shortName = simpleTeamProfile.Competitor.ShortName;
-                }
-                if (simpleTeamProfile.Competitor.Division != null)
-                {
-                    Division = new DivisionCacheItem(simpleTeamProfile.Competitor.Division);
-                }
+                MergeInternalCompetitorDto(simpleTeamProfile.Competitor, culture);
+
                 AddOrUpdateProfileFetchTime(culture);
             }
         }
@@ -719,6 +607,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// Merges the information from the provided <see cref="CompetitorCacheItem"/> into the current instance
         /// </summary>
         /// <param name="item">A <see cref="CompetitorCacheItem"/> containing information about the competitor</param>
+        // ReSharper disable once CognitiveComplexity
         internal void Merge(CompetitorCacheItem item)
         {
             if (item == null)
@@ -728,32 +617,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
 
             lock (_lockAdd)
             {
-                if (!item.Names.IsNullOrEmpty())
-                {
-                    foreach (var k in item.Names.Keys)
-                    {
-                        Names[k] = item.Names[k];
-                    }
-                }
-                if (!item._countryNames.IsNullOrEmpty())
-                {
-                    foreach (var k in item._countryNames.Keys)
-                    {
-                        _countryNames[k] = item._countryNames[k];
-                    }
-                }
-                if (!item._abbreviations.IsNullOrEmpty())
-                {
-                    foreach (var k in item._abbreviations.Keys)
-                    {
-                        _abbreviations[k] = item._abbreviations[k];
-                    }
-                }
+                MergeNamesFromCompetitorCi(item);
                 if (!item._associatedPlayerIds.IsNullOrEmpty())
                 {
                     _associatedPlayerIds = item._associatedPlayerIds.ToList();
                 }
-                _isVirtual = item.IsVirtual;
                 _referenceId = item._referenceId ?? _referenceId;
                 if (item._jerseys != null && !item._jerseys.IsNullOrEmpty())
                 {
@@ -769,15 +637,93 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 _referenceId = item._referenceId ?? _referenceId;
                 _sportId = item._sportId ?? _sportId;
                 _categoryId = item._categoryId ?? _categoryId;
-                if (!string.IsNullOrEmpty(item.ShortName))
-                {
-                    _shortName = item.ShortName;
-                }
                 if (item.Division != null)
                 {
                     Division = item.Division;
                 }
+                if (item.IsVirtual.HasValue)
+                {
+                    _isVirtual = item.IsVirtual.Value;
+                }
                 CultureCompetitorProfileFetched = item.CultureCompetitorProfileFetched.ToDictionary(pair => pair.Key, pair => pair.Value);
+            }
+        }
+        private void MergeNamesFromCompetitorCi(CompetitorCacheItem item)
+        {
+            if (!item.Names.IsNullOrEmpty())
+            {
+                foreach (var culture in item.Names.Keys)
+                {
+                    Names[culture] = item.Names[culture];
+                }
+            }
+            if (!item._countryNames.IsNullOrEmpty())
+            {
+                foreach (var culture in item._countryNames.Keys)
+                {
+                    _countryNames[culture] = item._countryNames[culture];
+                }
+            }
+            if (!item._abbreviations.IsNullOrEmpty())
+            {
+                foreach (var culture in item._abbreviations.Keys)
+                {
+                    _abbreviations[culture] = item._abbreviations[culture];
+                }
+            }
+            if (!string.IsNullOrEmpty(item.ShortName))
+            {
+                _shortName = item.ShortName;
+            }
+        }
+
+        private void MergeInternalCompetitorDto(CompetitorDto competitorDto, CultureInfo culture)
+        {
+            Names[culture] = competitorDto.Name;
+            _countryNames[culture] = competitorDto.CountryName;
+            _abbreviations[culture] = string.IsNullOrEmpty(competitorDto.Abbreviation)
+                ? SdkInfo.GetAbbreviationFromName(competitorDto.Name)
+                : competitorDto.Abbreviation;
+            _referenceId = UpdateReferenceIds(competitorDto.Id, competitorDto.ReferenceIds);
+            if (!string.IsNullOrEmpty(competitorDto.CountryCode))
+            {
+                _countryCode = competitorDto.CountryCode;
+            }
+            if (!string.IsNullOrEmpty(competitorDto.State))
+            {
+                _state = competitorDto.State;
+            }
+            if (competitorDto.Players?.IsNullOrEmpty() == false)
+            {
+                _associatedPlayerIds = competitorDto.Players.Select(s => s.Id).ToList();
+            }
+            if (!string.IsNullOrEmpty(competitorDto.Gender))
+            {
+                _gender = competitorDto.Gender;
+            }
+            if (!string.IsNullOrEmpty(competitorDto.AgeGroup))
+            {
+                _ageGroup = competitorDto.AgeGroup;
+            }
+            if (competitorDto.SportId != null)
+            {
+                _sportId = competitorDto.SportId;
+            }
+            if (competitorDto.CategoryId != null)
+            {
+                _categoryId = competitorDto.CategoryId;
+            }
+            if (!string.IsNullOrEmpty(competitorDto.ShortName))
+            {
+                _shortName = competitorDto.ShortName;
+            }
+            if (competitorDto.Division != null)
+            {
+                Division = new DivisionCacheItem(competitorDto.Division);
+            }
+            if (competitorDto.IsVirtual.HasValue)
+            {
+                _isVirtual = competitorDto.IsVirtual.Value;
             }
         }
 
@@ -879,7 +825,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 CountryNames = _countryNames.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(_countryNames),
                 Abbreviations = _abbreviations.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(_abbreviations),
                 AssociatedPlayerIds = _associatedPlayerIds.IsNullOrEmpty() ? new List<string>() : new List<string>(_associatedPlayerIds.Select(i => i.ToString()).ToList()),
-                IsVirtual = _isVirtual,
+                IsVirtual = _isVirtual ?? false,
                 ReferenceIds = _referenceId?.ReferenceIds == null ? new Dictionary<string, string>() : new Dictionary<string, string>((IDictionary<string, string>)_referenceId.ReferenceIds),
                 Jerseys = jerseysList.IsNullOrEmpty() ? new List<ExportableJersey>() : new List<ExportableJersey>(jerseysList),
                 CountryCode = _countryCode,
@@ -943,7 +889,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 }
                 catch (Exception e)
                 {
-                    SdkLoggerFactory.GetLoggerForExecution(typeof(CompetitorCacheItem)).LogError(e, $"Importing CompetitorCacheItem {exportable.Id}");
+                    SdkLoggerFactory.GetLoggerForExecution(typeof(CompetitorCacheItem)).LogError(e, "Importing CompetitorCacheItem {ExportableId}", exportable.Id);
                 }
             }
         }

@@ -183,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         {
             if (IsRunning)
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying to start recovery which is already in progress.");
+                ExecutionLog.LogError("{ProducerName}: trying to start recovery which is already in progress", _producer.Name);
                 return false;
             }
 
@@ -201,7 +201,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
                     {
                         if (_adjustedAfterAge)
                         {
-                            ExecutionLog.LogInformation($"{_producer.Name}: After time {after} is adjusted.");
+                            ExecutionLog.LogInformation("{ProducerName}: After time {After} is adjusted", _producer.Name, after);
                             after = TimeProviderAccessor.Current.Now - _producer.MaxAfterAge() + TimeSpan.FromMinutes(1);
                         }
                         else
@@ -217,7 +217,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
             catch (Exception ex)
             {
                 var actualException = ex.InnerException ?? ex;
-                ExecutionLog.LogError(actualException, $"{_producer.Name} There was an error requesting recovery.");
+                ExecutionLog.LogError(actualException, "{ProducerName} There was an error requesting recovery", _producer.Name);
                 if (actualException.Message.Contains("Forbidden", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _adjustedAfterAge = true;
@@ -246,7 +246,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         {
             if (!IsRunning)
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying to interrupt recovery which is not running.");
+                ExecutionLog.LogError("{ProducerName}: trying to interrupt recovery which is not running", _producer.Name);
                 return;
             }
             if (InterruptionTime.HasValue)
@@ -265,7 +265,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         {
             if (!IsRunning)
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying to check recovery which is not running.");
+                ExecutionLog.LogError("{ProducerName}: trying to check recovery which is not running", _producer.Name);
                 return false;
             }
             return (TimeProviderAccessor.Current.Now - _startTime).TotalSeconds > _producer.MaxRecoveryTime;
@@ -283,7 +283,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
             result = null;
             if (!IsRunning)
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying to complete recovery which is not running.");
+                ExecutionLog.LogError("{ProducerName}: trying to complete recovery which is not running", _producer.Name);
                 return false;
             }
 
@@ -313,12 +313,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         {
             if (!IsRunning)
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying to CompleteTimedOut recovery which is not running.");
+                ExecutionLog.LogError("{ProducerName}: trying to CompleteTimedOut recovery which is not running", _producer.Name);
                 return null;
             }
             if (!HasTimedOut())
             {
-                ExecutionLog.LogError($"{_producer.Name}: trying to CompleteTimedOut recovery which is not timed-out.");
+                ExecutionLog.LogError("{ProducerName}: trying to CompleteTimedOut recovery which is not timed-out", _producer.Name);
                 return null;
             }
 

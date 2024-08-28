@@ -67,8 +67,9 @@ public class SdkLogTests : IDisposable
 
     private static void LogPrint(ILogger log)
     {
+        var ex = new InvalidDataException("just testing");
         log.LogInformation("info message");
-        log.LogError(new InvalidDataException("just testing").Message);
+        log.LogError(ex, "error message with exception");
         log.LogDebug("debug message");
         log.LogWarning("warn message");
         log.LogError("error message");

@@ -112,7 +112,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             switch (validationResult)
             {
                 case ValidationResult.Failure:
-                    _log.LogWarning($"Validation of message=[{message}] failed. Raising OnUnparsableMessageReceived event");
+                    _log.LogWarning("Validation of message=[{FeedMessage}] failed. Raising OnUnparsableMessageReceived event", message);
                     MessageType messageType;
                     try
                     {
@@ -120,21 +120,21 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     }
                     catch (ArgumentException ex)
                     {
-                        _log.LogError(ex, $"An error occurred while determining the MessageType of the message whose validation has failed. Message={message}");
+                        _log.LogError(ex, "An error occurred while determining the MessageType of the message whose validation has failed. Message={FeedMessage}", message);
                         return;
                     }
                     var eventArgs = new UnparsableMessageEventArgs(messageType, message.ProducerId.ToString(), message.EventId, e.RawMessage);
                     Dispatch(UnparsableMessageReceived, eventArgs, "OnUnparsableMessageReceived");
                     return;
                 case ValidationResult.ProblemsDetected:
-                    _log.LogWarning($"Problems were detected while validating message=[{message}], but the message is still eligible for further processing.");
+                    _log.LogWarning("Problems were detected while validating message=[{FeedMessage}], but the message is still eligible for further processing", message);
                     return;
                 case ValidationResult.Success:
-                    _log.LogDebug($"Message=[{message}] successfully validated. Continuing with message processing");
+                    _log.LogDebug("Message=[{FeedMessage}] successfully validated. Continuing with message processing", message);
                     ProcessMessage(message, e.RawMessage);
                     return;
                 default:
-                    _log.LogError($"ValidationResult {Enum.GetName(typeof(ValidationResult), validationResult)} is not supported. Aborting processing of message=[{message}]");
+                    _log.LogError("ValidationResult {ValidationResult} is not supported. Aborting processing of message=[{FeedMessage}]", Enum.GetName(typeof(ValidationResult), validationResult), message);
                     return;
             }
         }
@@ -148,7 +148,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         {
             var rawData = eventArgs.RawData as byte[] ?? eventArgs.RawData.ToArray();
             var basicMessageData = _messageDataExtractor.GetBasicMessageData(rawData);
-            _log.LogInformation($"Extracted the following data from unparsed message data: [{basicMessageData}], raising OnUnparsableMessageReceived event");
+            _log.LogInformation("Extracted the following data from unparsed message data: [{BasicMessageData}], raising OnUnparsableMessageReceived event", basicMessageData);
             var dispatchmentEventArgs = new UnparsableMessageEventArgs(basicMessageData.MessageType, basicMessageData.ProducerId, basicMessageData.EventId, rawData);
             Dispatch(UnparsableMessageReceived, dispatchmentEventArgs, "OnUnparsableMessageReceived");
         }
@@ -164,18 +164,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         {
             if (handler == null)
             {
-                _log.LogWarning($"No event listeners attached to event {eventName}.");
+                _log.LogWarning("No event listeners attached to event {EventName}", eventName);
                 return;
             }
 
             try
             {
                 handler(this, eventArgs);
-                _log.LogInformation($"Successfully raised event {eventName}.");
+                _log.LogInformation("Successfully raised event {EventName}", eventName);
             }
             catch (Exception ex)
             {
-                _log.LogWarning(ex, $"Client threw an exception when handling event {eventName}.");
+                _log.LogWarning(ex, "Client threw an exception when handling event {EventName}", eventName);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        public void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (_isDisposed || !disposing)
             {

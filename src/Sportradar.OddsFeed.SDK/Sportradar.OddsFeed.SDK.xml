@@ -2753,58 +2753,6 @@
             </summary>
             <returns>Estimated cache size if tracking is enabled and sizes are specified, otherwise it will return store key count</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.Add(`0,`1,Microsoft.Extensions.Caching.Memory.CacheItemPriority)">
-            <summary>
-            Adds T2 value to the cache with key identifier. Also adds key to list of keys. Sets absolute and/or sliding expiration based on CacheStore settings.
-            </summary>
-            <param name="key">Key identifier for new cache item</param>
-            <param name="value">Value of the cache item</param>
-            <param name="cacheItemPriority">Priority of the cache item</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.Get(`0)">
-            <summary>
-            Get cache item for specified key if exists
-            </summary>
-            <param name="key">The key to search cache item</param>
-            <returns>Returns the cache item for specified key if exists</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.Remove(`0)">
-            <summary>
-            Remove cache item from cache if exists
-            </summary>
-            <param name="key">The key to remove from cache</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.GetKeys">
-            <summary>
-            Get the list of all the keys
-            </summary>
-            <returns>The list of all the keys</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.GetValues">
-            <summary>
-            Get all the cache items in the cache
-            </summary>
-            <returns>All the cache items in the cache</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.Contains(`0)">
-            <summary>
-            Check if the key exists in the cache store
-            </summary>
-            <param name="key">The key to be checked</param>
-            <returns>True if cache item with specified key exists, otherwise false</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.Count">
-            <summary>
-            Get the count of stored keys
-            </summary>
-            <returns>The count of stored keys</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore2`2.Size">
-            <summary>
-            Returns estimated cache size if tracking is enabled and sizes are specified, otherwise it will return store key count
-            </summary>
-            <returns>Estimated cache size if tracking is enabled and sizes are specified, otherwise it will return store key count</returns>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ILocalizedNamedValueCache">
             <summary>
             Defines a contract implemented by classes used to cache <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ILocalizedNamedValue"/> instances
@@ -4091,7 +4039,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventCache.SetDtoTypes">
             <summary>
-            Set the list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.DtoType"/> in the this cache
+            Set the list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.DtoType"/> in this cache
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventCache.CacheDeleteItem(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.CacheItemType)">
@@ -6432,14 +6380,6 @@
             The run-time implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> interface
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CustomBetManager.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager,Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder,Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CustomBetManager"/> class
-            </summary>
-            <param name="dataRouterManager">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager"/> used to make custom bet API requests</param>
-            <param name="customBetSelectionBuilder">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder"/> used to build selections</param>
-            <param name="config">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration"/> to extract <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy"/> used to handle exceptions</param>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CustomBetSelectionBuilder">
             <summary>
             The run-time implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder"/> interface
@@ -7187,7 +7127,7 @@
             <summary>
             Get the associated event timeline for single culture
             </summary>
-            <param name="id">The id of the sport event to be fetched</param>
+            <param name="sportEventId">The id of the sport event to be fetched</param>
             <param name="culture">The language to be fetched</param>
             <returns>The event timeline or empty if not found</returns>
         </member>
@@ -9687,7 +9627,7 @@
             <summary>
             Get the associated event timeline for single culture
             </summary>
-            <param name="id">The id of the sport event to be fetched</param>
+            <param name="sportEventId">The id of the sport event to be fetched</param>
             <param name="culture">The language to be fetched</param>
             <returns>The event timeline or empty if not found</returns>
         </member>
@@ -14212,7 +14152,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.Stage.GetStatusAsync">
             <summary>
-            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IStageStatus"/> containing information about the progress of the stage 
+            Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IStageStatus"/> containing information about the progress of the stage
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> containing information about the progress of the stage</returns>
         </member>
@@ -20366,14 +20306,6 @@
             </summary>
             <param name="competitor">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TeamCompetitorDto"/> to be used to construct new instance</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.TeamCompetitorCacheItem.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CompetitorDto,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager)">
-            <summary>
-            Initializes new TeamCompetitorCacheItem instance
-            </summary>
-            <param name="competitor">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CompetitorDto"/> to be used to construct new instance</param>
-            <param name="culture">A culture to be used to construct new instance</param>
-            <param name="dataRouterManager">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager"/> used to fetch missing data</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.TeamCompetitorCacheItem.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTeamCompetitor,Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager)">
             <summary>
             Initializes new TeamCompetitorCacheItem instance
@@ -20656,11 +20588,6 @@
             The competitors references
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.CompetitionCacheItem._competitorsVirtual">
-            <summary>
-            The competitors isVirtual attribute
-            </summary>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.CompetitionCacheItem.#ctor(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager,Sportradar.OddsFeed.SDK.Common.Internal.ISemaphorePool,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheStore{System.String})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.CompetitionCacheItem"/> class
@@ -20751,12 +20678,6 @@
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.CompetitionCacheItem.GetCompetitorsQualifiersAsync">
             <summary>
             Asynchronously get the list of available team qualifiers
-            </summary>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.CompetitionCacheItem.GetCompetitorsVirtualAsync">
-            <summary>
-            Asynchronously get the list of competitors marked as virtual
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
         </member>
@@ -21019,12 +20940,6 @@
             Asynchronously gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.StageType"/> for the associated sport event.
             </summary>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.StageType"/> for the associated sport event.</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.ICompetitionCacheItem.GetCompetitorsVirtualAsync">
-            <summary>
-            Asynchronously get the list of competitors marked as virtual
-            </summary>
-            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an async operation</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.IDrawCacheItem">
             <summary>
@@ -25924,156 +25839,67 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Player" />
             <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitor" />
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.Countries">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory,Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.ICompetitionCacheItem)">
             <summary>
-            Gets a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> containing competitor's country name in different languages
+                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor" /> class
             </summary>
+            <param name="ci">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem" /> used to create new instance</param>
+            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache" /> used for fetching profile data</param>
+            <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem" /></param>
+            <param name="sportEntityFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory" /> used to retrieve <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile" />
+            </param>
+            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy" /> used in sport entity factory</param>
+            <param name="rootCompetitionCacheItem">A root <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.CompetitionCacheItem" /> to which this competitor belongs to</param>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.Abbreviations">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory,Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy,System.Collections.Generic.IDictionary{Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem})">
             <summary>
-            Gets a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> containing competitor's abbreviations in different languages
+                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor" /> class
             </summary>
+            <param name="ci">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem" /> used to create new instance</param>
+            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache" /> used for fetching profile data</param>
+            <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem" /></param>
+            <param name="sportEntityFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory" /> used to retrieve <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile" />
+            </param>
+            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy" /> used in sport entity factory</param>
+            <param name="competitorsReferences">A list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem" /> for all competitors</param>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.IsVirtual">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.#ctor(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory,Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy,System.Collections.Generic.IDictionary{Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem})">
             <summary>
-            Gets a value indicating whether the current instance represents a placeholder team
+                Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor" /> class
             </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.References">
-            <summary>
-            Gets the reference ids
-            </summary>
+            <param name="competitorId">A competitor id used to create new instance</param>
+            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache" /> used for fetching profile data</param>
+            <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem" /></param>
+            <param name="sportEntityFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory" /> used to retrieve <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile" />
+            </param>
+            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy" /> used in sport entity factory</param>
+            <param name="competitorsReferences">A list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem" /> for all competitors</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.GetCountry(System.Globalization.CultureInfo)">
             <summary>
-            Gets the name for specific locale
+                Gets the name for specific locale
             </summary>
             <param name="culture">The culture</param>
             <returns>Return the Country if exists, or null</returns>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.CountryCode">
-            <summary>
-            Gets the country code
-            </summary>
-            <value>The country code</value>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.GetAbbreviation(System.Globalization.CultureInfo)">
             <summary>
-            Gets the competitor's abbreviation in the specified language or a null reference
+                Gets the competitor's abbreviation in the specified language or a null reference
             </summary>
             <param name="culture">A <see cref="T:System.Globalization.CultureInfo" /> specifying the language of the abbreviation</param>
             <returns>The competitor's abbreviation in the specified language or a null reference</returns>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.AssociatedPlayers">
-            <summary>
-            Gets the list of associated player ids
-            </summary>
-            <value>The associated player ids</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.Jerseys">
-            <summary>
-            Gets the jerseys of known competitors
-            </summary>
-            <value>The jerseys</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.Manager">
-            <summary>
-            Gets the manager
-            </summary>
-            <value>The manager</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.Venue">
-            <summary>
-            Gets the venue
-            </summary>
-            <value>The venue</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.Gender">
-            <summary>
-            Gets the gender
-            </summary>
-            <value>The gender</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.RaceDriverProfile">
-            <summary>
-            Gets the race driver profile
-            </summary>
-            <value>The race driver profile</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.AgeGroup">
-            <summary>
-            Gets the age group
-            </summary>
-            <value>The age group</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.State">
-            <summary>
-            Gets the state
-            </summary>
-            <value>The state</value>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.GetSportAsync">
-            <summary>
-            Gets associated sport
-            </summary>
-            <returns>The associated sport</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.GetCategoryAsync">
-            <summary>
-            Gets associated category
-            </summary>
-            <returns>The associated category</returns>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.ShortName">
-            <summary>
-            Gets the short name
-            </summary>
-            <value>The short name</value>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory,Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.ICompetitionCacheItem)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor"/> class
-            </summary>
-            <param name="ci">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem"/> used to create new instance</param>
-            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache"/> used for fetching profile data</param>
-            <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem"/></param>
-            <param name="sportEntityFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory"/> used to retrieve <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile"/></param>
-            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy"/> used in sport entity factory</param>
-            <param name="rootCompetitionCacheItem">A root <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.CompetitionCacheItem"/> to which this competitor belongs to</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory,Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy,System.Collections.Generic.IDictionary{Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor"/> class
-            </summary>
-            <param name="ci">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem"/> used to create new instance</param>
-            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache"/> used for fetching profile data</param>
-            <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem"/></param>
-            <param name="sportEntityFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory"/> used to retrieve <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile"/></param>
-            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy"/> used in sport entity factory</param>
-            <param name="competitorsReferences">A list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem"/> for all competitors</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.#ctor(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory,Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy,System.Collections.Generic.IDictionary{Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor"/> class
-            </summary>
-            <param name="competitorId">A competitor id used to create new instance</param>
-            <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache"/> used for fetching profile data</param>
-            <param name="cultures">A cultures of the current instance of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.CompetitorCacheItem"/></param>
-            <param name="sportEntityFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ISportEntityFactory"/> used to retrieve <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IPlayerProfile"/></param>
-            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy"/> used in sport entity factory</param>
-            <param name="competitorsReferences">A list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem"/> for all competitors</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.PrintC">
             <summary>
-            Constructs and return a <see cref="T:System.String"/> containing details of the current instance
+                Constructs and return a <see cref="T:System.String" /> containing details of the current instance
             </summary>
-            <returns>A <see cref="T:System.String"/> containing details of the current instance</returns>
+            <returns>A <see cref="T:System.String" /> containing details of the current instance</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Competitor.PrintF">
             <summary>
-            Constructs and return a <see cref="T:System.String"/> containing details of the current instance
+                Constructs and return a <see cref="T:System.String" /> containing details of the current instance
             </summary>
-            <returns>A <see cref="T:System.String"/> containing details of the current instance</returns>
+            <returns>A <see cref="T:System.String" /> containing details of the current instance</returns>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CompetitorResult.Type">
             <summary>

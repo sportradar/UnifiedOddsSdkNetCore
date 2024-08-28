@@ -57,7 +57,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
             var responseMessage = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             try
             {
-                _log.LogInformation($"PutDataAsync url: {uri.AbsoluteUri}");
+                _log.LogInformation("PutDataAsync url: {AbsoluteUri}", uri.AbsoluteUri);
                 responseMessage = await _sdkHttpClient.PutAsync(uri, content ?? new StringContent(string.Empty)).ConfigureAwait(false);
                 RecordSuccess();
                 return responseMessage;
@@ -85,7 +85,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Replay
             var responseMessage = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             try
             {
-                _log.LogInformation($"DeleteDataAsync url: {uri.AbsoluteUri}");
+                _log.LogInformation("DeleteDataAsync url: {AbsoluteUri}", uri.AbsoluteUri);
                 responseMessage = await _sdkHttpClient.DeleteAsync(uri).ConfigureAwait(false);
                 RecordSuccess();
                 return responseMessage;

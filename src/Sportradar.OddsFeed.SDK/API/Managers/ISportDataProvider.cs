@@ -232,9 +232,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Managers
         /// <summary>
         /// Get the associated event timeline for single culture
         /// </summary>
-        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="sportEventId">The id of the sport event to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
         /// <returns>The event timeline or empty if not found</returns>
-        Task<IEnumerable<ITimelineEvent>> GetTimelineEventsAsync(Urn id, CultureInfo culture = null);
+        Task<IEnumerable<ITimelineEvent>> GetTimelineEventsAsync(Urn sportEventId, CultureInfo culture = null);
     }
 }

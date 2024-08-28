@@ -1804,6 +1804,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             return "?" + string.Join("&", paramList);
         }
 
+        [SuppressMessage("ReSharper", "TemplateIsNotCompileTimeConstantProblem")]
         private void WriteLog(string text, bool useDebug = false)
         {
             if (useDebug)

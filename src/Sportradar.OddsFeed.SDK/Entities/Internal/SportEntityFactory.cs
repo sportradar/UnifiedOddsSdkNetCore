@@ -267,7 +267,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                     }
                 case ResourceTypeGroup.Unknown:
                     {
-                        _executionLog.LogWarning($"Received entity with unknown resource type group: id={eventId}, id={sportId}");
+                        _executionLog.LogWarning("Received entity with unknown resource type group: eventId={SportEventId}, sportId={SportId}", eventId, sportId);
                         sportEvent = new SportEvent(eventId, sportId, null, _sportEventCache, cultures, exceptionStrategy);
                         break;
                     }

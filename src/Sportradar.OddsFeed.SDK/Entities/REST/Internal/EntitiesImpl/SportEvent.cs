@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// <summary>
         /// A <see cref="IEnumerable{T}"/> specifying languages the current instance supports
         /// </summary>
-        public readonly IReadOnlyCollection<CultureInfo> Cultures;
+        protected readonly IReadOnlyCollection<CultureInfo> Cultures;
 
         /// <summary>
         /// A <see cref="ISportEventCache"/> instance containing <see cref="SportEventCacheItem"/>
@@ -98,7 +98,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var sportEventCacheItem = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -108,9 +108,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 : await new Func<IEnumerable<CultureInfo>, Task<IReadOnlyDictionary<CultureInfo, string>>>(sportEventCacheItem.GetNamesAsync).SafeInvokeAsync(cultureList, ExecutionLog, GetFetchErrorMessage("Name"))
                     .ConfigureAwait(false);
 
-            return item == null || !item.ContainsKey(culture)
+            return item == null || !item.TryGetValue(culture, out var value)
                 ? null
-                : item[culture];
+                : value;
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 var sportEventCacheItem = SportEventCache.GetEventCacheItem(Id);
                 if (sportEventCacheItem == null)
                 {
-                    ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                    LogMissingCacheItem();
                     return null;
                 }
                 SportId = await sportEventCacheItem.GetSportIdAsync().ConfigureAwait(false);
@@ -143,7 +143,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var sportEventCacheItem = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -161,7 +161,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var sportEventCacheItem = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -217,7 +217,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var sportEventCacheItem = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -234,12 +234,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             var sportEventCacheItem = SportEventCache.GetEventCacheItem(Id);
             if (sportEventCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No sportEvent cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.Throw
                 ? await sportEventCacheItem.GetReplacedByAsync().ConfigureAwait(false)
                 : await new Func<Task<Urn>>(sportEventCacheItem.GetReplacedByAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ReplacedBy")).ConfigureAwait(false);
+        }
+
+        protected void LogMissingCacheItem()
+        {
+            ExecutionLog.LogDebug("Missing data. No sport event cache item for id={SportEventId}", Id);
         }
     }
 }

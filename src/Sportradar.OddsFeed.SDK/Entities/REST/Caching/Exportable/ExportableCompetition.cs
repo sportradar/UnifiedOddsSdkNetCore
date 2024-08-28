@@ -50,6 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable
         /// <summary>
         /// Gets the <see cref="IList{T}"/> specifying the competitors which are market virtual
         /// </summary>
+        [Obsolete("Competitors virtual is not used anymore. Use Competitor.IsVirtual property to identify virtual competitors.")]
         public IList<string> CompetitorsVirtual { get; set; }
 
         /// <summary>

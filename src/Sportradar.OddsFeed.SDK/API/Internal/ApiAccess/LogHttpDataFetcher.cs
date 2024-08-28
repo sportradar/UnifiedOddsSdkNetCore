@@ -181,14 +181,20 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
             if (_restLog.IsEnabled(LogLevel.Debug) || !response.IsSuccessStatusCode)
             {
-                var msg = $"Id:{dataId} Posting took {watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture)} ms. Response: {((int)response.StatusCode).ToString(CultureInfo.InvariantCulture)}-{response.ReasonPhrase} {responseContent}";
+                const string msgTemplate = "Id:{DataId} Posting took {Elapsed} ms. Response: {ResponseStatusCode}-{ResponseReasonPhrase} {ResponseContent}";
                 if (!response.IsSuccessStatusCode)
                 {
-                    _restLog.LogWarning(msg);
+                    _restLog.LogWarning(msgTemplate, dataId, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture), ((int)response.StatusCode).ToString(CultureInfo.InvariantCulture), response.ReasonPhrase, responseContent);
                 }
                 else
                 {
-                    _restLog.Log(SdkLoggerFactory.GetWriteLogLevel(_restLog, LogLevel.Debug), msg);
+                    _restLog.Log(SdkLoggerFactory.GetWriteLogLevel(_restLog, LogLevel.Debug),
+                                 msgTemplate,
+                                 dataId,
+                                 watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture),
+                                 ((int)response.StatusCode).ToString(CultureInfo.InvariantCulture),
+                                 response.ReasonPhrase,
+                                 responseContent);
                 }
             }
             else

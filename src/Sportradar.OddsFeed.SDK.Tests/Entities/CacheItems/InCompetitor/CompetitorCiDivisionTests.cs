@@ -28,7 +28,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorDto_NoDivision()
+    public void ConstructorWithCompetitorDtoWhenNoDivision()
     {
         var apiTeam = GetApiTeamFull(1);
         apiTeam.divisionSpecified = false;
@@ -52,7 +52,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorProfileDto_NoDivision()
+    public void ConstructorWithCompetitorProfileDtoWhenNoDivision()
     {
         var apiCompetitorProfile = GetApiCompetitorProfileFull(1);
         apiCompetitorProfile.competitor.divisionSpecified = false;
@@ -76,7 +76,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithSimpleTeamProfileDto_NoDivision()
+    public void ConstructorWithSimpleTeamProfileDtoWhenNoDivision()
     {
         var apiCompetitorProfile = GetApiSimpleTeamProfileFull(1);
         apiCompetitorProfile.competitor.divisionSpecified = false;
@@ -98,7 +98,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void TeamCompetitorConstructor_WithTeamCompetitorDto()
+    public void TeamCompetitorConstructorWhenWithTeamCompetitorDto()
     {
         var dto = new TeamCompetitorDto(GetApiTeamCompetitorFull(1));
 
@@ -110,7 +110,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void TeamCompetitorConstructor_WithTeamCompetitorDto_NoDivision()
+    public void TeamCompetitorConstructorWhenWithTeamCompetitorDtoThenNoDivision()
     {
         var apiTeamCompetitorProfile = GetApiTeamCompetitorFull(1);
         apiTeamCompetitorProfile.divisionSpecified = false;
@@ -122,7 +122,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void TeamCompetitorConstructor_WithTeamCompetitorCacheItem()
+    public void TeamCompetitorConstructorWhenWithTeamCompetitorCacheItem()
     {
         var dto = new TeamCompetitorDto(GetApiTeamCompetitorFull(1));
         var baseTeamCi = new TeamCompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
@@ -135,7 +135,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void TeamCompetitorConstructor_WithTeamCompetitorCacheItem_NoDivision()
+    public void TeamCompetitorConstructorWhenWithTeamCompetitorCacheItemThenNoDivision()
     {
         var apiTeamCompetitorProfile = GetApiTeamCompetitorFull(1);
         apiTeamCompetitorProfile.divisionSpecified = false;
@@ -148,7 +148,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Export_DivisionExist()
+    public async Task ExportWhenDivisionExist()
     {
         var dto = new CompetitorDto(GetApiTeamFull(1));
         var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
@@ -161,7 +161,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Export_DivisionDoesNotExist()
+    public async Task ExportWhenDivisionDoesNotExist()
     {
         var apiCompetitorProfile = GetApiSimpleTeamProfileFull(1);
         apiCompetitorProfile.competitor.divisionSpecified = false;
@@ -174,7 +174,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Import_DivisionExist()
+    public async Task ImportWhenDivisionExist()
     {
         var dto = new CompetitorDto(GetApiTeamFull(1));
         var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
@@ -188,7 +188,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task Import_DivisionDoesNotExist()
+    public async Task ImportWhenDivisionDoesNotExist()
     {
         var apiCompetitorProfile = GetApiSimpleTeamProfileFull(1);
         apiCompetitorProfile.competitor.divisionSpecified = false;
@@ -202,7 +202,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNewDivision_FromCompetitorDto()
+    public void MergeDivisionWithNewDivisionWhenFromCompetitorDto()
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorWithDivision(222);
@@ -216,7 +216,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeNoDivisionWithNewDivision_FromCompetitorDto()
+    public void MergeNoDivisionWithNewDivisionWhenFromCompetitorDto()
     {
         var dto1 = GetCompetitorWithoutDivision();
         var dto2 = GetCompetitorWithDivision(222);
@@ -230,7 +230,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNoDivision_FromCompetitorDto()
+    public void MergeDivisionWithNoDivisionWhenFromCompetitorDto()
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorWithoutDivision();
@@ -244,7 +244,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNewDivision_FromCompetitorProfileDto()
+    public void MergeDivisionWithNewDivisionWhenFromCompetitorProfileDto()
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorProfileWithDivision(222);
@@ -258,7 +258,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeNoDivisionWithNewDivision_FromCompetitorProfileDto()
+    public void MergeNoDivisionWithNewDivisionWhenFromCompetitorProfileDto()
     {
         var dto1 = GetCompetitorWithoutDivision();
         var dto2 = GetCompetitorProfileWithDivision(222);
@@ -272,7 +272,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNoDivision_FromCompetitorProfileDto()
+    public void MergeDivisionWithNoDivisionWhenFromCompetitorProfileDto()
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorProfileWithoutDivision();
@@ -286,7 +286,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNewDivision_FromSimpleTeamProfileDto()
+    public void MergeDivisionWithNewDivisionWhenFromSimpleTeamProfileDto()
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetSimpleTeamProfileWithDivision(222);
@@ -300,7 +300,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeNoDivisionWithNewDivision_FromSimpleTeamProfileDto()
+    public void MergeNoDivisionWithNewDivisionWhenFromSimpleTeamProfileDto()
     {
         var dto1 = GetCompetitorWithoutDivision();
         var dto2 = GetSimpleTeamProfileWithDivision(222);
@@ -314,7 +314,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNoDivision_FromSimpleTeamProfileDto()
+    public void MergeDivisionWithNoDivisionWhenFromSimpleTeamProfileDto()
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetSimpleTeamProfileWithoutDivision();
@@ -328,7 +328,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNewDivision_FromTeamCompetitorDto()
+    public void MergeDivisionWithNewDivisionWhenFromTeamCompetitorDto()
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithDivision(222);
@@ -342,7 +342,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeNoDivisionWithNewDivision_FromTeamCompetitorDto()
+    public void MergeNoDivisionWithNewDivisionWhenFromTeamCompetitorDto()
     {
         var dto1 = GetTeamCompetitorWithDivision();
         var dto2 = GetTeamCompetitorWithDivision(222);
@@ -356,7 +356,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNoDivision_FromTeamCompetitorDto()
+    public void MergeDivisionWithNoDivisionWhenFromTeamCompetitorDto()
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithoutDivision();
@@ -370,7 +370,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNewDivision_FromTeamCompetitorCacheItem()
+    public void MergeDivisionWithNewDivisionWhenFromTeamCompetitorCacheItem()
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithDivision(222);
@@ -385,7 +385,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeNoDivisionWithNewDivision_FromTeamCompetitorCacheItem()
+    public void MergeNoDivisionWithNewDivisionWhenFromTeamCompetitorCacheItem()
     {
         var dto1 = GetTeamCompetitorWithDivision();
         var dto2 = GetTeamCompetitorWithDivision(222);
@@ -400,7 +400,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     }
 
     [Fact]
-    public void MergeDivisionWithNoDivision_FromTeamCompetitorCacheItem()
+    public void MergeDivisionWithNoDivisionWhenFromTeamCompetitorCacheItem()
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithoutDivision();

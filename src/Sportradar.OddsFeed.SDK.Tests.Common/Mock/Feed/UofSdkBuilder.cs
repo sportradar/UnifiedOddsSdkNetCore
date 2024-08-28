@@ -98,15 +98,17 @@ public class UofSdkBuilder
                                13, 14, 15, 16,
                                17
                            };
+
+        var projectConfiguration = new ProjectConfiguration();
         var disabledProducers = allProducers.Where(x => !_enabledProducers.Contains(x)).ToList();
         var sdkConfig = UofSdk.GetConfigurationBuilder()
-                              .SetAccessToken(RabbitManagement.SdkRabbitUsername)
+                              .SetAccessToken(projectConfiguration.SdkRabbitUsername)
                               .SelectCustom()
-                              .SetMessagingUsername(RabbitManagement.SdkRabbitUsername)
-                              .SetMessagingPassword(RabbitManagement.SdkRabbitPassword)
-                              .SetMessagingHost(RabbitManagement.GetRabbitIp())
+                              .SetMessagingUsername(projectConfiguration.SdkRabbitUsername)
+                              .SetMessagingPassword(projectConfiguration.SdkRabbitPassword)
+                              .SetMessagingHost(projectConfiguration.GetRabbitIp())
                               .UseMessagingSsl(false)
-                              .SetMessagingPort(RabbitManagement.DefaultRabbitPort)
+                              .SetMessagingPort(projectConfiguration.DefaultRabbitPort)
                               .SetApiHost(UrlUtils.ExtractDomainName(_apiUrl))
                               .UseApiSsl(false)
                               .SetDesiredLanguages(_cultures)
@@ -117,14 +119,11 @@ public class UofSdkBuilder
         var serviceCollection = new ServiceCollection();
         if (_useSdkLogging)
         {
-            var configuration = new ConfigurationBuilder()
-                               .AddJsonFile("appsettings.json", false, true)
-                               .Build();
             var xLoggerFactory = new XunitLoggerFactory(_outputHelper);
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddSingleton<IConfiguration>(projectConfiguration.Configuration);
             serviceCollection.AddLogging(options =>
                                          {
-                                             options.AddConfiguration(configuration.GetSection("Logging"));
+                                             options.AddConfiguration(projectConfiguration.Configuration.GetSection("Logging"));
                                              options.SetMinimumLevel(LogLevel.Information);
                                              options.AddProvider(new XUnitLoggerProvider(xLoggerFactory));
                                          });

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry.Metrics;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Extended;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -472,9 +473,9 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
     }
 
     [Fact]
-    public void CustomBetSelectionBuilderIsScoped()
+    public void CustomBetSelectionBuilderIsTransient()
     {
-        CheckScopedType<ICustomBetSelectionBuilder>();
+        CheckTransientType<ICustomBetSelectionBuilder>();
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<ICustomBetSelectionBuilder>();
         Assert.NotNull(service);
@@ -482,13 +483,36 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
     }
 
     [Fact]
-    public void CustomBetManagerIsScoped()
+    public void CustomBetSelectionBuilderFactoryIsSingleton()
     {
-        CheckScopedType<ICustomBetManager>();
+        CheckSingletonType<ICustomBetSelectionBuilderFactory>();
+
+        var service = ServiceScope1.ServiceProvider.GetRequiredService<ICustomBetSelectionBuilderFactory>();
+        Assert.NotNull(service);
+        Assert.IsAssignableFrom<CustomBetSelectionBuilderFactory>(service);
+    }
+
+    [Fact]
+    public void CustomBetManagerIsSingleton()
+    {
+        CheckSingletonType<ICustomBetManager>();
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<ICustomBetManager>();
         Assert.NotNull(service);
         Assert.IsAssignableFrom<CustomBetManager>(service);
+    }
+
+    [Fact]
+    public void CustomBetSelectionBuilderWhenRequestTwoThenEachIsUnique()
+    {
+        var customBetManager = ServiceCollection.BuildServiceProvider().GetRequiredService<ICustomBetManager>();
+
+        var customBetSelectionBuilder1 = customBetManager.CustomBetSelectionBuilder;
+        var customBetSelectionBuilder2 = customBetManager.CustomBetSelectionBuilder;
+
+        Assert.NotNull(customBetSelectionBuilder1);
+        Assert.NotNull(customBetSelectionBuilder2);
+        Assert.NotEqual(customBetSelectionBuilder1, customBetSelectionBuilder2);
     }
 
     [Fact]
@@ -586,5 +610,60 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
         Assert.NotEmpty(exportedItems);
         Assert.NotEmpty(exportedItems.Where(w => w.MeterName.Equals(UofSdkTelemetry.ServiceName)));
         Assert.Single(exportedItems.Where(w => w.Name.Contains("sportdatacache-getall", StringComparison.OrdinalIgnoreCase)));
+    }
+
+    [Fact]
+    public void CreateUofSdkInstance()
+    {
+        var serviceProvider = ServiceCollection.BuildServiceProvider();
+
+        var uofSdk = new UofSdk(serviceProvider);
+
+        Assert.NotNull(uofSdk);
+    }
+
+    [Fact]
+    public void UofSdkInstanceCanBeSingleton()
+    {
+        var sdkServiceProvider = ServiceCollection.BuildServiceProvider();
+        var uofSdk = new UofSdk(sdkServiceProvider);
+
+        var services = new ServiceCollection();
+        services.AddSingleton<IUofSdk>(uofSdk);
+        var serviceProvider = services.BuildServiceProvider();
+
+        var uofSdkFromDi = serviceProvider.GetService<IUofSdk>();
+
+        Assert.NotNull(uofSdkFromDi);
+    }
+
+    [Fact]
+    public void UofSdkExtendedInstanceCanBeSingleton()
+    {
+        var sdkServiceProvider = ServiceCollection.BuildServiceProvider();
+        var uofSdk = new UofSdkExtended(sdkServiceProvider);
+
+        var services = new ServiceCollection();
+        services.AddSingleton<IUofSdkExtended>(uofSdk);
+        var serviceProvider = services.BuildServiceProvider();
+
+        var uofSdkFromDi = serviceProvider.GetService<IUofSdkExtended>();
+
+        Assert.NotNull(uofSdkFromDi);
+    }
+
+    [Fact]
+    public void UofSdkForReplayInstanceCanBeSingleton()
+    {
+        var sdkServiceProvider = ServiceCollection.BuildServiceProvider();
+        var uofSdk = new UofSdkForReplay(sdkServiceProvider);
+
+        var services = new ServiceCollection();
+        services.AddSingleton<IUofSdkForReplay>(uofSdk);
+        var serviceProvider = services.BuildServiceProvider();
+
+        var uofSdkFromDi = serviceProvider.GetService<IUofSdkForReplay>();
+
+        Assert.NotNull(uofSdkFromDi);
     }
 }

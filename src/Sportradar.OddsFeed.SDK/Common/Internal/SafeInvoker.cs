@@ -27,6 +27,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
             if (ex is CommunicationException || ex is DeserializationException || ex is MappingException)
             {
+                // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
                 log.LogError(ex, errorMessage);
                 return true;
             }

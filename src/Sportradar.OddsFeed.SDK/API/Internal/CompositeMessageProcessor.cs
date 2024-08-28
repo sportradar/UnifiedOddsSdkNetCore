@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
 
         private void OnProcessorMessageProcessedEvent(object sender, FeedMessageReceivedEventArgs e)
         {
-            ExecutionLog.LogDebug($"{ProcessorId} - CompositeMessageProcessor.OnProcessorMessageProcessedEvent called by {sender?.GetType().Name}");
+            ExecutionLog.LogDebug("{ProcessorId} - CompositeMessageProcessor.OnProcessorMessageProcessedEvent called by {SenderName}", ProcessorId, sender?.GetType().Name);
             RaiseOnMessageProcessedEvent(e);
         }
 

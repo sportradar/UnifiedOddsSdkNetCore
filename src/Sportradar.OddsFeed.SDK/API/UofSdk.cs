@@ -432,20 +432,7 @@ namespace Sportradar.OddsFeed.SDK.Api
                 var interests = Sessions.Select(s => ((UofSession)s).MessageInterest).ToList();
                 _feedRecoveryManager.Open(interests);
 
-                //if (UofConfig.StatisticsEnabled)
-                //{
-                //    _metricsTaskScheduler.Start();
-                //}
-
-                _log.LogInformation("Producers:");
-                foreach (var p in ProducerManager.Producers.OrderBy(o => o.Id))
-                {
-                    _log.LogInformation("Producer {ProducerId}-{ProducerName}  IsAvailable={ProducerIsAvailable} IsEnabled={ProducerIsEnabled}",
-                        p.Id.ToString(CultureInfo.InvariantCulture),
-                        p.Name.FixedLength(15),
-                        p.IsAvailable.ToString(CultureInfo.InvariantCulture),
-                        (!p.IsDisabled).ToString(CultureInfo.InvariantCulture));
-                }
+                LogProducerAvailability();
             }
             catch (CommunicationException ex)
             {
@@ -487,6 +474,20 @@ namespace Sportradar.OddsFeed.SDK.Api
             {
                 Interlocked.CompareExchange(ref _opened, 0, 1);
                 throw;
+            }
+        }
+
+        private void LogProducerAvailability()
+        {
+
+            _log.LogInformation("Producers:");
+            foreach (var p in ProducerManager.Producers.OrderBy(o => o.Id))
+            {
+                _log.LogInformation("Producer {ProducerId}-{ProducerName}  IsAvailable={ProducerIsAvailable} IsEnabled={ProducerIsEnabled}",
+                    p.Id.ToString(CultureInfo.InvariantCulture),
+                    p.Name.FixedLength(15),
+                    p.IsAvailable.ToString(CultureInfo.InvariantCulture),
+                    (!p.IsDisabled).ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -628,17 +629,17 @@ namespace Sportradar.OddsFeed.SDK.Api
             {
                 return;
             }
-            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
             logger = SdkLoggerFactory.GetLoggerForCache(typeof(UofSdk));
-            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
             logger = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(UofSdk));
-            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
             logger = SdkLoggerFactory.GetLoggerForRestTraffic(typeof(UofSdk));
-            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
             logger = SdkLoggerFactory.GetLoggerForFeedTraffic(typeof(UofSdk));
-            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
             logger = SdkLoggerFactory.GetLoggerForStats(typeof(UofSdk));
-            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), $"{msg}. LogLevel: {SdkLoggerFactory.GetLoggerLogLevel(logger)}");
+            logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
         }
     }
 }

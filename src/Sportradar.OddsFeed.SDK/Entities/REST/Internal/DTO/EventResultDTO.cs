@@ -149,7 +149,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             }
             else if (!string.IsNullOrEmpty(result.home_score))
             {
-                SdkInfo.ExecutionLog.LogWarning($"EventResult - can not parse home score: {result.home_score}");
+                SdkInfo.ExecutionLog.LogWarning("EventResult - can not parse home score: {ResultHomeScore}", result.home_score);
             }
             if (decimal.TryParse(result.away_score, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out var awayScore))
             {
@@ -157,7 +157,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             }
             else if (!string.IsNullOrEmpty(result.away_score))
             {
-                SdkInfo.ExecutionLog.LogWarning($"EventResult - can not parse away score: {result.away_score}");
+                SdkInfo.ExecutionLog.LogWarning("EventResult - can not parse away score: {ResultAwayScore}", result.away_score);
             }
             MatchStatus = result.match_status_code;
         }

@@ -9,7 +9,6 @@ using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
-using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
@@ -53,10 +52,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// The competitors references
         /// </summary>
         private IDictionary<Urn, ReferenceIdCacheItem> _competitorsReferences;
-        /// <summary>
-        /// The competitors isVirtual attribute
-        /// </summary>
-        private IList<Urn> _competitorsVirtual;
 
         private string _liveOdds;
 
@@ -166,9 +161,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                         exportableCompetition.CompetitorsReferences.ToDictionary(c => Urn.Parse(c.Key),
                             c => new ReferenceIdCacheItem(c.Value)))
                     : null;
-                _competitorsVirtual = exportableCompetition.CompetitorsVirtual != null
-                                          ? exportableCompetition.CompetitorsVirtual.Select(Urn.Parse).ToList()
-                                          : new List<Urn>();
                 _liveOdds = string.IsNullOrEmpty(exportableCompetition.LiveOdds) ? null : exportableCompetition.LiveOdds;
                 _sportEventType = exportableCompetition.SportEventType;
                 _stageType = exportableCompetition.StageType;
@@ -294,19 +286,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         }
 
         /// <summary>
-        /// Asynchronously get the list of competitors marked as virtual
-        /// </summary>
-        /// <returns>A <see cref="Task{T}"/> representing an async operation</returns>
-        public async Task<IList<Urn>> GetCompetitorsVirtualAsync()
-        {
-            if (!LoadedSummaries.Any())
-            {
-                await FetchMissingSummary(new[] { DefaultCulture }, false).ConfigureAwait(false);
-            }
-            return _competitorsVirtual;
-        }
-
-        /// <summary>
         /// Asynchronously gets a liveOdds
         /// </summary>
         /// <returns>A liveOdds</returns>
@@ -418,7 +397,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                 GenerateMatchName(eventSummary.Competitors, culture);
                 FillCompetitorsQualifiers(eventSummary.Competitors);
                 FillCompetitorsReferences(eventSummary.Competitors);
-                FillCompetitorsVirtual(eventSummary.Competitors);
             }
             if (eventSummary.BookingStatus != null)
             {
@@ -570,25 +548,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
             }
         }
 
-        private void FillCompetitorsVirtual(IEnumerable<TeamCompetitorDto> competitors)
-        {
-            if (competitors == null)
-            {
-                return;
-            }
-            if (_competitorsVirtual == null)
-            {
-                _competitorsVirtual = new List<Urn>();
-            }
-            foreach (var competitor in competitors)
-            {
-                if (competitor.IsVirtual && !_competitorsVirtual.Contains(competitor.Id))
-                {
-                    _competitorsVirtual.Add(competitor.Id);
-                }
-            }
-        }
-
         /// <summary>
         /// Change booking status to Booked
         /// </summary>
@@ -610,7 +569,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                 competition.ReferenceId = _referenceId?.ReferenceIds?.ToDictionary(r => r.Key, r => r.Value);
                 competition.CompetitorsQualifiers = _competitorsQualifiers?.ToDictionary(q => q.Key.ToString(), q => q.Value);
                 competition.CompetitorsReferences = _competitorsReferences?.ToDictionary(r => r.Key.ToString(), r => (IDictionary<string, string>)r.Value.ReferenceIds.ToDictionary(v => v.Key, v => v.Value));
-                competition.CompetitorsVirtual = _competitorsVirtual.IsNullOrEmpty() ? null : _competitorsVirtual.Select(s => s.ToString()).ToList();
+#pragma warning disable CS0618 // Type or member is obsolete
+                competition.CompetitorsVirtual = null; // later this property should be removed
+#pragma warning restore CS0618 // Type or member is obsolete
                 competition.LiveOdds = _liveOdds;
                 competition.SportEventType = _sportEventType;
                 competition.StageType = _stageType;

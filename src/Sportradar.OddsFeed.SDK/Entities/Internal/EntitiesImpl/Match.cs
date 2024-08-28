@@ -76,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -95,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -114,7 +114,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -132,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[0], Cultures, matchCacheItem, ExceptionStrategy).ConfigureAwait(false);
             }
 
-            ExecutionLog.LogError($"Received {competitorUrns.Count} competitors for match[Id = {Id}]. Match can have only 2 competitors");
+            ExecutionLog.LogError("Received {CompetitorCount} competitors for match[Id = {SportEventId}]. Match can have only 2 competitors", competitorUrns.Count, Id);
             throw new InvalidOperationException($"Invalid number of competitors. Match must have exactly 2 competitors, received {competitorUrns.Count}");
         }
 
@@ -146,7 +146,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -166,7 +166,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[0], cultureList, matchCacheItem, ExceptionStrategy).ConfigureAwait(false);
             }
 
-            ExecutionLog.LogError($"Received {competitorUrns.Count} competitors for match[Id = {Id}]. Match can have only 2 competitors");
+            ExecutionLog.LogError("Received {CompetitorCount} competitors for match[Id = {SportEventId}]. Match can have only 2 competitors", competitorUrns.Count, Id);
             throw new InvalidOperationException($"Invalid number of competitors. Match must have exactly 2 competitors, received {competitorUrns.Count}");
         }
 
@@ -179,7 +179,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -197,7 +197,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[1], Cultures, matchCacheItem, ExceptionStrategy).ConfigureAwait(false);
             }
 
-            ExecutionLog.LogError($"Received {competitorUrns.Count} competitors for match[Id = {Id}]. Match can have only 2 competitors.");
+            ExecutionLog.LogError("Received {CompetitorCount} competitors for match[Id = {SportEventId}]. Match can have only 2 competitors", competitorUrns.Count, Id);
             throw new InvalidOperationException($"Invalid number of competitors. Match must have exactly 2 competitors, received {competitorUrns.Count}");
         }
 
@@ -211,7 +211,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -231,7 +231,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return await _sportEntityFactory.BuildTeamCompetitorAsync(competitorUrns[1], cultureList, matchCacheItem, ExceptionStrategy).ConfigureAwait(false);
             }
 
-            ExecutionLog.LogError($"Received {competitorUrns.Count} competitors for match[Id = {Id}]. Match can have only 2 competitors.");
+            ExecutionLog.LogError("Received {CompetitorCount} competitors for match[Id = {SportEventId}]. Match can have only 2 competitors", competitorUrns.Count, Id);
             throw new InvalidOperationException($"Invalid number of competitors. Match must have exactly 2 competitors, received {competitorUrns.Count}");
         }
 
@@ -244,7 +244,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item with id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var tournamentId = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -266,7 +266,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -283,7 +283,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -307,7 +307,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (IMatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
 
@@ -331,7 +331,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (MatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var delayedInfoCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
@@ -353,7 +353,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             var matchCacheItem = (MatchCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (matchCacheItem == null)
             {
-                ExecutionLog.LogDebug($"Missing data. No match cache item for id={Id}.");
+                LogMissingCacheItem();
                 return null;
             }
             var coverageInfoCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw

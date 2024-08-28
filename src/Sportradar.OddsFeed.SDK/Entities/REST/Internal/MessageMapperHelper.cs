@@ -125,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             catch
             {
                 var log = SdkLoggerFactory.GetLogger(typeof(MessageMapperHelper));
-                log.LogError($"Enum value [{value}] not available for enum {typeof(T)}.");
+                log.LogError("Enum value [{Value}] not available for enum {DefaultValue}", value, typeof(T));
                 // ignored
             }
             return defaultValue;

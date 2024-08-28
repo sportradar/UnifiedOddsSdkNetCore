@@ -176,7 +176,7 @@ public class ScheduleData
         competitor.Setup(s => s.AssociatedPlayers).Returns(players);
         competitor.Setup(s => s.Countries).Returns(Cultures3.ToDictionary(c => c, c => competitorProfileCi.GetCountry(c)));
         competitor.Setup(s => s.Gender).Returns(competitorProfileCi.Gender);
-        competitor.Setup(s => s.IsVirtual).Returns(competitorProfileCi.IsVirtual);
+        competitor.Setup(s => s.IsVirtual).Returns(competitorProfileCi.IsVirtual ?? false);
         competitor.Setup(s => s.Jerseys).Returns(competitorProfileCi.Jerseys.Select(j => new Jersey(j)));
         competitor.Setup(s => s.Manager).Returns(new Manager(competitorProfileCi.Manager));
         competitor.Setup(s => s.RaceDriverProfile).Returns(competitorProfileCi.RaceDriverProfile == null ? null : new RaceDriverProfile(competitorProfileCi.RaceDriverProfile));

@@ -28,19 +28,19 @@ public class CompetitorCiTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorDto_WithNullDto_Throws()
+    public void ConstructorWithCompetitorDtoWhenNullDtoThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem((CompetitorDto)null, TestData.Culture, _dataRouterManagerMock.Object));
     }
 
     [Fact]
-    public void ConstructorWithCompetitorDto_WithNullCulture_Throws()
+    public void ConstructorWithCompetitorDtoWhenNullCultureThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), null, _dataRouterManagerMock.Object));
     }
 
     [Fact]
-    public void ConstructorWithCompetitorDto_WithNullDataRouterManager()
+    public void ConstructorWithCompetitorDtoWhenNullDataRouterManager()
     {
         var competitorDto = new CompetitorDto(GetApiTeamFull(1));
 
@@ -50,13 +50,13 @@ public class CompetitorCiTests : CompetitorHelper
     }
 
     [Fact]
-    public void ConstructorWithCompetitorDto_WithNullExportable_Throws()
+    public void ConstructorWithCompetitorDtoWhenNullExportableThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem(null, _dataRouterManagerMock.Object));
     }
 
     [Fact]
-    public async Task WithCompetitorDto_Export()
+    public async Task WithCompetitorDtoWhenExport()
     {
         var competitorCi = new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), TestData.Culture, _dataRouterManagerMock.Object);
 
@@ -68,7 +68,8 @@ public class CompetitorCiTests : CompetitorHelper
         //Assert.Equal(competitorCi.CategoryId.ToString(), exported.CategoryId);
         Assert.Equal(competitorCi.CountryCode, exported.CountryCode);
         Assert.Equal(competitorCi.Gender, exported.Gender);
-        Assert.Equal(competitorCi.IsVirtual, exported.IsVirtual);
+        Assert.Null(competitorCi.IsVirtual);
+        Assert.False(exported.IsVirtual);
         Assert.Equal(competitorCi.ShortName, exported.ShortName);
         //Assert.Equal(competitorCi.SportId.ToString(), exported.SportId);
         Assert.Equal(competitorCi.State, exported.State);
@@ -85,7 +86,7 @@ public class CompetitorCiTests : CompetitorHelper
     }
 
     [Fact]
-    public async Task WithCompetitorDto_Import()
+    public async Task WithCompetitorDtoWhenImport()
     {
         var competitorCi = new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), TestData.Culture, _dataRouterManagerMock.Object);
         var exported = (ExportableCompetitor)await competitorCi.ExportAsync();
@@ -98,7 +99,8 @@ public class CompetitorCiTests : CompetitorHelper
         Assert.Equal(competitorCi.CategoryId, imported.CategoryId);
         Assert.Equal(competitorCi.CountryCode, imported.CountryCode);
         Assert.Equal(competitorCi.Gender, imported.Gender);
-        Assert.Equal(competitorCi.IsVirtual, imported.IsVirtual);
+        Assert.Null(competitorCi.IsVirtual);
+        Assert.False(imported.IsVirtual);
         Assert.Equal(competitorCi.ShortName, imported.ShortName);
         Assert.Equal(competitorCi.SportId, imported.SportId);
         Assert.Equal(competitorCi.State, imported.State);

@@ -280,7 +280,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         {
             if (RecoveryInitiated == null)
             {
-                Log.LogDebug("Cannot invoke RecoveryInitiated because no event listeners are attached to associated event handler.");
+                Log.LogDebug("Cannot invoke RecoveryInitiated because no event listeners are attached to associated event handler");
                 return;
             }
 
@@ -289,12 +289,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             {
                 RecoveryInitiated(this, eventArgs);
                 stopwatch.Stop();
-                Log.LogInformation($"Successfully called RecoveryInitiated event. Duration: {stopwatch.ElapsedMilliseconds} ms.");
+                Log.LogInformation("Successfully called RecoveryInitiated event. Duration: {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                Log.LogWarning(ex, "Event handler throw an exception while invoking RecoveryInitiated.");
+                Log.LogWarning(ex, "Event handler throw an exception while invoking RecoveryInitiated");
             }
         }
     }

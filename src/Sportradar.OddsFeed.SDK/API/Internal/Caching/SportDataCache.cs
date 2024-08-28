@@ -149,25 +149,25 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 if (cultureInfos.Any())
                 {
                     await FetchAndMergeAll(new ReadOnlyCollection<CultureInfo>(cultureInfos), _wasDataAutoFetched).ConfigureAwait(false);
-                    ExecutionLog.LogInformation($"Sport data for languages [{string.Join(",", cultureInfos)}] successfully fetched and merged.");
+                    ExecutionLog.LogInformation("Sport data for languages [{Langs}] successfully fetched and merged", string.Join(",", cultureInfos));
                     _wasDataAutoFetched = true;
                 }
             }
             catch (FeedSdkException ex)
             {
-                ExecutionLog.LogWarning(ex, $"An exception occurred while attempting to fetch sport data for: {string.Join(",", cultureInfos)}.");
+                ExecutionLog.LogWarning(ex, "An exception occurred while attempting to fetch sport data for: {Langs}", string.Join(",", cultureInfos));
             }
             catch (ObjectDisposedException)
             {
-                ExecutionLog.LogWarning($"An exception occurred while attempting to fetch sport data for: {string.Join(",", cultureInfos)}. DataProvider was already disposed.");
+                ExecutionLog.LogWarning("An exception occurred while attempting to fetch sport data for: {Langs}. DataProvider was already disposed", string.Join(",", cultureInfos));
             }
             catch (TaskCanceledException)
             {
-                ExecutionLog.LogWarning($"An exception occurred while attempting to fetch sport data for: {string.Join(",", cultureInfos)}. Task canceled.");
+                ExecutionLog.LogWarning("An exception occurred while attempting to fetch sport data for: {Langs}. Task canceled", string.Join(",", cultureInfos));
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogWarning(ex, $"An exception occurred while attempting to fetch sport data for: {string.Join(",", cultureInfos)}.");
+                ExecutionLog.LogWarning(ex, "An exception occurred while attempting to fetch sport data for: {Langs}", string.Join(",", cultureInfos));
             }
             finally
             {
@@ -232,7 +232,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                     }
                     catch (Exception e)
                     {
-                        ExecutionLog.LogWarning(e, $"Error obtaining data for newly created tournament {tournamentId}.");
+                        ExecutionLog.LogWarning(e, "Error obtaining data for newly created tournament {SportEventId}", tournamentId);
                         return null;
                     }
                 }
@@ -248,7 +248,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                     }
                     catch (Exception e)
                     {
-                        ExecutionLog.LogWarning(e, $"Error obtaining data for newly created tournament {tournamentId}.");
+                        ExecutionLog.LogWarning(e, "Error obtaining data for newly created tournament {SportEventId}", tournamentId);
                     }
                 }
             }
@@ -308,7 +308,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                         {
                             if (!(Categories.TryGetValue(categoryId, out var cachedCategory) && cachedCategory.HasTranslationsFor(cultures)))
                             {
-                                ExecutionLog.LogWarning($"An error occurred while retrieving sport from cache. For sportId = {id} and lang =[{string.Join(",", cultures)}] we are missing category {categoryId}.");
+                                ExecutionLog.LogWarning("An error occurred while retrieving sport from cache. For sportId = {SportId} and lang =[{Langs}] we are missing category {CategoryId}", id, string.Join(",", cultures), categoryId);
                                 continue;
                             }
 
@@ -322,7 +322,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogWarning(e, $"An error occurred while retrieving sport from cache. id={id} and lang=[{string.Join(",", cultures)}].");
+                    ExecutionLog.LogWarning(e, "An error occurred while retrieving sport from cache. id={SportId} and lang=[{Langs}]", id, string.Join(",", cultures));
                 }
 
                 return new SportData(
@@ -412,7 +412,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogWarning(ex, $"An exception occurred while attempting to fetch sports data for: {string.Join(",", missingCultures)}.");
+                ExecutionLog.LogWarning(ex, "An exception occurred while attempting to fetch sports data for: {Langs}", string.Join(",", missingCultures));
                 throw;
             }
             finally
@@ -451,7 +451,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogWarning(ex, $"An exception occurred while attempting to fetch sport data for: id={id}, cultures={string.Join(",", cultures)}.");
+                ExecutionLog.LogWarning(ex, "An exception occurred while attempting to fetch sport data for: id={SportId}, cultures={Langs}", id, string.Join(",", cultures));
                 throw;
             }
             finally
@@ -492,7 +492,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogWarning(ex, $"An exception occurred while attempting to fetch category data for: id={id}, cultures={string.Join(",", cultures)}.");
+                ExecutionLog.LogWarning(ex, "An exception occurred while attempting to fetch category data for: id={CategoryId}, cultures={Langs}", id, string.Join(",", cultures));
             }
             finally
             {
@@ -529,7 +529,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
             catch (Exception ex)
             {
-                ExecutionLog.LogWarning(ex, $"An exception occurred while attempting to fetch sport data for tournament: id={tournamentId}, cultures={string.Join(",", cultures)}.");
+                ExecutionLog.LogWarning(ex, "An exception occurred while attempting to fetch sport data for tournament: id={TournamentId}, cultures={Langs}", tournamentId, string.Join(",", cultures));
                 return null;
             }
             finally
@@ -785,7 +785,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 case DtoType.Calculation:
                     break;
                 default:
-                    ExecutionLog.LogWarning($"Trying to add unchecked dto type: {dtoType} for id: {id}.");
+                    ExecutionLog.LogWarning("Trying to add unchecked dto type: {DtoType} for id: {Id}", dtoType, id);
                     break;
             }
 
@@ -938,7 +938,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogError(e, $"Error saving SportDto for {id} and lang={culture.TwoLetterISOLanguageName}.");
+                    ExecutionLog.LogError(e, "Error saving SportDto for {SportId} and lang={Lang}", id, culture.TwoLetterISOLanguageName);
                 }
             }
         }
@@ -966,7 +966,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogError(e, $"Error saving SportEntityDto for {id} and lang={culture.TwoLetterISOLanguageName}.");
+                    ExecutionLog.LogError(e, "Error saving SportEntityDto for {SportId} and lang={Lang}", id, culture.TwoLetterISOLanguageName);
                 }
             }
         }
@@ -989,7 +989,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogError(e, $"Error saving SportEntityDto for {id} and lang={culture.TwoLetterISOLanguageName}.");
+                    ExecutionLog.LogError(e, "Error saving SportEntityDto for {SportId} and lang={Lang}", id, culture.TwoLetterISOLanguageName);
                 }
             }
         }
@@ -1013,7 +1013,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogError(e, $"Error importing  ExportableSportCacheItem for {item.Id}.");
+                    ExecutionLog.LogError(e, "Error importing ExportableSportCacheItem for {SportId}", item.Id);
                 }
             }
         }
@@ -1042,7 +1042,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogError(e, $"Error saving CategoryDto for {id} and lang={culture.TwoLetterISOLanguageName}.");
+                    ExecutionLog.LogError(e, "Error saving CategoryDto for {CategoryId} and lang={Lang}", id, culture.TwoLetterISOLanguageName);
                 }
             }
         }
@@ -1065,7 +1065,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogError(e, $"Error saving CategorySummaryDto for {id} and lang={culture.TwoLetterISOLanguageName}.");
+                    ExecutionLog.LogError(e, "Error saving CategorySummaryDto for {CategoryId} and lang={Lang}", id, culture.TwoLetterISOLanguageName);
                 }
             }
         }
@@ -1089,7 +1089,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 }
                 catch (Exception e)
                 {
-                    ExecutionLog.LogError(e, $"Error importing ExportableCategory for {item.Id}.");
+                    ExecutionLog.LogError(e, "Error importing ExportableCategory for {CategoryId}", item.Id);
                 }
             }
         }
@@ -1114,7 +1114,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                     }
                     catch (Exception e)
                     {
-                        ExecutionLog.LogError(e, $"Error saving CategoryDto for {category.Id} and lang={culture.TwoLetterISOLanguageName}.");
+                        ExecutionLog.LogError(e, "Error saving CategoryDto for {CategoryId} and lang={Lang}", category.Id, culture.TwoLetterISOLanguageName);
                     }
                 }
             }

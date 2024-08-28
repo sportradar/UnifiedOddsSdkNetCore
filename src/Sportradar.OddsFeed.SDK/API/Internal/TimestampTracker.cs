@@ -142,7 +142,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
             {
                 if (!(message is alive))
                 {
-                    ExecutionLog.LogError($"Message timing info for message type:{message.GetType().Name} and interest:{interest.Name} does not exist in this scope:{string.Join(",", dictionary.Keys)}.");
+                    var messageInterests = string.Join(",", dictionary.Keys);
+                    ExecutionLog.LogError("Message timing info for message type:{FeedMessageName} and interest:{MessageInterestName} does not exist in this scope:{MessageInterests}", message.GetType().Name, interest.Name, messageInterests);
                 }
             }
         }
@@ -174,7 +175,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
             {
                 if (!(message is alive))
                 {
-                    ExecutionLog.LogError($"Message timing info for message type:{message.GetType().Name}, interest:{interest.Name} does not exist.");
+                    ExecutionLog.LogError("Message timing info for message type:{FeedMessageType}, interest:{MessageInterestName} does not exist", message.GetType().Name, interest.Name);
                 }
             }
         }

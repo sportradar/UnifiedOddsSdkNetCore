@@ -13,7 +13,6 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
-using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
