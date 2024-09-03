@@ -92,7 +92,7 @@
 <p>No upgrades are planned for the nuget package Sportradar.OddsFeed.SDK in the future and customer solutions should be upgraded to use <code>Sportradar.OddsFeed.SDKCore</code>.</p>
 <p>This is your roadmap to a smooth transition from your current SDK version to the latest version. The upgrade is designed to elevate your experience and align the SDK more closely with your business
 needs.</p>
-<h2 id="page-contents">Page Contents</h2>
+<h3 id="page-contents">Page Contents</h3>
 <ol>
 <li>Upgrade Dependencies</li>
 <li>Build new UofSdk instance</li>
@@ -118,7 +118,9 @@ needs.</p>
 <li>Update the Documentation</li>
 <li>Deploy to production</li>
 <li>Monitoring and Maintenance</li>
-<li>Feedback and Reporting</li>
+<li>Feedback and Reporting
+<br>
+<br></li>
 </ol>
 <h2 id="here-are-the-general-steps-you-can-follow-to-complete-the-transition">Here are the general steps you can follow to complete the transition:</h2>
 <h3 id="1-upgrade-dependencies">1. Upgrade Dependencies</h3>
@@ -179,7 +181,7 @@ new APIs provided by the UOF SDK 2.0.0. This may involve making changes to metho
 You can contact support if you
 encounter specific issues.</p>
 <p>The following classes and methods are changed. Hence, you will be needed to update your code to use new names.</p>
-<h3 id="root-classes-renamed">Root Classes Renamed</h3>
+<h4 id="root-classes-renamed">Root Classes Renamed</h4>
 <ul>
 <li>IOddsFeed to IUofSdk</li>
 <li>IOddsFeedSession to IUofSession</li>
@@ -195,18 +197,18 @@ encounter specific issues.</p>
 <li>Renamed Feed.CreateBuilder() to UofSdk.GetSessionBuilder() for creating new IUofSession</li>
 <li>config section moved to Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfigurationSection</li>
 </ul>
-<h3 id="removed-methods-and-classes">Removed methods and classes</h3>
+<h4 id="removed-methods-and-classes">Removed methods and classes</h4>
 <ul>
 <li>IOutcomeSettlement.Result</li>
 <li>IOddsFeedConfigurationSection.UseIntegrationEnvironment</li>
 <li>IRound.GroupName</li>
 <li>IRound.GetGroupName()</li>
 </ul>
-<h3 id="added-or-changed-methods">Added or changed methods</h3>
+<h4 id="added-or-changed-methods">Added or changed methods</h4>
 <ul>
 <li>Added support for IVenue.Courses (returns list of ICourse instead of list of IHole)</li>
 </ul>
-<h3 id="enum-values-renamed-to-camelcase">Enum values renamed to CamelCase</h3>
+<h4 id="enum-values-renamed-to-camelcase">Enum values renamed to CamelCase</h4>
 <ul>
 <li>MessageType</li>
 <li>ExceptionHandlingStrategy</li>
@@ -217,13 +219,13 @@ encounter specific issues.</p>
 <li>PropertyUsage</li>
 <li>ResourceTypeGroup</li>
 </ul>
-<h3 id="changes-andor-new-features">Changes and/or new features</h3>
+<h4 id="changes-andor-new-features">Changes and/or new features</h4>
 <ul>
 <li>Added support for IVenue.Courses (returns list of ICourse instead of list of IHole)</li>
 <li>Added support for ICompetitor.Division - now contains division id and name (moved and replaced from ITeamCompetitor)</li>
 <li>Extended IJersey with SquareColor and HorizontalStripesColor</li>
 </ul>
-<h3 id="name-changes">Name changes</h3>
+<h4 id="name-changes">Name changes</h4>
 <p>The following are changed to improve the consistency. Some classes were also moved to different namespace.</p>
 <ul>
 <li>URN -&gt; Urn</li>
@@ -235,7 +237,7 @@ encounter specific issues.</p>
 <li>IRound.PhaseOrGroupLongName -&gt; PhaseOrGroupLongNames</li>
 <li>IProducerManager.Get() -&gt; GetProducer()</li>
 </ul>
-<h3 id="changed-namespaces">Changed namespaces</h3>
+<h4 id="changed-namespaces">Changed namespaces</h4>
 <ul>
 <li><code>API</code> namespace renamed to <code>Api</code></li>
 <li><code>REST</code> namespace renamed to <code>Rest</code></li>
@@ -255,7 +257,7 @@ encounter specific issues.</p>
 <li>just programmatically via IConfigurationBuilder</li>
 </ol>
 <p>Some of the options were removed from App.config section options and can only be configured via configuration builder.</p>
-<h3 id="upgrade-configuration-in-appconfig">Upgrade configuration in App.config</h3>
+<h4 id="upgrade-configuration-in-appconfig">Upgrade configuration in App.config</h4>
 <p>Replace</p>
 <pre><code class="lang-xml">&lt;configSections&gt;
    &lt;section name=&quot;oddsFeedSection&quot; type=&quot;Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection,Sportradar.OddsFeed.SDK&quot; /&gt;
@@ -266,7 +268,7 @@ encounter specific issues.</p>
 &lt;section name=&quot;uofSdkSection&quot; type=&quot;Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfigurationSection,Sportradar.OddsFeed.SDK&quot; /&gt;
 &lt;/configSections&gt;
 </code></pre>
-<h3 id="other-changes">Other changes</h3>
+<h4 id="other-changes">Other changes</h4>
 <p>You'll need to re-configure the following App.config configuration attributes.</p>
 <table>
 <thead>
@@ -364,9 +366,10 @@ encounter specific issues.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="through-configurationbuilder">Through ConfigurationBuilder</h3>
+<h4 id="through-configurationbuilder">Through ConfigurationBuilder</h4>
 <p>The full configuration can be also setup via ConfigurationBuilder obtained via <code>UofSdk.GetUofConfigurationBuilder()</code>. The resulting
-<code>IUofConfiguration</code> contains all the previously set configurations for the SDK.</p>
+<code>IUofConfiguration</code> contains all the previously set configurations for the SDK.
+<br><br></p>
 <h3 id="5-test-your-project">5. Test your project</h3>
 <p>Thoroughly test your project after making the changes. Test all critical functionality to ensure that everything still works as expected. Pay special attention to any areas of your setup that interact
 with the sdk, as these are likely to be the most affected by the upgrade.</p>
