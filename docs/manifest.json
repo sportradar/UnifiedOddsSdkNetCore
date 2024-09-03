@@ -1,5 +1,5 @@
 {
-  "source_base_path": "/Users/d.hrovat/Github/UnifiedOddsSdkNetCoreTmp/src/Sportradar.OddsFeed.SDK.DocFx",
+  "source_base_path": "/Users/d.hrovat/SrGitlab/UnifiedOdds.Sdk.NetCore/src/Sportradar.OddsFeed.SDK.DocFx",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -12,20 +12,20 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/changelog.md",
+      "source_relative_path": "docs/introduction.md",
       "output": {
         ".html": {
-          "relative_path": "docs/changelog.html"
+          "relative_path": "docs/introduction.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/introduction.md",
+      "source_relative_path": "docs/migration-guide.md",
       "output": {
         ".html": {
-          "relative_path": "docs/introduction.html"
+          "relative_path": "docs/migration-guide.html"
         }
       },
       "version": ""
@@ -55,180 +55,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "images/CompetitionDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/CompetitionDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/CompetitorDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/CompetitorDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/DtoDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/DtoDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/EventCiDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/EventCiDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/ExportableDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/ExportableDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/ExportableSportEventDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/ExportableSportEventDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/FeedMessagesDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/FeedMessagesDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "images/Help.png",
       "output": {
         "resource": {
           "relative_path": "images/Help.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/LongTermEventDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/LongTermEventDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/MarketDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/MarketDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/MessageDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/MessageDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/OutcomeDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/OutcomeDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/RawSportEvent.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/RawSportEvent.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/RestMessagesDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/RestMessagesDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/SdkDataFlow.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/SdkDataFlow.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/SportEventHierarchyNet.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/SportEventHierarchyNet.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/SportEventStatusDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/SportEventStatusDiagram.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UofConfigurationDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/UofConfigurationDiagram.png"
         }
       },
       "version": ""
@@ -275,30 +105,170 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "media/OddsFeedSDKCore.zip",
+      "source_relative_path": "media/diagrams/CompetitionDiagram.png",
       "output": {
         "resource": {
-          "relative_path": "media/OddsFeedSDKCore.zip"
+          "relative_path": "media/diagrams/CompetitionDiagram.png"
         }
       },
       "version": ""
     },
     {
       "type": "Resource",
-      "source_relative_path": "media/OddsFeedSDKCore_2.1.0.zip",
+      "source_relative_path": "media/diagrams/CompetitorDiagram.png",
       "output": {
         "resource": {
-          "relative_path": "media/OddsFeedSDKCore_2.1.0.zip"
+          "relative_path": "media/diagrams/CompetitorDiagram.png"
         }
       },
       "version": ""
     },
     {
       "type": "Resource",
-      "source_relative_path": "media/OddsFeedSDKCore_2.2.0.zip",
+      "source_relative_path": "media/diagrams/DtoDiagram.png",
       "output": {
         "resource": {
-          "relative_path": "media/OddsFeedSDKCore_2.2.0.zip"
+          "relative_path": "media/diagrams/DtoDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/EventCiDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/EventCiDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/ExportableDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/ExportableDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/ExportableSportEventDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/ExportableSportEventDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/FeedMessagesDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/FeedMessagesDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/LongTermEventDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/LongTermEventDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/MarketDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/MarketDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/MessageDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/MessageDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/OutcomeDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/OutcomeDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/RawSportEvent.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/RawSportEvent.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/RestMessagesDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/RestMessagesDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/SdkDataFlow.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/SdkDataFlow.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/SportEventHierarchyNet.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/SportEventHierarchyNet.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/SportEventStatusDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/SportEventStatusDiagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/diagrams/UofConfigurationDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/diagrams/UofConfigurationDiagram.png"
         }
       },
       "version": ""
@@ -2429,6 +2399,16 @@
       "output": {
         ".html": {
           "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.html"
         }
       },
       "version": ""

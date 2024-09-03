@@ -1,0 +1,407 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>UOF .NET SDK - Migration Guide | Sportradar.OddsFeed.SDK </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="UOF .NET SDK - Migration Guide | Sportradar.OddsFeed.SDK ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/uf-ns-h60.png" alt="Sportradar.OddsFeed.SDK">
+            Sportradar.OddsFeed.SDK
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="uof-net-sdk---migration-guide">UOF .NET SDK - Migration Guide</h1>
+
+<p>The <code>Sportradar.OddsFeed.SDKCore</code> library target framework was downgraded from .NET Standard 2.1 to .NET Standard 2.0, so this package can be used in any .NET Core and .NET project and also in old
+.NET Framework 4.6.2 or newer.</p>
+<p>No upgrades are planned for the nuget package Sportradar.OddsFeed.SDK in the future and customer solutions should be upgraded to use <code>Sportradar.OddsFeed.SDKCore</code>.</p>
+<p>This is your roadmap to a smooth transition from your current SDK version to the latest version. The upgrade is designed to elevate your experience and align the SDK more closely with your business
+needs.</p>
+<h2 id="page-contents">Page Contents</h2>
+<ol>
+<li>Upgrade Dependencies</li>
+<li>Build new UofSdk instance</li>
+<li>Update the methods and classes in your code
+<ol>
+<li>Root Classes Renamed</li>
+<li>Removed methods and classes</li>
+<li>Added or changed methods</li>
+<li>Enum values renamed to CamelCase</li>
+<li>Changes and/or new features</li>
+<li>Name changes</li>
+<li>Changed namespaces</li>
+</ol>
+</li>
+<li>Update the Configuration
+<ol>
+<li>Upgrade configuration in App.config</li>
+<li>Other changes</li>
+<li>Through ConfigurationBuilder</li>
+</ol>
+</li>
+<li>Test your project</li>
+<li>Update the Documentation</li>
+<li>Deploy to production</li>
+<li>Monitoring and Maintenance</li>
+<li>Feedback and Reporting</li>
+</ol>
+<h2 id="here-are-the-general-steps-you-can-follow-to-complete-the-transition">Here are the general steps you can follow to complete the transition:</h2>
+<h3 id="1-upgrade-dependencies">1. Upgrade Dependencies</h3>
+<p>Upgrade Sdk nuget package to <code>Sportradar.OddsFeed.SDKCore</code> 2.0.0 or newer. Before upgrading you might need to upgrade some of the dependent libraries, like libraries for logging or dependency
+injection.</p>
+<p>SDK dependent libraries were upgraded or replaced.</p>
+<ul>
+<li><p>Removed libraries</p>
+<ul>
+<li>Newtonsoft.Json</li>
+<li>Castle.Core</li>
+</ul>
+</li>
+<li><p>Added libraries</p>
+<ul>
+<li>Microsoft.Extensions.Diagnostics.HealthChecks 7.0.11</li>
+<li>Microsoft.Extensions.Http 7.0.0</li>
+</ul>
+</li>
+<li><p>Upgraded libraries</p>
+<ul>
+<li>Humanizer 2.8.26 -&gt; 2.14.1</li>
+<li>RabbitMQ.Client 5.1.2 -&gt; 6.5.0</li>
+<li>Microsoft.Extensions.Logging.Abstractions 3.1.0 -&gt; 7.0.0</li>
+<li>System.Configuration.ConfigurationManager 4.7.0 -&gt; 7.0.0</li>
+</ul>
+</li>
+<li><p>Replaced libraries</p>
+<ul>
+<li>App.Metrics with OpenTelemetry 1.6.0</li>
+<li>System.Runtime.Caching with Microsoft.Extensions.Caching.Memory 7.0.0</li>
+<li>Unity with Microsoft.Extensions.DependencyInjection 7.0.0</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-build-new-uofsdk-instance">2. Build new UofSdk instance</h3>
+<p>The feed instance is now named <code>UofSdk</code>. Building new feed instance is changed. You need to build configuration and register all the sdk services before creating new UofSdk instance.</p>
+<pre><code class="lang-csharp">var uofConfiguration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+var services = new ServiceCollection();
+services.AddUofSdk(uofConfiguration);
+var uofSdk = new UofSdk(services.BuildServiceProvider());
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong>
+When configuring WebHost services (as in ASP.NET Core apps) via <code>WebApplicationBuilder</code> you should create a scope before creating <code>UofSdk</code>.
+Registering services for logging, telemetry and user classes is omitted for simplicity (but don't forget to add them).</p>
+</blockquote>
+<pre><code class="lang-csharp">var webAppBuilder = WebApplication.CreateBuilder(args).WebHost.ConfigureServices(
+(hostBuilderContext, serviceCollection) =&gt; {
+serviceCollection.AddUofSdk(configuration);
+});
+var app = webAppBuilder.Build();
+var uofSdk = new UofSdk(app.Services.CreateScope().ServiceProvider);
+</code></pre>
+<h3 id="3-update-the-methods-and-classes-in-your-code">3. Update the methods and classes in your code</h3>
+<p>Review your codebase to identify any parts that might be affected by the upgrade. Look for deprecated methods or classes that have been removed in the new version. Update your code to use the
+new APIs provided by the UOF SDK 2.0.0. This may involve making changes to method calls, imports, and class references. Handle any breaking changes or deprecations by updating your code accordingly.
+You can contact support if you
+encounter specific issues.</p>
+<p>The following classes and methods are changed. Hence, you will be needed to update your code to use new names.</p>
+<h3 id="root-classes-renamed">Root Classes Renamed</h3>
+<ul>
+<li>IOddsFeed to IUofSdk</li>
+<li>IOddsFeedSession to IUofSession</li>
+<li>Feed to UofSdk</li>
+<li>ReplayFeed to UofSdkForReplay</li>
+<li>IOddsFeedExt to IUofSdkExtended</li>
+<li>FeedExt to UofSdkExtended</li>
+<li>IOddsFeedConfigurationSection to IUofConfigurationSection</li>
+<li>OddsFeedConfigurationSection to UofConfigurationSection</li>
+<li>IOddsFeedConfiguration to IUofConfiguration</li>
+<li>Removed OperationManager (properties moved to IUofConfiguration)</li>
+<li>IEnvironmentSelector - removed SelectIntegration() and SelectProduction() - use SelectEnvironment (SdkEnvironment ufEnvironment)</li>
+<li>Renamed Feed.CreateBuilder() to UofSdk.GetSessionBuilder() for creating new IUofSession</li>
+<li>config section moved to Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfigurationSection</li>
+</ul>
+<h3 id="removed-methods-and-classes">Removed methods and classes</h3>
+<ul>
+<li>IOutcomeSettlement.Result</li>
+<li>IOddsFeedConfigurationSection.UseIntegrationEnvironment</li>
+<li>IRound.GroupName</li>
+<li>IRound.GetGroupName()</li>
+</ul>
+<h3 id="added-or-changed-methods">Added or changed methods</h3>
+<ul>
+<li>Added support for IVenue.Courses (returns list of ICourse instead of list of IHole)</li>
+</ul>
+<h3 id="enum-values-renamed-to-camelcase">Enum values renamed to CamelCase</h3>
+<ul>
+<li>MessageType</li>
+<li>ExceptionHandlingStrategy</li>
+<li>CashoutStatus</li>
+<li>FixtureChangeType</li>
+<li>MarketStatus</li>
+<li>OddsChangeReason</li>
+<li>PropertyUsage</li>
+<li>ResourceTypeGroup</li>
+</ul>
+<h3 id="changes-andor-new-features">Changes and/or new features</h3>
+<ul>
+<li>Added support for IVenue.Courses (returns list of ICourse instead of list of IHole)</li>
+<li>Added support for ICompetitor.Division - now contains division id and name (moved and replaced from ITeamCompetitor)</li>
+<li>Extended IJersey with SquareColor and HorizontalStripesColor</li>
+</ul>
+<h3 id="name-changes">Name changes</h3>
+<p>The following are changed to improve the consistency. Some classes were also moved to different namespace.</p>
+<ul>
+<li>URN -&gt; Urn</li>
+<li>ReplayPlayerStatus.Setting_up -&gt; SettingUp</li>
+<li>IFixture.StartTimeTBD -&gt; StartTimeTbd</li>
+<li>EventStatus.Not_Started -&gt; NotStarted</li>
+<li>FeedMessage.EventURN -&gt; EventUrn</li>
+<li>IRound.Name -&gt; Names</li>
+<li>IRound.PhaseOrGroupLongName -&gt; PhaseOrGroupLongNames</li>
+<li>IProducerManager.Get() -&gt; GetProducer()</li>
+</ul>
+<h3 id="changed-namespaces">Changed namespaces</h3>
+<ul>
+<li><code>API</code> namespace renamed to <code>Api</code></li>
+<li><code>REST</code> namespace renamed to <code>Rest</code></li>
+<li>replay interfaces moved to <code>Api.Replay</code></li>
+<li>UofSdk managers moved to <code>Api.Managers</code></li>
+<li>UofSdk providers moved to <code>Api.Managers</code></li>
+<li>enum types moved to <code>Common.Enums</code></li>
+<li>IUofConfigurationSection moved to <code>Api.Internal.Config</code></li>
+<li>configuration interfaces moved to <code>Api.Config</code></li>
+<li>MessageInterest class moved to <code>Api.Config</code></li>
+</ul>
+<h3 id="4-update-the-configuration">4. Update the Configuration</h3>
+<p>The configuration settings were split between configuration class and OperationManager. OperationManager is removed and all settings are consolidated within the <code>IUofConfiguration</code> interface.</p>
+<p>You have two ways for constructing final configuration</p>
+<ol>
+<li>combining App.config and IConfigurationBuilder or</li>
+<li>just programmatically via IConfigurationBuilder</li>
+</ol>
+<p>Some of the options were removed from App.config section options and can only be configured via configuration builder.</p>
+<h3 id="upgrade-configuration-in-appconfig">Upgrade configuration in App.config</h3>
+<p>Replace</p>
+<pre><code class="lang-xml">&lt;configSections&gt;
+   &lt;section name=&quot;oddsFeedSection&quot; type=&quot;Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection,Sportradar.OddsFeed.SDK&quot; /&gt;
+&lt;/configSections&gt;
+</code></pre>
+<p>with</p>
+<pre><code class="lang-xml">&lt;configSections&gt;
+&lt;section name=&quot;uofSdkSection&quot; type=&quot;Sportradar.OddsFeed.SDK.Api.Internal.Config.UofConfigurationSection,Sportradar.OddsFeed.SDK&quot; /&gt;
+&lt;/configSections&gt;
+</code></pre>
+<h3 id="other-changes">Other changes</h3>
+<p>You'll need to re-configure the following App.config configuration attributes.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>IsRequired</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>accessToken</td>
+<td>yes</td>
+<td>The token you are currently using can also be used with our new version</td>
+</tr>
+<tr>
+<td>defaultLanguage or desiredLanguages</td>
+<td>yes</td>
+<td>desiredLanguages is renamed from supportedLanguages</td>
+</tr>
+<tr>
+<td>nodeId</td>
+<td>no</td>
+<td>Recommended to be set – must be unique per UofSdk instance</td>
+</tr>
+<tr>
+<td>environment</td>
+<td>no</td>
+<td>If not set, 'Integration' will be used. Note: renamed from ufEnvironment</td>
+</tr>
+<tr>
+<td>supportedLanguages</td>
+<td>no</td>
+<td>This is removed. Use desiredLanguages</td>
+</tr>
+<tr>
+<td>inactivitySeconds</td>
+<td>no</td>
+<td>This is removed from App.config. Can be set through configuration builder</td>
+</tr>
+<tr>
+<td>host</td>
+<td>no</td>
+<td>This setting is used only when using Custom environment</td>
+</tr>
+<tr>
+<td>useSsl</td>
+<td>no</td>
+<td>This setting is used only when using Custom environment</td>
+</tr>
+<tr>
+<td>virtualHost</td>
+<td>no</td>
+<td>This setting is used only when using Custom environment</td>
+</tr>
+<tr>
+<td>apiHost</td>
+<td>no</td>
+<td>This setting is used only when using custom environment</td>
+</tr>
+<tr>
+<td>apiUseSsl</td>
+<td>no</td>
+<td>This setting is used only when using Custom environment</td>
+</tr>
+<tr>
+<td>exceptionHandlingStrategy</td>
+<td>no</td>
+<td>Sets a ExceptionHandlingStrategy enum member specifying how to handle exceptions thrown to outside callers ('Catch' or 'Throw')</td>
+</tr>
+<tr>
+<td>disabledProducers</td>
+<td>no</td>
+<td>Sets the comma delimited list of ids of disabled producers (e.g. '1,2,7,9')</td>
+</tr>
+<tr>
+<td>maxRecoveryTime</td>
+<td>no</td>
+<td>This is removed from App.config. Can be set through configuration builder</td>
+</tr>
+<tr>
+<td>adjustAfterAge</td>
+<td>no</td>
+<td>This is removed from App.config. Can be set through configuration builder</td>
+</tr>
+<tr>
+<td>httpClientTimeout</td>
+<td>no</td>
+<td>This is removed from App.config. Can be set through configuration builder</td>
+</tr>
+<tr>
+<td>recoveryHttpClientTimeout</td>
+<td>no</td>
+<td>This is removed from App.config. Can be set through configuration builder</td>
+</tr>
+</tbody>
+</table>
+<h3 id="through-configurationbuilder">Through ConfigurationBuilder</h3>
+<p>The full configuration can be also setup via ConfigurationBuilder obtained via <code>UofSdk.GetUofConfigurationBuilder()</code>. The resulting
+<code>IUofConfiguration</code> contains all the previously set configurations for the SDK.</p>
+<h3 id="5-test-your-project">5. Test your project</h3>
+<p>Thoroughly test your project after making the changes. Test all critical functionality to ensure that everything still works as expected. Pay special attention to any areas of your setup that interact
+with the sdk, as these are likely to be the most affected by the upgrade.</p>
+<h3 id="6-update-the-documentation">6. Update the Documentation</h3>
+<p>Update your project's documentation and any training materials to reflect the changes introduced by the upgrade. This will help your team members understand and work with the new version.</p>
+<h3 id="7-deploy-to-production">7. Deploy to production</h3>
+<p>Once you are confident that your project works correctly with the upgraded sdk, you can deploy the updated version to your production environment.</p>
+<h3 id="8-monitoring-and-maintenance">8. Monitoring and Maintenance</h3>
+<p>After deployment, monitor your project closely for any unexpected issues or performance problems. Be prepared to address any post-upgrade issues promptly.</p>
+<h3 id="9-feedback-and-reporting">9. Feedback and Reporting</h3>
+<p>If you encounter any bugs or issues in the <code>Sportradar.OddsFeed.SDKCore</code> v2.0.0 or newer, consider reporting them to support@sportradar.com. Providing feedback can help improve the SDK for future
+releases.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2024, Sportradar AG. Send comments or questions to <a href='mailto:sdk%40sportradar.com?Subject=Odds%20Feed%20SDK%20Std%20Documentation: UnifiedFeed SDK .NET Standard 2.0&amp;body=Your%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report%2C%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed%2C%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.'>SDK Team</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

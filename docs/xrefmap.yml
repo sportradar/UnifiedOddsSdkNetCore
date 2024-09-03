@@ -8010,6 +8010,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.AssociatedPlayerIds
   nameWithType: ExportableCompetitor.AssociatedPlayerIds
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.AssociatedPlayersJerseyNumbers
+  name: AssociatedPlayersJerseyNumbers
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.html#Sportradar_OddsFeed_SDK_Entities_Rest_Caching_Exportable_ExportableCompetitor_AssociatedPlayersJerseyNumbers
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.AssociatedPlayersJerseyNumbers
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.AssociatedPlayersJerseyNumbers
+  nameWithType: ExportableCompetitor.AssociatedPlayersJerseyNumbers
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.AssociatedPlayersJerseyNumbers*
+  name: AssociatedPlayersJerseyNumbers
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.html#Sportradar_OddsFeed_SDK_Entities_Rest_Caching_Exportable_ExportableCompetitor_AssociatedPlayersJerseyNumbers_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.AssociatedPlayersJerseyNumbers
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.AssociatedPlayersJerseyNumbers
+  nameWithType: ExportableCompetitor.AssociatedPlayersJerseyNumbers
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.CategoryId
   name: CategoryId
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetitor.html#Sportradar_OddsFeed_SDK_Entities_Rest_Caching_Exportable_ExportableCompetitor_CategoryId
@@ -12847,6 +12860,25 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitor.Venue
   nameWithType: ICompetitor.Venue
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer
+  name: ICompetitorPlayer
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer
+  nameWithType: ICompetitorPlayer
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.JerseyNumber
+  name: JerseyNumber
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.html#Sportradar_OddsFeed_SDK_Entities_Rest_ICompetitorPlayer_JerseyNumber
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.JerseyNumber
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.JerseyNumber
+  nameWithType: ICompetitorPlayer.JerseyNumber
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.JerseyNumber*
+  name: JerseyNumber
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.html#Sportradar_OddsFeed_SDK_Entities_Rest_ICompetitorPlayer_JerseyNumber_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.JerseyNumber
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorPlayer.JerseyNumber
+  nameWithType: ICompetitorPlayer.JerseyNumber
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorResult
   name: ICompetitorResult
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ICompetitorResult.html
