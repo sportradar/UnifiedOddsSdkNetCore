@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -120,14 +121,37 @@ public class CompetitorProfileEndpoint
         return new playerCompetitor { id = playerUrn.ToString(), name = "Player " + playerUrn.Id, abbreviation = "P" + playerUrn.Id, nationality = "nat " + SR.S1000 };
     }
 
-    private static playerExtended BuildPlayerExtended(int id = 0)
+    public static playerExtended BuildPlayerExtended(int id = 0)
     {
+        var newId = id == 0 ? SR.I1000 : id;
         return new playerExtended
         {
-            id = id == 0 ? SR.Urn("player").ToString() : SR.Urn(id, "player").ToString(), name = SR.S1000, weight = SR.I(150), heightSpecified = true,
-            jersey_number = 60, jersey_numberSpecified = true, nationality = "nat " + SR.S1000, type = SR.S1000,
-            height = SR.I(200), date_of_birth = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), weightSpecified = true
+            id = SR.Urn(id, "player").ToString(),
+            name = "Player " + newId,
+            weight = SR.I(50, 150),
+            weightSpecified = true,
+            height = SR.I(100, 200),
+            heightSpecified = true,
+            jersey_number = SR.I(100),
+            jersey_numberSpecified = true,
+            nationality = "nat " + SR.S1000,
+            type = SR.S100,
+            date_of_birth = DateTime.Today.AddYears(-SR.I(20, 40)).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+            country_code = "ENG",
+            full_name = $"Player{newId} Surname",
+            gender = SR.B ? "male" : "female",
+            nickname = SR.S10000P
         };
+    }
+
+    public static Collection<playerExtended> BuildPlayerExtendedList(int limit = 10)
+    {
+        var players = new Collection<playerExtended>();
+        for (var i = 0; i < limit; i++)
+        {
+            players.Add(BuildPlayerExtended(i + 1));
+        }
+        return players;
     }
 
     public static teamCompetitor BuildTeamCompetitor(int id = 0, bool? isVirtual = null)

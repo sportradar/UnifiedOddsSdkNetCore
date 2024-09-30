@@ -1,8 +1,6 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Threading.Tasks;
-using Moq;
-using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
@@ -11,16 +9,14 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 
-public class CompetitorCiDivisionTests : CompetitorHelper
+public class CompetitorCiDivisionTests : CompetitorSetup
 {
-    private readonly Mock<IDataRouterManager> _dataRouterManagerMock = new Mock<IDataRouterManager>();
-
     [Fact]
     public void ConstructorWithCompetitorDto()
     {
         var dto = new CompetitorDto(GetApiTeamFull(1));
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.NotNull(ci.Division);
         Assert.Equal(dto.Division.Id, ci.Division.Id);
@@ -34,7 +30,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
         apiTeam.divisionSpecified = false;
         var dto = new CompetitorDto(apiTeam);
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Null(ci.Division);
     }
@@ -44,7 +40,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto = new CompetitorProfileDto(GetApiCompetitorProfileFull(1));
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.NotNull(ci.Division);
         Assert.Equal(dto.Competitor.Division.Id, ci.Division.Id);
@@ -58,7 +54,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
         apiCompetitorProfile.competitor.divisionSpecified = false;
         var dto = new CompetitorProfileDto(apiCompetitorProfile);
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Null(ci.Division);
     }
@@ -68,7 +64,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto = new SimpleTeamProfileDto(GetApiSimpleTeamProfileFull(1));
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.NotNull(ci.Division);
         Assert.Equal(dto.Competitor.Division.Id, ci.Division.Id);
@@ -82,7 +78,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
         apiCompetitorProfile.competitor.divisionSpecified = false;
         var dto = new SimpleTeamProfileDto(apiCompetitorProfile);
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Null(ci.Division);
     }
@@ -92,7 +88,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto = new PlayerCompetitorDto(GetApiPlayerCompetitor(1));
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Null(ci.Division);
     }
@@ -102,7 +98,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto = new TeamCompetitorDto(GetApiTeamCompetitorFull(1));
 
-        var ci = new TeamCompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new TeamCompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.NotNull(ci.Division);
         Assert.Equal(dto.Division.Id, ci.Division.Id);
@@ -116,7 +112,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
         apiTeamCompetitorProfile.divisionSpecified = false;
         var dto = new TeamCompetitorDto(apiTeamCompetitorProfile);
 
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Null(ci.Division);
     }
@@ -125,7 +121,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     public void TeamCompetitorConstructorWhenWithTeamCompetitorCacheItem()
     {
         var dto = new TeamCompetitorDto(GetApiTeamCompetitorFull(1));
-        var baseTeamCi = new TeamCompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var baseTeamCi = new TeamCompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         var ci = new TeamCompetitorCacheItem(baseTeamCi);
 
@@ -140,7 +136,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
         var apiTeamCompetitorProfile = GetApiTeamCompetitorFull(1);
         apiTeamCompetitorProfile.divisionSpecified = false;
         var dto = new TeamCompetitorDto(apiTeamCompetitorProfile);
-        var baseTeamCi = new TeamCompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var baseTeamCi = new TeamCompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         var ci = new TeamCompetitorCacheItem(baseTeamCi);
 
@@ -151,7 +147,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     public async Task ExportWhenDivisionExist()
     {
         var dto = new CompetitorDto(GetApiTeamFull(1));
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         var exported = (ExportableCompetitor)await ci.ExportAsync();
 
@@ -166,7 +162,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
         var apiCompetitorProfile = GetApiSimpleTeamProfileFull(1);
         apiCompetitorProfile.competitor.divisionSpecified = false;
         var dto = new SimpleTeamProfileDto(apiCompetitorProfile);
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         var exported = (ExportableCompetitor)await ci.ExportAsync();
 
@@ -177,10 +173,10 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     public async Task ImportWhenDivisionExist()
     {
         var dto = new CompetitorDto(GetApiTeamFull(1));
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
         var exported = (ExportableCompetitor)await ci.ExportAsync();
 
-        var imported = new CompetitorCacheItem(exported, _dataRouterManagerMock.Object);
+        var imported = new CompetitorCacheItem(exported, DataRouterManagerMock.Object);
 
         Assert.NotNull(imported.Division);
         Assert.Equal(ci.Division.Id, imported.Division.Id);
@@ -193,10 +189,10 @@ public class CompetitorCiDivisionTests : CompetitorHelper
         var apiCompetitorProfile = GetApiSimpleTeamProfileFull(1);
         apiCompetitorProfile.competitor.divisionSpecified = false;
         var dto = new SimpleTeamProfileDto(apiCompetitorProfile);
-        var ci = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
         var exported = (ExportableCompetitor)await ci.ExportAsync();
 
-        var imported = new CompetitorCacheItem(exported, _dataRouterManagerMock.Object);
+        var imported = new CompetitorCacheItem(exported, DataRouterManagerMock.Object);
 
         Assert.Null(imported.Division);
     }
@@ -206,7 +202,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorWithDivision(222);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -220,7 +216,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithoutDivision();
         var dto2 = GetCompetitorWithDivision(222);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -234,7 +230,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorWithoutDivision();
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -248,7 +244,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorProfileWithDivision(222);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -262,7 +258,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithoutDivision();
         var dto2 = GetCompetitorProfileWithDivision(222);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -276,7 +272,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetCompetitorProfileWithoutDivision();
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -290,7 +286,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetSimpleTeamProfileWithDivision(222);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -304,7 +300,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithoutDivision();
         var dto2 = GetSimpleTeamProfileWithDivision(222);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -318,7 +314,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetCompetitorWithDivision(111);
         var dto2 = GetSimpleTeamProfileWithoutDivision();
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -332,7 +328,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithDivision(222);
-        var ci = new TeamCompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new TeamCompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -346,7 +342,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorWithDivision();
         var dto2 = GetTeamCompetitorWithDivision(222);
-        var ci = new TeamCompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new TeamCompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -360,7 +356,7 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithoutDivision();
-        var ci = new TeamCompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new TeamCompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -374,8 +370,8 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithDivision(222);
-        var baseCi = new TeamCompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
-        var newCi = new TeamCompetitorCacheItem(dto2, TestData.CultureNl, _dataRouterManagerMock.Object);
+        var baseCi = new TeamCompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
+        var newCi = new TeamCompetitorCacheItem(dto2, TestData.CultureNl, DataRouterManagerMock.Object);
 
         baseCi.Merge(newCi);
 
@@ -389,8 +385,8 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorWithDivision();
         var dto2 = GetTeamCompetitorWithDivision(222);
-        var baseCi = new TeamCompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
-        var newCi = new TeamCompetitorCacheItem(dto2, TestData.CultureNl, _dataRouterManagerMock.Object);
+        var baseCi = new TeamCompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
+        var newCi = new TeamCompetitorCacheItem(dto2, TestData.CultureNl, DataRouterManagerMock.Object);
 
         baseCi.Merge(newCi);
 
@@ -404,8 +400,8 @@ public class CompetitorCiDivisionTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorWithDivision(111);
         var dto2 = GetTeamCompetitorWithoutDivision();
-        var baseCi = new TeamCompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
-        var newCi = new TeamCompetitorCacheItem(dto2, TestData.CultureNl, _dataRouterManagerMock.Object);
+        var baseCi = new TeamCompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
+        var newCi = new TeamCompetitorCacheItem(dto2, TestData.CultureNl, DataRouterManagerMock.Object);
 
         baseCi.Merge(newCi);
 

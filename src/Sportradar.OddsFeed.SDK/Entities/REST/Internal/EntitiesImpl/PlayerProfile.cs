@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     /// <summary>
     /// Represents player's profile information
     /// </summary>
-    /// <seealso cref="Player" />
+    /// <seealso cref="IPlayer" />
     /// <seealso cref="IPlayerProfile" />
     internal class PlayerProfile : Player, IPlayerProfile
     {

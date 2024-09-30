@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
@@ -52,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         /// Gets the players
         /// </summary>
         /// <value>The players</value>
-        public IEnumerable<PlayerCompetitorDto> Players { get; }
+        public ICollection<PlayerCompetitorDto> Players { get; }
 
         /// <summary>
         /// Gets the gender
@@ -108,9 +109,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             CountryCode = record.country_code;
             State = record.state;
 
-            if (record.players != null && record.players.Any())
+            if (!record.players.IsNullOrEmpty())
             {
-                Players = record.players.Select(s => new PlayerCompetitorDto(s));
+                Players = record.players.Select(s => new PlayerCompetitorDto(s)).ToList();
             }
             Gender = record.gender;
             AgeGroup = record.age_group;

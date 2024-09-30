@@ -8,9 +8,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 public static class StaticRandom
 {
-    private static int Seed = Environment.TickCount;
+    private static int _seed = Environment.TickCount;
 
-    private static readonly ThreadLocal<Random> ThreadLocal = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref Seed)));
+    private static readonly ThreadLocal<Random> ThreadLocal = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref _seed)));
 
     public static Random Instance => ThreadLocal.Value;
 
@@ -22,6 +22,11 @@ public static class StaticRandom
     public static int I(int limit = 0)
     {
         return limit > 1 ? Instance.Next(1, limit) : Instance.Next();
+    }
+
+    public static int I(int min, int limit)
+    {
+        return Instance.Next(min, limit);
     }
 
     public static double D(int limit = 0)

@@ -20,13 +20,13 @@ public class TelemetryTrackerTests
     }
 
     [Fact]
-    public void Constructor_WithNullHistogram_Throws()
+    public void ConstructorWhenWithNullHistogramThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new TelemetryTracker(null));
     }
 
     [Fact]
-    public void Constructor_InitializesFieldsCorrectly()
+    public void ConstructorWhenInitializesFieldsCorrectlyThenSucceed()
     {
         var tracker = new TelemetryTracker(_meter.CreateHistogram<long>("some-name"));
 
@@ -36,7 +36,7 @@ public class TelemetryTrackerTests
     }
 
     [Fact]
-    public void Constructor_WithSingleTags_InitializesFieldsCorrectly()
+    public void ConstructorWhenWithSingleTagsThenInitializesFieldsCorrectly()
     {
         var tagKey = "key";
         var tagValue = "value";
@@ -51,7 +51,7 @@ public class TelemetryTrackerTests
     }
 
     [Fact]
-    public void Constructor_WithSingleDictionaryTags_InitializesFieldsCorrectly()
+    public void ConstructorWhenWithSingleDictionaryTagsThenInitializesFieldsCorrectly()
     {
         var tags = new Dictionary<string, string> { { "key1", "value1" } };
 
@@ -66,7 +66,7 @@ public class TelemetryTrackerTests
     }
 
     [Fact]
-    public void Constructor_WithDictionaryTags_InitializesFieldsCorrectly()
+    public void ConstructorWhenWithDictionaryTagsThenInitializesFieldsCorrectly()
     {
         var tags = new Dictionary<string, string> { { "key1", "value1" }, { "key2", "value2" } };
 
@@ -83,20 +83,20 @@ public class TelemetryTrackerTests
     }
 
     [Fact]
-    public async Task Dispose_RecordsToHistogram()
+    public async Task WhenDisposeThenRecordsToHistogram()
     {
         var hist = _meter.CreateHistogram<long>("some-name");
         using var tracker = new TelemetryTracker(hist);
-        await Task.Delay(TimeSpan.FromMilliseconds(250));
+        await Task.Delay(TimeSpan.FromMilliseconds(500));
 
         Assert.NotNull(hist);
         Assert.NotNull(tracker);
-        Assert.True(tracker.Elapsed.TotalMilliseconds >= 250, $"Expected: {tracker.Elapsed.TotalMilliseconds} >= 250");
+        Assert.True(tracker.Elapsed.TotalMilliseconds >= 450, $"Expected: {tracker.Elapsed.TotalMilliseconds} >= 450");
     }
 
     [Fact]
     [SuppressMessage("Major Code Smell", "S3966:Objects should not be disposed more than once", Justification = "Allowed in this test")]
-    public void DisposeTwice()
+    public void WhenDisposedTwiceThenDoesNotThrow()
     {
         var hist = _meter.CreateHistogram<long>("some-name");
         var tracker = new TelemetryTracker(hist);

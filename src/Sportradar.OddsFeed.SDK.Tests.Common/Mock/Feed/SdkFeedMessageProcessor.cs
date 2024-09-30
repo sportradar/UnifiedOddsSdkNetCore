@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Concurrent;
+using System.Linq;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
@@ -58,7 +59,7 @@ public sealed class SdkFeedMessageProcessor
     private void OnOddsChangeReceived(object sender, OddsChangeEventArgs<ISportEvent> e)
     {
         var oddsChange = e.GetOddsChange();
-        ReceivedFeedMessages.Add(new UserReceivedMessage(oddsChange.Timestamps.Created, oddsChange.Event, "OddsChange"));
+        ReceivedFeedMessages.Add(new UserReceivedMessage(oddsChange.Timestamps.Created, oddsChange.Event, "OddsChange", oddsChange.Markets.ToList()));
     }
 
     /// <summary>
@@ -91,7 +92,7 @@ public sealed class SdkFeedMessageProcessor
     private void OnBetCancel(object sender, BetCancelEventArgs<ISportEvent> e)
     {
         var betCancel = e.GetBetCancel();
-        ReceivedFeedMessages.Add(new UserReceivedMessage(betCancel.Timestamps.Created, betCancel.Event, "BetCancel"));
+        ReceivedFeedMessages.Add(new UserReceivedMessage(betCancel.Timestamps.Created, betCancel.Event, "BetCancel", betCancel.Markets.ToList()));
     }
 
     /// <summary>
@@ -102,7 +103,7 @@ public sealed class SdkFeedMessageProcessor
     private void OnBetSettlementReceived(object sender, BetSettlementEventArgs<ISportEvent> e)
     {
         var betSettlement = e.GetBetSettlement();
-        ReceivedFeedMessages.Add(new UserReceivedMessage(betSettlement.Timestamps.Created, betSettlement.Event, "BetSettlement"));
+        ReceivedFeedMessages.Add(new UserReceivedMessage(betSettlement.Timestamps.Created, betSettlement.Event, "BetSettlement", betSettlement.Markets.ToList()));
     }
 
     /// <summary>
@@ -113,7 +114,7 @@ public sealed class SdkFeedMessageProcessor
     private void OnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> e)
     {
         var betSettlementRollback = e.GetBetSettlementRollback();
-        ReceivedFeedMessages.Add(new UserReceivedMessage(betSettlementRollback.Timestamps.Created, betSettlementRollback.Event, "BetSettlementRollback"));
+        ReceivedFeedMessages.Add(new UserReceivedMessage(betSettlementRollback.Timestamps.Created, betSettlementRollback.Event, "BetSettlementRollback", betSettlementRollback.Markets.ToList()));
     }
 
     /// <summary>
@@ -124,6 +125,6 @@ public sealed class SdkFeedMessageProcessor
     private void OnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> e)
     {
         var betCancelRollback = e.GetBetCancelRollback();
-        ReceivedFeedMessages.Add(new UserReceivedMessage(betCancelRollback.Timestamps.Created, betCancelRollback.Event, "BetCancelRollback"));
+        ReceivedFeedMessages.Add(new UserReceivedMessage(betCancelRollback.Timestamps.Created, betCancelRollback.Event, "BetCancelRollback", betCancelRollback.Markets.ToList()));
     }
 }

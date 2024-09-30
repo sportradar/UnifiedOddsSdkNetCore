@@ -2,8 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Moq;
-using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
@@ -12,16 +10,14 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 
-public class CompetitorCiTests : CompetitorHelper
+public class CompetitorCiTests : CompetitorSetup
 {
-    private readonly Mock<IDataRouterManager> _dataRouterManagerMock = new Mock<IDataRouterManager>();
-
     [Fact]
     public void ConstructorWithCompetitorDto()
     {
         var competitorDto = new CompetitorDto(GetApiTeamFull(1));
 
-        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, DataRouterManagerMock.Object);
 
         ValidateCompetitorDtoWithCi(competitorDto, competitorCi, TestData.Culture);
         Assert.Equal("CompetitorDto", competitorCi.RootSource);
@@ -30,13 +26,13 @@ public class CompetitorCiTests : CompetitorHelper
     [Fact]
     public void ConstructorWithCompetitorDtoWhenNullDtoThenThrows()
     {
-        Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem((CompetitorDto)null, TestData.Culture, _dataRouterManagerMock.Object));
+        Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem((CompetitorDto)null, TestData.Culture, DataRouterManagerMock.Object));
     }
 
     [Fact]
     public void ConstructorWithCompetitorDtoWhenNullCultureThenThrows()
     {
-        Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), null, _dataRouterManagerMock.Object));
+        Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), null, DataRouterManagerMock.Object));
     }
 
     [Fact]
@@ -52,13 +48,13 @@ public class CompetitorCiTests : CompetitorHelper
     [Fact]
     public void ConstructorWithCompetitorDtoWhenNullExportableThenThrows()
     {
-        Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem(null, _dataRouterManagerMock.Object));
+        Assert.Throws<ArgumentNullException>(() => new CompetitorCacheItem(null, DataRouterManagerMock.Object));
     }
 
     [Fact]
     public async Task WithCompetitorDtoWhenExport()
     {
-        var competitorCi = new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), TestData.Culture, DataRouterManagerMock.Object);
 
         var exported = (ExportableCompetitor)await competitorCi.ExportAsync();
 
@@ -88,10 +84,10 @@ public class CompetitorCiTests : CompetitorHelper
     [Fact]
     public async Task WithCompetitorDtoWhenImport()
     {
-        var competitorCi = new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(new CompetitorDto(GetApiTeamFull(1)), TestData.Culture, DataRouterManagerMock.Object);
         var exported = (ExportableCompetitor)await competitorCi.ExportAsync();
 
-        var imported = new CompetitorCacheItem(exported, _dataRouterManagerMock.Object);
+        var imported = new CompetitorCacheItem(exported, DataRouterManagerMock.Object);
 
         Assert.NotNull(imported);
         Assert.Equal(competitorCi.Id, imported.Id);
@@ -118,7 +114,7 @@ public class CompetitorCiTests : CompetitorHelper
     {
         var competitorDto = new CompetitorDto(GetApiTeamFull(1));
 
-        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Equal(competitorDto.Name, competitorCi.Names[TestData.Culture]);
     }
@@ -128,7 +124,7 @@ public class CompetitorCiTests : CompetitorHelper
     {
         var competitorDto = new CompetitorDto(GetApiTeamFull(1));
 
-        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.False(competitorCi.Names.ContainsKey(TestData.CultureNl));
     }
@@ -138,7 +134,7 @@ public class CompetitorCiTests : CompetitorHelper
     {
         var competitorDto = new CompetitorDto(GetApiTeamFull(1));
 
-        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Equal(competitorDto.Name, competitorCi.GetName(TestData.Culture));
     }
@@ -148,7 +144,7 @@ public class CompetitorCiTests : CompetitorHelper
     {
         var competitorDto = new CompetitorDto(GetApiTeamFull(1));
 
-        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Null(competitorCi.GetName(TestData.CultureNl));
     }

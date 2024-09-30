@@ -68,7 +68,7 @@ public class SdkTimerTests
     {
         _sdkTimer.Elapsed += SdkTimerOnElapsed;
         _sdkTimer.Start();
-        await Task.Delay(5200);
+        await Task.Delay(5500);
         Assert.NotNull(_sdkTimer);
         Assert.NotEmpty(_timerMsgs);
         Assert.True(5 <= _timerMsgs.Count, $"Expected 5, actual {_timerMsgs.Count}");

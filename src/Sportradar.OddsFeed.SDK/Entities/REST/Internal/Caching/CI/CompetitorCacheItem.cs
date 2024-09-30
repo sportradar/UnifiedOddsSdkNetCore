@@ -43,6 +43,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         private IDictionary<CultureInfo, string> _abbreviations;
 
         private List<Urn> _associatedPlayerIds;
+        private IDictionary<Urn, int> _associatedPlayerJerseyNumbers;
         private bool? _isVirtual;
         private ReferenceIdCacheItem _referenceId;
         private List<JerseyCacheItem> _jerseys;
@@ -60,7 +61,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// <summary>
         /// The list of CultureInfo used to fetch competitor profiles
         /// </summary>
-        public IDictionary<CultureInfo, DateTime> CultureCompetitorProfileFetched { get; private set; }
+        private IDictionary<CultureInfo, DateTime> CultureCompetitorProfileFetched { get; set; }
 
         /// <summary>
         /// Gets the name of the competitor in the specified language
@@ -157,7 +158,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// Gets the list of associated player ids
         /// </summary>
         /// <value>The associated player ids</value>
-        public IEnumerable<Urn> AssociatedPlayerIds
+        public ICollection<Urn> AssociatedPlayerIds
         {
             get
             {
@@ -172,16 +173,40 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// <summary>
         /// Get associated player ids if already cached (no competitor profile is fetched)
         /// </summary>
-        public IEnumerable<Urn> GetAssociatedPlayerIds()
+        public ICollection<Urn> GetAssociatedPlayerIds()
         {
             return _associatedPlayerIds;
+        }
+
+        /// <summary>
+        /// Gets the list of associated player ids
+        /// </summary>
+        /// <value>The associated player ids</value>
+        public IDictionary<Urn, int> AssociatedPlayersJerseyNumbers
+        {
+            get
+            {
+                if (_associatedPlayerJerseyNumbers.IsNullOrEmpty())
+                {
+                    FetchProfileIfNeeded(_primaryCulture);
+                }
+                return _associatedPlayerJerseyNumbers;
+            }
+        }
+
+        /// <summary>
+        /// Get associated player jersey numbers if already cached (no competitor profile is fetched)
+        /// </summary>
+        public IDictionary<Urn, int> GetAssociatedPlayersJerseyNumber()
+        {
+            return _associatedPlayerJerseyNumbers;
         }
 
         /// <summary>
         /// Gets the jerseys of known competitors
         /// </summary>
         /// <value>The jerseys</value>
-        public IEnumerable<JerseyCacheItem> Jerseys
+        public ICollection<JerseyCacheItem> Jerseys
         {
             get
             {
@@ -352,6 +377,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             _countryNames = new Dictionary<CultureInfo, string>();
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<Urn>();
+            _associatedPlayerJerseyNumbers = new Dictionary<Urn, int>();
             _jerseys = new List<JerseyCacheItem>();
             RootSource = "CompetitorDto";
             Merge(competitor, culture);
@@ -378,6 +404,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             _countryNames = new Dictionary<CultureInfo, string>();
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<Urn>();
+            _associatedPlayerJerseyNumbers = new Dictionary<Urn, int>();
             _jerseys = new List<JerseyCacheItem>();
             RootSource = "CompetitorProfileDto";
             Merge(competitor, culture);
@@ -404,6 +431,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             _countryNames = new Dictionary<CultureInfo, string>();
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<Urn>();
+            _associatedPlayerJerseyNumbers = new Dictionary<Urn, int>();
             _jerseys = new List<JerseyCacheItem>();
             RootSource = "SimpleTeamProfileDto";
             Merge(competitor, culture);
@@ -431,6 +459,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             _countryNames = new Dictionary<CultureInfo, string>();
             _abbreviations = new Dictionary<CultureInfo, string>();
             _associatedPlayerIds = new List<Urn>();
+            _associatedPlayerJerseyNumbers = new Dictionary<Urn, int>();
             _jerseys = new List<JerseyCacheItem>();
             RootSource = "PlayerCompetitorDto";
             Merge(playerCompetitor, culture);
@@ -447,6 +476,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             _countryNames = originalCompetitorCacheItem._countryNames;
             _abbreviations = originalCompetitorCacheItem._abbreviations;
             _associatedPlayerIds = originalCompetitorCacheItem._associatedPlayerIds.IsNullOrEmpty() ? new List<Urn>() : originalCompetitorCacheItem._associatedPlayerIds;
+            _associatedPlayerJerseyNumbers = originalCompetitorCacheItem._associatedPlayerJerseyNumbers.IsNullOrEmpty() ? new Dictionary<Urn, int>() : originalCompetitorCacheItem._associatedPlayerJerseyNumbers;
             _isVirtual = originalCompetitorCacheItem._isVirtual;
             _referenceId = originalCompetitorCacheItem._referenceId;
             _jerseys = originalCompetitorCacheItem._jerseys;
@@ -531,10 +561,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             {
                 MergeInternalCompetitorDto(competitorProfile.Competitor, culture);
 
-                if (!competitorProfile.Players.IsNullOrEmpty())
-                {
-                    _associatedPlayerIds = competitorProfile.Players.Select(s => s.Id).ToList();
-                }
+                MergeAssociatedPlayers(competitorProfile.Players);
+                MergeAssociatedTeamPlayers(competitorProfile.Competitor.Players);
+
                 if (!competitorProfile.Jerseys.IsNullOrEmpty())
                 {
                     _jerseys = competitorProfile.Jerseys.Select(s => new JerseyCacheItem(s)).ToList();
@@ -622,6 +651,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 {
                     _associatedPlayerIds = item._associatedPlayerIds.ToList();
                 }
+                if (!item._associatedPlayerJerseyNumbers.IsNullOrEmpty())
+                {
+                    _associatedPlayerJerseyNumbers = item._associatedPlayerJerseyNumbers;
+                }
                 _referenceId = item._referenceId ?? _referenceId;
                 if (item._jerseys != null && !item._jerseys.IsNullOrEmpty())
                 {
@@ -648,6 +681,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 CultureCompetitorProfileFetched = item.CultureCompetitorProfileFetched.ToDictionary(pair => pair.Key, pair => pair.Value);
             }
         }
+
+        private void MergeAssociatedTeamPlayers(ICollection<PlayerCompetitorDto> competitorPlayers)
+        {
+            if (competitorPlayers.IsNullOrEmpty())
+            {
+                return;
+            }
+            _associatedPlayerIds = competitorPlayers.Select(s => s.Id).ToList();
+        }
+
+        private void MergeAssociatedPlayers(ICollection<PlayerProfileDto> competitorPlayers)
+        {
+            if (competitorPlayers.IsNullOrEmpty())
+            {
+                return;
+            }
+            _associatedPlayerIds = competitorPlayers.Select(s => s.Id).ToList();
+
+            foreach (var player in competitorPlayers)
+            {
+                if (player.JerseyNumber != null)
+                {
+                    _associatedPlayerJerseyNumbers[player.Id] = player.JerseyNumber.Value;
+                }
+            }
+        }
+
         private void MergeNamesFromCompetitorCi(CompetitorCacheItem item)
         {
             if (!item.Names.IsNullOrEmpty())
@@ -693,10 +753,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             {
                 _state = competitorDto.State;
             }
-            if (competitorDto.Players?.IsNullOrEmpty() == false)
-            {
-                _associatedPlayerIds = competitorDto.Players.Select(s => s.Id).ToList();
-            }
+            MergeAssociatedTeamPlayers(competitorDto.Players);
             if (!string.IsNullOrEmpty(competitorDto.Gender))
             {
                 _gender = competitorDto.Gender;
@@ -772,19 +829,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// </summary>
         /// <param name="culture">Check for specified language</param>
         /// <returns>Returns true if it should be fetched, otherwise false</returns>
-        public bool IsEligibleForFetch(CultureInfo culture)
+        private bool IsEligibleForFetch(CultureInfo culture)
         {
             return !CultureCompetitorProfileFetched.ContainsKey(culture);
-        }
-
-        /// <summary>
-        /// Check if culture is eligible for fetching (is not yet fetched or it was fetched long ago)
-        /// </summary>
-        /// <param name="culture">Check for specified language</param>
-        /// <returns>Returns true if it should be fetched, otherwise false</returns>
-        public bool IsEligibleForFetchForce(CultureInfo culture)
-        {
-            return !CultureCompetitorProfileFetched.ContainsKey(culture) || CultureCompetitorProfileFetched[culture] < DateTime.Now.AddSeconds(-30);
         }
 
         /// <summary>
@@ -825,6 +872,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 CountryNames = _countryNames.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(_countryNames),
                 Abbreviations = _abbreviations.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(_abbreviations),
                 AssociatedPlayerIds = _associatedPlayerIds.IsNullOrEmpty() ? new List<string>() : new List<string>(_associatedPlayerIds.Select(i => i.ToString()).ToList()),
+                AssociatedPlayersJerseyNumbers = _associatedPlayerJerseyNumbers.ToDictionary(pair => pair.Key.ToString(), pair => pair.Value),
                 IsVirtual = _isVirtual ?? false,
                 ReferenceIds = _referenceId?.ReferenceIds == null ? new Dictionary<string, string>() : new Dictionary<string, string>((IDictionary<string, string>)_referenceId.ReferenceIds),
                 Jerseys = jerseysList.IsNullOrEmpty() ? new List<ExportableJersey>() : new List<ExportableJersey>(jerseysList),
@@ -862,6 +910,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                                          ? new Dictionary<CultureInfo, string>()
                                          : new Dictionary<CultureInfo, string>(exportable.Abbreviations);
                     _associatedPlayerIds = exportable.AssociatedPlayerIds.IsNullOrEmpty() ? new List<Urn>() : new List<Urn>(exportable.AssociatedPlayerIds.Select(Urn.Parse));
+                    _associatedPlayerJerseyNumbers = exportable.AssociatedPlayersJerseyNumbers.IsNullOrEmpty()
+                                                         ? new Dictionary<Urn, int>()
+                                                         : exportable.AssociatedPlayersJerseyNumbers.ToDictionary(pair => Urn.Parse(pair.Key), pair => pair.Value);
                     _isVirtual = exportable.IsVirtual;
                     _referenceId = exportable.ReferenceIds.IsNullOrEmpty() ? null : new ReferenceIdCacheItem(exportable.ReferenceIds);
                     _jerseys = exportable.Jerseys.IsNullOrEmpty() ? new List<JerseyCacheItem>() : new List<JerseyCacheItem>(exportable.Jerseys.Select(j => new JerseyCacheItem(j)));

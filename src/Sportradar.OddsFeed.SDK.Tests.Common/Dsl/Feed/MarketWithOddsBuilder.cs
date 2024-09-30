@@ -33,6 +33,12 @@ public class MarketWithOddsBuilder
         return this;
     }
 
+    public MarketWithOddsBuilder WithSpecifiers(string specifiers)
+    {
+        _market.specifiers = specifiers;
+        return this;
+    }
+
     public oddsChangeMarket Build()
     {
         if (_outcomes.Any())

@@ -186,7 +186,7 @@ public class CacheExportTests
         {
             _outputHelper.WriteLine(key);
         }
-        TestExecutionHelper.WaitToComplete(() => _profileMemoryCache.Count() == export.Count, 15000, 100);
+        TestExecutionHelper.WaitToComplete(() => _profileMemoryCache.Count() == export.Count, 100, 15000);
         Assert.Equal(export.Count, _profileMemoryCache.Count());
 
         // No calls to the data router manager
@@ -243,7 +243,7 @@ public class CacheExportTests
 
         await _sportEventCache.ImportAsync(export);
 
-        TestExecutionHelper.WaitToComplete(() => _sportEventCache.Cache.Count() == export.Count, 15000, 100);
+        TestExecutionHelper.WaitToComplete(() => _sportEventCache.Cache.Count() == export.Count, 100, 15000);
         Assert.Equal(1187, _sportEventCache.Cache.Count());
 
         // No calls to the data router manager

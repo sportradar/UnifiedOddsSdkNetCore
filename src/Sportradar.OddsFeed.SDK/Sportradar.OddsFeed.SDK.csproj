@@ -5,7 +5,6 @@
 	<LangVersion>7.3</LangVersion>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-	<PackageLicenseFile>License.txt</PackageLicenseFile>
 	<PackageId>Sportradar.OddsFeed.SDKCore</PackageId>
 	<Product>Sportradar.OddsFeed.SDKCore</Product>
 	<Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.NET Standard 2.0)</Description>
@@ -15,9 +14,9 @@
 	<RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
 	<PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
 	<PackageProjectUrl>https://sdk.sportradar.com</PackageProjectUrl>
-	<AssemblyVersion>2.2.1.0</AssemblyVersion>
-	<FileVersion>2.2.1.0</FileVersion>
-	<Version>2.2.1</Version>
+	<AssemblyVersion>2.3.0.0</AssemblyVersion>
+	<FileVersion>2.3.0.0</FileVersion>
+	  <Version>2.3.0</Version>
 	<UserSecretsId>27ef2334-e9fc-4f05-b88a-a33259c908c3</UserSecretsId>
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	<EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -26,6 +25,7 @@
 	<PackageIcon>uf-ns.png</PackageIcon>
 	<Title>Sportradar.OddsFeed.SDKCore</Title>
 	<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+	  <PackageLicenseUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore?tab=License-1-ov-file</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -60,25 +60,15 @@
   </ItemGroup>
 
   <ItemGroup>
-	<None Update="License">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
-	<None Update="License.txt">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
-	<None Update="Readme.md">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>True</Pack>
-	  <PackagePath>\</PackagePath>
-	</None>
 	<None Update="uf-ns.png">
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>
 	</None>
-	<None Include="License.txt">
-	  <Pack>True</Pack>
-	  <PackagePath></PackagePath>
-	</None>
+	  <None Update="Readme.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+	  </None>
   </ItemGroup>
 
 </Project>

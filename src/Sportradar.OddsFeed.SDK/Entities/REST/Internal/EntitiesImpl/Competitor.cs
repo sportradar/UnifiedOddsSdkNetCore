@@ -222,14 +222,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 try
                 {
                     var associatedPlayerIds = GetOrLoadCompetitor()?.AssociatedPlayerIds?.ToList();
+                    var associatedPlayersJerseyNumbers = GetOrLoadCompetitor()?.AssociatedPlayersJerseyNumbers;
                     if (!associatedPlayerIds.IsNullOrEmpty())
                     {
-                        return _sportEntityFactory.BuildPlayersAsync(associatedPlayerIds, _cultures, _exceptionStrategy).GetAwaiter().GetResult();
+                        return _sportEntityFactory.BuildPlayersAsync(associatedPlayerIds, _cultures, _exceptionStrategy, associatedPlayersJerseyNumbers).GetAwaiter().GetResult();
                     }
                 }
                 catch (Exception e)
                 {
-                    SdkLoggerFactory.GetLoggerForExecution(typeof(Competitor)).LogError(e, "Getting Competitor associated players");
+                    SdkLoggerFactory.GetLoggerForExecution(typeof(Competitor)).LogError(e, "Error getting Competitor associated players");
                 }
 
                 return new List<IPlayer>();

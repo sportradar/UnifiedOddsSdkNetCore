@@ -28,6 +28,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable
         public IEnumerable<string> AssociatedPlayerIds { get; set; }
 
         /// <summary>
+        /// A <see cref="IDictionary{K, V}"/> containing associated player jersey numbers
+        /// </summary>
+        public IDictionary<string, int> AssociatedPlayersJerseyNumbers { get; set; }
+
+        /// <summary>
         /// A <see cref="bool"/> indicating whether represented competitor is virtual
         /// </summary>
         public bool IsVirtual { get; set; }

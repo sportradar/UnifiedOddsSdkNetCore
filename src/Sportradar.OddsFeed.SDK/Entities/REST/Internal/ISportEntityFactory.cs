@@ -47,8 +47,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <param name="playersIds">A list of <see cref="Urn"/> specifying the ids of the players or competitors which will be represented by the constructed instances</param>
         /// <param name="cultures">A list of all supported languages</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the build instance will handle potential exceptions</param>
+        /// <param name="playersJerseyNumbers">The list of player id and associated jersey numbers</param>
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation</returns>
-        Task<IEnumerable<IPlayer>> BuildPlayersAsync(IReadOnlyCollection<Urn> playersIds, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy);
+        Task<IEnumerable<IPlayer>> BuildPlayersAsync(IReadOnlyCollection<Urn> playersIds, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy, IDictionary<Urn, int> playersJerseyNumbers);
 
         /// <summary>
         /// Builds the <see cref="ISportEvent"/> derived class based on specified id

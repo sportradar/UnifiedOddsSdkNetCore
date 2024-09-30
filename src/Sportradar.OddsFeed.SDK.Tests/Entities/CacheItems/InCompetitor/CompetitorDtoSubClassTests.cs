@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 
-public class CompetitorDtoSubClassTests : CompetitorHelper
+public class CompetitorDtoSubClassTests : CompetitorSetup
 {
     [Fact]
     public void DivisionWhenNormalConstructor()

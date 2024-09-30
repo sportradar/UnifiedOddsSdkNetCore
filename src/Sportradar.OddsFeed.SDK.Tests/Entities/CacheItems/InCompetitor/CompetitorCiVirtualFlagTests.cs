@@ -1,8 +1,6 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Threading.Tasks;
-using Moq;
-using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
@@ -11,10 +9,8 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 
-public class CompetitorCiVirtualFlagTests : CompetitorHelper
+public class CompetitorCiVirtualFlagTests : CompetitorSetup
 {
-    private readonly Mock<IDataRouterManager> _dataRouterManagerMock = new Mock<IDataRouterManager>();
-
     [Theory]
     [InlineData(null, null)]
     [InlineData(false, false)]
@@ -23,7 +19,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto = GetCompetitorDtoWithVirtualFlag(actualVirtual);
 
-        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Equal(expectedVirtual, competitorCi.IsVirtual);
     }
@@ -36,7 +32,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto = GetCompetitorProfileDtoWithVirtualFlag(actualVirtual);
 
-        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Equal(expectedVirtual, competitorCi.IsVirtual);
     }
@@ -49,7 +45,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto = GetSimpleTeamProfileDtoWithVirtualFlag(actualVirtual);
 
-        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Equal(expectedVirtual, competitorCi.IsVirtual);
     }
@@ -60,7 +56,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
         var apiPlayerCompetitor = GetApiPlayerCompetitor(1);
         var dtoPlayerCompetitor = new PlayerCompetitorDto(apiPlayerCompetitor);
 
-        var competitorCi = new CompetitorCacheItem(dtoPlayerCompetitor, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(dtoPlayerCompetitor, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Null(competitorCi.IsVirtual);
     }
@@ -72,7 +68,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     public void ConstructorWithCompetitorCiThenVirtualIsCorrectlySet(bool? actualVirtual, bool? expectedVirtual)
     {
         var dto = GetCompetitorProfileDtoWithVirtualFlag(actualVirtual);
-        var orgCompetitorCi = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var orgCompetitorCi = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         var competitorCi = new TeamCompetitorCacheItem(orgCompetitorCi);
 
@@ -87,7 +83,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto = GetTeamCompetitorProfileDtoWithVirtualFlag(actualVirtual);
 
-        var competitorCi = new TeamCompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new TeamCompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         Assert.Equal(expectedVirtual, competitorCi.IsVirtual);
     }
@@ -99,7 +95,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     public async Task ExportThenVirtualIsCorrectlySet(bool? actualVirtual, bool? expectedVirtual)
     {
         var dto = GetTeamCompetitorProfileDtoWithVirtualFlag(actualVirtual);
-        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
 
         var exported = (ExportableCompetitor)await competitorCi.ExportAsync();
 
@@ -113,10 +109,10 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     public async Task ImportThenVirtualIsCorrectlySet(bool? initialVirtual, bool? expectedVirtual)
     {
         var dto = GetCompetitorDtoWithVirtualFlag(initialVirtual);
-        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, _dataRouterManagerMock.Object);
+        var competitorCi = new CompetitorCacheItem(dto, TestData.Culture, DataRouterManagerMock.Object);
         var exported = (ExportableCompetitor)await competitorCi.ExportAsync();
 
-        var importedCi = new CompetitorCacheItem(exported, _dataRouterManagerMock.Object);
+        var importedCi = new CompetitorCacheItem(exported, DataRouterManagerMock.Object);
 
         Assert.Equal(expectedVirtual, importedCi.IsVirtual);
     }
@@ -133,7 +129,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto1 = GetCompetitorDtoWithVirtualFlag(firstVirtual);
         var dto2 = GetCompetitorDtoWithVirtualFlag(secondVirtual);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -152,7 +148,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto1 = GetCompetitorProfileDtoWithVirtualFlag(firstVirtual);
         var dto2 = GetCompetitorProfileDtoWithVirtualFlag(secondVirtual);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -171,7 +167,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorProfileDtoWithVirtualFlag(firstVirtual);
         var dto2 = GetTeamCompetitorProfileDtoWithVirtualFlag(secondVirtual);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 
@@ -190,8 +186,8 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto1 = GetTeamCompetitorProfileDtoWithVirtualFlag(firstVirtual);
         var dto2 = GetTeamCompetitorProfileDtoWithVirtualFlag(secondVirtual);
-        var orgCompetitorCi1 = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
-        var orgCompetitorCi2 = new CompetitorCacheItem(dto2, TestData.CultureNl, _dataRouterManagerMock.Object);
+        var orgCompetitorCi1 = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
+        var orgCompetitorCi2 = new CompetitorCacheItem(dto2, TestData.CultureNl, DataRouterManagerMock.Object);
 
         orgCompetitorCi1.Merge(orgCompetitorCi2);
 
@@ -210,7 +206,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorHelper
     {
         var dto1 = GetSimpleTeamProfileDtoWithVirtualFlag(firstVirtual);
         var dto2 = GetSimpleTeamProfileDtoWithVirtualFlag(secondVirtual);
-        var ci = new CompetitorCacheItem(dto1, TestData.Culture, _dataRouterManagerMock.Object);
+        var ci = new CompetitorCacheItem(dto1, TestData.Culture, DataRouterManagerMock.Object);
 
         ci.Merge(dto2, TestData.CultureNl);
 

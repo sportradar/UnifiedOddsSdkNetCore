@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -19,7 +20,7 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.OutCompetitor;
 
-public class CompetitorTests : CompetitorHelper
+public class CompetitorTests : CompetitorSetup
 {
     private readonly Mock<ICompetitionCacheItem> _competitionCacheItemMock = new();
     private readonly Mock<IDataRouterManager> _mockDataRouterManager = new();
@@ -352,6 +353,64 @@ public class CompetitorTests : CompetitorHelper
         Assert.Equal(expectedVirtualFlag, competitor.IsVirtual);
     }
 
+    [Fact]
+    public void JerseyNumberWhenNumberPresentThenAvailableInPlayer()
+    {
+        var dto1 = GetCompetitorProfileDtoWithPlayerJerseyNumber(true);
+        var competitorCi = new CompetitorCacheItem(dto1, TestData.Culture, _mockDataRouterManager.Object);
+        var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
+        _mockSportEntityFactory.Setup(s => s
+                                         .BuildPlayersAsync(competitorCi.AssociatedPlayerIds.ToList(), It.IsAny<IReadOnlyCollection<CultureInfo>>(), It.IsAny<ExceptionHandlingStrategy>(), competitorCi.AssociatedPlayersJerseyNumbers))
+                               .ReturnsAsync(dto1.Players.Select(p1 => new CompetitorPlayer(new PlayerProfileCacheItem(p1, dto1.Competitor.Id, TestData.Culture, _mockDataRouterManager.Object), TestData.Cultures1, p1.JerseyNumber))
+                                                 .ToList());
+        _mockProfileCache.Setup(s => s.GetCompetitorProfileAsync(It.IsAny<Urn>(), TestData.Cultures1, true)).ReturnsAsync(competitorCi);
+
+        var competitor = new Competitor(competitorCi, _mockProfileCache.Object, TestData.Cultures1, _mockSportEntityFactory.Object, ExceptionHandlingStrategy.Catch, referenceDictionary);
+        var competitorPlayer = competitor.AssociatedPlayers.ToList();
+
+        Assert.NotNull(competitor);
+        Assert.NotEmpty(competitorPlayer);
+        Assert.All(competitorPlayer, p => Assert.True(((ICompetitorPlayer)p).JerseyNumber > 0));
+    }
+
+    [Fact]
+    public void JerseyNumberWhenNoNumberPresentThenNotAvailableInPlayer()
+    {
+        var dto1 = GetCompetitorProfileDtoWithPlayerJerseyNumber(false);
+        var competitorCi = new CompetitorCacheItem(dto1, TestData.Culture, _mockDataRouterManager.Object);
+        var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
+        _mockSportEntityFactory.Setup(s => s
+                                         .BuildPlayersAsync(competitorCi.AssociatedPlayerIds.ToList(), It.IsAny<IReadOnlyCollection<CultureInfo>>(), It.IsAny<ExceptionHandlingStrategy>(), competitorCi.AssociatedPlayersJerseyNumbers))
+                               .ReturnsAsync(dto1.Players.Select(p1 => new CompetitorPlayer(new PlayerProfileCacheItem(p1, dto1.Competitor.Id, TestData.Culture, _mockDataRouterManager.Object), TestData.Cultures1, p1.JerseyNumber))
+                                                 .ToList());
+        _mockProfileCache.Setup(s => s.GetCompetitorProfileAsync(It.IsAny<Urn>(), TestData.Cultures1, true)).ReturnsAsync(competitorCi);
+
+        var competitor = new Competitor(competitorCi, _mockProfileCache.Object, TestData.Cultures1, _mockSportEntityFactory.Object, ExceptionHandlingStrategy.Catch, referenceDictionary);
+        var competitorPlayer = competitor.AssociatedPlayers.ToList();
+
+        Assert.NotNull(competitor);
+        Assert.NotEmpty(competitorPlayer);
+        Assert.All(competitorPlayer, p => Assert.Null(((ICompetitorPlayer)p).JerseyNumber));
+    }
+
+    [Fact]
+    public void JerseyNumberWhenValidAndSportEntityFactoryThrowsThenEmptyPlayerList()
+    {
+        var dto1 = GetCompetitorProfileDtoWithPlayerJerseyNumber(true);
+        var competitorCi = new CompetitorCacheItem(dto1, TestData.Culture, _mockDataRouterManager.Object);
+        var referenceDictionary = new Dictionary<Urn, ReferenceIdCacheItem>();
+        _mockSportEntityFactory.Setup(s => s
+                                         .BuildPlayersAsync(competitorCi.AssociatedPlayerIds.ToList(), It.IsAny<IReadOnlyCollection<CultureInfo>>(), It.IsAny<ExceptionHandlingStrategy>(), competitorCi.AssociatedPlayersJerseyNumbers))
+                               .Throws(new InvalidOperationException("any-message"));
+        _mockProfileCache.Setup(s => s.GetCompetitorProfileAsync(It.IsAny<Urn>(), TestData.Cultures1, true)).ReturnsAsync(competitorCi);
+
+        var competitor = new Competitor(competitorCi, _mockProfileCache.Object, TestData.Cultures1, _mockSportEntityFactory.Object, ExceptionHandlingStrategy.Catch, referenceDictionary);
+        var competitorPlayer = competitor.AssociatedPlayers.ToList();
+
+        Assert.NotNull(competitor);
+        Assert.Empty(competitorPlayer);
+    }
+
     private void SetupProfileCacheMockWithCompetitorCi(CompetitorCacheItem competitorCi)
     {
         _mockProfileCache.Setup(s => s.GetCompetitorNamesAsync(It.IsAny<Urn>(), TestData.Cultures, true)).ReturnsAsync(competitorCi.Names as IReadOnlyDictionary<CultureInfo, string>);
@@ -359,7 +418,7 @@ public class CompetitorTests : CompetitorHelper
         _mockProfileCache.Setup(s => s.GetCompetitorProfileAsync(It.IsAny<Urn>(), TestData.Cultures, true)).ReturnsAsync(competitorCi);
     }
 
-    private void ValidateCompetitor(CompetitorCacheItem competitorCi, ICompetitor competitor)
+    private static void ValidateCompetitor(CompetitorCacheItem competitorCi, Competitor competitor)
     {
         Assert.NotNull(competitor);
         Assert.Equal(competitorCi.Id, competitor.Id);

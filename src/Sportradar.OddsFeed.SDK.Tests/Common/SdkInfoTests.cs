@@ -15,6 +15,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 using Xunit;
+
 #pragma warning disable SYSLIB0050
 
 // ReSharper disable ArrangeRedundantParentheses
@@ -172,7 +173,7 @@ public class SdkInfoTests
     [SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
     public void AddVariableNumberForProfileCacheTimeoutReturnsVariableBetweenMinMax()
     {
-        var baseValue = TestConfiguration.GetConfig(null).Cache.ProfileCacheTimeout;
+        var baseValue = TestConfiguration.GetConfig().Cache.ProfileCacheTimeout;
         const int variablePercent = 10;
         var max = ((100 + (double)variablePercent) / 100) * baseValue.TotalSeconds;
         for (var i = 0; i < 100; i++)
@@ -262,11 +263,9 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetObjectSize_ForNull()
+    public void GetObjectSizeWhenObjectIsNull()
     {
-        var fake = (FakeTimeProvider)null;
-
-        var size = SdkInfo.GetObjectSize(fake);
+        var size = SdkInfo.GetObjectSize(null);
 
         Assert.Equal(0, size);
     }
@@ -296,9 +295,9 @@ public class SdkInfoTests
     [Fact]
     public void GetObjectSizeWhenIsCompetitorCacheItemThenReturnValue()
     {
-        var competitorHelper = new CompetitorHelper();
+        _ = new CompetitorSetup();
         var dataRouterManagerMock = new Mock<IDataRouterManager>();
-        var competitorDto = new CompetitorDto(competitorHelper.GetApiTeamFull());
+        var competitorDto = new CompetitorDto(CompetitorSetup.GetApiTeamFull());
         var competitorCi = new CompetitorCacheItem(competitorDto, TestData.Culture, dataRouterManagerMock.Object);
 
         var size = SdkInfo.GetObjectSize(competitorCi);

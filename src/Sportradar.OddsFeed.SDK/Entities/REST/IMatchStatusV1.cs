@@ -7,6 +7,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
     /// </summary>
     public interface IMatchStatusV1 : IMatchStatus
     {
+        /// <summary>
+        /// Gets the soccer match statistics
+        /// </summary>
+        /// <value>The soccer match statistics</value>
         IMatchStatistics Statistics { get; }
     }
 }

@@ -80,7 +80,7 @@ internal class TestSportEntityFactory : ISportEntityFactory
         return Task.FromResult((IPlayer)player);
     }
 
-    public async Task<IEnumerable<IPlayer>> BuildPlayersAsync(IReadOnlyCollection<Urn> playersIds, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)
+    public async Task<IEnumerable<IPlayer>> BuildPlayersAsync(IReadOnlyCollection<Urn> playersIds, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy, IDictionary<Urn, int> playersJerseyNumbers)
     {
         if (playersIds.IsNullOrEmpty())
         {
@@ -94,6 +94,30 @@ internal class TestSportEntityFactory : ISportEntityFactory
             if (playerCi != null)
             {
                 players.Add(new Player(playerCi.Id, playerCi.Names));
+            }
+            else
+            {
+                _outputHelper.WriteLine($"No player for {playersId}");
+            }
+        }
+        return players;
+    }
+
+    public async Task<IEnumerable<ICompetitorPlayer>> BuildCompetitorPlayersAsync(IReadOnlyCollection<Urn> playersIds, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy, IDictionary<Urn, int> playersJerseyNumbers)
+    {
+        if (playersIds.IsNullOrEmpty())
+        {
+            return new List<ICompetitorPlayer>();
+        }
+
+        var players = new List<ICompetitorPlayer>();
+        foreach (var playersId in playersIds)
+        {
+            var playerCi = await _profileCache.GetPlayerProfileAsync(playersId, cultures, true).ConfigureAwait(false);
+            if (playerCi != null)
+            {
+                var playerJerseyNumber = playersJerseyNumbers.TryGetValue(playerCi.Id, out var jerseyNumber) ? jerseyNumber : (int?)null;
+                players.Add(new CompetitorPlayer(playerCi, cultures, playerJerseyNumber));
             }
             else
             {

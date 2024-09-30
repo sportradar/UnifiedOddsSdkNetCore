@@ -22,13 +22,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         /// <summary>
         /// Gets a <see cref="IEnumerable{PlayerProfileDto}"/> representing players which are part of the represented competitor
         /// </summary>
-        public readonly IEnumerable<PlayerProfileDto> Players;
+        public readonly ICollection<PlayerProfileDto> Players;
 
         /// <summary>
         /// Gets the jerseys of the players
         /// </summary>
         /// <value>The jerseys</value>
-        public IEnumerable<JerseyDto> Jerseys { get; }
+        public ICollection<JerseyDto> Jerseys { get; }
 
         /// <summary>
         /// Gets the manager

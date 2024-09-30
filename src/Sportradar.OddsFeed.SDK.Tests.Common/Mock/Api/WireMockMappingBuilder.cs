@@ -3,7 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
 using WireMock;
@@ -193,6 +198,53 @@ public class WireMockMappingBuilder
             .WithTitle(MappingNameForInvariantMarketList)
             .RespondWith(Response.Create().WithBody(responseBody));
         return this;
+    }
+
+    public async Task<WireMockMappingBuilder> ReplaceInvariantMarketList(CultureInfo culture, int marketId, string marketNameTemplate, IDictionary<string, string> newOutcomes)
+    {
+        if (!_server.Mappings.IsNullOrEmpty() && _server.Mappings.Any(a => a.Title != null && a.Title.Equals(MappingNameForInvariantMarketList, StringComparison.Ordinal)))
+        {
+            _server.DeleteMapping(_server.Mappings.First(w => w.Title != null && w.Title.Equals(MappingNameForInvariantMarketList, StringComparison.Ordinal)).Guid);
+        }
+
+        var restDeserializer = new Deserializer<market_descriptions>();
+        var fileNameTemplate = $"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
+        await using var stream = FileHelper.GetResource(fileNameTemplate);
+        var apiMarketDescriptions = restDeserializer.Deserialize(stream);
+
+        ModifyApiMarketDescription(marketId, marketNameTemplate, newOutcomes, apiMarketDescriptions);
+
+        var apiMarketDescriptionsXml = DeserializerHelper.SerializeApiMessageToXml(apiMarketDescriptions);
+
+        _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets.xml").UsingGet())
+               .WithTitle(MappingNameForInvariantMarketList)
+               .RespondWith(Response.Create().WithBody(apiMarketDescriptionsXml));
+        return this;
+    }
+    private static void ModifyApiMarketDescription(int marketId, string marketNameTemplate, IDictionary<string, string> newOutcomes, market_descriptions apiMarketDescriptions)
+    {
+        var apiMarket = apiMarketDescriptions.market.FirstOrDefault(f => f.id == marketId);
+        if (apiMarket == null)
+        {
+            return;
+        }
+
+        if (!marketNameTemplate.IsNullOrEmpty())
+        {
+            apiMarket.name = marketNameTemplate;
+        }
+        if (!newOutcomes.IsNullOrEmpty())
+        {
+            foreach (var newOutcome in newOutcomes)
+            {
+                var apiOutcome = apiMarket.outcomes.FirstOrDefault(f => f.id == newOutcome.Key);
+                if (apiOutcome != null)
+                {
+                    apiOutcome.name = newOutcome.Value;
+                }
+            }
+        }
+        //LogIgnoreXmls.Remove("<market_descriptions");
     }
 
     public WireMockMappingBuilder WithVariantMarketList(CultureInfo culture)

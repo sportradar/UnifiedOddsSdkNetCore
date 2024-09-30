@@ -309,9 +309,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 FetchProfileIfNeeded(culture);
             }
 
-            return Names.ContainsKey(culture)
-                ? Names[culture]
-                : null;
+            return Names.TryGetValue(culture, out var name)
+                       ? name
+                       : null;
         }
 
         /// <summary>
@@ -328,9 +328,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 FetchProfileIfNeeded(culture);
             }
 
-            return _nationalities.ContainsKey(culture)
-                ? _nationalities[culture]
-                : null;
+            return _nationalities.TryGetValue(culture, out var nationality)
+                       ? nationality
+                       : null;
         }
 
         private void FetchProfileIfNeeded(CultureInfo culture)
@@ -367,9 +367,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 Abbreviation = _abbreviation,
                 Gender = _gender,
                 CountryCode = CountryCode,
-                FullName = FullName,
-                Nickname = Nickname,
-                CompetitorId = _competitorId?.ToString()
+                FullName = FullName, Nickname = Nickname, CompetitorId = _competitorId?.ToString()
             });
         }
     }

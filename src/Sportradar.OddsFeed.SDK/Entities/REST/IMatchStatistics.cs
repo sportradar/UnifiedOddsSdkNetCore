@@ -10,8 +10,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
     /// <seealso cref="ICompetitionStatistics" />
     public interface IMatchStatistics : ICompetitionStatistics
     {
+        /// <summary>
+        /// Gets the list of complete team statistics data
+        /// </summary>
+        /// <value>The list of complete team statistics data</value>
         IEnumerable<ITeamStatistics> TotalStatistics { get; }
 
+        /// <summary>
+        /// Gets the list of separate period statistics
+        /// </summary>
+        /// <value>The list of separate period statistics</value>
         IEnumerable<IPeriodStatistics> PeriodStatistics { get; }
     }
 }

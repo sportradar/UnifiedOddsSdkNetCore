@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.OutCompetitor;
 
-public class CompetitorSubClassTests : CompetitorHelper
+public class CompetitorSubClassTests : CompetitorSetup
 {
     [Fact]
     public void Division_Constructor()

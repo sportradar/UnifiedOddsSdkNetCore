@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 
-public class CompetitorDtoTests : CompetitorHelper
+public class CompetitorDtoTests : CompetitorSetup
 {
     [Fact]
     public void PropertiesAreSet()

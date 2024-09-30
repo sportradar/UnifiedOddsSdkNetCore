@@ -86,10 +86,7 @@ public class ProfileCacheSetup
 
     private protected IReadOnlyCollection<CultureInfo> FilterLanguages(int languageIndex = 0)
     {
-        return new[]
-               {
-                   _cultures[languageIndex]
-               };
+        return [_cultures[languageIndex]];
     }
 
     private protected void PrepareSportEventCacheMockForMatchSummaryFetch(Urn sportEventId)
