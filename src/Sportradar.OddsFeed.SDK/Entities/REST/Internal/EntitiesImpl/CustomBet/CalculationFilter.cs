@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to provides a probability calculation
     /// </summary>
-    internal class CalculationFilter : ICalculationFilter
+    internal class CalculationFilter : ICalculationFilterV1
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ICalculationFilter"/> class
@@ -29,6 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
             Probability = calculation.Probability;
             GeneratedAt = SdkInfo.ParseDate(calculation.GeneratedAt);
             AvailableSelections = calculation.AvailableSelections.Select(s => new AvailableSelectionsFilter(s));
+            Harmonization = calculation.Harmonization;
         }
 
         public double Odds { get; }
@@ -36,6 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
         public double Probability { get; }
 
         public DateTime? GeneratedAt { get; }
+        public bool? Harmonization { get; }
 
         public IEnumerable<IAvailableSelectionsFilter> AvailableSelections { get; }
     }

@@ -926,7 +926,7 @@ public class VariantMarketDescriptionListCacheTests
 
         Assert.Empty(logCache.Messages);
         Assert.Single(logExec.Messages);
-        Assert.Single(logExec.Messages.Where(w => w.Contains("Invalid data")));
+        Assert.Single(logExec.Messages, w => w.Contains("Invalid data"));
     }
 
     [Fact]

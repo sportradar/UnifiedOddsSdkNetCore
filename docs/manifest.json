@@ -765,6 +765,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IEventChangeManager.yml",
       "output": {
         ".html": {
@@ -2075,6 +2085,26 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket.yml",
       "output": {
         ".html": {
@@ -2109,6 +2139,16 @@
       "output": {
         ".html": {
           "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.html"
         }
       },
       "version": ""

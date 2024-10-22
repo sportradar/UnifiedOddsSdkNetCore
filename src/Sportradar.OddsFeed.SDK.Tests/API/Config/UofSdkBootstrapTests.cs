@@ -608,8 +608,8 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
         meterProvider.ForceFlush();
 
         Assert.NotEmpty(exportedItems);
-        Assert.NotEmpty(exportedItems.Where(w => w.MeterName.Equals(UofSdkTelemetry.ServiceName)));
-        Assert.Single(exportedItems.Where(w => w.Name.Contains("sportdatacache-getall", StringComparison.OrdinalIgnoreCase)));
+        Assert.Contains(exportedItems, w => w.MeterName.Equals(UofSdkTelemetry.ServiceName, StringComparison.Ordinal));
+        Assert.Single(exportedItems, w => w.Name.Contains("sportdatacache-getall", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]

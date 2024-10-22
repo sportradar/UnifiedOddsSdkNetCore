@@ -1,5 +1,12 @@
 # Change Log
 
+## 2024-10-22  2.4.0
+- CustomBet ICalculation and ICalculationFilter extended with new property Harmonization (extended with ICalculationV1 and ICalculationFilterV1)
+- CustomBet ISelection extended with new property Odds (extended with ISelectionV1)
+- CustomBetSelectionBuilder extended with new method SetOdds (extended with ICustomBetSelectionBuilderV1)
+- Fix: calling SportDataProvider.GetFixtureChangesAsync without additional filter
+- Fix: calling SportDataProvider.GetResultChangesAsync without additional filter
+
 ## 2024-09-30  2.3.0
 - A player can now have different jersey numbers assigned for different teams (new interface ICompetitorPlayer)
 - Added support for + or - operation in market and outcome name template (e.g. market 739, 725)

@@ -10,22 +10,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
     public interface ISelection
     {
         /// <summary>
-        /// Gets the event id.
+        /// Gets the event id
         /// </summary>
         Urn EventId { get; }
 
         /// <summary>
-        /// Gets the market id.
+        /// Gets the market id
         /// </summary>
         int MarketId { get; }
 
         /// <summary>
-        /// Gets the specifiers.
+        /// Gets the specifiers
         /// </summary>
         string Specifiers { get; }
 
         /// <summary>
-        /// Gets the outcome id.
+        /// Gets the outcome id
         /// </summary>
         string OutcomeId { get; }
     }

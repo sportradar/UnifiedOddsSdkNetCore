@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
@@ -23,9 +24,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
         public double Probability { get; }
 
         /// <summary>
-        /// Gets the <see cref="string"/> specifying when the associated message was generated (on the server side)
+        /// Gets the value specifying when the associated message was generated (on the server side)
         /// </summary>
         public string GeneratedAt { get; }
+
+        /// <summary>
+        /// Get the value specifying if the calculation used harmonized method
+        /// </summary>
+        public bool? Harmonization { get; }
 
         /// <summary>
         /// Gets the available selections
@@ -43,11 +49,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
             Odds = calculation.calculation.odds;
             Probability = calculation.calculation.probability;
             GeneratedAt = calculation.generated_at;
-
-            if (calculation.available_selections != null && calculation.available_selections.Any())
-            {
-                AvailableSelections = calculation.available_selections.Select(s => new AvailableSelectionsDto(s, calculation.generated_at)).ToList();
-            }
+            AvailableSelections = calculation.available_selections.IsNullOrEmpty()
+                ? new List<AvailableSelectionsDto>()
+                : calculation.available_selections.Select(s => new AvailableSelectionsDto(s, calculation.generated_at)).ToList();
+            Harmonization = !calculation.calculation.harmonizationSpecified ? (bool?)null : calculation.calculation.harmonization;
         }
     }
 }

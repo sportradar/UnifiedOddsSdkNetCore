@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -22,19 +23,22 @@ public class ProfileCacheTests : ProfileCacheSetup
     [Fact]
     public async Task GetPlayerProfileWhenNullPlayerIdThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetPlayerProfileAsync(null, _cultures, true));
+        var act = async () => await _profileCache.GetPlayerProfileAsync(null, _cultures, true);
+        await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
     public async Task GetPlayerProfileWhenNullLanguagesThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), null, true));
+        var act = async () => await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), null, true);
+        await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
     public async Task GetPlayerProfileWhenEmptyLanguagesThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), Array.Empty<CultureInfo>(), true));
+        var act = async () => await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), Array.Empty<CultureInfo>(), true);
+        await act.Should().ThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -42,20 +46,20 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.NotNull(player);
-        Assert.Equal(1, _profileMemoryCache.Count());
+        player.Should().NotBeNull();
+        _profileMemoryCache.Count().Should().Be(1);
     }
 
     [Fact]
     public async Task GetPlayerProfileWhenFetchedThenInvokesPlayerProfileEndpoint()
     {
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _profileMemoryCache.Count());
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _profileMemoryCache.Count().Should().Be(0);
 
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -63,21 +67,21 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.NotNull(player);
+        player.Should().NotBeNull();
         ValidatePlayer1(player, TestData.Culture);
     }
 
     [Fact]
     public async Task GetPlayerProfileWhenFetchedTwiceThenInvokesPlayerProfileEndpointJustOnce()
     {
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _profileMemoryCache.Count());
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _profileMemoryCache.Count().Should().Be(0);
 
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, true);
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -88,8 +92,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.NotNull(player);
-        Assert.Single(player.Names);
+        player.Should().NotBeNull();
+        player.Names.Should().HaveCount(1);
     }
 
     [Fact]
@@ -100,8 +104,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -109,8 +113,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -118,8 +122,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.NotNull(player);
-        Assert.Equal(3, player.Names.Count);
+        player.Should().NotBeNull();
+        player.Names.Should().HaveCount(3);
     }
 
     [Fact]
@@ -130,8 +134,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(_cultures.Count - 1);
     }
 
     [Fact]
@@ -142,8 +146,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -153,8 +157,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true);
 
-        Assert.NotNull(player);
-        Assert.Equal("Smithies, Alex", player.GetName(TestData.Culture));
+        player.Should().NotBeNull();
+        player.GetName(TestData.Culture).Should().Be("Smithies, Alex");
     }
 
     [Fact]
@@ -165,9 +169,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true);
 
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -177,9 +181,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true);
 
-        Assert.NotNull(player);
-        Assert.Equal(3, player.Names.Count);
-        Assert.Equal("Smithies, Alex", player.GetName(TestData.Culture));
+        player.Should().NotBeNull();
+        player.Names.Should().HaveCount(3);
+        player.GetName(TestData.Culture).Should().Be("Smithies, Alex");
     }
 
     [Fact]
@@ -191,9 +195,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true);
 
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -205,8 +209,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true);
 
-        Assert.NotNull(player);
-        Assert.Equal(3, player.Names.Count);
+        player.Should().NotBeNull();
+        player.Names.Should().HaveCount(3);
     }
 
     [Fact]
@@ -214,10 +218,9 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetMappingException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), FilterLanguages(), true));
-
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:player:1", StringComparison.InvariantCultureIgnoreCase));
+        var act = () => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), FilterLanguages(), true);
+        var exceptionAssertion = await act.Should().ThrowAsync<CacheItemNotFoundException>();
+        exceptionAssertion.Which.Message.Should().Contain("sr:player:1");
     }
 
     [Fact]
@@ -225,10 +228,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetDeserializationException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), FilterLanguages(), true));
+        var act = () => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), FilterLanguages(), true);
+        var resultException = await act
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:player:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:player:1");
     }
 
     [Fact]
@@ -236,21 +241,26 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetInvalidException()));
 
-        var resultException = await Assert.ThrowsAsync<InvalidOperationException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), FilterLanguages(), true));
+        var act = () => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1), FilterLanguages(), true);
+        var resultException = await act
+                                   .Should()
+                                   .ThrowAsync<InvalidOperationException>();
 
-        Assert.NotNull(resultException);
+        resultException.NotBeNull();
     }
 
-    //TODO: if competitor request fails it should still try player profile
     [Fact]
     public async Task GetPlayerProfileWhenPartiallyPreloadedFromCompetitorAndNewCompetitorRequestThrowsThenThrows()
     {
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), FilterLanguages(), true);
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetMappingException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true));
+        var action = () => _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(30401), _cultures, true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
+        resultException.NotBeNull();
     }
 
     [Fact]
@@ -258,25 +268,28 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var player = await _profileCache.GetPlayerProfileAsync(CreatePlayerUrn(1234), FilterLanguages(), true);
 
-        Assert.Null(player);
+        player.Should().BeNull();
     }
 
     [Fact]
     public async Task GetCompetitorProfileWhenNullPlayerIdThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetCompetitorProfileAsync(null, _cultures, true));
+        var act = async () => await _profileCache.GetCompetitorProfileAsync(null, _cultures, true);
+        await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
     public async Task GetCompetitorProfileWhenNullLanguagesThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), null, true));
+        var act = async () => await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), null, true);
+        await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
     public async Task GetCompetitorProfileWhenEmptyLanguagesThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), Array.Empty<CultureInfo>(), true));
+        var act = async () => await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), Array.Empty<CultureInfo>(), true);
+        await act.Should().ThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -284,20 +297,20 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var competitor = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitor);
-        Assert.Equal(35, _profileMemoryCache.Count());
+        competitor.Should().NotBeNull();
+        _profileMemoryCache.Count().Should().Be(35);
     }
 
     [Fact]
     public async Task GetCompetitorProfileWhenFetchedThenInvokesCompetitorProfileEndpoint()
     {
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _profileMemoryCache.Count());
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _profileMemoryCache.Count().Should().Be(0);
 
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -305,10 +318,10 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var competitorCacheItem = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitorCacheItem);
-        Assert.Equal(3, competitorCacheItem.Names.Count);
-        Assert.Equal("Queens Park Rangers", competitorCacheItem.GetName(_cultures[0]));
-        Assert.Equal(34, competitorCacheItem.AssociatedPlayerIds.Count());
+        competitorCacheItem.Should().NotBeNull();
+        competitorCacheItem.Names.Should().HaveCount(3);
+        competitorCacheItem.GetName(_cultures[0]).Should().Be("Queens Park Rangers");
+        competitorCacheItem.AssociatedPlayerIds.Should().HaveCount(34);
     }
 
     [Fact]
@@ -317,8 +330,8 @@ public class ProfileCacheTests : ProfileCacheSetup
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -329,8 +342,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitor = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.NotNull(competitor);
-        Assert.Single(competitor.Names);
+        competitor.Should().NotBeNull();
+        competitor.Names.Should().HaveCount(1);
     }
 
     [Fact]
@@ -341,8 +354,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
     }
 
     [Fact]
@@ -350,8 +363,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -359,8 +372,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var competitor = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.NotNull(competitor);
-        Assert.Equal(3, competitor.Names.Count());
+        competitor.Should().NotBeNull();
+        competitor.Names.Should().HaveCount(3);
     }
 
     [Fact]
@@ -371,8 +384,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count - 1);
     }
 
     [Fact]
@@ -381,9 +394,9 @@ public class ProfileCacheTests : ProfileCacheSetup
         var competitorNames1 = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
         var competitorNames2 = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(2), _cultures, true);
 
-        Assert.NotEqual(competitorNames1.Id, competitorNames2.Id);
-        Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count * 2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        competitorNames1.Id.Should().NotBe(competitorNames2.Id);
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count * 2);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count * 2);
     }
 
     [Fact]
@@ -396,9 +409,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitor = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitor);
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        competitor.Should().NotBeNull();
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -409,9 +422,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary).Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -422,8 +435,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitor = await _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitor);
-        Assert.Equal(3, competitor.Names.Count);
+        competitor.Should().NotBeNull();
+        competitor.Names.Should().HaveCount(3);
     }
 
     [Fact]
@@ -431,10 +444,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetMappingException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:competitor:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:competitor:1");
     }
 
     [Fact]
@@ -442,10 +457,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetDeserializationException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:competitor:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:competitor:1");
     }
 
     [Fact]
@@ -453,9 +470,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetInvalidException()));
 
-        var resultException = await Assert.ThrowsAsync<InvalidOperationException>(() => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetCompetitorProfileAsync(CreateCompetitorUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<InvalidOperationException>();
 
-        Assert.NotNull(resultException);
+        resultException.NotBeNull();
     }
 
     [Fact]
@@ -463,10 +483,10 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var playerNames = await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.NotNull(playerNames);
-        Assert.NotEqual(string.Empty, playerNames[_cultures[0]]);
-        Assert.NotEqual(string.Empty, playerNames[_cultures[1]]);
-        Assert.NotEqual(string.Empty, playerNames[_cultures[2]]);
+        playerNames.Should().NotBeNull();
+        playerNames[_cultures[0]].Should().NotBeEmpty();
+        playerNames[_cultures[1]].Should().NotBeEmpty();
+        playerNames[_cultures[2]].Should().NotBeEmpty();
     }
 
     [Fact]
@@ -474,8 +494,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -483,7 +503,7 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.Equal(1, _profileMemoryCache.Count());
+        _profileMemoryCache.Count().Should().Be(1);
     }
 
     [Fact]
@@ -491,8 +511,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -500,9 +520,9 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var playerNames = await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.NotNull(playerNames);
-        Assert.Equal(_cultures.Count, playerNames.Count);
-        Assert.True(playerNames.All(a => string.IsNullOrEmpty(a.Value)));
+        playerNames.Should().NotBeNull();
+        playerNames.Should().HaveCount(_cultures.Count);
+        playerNames.Should().AllSatisfy(a => a.Value.Should().BeNullOrEmpty());
     }
 
     [Fact]
@@ -513,8 +533,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -525,11 +545,11 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var playerNames = await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.NotNull(playerNames);
-        Assert.Equal(3, playerNames.Count);
-        Assert.NotEqual(string.Empty, playerNames[_cultures[0]]);
-        Assert.Equal(string.Empty, playerNames[_cultures.Skip(1).First()]);
-        Assert.Equal(string.Empty, playerNames[_cultures.Skip(2).First()]);
+        playerNames.Should().NotBeNull();
+        playerNames.Should().HaveCount(3);
+        playerNames[_cultures[0]].Should().NotBeEmpty();
+        playerNames[_cultures.Skip(1).First()].Should().BeEmpty();
+        playerNames[_cultures.Skip(2).First()].Should().BeEmpty();
     }
 
     [Fact]
@@ -540,9 +560,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count - 1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count - 1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -552,11 +572,11 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var playerNames = await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.NotNull(playerNames);
-        Assert.Equal(_cultures.Count, playerNames.Count);
-        Assert.NotEqual(string.Empty, playerNames[_cultures[0]]);
-        Assert.NotEqual(string.Empty, playerNames[_cultures.Skip(1).First()]);
-        Assert.NotEqual(string.Empty, playerNames[_cultures.Skip(2).First()]);
+        playerNames.Should().NotBeNull();
+        playerNames.Count.Should().Be(_cultures.Count);
+        playerNames[_cultures[0]].Should().NotBeEmpty();
+        playerNames[_cultures.Skip(1).First()].Should().NotBeEmpty();
+        playerNames[_cultures.Skip(2).First()].Should().NotBeEmpty();
     }
 
     [Fact]
@@ -567,9 +587,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -579,10 +599,10 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var playerNames = await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, false);
 
-        Assert.NotNull(playerNames);
-        Assert.NotEqual(string.Empty, playerNames[_cultures.First()]);
-        Assert.Equal(string.Empty, playerNames[_cultures.Skip(1).First()]);
-        Assert.Equal(string.Empty, playerNames[_cultures.Skip(2).First()]);
+        playerNames.Should().NotBeNull();
+        playerNames[_cultures[0]].Should().NotBeEmpty();
+        playerNames[_cultures.Skip(1).First()].Should().BeEmpty();
+        playerNames[_cultures.Skip(2).First()].Should().BeEmpty();
     }
 
     [Fact]
@@ -593,9 +613,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), _cultures, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -603,10 +623,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetMappingException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:player:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:player:1");
     }
 
     [Fact]
@@ -614,10 +636,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetDeserializationException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:player:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:player:1");
     }
 
     [Fact]
@@ -625,9 +649,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetInvalidException()));
 
-        var resultException = await Assert.ThrowsAsync<InvalidOperationException>(() => _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetPlayerNamesAsync(CreatePlayerUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<InvalidOperationException>();
 
-        Assert.NotNull(resultException);
+        resultException.NotBeNull();
     }
 
     [Fact]
@@ -635,10 +662,10 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitorNames);
-        Assert.NotEqual(string.Empty, competitorNames[_cultures.First()]);
-        Assert.NotEqual(string.Empty, competitorNames[_cultures.Skip(1).First()]);
-        Assert.NotEqual(string.Empty, competitorNames[_cultures.Skip(2).First()]);
+        competitorNames.Should().NotBeNull();
+        competitorNames[_cultures[0]].Should().NotBeEmpty();
+        competitorNames[_cultures.Skip(1).First()].Should().NotBeEmpty();
+        competitorNames[_cultures.Skip(2).First()].Should().NotBeEmpty();
     }
 
     [Fact]
@@ -646,8 +673,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(_cultures.Count);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(_cultures.Count);
     }
 
     [Fact]
@@ -655,7 +682,7 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(1, _profileMemoryCache.GetKeys().Count(c => c.Contains("competitor", StringComparison.InvariantCultureIgnoreCase)));
+        _profileMemoryCache.GetKeys().Count(c => c.Contains("competitor", StringComparison.InvariantCultureIgnoreCase)).Should().Be(1);
     }
 
     [Fact]
@@ -663,7 +690,7 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(34, _profileMemoryCache.GetKeys().Count(c => c.Contains("player", StringComparison.InvariantCultureIgnoreCase)));
+        _profileMemoryCache.GetKeys().Count(c => c.Contains("player", StringComparison.InvariantCultureIgnoreCase)).Should().Be(34);
     }
 
     [Fact]
@@ -671,9 +698,10 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.NotNull(competitorNames);
-        Assert.Equal(_cultures.Count, competitorNames.Count);
-        Assert.True(competitorNames.All(a => string.IsNullOrEmpty(a.Value)));
+        competitorNames.Should().NotBeNull();
+        competitorNames.Count.Should().Be(_cultures.Count);
+
+        competitorNames.Should().AllSatisfy(a => a.Value.Should().BeNullOrEmpty());
     }
 
     [Fact]
@@ -681,8 +709,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
     }
 
     [Fact]
@@ -692,10 +720,10 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.NotNull(competitorNames);
-        Assert.NotEqual(string.Empty, competitorNames[_cultures.First()]);
-        Assert.Equal(string.Empty, competitorNames[_cultures.Skip(1).First()]);
-        Assert.Equal(string.Empty, competitorNames[_cultures.Skip(2).First()]);
+        competitorNames.Should().NotBeNull();
+        competitorNames[_cultures[0]].Should().NotBeEmpty();
+        competitorNames[_cultures.Skip(1).First()].Should().BeEmpty();
+        competitorNames[_cultures.Skip(2).First()].Should().BeEmpty();
     }
 
     [Fact]
@@ -706,8 +734,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
     }
 
     [Fact]
@@ -717,9 +745,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitorNames);
-        Assert.Equal(_cultures.Count, competitorNames.Count);
-        Assert.True(competitorNames.All(a => !string.IsNullOrEmpty(a.Value)));
+        competitorNames.Should().NotBeNull();
+        competitorNames.Count.Should().Be(_cultures.Count);
+        competitorNames.All(a => !string.IsNullOrEmpty(a.Value)).Should().BeTrue();
     }
 
     [Fact]
@@ -730,8 +758,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(2, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(2);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(2);
     }
 
     [Fact]
@@ -743,8 +771,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(2, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+        _dataRouterManager.TotalRestCalls.Should().Be(2);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary).Should().Be(2);
     }
 
     [Fact]
@@ -755,9 +783,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitorNames);
-        Assert.Equal(_cultures.Count, competitorNames.Count);
-        Assert.True(competitorNames.All(a => !string.IsNullOrEmpty(a.Value)));
+        competitorNames.Should().NotBeNull();
+        competitorNames.Count.Should().Be(_cultures.Count);
+        competitorNames.All(a => !string.IsNullOrEmpty(a.Value)).Should().BeTrue();
     }
 
     [Fact]
@@ -769,8 +797,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary).Should().Be(0);
     }
 
     [Fact]
@@ -781,11 +809,11 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, false);
 
-        Assert.NotNull(competitorNames);
-        Assert.Equal(_cultures.Count, competitorNames.Count);
-        Assert.NotEqual(string.Empty, competitorNames[_cultures.First()]);
-        Assert.Equal(string.Empty, competitorNames[_cultures.Skip(1).First()]);
-        Assert.Equal(string.Empty, competitorNames[_cultures.Skip(2).First()]);
+        competitorNames.Should().NotBeNull();
+        competitorNames.Count.Should().Be(_cultures.Count);
+        competitorNames[_cultures[0]].Should().NotBeEmpty();
+        competitorNames[_cultures.Skip(1).First()].Should().BeEmpty();
+        competitorNames[_cultures.Skip(2).First()].Should().BeEmpty();
     }
 
     [Fact]
@@ -798,8 +826,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary).Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
     }
 
     [Fact]
@@ -812,9 +841,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitorNames);
-        Assert.Equal(_cultures.Count, competitorNames.Count);
-        Assert.True(competitorNames.All(a => !string.IsNullOrEmpty(a.Value)));
+        competitorNames.Should().NotBeNull();
+        competitorNames.Count.Should().Be(_cultures.Count);
+        competitorNames.Should().AllSatisfy(a => a.Value.Should().NotBeNullOrEmpty());
     }
 
     [Fact]
@@ -822,10 +851,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetMappingException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:competitor:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:competitor:1");
     }
 
     [Fact]
@@ -833,10 +864,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetDeserializationException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:competitor:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:competitor:1");
     }
 
     [Fact]
@@ -844,9 +877,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetInvalidException()));
 
-        var resultException = await Assert.ThrowsAsync<InvalidOperationException>(() => _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), FilterLanguages(), true));
+        var action = () => _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), FilterLanguages(), true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<InvalidOperationException>();
 
-        Assert.NotNull(resultException);
+        resultException.NotBeNull();
     }
 
     [Fact]
@@ -857,8 +893,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.Equal(2, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(2);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(2);
     }
 
     [Fact]
@@ -868,9 +904,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var competitorNames = await _profileCache.GetCompetitorNamesAsync(CreateCompetitorUrn(1), _cultures, true);
 
-        Assert.NotNull(competitorNames);
-        Assert.Equal(_cultures.Count, competitorNames.Count);
-        Assert.True(competitorNames.All(a => !string.IsNullOrEmpty(a.Value)));
+        competitorNames.Should().NotBeNull();
+        competitorNames.Count.Should().Be(_cultures.Count);
+        competitorNames.All(a => !string.IsNullOrEmpty(a.Value)).Should().BeTrue();
     }
 
     [Fact]
@@ -881,9 +917,9 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -891,8 +927,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true);
 
-        Assert.Equal(1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(1);
     }
 
     [Fact]
@@ -900,7 +936,7 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true);
 
-        Assert.Equal(1, _profileMemoryCache.Count());
+        _profileMemoryCache.Count().Should().Be(1);
     }
 
     [Fact]
@@ -908,8 +944,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile).Should().Be(0);
     }
 
     [Fact]
@@ -917,7 +953,7 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var name = await _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], false);
 
-        Assert.Empty(name);
+        name.Should().BeEmpty();
     }
 
     [Fact]
@@ -928,8 +964,7 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var name = await _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true);
 
-        Assert.NotNull(name);
-        Assert.False(string.IsNullOrEmpty(name));
+        name.Should().NotBeNullOrEmpty();
     }
 
     [Fact]
@@ -937,10 +972,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetMappingException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true));
+        var action = () => _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:player:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:player:1");
     }
 
     [Fact]
@@ -948,10 +985,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetDeserializationException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true));
+        var action = () => _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:player:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:player:1");
     }
 
     [Fact]
@@ -959,9 +998,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("player.xml", ExceptionHelper.GetInvalidException()));
 
-        var resultException = await Assert.ThrowsAsync<InvalidOperationException>(() => _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true));
+        var action = () => _profileCache.GetPlayerNameAsync(CreatePlayerUrn(1), _cultures[0], true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<InvalidOperationException>();
 
-        Assert.NotNull(resultException);
+        resultException.NotBeNull();
     }
 
     [Fact]
@@ -972,9 +1014,8 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         await _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
     }
 
     [Fact]
@@ -982,8 +1023,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true);
 
-        Assert.Equal(1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(1);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(1);
     }
 
     [Fact]
@@ -991,7 +1032,7 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true);
 
-        Assert.Equal(35, _profileMemoryCache.Count());
+        _profileMemoryCache.Count().Should().Be(35);
     }
 
     [Fact]
@@ -999,8 +1040,8 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         await _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
+        _dataRouterManager.TotalRestCalls.Should().Be(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor).Should().Be(0);
     }
 
     [Fact]
@@ -1008,7 +1049,7 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         var name = await _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], false);
 
-        Assert.Empty(name);
+        name.Should().BeEmpty();
     }
 
     [Fact]
@@ -1019,8 +1060,7 @@ public class ProfileCacheTests : ProfileCacheSetup
 
         var name = await _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true);
 
-        Assert.NotNull(name);
-        Assert.False(string.IsNullOrEmpty(name));
+        name.Should().NotBeNullOrEmpty();
     }
 
     [Fact]
@@ -1028,10 +1068,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetMappingException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true));
+        var action = () => _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:competitor:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:competitor:1");
     }
 
     [Fact]
@@ -1039,10 +1081,12 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetDeserializationException()));
 
-        var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true));
+        var action = () => _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<CacheItemNotFoundException>();
 
-        Assert.NotNull(resultException);
-        Assert.True(resultException.Message.Contains("sr:competitor:1", StringComparison.InvariantCultureIgnoreCase));
+        resultException.Which.Message.Should().Contain("sr:competitor:1");
     }
 
     [Fact]
@@ -1050,8 +1094,11 @@ public class ProfileCacheTests : ProfileCacheSetup
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("competitor.xml", ExceptionHelper.GetInvalidException()));
 
-        var resultException = await Assert.ThrowsAsync<InvalidOperationException>(() => _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true));
+        var action = () => _profileCache.GetCompetitorNameAsync(CreateCompetitorUrn(1), _cultures[0], true);
+        var resultException = await action
+                                   .Should()
+                                   .ThrowAsync<InvalidOperationException>();
 
-        Assert.NotNull(resultException);
+        resultException.NotBeNull();
     }
 }

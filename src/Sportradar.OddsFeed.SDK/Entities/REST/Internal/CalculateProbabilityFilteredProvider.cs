@@ -2,12 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -69,6 +64,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
                     outcome_id = selection.OutcomeId,
                     specifiers = selection.Specifiers
                 };
+                var selectionV1 = selection as ISelectionV1;
+                if (selectionV1?.Odds != null)
+                {
+                    filterSelectionMarketType.odds = selectionV1.Odds.Value;
+                    filterSelectionMarketType.oddsSpecified = true;
+                }
                 var filterSelectionType = new FilterSelectionType
                 {
                     id = selection.EventId.ToString(),
@@ -79,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 
             resultSelection.selection = selectionSelection.ToArray();
 
-            var content = GetContent(resultSelection);
+            var content = CalculateProbabilityProvider.GetContent(_serializer, resultSelection);
 
             var responseMessage = await _poster.PostDataAsync(new Uri(_uriFormat), content).ConfigureAwait(false);
 
@@ -94,25 +95,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
 
             var stream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
             return _mapperFactory.CreateMapper(_deserializer.Deserialize(stream)).Map();
-        }
-
-        private HttpContent GetContent(FilterSelectionsType content)
-        {
-            using (var stream = new MemoryStream())
-            {
-                using (var writer = XmlWriter.Create(stream))
-                {
-                    _serializer.Serialize(writer, content);
-                    writer.Flush();
-                    stream.Seek(0, SeekOrigin.Begin);
-                    var reader = new StreamReader(stream, Encoding.UTF8);
-                    var str = reader.ReadToEnd();
-                    var httpContent = new StringContent(str);
-                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
-
-                    return httpContent;
-                }
-            }
         }
     }
 }

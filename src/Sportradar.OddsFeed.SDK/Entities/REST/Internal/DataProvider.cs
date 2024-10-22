@@ -3,7 +3,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
@@ -194,10 +193,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             if (identifiers == null || identifiers.Length == 0)
             {
                 return new Uri(_uriFormat);
-            }
-            if (identifiers.Any(string.IsNullOrEmpty))
-            {
-                throw new ArgumentOutOfRangeException(nameof(identifiers));
             }
 
             // ReSharper disable once CoVariantArrayConversion

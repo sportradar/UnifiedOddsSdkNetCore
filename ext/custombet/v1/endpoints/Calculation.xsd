@@ -40,6 +40,11 @@
         <xs:documentation>The probability of this outcome returned in decimal</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="harmonization" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>The indicator if the harmonization method was used to calculate odds</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="AvailableSelectionsAfterCalculationType">

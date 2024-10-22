@@ -10,48 +10,32 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to provides an requested selection
     /// </summary>
-    internal class Selection : ISelection
+    internal class Selection : ISelectionV1
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Selection"/> class
-        /// </summary>
-        /// <param name="eventId">a <see cref="Urn"/> representing the event id</param>
-        /// <param name="marketId">a value representing the market id</param>
-        /// <param name="outcomeId">a value representing the outcome id</param>
-        /// <param name="specifiers">a value representing the specifiers</param>
-        internal Selection(Urn eventId, int marketId, string outcomeId, string specifiers)
+        public Urn EventId { get; }
+
+        public int MarketId { get; }
+
+        public string OutcomeId { get; }
+
+        public string Specifiers { get; }
+
+        public double? Odds { get; }
+
+        internal Selection(Urn eventId, int marketId, string outcomeId, string specifiers, double? odds = null)
         {
             EventId = eventId ?? throw new ArgumentNullException(nameof(eventId));
             MarketId = marketId > 0 ? marketId : throw new ArgumentException("Missing marketId", nameof(marketId));
             OutcomeId = outcomeId ?? throw new ArgumentNullException(nameof(outcomeId));
             Specifiers = specifiers;
+            Odds = odds;
         }
-
-        /// <summary>
-        /// Gets the event id.
-        /// </summary>
-        public Urn EventId { get; }
-
-        /// <summary>
-        /// Gets the market id.
-        /// </summary>
-        public int MarketId { get; }
-
-        /// <summary>
-        /// Gets the outcome id.
-        /// </summary>
-        public string OutcomeId { get; }
-
-        /// <summary>
-        /// Gets the specifiers.
-        /// </summary>
-        public string Specifiers { get; }
 
         /// <inheritdoc />
         public override string ToString()
         {
             var specifiers = Specifiers.IsNullOrEmpty() ? string.Empty : $",Specifiers={Specifiers}";
-            return $"Event={EventId},Market={MarketId},Outcome={OutcomeId}{specifiers}";
+            return $"Event={EventId},Market={MarketId},Outcome={OutcomeId}{specifiers},Odds={Odds}";
         }
     }
 }

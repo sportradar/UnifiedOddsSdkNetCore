@@ -1,9 +1,11 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using FluentAssertions;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
@@ -13,6 +15,8 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
@@ -26,6 +30,7 @@ public class CustomBetEntityTests
     private readonly IDataRouterManager _dataRouterManager;
     private readonly ICustomBetSelectionBuilder _customBetSelectionBuilder;
 
+    // ReSharper disable once ConvertToPrimaryConstructor
     public CustomBetEntityTests(ITestOutputHelper outputHelper)
     {
         _dataRouterManager = new TestDataRouterManager(new CacheManager(), outputHelper);
@@ -43,6 +48,26 @@ public class CustomBetEntityTests
 
     [Fact]
     public void AvailableSelectionsEmptyMap()
+    {
+        var availableSelectionsType = MessageFactoryRest.GetAvailableSelections(Urn.Parse("sr:match:1000"), 0);
+        Assert.True(availableSelectionsType.@event.markets.IsNullOrEmpty());
+        var resultAvailableSelections = MessageFactorySdk.GetAvailableSelections(availableSelectionsType);
+        Assert.True(resultAvailableSelections.Markets.IsNullOrEmpty());
+
+        AvailableSelectionsCompare(availableSelectionsType, resultAvailableSelections);
+    }
+
+    [Fact]
+    public void AvailableSelectionsFilterMap()
+    {
+        var availableFilteredEventType = MessageFactoryRest.GetFilteredEventType(Urn.Parse("sr:match:1000"), 10);
+        var resultAvailableSelectionsFilter = new AvailableSelectionsFilter(new FilteredAvailableSelectionsDto(availableFilteredEventType));
+
+        AvailableSelectionsFilterCompare(availableFilteredEventType, resultAvailableSelectionsFilter);
+    }
+
+    [Fact]
+    public void AvailableSelectionsFilterEmptyMap()
     {
         var availableSelectionsType = MessageFactoryRest.GetAvailableSelections(Urn.Parse("sr:match:1000"), 0);
         Assert.True(availableSelectionsType.@event.markets.IsNullOrEmpty());
@@ -234,7 +259,179 @@ public class CustomBetEntityTests
         Assert.False(calculation.AvailableSelections.IsNullOrEmpty());
     }
 
-    private void AvailableSelectionsCompare(AvailableSelectionsType source, IAvailableSelections result)
+    [Theory]
+    [InlineData(null)]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CalculationWhenHarmonizationSetThenMapCorrectly(bool? harmonizationValue)
+    {
+        var calculationResponseType = MessageFactoryRest.GetFilteredCalculationResponse(Urn.Parse("sr:match:1000"), 7);
+        if (harmonizationValue == null)
+        {
+            calculationResponseType.calculation.harmonizationSpecified = false;
+        }
+        else
+        {
+            calculationResponseType.calculation.harmonization = (bool)harmonizationValue;
+            calculationResponseType.calculation.harmonizationSpecified = true;
+        }
+
+        var calculation = MessageFactorySdk.GetCalculationFilter(calculationResponseType);
+
+        calculation.Should().BeAssignableTo<ICalculationFilterV1>();
+        var calculationV1 = calculation as ICalculationFilterV1;
+        calculationV1.Should().NotBeNull();
+        calculationV1.Harmonization.Should().Be(harmonizationValue);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CalculationFilterWhenHarmonizationSetThenMapCorrectly(bool? harmonizationValue)
+    {
+        var calculationResponseType = MessageFactoryRest.GetCalculationResponse(Urn.Parse("sr:match:1000"), 7);
+        if (harmonizationValue == null)
+        {
+            calculationResponseType.calculation.harmonizationSpecified = false;
+        }
+        else
+        {
+            calculationResponseType.calculation.harmonization = (bool)harmonizationValue;
+            calculationResponseType.calculation.harmonizationSpecified = true;
+        }
+
+        var calculation = MessageFactorySdk.GetCalculation(calculationResponseType);
+
+        calculation.Should().BeAssignableTo<ICalculationV1>();
+        var calculationV1 = calculation as ICalculationV1;
+        calculationV1.Should().NotBeNull();
+        calculationV1.Harmonization.Should().Be(harmonizationValue);
+    }
+
+    [Fact]
+    public void AvailableSelectionsDtoWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new AvailableSelectionsDto(null));
+    }
+
+    [Fact]
+    public void FilteredAvailableSelectionsDtoWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new FilteredAvailableSelectionsDto(null));
+    }
+
+    [Fact]
+    public void CalculationDtoWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new CalculationDto(null));
+    }
+
+    [Fact]
+    public void FilteredCalculationDtoWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new FilteredCalculationDto(null));
+    }
+
+    [Fact]
+    public void MarketDtoWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new MarketDto(null));
+    }
+
+    [Fact]
+    public void FilteredMarketDtoWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new FilteredMarketDto(null));
+    }
+
+    [Fact]
+    public void FilteredOutcomeDtoWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new FilteredOutcomeDto(null));
+    }
+
+    [Fact]
+    public void AvailableSelectionsWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new AvailableSelections(null));
+    }
+
+    [Fact]
+    public void AvailableSelectionsFilterWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new AvailableSelectionsFilter(null));
+    }
+
+    [Fact]
+    public void CalculationWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new Calculation(null));
+    }
+
+    [Fact]
+    public void FilteredCalculationWhenInputNullThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new CalculationFilter(null));
+    }
+
+    [Fact]
+    public void SelectionConstructionWhenEventIdMissingThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new Selection(null, 1, "123", "value=1", 1.234));
+    }
+
+    [Fact]
+    public void SelectionConstructionWhenMarketIdZeroThenThrow()
+    {
+        Assert.Throws<ArgumentException>(() => new Selection(TestData.EventMatchId, 0, "123", "value=1", 1.234));
+    }
+
+    [Fact]
+    public void SelectionConstructionWhenOutcomeIdIdMissingThenThrow()
+    {
+        Assert.Throws<ArgumentNullException>(() => new Selection(TestData.EventMatchId, 1, null, "value=1", 1.234));
+    }
+
+    [Fact]
+    public void SelectionConstructionWhenSpecifiersMissingThenOk()
+    {
+        var selection = new Selection(TestData.EventMatchId, 1, "123", null, 1.234);
+
+        selection.Should().NotBeNull();
+        selection.Specifiers.Should().BeNull();
+    }
+
+    [Fact]
+    public void SelectionConstructionWhenOddsMissingThenOk()
+    {
+        var selection = new Selection(TestData.EventMatchId, 1, "123", null, null);
+
+        selection.Should().NotBeNull();
+        selection.Odds.Should().BeNull();
+    }
+
+    [Fact]
+    public void SelectionConstructionWhenAllFieldsSetThenPopulateAll()
+    {
+        var selection = new Selection(TestData.EventMatchId, 111, "123", "value=1", 1.234);
+
+        selection.EventId.Should().Be(TestData.EventMatchId);
+        selection.MarketId.Should().Be(111);
+        selection.OutcomeId.Should().Be("123");
+        selection.Specifiers.Should().Be("value=1");
+        selection.Odds.Should().Be(1.234);
+    }
+
+    [Fact]
+    public void SelectionConstructionWhenOddsNotSetThenOddsNull()
+    {
+        var selection = new Selection(TestData.EventMatchId, 111, "123", "value=1");
+
+        selection.Odds.Should().BeNull();
+    }
+
+    private static void AvailableSelectionsCompare(AvailableSelectionsType source, IAvailableSelections result)
     {
         Assert.NotNull(source);
         Assert.NotNull(result);
@@ -259,7 +456,30 @@ public class CustomBetEntityTests
         }
     }
 
-    private void MarketCompare(MarketType source, IMarket result)
+    private static void AvailableSelectionsFilterCompare(FilteredEventType source, IAvailableSelectionsFilter result)
+    {
+        Assert.NotNull(source);
+        Assert.NotNull(result);
+
+        Assert.NotNull(source.id);
+        Assert.Equal(source.id, result.Event.ToString());
+
+        if (source.markets.IsNullOrEmpty())
+        {
+            Assert.True(result.Markets.IsNullOrEmpty());
+            return;
+        }
+
+        Assert.Equal(source.markets.Length, result.Markets.Count());
+        foreach (var sourceMarket in source.markets)
+        {
+            var resultMarket = result.Markets.First(f => f.Id == sourceMarket.id);
+            Assert.NotNull(resultMarket);
+            MarketCompare(sourceMarket, resultMarket);
+        }
+    }
+
+    private static void MarketCompare(MarketType source, IMarket result)
     {
         Assert.NotNull(source);
         Assert.NotNull(result);
@@ -280,7 +500,7 @@ public class CustomBetEntityTests
         }
     }
 
-    private void MarketCompare(FilteredMarketType source, IMarketFilter result)
+    private static void MarketCompare(FilteredMarketType source, IMarketFilter result)
     {
         Assert.NotNull(source);
         Assert.NotNull(result);

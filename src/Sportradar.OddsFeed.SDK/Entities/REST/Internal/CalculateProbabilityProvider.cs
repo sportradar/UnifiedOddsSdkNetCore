@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -59,16 +58,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <returns>A <see cref="Task{CalculationDto}"/> representing the probability calculation</returns>
         public async Task<CalculationDto> GetDataAsync(IEnumerable<ISelection> selections)
         {
-            var content = GetContent(new SelectionsType
+            var capiSelections = new List<SelectionType>();
+            foreach (var selection in selections)
             {
-                selection = selections.Select(s => new SelectionType
+                var capiSelection = new SelectionType
                 {
-                    id = s.EventId.ToString(),
-                    market_id = s.MarketId,
-                    outcome_id = s.OutcomeId,
-                    specifiers = s.Specifiers
-                }).ToArray()
-            });
+                    id = selection.EventId.ToString(),
+                    market_id = selection.MarketId,
+                    outcome_id = selection.OutcomeId,
+                    specifiers = selection.Specifiers
+                };
+                var selectionV1 = selection as ISelectionV1;
+                if (selectionV1?.Odds != null)
+                {
+                    capiSelection.odds = selectionV1.Odds.Value;
+                    capiSelection.oddsSpecified = true;
+                }
+                capiSelections.Add(capiSelection);
+            }
+
+            var content = GetContent(_serializer, new SelectionsType { selection = capiSelections.ToArray() });
 
             var responseMessage = await _poster.PostDataAsync(new Uri(_uriFormat), content).ConfigureAwait(false);
 
@@ -85,13 +94,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             return _mapperFactory.CreateMapper(_deserializer.Deserialize(stream)).Map();
         }
 
-        private HttpContent GetContent(SelectionsType content)
+        internal static HttpContent GetContent<T>(XmlSerializer xmlSerializer, T content)
         {
             using (var stream = new MemoryStream())
             {
                 using (var writer = XmlWriter.Create(stream))
                 {
-                    _serializer.Serialize(writer, content);
+                    xmlSerializer.Serialize(writer, content);
                     writer.Flush();
                     stream.Seek(0, SeekOrigin.Begin);
                     var reader = new StreamReader(stream, Encoding.UTF8);

@@ -30,15 +30,17 @@
     </xs:attribute>
     <xs:attribute name="specifiers" type="xs:string">
       <xs:annotation>
-        <xs:documentation>
-          Market specifiers to identify markets with additional parameters, if applicable, such as
-          "total=1.5"
-        </xs:documentation>
+        <xs:documentation>Market specifiers to identify markets with additional parameters, if applicable, such as "total=1.5"</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="outcome_id" type="xs:string" use="required">
       <xs:annotation>
         <xs:documentation>Unique id of the market outcome</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="odds" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>Odds for the selection, in EU odds format</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>

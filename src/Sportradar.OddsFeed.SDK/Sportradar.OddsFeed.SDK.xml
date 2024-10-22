@@ -9198,6 +9198,29 @@
             <param name="outcomeId">A value representing the outcome id</param>
             <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1">
+            <summary>
+            Defines methods used to build selections
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds(System.Double)">
+            <summary>
+            Sets outcome odds to the provided value
+            </summary>
+            <param name="odds">A value representing the outcome odds</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder"/> instance used to set additional values</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String,System.Nullable{System.Double})">
+            <summary>
+            Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance
+            </summary>
+            <param name="eventId">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> representing the event id</param>
+            <param name="marketId">A value representing the market id</param>
+            <param name="specifiers">A value representing the specifiers</param>
+            <param name="outcomeId">A value representing the outcome id</param>
+            <param name="odds">A odds value for the outcome</param>
+            <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance</returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.IEventChangeManager">
             <summary>
             Defines a contract implemented by classes capable of getting list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IFixtureChange"/> and/or <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IResultChange"/>
@@ -16799,6 +16822,26 @@
             DateTime when API response was generated
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1">
+            <summary>
+            Provides a probability calculation filter
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization">
+            <summary>
+            Get the value specifying if the calculation used harmonized method
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1">
+            <summary>
+            Provides a probability calculation
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization">
+            <summary>
+            Get the value specifying if the calculation used harmonized method
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket">
             <summary>
             Provides an available selections for a particular market
@@ -16866,22 +16909,32 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.EventId">
             <summary>
-            Gets the event id.
+            Gets the event id
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.MarketId">
             <summary>
-            Gets the market id.
+            Gets the market id
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Specifiers">
             <summary>
-            Gets the specifiers.
+            Gets the specifiers
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.OutcomeId">
             <summary>
-            Gets the outcome id.
+            Gets the outcome id
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1">
+            <summary>
+            Provides an requested selection
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds">
+            <summary>
+            Gets the odds
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.BonusDrumType">
@@ -23522,7 +23575,12 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.CalculationDto.GeneratedAt">
             <summary>
-            Gets the <see cref="T:System.String"/> specifying when the associated message was generated (on the server side)
+            Gets the value specifying when the associated message was generated (on the server side)
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.CalculationDto.Harmonization">
+            <summary>
+            Get the value specifying if the calculation used harmonized method
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.CalculationDto.AvailableSelections">
@@ -23568,6 +23626,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.FilteredCalculationDto.GeneratedAt">
             <summary>
             Gets the <see cref="T:System.String"/> specifying when the associated message was generated (on the server side)
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.FilteredCalculationDto.Harmonization">
+            <summary>
+            Get the value specifying if the calculation used harmonized method
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.FilteredCalculationDto.AvailableSelections">
@@ -26118,35 +26181,6 @@
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection">
             <summary>
             Implements methods used to provides an requested selection
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection.#ctor(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection"/> class
-            </summary>
-            <param name="eventId">a <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> representing the event id</param>
-            <param name="marketId">a value representing the market id</param>
-            <param name="outcomeId">a value representing the outcome id</param>
-            <param name="specifiers">a value representing the specifiers</param>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection.EventId">
-            <summary>
-            Gets the event id.
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection.MarketId">
-            <summary>
-            Gets the market id.
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection.OutcomeId">
-            <summary>
-            Gets the outcome id.
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection.Specifiers">
-            <summary>
-            Gets the specifiers.
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection.ToString">
@@ -37263,6 +37297,12 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResultType.probability">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResultType.harmonization">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResultType.harmonizationSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.ResponseType">
             <remarks/>
         </member>
@@ -37353,6 +37393,12 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.outcome_id">
             <remarks/>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.oddsSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType">
             <remarks/>
         </member>
@@ -37360,6 +37406,12 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.probability">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.harmonization">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType.harmonizationSpecified">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredEventType">
@@ -37420,6 +37472,12 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.outcome_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionType.oddsSpecified">
             <remarks/>
         </member>
     </members>

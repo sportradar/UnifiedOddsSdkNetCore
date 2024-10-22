@@ -1392,7 +1392,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 
         public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
         {
-            var enumerable = selections.ToList();
+            var selectionList = selections.ToList();
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "CalculateProbability"))
             {
                 WriteLog("Executing CalculateProbability.", true);
@@ -1401,7 +1401,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 int restCallTime;
                 try
                 {
-                    result = await _calculateProbabilityProvider.GetDataAsync(enumerable).ConfigureAwait(false);
+                    result = await _calculateProbabilityProvider.GetDataAsync(selectionList).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (CommunicationException e)
@@ -1442,7 +1442,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 
         public async Task<ICalculationFilter> CalculateProbabilityFilteredAsync(IEnumerable<ISelection> selections)
         {
-            var enumerable = selections.ToList();
+            var selectionList = selections.ToList();
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "CalculateProbabilityFiltered"))
             {
                 WriteLog("Executing CalculateProbabilityFiltered.", true);
@@ -1451,7 +1451,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 int restCallTime;
                 try
                 {
-                    result = await _calculateProbabilityFilteredProvider.GetDataAsync(enumerable).ConfigureAwait(false);
+                    result = await _calculateProbabilityFilteredProvider.GetDataAsync(selectionList).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (CommunicationException e)

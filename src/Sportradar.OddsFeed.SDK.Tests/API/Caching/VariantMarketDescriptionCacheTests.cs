@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -233,7 +234,7 @@ public class VariantMarketDescriptionCacheTests
     }
 
     [Fact]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3966:Objects should not be disposed more than once", Justification = "Test designed for this")]
+    [SuppressMessage("Major Code Smell", "S3966:Objects should not be disposed more than once", Justification = "Test designed for this")]
     public void DisposingTwiceDoesNotThrow()
     {
         _variantMarketDescriptionCache.Dispose();
@@ -321,7 +322,7 @@ public class VariantMarketDescriptionCacheTests
 
         _variantMarketDescriptionCache.CacheDeleteItem(cacheItemKey, CacheItemType.All);
 
-        _ = Assert.Single(logCache.Messages.Where(w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase)));
+        _ = Assert.Single(logCache.Messages, w => w.Contains("delete variant market", StringComparison.InvariantCultureIgnoreCase));
         Assert.Empty(logExec.Messages);
     }
 

@@ -46,6 +46,11 @@
         <xs:documentation>Unique id of the market outcome</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="odds" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>Odds for the selection, in EU odds format</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 </xs:schema>
 

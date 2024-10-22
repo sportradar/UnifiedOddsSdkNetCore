@@ -14,6 +14,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
     /// </summary>
     internal class AvailableSelections : IAvailableSelections
     {
+        public Urn Event { get; }
+
+        public IEnumerable<Rest.CustomBet.IMarket> Markets { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AvailableSelections"/> class
         /// </summary>
@@ -28,9 +32,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
             Event = availableSelections.Event;
             Markets = availableSelections.Markets.Select(m => new Market(m));
         }
-
-        public Urn Event { get; }
-
-        public IEnumerable<Rest.CustomBet.IMarket> Markets { get; }
     }
 }

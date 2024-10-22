@@ -295,7 +295,7 @@ public class CacheStoreTests
         TestExecutionHelper.WaitToComplete(() => !_testLogger.Messages.IsEmpty);
 
         _ = Assert.Single(_testLogger.Messages);
-        _ = Assert.Single(_testLogger.Messages.Where(w => w.Contains("evicted cache item", StringComparison.InvariantCultureIgnoreCase)));
+        _ = Assert.Single(_testLogger.Messages, w => w.Contains("evicted cache item", StringComparison.InvariantCultureIgnoreCase));
     }
 
     [Fact]

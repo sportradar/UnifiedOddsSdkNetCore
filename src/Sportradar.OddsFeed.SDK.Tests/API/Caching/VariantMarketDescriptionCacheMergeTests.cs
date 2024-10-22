@@ -378,7 +378,7 @@ public class VariantMarketDescriptionCacheMergeTests
         Assert.Equal(3, logExec.Messages.Count);
         Assert.Equal(2, logExec.CountByLevel(LogLevel.Debug));
         Assert.Equal(1, logExec.CountByLevel(LogLevel.Warning));
-        _ = Assert.Single(logExec.Messages.Where(w => w.Contains("Could not merge outcome", StringComparison.InvariantCultureIgnoreCase)));
+        _ = Assert.Single(logExec.Messages, w => w.Contains("Could not merge outcome", StringComparison.InvariantCultureIgnoreCase));
     }
 
     [Fact]
@@ -412,7 +412,7 @@ public class VariantMarketDescriptionCacheMergeTests
         Assert.Equal(3, logExec.Messages.Count);
         Assert.Equal(2, logExec.CountByLevel(LogLevel.Debug));
         Assert.Equal(1, logExec.CountByLevel(LogLevel.Warning));
-        _ = Assert.Single(logExec.Messages.Where(w => w.Contains("Could not merge mapping", StringComparison.InvariantCultureIgnoreCase)));
+        _ = Assert.Single(logExec.Messages, w => w.Contains("Could not merge mapping", StringComparison.InvariantCultureIgnoreCase));
     }
 
     [Fact]
@@ -432,8 +432,8 @@ public class VariantMarketDescriptionCacheMergeTests
         Assert.Equal(3, logExec.Messages.Count);
         Assert.Equal(2, logExec.CountByLevel(LogLevel.Debug));
         Assert.Equal(1, logExec.CountByLevel(LogLevel.Warning));
-        _ = Assert.Single(logExec.Messages.Where(w => w.Contains("Original Id=", StringComparison.InvariantCultureIgnoreCase)));
-        _ = Assert.Single(logExec.Messages.Where(w => w.Contains("New Id=", StringComparison.InvariantCultureIgnoreCase)));
+        _ = Assert.Single(logExec.Messages, w => w.Contains("Original Id=", StringComparison.InvariantCultureIgnoreCase));
+        _ = Assert.Single(logExec.Messages, w => w.Contains("New Id=", StringComparison.InvariantCultureIgnoreCase));
     }
 
     private void AddDummyDescriptionAndSpecifiersAndMappingsAndWrongOutcome()

@@ -10,12 +10,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
     /// <summary>
     /// The run-time implementation of the <see cref="ICustomBetSelectionBuilder"/> interface
     /// </summary>
-    internal class CustomBetSelectionBuilder : ICustomBetSelectionBuilder
+    internal class CustomBetSelectionBuilder : ICustomBetSelectionBuilderV1
     {
         private Urn _eventId;
         private int _marketId;
         private string _outcomeId;
         private string _specifiers;
+        private double? _odds;
 
         public ICustomBetSelectionBuilder SetEventId(Urn eventId)
         {
@@ -34,20 +35,26 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             _outcomeId = outcomeId;
             return this;
         }
-
         public ICustomBetSelectionBuilder SetSpecifiers(string specifiers)
         {
             _specifiers = specifiers;
             return this;
         }
 
+        public ICustomBetSelectionBuilder SetOdds(double odds)
+        {
+            _odds = odds;
+            return this;
+        }
+
         public ISelection Build()
         {
-            var selection = new Selection(_eventId, _marketId, _outcomeId, _specifiers);
+            var selection = new Selection(_eventId, _marketId, _outcomeId, _specifiers, _odds);
             _eventId = null;
             _marketId = 0;
             _outcomeId = null;
             _specifiers = null;
+            _odds = null;
             return selection;
         }
 
@@ -57,6 +64,16 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             _marketId = marketId;
             _outcomeId = outcomeId;
             _specifiers = specifiers;
+            return Build();
+        }
+
+        public ISelection Build(Urn eventId, int marketId, string specifiers, string outcomeId, double? odds)
+        {
+            _eventId = eventId;
+            _marketId = marketId;
+            _outcomeId = outcomeId;
+            _specifiers = specifiers;
+            _odds = odds;
             return Build();
         }
     }

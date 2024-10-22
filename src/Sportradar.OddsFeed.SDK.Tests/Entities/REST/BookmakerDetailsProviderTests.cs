@@ -86,35 +86,11 @@ public class BookmakerDetailsProviderTests
     }
 
     [Fact]
-    public async Task GetDataAsyncWhenIdentifierEmptyStringThenThrow()
-    {
-        SetupDataFetcherWithValidResponse();
-
-        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _bookmakerDetailsProvider.GetDataAsync(new[] { string.Empty }));
-    }
-
-    [Fact]
-    public async Task GetDataAsyncWhenIdentifierNullThenThrow()
-    {
-        SetupDataFetcherWithValidResponse();
-
-        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _bookmakerDetailsProvider.GetDataAsync((string)null));
-    }
-
-    [Fact]
-    public async Task GetDataAsyncWhenIdentifierEmptyThenThrow()
-    {
-        SetupDataFetcherWithValidResponse();
-
-        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _bookmakerDetailsProvider.GetDataAsync(string.Empty));
-    }
-
-    [Fact]
     public async Task GetDataAsyncWhenCorrectResponseThenDataIsReturned()
     {
         SetupDataFetcherWithValidResponse();
 
-        var dto = await _bookmakerDetailsProvider.GetDataAsync(new[] { DefaultLanguageCode });
+        var dto = await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         Assert.Equal(6908, dto.Id);
@@ -127,7 +103,7 @@ public class BookmakerDetailsProviderTests
     {
         SetupDataFetcherWithValidResponse();
 
-        var dto = await _bookmakerDetailsProvider.GetDataAsync(new[] { DefaultLanguageCode });
+        var dto = await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         Assert.Equal(TimeSpan.Zero, dto.ServerTimeDifference);
@@ -138,7 +114,7 @@ public class BookmakerDetailsProviderTests
     {
         SetupDataFetcherWithInvalidAttributeResponse();
 
-        var dto = await _bookmakerDetailsProvider.GetDataAsync(new[] { DefaultLanguageCode });
+        var dto = await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         Assert.Equal(6908, dto.Id);
@@ -151,7 +127,7 @@ public class BookmakerDetailsProviderTests
     {
         SetupDataFetcherWithInvalidResponse();
 
-        await Assert.ThrowsAsync<DeserializationException>(async () => await _bookmakerDetailsProvider.GetDataAsync(new[] { DefaultLanguageCode }));
+        await Assert.ThrowsAsync<DeserializationException>(async () => await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]));
     }
 
     [Fact]
@@ -210,35 +186,11 @@ public class BookmakerDetailsProviderTests
     }
 
     [Fact]
-    public void GetDataWhenIdentifierEmptyStringThenThrow()
-    {
-        SetupDataFetcherWithValidResponse();
-
-        Assert.Throws<ArgumentOutOfRangeException>(() => _bookmakerDetailsProvider.GetData(new[] { string.Empty }));
-    }
-
-    [Fact]
-    public void GetDataWhenIdentifierNullThenThrow()
-    {
-        SetupDataFetcherWithValidResponse();
-
-        Assert.Throws<ArgumentOutOfRangeException>(() => _bookmakerDetailsProvider.GetData(null));
-    }
-
-    [Fact]
-    public void GetDataWhenIdentifierEmptyThenThrow()
-    {
-        SetupDataFetcherWithValidResponse();
-
-        Assert.Throws<ArgumentOutOfRangeException>(() => _bookmakerDetailsProvider.GetData(string.Empty));
-    }
-
-    [Fact]
     public void GetDataWhenCorrectResponseThenDataIsReturned()
     {
         SetupDataFetcherWithValidResponse();
 
-        var dto = _bookmakerDetailsProvider.GetData(new[] { DefaultLanguageCode });
+        var dto = _bookmakerDetailsProvider.GetData([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         Assert.Equal(6908, dto.Id);
@@ -251,7 +203,7 @@ public class BookmakerDetailsProviderTests
     {
         SetupDataFetcherWithValidResponse();
 
-        var dto = _bookmakerDetailsProvider.GetData(new[] { DefaultLanguageCode });
+        var dto = _bookmakerDetailsProvider.GetData([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         Assert.Equal(TimeSpan.Zero, dto.ServerTimeDifference);
@@ -262,7 +214,7 @@ public class BookmakerDetailsProviderTests
     {
         SetupDataFetcherWithInvalidAttributeResponse();
 
-        var dto = _bookmakerDetailsProvider.GetData(new[] { DefaultLanguageCode });
+        var dto = _bookmakerDetailsProvider.GetData([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         Assert.Equal(6908, dto.Id);
@@ -275,7 +227,7 @@ public class BookmakerDetailsProviderTests
     {
         SetupDataFetcherWithInvalidResponse();
 
-        Assert.Throws<DeserializationException>(() => _bookmakerDetailsProvider.GetData(new[] { DefaultLanguageCode }));
+        Assert.Throws<DeserializationException>(() => _bookmakerDetailsProvider.GetData([DefaultLanguageCode]));
     }
 
     [Fact]
@@ -334,7 +286,7 @@ public class BookmakerDetailsProviderTests
             receivedArgs = args;
         };
 
-        await _bookmakerDetailsProvider.GetDataAsync(new[] { DefaultLanguageCode });
+        await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]);
 
         ValidateReceivedRawArgs(receivedArgs);
     }
@@ -350,7 +302,7 @@ public class BookmakerDetailsProviderTests
             receivedArgs = args;
         };
 
-        _ = _bookmakerDetailsProvider.GetData(new[] { DefaultLanguageCode });
+        _ = _bookmakerDetailsProvider.GetData([DefaultLanguageCode]);
 
         ValidateReceivedRawArgs(receivedArgs);
     }
@@ -366,7 +318,7 @@ public class BookmakerDetailsProviderTests
             throw new InvalidOperationException("Test exception");
         };
 
-        var dto = await _bookmakerDetailsProvider.GetDataAsync(new[] { DefaultLanguageCode });
+        var dto = await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         ValidateReceivedRawArgs(receivedArgs);
@@ -383,7 +335,7 @@ public class BookmakerDetailsProviderTests
             throw new InvalidOperationException("Test exception");
         };
 
-        var dto = _bookmakerDetailsProvider.GetData(new[] { DefaultLanguageCode });
+        var dto = _bookmakerDetailsProvider.GetData([DefaultLanguageCode]);
 
         Assert.NotNull(dto);
         ValidateReceivedRawArgs(receivedArgs);
