@@ -39,6 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
     {
         internal const string HttpClientDefaultRequestHeaderForAccessToken = "x-access-token";
         internal const string HttpClientDefaultRequestHeaderForUserAgent = "User-Agent";
+        internal const string HttpClientNameForFastFailing = "HttpClientFastFailing";
+        internal const string HttpClientNameForRecovery = "HttpClientRecovery";
+        internal const string HttpClientNameForNormal = "HttpClientNormal";
 
         internal const string CacheStoreNameForInvariantMarketDescriptionsCache = "MemoryCacheForInvariantMarketDescriptionsCache";
         internal const string CacheStoreNameForVariantMarketDescriptionCache = "MemoryCacheForVariantMarketDescriptionCache";
@@ -146,61 +149,45 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private static void RegisterHttpClients(IServiceCollection services, IUofConfiguration configuration)
         {
-            var httpClientHandler = new HttpClientHandler { MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer, AllowAutoRedirect = true };
-
             var userAgentData = string.Intern($"UfSdk-{SdkInfo.SdkType}/{SdkInfo.GetVersion()} (OS: {Environment.OSVersion}, NET: {Environment.Version}, Init: {DateTime.UtcNow:yyyyMMddHHmm})");
-            services.AddHttpClient("HttpClient")
-                .ConfigureHttpClient(configureClient =>
-                {
-                    configureClient.Timeout = configuration.Api.HttpClientTimeout;
-                    configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
-                    configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
-                })
-                .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
-            services.AddHttpClient("HttpClientRecovery")
-                .ConfigureHttpClient(configureClient =>
-                {
-                    configureClient.Timeout = configuration.Api.HttpClientRecoveryTimeout;
-                    configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
-                    configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
-                })
-                .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
-            services.AddHttpClient("HttpClientFastFailing")
-                .ConfigureHttpClient(configureClient =>
-                {
-                    configureClient.Timeout = configuration.Api.HttpClientFastFailingTimeout;
-                    configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
-                    configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
-                })
-                .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
 
-            services.AddSingleton<ISdkHttpClient, SdkHttpClient>(serviceProvider =>
+            services.AddHttpClient(HttpClientNameForNormal)
+                    .ConfigureHttpClient(configureClient =>
+                                         {
+                                             configureClient.Timeout = configuration.Api.HttpClientTimeout;
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
+                                         })
+                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer, AllowAutoRedirect = true });
+            services.AddHttpClient(HttpClientNameForRecovery)
+                    .ConfigureHttpClient(configureClient =>
+                                         {
+                                             configureClient.Timeout = configuration.Api.HttpClientRecoveryTimeout;
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
+                                         })
+                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer, AllowAutoRedirect = true });
+            services.AddHttpClient(HttpClientNameForFastFailing)
+                    .ConfigureHttpClient(configureClient =>
+                                         {
+                                             configureClient.Timeout = configuration.Api.HttpClientFastFailingTimeout;
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
+                                         })
+                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer, AllowAutoRedirect = true });
 
-                new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClient"))
-            );
-            services.AddSingleton<ISdkHttpClientRecovery, SdkHttpClientRecovery>(serviceProvider =>
+            services.AddTransient<ISdkHttpClient, SdkHttpClient>(serviceProvider => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForNormal));
+            services.AddTransient<ISdkHttpClientRecovery, SdkHttpClientRecovery>(serviceProvider => new SdkHttpClientRecovery(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForRecovery));
+            services.AddTransient<ISdkHttpClientFastFailing, SdkHttpClientFastFailing>(serviceProvider => new SdkHttpClientFastFailing(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForFastFailing));
 
-                new SdkHttpClientRecovery(serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientRecovery"))
-            );
-            services.AddSingleton<ISdkHttpClientFastFailing, SdkHttpClientFastFailing>(serviceProvider =>
-
-                new SdkHttpClientFastFailing(serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientFastFailing"))
-            );
-
-            services.AddSingleton<HttpDataFetcher, HttpDataFetcher>(serviceProvider =>
-                new HttpDataFetcher(
-                    serviceProvider.GetRequiredService<ISdkHttpClient>(),
-                    serviceProvider.GetRequiredService<IDeserializer<response>>())
-            );
-
-            var logHttpDataFetcherLoggerName = SdkLoggerFactory.SdkLogRepositoryName + "." + Enum.GetName(typeof(LoggerType), LoggerType.RestTraffic);
+            var restTrafficLoggerName = SdkLoggerFactory.SdkLogRepositoryName + "." + Enum.GetName(typeof(LoggerType), LoggerType.RestTraffic);
 
             services.AddSingleton<IDataFetcher, LogHttpDataFetcher>(serviceProvider =>
                 new LogHttpDataFetcher(
                     serviceProvider.GetRequiredService<ISdkHttpClient>(),
                     serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
-                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(logHttpDataFetcherLoggerName))
+                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
 
             services.AddSingleton<IDataPoster, LogHttpDataFetcher>(serviceProvider =>
@@ -208,7 +195,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISdkHttpClient>(),
                     serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
-                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(logHttpDataFetcherLoggerName))
+                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
 
             services.AddSingleton<IDataRestful, HttpDataRestful>(serviceProvider =>
@@ -222,7 +209,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISdkHttpClient>(),
                     serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
-                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(logHttpDataFetcherLoggerName))
+                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
 
             services.AddSingleton<ILogHttpDataFetcherRecovery, LogHttpDataFetcherRecovery>(serviceProvider =>
@@ -230,7 +217,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISdkHttpClientRecovery>(),
                     serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
-                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(logHttpDataFetcherLoggerName))
+                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
 
             services.AddSingleton<ILogHttpDataFetcherFastFailing, LogHttpDataFetcherFastFailing>(serviceProvider =>
@@ -238,11 +225,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISdkHttpClientFastFailing>(),
                     serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
-                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(logHttpDataFetcherLoggerName))
+                    serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
         }
 
-        internal static void RegisterBookmakerDetailsProvider(IServiceCollection services)
+        private static void RegisterBookmakerDetailsProvider(IServiceCollection services)
         {
             services.AddSingleton<IDeserializer<bookmaker_details>, Deserializer<bookmaker_details>>();
             services.AddSingleton<ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto>, BookmakerDetailsMapperFactory>();

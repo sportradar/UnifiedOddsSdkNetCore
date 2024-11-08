@@ -23,7 +23,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Sportradar.OddsFeed.SDKCore" Version="2.4.0" />
+    <PackageReference Include="Sportradar.OddsFeed.SDKCore" Version="2.4.0-rc1-feedsdk-2447" />
   </ItemGroup>
 
   <ItemGroup>

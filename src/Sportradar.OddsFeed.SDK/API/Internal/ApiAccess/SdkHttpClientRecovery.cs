@@ -6,8 +6,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 {
     internal class SdkHttpClientRecovery : SdkHttpClient, ISdkHttpClientRecovery
     {
-        public SdkHttpClientRecovery(HttpClient httpClient)
-        : base(httpClient)
+        public SdkHttpClientRecovery(IHttpClientFactory httpClientFactory, string httpClientName)
+            : base(httpClientFactory, httpClientName)
         {
         }
     }

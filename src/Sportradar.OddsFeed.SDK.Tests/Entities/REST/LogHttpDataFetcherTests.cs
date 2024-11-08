@@ -9,6 +9,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -28,10 +30,10 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 public class LogHttpDataFetcherTests
 {
     private readonly ITestOutputHelper _outputHelper;
+    private const string HttpClientDefaultName = "test";
     private readonly IncrementalSequenceGenerator _incrementalSequenceGenerator;
     private readonly SdkHttpClient _sdkHttpClient;
     private LogHttpDataFetcher _logHttpDataFetcher;
-    private readonly LogHttpDataFetcher _logHttpDataFetcherPool;
     private readonly Uri _badUri = new Uri("http://www.unexisting-url.com");
     private readonly Uri _getUri = new Uri("http://test.domain.com/get");
     private readonly Uri _postUri = new Uri("http://test.domain.com/post");
@@ -41,33 +43,94 @@ public class LogHttpDataFetcherTests
     {
         _outputHelper = outputHelper;
         _stubMessageHandler = new StubMessageHandler(_outputHelper, 100, 50);
-        var httpClient = new HttpClient(_stubMessageHandler);
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
-        _sdkHttpClient = new SdkHttpClient(httpClient);
-        var sdkHttpClientPool = new SdkHttpClientPool("aaa", 20, TimeSpan.FromSeconds(5), _stubMessageHandler);
+        var services = new ServiceCollection();
+        services.AddHttpClient(HttpClientDefaultName)
+                .ConfigureHttpClient(configureClient =>
+                                     {
+                                         configureClient.Timeout = TimeSpan.FromSeconds(5);
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
+                                     })
+                .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+        var serviceProvider = services.BuildServiceProvider();
+        _sdkHttpClient = new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName);
 
         _incrementalSequenceGenerator = new IncrementalSequenceGenerator(new NullLogger<IncrementalSequenceGenerator>());
         _logHttpDataFetcher = new LogHttpDataFetcher(_sdkHttpClient, _incrementalSequenceGenerator, new Deserializer<response>(), new NullLogger<LogHttpDataFetcher>());
-        _logHttpDataFetcherPool = new LogHttpDataFetcher(sdkHttpClientPool, _incrementalSequenceGenerator, new Deserializer<response>(), new NullLogger<LogHttpDataFetcher>());
     }
 
     [Fact]
-    public void SdkHttpClientWithoutAccessTokenFails()
+    public void SdkHttpClientWhenConstructedThenSetTimeout()
     {
-        var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
-
-        Assert.Throws<InvalidOperationException>(() => new SdkHttpClient(httpClient));
+        _sdkHttpClient.Timeout.TotalSeconds.Should().Be(5);
     }
 
     [Fact]
-    public void SdkHttpClientWithoutUserAgentFails()
+    public void SdkHttpClientWhenWithoutHeadersThenThrow()
     {
-        var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
+        var services = new ServiceCollection();
+        services.AddHttpClient(HttpClientDefaultName)
+            .ConfigureHttpClient(configureClient =>
+            {
+                configureClient.Timeout = TimeSpan.FromSeconds(5);
+                configureClient.DefaultRequestHeaders.Clear();
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+        var serviceProvider = services.BuildServiceProvider();
 
-        Assert.Throws<InvalidOperationException>(() => new SdkHttpClient(httpClient));
+        Assert.Throws<InvalidOperationException>(() => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName));
+    }
+
+    [Fact]
+    public void SdkHttpClientWhenWithoutAccessTokenThenThrow()
+    {
+        var services = new ServiceCollection();
+        services.AddHttpClient(HttpClientDefaultName)
+                .ConfigureHttpClient(configureClient =>
+                                     {
+                                         configureClient.Timeout = TimeSpan.FromSeconds(5);
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
+                                     })
+                .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+        var serviceProvider = services.BuildServiceProvider();
+
+        Assert.Throws<InvalidOperationException>(() => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName));
+    }
+
+    [Fact]
+    public void SdkHttpClientWhenWithoutUserAgentThenThrow()
+    {
+        var services = new ServiceCollection();
+        services.AddHttpClient(HttpClientDefaultName)
+                .ConfigureHttpClient(configureClient =>
+                                     {
+                                         configureClient.Timeout = TimeSpan.FromSeconds(5);
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
+                                     })
+                .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+        var serviceProvider = services.BuildServiceProvider();
+
+        Assert.Throws<InvalidOperationException>(() => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName));
+    }
+
+    [Fact]
+    public void SdkHttpClientWhenWithLowCaseUserAgentThenDoNotThrow()
+    {
+        var services = new ServiceCollection();
+        services.AddHttpClient(HttpClientDefaultName)
+            .ConfigureHttpClient(configureClient =>
+            {
+                configureClient.Timeout = TimeSpan.FromSeconds(5);
+                configureClient.DefaultRequestHeaders.Clear();
+                configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
+                configureClient.DefaultRequestHeaders.Add("user-agent", "UofSdk-Net");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+        var serviceProvider = services.BuildServiceProvider();
+
+        var sdkHttpClient = new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName);
+
+        sdkHttpClient.Should().NotBeNull();
     }
 
     [Fact]
@@ -100,22 +163,6 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public async Task PerformancePoolOfManyParallelRequests()
-    {
-        var stopwatch = Stopwatch.StartNew();
-        var tasks = new List<Task>();
-        for (var i = 0; i < 1000; i++)
-        {
-            var task = _logHttpDataFetcherPool.GetDataAsync(GetRequestUri(false));
-            tasks.Add(task);
-        }
-        await Task.WhenAll(tasks);
-
-        Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
-        _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
-    }
-
-    [Fact]
     public async Task PerformanceOfManyUniqueParallelRequests()
     {
         var stopwatch = Stopwatch.StartNew();
@@ -123,22 +170,6 @@ public class LogHttpDataFetcherTests
         for (var i = 0; i < 1000; i++)
         {
             var task = _logHttpDataFetcher.GetDataAsync(GetRequestUri(true));
-            tasks.Add(task);
-        }
-        await Task.WhenAll(tasks);
-
-        Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
-        _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
-    }
-
-    [Fact]
-    public async Task PerformancePoolOfManyUniqueParallelRequests()
-    {
-        var stopwatch = Stopwatch.StartNew();
-        var tasks = new List<Task>();
-        for (var i = 0; i < 1000; i++)
-        {
-            var task = _logHttpDataFetcherPool.GetDataAsync(GetRequestUri(true));
             tasks.Add(task);
         }
         await Task.WhenAll(tasks);
@@ -164,23 +195,7 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public async Task PerformancePoolOfManyUniqueUriParallelRequests()
-    {
-        var stopwatch = Stopwatch.StartNew();
-        var tasks = new List<Task>();
-        for (var i = 0; i < 1000; i++)
-        {
-            var task = _logHttpDataFetcherPool.GetDataAsync(GetRandomUri(true));
-            tasks.Add(task);
-        }
-        await Task.WhenAll(tasks);
-
-        Assert.True(tasks.TrueForAll(a => a.IsCompletedSuccessfully));
-        _outputHelper.WriteLine($"Elapsed {stopwatch.ElapsedMilliseconds} ms");
-    }
-
-    [Fact]
-    public async Task GetDataAsyncWhneNormalUri()
+    public async Task GetDataAsyncWhenNormalUri()
     {
         // in logRest file there should be result for this call
         var result = await _logHttpDataFetcher.GetDataAsync(_getUri);
@@ -241,6 +256,22 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
+    public async Task GetDataAsyncWhenWrongUrlThenThrowsHttpRequestExceptionWithNotFound()
+    {
+        _stubMessageHandler.SetWantedResponse(new HttpRequestException("NotFound any-message", new SocketException(), HttpStatusCode.NotFound));
+        Stream result = null;
+
+        var e = await Assert.ThrowsAsync<CommunicationException>(async () => result = await _logHttpDataFetcher.GetDataAsync(_badUri));
+
+        Assert.Null(result);
+        Assert.IsType<CommunicationException>(e);
+        if (e.InnerException != null)
+        {
+            Assert.IsType<HttpRequestException>(e.InnerException);
+        }
+    }
+
+    [Fact]
     public async Task GetDataAsyncWhenWrongUrlThenThrowsSocketException()
     {
         _stubMessageHandler.SetWantedResponse(new SocketException());
@@ -268,13 +299,9 @@ public class LogHttpDataFetcherTests
     [Fact]
     public async Task PostData_DebugLog()
     {
-        var httpClient = new HttpClient(_stubMessageHandler);
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
-        var sdkHttpClient = new SdkHttpClient(httpClient);
         var mockLocker = new Mock<ILogger>();
         mockLocker.Setup(l => l.IsEnabled(LogLevel.Debug)).Returns(true);
-        var logHttpDataFetcher = new LogHttpDataFetcher(sdkHttpClient, _incrementalSequenceGenerator, new Deserializer<response>(), mockLocker.Object);
+        var logHttpDataFetcher = new LogHttpDataFetcher(_sdkHttpClient, _incrementalSequenceGenerator, new Deserializer<response>(), mockLocker.Object);
 
         var result = await logHttpDataFetcher.PostDataAsync(_getUri);
 

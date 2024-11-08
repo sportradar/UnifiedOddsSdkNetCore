@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,20 +86,26 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         public virtual async Task<Stream> GetDataAsync(Uri uri)
         {
             ValidateConnection(uri);
-            var responseMessage = new HttpResponseMessage();
+            HttpResponseMessage responseMessage = null;
             try
             {
                 responseMessage = await SdkHttpClient.GetAsync(uri).ConfigureAwait(false);
                 return await ProcessGetDataAsync(responseMessage, uri).ConfigureAwait(false);
             }
+            catch (CommunicationException)
+            {
+                RecordFailure();
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                RecordFailure();
+                throw new CommunicationException("Failed to execute http get", uri.ToString(), responseMessage?.StatusCode ?? HttpStatusCode.RequestTimeout, ex);
+            }
             catch (Exception ex)
             {
                 RecordFailure();
-                if (ex is CommunicationException)
-                {
-                    throw;
-                }
-                throw new CommunicationException("Failed to execute http get", uri.ToString(), responseMessage.StatusCode, ex);
+                throw new CommunicationException("Failed to execute http get", uri.ToString(), responseMessage?.StatusCode ?? HttpStatusCode.OK, ex);
             }
         }
 
@@ -173,7 +180,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         public virtual async Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null)
         {
             ValidateConnection(uri);
-            var responseMessage = new HttpResponseMessage();
+            HttpResponseMessage responseMessage = null;
             try
             {
                 responseMessage = await SdkHttpClient.PostAsync(uri, content ?? new StringContent(string.Empty)).ConfigureAwait(false);
@@ -190,14 +197,20 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 }
                 return responseMessage;
             }
+            catch (CommunicationException)
+            {
+                RecordFailure();
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                RecordFailure();
+                throw new CommunicationException("Failed to execute http post", uri.ToString(), responseMessage?.StatusCode ?? HttpStatusCode.RequestTimeout, ex);
+            }
             catch (Exception ex)
             {
                 RecordFailure();
-                if (ex is CommunicationException)
-                {
-                    throw;
-                }
-                throw new CommunicationException("Failed to execute http post", uri.ToString(), responseMessage.StatusCode, ex);
+                throw new CommunicationException("Failed to execute http post", uri.ToString(), responseMessage?.StatusCode ?? HttpStatusCode.OK, ex);
             }
         }
 
@@ -242,7 +255,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 
             if (_blockingModeActive)
             {
-                throw new CommunicationException("Failed to execute request due to previous failures.", uri.ToString(), null);
+                throw new CommunicationException("Failed to execute request due to previous failures", uri.ToString(), null);
             }
         }
     }

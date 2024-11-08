@@ -1,5 +1,8 @@
 # Change Log
 
+## 2024-11-08  2.4.1
+- Improved how api requests are made (utilizing IHttpClientFactory)
+
 ## 2024-10-22  2.4.0
 - CustomBet ICalculation and ICalculationFilter extended with new property Harmonization (extended with ICalculationV1 and ICalculationFilterV1)
 - CustomBet ISelection extended with new property Odds (extended with ISelectionV1)

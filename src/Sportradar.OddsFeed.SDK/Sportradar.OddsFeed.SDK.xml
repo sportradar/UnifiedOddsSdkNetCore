@@ -2484,7 +2484,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcher">
             <summary>
-            A implementation of <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher"/> and <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataPoster"/> which uses the HTTP requests to fetch or post the requested data. All request are logged.
+            An implementation of <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher"/> and <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataPoster"/> which uses the HTTP requests to fetch or post the requested data. All request are logged.
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" />
             <remarks>ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF - the levels are defined in order of increasing priority</remarks>
@@ -2574,21 +2574,6 @@
             <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent)">
-            <inheritdoc />
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClientPool.DefaultRequestHeaders">
-            <inheritdoc />
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClientPool.GetAsync(System.Uri)">
-            <inheritdoc />
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClientPool.PostAsync(System.Uri,System.Net.Http.HttpContent)">
-            <inheritdoc />
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClientPool.DeleteAsync(System.Uri)">
-            <inheritdoc />
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClientPool.PutAsync(System.Uri,System.Net.Http.HttpContent)">
             <inheritdoc />
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.BookmakerDetailsFetcher">

@@ -6,8 +6,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 {
     internal class SdkHttpClientFastFailing : SdkHttpClient, ISdkHttpClientFastFailing
     {
-        public SdkHttpClientFastFailing(HttpClient httpClient)
-        : base(httpClient)
+        public SdkHttpClientFastFailing(IHttpClientFactory httpClientFactory, string httpClientName)
+            : base(httpClientFactory, httpClientName)
         {
         }
     }

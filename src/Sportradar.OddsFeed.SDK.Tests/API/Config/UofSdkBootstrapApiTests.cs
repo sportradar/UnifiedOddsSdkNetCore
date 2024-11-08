@@ -38,9 +38,9 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     [Fact]
     public void HttpClientIsRegistered()
     {
-        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClient");
-        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClient");
-        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClient");
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForNormal);
+        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForNormal);
+        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForNormal);
         Assert.NotNull(service1);
         Assert.NotNull(service1A);
         Assert.NotNull(service2);
@@ -51,9 +51,9 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     [Fact]
     public void HttpClientRecoveryIsRegistered()
     {
-        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientRecovery");
-        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientRecovery");
-        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientRecovery");
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForRecovery);
+        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForRecovery);
+        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForRecovery);
         Assert.NotNull(service1);
         Assert.NotNull(service1A);
         Assert.NotNull(service2);
@@ -64,9 +64,9 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     [Fact]
     public void HttpClientFastFailingIsRegistered()
     {
-        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientFastFailing");
-        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientFastFailing");
-        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientFastFailing");
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForFastFailing);
+        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForFastFailing);
+        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForFastFailing);
         Assert.NotNull(service1);
         Assert.NotNull(service1A);
         Assert.NotNull(service2);
@@ -77,9 +77,9 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     [Fact]
     public void HttpClientsHaveDifferentTimeouts()
     {
-        var httpClientNormal = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClient");
-        var httpClientRecovery = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientRecovery");
-        var httpClientFastFailing = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("HttpClientFastFailing");
+        var httpClientNormal = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForNormal);
+        var httpClientRecovery = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForRecovery);
+        var httpClientFastFailing = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForFastFailing);
         Assert.NotNull(httpClientNormal);
         Assert.NotNull(httpClientRecovery);
         Assert.NotNull(httpClientFastFailing);
@@ -93,9 +93,9 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     }
 
     [Fact]
-    public void SdkHttpClientInterfaceIsSingleton()
+    public void SdkHttpClientInterfaceIsTransient()
     {
-        CheckSingletonType<ISdkHttpClient>();
+        CheckTransientType<ISdkHttpClient>();
     }
 
     [Fact]
@@ -166,12 +166,6 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     {
         var sdkHttpClient = ServiceScope1.ServiceProvider.GetRequiredService<ISdkHttpClientFastFailing>();
         Assert.Equal(UofConfig.Api.HttpClientFastFailingTimeout, sdkHttpClient.Timeout);
-    }
-
-    [Fact]
-    public void HttpDataFetcherIsSingleton()
-    {
-        CheckSingletonType<HttpDataFetcher>();
     }
 
     [Fact]

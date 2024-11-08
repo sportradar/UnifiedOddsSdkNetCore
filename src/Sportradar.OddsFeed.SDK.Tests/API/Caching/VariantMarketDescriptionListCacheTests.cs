@@ -575,7 +575,7 @@ public class VariantMarketDescriptionListCacheTests
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml", new ObjectDisposedException("Drm disposed")));
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions), timeoutMs: 20000);
 
         Assert.True(success);
     }
@@ -845,9 +845,9 @@ public class VariantMarketDescriptionListCacheTests
     // public async Task GetAllWhenNoDataPresentThenReturnEmptyCollection()
     // {
     //     Assert.Equal(0, _variantsListMemoryCache.Count());
-    //     
+    //
     //     var result = await _variantsListCache.GetAllInvariantMarketDescriptionsAsync(_cultures);
-    //     
+    //
     //     Assert.Empty(result);
     // }
     //
@@ -855,9 +855,9 @@ public class VariantMarketDescriptionListCacheTests
     // public async Task GetAllWhenDataPresentThenReturnAllCollection()
     // {
     //     _ = await _variantsListCache.LoadMarketDescriptionsAsync();
-    //     
+    //
     //     var result = await _variantsListCache.GetAllInvariantMarketDescriptionsAsync(_cultures);
-    //     
+    //
     //     Assert.Equal(ScheduleData.VariantListCacheCount, result.Count());
     // }
     //

@@ -10,55 +10,61 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 {
     internal class SdkHttpClient : ISdkHttpClient
     {
-        private readonly HttpClient _httpClient;
-
-        public TimeSpan Timeout => _httpClient.Timeout;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly string _httpClientName;
+        public TimeSpan Timeout { get; }
 
         /// <inheritdoc />
-        public HttpRequestHeaders DefaultRequestHeaders => _httpClient.DefaultRequestHeaders;
+        public HttpRequestHeaders DefaultRequestHeaders { get; }
 
-        public SdkHttpClient(HttpClient httpClient)
+        public SdkHttpClient(IHttpClientFactory httpClientFactory, string httpClientName)
         {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            if (_httpClient.DefaultRequestHeaders.IsNullOrEmpty())
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _httpClientName = string.IsNullOrEmpty(httpClientName) ? throw new ArgumentNullException(nameof(httpClientName)) : httpClientName;
+
+            var httpClient = _httpClientFactory.CreateClient(_httpClientName);
+            if (httpClient.DefaultRequestHeaders.IsNullOrEmpty())
             {
                 throw new InvalidOperationException("Missing DefaultRequestHeaders");
             }
-            if (!_httpClient.DefaultRequestHeaders.Contains("x-access-token"))
+            if (!httpClient.DefaultRequestHeaders.Contains("x-access-token"))
             {
                 throw new InvalidOperationException("Missing x-access-token");
             }
-            if (!_httpClient.DefaultRequestHeaders.Contains("User-Agent"))
+            if (!httpClient.DefaultRequestHeaders.Contains("User-Agent"))
             {
                 throw new InvalidOperationException("User-Agent");
             }
-            //_httpClient.DefaultRequestHeaders.Add("x-access-token", accessToken); //
-            //_httpClient.DefaultRequestHeaders.Add("User-Agent", $"UfSdk-{SdkInfo.SdkType}/{SdkInfo.GetVersion()} (OS: {Environment.OSVersion}, NET: {Environment.Version}, Init: {SdkInfo.Created:yyyyMMddHHmm})");
-            //Timeout = TimeSpan.FromSeconds(_httpClient.Timeout.TotalSeconds);
+            Timeout = httpClient.Timeout;
+            DefaultRequestHeaders = httpClient.DefaultRequestHeaders;
         }
 
         /// <inheritdoc />
         public async Task<HttpResponseMessage> GetAsync(Uri requestUri)
         {
-            return await _httpClient.GetAsync(requestUri).ConfigureAwait(false);
+            var httpClient = _httpClientFactory.CreateClient(_httpClientName);
+            return await httpClient.GetAsync(requestUri).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<HttpResponseMessage> PostAsync(Uri requestUri, HttpContent content)
         {
-            return await _httpClient.PostAsync(requestUri, content).ConfigureAwait(false);
+            var httpClient = _httpClientFactory.CreateClient(_httpClientName);
+            return await httpClient.PostAsync(requestUri, content).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<HttpResponseMessage> DeleteAsync(Uri requestUri)
         {
-            return await _httpClient.DeleteAsync(requestUri).ConfigureAwait(false);
+            var httpClient = _httpClientFactory.CreateClient(_httpClientName);
+            return await httpClient.DeleteAsync(requestUri).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<HttpResponseMessage> PutAsync(Uri requestUri, HttpContent content)
         {
-            return await _httpClient.PutAsync(requestUri, content).ConfigureAwait(false);
+            var httpClient = _httpClientFactory.CreateClient(_httpClientName);
+            return await httpClient.PutAsync(requestUri, content).ConfigureAwait(false);
         }
     }
 }

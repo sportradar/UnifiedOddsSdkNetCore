@@ -19,9 +19,8 @@ The SDK uses the following 3rd party libraries which must be added via the NuGet
 - RabbitMQ.Client (6.5.0)
 
 The package contains:
-- DemoProject: A Visual Studio 2022 solution containing a demo project showing the basic usage of the SDK
+- DemoProject: A solution containing a demo project showing the basic usage of the SDK
 - libs: DLL file composing the Odds Feed SDK
-- Odds Feed SDK Documentation.chm: A documentation file describing exposed entities
 - Resources containing the log4net configuration needed by the Odds Feed SDK
 
 For more information please contact support@sportradar.com or visit https://iodocs.betradar.com/unifiedsdk/index.html

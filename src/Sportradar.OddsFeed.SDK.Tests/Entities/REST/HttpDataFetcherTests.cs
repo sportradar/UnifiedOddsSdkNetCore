@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.Extensions.DependencyInjection;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -22,6 +23,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
 public class HttpDataFetcherTests
 {
+    private readonly ITestOutputHelper _outputHelper;
     private readonly SdkHttpClient _sdkHttpClient;
     private readonly HttpDataFetcher _httpDataFetcher;
     private readonly Uri _badUri = new Uri("http://www.unexisting-url.com");
@@ -31,11 +33,20 @@ public class HttpDataFetcherTests
 
     public HttpDataFetcherTests(ITestOutputHelper outputHelper)
     {
-        _stubMessageHandler = new StubMessageHandler(outputHelper, 100, 50);
-        var httpClient = new HttpClient(_stubMessageHandler);
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
-        httpClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
-        _sdkHttpClient = new SdkHttpClient(httpClient);
+        _outputHelper = outputHelper;
+        const string httpClientName = "test";
+        _stubMessageHandler = new StubMessageHandler(_outputHelper, 100, 50);
+        var services = new ServiceCollection();
+        services.AddHttpClient(httpClientName)
+                .ConfigureHttpClient(configureClient =>
+                                     {
+                                         configureClient.Timeout = TimeSpan.FromSeconds(5);
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
+                                     })
+                .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+        var serviceProvider = services.BuildServiceProvider();
+        _sdkHttpClient = new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), httpClientName);
 
         _httpDataFetcher = new HttpDataFetcher(_sdkHttpClient, new Deserializer<response>());
     }
@@ -90,7 +101,7 @@ public class HttpDataFetcherTests
         Assert.Null(result);
         Assert.IsType<CommunicationException>(e);
         Assert.Null(e.InnerException);
-        Assert.Equal("Failed to execute request due to previous failures.", e.Message);
+        Assert.Equal("Failed to execute request due to previous failures", e.Message);
     }
 
     [Fact]
@@ -139,6 +150,23 @@ public class HttpDataFetcherTests
         if (e.InnerException != null)
         {
             Assert.IsType<HttpRequestException>(e.InnerException);
+        }
+    }
+
+    [Fact]
+    public async Task GetDataAsyncWhenTaskIsCanceled()
+    {
+        var httpDataFetcher = SetupHttpDataFetcherForTaskTimeout();
+
+        Stream result = null;
+        var ex = await Assert.ThrowsAsync<CommunicationException>(async () => result = await httpDataFetcher.GetDataAsync(_getUri));
+
+        Assert.Null(result);
+        Assert.IsType<CommunicationException>(ex);
+        Assert.Equal(HttpStatusCode.RequestTimeout, ex.ResponseCode);
+        if (ex.InnerException != null)
+        {
+            Assert.IsType<TaskCanceledException>(ex.InnerException);
         }
     }
 
@@ -280,6 +308,23 @@ public class HttpDataFetcherTests
     }
 
     [Fact]
+    public async Task PostDataAsyncWhenTaskIsCanceled()
+    {
+        var httpDataFetcher = SetupHttpDataFetcherForTaskTimeout();
+
+        HttpResponseMessage result = null;
+        var ex = await Assert.ThrowsAsync<CommunicationException>(async () => result = await httpDataFetcher.PostDataAsync(_getUri, new StringContent("test string")));
+
+        Assert.Null(result);
+        Assert.IsType<CommunicationException>(ex);
+        Assert.Equal(HttpStatusCode.RequestTimeout, ex.ResponseCode);
+        if (ex.InnerException != null)
+        {
+            Assert.IsType<TaskCanceledException>(ex.InnerException);
+        }
+    }
+
+    [Fact]
     public async Task PostDataAsyncWhenValidContentWithResponseHeaders()
     {
         var httpResponseMessage = GetSuccessResponseMessage();
@@ -311,6 +356,25 @@ public class HttpDataFetcherTests
         Assert.Equal("any-key", _httpDataFetcher.ResponseHeaders.First().Key);
     }
 
+    private HttpDataFetcher SetupHttpDataFetcherForTaskTimeout()
+    {
+        const string httpClientName = "test";
+        var stubMessageHandler = new StubMessageHandler(_outputHelper, 1000);
+        var services = new ServiceCollection();
+        services.AddHttpClient(httpClientName)
+                .ConfigureHttpClient(configureClient =>
+                                     {
+                                         configureClient.Timeout = TimeSpan.FromMilliseconds(200);
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "UofSdk-Net");
+                                     })
+                .ConfigurePrimaryHttpMessageHandler(() => stubMessageHandler);
+        var serviceProvider = services.BuildServiceProvider();
+        var sdkHttpClient = new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), httpClientName);
+        var httpDataFetcher = new HttpDataFetcher(sdkHttpClient, new Deserializer<response>());
+        return httpDataFetcher;
+    }
+
     private HttpResponseMessage GetSuccessResponseMessage(HttpStatusCode httpStatusCode = HttpStatusCode.Accepted)
     {
         var response = GetResponse(httpStatusCode);
@@ -324,7 +388,7 @@ public class HttpDataFetcherTests
         return new response { action = "some-response-action", message = $"some-response-message {httpStatusCode}", response_code = response_code.ACCEPTED, response_codeSpecified = true };
     }
 
-    public static string ObjectToXmlString<T>(T objectToSerialize)
+    private static string ObjectToXmlString<T>(T objectToSerialize)
     {
         var xmlSerializer = new XmlSerializer(typeof(T));
 
