@@ -733,7 +733,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISingleTypeMapperFactory<lotteries, EntityList<LotteryDto>>>()));
 
             // list sport event provider (example: /v1/sports/{0}/schedules/pre/schedule.xml?start={1}&limit={2})
-            var sportEventListEndpoint = configuration.Api.BaseUrl + "/v1/sports/{0}/sports/{1}/tournaments.xml";
+            var sportEventListEndpoint = configuration.Api.BaseUrl + "/v1/sports/{0}/schedules/pre/schedule.xml?start={1}&limit={2}";
             services.AddSingleton<IDataProviderNamed<EntityList<SportEventSummaryDto>>, DataProviderNamed<scheduleEndpoint, EntityList<SportEventSummaryDto>>>(serviceProvider =>
                 new DataProviderNamed<scheduleEndpoint, EntityList<SportEventSummaryDto>>(DataProviderForSportEventList,
                     sportEventListEndpoint,

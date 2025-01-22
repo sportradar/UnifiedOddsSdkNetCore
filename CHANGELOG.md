@@ -1,5 +1,8 @@
 # Change Log
 
+## 2025-01-22  2.4.2
+- SportDataProvider.GetListOfSportEventsAsync issues the call to the right endpoint and properly returns data 
+
 ## 2024-11-08  2.4.1
 - Improved how api requests are made (utilizing IHttpClientFactory)
 
