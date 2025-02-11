@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to provides an requested selection
     /// </summary>
-    internal class Selection : ISelectionV1
+    internal class Selection : ISelection
     {
         public Urn EventId { get; }
 

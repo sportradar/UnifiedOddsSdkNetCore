@@ -66,7 +66,7 @@ namespace Sportradar.OddsFeed.SDK.Api
         {
             if (handler == null)
             {
-                var args = eventArgs == null
+                var args = Equals(eventArgs, default(T))
                                ? string.Empty
                                : eventArgs.GetType().Name;
                 Log.LogWarning("Cannot invoke event {EventHandler} because no listeners are attached to associated event handler. EventArgs: {Args}", eventHandlerName, args);

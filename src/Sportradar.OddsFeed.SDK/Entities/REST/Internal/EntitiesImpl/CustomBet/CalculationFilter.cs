@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
     /// <summary>
     /// Implements methods used to provides a probability calculation
     /// </summary>
-    internal class CalculationFilter : ICalculationFilterV1
+    internal class CalculationFilter : ICalculationFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ICalculationFilter"/> class

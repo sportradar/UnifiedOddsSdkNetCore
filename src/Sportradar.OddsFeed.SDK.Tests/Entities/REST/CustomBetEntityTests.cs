@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -24,7 +24,6 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
-[SuppressMessage("Usage", "xUnit1031:Do not use blocking task operations in test method")]
 public class CustomBetEntityTests
 {
     private readonly IDataRouterManager _dataRouterManager;
@@ -60,7 +59,7 @@ public class CustomBetEntityTests
     [Fact]
     public void AvailableSelectionsFilterMap()
     {
-        var availableFilteredEventType = MessageFactoryRest.GetFilteredEventType(Urn.Parse("sr:match:1000"), 10);
+        var availableFilteredEventType = MessageFactoryRest.GetFilteredEventType(Urn.Parse("sr:match:1000"));
         var resultAvailableSelectionsFilter = new AvailableSelectionsFilter(new FilteredAvailableSelectionsDto(availableFilteredEventType));
 
         AvailableSelectionsFilterCompare(availableFilteredEventType, resultAvailableSelectionsFilter);
@@ -126,7 +125,7 @@ public class CustomBetEntityTests
             var sourceAvailableSelection = calculationResponseType.available_selections[i];
             var resultAvailableSelection = calculation.AvailableSelections.ElementAt(i);
 
-            Assert.Equal(Urn.Parse(sourceAvailableSelection.id), resultAvailableSelection.Event);
+            Assert.Equal(Urn.Parse(sourceAvailableSelection.id), resultAvailableSelection.EventId);
             foreach (var sourceMarket in sourceAvailableSelection.markets)
             {
                 var resultMarket = resultAvailableSelection.Markets.First(f => f.Id == sourceMarket.id);
@@ -191,7 +190,7 @@ public class CustomBetEntityTests
             var sourceAvailableSelection = calculationResponseType.available_selections[i];
             var resultAvailableSelection = calculation.AvailableSelections.ElementAt(i);
 
-            Assert.Equal(Urn.Parse(sourceAvailableSelection.id), resultAvailableSelection.Event);
+            Assert.Equal(Urn.Parse(sourceAvailableSelection.id), resultAvailableSelection.EventId);
             foreach (var sourceMarket in sourceAvailableSelection.markets)
             {
                 var resultMarket = resultAvailableSelection.Markets.First(f => f.Id == sourceMarket.id);
@@ -205,21 +204,21 @@ public class CustomBetEntityTests
     }
 
     [Fact]
-    public void GetAvailableSelections()
+    public async Task GetAvailableSelections()
     {
         var eventId = Urn.Parse("sr:match:31561675");
-        var resultAvailableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).GetAwaiter().GetResult();
+        var resultAvailableSelections = await _dataRouterManager.GetAvailableSelectionsAsync(eventId);
 
         Assert.NotNull(resultAvailableSelections);
-        Assert.Equal(eventId, resultAvailableSelections.Event);
+        Assert.Equal(eventId, resultAvailableSelections.EventId);
         Assert.False(resultAvailableSelections.Markets.IsNullOrEmpty());
     }
 
     [Fact]
-    public void GetCalculation()
+    public async Task GetCalculation()
     {
         var eventId = Urn.Parse("sr:match:31561675");
-        var availableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).GetAwaiter().GetResult();
+        var availableSelections = await _dataRouterManager.GetAvailableSelectionsAsync(eventId);
         Assert.NotNull(availableSelections);
 
         var matchSelections = new List<ISelection>();
@@ -230,18 +229,18 @@ public class CustomBetEntityTests
         selection = _customBetSelectionBuilder.SetEventId(eventId).SetMarketId(market.Id).SetOutcomeId(market.Outcomes.First()).SetSpecifiers(market.Specifiers).Build();
         matchSelections.Add(selection);
 
-        var calculation = _dataRouterManager.CalculateProbabilityAsync(matchSelections).GetAwaiter().GetResult();
+        var calculation = await _dataRouterManager.CalculateProbabilityAsync(matchSelections);
 
         Assert.NotNull(calculation);
-        Assert.Equal(eventId, calculation.AvailableSelections.First().Event);
+        Assert.Equal(eventId, calculation.AvailableSelections.First().EventId);
         Assert.False(calculation.AvailableSelections.IsNullOrEmpty());
     }
 
     [Fact]
-    public void GetCalculationFilter()
+    public async Task GetCalculationFilter()
     {
         var eventId = Urn.Parse("sr:match:31561675");
-        var availableSelections = _dataRouterManager.GetAvailableSelectionsAsync(eventId).GetAwaiter().GetResult();
+        var availableSelections = await _dataRouterManager.GetAvailableSelectionsAsync(eventId);
         Assert.NotNull(availableSelections);
 
         var matchSelections = new List<ISelection>();
@@ -252,10 +251,10 @@ public class CustomBetEntityTests
         selection = _customBetSelectionBuilder.SetEventId(eventId).SetMarketId(market.Id).SetOutcomeId(market.Outcomes.First()).SetSpecifiers(market.Specifiers).Build();
         matchSelections.Add(selection);
 
-        var calculation = _dataRouterManager.CalculateProbabilityFilteredAsync(matchSelections).GetAwaiter().GetResult();
+        var calculation = await _dataRouterManager.CalculateProbabilityFilteredAsync(matchSelections);
 
         Assert.NotNull(calculation);
-        Assert.Equal(eventId, calculation.AvailableSelections.First().Event);
+        Assert.Equal(eventId, calculation.AvailableSelections.First().EventId);
         Assert.False(calculation.AvailableSelections.IsNullOrEmpty());
     }
 
@@ -278,10 +277,8 @@ public class CustomBetEntityTests
 
         var calculation = MessageFactorySdk.GetCalculationFilter(calculationResponseType);
 
-        calculation.Should().BeAssignableTo<ICalculationFilterV1>();
-        var calculationV1 = calculation as ICalculationFilterV1;
-        calculationV1.Should().NotBeNull();
-        calculationV1.Harmonization.Should().Be(harmonizationValue);
+        calculation.Should().NotBeNull();
+        calculation.Harmonization.Should().Be(harmonizationValue);
     }
 
     [Theory]
@@ -303,10 +300,9 @@ public class CustomBetEntityTests
 
         var calculation = MessageFactorySdk.GetCalculation(calculationResponseType);
 
-        calculation.Should().BeAssignableTo<ICalculationV1>();
-        var calculationV1 = calculation as ICalculationV1;
-        calculationV1.Should().NotBeNull();
-        calculationV1.Harmonization.Should().Be(harmonizationValue);
+        calculation.Should().BeAssignableTo<ICalculation>();
+        calculation.Should().NotBeNull();
+        calculation.Harmonization.Should().Be(harmonizationValue);
     }
 
     [Fact]
@@ -405,7 +401,7 @@ public class CustomBetEntityTests
     [Fact]
     public void SelectionConstructionWhenOddsMissingThenOk()
     {
-        var selection = new Selection(TestData.EventMatchId, 1, "123", null, null);
+        var selection = new Selection(TestData.EventMatchId, 1, "123", null);
 
         selection.Should().NotBeNull();
         selection.Odds.Should().BeNull();
@@ -439,7 +435,7 @@ public class CustomBetEntityTests
         Assert.NotNull(source.@event);
         Assert.False(string.IsNullOrEmpty(source.generated_at));
 
-        Assert.Equal(source.@event.id, result.Event.ToString());
+        Assert.Equal(source.@event.id, result.EventId.ToString());
 
         if (source.@event.markets.IsNullOrEmpty())
         {
@@ -462,7 +458,7 @@ public class CustomBetEntityTests
         Assert.NotNull(result);
 
         Assert.NotNull(source.id);
-        Assert.Equal(source.id, result.Event.ToString());
+        Assert.Equal(source.id, result.EventId.ToString());
 
         if (source.markets.IsNullOrEmpty())
         {

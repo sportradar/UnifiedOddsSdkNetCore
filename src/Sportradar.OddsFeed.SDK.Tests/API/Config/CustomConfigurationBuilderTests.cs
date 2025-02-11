@@ -17,7 +17,7 @@ public class CustomConfigurationBuilderTests : ConfigurationBuilderSetup
 
         Assert.Equal(customApiHost, config.Api.Host);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
     }
 
     [Theory]
@@ -29,7 +29,7 @@ public class CustomConfigurationBuilderTests : ConfigurationBuilderSetup
 
         Assert.Equal(useSsl, config.Api.UseSsl);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
     }
 
     [Theory]
@@ -41,7 +41,7 @@ public class CustomConfigurationBuilderTests : ConfigurationBuilderSetup
 
         Assert.Equal(useSsl, config.Rabbit.UseSsl);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class CustomConfigurationBuilderTests : ConfigurationBuilderSetup
 
         Assert.Equal(customMqHost, config.Rabbit.Host);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class CustomConfigurationBuilderTests : ConfigurationBuilderSetup
 
         Assert.Equal(customValue, config.Rabbit.Username);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class CustomConfigurationBuilderTests : ConfigurationBuilderSetup
 
         Assert.Equal(customValue, config.Rabbit.Password);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public class CustomConfigurationBuilderTests : ConfigurationBuilderSetup
 
         Assert.Equal(port, config.Rabbit.Port);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
     }
 }

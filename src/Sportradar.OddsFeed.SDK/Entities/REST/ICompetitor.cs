@@ -28,7 +28,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         /// Gets a value indicating whether the current instance represents a placeholder team
         /// </summary>
         [DataMember]
-        bool IsVirtual { get; }
+        bool? IsVirtual { get; }
 
         /// <summary>
         /// Gets the reference ids

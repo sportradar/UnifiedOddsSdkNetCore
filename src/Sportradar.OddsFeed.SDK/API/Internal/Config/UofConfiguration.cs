@@ -26,12 +26,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         public string AccessToken { get; internal set; }
         public CultureInfo DefaultLanguage { get; internal set; }
         public List<CultureInfo> Languages { get; internal set; }
-        public IBookmakerDetails BookmakerDetails { get; private set; }
+        public IBookmakerDetails BookmakerDetails { get; internal set; }
         public IUofRabbitConfiguration Rabbit { get; internal set; }
         public IUofApiConfiguration Api { get; internal set; }
         public IUofProducerConfiguration Producer { get; internal set; }
         public IUofCacheConfiguration Cache { get; internal set; }
         public IUofAdditionalConfiguration Additional { get; internal set; }
+        public IUofUsageConfiguration Usage { get; internal set; }
         public int NodeId { get; internal set; }
         public SdkEnvironment Environment { get; internal set; }
         public ExceptionHandlingStrategy ExceptionHandlingStrategy { get; internal set; }
@@ -47,7 +48,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             Producer = new UofProducerConfiguration();
             Rabbit = new UofRabbitConfiguration();
             Additional = new UofAdditionalConfiguration();
-            ExceptionHandlingStrategy = ExceptionHandlingStrategy.Catch;
+            Usage = new UofUsageConfiguration();
+            ExceptionHandlingStrategy = ExceptionHandlingStrategy.Throw;
         }
 
         public void UpdateSdkEnvironment(SdkEnvironment environment)
@@ -88,7 +90,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 return;
             }
 
-            UpdateCommonPropertiesFromSectionInternal(section, loadAll);
+            UpdateCommonPropertiesFromSectionInternal(section);
 
             if (loadAll)
             {
@@ -107,7 +109,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             ValidateMinimumSettings();
         }
 
-        private void UpdateCommonPropertiesFromSectionInternal(IUofConfigurationSection section, bool loadAll)
+        private void UpdateCommonPropertiesFromSectionInternal(IUofConfigurationSection section)
         {
             if (string.IsNullOrEmpty(section.AccessToken))
             {
@@ -201,6 +203,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             }
 
             CheckAndUpdateConnectionSettings();
+
+            var usageConfig = (UofUsageConfiguration)Usage;
+            usageConfig.Host = EnvironmentManager.GetUsageHost(Environment);
+            Usage = usageConfig;
         }
 
         private void CheckAndUpdateConnectionSettings()
@@ -277,7 +283,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 .Append(", ").Append(Rabbit)
                 .Append(", ").Append(Cache)
                 .Append(", ").Append(Producer)
-                .Append(", ").Append(Additional);
+                .Append(", ").Append(Additional)
+                .Append(", ").Append(Usage);
 
             return "UofConfiguration{" + SdkInfo.DictionaryToString(summaryValues) + sb + "}";
         }

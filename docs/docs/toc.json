@@ -1,2 +1,2 @@
 
-{"items":[{"name":"Introduction","href":"introduction.html","topicHref":"introduction.html"},{"name":"Migration Guide","href":"migration-guide.html","topicHref":"migration-guide.html"}],"pdf":true}
+{"items":[{"name":"Introduction","href":"introduction.html","topicHref":"introduction.html"},{"name":"Migration Guide 1.x to 2.x","href":"migration-guide.html","topicHref":"migration-guide.html"},{"name":"Migration Guide 2.x to 3.x","href":"migration-guide-v3.html","topicHref":"migration-guide-v3.html"}],"pdf":true}

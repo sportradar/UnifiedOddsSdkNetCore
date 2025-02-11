@@ -1,7 +1,6 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
@@ -14,8 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
         /// <summary>
         /// Gets the <see cref="Urn"/> of the event
         /// </summary>
-        [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Allowed - not to introduce breaking change")]
-        Urn Event { get; }
+        Urn EventId { get; }
 
         /// <summary>
         /// Gets the list of markets for this event

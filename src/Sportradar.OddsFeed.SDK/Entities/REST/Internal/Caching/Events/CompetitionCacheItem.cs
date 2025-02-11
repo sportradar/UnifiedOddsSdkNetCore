@@ -569,9 +569,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                 competition.ReferenceId = _referenceId?.ReferenceIds?.ToDictionary(r => r.Key, r => r.Value);
                 competition.CompetitorsQualifiers = _competitorsQualifiers?.ToDictionary(q => q.Key.ToString(), q => q.Value);
                 competition.CompetitorsReferences = _competitorsReferences?.ToDictionary(r => r.Key.ToString(), r => (IDictionary<string, string>)r.Value.ReferenceIds.ToDictionary(v => v.Key, v => v.Value));
-#pragma warning disable CS0618 // Type or member is obsolete
-                competition.CompetitorsVirtual = null; // later this property should be removed
-#pragma warning restore CS0618 // Type or member is obsolete
                 competition.LiveOdds = _liveOdds;
                 competition.SportEventType = _sportEventType;
                 competition.StageType = _stageType;

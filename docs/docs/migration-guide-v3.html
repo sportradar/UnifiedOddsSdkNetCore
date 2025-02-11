@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>UOF .NET SDK - Migration Guide | Sportradar.OddsFeed.SDK </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="UOF .NET SDK - Migration Guide | Sportradar.OddsFeed.SDK ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/uf-ns-h60.png" alt="Sportradar.OddsFeed.SDK">
+            Sportradar.OddsFeed.SDK
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="uof-net-sdk---migration-guide">UOF .NET SDK - Migration Guide</h1>
+
+<p>The UOF .NET SDK 2.x.x is upgraded to 3.0.0, and this is your roadmap to a smooth transition from your current SDK version to the latest version. The upgrade is designed to elevate your experience and
+align the SDK more closely with your business needs.</p>
+<p>This guide is intended to offer practical advice to ensure your transition is not only efficient but also enhances the performance and capabilities of your software.</p>
+<h2 id="1-upgraded-dependencies">1. Upgraded dependencies</h2>
+<ul>
+<li>RabbitMQ.Client 6.8.1</li>
+<li>Dawn.Guard 1.12.0</li>
+<li>Humanizer 2.14.1</li>
+<li>Microsoft.Bcl.AsyncInterfaces 9.0.1</li>
+<li>Microsoft.Extensions.Caching.Memory 9.0.1</li>
+<li>Microsoft.Extensions.Configuration 9.0.1</li>
+<li>Microsoft.Extensions.DependencyInjection 9.0.1</li>
+<li>Microsoft.Extensions.Diagnostics.HealthChecks 9.0.1</li>
+<li>Microsoft.Extensions.Http 9.0.1</li>
+<li>System.Configuration.ConfigurationManager 9.0.1</li>
+<li>OpenTelemetry 1.11.1</li>
+<li>OpenTelemetry.Extensions.Hosting 1.11.1</li>
+<li>OpenTelemetry.Instrumentation.Runtime 1.10.0 (added)</li>
+<li>OpenTelemetry.Exporter.OpenTelemetryProtocol 1.11.1 (added)</li>
+<li>Removed: OpenTelemetry.Api</li>
+</ul>
+<h2 id="2-update-the-methods-and-classes-in-your-code">2. Update the Methods and Classes in Your Code</h2>
+<p>Review your codebase to identify any parts that might be affected by the upgrade. Look for deprecated methods or classes that have been removed in the new version. Update your code to use the new APIs
+provided by the SDK. This may involve making changes to method calls, imports, and references. Handle any breaking changes or deprecations by updating your code accordingly. You can
+contact support if you encounter specific issues.</p>
+<p>The following classes and methods are changed. Hence, you will need to update your code to use the new names:</p>
+<h4 id="removed-methods-classes-and-interfaces">Removed Methods, Classes and Interfaces</h4>
+<table>
+<thead>
+<tr>
+<th>Removed Methods / Classes / Interfaces</th>
+<th>Alternative Methods / Classes / Interfaces</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISoccerEvent</td>
+<td>IMatch</td>
+</tr>
+<tr>
+<td>ISoccerStatistics</td>
+<td>IMatchStatistics</td>
+</tr>
+<tr>
+<td>ISoccerStatus</td>
+<td>IMatchStatus</td>
+</tr>
+<tr>
+<td>ICalculationFilterV1</td>
+<td>ICalculationFilter</td>
+</tr>
+<tr>
+<td>ICalculationV1</td>
+<td>ICalculation</td>
+</tr>
+<tr>
+<td>ICustomBetSelectionBuilderV1</td>
+<td>ICustomBetSelectionBuilder</td>
+</tr>
+<tr>
+<td>IMatchStatusV1</td>
+<td>IMatchStatus</td>
+</tr>
+<tr>
+<td>ISelectionV1</td>
+<td>ISelection</td>
+</tr>
+</tbody>
+</table>
+<h4 id="removed-methods--properties">Removed Methods / Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Method / Property name</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ExportableCompetition.CompetitorsVirtual</td>
+<td>Use Competitor.IsVirtual property to identify virtual competitors</td>
+</tr>
+<tr>
+<td>ICustomBetSelectionBuilder.Build(Urn eventId, int marketId, string specifiers, string outcomeId)</td>
+<td>Use ICustomBetSelectionBuilder.Build(Urn eventId, int marketId, string specifiers, string outcomeId, double? odds = null)</td>
+</tr>
+<tr>
+<td>IRecoveryConfigurationBuilder.SetAdjustAfterAge(bool adjustAfterAge)</td>
+<td>internally always true</td>
+</tr>
+<tr>
+<td>IUofProducerConfiguration.AdjustAfterAge</td>
+<td>internally always true</td>
+</tr>
+</tbody>
+</table>
+<h4 id="updated-methods--properties">Updated Methods / Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Method / Property name</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ICompetitor.IsVirtual</td>
+<td>Check it to be true to confirm that the competitor is virual. Consider all other values as an indicator that the competitor is not virtual</td>
+</tr>
+</tbody>
+</table>
+<h4 id="renamed-methods--properties">Renamed Methods / Properties</h4>
+<ul>
+<li>IAvailableSelections.Event to EventId</li>
+<li>IAvailableSelectionsFilter.Event to EventId</li>
+</ul>
+<h4 id="new-features">New Features</h4>
+<p>SDK Usage Service: This service will allow us to anonymously track producer downtrends, helping us proactively identify potential bottlenecks and broader implementation trends before they lead to
+future issues.</p>
+<p>New configuration properties:</p>
+<ul>
+<li>IUofUsageConfiguration exposed as IUofConfiguration.Usage for properties configuring usage export (metrics)</li>
+<li>IUofConfiguration.Usage.IsExportEnabled (default: enabled)</li>
+<li>Added IConfigurationBuilder.EnableUsageExport(bool enable) method</li>
+</ul>
+<h2 id="5-test-your-project">5. Test your project</h2>
+<p>Thoroughly test your project after making the changes. Test all critical functionality to ensure that everything still works as expected. Pay special attention to any areas of your setup that interact
+with the SDK, as these are likely to be the most affected by the upgrade.</p>
+<h2 id="6-update-the-documentation">6. Update the Documentation</h2>
+<p>Update your project's documentation and any training materials to reflect the changes introduced by the upgrade. This will help your team members understand and work with the new version.</p>
+<h2 id="7-deploy-to-production">7. Deploy to Production</h2>
+<p>Once you are confident that your project works correctly with the upgraded SDK, you can deploy the updated version to your production environment.</p>
+<h2 id="8-monitoring-and-maintenance">8. Monitoring and Maintenance</h2>
+<p>After deployment, monitor your project closely for any unexpected issues or performance problems. Be prepared to address any post-upgrade issues promptly.</p>
+<h2 id="9-feedback-and-reporting">9. Feedback and Reporting</h2>
+<p>If you encounter any bugs or issues in the SDK, consider reporting them to support@sportradar.com. Providing feedback can help improve the SDK for future releases.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2024, Sportradar AG. Send comments or questions to <a href='mailto:sdk%40sportradar.com?Subject=Odds%20Feed%20SDK%20Std%20Documentation: UnifiedFeed SDK .NET Standard 2.0&amp;body=Your%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report%2C%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed%2C%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.'>SDK Team</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

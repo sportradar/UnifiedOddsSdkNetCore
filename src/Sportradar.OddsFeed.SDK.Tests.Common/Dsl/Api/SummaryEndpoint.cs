@@ -228,6 +228,18 @@ public class SummaryEndpoint
         return msg;
     }
 
+    public static tournamentSchedule BuildTournamentSeasonSchedule(int id = 0, int sportEventCount = 0)
+    {
+        return new tournamentSchedule()
+        {
+            generated_at = new DateTime(2024, 9, 7),
+            generated_atSpecified = true,
+            tournament = [BuildTournamentExtended(id)],
+            sport_events = Enumerable.Range(1, sportEventCount).Select(sid => BuildSportEventEndpoint(sid, 2))
+                                               .ToArray()
+        };
+    }
+
     public static category BuildCategory(int id = 0)
     {
         id = id == 0 ? SR.I1000 : id;

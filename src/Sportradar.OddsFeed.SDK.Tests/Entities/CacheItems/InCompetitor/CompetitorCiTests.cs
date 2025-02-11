@@ -64,7 +64,7 @@ public class CompetitorCiTests : CompetitorSetup
         //Assert.Equal(competitorCi.CategoryId.ToString(), exported.CategoryId);
         Assert.Equal(competitorCi.CountryCode, exported.CountryCode);
         Assert.Equal(competitorCi.Gender, exported.Gender);
-        Assert.Null(competitorCi.IsVirtual);
+        Assert.False(competitorCi.IsVirtual);
         Assert.False(exported.IsVirtual);
         Assert.Equal(competitorCi.ShortName, exported.ShortName);
         //Assert.Equal(competitorCi.SportId.ToString(), exported.SportId);
@@ -95,7 +95,7 @@ public class CompetitorCiTests : CompetitorSetup
         Assert.Equal(competitorCi.CategoryId, imported.CategoryId);
         Assert.Equal(competitorCi.CountryCode, imported.CountryCode);
         Assert.Equal(competitorCi.Gender, imported.Gender);
-        Assert.Null(competitorCi.IsVirtual);
+        Assert.False(competitorCi.IsVirtual);
         Assert.False(imported.IsVirtual);
         Assert.Equal(competitorCi.ShortName, imported.ShortName);
         Assert.Equal(competitorCi.SportId, imported.SportId);

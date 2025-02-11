@@ -87,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <summary>
         /// Gets a <see cref="ExceptionHandlingStrategy"/> enum member specifying how to handle exceptions thrown to outside callers
         /// </summary>
-        [ConfigurationProperty("exceptionHandlingStrategy", IsRequired = false, DefaultValue = ExceptionHandlingStrategy.Catch)]
+        [ConfigurationProperty("exceptionHandlingStrategy", IsRequired = false, DefaultValue = ExceptionHandlingStrategy.Throw)]
         public ExceptionHandlingStrategy ExceptionHandlingStrategy => (ExceptionHandlingStrategy)base["exceptionHandlingStrategy"];
 
         /// <summary>

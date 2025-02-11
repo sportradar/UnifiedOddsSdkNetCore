@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
         /// <summary>
         /// Gets the <see cref="Urn"/> of the event
         /// </summary>
-        public Urn Event { get; }
+        public Urn EventId { get; }
 
         /// <summary>
         /// Gets the list of markets for this event
@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
                 throw new ArgumentNullException(nameof(eventType));
             }
 
-            Event = Urn.Parse(eventType.id);
+            EventId = Urn.Parse(eventType.id);
             Markets = eventType.markets != null
                           ? eventType.markets.Select(m => new FilteredMarketDto(m)).ToList()
                           : new List<FilteredMarketDto>();

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using FluentAssertions;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -136,10 +137,12 @@ public class ConfigurationBuilderSetup
 
     protected static void ConfigHasDefaultValuesSet(IUofConfiguration config)
     {
-        ValidateDefaultProducerConfig(config);
-        ValidateDefaultCacheConfig(config);
-        ValidateApiConfigForEnvironment(config, config.Environment);
+        ValidateDefaultProducerConfig(config.Producer);
+        ValidateDefaultCacheConfig(config.Cache);
+        ValidateApiConfigForEnvironment(config.Api, config.Environment);
         ValidateRabbitConfigForEnvironment(config, config.Environment);
+        ValidateDefaultAdditionalConfig(config.Additional);
+        ValidateDefaultUsageConfig(config);
     }
 
     internal static void ValidateDefaultConfig(IUofConfiguration config, SdkEnvironment environment)
@@ -153,41 +156,40 @@ public class ConfigurationBuilderSetup
         Assert.Equal(0, config.NodeId);
     }
 
-    internal static void ValidateDefaultProducerConfig(IUofConfiguration config)
+    internal static void ValidateDefaultProducerConfig(IUofProducerConfiguration producerConfig)
     {
-        Assert.Empty(config.Producer.DisabledProducers);
-        Assert.Equal(ConfigLimit.InactivitySecondsDefault, config.Producer.InactivitySeconds.TotalSeconds);
-        Assert.Equal(ConfigLimit.InactivitySecondsPrematchDefault, config.Producer.InactivitySecondsPrematch.TotalSeconds);
-        Assert.Equal(ConfigLimit.MaxRecoveryTimeDefault, config.Producer.MaxRecoveryTime.TotalSeconds);
-        Assert.True(config.Producer.AdjustAfterAge);
-        Assert.Equal(ConfigLimit.MinIntervalBetweenRecoveryRequestDefault, config.Producer.MinIntervalBetweenRecoveryRequests.TotalSeconds);
+        Assert.Empty(producerConfig.DisabledProducers);
+        Assert.Equal(ConfigLimit.InactivitySecondsDefault, producerConfig.InactivitySeconds.TotalSeconds);
+        Assert.Equal(ConfigLimit.InactivitySecondsPrematchDefault, producerConfig.InactivitySecondsPrematch.TotalSeconds);
+        Assert.Equal(ConfigLimit.MaxRecoveryTimeDefault, producerConfig.MaxRecoveryTime.TotalSeconds);
+        Assert.Equal(ConfigLimit.MinIntervalBetweenRecoveryRequestDefault, producerConfig.MinIntervalBetweenRecoveryRequests.TotalSeconds);
     }
 
-    internal static void ValidateDefaultCacheConfig(IUofConfiguration config)
+    internal static void ValidateDefaultCacheConfig(IUofCacheConfiguration cacheConfig)
     {
-        Assert.Equal(ConfigLimit.SportEventCacheTimeoutDefault, config.Cache.SportEventCacheTimeout.TotalHours);
-        Assert.Equal(ConfigLimit.SportEventStatusCacheTimeoutMinutesDefault, config.Cache.SportEventStatusCacheTimeout.TotalMinutes);
-        Assert.Equal(ConfigLimit.ProfileCacheTimeoutDefault, config.Cache.ProfileCacheTimeout.TotalHours);
-        Assert.Equal(ConfigLimit.SingleVariantMarketTimeoutDefault, config.Cache.VariantMarketDescriptionCacheTimeout.TotalHours);
-        Assert.Equal(ConfigLimit.IgnoreBetpalTimelineTimeoutDefault, config.Cache.IgnoreBetPalTimelineSportEventStatusCacheTimeout.TotalHours);
-        Assert.False(config.Cache.IgnoreBetPalTimelineSportEventStatus);
+        Assert.Equal(ConfigLimit.SportEventCacheTimeoutDefault, cacheConfig.SportEventCacheTimeout.TotalHours);
+        Assert.Equal(ConfigLimit.SportEventStatusCacheTimeoutMinutesDefault, cacheConfig.SportEventStatusCacheTimeout.TotalMinutes);
+        Assert.Equal(ConfigLimit.ProfileCacheTimeoutDefault, cacheConfig.ProfileCacheTimeout.TotalHours);
+        Assert.Equal(ConfigLimit.SingleVariantMarketTimeoutDefault, cacheConfig.VariantMarketDescriptionCacheTimeout.TotalHours);
+        Assert.Equal(ConfigLimit.IgnoreBetpalTimelineTimeoutDefault, cacheConfig.IgnoreBetPalTimelineSportEventStatusCacheTimeout.TotalHours);
+        Assert.False(cacheConfig.IgnoreBetPalTimelineSportEventStatus);
     }
 
-    internal static void ValidateApiConfigForEnvironment(IUofConfiguration config, SdkEnvironment environment)
+    internal static void ValidateApiConfigForEnvironment(IUofApiConfiguration apiConfig, SdkEnvironment environment)
     {
-        Assert.Equal(ConfigLimit.HttpClientTimeoutDefault, config.Api.HttpClientTimeout.TotalSeconds);
-        Assert.Equal(ConfigLimit.HttpClientRecoveryTimeoutDefault, config.Api.HttpClientRecoveryTimeout.TotalSeconds);
-        Assert.Equal(ConfigLimit.HttpClientFastFailingTimeoutDefault, config.Api.HttpClientFastFailingTimeout.TotalSeconds);
-        Assert.Equal(int.MaxValue, config.Api.MaxConnectionsPerServer);
+        Assert.Equal(ConfigLimit.HttpClientTimeoutDefault, apiConfig.HttpClientTimeout.TotalSeconds);
+        Assert.Equal(ConfigLimit.HttpClientRecoveryTimeoutDefault, apiConfig.HttpClientRecoveryTimeout.TotalSeconds);
+        Assert.Equal(ConfigLimit.HttpClientFastFailingTimeoutDefault, apiConfig.HttpClientFastFailingTimeout.TotalSeconds);
+        Assert.Equal(int.MaxValue, apiConfig.MaxConnectionsPerServer);
         if (environment != SdkEnvironment.Custom)
         {
-            Assert.True(config.Api.UseSsl);
-            Assert.Equal(EnvironmentManager.GetApiHost(environment), config.Api.Host);
+            Assert.True(apiConfig.UseSsl);
+            Assert.Equal(EnvironmentManager.GetApiHost(environment), apiConfig.Host);
         }
-        Assert.False(config.Api.Host.IsNullOrEmpty());
-        Assert.False(config.Api.BaseUrl.IsNullOrEmpty());
-        Assert.False(config.Api.ReplayHost.IsNullOrEmpty());
-        Assert.False(config.Api.ReplayBaseUrl.IsNullOrEmpty());
+        Assert.False(apiConfig.Host.IsNullOrEmpty());
+        Assert.False(apiConfig.BaseUrl.IsNullOrEmpty());
+        Assert.False(apiConfig.ReplayHost.IsNullOrEmpty());
+        Assert.False(apiConfig.ReplayBaseUrl.IsNullOrEmpty());
     }
 
     internal static void ValidateRabbitConfigForEnvironment(IUofConfiguration config, SdkEnvironment environment)
@@ -206,5 +208,20 @@ public class ConfigurationBuilderSetup
         Assert.True(config.Rabbit.Heartbeat > TimeSpan.Zero);
         Assert.NotNull(config.BookmakerDetails);
         Assert.NotNull(config.BookmakerDetails.VirtualHost);
+    }
+
+    internal static void ValidateDefaultAdditionalConfig(IUofAdditionalConfiguration addConfig)
+    {
+        Assert.Equal(ConfigLimit.StatisticsIntervalMinutesDefault, addConfig.StatisticsInterval.TotalMinutes);
+        Assert.False(addConfig.OmitMarketMappings);
+    }
+
+    internal static void ValidateDefaultUsageConfig(IUofConfiguration config)
+    {
+        config.Usage.ExportTimeoutInSec.Should().Be(20);
+        config.Usage.ExportIntervalInSec.Should().Be(300);
+        config.Usage.IsExportEnabled.Should().BeTrue();
+        config.Usage.Host.Should().NotBeNullOrEmpty();
+        config.Usage.Host.Should().BeEquivalentTo(EnvironmentManager.GetUsageHost(config.Environment));
     }
 }

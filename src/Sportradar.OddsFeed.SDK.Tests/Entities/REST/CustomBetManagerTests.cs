@@ -104,7 +104,7 @@ public class CustomBetManagerTests
     [InlineData(0.2345)]
     public void CustomBetSelectionBuilderWhenConstructedThenSelectionIsCreatedCorrectly(double? wantedOdds)
     {
-        var cbSelectionBuilder = _customBetManagerThrow.CustomBetSelectionBuilder as ICustomBetSelectionBuilderV1;
+        var cbSelectionBuilder = _customBetManagerThrow.CustomBetSelectionBuilder;
         cbSelectionBuilder.Should().NotBeNull();
         cbSelectionBuilder.SetEventId(TestData.EventMatchId)
             .SetMarketId(1)
@@ -122,9 +122,7 @@ public class CustomBetManagerTests
         selection.MarketId.Should().Be(1);
         selection.OutcomeId.Should().Be("123");
         selection.Specifiers.Should().Be("value=1");
-        var selectionV1 = selection as ISelectionV1;
-        selectionV1.Should().NotBeNull();
-        selectionV1.Odds.Should().Be(wantedOdds);
+        selection.Odds.Should().Be(wantedOdds);
     }
 
     [Theory]
@@ -134,7 +132,7 @@ public class CustomBetManagerTests
     [InlineData(0.2345)]
     public void CustomBetSelectionBuilderWhenConstructedDirectlyThenSelectionIsCreatedCorrectly(double? wantedOdds)
     {
-        var cbSelectionBuilder = _customBetManagerThrow.CustomBetSelectionBuilder as ICustomBetSelectionBuilderV1;
+        var cbSelectionBuilder = _customBetManagerThrow.CustomBetSelectionBuilder;
         cbSelectionBuilder.Should().NotBeNull();
 
         var selection = cbSelectionBuilder.Build(TestData.EventMatchId, 1, "value=1", "123", wantedOdds);
@@ -144,9 +142,7 @@ public class CustomBetManagerTests
         selection.MarketId.Should().Be(1);
         selection.OutcomeId.Should().Be("123");
         selection.Specifiers.Should().Be("value=1");
-        var selectionV1 = selection as ISelectionV1;
-        selectionV1.Should().NotBeNull();
-        selectionV1.Odds.Should().Be(wantedOdds);
+        selection.Odds.Should().Be(wantedOdds);
     }
 
     [Fact]
@@ -157,7 +153,7 @@ public class CustomBetManagerTests
         var availableSelections = await _customBetManagerThrow.GetAvailableSelectionsAsync(ScheduleData.MatchId);
 
         Assert.NotNull(availableSelections);
-        Assert.Equal(Urn.Parse("sr:match:31561675"), availableSelections.Event);
+        Assert.Equal(Urn.Parse("sr:match:31561675"), availableSelections.EventId);
         Assert.NotNull(availableSelections.Markets);
         Assert.NotEmpty(availableSelections.Markets);
     }
@@ -237,10 +233,9 @@ public class CustomBetManagerTests
         _dataPosterMock.Setup(s => s.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>())).ReturnsAsync(httpResponseMessage);
 
         var calculation = await _customBetManagerThrow.CalculateProbabilityAsync(GenerateAnySelectionsWithOdds());
-        var calculationV1 = calculation as ICalculationV1;
 
-        calculationV1.Should().NotBeNull();
-        calculationV1.Harmonization.Should().BeTrue();
+        calculation.Should().NotBeNull();
+        calculation.Harmonization.Should().BeTrue();
     }
 
     [Fact]
@@ -328,10 +323,9 @@ public class CustomBetManagerTests
         _dataPosterMock.Setup(s => s.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>())).ReturnsAsync(httpResponseMessage);
 
         var calculation = await _customBetManagerThrow.CalculateProbabilityFilterAsync(GenerateAnySelectionsWithOdds());
-        var calculationV1 = calculation as ICalculationFilterV1;
 
-        calculationV1.Should().NotBeNull();
-        calculationV1.Harmonization.Should().BeTrue();
+        calculation.Should().NotBeNull();
+        calculation.Harmonization.Should().BeTrue();
     }
 
     [Fact]

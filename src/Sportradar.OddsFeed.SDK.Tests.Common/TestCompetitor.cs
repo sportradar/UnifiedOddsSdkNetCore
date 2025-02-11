@@ -77,7 +77,7 @@ public class TestCompetitor : ICompetitor
     /// Gets a value indicating whether the current <see cref="ICompetitor"/> is virtual - i.e.
     /// competes in a virtual sport
     /// </summary>
-    public bool IsVirtual { get; }
+    public bool? IsVirtual { get; }
 
     /// <summary>
     /// Gets the reference ids

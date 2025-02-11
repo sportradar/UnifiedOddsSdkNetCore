@@ -188,7 +188,7 @@ public class SportEventDetailsMapperTests
             }
             else
             {
-                Assert.Null(m.IsVirtual);
+                Assert.False(m.IsVirtual);
             }
         }
     }

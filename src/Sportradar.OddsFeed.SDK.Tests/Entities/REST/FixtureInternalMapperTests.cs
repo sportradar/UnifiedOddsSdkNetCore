@@ -177,7 +177,7 @@ public class FixtureInternalMapperTests
             }
             else
             {
-                Assert.Null(m.IsVirtual);
+                Assert.False(m.IsVirtual);
             }
 
             if (c.divisionSpecified)

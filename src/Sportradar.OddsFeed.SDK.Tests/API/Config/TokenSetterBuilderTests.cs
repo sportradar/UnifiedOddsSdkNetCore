@@ -48,25 +48,29 @@ public class TokenSetterBuilderTests : ConfigurationBuilderSetup
         Assert.Equal(BaseSection.Environment, config.Environment);
 
         ValidateDefaultConfig(config, BaseSection.Environment);
-        ValidateDefaultProducerConfig(config);
-        ValidateDefaultCacheConfig(config);
-        ValidateApiConfigForEnvironment(config, BaseSection.Environment);
+        ValidateDefaultProducerConfig(config.Producer);
+        ValidateDefaultCacheConfig(config.Cache);
+        ValidateApiConfigForEnvironment(config.Api, BaseSection.Environment);
         ValidateRabbitConfigForEnvironment(config, BaseSection.Environment);
+        ValidateDefaultAdditionalConfig(config.Additional);
+        ValidateDefaultUsageConfig(config);
     }
 
     [Fact]
     public void EnvironmentFromConfigurationSectionCanBeOverridden()
     {
         Assert.Equal(SdkEnvironment.Integration, BaseSection.Environment);
-        var config = GetTokenSetter(BaseSection).SetAccessTokenFromConfigFile().SelectEnvironment(SdkEnvironment.ProxyTokyo).LoadFromConfigFile().Build();
+        var config = GetTokenSetter(BaseSection).SetAccessTokenFromConfigFile().SelectEnvironment(SdkEnvironment.GlobalProduction).LoadFromConfigFile().Build();
         Assert.Equal(BaseSection.AccessToken, config.AccessToken);
-        Assert.Equal(SdkEnvironment.ProxyTokyo, config.Environment);
+        Assert.Equal(SdkEnvironment.GlobalProduction, config.Environment);
 
-        ValidateDefaultConfig(config, SdkEnvironment.ProxyTokyo);
-        ValidateDefaultProducerConfig(config);
-        ValidateDefaultCacheConfig(config);
-        ValidateApiConfigForEnvironment(config, SdkEnvironment.ProxyTokyo);
-        ValidateRabbitConfigForEnvironment(config, SdkEnvironment.ProxyTokyo);
+        ValidateDefaultConfig(config, SdkEnvironment.GlobalProduction);
+        ValidateDefaultProducerConfig(config.Producer);
+        ValidateDefaultCacheConfig(config.Cache);
+        ValidateApiConfigForEnvironment(config.Api, SdkEnvironment.GlobalProduction);
+        ValidateRabbitConfigForEnvironment(config, SdkEnvironment.GlobalProduction);
+        ValidateDefaultAdditionalConfig(config.Additional);
+        ValidateDefaultUsageConfig(config);
     }
 
     [Fact]
@@ -76,9 +80,11 @@ public class TokenSetterBuilderTests : ConfigurationBuilderSetup
         Assert.Equal(BaseSection.AccessToken, config.AccessToken);
 
         ValidateDefaultConfig(config, BaseSection.Environment);
-        ValidateDefaultProducerConfig(config);
-        ValidateDefaultCacheConfig(config);
-        ValidateApiConfigForEnvironment(config, BaseSection.Environment);
+        ValidateDefaultProducerConfig(config.Producer);
+        ValidateDefaultCacheConfig(config.Cache);
+        ValidateApiConfigForEnvironment(config.Api, BaseSection.Environment);
         ValidateRabbitConfigForEnvironment(config, BaseSection.Environment);
+        ValidateDefaultAdditionalConfig(config.Additional);
+        ValidateDefaultUsageConfig(config);
     }
 }

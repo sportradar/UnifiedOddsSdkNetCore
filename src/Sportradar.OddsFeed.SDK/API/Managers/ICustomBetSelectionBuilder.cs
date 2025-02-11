@@ -51,7 +51,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Managers
         /// <param name="marketId">A value representing the market id</param>
         /// <param name="specifiers">A value representing the specifiers</param>
         /// <param name="outcomeId">A value representing the outcome id</param>
+        /// <param name="odds">A odds value for the outcome</param>
         /// <returns>The constructed <see cref="ISelection"/> instance</returns>
-        ISelection Build(Urn eventId, int marketId, string specifiers, string outcomeId);
+        ISelection Build(Urn eventId, int marketId, string specifiers, string outcomeId, double? odds = null);
+
+        /// <summary>
+        /// Sets outcome odds to the provided value
+        /// </summary>
+        /// <param name="odds">A value representing the outcome odds</param>
+        /// <returns>The <see cref="ICustomBetSelectionBuilder"/> instance used to set additional values</returns>
+        ICustomBetSelectionBuilder SetOdds(double odds);
     }
 }

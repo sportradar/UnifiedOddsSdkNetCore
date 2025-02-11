@@ -114,19 +114,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         }
 
         /// <summary>
-        /// Sets the value indicating whether the after age should be enforced before executing recovery request
-        /// </summary>
-        /// <param name="adjustAfterAge">True if age should be enforced; False otherwise</param>
-        /// <returns>The <see cref="IRecoveryConfigurationBuilder{T}"/> instance used to set additional values</returns>
-        public T SetAdjustAfterAge(bool adjustAfterAge)
-        {
-            var producerConfig = (UofProducerConfiguration)UofConfiguration.Producer;
-            producerConfig.AdjustAfterAge = adjustAfterAge;
-            UofConfiguration.Producer = producerConfig;
-            return this as T;
-        }
-
-        /// <summary>
         /// Sets the timeout for HTTP responses for this instance of the sdk
         /// </summary>
         /// <param name="httpClientTimeout">The timeout for HTTP responses</param>
@@ -317,6 +304,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         public T OmitMarketMappings(bool omit)
         {
             ((UofAdditionalConfiguration)UofConfiguration.Additional).OmitMarketMappings = omit;
+            return this as T;
+        }
+
+        public T EnableUsageExport(bool enableUsageExport)
+        {
+            ((UofUsageConfiguration)UofConfiguration.Usage).IsExportEnabled = enableUsageExport;
             return this as T;
         }
     }

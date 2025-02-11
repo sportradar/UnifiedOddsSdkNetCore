@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -50,7 +51,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="cacheItemPriority">Priority of the cache item</param>
         public void Add(T key, object value, CacheItemPriority cacheItemPriority = CacheItemPriority.Normal)
         {
-            if (key == null || value == null)
+            if (Equals(key, default(T)) || value == null)
             {
                 return;
             }
@@ -73,30 +74,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
         }
 
-        private MemoryCacheEntryOptions GetMemoryCacheEntryOptions(long? cacheItemSize, CacheItemPriority cacheItemPriority = CacheItemPriority.Normal)
-        {
-            var memoryCacheEntryOptions = new MemoryCacheEntryOptions();
-            memoryCacheEntryOptions.Size = cacheItemSize;
-            if (_absoluteExpiration > TimeSpan.Zero)
-            {
-                memoryCacheEntryOptions.SetAbsoluteExpiration(_absoluteExpiration);
-                //memoryCacheEntryOptions.AddExpirationToken(new CancellationChangeToken(new CancellationTokenSource(_absoluteExpiration.Value).Token)); // enabling this would expire item regardless of Get
-            }
-            if (_slidingExpiration > TimeSpan.Zero)
-            {
-                var expiration = _slidingExpirationVariance == 0 ? _slidingExpiration : SdkInfo.AddVariableNumber(_slidingExpiration, _slidingExpirationVariance);
-                memoryCacheEntryOptions.SetSlidingExpiration(expiration);
-                //memoryCacheEntryOptions.AddExpirationToken(new CancellationChangeToken(new CancellationTokenSource(expiration).Token)); // enabling this would expire item regardless of Get
-            }
-            memoryCacheEntryOptions.SetPriority(cacheItemPriority);
-            memoryCacheEntryOptions.RegisterPostEvictionCallback(PostEvictionDelegate, this);
-
-            return memoryCacheEntryOptions;
-        }
-
         public object Get(T key)
         {
-            if (key == null)
+            if (Equals(key, default(T)))
             {
                 return null;
             }
@@ -158,16 +138,36 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
         public long Size()
         {
-            if (_memoryCache is MemoryCache memoryCache)
+            if (!(_memoryCache is MemoryCache memoryCache))
             {
-                var statistics = memoryCache.GetCurrentStatistics();
-                if (statistics?.CurrentEstimatedSize != null)
-                {
-                    return statistics.CurrentEstimatedSize.Value;
-                }
+                return Count();
             }
 
-            return Count();
+            var statistics = memoryCache.GetCurrentStatistics();
+
+            return statistics?.CurrentEstimatedSize ?? Count();
+        }
+
+        [SuppressMessage("CodeQuality", "IDE0058:Expression value is never used", Justification = "Allowed here")]
+        private MemoryCacheEntryOptions GetMemoryCacheEntryOptions(long? cacheItemSize, CacheItemPriority cacheItemPriority = CacheItemPriority.Normal)
+        {
+            var memoryCacheEntryOptions = new MemoryCacheEntryOptions();
+            if (_absoluteExpiration > TimeSpan.Zero)
+            {
+                memoryCacheEntryOptions.SetAbsoluteExpiration(_absoluteExpiration);
+                //memoryCacheEntryOptions.AddExpirationToken(new CancellationChangeToken(new CancellationTokenSource(_absoluteExpiration.Value).Token)); // enabling this would expire item regardless of Get
+            }
+            if (_slidingExpiration > TimeSpan.Zero)
+            {
+                var expiration = _slidingExpirationVariance == 0 ? _slidingExpiration : SdkInfo.AddVariableNumber(_slidingExpiration, _slidingExpirationVariance);
+                memoryCacheEntryOptions.SetSlidingExpiration(expiration);
+                //memoryCacheEntryOptions.AddExpirationToken(new CancellationChangeToken(new CancellationTokenSource(expiration).Token)); // enabling this would expire item regardless of Get
+            }
+            memoryCacheEntryOptions.Size = cacheItemSize;
+            memoryCacheEntryOptions.SetPriority(cacheItemPriority);
+            memoryCacheEntryOptions.RegisterPostEvictionCallback(PostEvictionDelegate, this);
+
+            return memoryCacheEntryOptions;
         }
 
         private void PostEvictionDelegate(object key, object value, EvictionReason reason, object state)
@@ -192,13 +192,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
             _memoryCache.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         private static readonly Action<ILogger, string, string, EvictionReason, Exception> LogCacheItemPostEviction =

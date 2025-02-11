@@ -180,7 +180,9 @@ namespace Sportradar.OddsFeed.SDK.Api
 
             ServiceProvider = serviceProvider;
 
-            UofConfig = (UofConfiguration)ServiceProvider.GetRequiredService<IUofConfiguration>();
+            var tmpConfig = ServiceProvider.GetRequiredService<IUofConfiguration>();
+            UofConfig = tmpConfig as UofConfiguration ?? GetUofConfigFromCustomConfig(tmpConfig);
+
             if (isReplay || UofConfig.Environment == SdkEnvironment.Replay)
             {
                 UofConfig.UpdateSdkEnvironment(SdkEnvironment.Replay);
@@ -189,9 +191,7 @@ namespace Sportradar.OddsFeed.SDK.Api
             // check if ILoggerFactory is configured
             var loggerFactory = ServiceProvider.GetService<ILoggerFactory>();
             SdkLoggerFactory.SetLoggerFactory(loggerFactory ?? new NullLoggerFactory());
-
             _log = SdkLoggerFactory.GetLoggerForExecution(typeof(UofSdk));
-
             LogInit();
 
             _connectionFactory = ServiceProvider.GetRequiredService<ConfiguredConnectionFactory>();
@@ -211,6 +211,8 @@ namespace Sportradar.OddsFeed.SDK.Api
             EventChangeManager = ServiceProvider.GetRequiredService<IEventChangeManager>();
             _feedRecoveryManager = ServiceProvider.GetRequiredService<IAbstractFactory<IFeedRecoveryManager>>().Create();
             _connectionValidator = ServiceProvider.GetRequiredService<ConnectionValidator>();
+
+            _ = UsageTelemetry.SetupUsageTelemetry(UofConfig);
         }
 
         /// <summary>
@@ -479,7 +481,6 @@ namespace Sportradar.OddsFeed.SDK.Api
 
         private void LogProducerAvailability()
         {
-
             _log.LogInformation("Producers:");
             foreach (var p in ProducerManager.Producers.OrderBy(o => o.Id))
             {
@@ -509,7 +510,7 @@ namespace Sportradar.OddsFeed.SDK.Api
         /// Disposes the current instance and resources associated with it
         /// </summary>
         /// <param name="disposing">Value indicating whether the managed resources should also be disposed</param>
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (_isDisposed)
             {
@@ -621,14 +622,11 @@ namespace Sportradar.OddsFeed.SDK.Api
             RecoveryInitiated?.Invoke(this, e);
         }
 
-        private void LogInit()
+        private static void LogInit()
         {
             var msg = "UF SDK .NET Std initialization. Version: " + SdkInfo.GetVersion();
             var logger = SdkLoggerFactory.GetLoggerForExecution(typeof(UofSdk));
-            if (logger == null)
-            {
-                return;
-            }
+
             logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
             logger = SdkLoggerFactory.GetLoggerForCache(typeof(UofSdk));
             logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
@@ -640,6 +638,26 @@ namespace Sportradar.OddsFeed.SDK.Api
             logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
             logger = SdkLoggerFactory.GetLoggerForStats(typeof(UofSdk));
             logger.Log(SdkLoggerFactory.GetWriteLogLevel(logger, LogLevel.Information), "{Msg}. LogLevel: {LoggerLogLevel}", msg, SdkLoggerFactory.GetLoggerLogLevel(logger));
+        }
+
+        private static UofConfiguration GetUofConfigFromCustomConfig(IUofConfiguration tmpConfig)
+        {
+            return new UofConfiguration(new UofConfigurationSectionProvider())
+            {
+                AccessToken = tmpConfig.AccessToken,
+                Api = tmpConfig.Api,
+                Additional = tmpConfig.Additional,
+                BookmakerDetails = tmpConfig.BookmakerDetails,
+                Cache = tmpConfig.Cache,
+                DefaultLanguage = tmpConfig.DefaultLanguage,
+                Languages = tmpConfig.Languages,
+                Environment = tmpConfig.Environment,
+                ExceptionHandlingStrategy = tmpConfig.ExceptionHandlingStrategy,
+                NodeId = tmpConfig.NodeId,
+                Producer = tmpConfig.Producer,
+                Rabbit = tmpConfig.Rabbit,
+                Usage = tmpConfig.Usage
+            };
         }
     }
 }

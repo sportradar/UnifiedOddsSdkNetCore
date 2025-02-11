@@ -35,7 +35,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable
         /// <summary>
         /// A <see cref="bool"/> indicating whether represented competitor is virtual
         /// </summary>
-        public bool IsVirtual { get; set; }
+        public bool? IsVirtual { get; set; }
 
         /// <summary>
         /// A <see cref="IDictionary{K, V}"/> containing reference ids

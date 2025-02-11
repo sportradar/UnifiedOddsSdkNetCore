@@ -1,24 +1,26 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
-using System.Linq;
+using FluentAssertions;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Api;
+namespace Sportradar.OddsFeed.SDK.Tests.API.Managers;
 
 public class ProducerManagerTests
 {
     [Fact]
-    public void ProducerManagerInit()
+    public void Init()
     {
         var producerManager = TestProducerManager.Create();
         Assert.NotNull(producerManager);
         Assert.NotNull(producerManager.Producers);
-        Assert.True(producerManager.Producers.Any());
+        Assert.NotEmpty(producerManager.Producers);
     }
 
     [Fact]
@@ -50,12 +52,12 @@ public class ProducerManagerTests
         Assert.Equal(producer1.IsDisabled, producer2.IsDisabled);
         Assert.Equal(producer1.IsProducerDown, producer2.IsProducerDown);
         Assert.Equal(producer1.Name, producer2.Name, true);
-        Assert.True(producer1.Name.Equals(producer2.Name, StringComparison.InvariantCultureIgnoreCase));
+        Assert.Equal(producer1.Name, producer2.Name, ignoreCase: true);
         Assert.Equal(producer1, producer2);
     }
 
     [Fact]
-    public void ProducerManagerGetById()
+    public void GetById()
     {
         var producerManager = TestProducerManager.Create();
 
@@ -65,7 +67,7 @@ public class ProducerManagerTests
     }
 
     [Fact]
-    public void ProducerManagerGetByName()
+    public void GetByName()
     {
         var producerManager = TestProducerManager.Create();
 
@@ -75,7 +77,7 @@ public class ProducerManagerTests
     }
 
     [Fact]
-    public void ProducerManagerExistsById()
+    public void ExistsById()
     {
         var producerManager = TestProducerManager.Create();
 
@@ -84,7 +86,7 @@ public class ProducerManagerTests
     }
 
     [Fact]
-    public void ProducerManagerExistsByName()
+    public void ExistsByName()
     {
         var producerManager = TestProducerManager.Create();
 
@@ -93,16 +95,16 @@ public class ProducerManagerTests
     }
 
     [Fact]
-    public void ProducerManagerNotExistsById()
+    public void NotExistsById()
     {
         var producerManager = TestProducerManager.Create();
 
         var result = producerManager.Exists(11);
-        Assert.True(!result);
+        Assert.False(result);
     }
 
     [Fact]
-    public void ProducerManagerUpdateLocked01()
+    public void UpdateLocked01()
     {
         var producerId = 1;
         var producerManager = TestProducerManager.Create();
@@ -115,9 +117,9 @@ public class ProducerManagerTests
     }
 
     [Fact]
-    public void ProducerManagerUpdateLocked02()
+    public void UpdateLocked02()
     {
-        var producerId = 1;
+        const int producerId = 1;
         var date = DateTime.Now;
         var producerManager = TestProducerManager.Create();
 
@@ -130,25 +132,123 @@ public class ProducerManagerTests
     }
 
     [Fact]
-    public void ProducerManagerUpdate()
+    public void UpdateIsDisabled()
     {
-        var producerId = 1;
+        const int producerId = 1;
+        var producerManager = TestProducerManager.Create();
+
+        producerManager.DisableProducer(producerId);
+
+        var producer = producerManager.GetProducer(producerId);
+        Assert.True(producer.IsDisabled);
+    }
+
+    [Fact]
+    public void UpdateTimestamp()
+    {
+        const int producerId = 1;
         var date = DateTime.Now;
         var producerManager = TestProducerManager.Create();
 
-        var producer = producerManager.GetProducer(producerId);
-        CheckLiveOddsProducer(producer);
+        producerManager.AddTimestampBeforeDisconnect(producerId, date);
 
-        producerManager.DisableProducer(producerId);
-        Assert.True(producer.IsDisabled);
+        var producer = producerManager.GetProducer(producerId);
+        Assert.Equal(date, producer.LastTimestampBeforeDisconnect);
+    }
+
+    [Fact]
+    public void UpdateTimestampWhenDateInFutureThenThrow()
+    {
+        const int producerId = 1;
+        var date = DateTime.Now.AddSeconds(1);
+        var producerManager = TestProducerManager.Create();
+
+        producerManager.Invoking(i => i.AddTimestampBeforeDisconnect(producerId, date)).Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void UpdateTimestampWhenDateMinThenThrow()
+    {
+        const int producerId = 1;
+        var producerManager = TestProducerManager.Create();
+
+        producerManager.Invoking(i => i.AddTimestampBeforeDisconnect(producerId, DateTime.MinValue)).Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void UpdateTimestampWhenDateEarlierThenMaxDateThenThrow()
+    {
+        const int producerId = 1;
+        var producerManager = TestProducerManager.Create();
+        var producer = producerManager.GetProducer(producerId);
+        var date = DateTime.Now.Subtract(producer.MaxAfterAge());
+
+        producerManager.Invoking(i => i.AddTimestampBeforeDisconnect(producerId, date)).Should().Throw<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void UpdateTimestampWhenValidAfterWithMaxInactivitySecondsThenUpdate()
+    {
+        const int producerId = 1;
+        var producerManager = TestProducerManager.Create();
+        var producer = producerManager.GetProducer(producerId);
+        var date = DateTime.Now.AddSeconds(-producer.MaxInactivitySeconds);
 
         producerManager.AddTimestampBeforeDisconnect(producerId, date);
+
         Assert.Equal(date, producer.LastTimestampBeforeDisconnect);
+    }
+
+    [Fact]
+    public void UpdateTimestampWhenValidMaxAfterThenUpdate()
+    {
+        const int producerId = 1;
+        var producerManager = TestProducerManager.Create();
+        var producer = producerManager.GetProducer(producerId);
+        var date = DateTime.Now.Subtract(producer.MaxAfterAge()).AddSeconds(1); // add 1 second to avoid diff in milliseconds
+
+        producerManager.AddTimestampBeforeDisconnect(producerId, date);
+
+        Assert.Equal(date, producer.LastTimestampBeforeDisconnect);
+    }
+
+    [Fact]
+    public void UpdateTimestampWhenValidMAfterAndUnknownProducerThenNotUpdate()
+    {
+        const int producerId = SdkInfo.UnknownProducerId;
+        var producerManager = TestProducerManager.Create();
+        var producer = producerManager.GetProducer(producerId);
+        var date = DateTime.Now.Subtract(TimeSpan.FromHours(1));
+
+        producerManager.AddTimestampBeforeDisconnect(producerId, date);
+
+        Assert.Equal(DateTime.MinValue, producer.LastTimestampBeforeDisconnect);
+    }
+
+    [Fact]
+    public void LockWhenNoProducerAvailableThenThrow()
+    {
+        var producerManager = (ProducerManager)TestProducerManager.Create();
+        foreach (var producer in producerManager.Producers)
+        {
+            producerManager.DisableProducer(producer.Id);
+        }
+
+        producerManager.Invoking(i => i.Lock()).Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void LockWhenLockedCanNotUpdateDisabledProducers()
+    {
+        var producerManager = (ProducerManager)TestProducerManager.Create();
+        producerManager.Lock();
+
+        producerManager.Invoking(i => i.DisableProducer(1)).Should().Throw<InvalidOperationException>();
     }
 
     // [Fact]
     // [ExpectedException(typeof(InvalidOperationException))]
-    // public void ProducerManagerUpdateLocked01()
+    // public void UpdateLocked01()
     // {
     //     var producerId = 1;
     //     var producerManager = TestProducerManager.Create();
@@ -163,7 +263,7 @@ public class ProducerManagerTests
     //
     // [Fact]
     // [ExpectedException(typeof(InvalidOperationException))]
-    // public void ProducerManagerUpdateLocked02()
+    // public void UpdateLocked02()
     // {
     //     var producerId = 1;
     //     var date = DateTime.Now;
@@ -177,7 +277,7 @@ public class ProducerManagerTests
     //     Assert.Equal(date, producer.LastTimestampBeforeDisconnect);
     // }
 
-    private void CheckLiveOddsProducer(IProducer producer)
+    private static void CheckLiveOddsProducer(IProducer producer)
     {
         Assert.NotNull(producer);
         Assert.Equal(1, producer.Id);

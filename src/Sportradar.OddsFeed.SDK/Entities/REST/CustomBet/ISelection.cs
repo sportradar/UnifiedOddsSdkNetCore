@@ -28,5 +28,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
         /// Gets the outcome id
         /// </summary>
         string OutcomeId { get; }
+
+        /// <summary>
+        /// Gets the odds
+        /// </summary>
+        double? Odds { get; }
     }
 }

@@ -142,8 +142,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ISportEventCache>(),
                     serviceProvider.GetRequiredService<ISportEventStatusCache>(),
                     serviceProvider.GetLocalizedNamedValueCache(NamedValueCacheNameForMatchStatus),
-                    serviceProvider.GetRequiredService<IProfileCache>(),
-                    SdkInfo.SoccerSportUrns
+                    serviceProvider.GetRequiredService<IProfileCache>()
                 ));
         }
 

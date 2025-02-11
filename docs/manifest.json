@@ -1,5 +1,5 @@
 {
-  "source_base_path": "/builds/unifiedoddssdk/temp-dir/src/Sportradar.OddsFeed.SDK.DocFx",
+  "source_base_path": "/Users/d.hrovat/Github/UnifiedOddsSdkNetCoreTmp/src/Sportradar.OddsFeed.SDK.DocFx",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -16,6 +16,16 @@
       "output": {
         ".html": {
           "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/migration-guide-v3.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/migration-guide-v3.html"
         }
       },
       "version": ""
@@ -395,6 +405,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.MessageInterest.yml",
       "output": {
         ".html": {
@@ -759,16 +779,6 @@
       "output": {
         ".html": {
           "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.html"
         }
       },
       "version": ""
@@ -2085,26 +2095,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket.yml",
       "output": {
         ".html": {
@@ -2139,16 +2129,6 @@
       "output": {
         ".html": {
           "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.html"
         }
       },
       "version": ""
@@ -2725,16 +2705,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue.yml",
       "output": {
         ".html": {
@@ -2929,36 +2899,6 @@
       "output": {
         ".html": {
           "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISeasonInfo.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.yml",
-      "output": {
-        ".html": {
-          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.html"
         }
       },
       "version": ""

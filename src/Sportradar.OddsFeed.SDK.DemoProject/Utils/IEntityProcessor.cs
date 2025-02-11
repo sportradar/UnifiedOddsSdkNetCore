@@ -3,21 +3,20 @@
 */
 using Sportradar.OddsFeed.SDK.Api;
 
-namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
+namespace Sportradar.OddsFeed.SDK.DemoProject.Utils;
+
+/// <summary>
+/// Defines a contract implemented by classes used to process entities dispatched by SDK's <see cref="IEntityDispatcher{T}"/> instances
+/// </summary>
+internal interface IEntityProcessor
 {
     /// <summary>
-    /// Defines a contract implemented by classes used to process entities dispatched by SDK's <see cref="IEntityDispatcher{T}"/> instances
+    /// Opens the current processor so it will start processing dispatched entities.
     /// </summary>
-    internal interface IEntityProcessor
-    {
-        /// <summary>
-        /// Opens the current processor so it will start processing dispatched entities.
-        /// </summary>
-        void Open();
+    void Open();
 
-        /// <summary>
-        /// Closes the current processor so it will no longer process dispatched entities
-        /// </summary>
-        void Close();
-    }
+    /// <summary>
+    /// Closes the current processor so it will no longer process dispatched entities
+    /// </summary>
+    void Close();
 }

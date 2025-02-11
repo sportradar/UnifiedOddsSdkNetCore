@@ -10,207 +10,206 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
-namespace Sportradar.OddsFeed.SDK.DemoProject.Example
+namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
+
+public abstract class ExampleBase
 {
-    public abstract class ExampleBase
+    protected readonly ILogger Log;
+    protected readonly TaskProcessor TaskProcessor;
+
+    protected ExampleBase(ILogger log)
     {
-        protected readonly ILogger Log;
-        protected readonly TaskProcessor TaskProcessor;
+        Log = log ?? new NullLogger<ExampleBase>();
+        TaskProcessor = new TaskProcessor(TimeSpan.FromSeconds(20));
+    }
 
-        protected ExampleBase(ILogger log)
+    public virtual void Run() { }
+
+    public virtual void Run(MessageInterest messageInterest) { }
+
+    protected IUofSdk RegisterServicesAndGetUofSdk(IUofConfiguration uofConfiguration)
+    {
+        var host = Host.CreateDefaultBuilder()
+                       .ConfigureLogging((context, logging) =>
+                                         {
+                                             logging.ClearProviders();
+                                             logging.AddLog4Net("log4net.config");
+                                             logging.SetMinimumLevel(LogLevel.Debug);
+                                         })
+                       .ConfigureServices(configure => configure.AddUofSdk(uofConfiguration))
+                       .Build();
+
+        Log.LogInformation("Creating UofSdk instance");
+        return new UofSdk(host.Services);
+    }
+
+    protected void LimitRecoveryRequests(IUofSdk uofSdk)
+    {
+        for (var i = 1; i < 20; i++)
         {
-            Log = log ?? new NullLogger<ExampleBase>();
-            TaskProcessor = new TaskProcessor(TimeSpan.FromSeconds(20));
+            uofSdk.ProducerManager.AddTimestampBeforeDisconnect(i, DateTime.Now.AddMinutes(-20));
         }
+    }
 
-        public virtual void Run() { }
+    /// <summary>
+    /// Attaches to events raised by <see cref="IUofSdk"/>
+    /// </summary>
+    /// <param name="uofSdk">A <see cref="IUofSdk"/> instance </param>
+    protected void AttachToGlobalEvents(IUofSdk uofSdk)
+    {
+        Guard.Argument(uofSdk, nameof(uofSdk)).NotNull();
 
-        public virtual void Run(MessageInterest messageInterest) { }
+        Log.LogInformation("Attaching to global events");
+        uofSdk.ProducerUp += OnProducerUp;
+        uofSdk.ProducerDown += OnProducerDown;
+        uofSdk.Disconnected += OnDisconnected;
+        uofSdk.Closed += OnClosed;
+    }
 
-        protected IUofSdk RegisterServicesAndGetUofSdk(IUofConfiguration uofConfiguration)
-        {
-            var host = Host.CreateDefaultBuilder()
-                .ConfigureLogging((context, logging) =>
-                {
-                    logging.ClearProviders();
-                    logging.AddLog4Net("log4net.config");
-                    logging.SetMinimumLevel(LogLevel.Debug);
-                })
-                .ConfigureServices(configure => configure.AddUofSdk(uofConfiguration))
-                .Build();
+    /// <summary>
+    /// Detaches from events defined by <see cref="IUofSdk"/>
+    /// </summary>
+    /// <param name="uofSdk">A <see cref="IUofSdk"/> instance</param>
+    protected void DetachFromGlobalEvents(IUofSdk uofSdk)
+    {
+        Guard.Argument(uofSdk, nameof(uofSdk)).NotNull();
 
-            Log.LogInformation("Creating UofSdk instance");
-            return new UofSdk(host.Services);
-        }
+        Log.LogInformation("Detaching from global events");
+        uofSdk.ProducerUp -= OnProducerUp;
+        uofSdk.ProducerDown -= OnProducerDown;
+        uofSdk.Disconnected -= OnDisconnected;
+        uofSdk.Closed -= OnClosed;
+    }
 
-        protected void LimitRecoveryRequests(IUofSdk uofSdk)
-        {
-            for (var i = 1; i < 20; i++)
-            {
-                uofSdk.ProducerManager.AddTimestampBeforeDisconnect(i, DateTime.Now.AddMinutes(-20));
-            }
-        }
+    /// <summary>
+    /// Attaches to events raised by <see cref="IUofSdk"/>
+    /// </summary>
+    /// <param name="session">A <see cref="IUofSession"/> instance </param>
+    protected void AttachToSessionEvents(IUofSession session)
+    {
+        Guard.Argument(session, nameof(session)).NotNull();
 
-        /// <summary>
-        /// Attaches to events raised by <see cref="IUofSdk"/>
-        /// </summary>
-        /// <param name="uofSdk">A <see cref="IUofSdk"/> instance </param>
-        protected void AttachToGlobalEvents(IUofSdk uofSdk)
-        {
-            Guard.Argument(uofSdk, nameof(uofSdk)).NotNull();
+        Log.LogInformation("Attaching to session events");
+        session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
+        session.OnBetCancel += SessionOnBetCancel;
+        session.OnBetSettlement += SessionOnBetSettlement;
+        session.OnBetStop += SessionOnBetStop;
+        session.OnFixtureChange += SessionOnFixtureChange;
+        session.OnOddsChange += SessionOnOddsChange;
+        session.OnRollbackBetCancel += SessionOnRollbackBetCancel;
+        session.OnRollbackBetSettlement += SessionOnRollbackBetSettlement;
+    }
 
-            Log.LogInformation("Attaching to global events");
-            uofSdk.ProducerUp += OnProducerUp;
-            uofSdk.ProducerDown += OnProducerDown;
-            uofSdk.Disconnected += OnDisconnected;
-            uofSdk.Closed += OnClosed;
-        }
+    /// <summary>
+    /// Detaches from events defined by <see cref="IUofSdk"/>
+    /// </summary>
+    /// <param name="session">A <see cref="IUofSession"/> instance</param>
+    protected void DetachFromSessionEvents(IUofSession session)
+    {
+        Guard.Argument(session, nameof(session)).NotNull();
 
-        /// <summary>
-        /// Detaches from events defined by <see cref="IUofSdk"/>
-        /// </summary>
-        /// <param name="uofSdk">A <see cref="IUofSdk"/> instance</param>
-        protected void DetachFromGlobalEvents(IUofSdk uofSdk)
-        {
-            Guard.Argument(uofSdk, nameof(uofSdk)).NotNull();
+        Log.LogInformation("Detaching from session events");
+        session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;
+        session.OnBetCancel -= SessionOnBetCancel;
+        session.OnBetSettlement -= SessionOnBetSettlement;
+        session.OnBetStop -= SessionOnBetStop;
+        session.OnFixtureChange -= SessionOnFixtureChange;
+        session.OnOddsChange -= SessionOnOddsChange;
+        session.OnRollbackBetCancel -= SessionOnRollbackBetCancel;
+        session.OnRollbackBetSettlement -= SessionOnRollbackBetSettlement;
+    }
 
-            Log.LogInformation("Detaching from global events");
-            uofSdk.ProducerUp -= OnProducerUp;
-            uofSdk.ProducerDown -= OnProducerDown;
-            uofSdk.Disconnected -= OnDisconnected;
-            uofSdk.Closed -= OnClosed;
-        }
+    private void SessionOnOddsChange(object sender, OddsChangeEventArgs<ISportEvent> oddsChangeEventArgs)
+    {
+        var baseEntity = oddsChangeEventArgs.GetOddsChange();
+        WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
+    }
 
-        /// <summary>
-        /// Attaches to events raised by <see cref="IUofSdk"/>
-        /// </summary>
-        /// <param name="session">A <see cref="IUofSession"/> instance </param>
-        protected void AttachToSessionEvents(IUofSession session)
-        {
-            Guard.Argument(session, nameof(session)).NotNull();
+    private void SessionOnFixtureChange(object sender, FixtureChangeEventArgs<ISportEvent> fixtureChangeEventArgs)
+    {
+        var baseEntity = fixtureChangeEventArgs.GetFixtureChange();
+        WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
+    }
 
-            Log.LogInformation("Attaching to session events");
-            session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
-            session.OnBetCancel += SessionOnBetCancel;
-            session.OnBetSettlement += SessionOnBetSettlement;
-            session.OnBetStop += SessionOnBetStop;
-            session.OnFixtureChange += SessionOnFixtureChange;
-            session.OnOddsChange += SessionOnOddsChange;
-            session.OnRollbackBetCancel += SessionOnRollbackBetCancel;
-            session.OnRollbackBetSettlement += SessionOnRollbackBetSettlement;
-        }
+    private void SessionOnBetStop(object sender, BetStopEventArgs<ISportEvent> betStopEventArgs)
+    {
+        var baseEntity = betStopEventArgs.GetBetStop();
+        WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
+    }
 
-        /// <summary>
-        /// Detaches from events defined by <see cref="IUofSdk"/>
-        /// </summary>
-        /// <param name="session">A <see cref="IUofSession"/> instance</param>
-        protected void DetachFromSessionEvents(IUofSession session)
-        {
-            Guard.Argument(session, nameof(session)).NotNull();
+    private void SessionOnBetCancel(object sender, BetCancelEventArgs<ISportEvent> betCancelEventArgs)
+    {
+        var baseEntity = betCancelEventArgs.GetBetCancel();
+        WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
+    }
 
-            Log.LogInformation("Detaching from session events");
-            session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;
-            session.OnBetCancel -= SessionOnBetCancel;
-            session.OnBetSettlement -= SessionOnBetSettlement;
-            session.OnBetStop -= SessionOnBetStop;
-            session.OnFixtureChange -= SessionOnFixtureChange;
-            session.OnOddsChange -= SessionOnOddsChange;
-            session.OnRollbackBetCancel -= SessionOnRollbackBetCancel;
-            session.OnRollbackBetSettlement -= SessionOnRollbackBetSettlement;
-        }
+    private void SessionOnBetSettlement(object sender, BetSettlementEventArgs<ISportEvent> betSettlementEventArgs)
+    {
+        var baseEntity = betSettlementEventArgs.GetBetSettlement();
+        WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
+    }
 
-        private void SessionOnOddsChange(object sender, OddsChangeEventArgs<ISportEvent> oddsChangeEventArgs)
-        {
-            var baseEntity = oddsChangeEventArgs.GetOddsChange();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
-        }
+    private void SessionOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
+    {
+        var baseEntity = rollbackBetSettlementEventArgs.GetBetSettlementRollback();
+        WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
+    }
 
-        private void SessionOnFixtureChange(object sender, FixtureChangeEventArgs<ISportEvent> fixtureChangeEventArgs)
-        {
-            var baseEntity = fixtureChangeEventArgs.GetFixtureChange();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
-        }
+    private void SessionOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
+    {
+        var baseEntity = rollbackBetCancelEventArgs.GetBetCancelRollback();
+        WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
+    }
 
-        private void SessionOnBetStop(object sender, BetStopEventArgs<ISportEvent> betStopEventArgs)
-        {
-            var baseEntity = betStopEventArgs.GetBetStop();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
-        }
+    private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
+    {
+        Log.LogInformation("{MessageType} message came for event {EventId}", unparsableMessageEventArgs.MessageType.GetType().Name, unparsableMessageEventArgs.EventId);
+    }
 
-        private void SessionOnBetCancel(object sender, BetCancelEventArgs<ISportEvent> betCancelEventArgs)
-        {
-            var baseEntity = betCancelEventArgs.GetBetCancel();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
-        }
+    /// <summary>
+    /// Invoked when the connection to the rabbit connection is lost
+    /// </summary>
+    /// <param name="sender">The instance raising the event</param>
+    /// <param name="e">The event arguments</param>
+    private void OnDisconnected(object sender, EventArgs e)
+    {
+        Log.LogWarning("Connection to the rabbit is lost");
+    }
 
-        private void SessionOnBetSettlement(object sender, BetSettlementEventArgs<ISportEvent> betSettlementEventArgs)
-        {
-            var baseEntity = betSettlementEventArgs.GetBetSettlement();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
-        }
+    /// <summary>
+    /// Invoked when the sdk instance is closed
+    /// </summary>
+    /// <param name="sender">The instance raising the event</param>
+    /// <param name="e">The event arguments</param>
+    private void OnClosed(object sender, FeedCloseEventArgs e)
+    {
+        Log.LogWarning("The sdk instance is closed with the reason: {Reason}", e.GetReason());
+    }
 
-        private void SessionOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
-        {
-            var baseEntity = rollbackBetSettlementEventArgs.GetBetSettlementRollback();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
-        }
+    /// <summary>
+    /// Invoked when a product associated with the feed goes down
+    /// </summary>
+    /// <param name="sender">The instance raising the event</param>
+    /// <param name="e">The event arguments</param>
+    private void OnProducerDown(object sender, ProducerStatusChangeEventArgs e)
+    {
+        Log.LogWarning("Producer {Producer} is down", e.GetProducerStatusChange().Producer);
+    }
 
-        private void SessionOnRollbackBetCancel(object sender, RollbackBetCancelEventArgs<ISportEvent> rollbackBetCancelEventArgs)
-        {
-            var baseEntity = rollbackBetCancelEventArgs.GetBetCancelRollback();
-            WriteSportEntity(baseEntity.GetType().Name, baseEntity.Event, baseEntity.Producer, baseEntity.RequestId);
-        }
+    /// <summary>
+    /// Invoked when a product associated with the feed goes up
+    /// </summary>
+    /// <param name="sender">The instance raising the event</param>
+    /// <param name="e">The event arguments</param>
+    private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
+    {
+        Log.LogInformation("Producer {Producer} is up", e.GetProducerStatusChange().Producer);
+    }
 
-        private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
-        {
-            Log.LogInformation("{MessageType} message came for event {EventId}", unparsableMessageEventArgs.MessageType.GetType().Name, unparsableMessageEventArgs.EventId);
-        }
+    protected virtual void WriteSportEntity(string msgType, ISportEvent message, IProducer producer, long? requestId)
+    {
+        msgType = msgType.Replace("`1", string.Empty);
 
-        /// <summary>
-        /// Invoked when the connection to the rabbit connection is lost
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnDisconnected(object sender, EventArgs e)
-        {
-            Log.LogWarning("Connection to the rabbit is lost");
-        }
-
-        /// <summary>
-        /// Invoked when the sdk instance is closed
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnClosed(object sender, FeedCloseEventArgs e)
-        {
-            Log.LogWarning("The sdk instance is closed with the reason: {Reason}", e.GetReason());
-        }
-
-        /// <summary>
-        /// Invoked when a product associated with the feed goes down
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnProducerDown(object sender, ProducerStatusChangeEventArgs e)
-        {
-            Log.LogWarning("Producer {Producer} is down", e.GetProducerStatusChange().Producer);
-        }
-
-        /// <summary>
-        /// Invoked when a product associated with the feed goes up
-        /// </summary>
-        /// <param name="sender">The instance raising the event</param>
-        /// <param name="e">The event arguments</param>
-        private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
-        {
-            Log.LogInformation("Producer {Producer} is up", e.GetProducerStatusChange().Producer);
-        }
-
-        protected virtual void WriteSportEntity(string msgType, ISportEvent message, IProducer producer, long? requestId)
-        {
-            msgType = msgType.Replace("`1", string.Empty);
-
-            Log.LogInformation("[{ProducerInfo}] {MsgType} received for event {EventId}{RequestId}", Helper.GetProducerInfo(producer), msgType, message.Id, Helper.GetRequestInfo(requestId));
-        }
+        Log.LogInformation("[{ProducerInfo}] {MsgType} received for event {EventId}{RequestId}", Helper.GetProducerInfo(producer), msgType, message.Id, Helper.GetRequestInfo(requestId));
     }
 }

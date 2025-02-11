@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using FluentAssertions;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -424,22 +425,6 @@ public class ConfigurationBuilderTests : ConfigurationBuilderSetup
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void AdjustAfterAgeIsSet(bool adjustAfterAge)
-    {
-        var integrationConfig = BuildConfig("i").SetAdjustAfterAge(adjustAfterAge).Build();
-        var productionConfig = BuildConfig("p").SetAdjustAfterAge(adjustAfterAge).Build();
-        var replayConfig = BuildConfig("r").SetAdjustAfterAge(adjustAfterAge).Build();
-        var customConfig = BuildCustomConfig().SetAdjustAfterAge(adjustAfterAge).Build();
-
-        Assert.Equal(adjustAfterAge, integrationConfig.Producer.AdjustAfterAge);
-        Assert.Equal(adjustAfterAge, productionConfig.Producer.AdjustAfterAge);
-        Assert.Equal(adjustAfterAge, replayConfig.Producer.AdjustAfterAge);
-        Assert.Equal(adjustAfterAge, customConfig.Producer.AdjustAfterAge);
-    }
-
-    [Theory]
-    [InlineData(true)]
-    [InlineData(false)]
     public void IgnoreBetPalTimelineSportEventStatusIsSet(bool ignoreBetPalTimelineSportEventStatus)
     {
         var integrationConfig = BuildConfig("i").SetIgnoreBetPalTimelineSportEventStatus(ignoreBetPalTimelineSportEventStatus).Build();
@@ -620,5 +605,21 @@ public class ConfigurationBuilderTests : ConfigurationBuilderSetup
         Assert.Equal(omitMarketMappings, productionConfig.Additional.OmitMarketMappings);
         Assert.Equal(omitMarketMappings, replayConfig.Additional.OmitMarketMappings);
         Assert.Equal(omitMarketMappings, customConfig.Additional.OmitMarketMappings);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void UsageExportEnabledIsSet(bool usageExportEnabled)
+    {
+        var integrationConfig = BuildConfig("i").EnableUsageExport(usageExportEnabled).Build();
+        var productionConfig = BuildConfig("p").EnableUsageExport(usageExportEnabled).Build();
+        var replayConfig = BuildConfig("r").EnableUsageExport(usageExportEnabled).Build();
+        var customConfig = BuildCustomConfig().EnableUsageExport(usageExportEnabled).Build();
+
+        integrationConfig.Usage.IsExportEnabled.Should().Be(usageExportEnabled);
+        productionConfig.Usage.IsExportEnabled.Should().Be(usageExportEnabled);
+        replayConfig.Usage.IsExportEnabled.Should().Be(usageExportEnabled);
+        customConfig.Usage.IsExportEnabled.Should().Be(usageExportEnabled);
     }
 }

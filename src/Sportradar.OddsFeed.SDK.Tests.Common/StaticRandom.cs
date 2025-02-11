@@ -8,11 +8,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 public static class StaticRandom
 {
-    private static int _seed = Environment.TickCount;
+    private static int Seed = Environment.TickCount;
 
-    private static readonly ThreadLocal<Random> ThreadLocal = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref _seed)));
+    private static readonly ThreadLocal<Random> ThreadLocal = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref Seed)));
 
-    public static Random Instance => ThreadLocal.Value;
+    private static Random Instance => ThreadLocal.Value;
 
     public static string S(int limit = 0)
     {

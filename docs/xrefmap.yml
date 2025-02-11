@@ -351,6 +351,24 @@ references:
   fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder(Of T)
   nameWithType: IRecoveryConfigurationBuilder<T>
   nameWithType.vb: IRecoveryConfigurationBuilder(Of T)
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.EnableUsageExport(System.Boolean)
+  name: EnableUsageExport(bool)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.html#Sportradar_OddsFeed_SDK_Api_Config_IRecoveryConfigurationBuilder_1_EnableUsageExport_System_Boolean_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.EnableUsageExport(System.Boolean)
+  name.vb: EnableUsageExport(Boolean)
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder<T>.EnableUsageExport(bool)
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder(Of T).EnableUsageExport(Boolean)
+  nameWithType: IRecoveryConfigurationBuilder<T>.EnableUsageExport(bool)
+  nameWithType.vb: IRecoveryConfigurationBuilder(Of T).EnableUsageExport(Boolean)
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.EnableUsageExport*
+  name: EnableUsageExport
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.html#Sportradar_OddsFeed_SDK_Api_Config_IRecoveryConfigurationBuilder_1_EnableUsageExport_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.EnableUsageExport
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder<T>.EnableUsageExport
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder(Of T).EnableUsageExport
+  nameWithType: IRecoveryConfigurationBuilder<T>.EnableUsageExport
+  nameWithType.vb: IRecoveryConfigurationBuilder(Of T).EnableUsageExport
 - uid: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.OmitMarketMappings(System.Boolean)
   name: OmitMarketMappings(bool)
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.html#Sportradar_OddsFeed_SDK_Api_Config_IRecoveryConfigurationBuilder_1_OmitMarketMappings_System_Boolean_
@@ -369,24 +387,6 @@ references:
   fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder(Of T).OmitMarketMappings
   nameWithType: IRecoveryConfigurationBuilder<T>.OmitMarketMappings
   nameWithType.vb: IRecoveryConfigurationBuilder(Of T).OmitMarketMappings
-- uid: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.SetAdjustAfterAge(System.Boolean)
-  name: SetAdjustAfterAge(bool)
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.html#Sportradar_OddsFeed_SDK_Api_Config_IRecoveryConfigurationBuilder_1_SetAdjustAfterAge_System_Boolean_
-  commentId: M:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.SetAdjustAfterAge(System.Boolean)
-  name.vb: SetAdjustAfterAge(Boolean)
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder<T>.SetAdjustAfterAge(bool)
-  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder(Of T).SetAdjustAfterAge(Boolean)
-  nameWithType: IRecoveryConfigurationBuilder<T>.SetAdjustAfterAge(bool)
-  nameWithType.vb: IRecoveryConfigurationBuilder(Of T).SetAdjustAfterAge(Boolean)
-- uid: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.SetAdjustAfterAge*
-  name: SetAdjustAfterAge
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.html#Sportradar_OddsFeed_SDK_Api_Config_IRecoveryConfigurationBuilder_1_SetAdjustAfterAge_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.SetAdjustAfterAge
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder<T>.SetAdjustAfterAge
-  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder(Of T).SetAdjustAfterAge
-  nameWithType: IRecoveryConfigurationBuilder<T>.SetAdjustAfterAge
-  nameWithType.vb: IRecoveryConfigurationBuilder(Of T).SetAdjustAfterAge
 - uid: Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.SetHttpClientFastFailingTimeout(System.Int32)
   name: SetHttpClientFastFailingTimeout(int)
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder-1.html#Sportradar_OddsFeed_SDK_Api_Config_IRecoveryConfigurationBuilder_1_SetHttpClientFastFailingTimeout_System_Int32_
@@ -1142,25 +1142,25 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Rabbit
   nameWithType: IUofConfiguration.Rabbit
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage
+  name: Usage
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofConfiguration_Usage
+  commentId: P:Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage
+  nameWithType: IUofConfiguration.Usage
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage*
+  name: Usage
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofConfiguration_Usage_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage
+  nameWithType: IUofConfiguration.Usage
 - uid: Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration
   name: IUofProducerConfiguration
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.html
   commentId: T:Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration
   fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration
   nameWithType: IUofProducerConfiguration
-- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.AdjustAfterAge
-  name: AdjustAfterAge
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofProducerConfiguration_AdjustAfterAge
-  commentId: P:Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.AdjustAfterAge
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.AdjustAfterAge
-  nameWithType: IUofProducerConfiguration.AdjustAfterAge
-- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.AdjustAfterAge*
-  name: AdjustAfterAge
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofProducerConfiguration_AdjustAfterAge_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.AdjustAfterAge
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.AdjustAfterAge
-  nameWithType: IUofProducerConfiguration.AdjustAfterAge
 - uid: Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.DisabledProducers
   name: DisabledProducers
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofProducerConfiguration_DisabledProducers
@@ -1349,6 +1349,64 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofRabbitConfiguration.VirtualHost
   nameWithType: IUofRabbitConfiguration.VirtualHost
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration
+  name: IUofUsageConfiguration
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html
+  commentId: T:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration
+  nameWithType: IUofUsageConfiguration
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportIntervalInSec
+  name: ExportIntervalInSec
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_ExportIntervalInSec
+  commentId: P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportIntervalInSec
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportIntervalInSec
+  nameWithType: IUofUsageConfiguration.ExportIntervalInSec
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportIntervalInSec*
+  name: ExportIntervalInSec
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_ExportIntervalInSec_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportIntervalInSec
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportIntervalInSec
+  nameWithType: IUofUsageConfiguration.ExportIntervalInSec
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportTimeoutInSec
+  name: ExportTimeoutInSec
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_ExportTimeoutInSec
+  commentId: P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportTimeoutInSec
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportTimeoutInSec
+  nameWithType: IUofUsageConfiguration.ExportTimeoutInSec
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportTimeoutInSec*
+  name: ExportTimeoutInSec
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_ExportTimeoutInSec_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportTimeoutInSec
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportTimeoutInSec
+  nameWithType: IUofUsageConfiguration.ExportTimeoutInSec
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.Host
+  name: Host
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_Host
+  commentId: P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.Host
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.Host
+  nameWithType: IUofUsageConfiguration.Host
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.Host*
+  name: Host
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_Host_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.Host
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.Host
+  nameWithType: IUofUsageConfiguration.Host
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.IsExportEnabled
+  name: IsExportEnabled
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_IsExportEnabled
+  commentId: P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.IsExportEnabled
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.IsExportEnabled
+  nameWithType: IUofUsageConfiguration.IsExportEnabled
+- uid: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.IsExportEnabled*
+  name: IsExportEnabled
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.html#Sportradar_OddsFeed_SDK_Api_Config_IUofUsageConfiguration_IsExportEnabled_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.IsExportEnabled
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.IsExportEnabled
+  nameWithType: IUofUsageConfiguration.IsExportEnabled
 - uid: Sportradar.OddsFeed.SDK.Api.Config.MessageInterest
   name: MessageInterest
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.MessageInterest.html
@@ -3101,15 +3159,15 @@ references:
   commentId: M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build
   fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build()
   nameWithType: ICustomBetSelectionBuilder.Build()
-- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String)
-  name: Build(Urn, int, string, string)
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilder_Build_Sportradar_OddsFeed_SDK_Common_Urn_System_Int32_System_String_System_String_
-  commentId: M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String)
-  name.vb: Build(Urn, Integer, String, String)
-  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn, int, string, string)
-  fullName.vb: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn, Integer, String, String)
-  nameWithType: ICustomBetSelectionBuilder.Build(Urn, int, string, string)
-  nameWithType.vb: ICustomBetSelectionBuilder.Build(Urn, Integer, String, String)
+- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String,System.Nullable{System.Double})
+  name: Build(Urn, int, string, string, double?)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilder_Build_Sportradar_OddsFeed_SDK_Common_Urn_System_Int32_System_String_System_String_System_Nullable_System_Double__
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String,System.Nullable{System.Double})
+  name.vb: Build(Urn, Integer, String, String, Double?)
+  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn, int, string, string, double?)
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn, Integer, String, String, Double?)
+  nameWithType: ICustomBetSelectionBuilder.Build(Urn, int, string, string, double?)
+  nameWithType.vb: ICustomBetSelectionBuilder.Build(Urn, Integer, String, String, Double?)
 - uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build*
   name: Build
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilder_Build_
@@ -3146,6 +3204,22 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetMarketId
   nameWithType: ICustomBetSelectionBuilder.SetMarketId
+- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds(System.Double)
+  name: SetOdds(double)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilder_SetOdds_System_Double_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds(System.Double)
+  name.vb: SetOdds(Double)
+  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds(double)
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds(Double)
+  nameWithType: ICustomBetSelectionBuilder.SetOdds(double)
+  nameWithType.vb: ICustomBetSelectionBuilder.SetOdds(Double)
+- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds*
+  name: SetOdds
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilder_SetOdds_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds
+  nameWithType: ICustomBetSelectionBuilder.SetOdds
 - uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOutcomeId(System.String)
   name: SetOutcomeId(string)
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilder_SetOutcomeId_System_String_
@@ -3178,44 +3252,6 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetSpecifiers
   nameWithType: ICustomBetSelectionBuilder.SetSpecifiers
-- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1
-  name: ICustomBetSelectionBuilderV1
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.html
-  commentId: T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1
-  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1
-  nameWithType: ICustomBetSelectionBuilderV1
-- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String,System.Nullable{System.Double})
-  name: Build(Urn, int, string, string, double?)
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilderV1_Build_Sportradar_OddsFeed_SDK_Common_Urn_System_Int32_System_String_System_String_System_Nullable_System_Double__
-  commentId: M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String,System.Nullable{System.Double})
-  name.vb: Build(Urn, Integer, String, String, Double?)
-  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build(Sportradar.OddsFeed.SDK.Common.Urn, int, string, string, double?)
-  fullName.vb: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build(Sportradar.OddsFeed.SDK.Common.Urn, Integer, String, String, Double?)
-  nameWithType: ICustomBetSelectionBuilderV1.Build(Urn, int, string, string, double?)
-  nameWithType.vb: ICustomBetSelectionBuilderV1.Build(Urn, Integer, String, String, Double?)
-- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build*
-  name: Build
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilderV1_Build_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build
-  nameWithType: ICustomBetSelectionBuilderV1.Build
-- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds(System.Double)
-  name: SetOdds(double)
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilderV1_SetOdds_System_Double_
-  commentId: M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds(System.Double)
-  name.vb: SetOdds(Double)
-  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds(double)
-  fullName.vb: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds(Double)
-  nameWithType: ICustomBetSelectionBuilderV1.SetOdds(double)
-  nameWithType.vb: ICustomBetSelectionBuilderV1.SetOdds(Double)
-- uid: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds*
-  name: SetOdds
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.html#Sportradar_OddsFeed_SDK_Api_Managers_ICustomBetSelectionBuilderV1_SetOdds_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds
-  nameWithType: ICustomBetSelectionBuilderV1.SetOdds
 - uid: Sportradar.OddsFeed.SDK.Api.Managers.IEventChangeManager
   name: IEventChangeManager
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IEventChangeManager.html
@@ -4992,18 +5028,6 @@ references:
   commentId: F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.Production
   fullName: Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.Production
   nameWithType: SdkEnvironment.Production
-- uid: Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxySingapore
-  name: ProxySingapore
-  href: sdkapi/Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.html#Sportradar_OddsFeed_SDK_Common_Enums_SdkEnvironment_ProxySingapore
-  commentId: F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxySingapore
-  fullName: Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxySingapore
-  nameWithType: SdkEnvironment.ProxySingapore
-- uid: Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxyTokyo
-  name: ProxyTokyo
-  href: sdkapi/Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.html#Sportradar_OddsFeed_SDK_Common_Enums_SdkEnvironment_ProxyTokyo
-  commentId: F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxyTokyo
-  fullName: Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxyTokyo
-  nameWithType: SdkEnvironment.ProxyTokyo
 - uid: Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.Replay
   name: Replay
   href: sdkapi/Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.html#Sportradar_OddsFeed_SDK_Common_Enums_SdkEnvironment_Replay
@@ -7912,19 +7936,6 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsReferences
   nameWithType: ExportableCompetition.CompetitorsReferences
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsVirtual
-  name: CompetitorsVirtual
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.html#Sportradar_OddsFeed_SDK_Entities_Rest_Caching_Exportable_ExportableCompetition_CompetitorsVirtual
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsVirtual
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsVirtual
-  nameWithType: ExportableCompetition.CompetitorsVirtual
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsVirtual*
-  name: CompetitorsVirtual
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.html#Sportradar_OddsFeed_SDK_Entities_Rest_Caching_Exportable_ExportableCompetition_CompetitorsVirtual_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsVirtual
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsVirtual
-  nameWithType: ExportableCompetition.CompetitorsVirtual
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.Conditions
   name: Conditions
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.html#Sportradar_OddsFeed_SDK_Entities_Rest_Caching_Exportable_ExportableCompetition_Conditions
@@ -11185,19 +11196,19 @@ references:
   commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections
   nameWithType: IAvailableSelections
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Event
-  name: Event
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelections_Event
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Event
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Event
-  nameWithType: IAvailableSelections.Event
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Event*
-  name: Event
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelections_Event_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Event
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.EventId
+  name: EventId
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelections_EventId
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.EventId
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.EventId
+  nameWithType: IAvailableSelections.EventId
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.EventId*
+  name: EventId
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelections_EventId_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.EventId
   isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Event
-  nameWithType: IAvailableSelections.Event
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.EventId
+  nameWithType: IAvailableSelections.EventId
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Markets
   name: Markets
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelections_Markets
@@ -11217,19 +11228,19 @@ references:
   commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter
   nameWithType: IAvailableSelectionsFilter
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Event
-  name: Event
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelectionsFilter_Event
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Event
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Event
-  nameWithType: IAvailableSelectionsFilter.Event
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Event*
-  name: Event
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelectionsFilter_Event_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Event
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.EventId
+  name: EventId
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelectionsFilter_EventId
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.EventId
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.EventId
+  nameWithType: IAvailableSelectionsFilter.EventId
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.EventId*
+  name: EventId
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelectionsFilter_EventId_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.EventId
   isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Event
-  nameWithType: IAvailableSelectionsFilter.Event
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.EventId
+  nameWithType: IAvailableSelectionsFilter.EventId
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Markets
   name: Markets
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_IAvailableSelectionsFilter_Markets
@@ -11275,6 +11286,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.GeneratedAt
   nameWithType: ICalculation.GeneratedAt
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Harmonization
+  name: Harmonization
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculation_Harmonization
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Harmonization
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Harmonization
+  nameWithType: ICalculation.Harmonization
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Harmonization*
+  name: Harmonization
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculation_Harmonization_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Harmonization
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Harmonization
+  nameWithType: ICalculation.Harmonization
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Odds
   name: Odds
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculation_Odds
@@ -11333,6 +11357,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.GeneratedAt
   nameWithType: ICalculationFilter.GeneratedAt
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Harmonization
+  name: Harmonization
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculationFilter_Harmonization
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Harmonization
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Harmonization
+  nameWithType: ICalculationFilter.Harmonization
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Harmonization*
+  name: Harmonization
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculationFilter_Harmonization_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Harmonization
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Harmonization
+  nameWithType: ICalculationFilter.Harmonization
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Odds
   name: Odds
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculationFilter_Odds
@@ -11359,44 +11396,6 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Probability
   nameWithType: ICalculationFilter.Probability
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1
-  name: ICalculationFilterV1
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.html
-  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1
-  nameWithType: ICalculationFilterV1
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization
-  name: Harmonization
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculationFilterV1_Harmonization
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization
-  nameWithType: ICalculationFilterV1.Harmonization
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization*
-  name: Harmonization
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculationFilterV1_Harmonization_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization
-  nameWithType: ICalculationFilterV1.Harmonization
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1
-  name: ICalculationV1
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.html
-  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1
-  nameWithType: ICalculationV1
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization
-  name: Harmonization
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculationV1_Harmonization
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization
-  nameWithType: ICalculationV1.Harmonization
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization*
-  name: Harmonization
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ICalculationV1_Harmonization_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization
-  nameWithType: ICalculationV1.Harmonization
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket
   name: IMarket
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket.html
@@ -11564,6 +11563,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.MarketId
   nameWithType: ISelection.MarketId
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Odds
+  name: Odds
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ISelection_Odds
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Odds
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Odds
+  nameWithType: ISelection.Odds
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Odds*
+  name: Odds
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ISelection_Odds_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Odds
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Odds
+  nameWithType: ISelection.Odds
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.OutcomeId
   name: OutcomeId
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ISelection_OutcomeId
@@ -11590,25 +11602,6 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Specifiers
   nameWithType: ISelection.Specifiers
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1
-  name: ISelectionV1
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.html
-  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1
-  nameWithType: ISelectionV1
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds
-  name: Odds
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ISelectionV1_Odds
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds
-  nameWithType: ISelectionV1.Odds
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds*
-  name: Odds
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_CustomBet_ISelectionV1_Odds_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds
-  nameWithType: ISelectionV1.Odds
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums
   name: Sportradar.OddsFeed.SDK.Entities.Rest.Enums
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.html
@@ -14938,25 +14931,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.PeriodScores
   nameWithType: IMatchStatus.PeriodScores
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1
-  name: IMatchStatusV1
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html
-  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1
-  nameWithType: IMatchStatusV1
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.Statistics
   name: Statistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatusV1_Statistics
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
-  nameWithType: IMatchStatusV1.Statistics
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics*
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatus_Statistics
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.Statistics
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.Statistics
+  nameWithType: IMatchStatus.Statistics
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.Statistics*
   name: Statistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatusV1_Statistics_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.html#Sportradar_OddsFeed_SDK_Entities_Rest_IMatchStatus_Statistics_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.Statistics
   isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics
-  nameWithType: IMatchStatusV1.Statistics
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.Statistics
+  nameWithType: IMatchStatus.Statistics
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue
   name: INamedValue
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue.html
@@ -16286,76 +16273,6 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISeasonInfo.Year
   nameWithType: ISeasonInfo.Year
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent
-  name: ISoccerEvent
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.html
-  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent
-  nameWithType: ISoccerEvent
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.GetStatusAsync
-  name: GetStatusAsync()
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerEvent_GetStatusAsync
-  commentId: M:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.GetStatusAsync
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.GetStatusAsync()
-  nameWithType: ISoccerEvent.GetStatusAsync()
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.GetStatusAsync*
-  name: GetStatusAsync
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerEvent_GetStatusAsync_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.GetStatusAsync
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.GetStatusAsync
-  nameWithType: ISoccerEvent.GetStatusAsync
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics
-  name: ISoccerStatistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.html
-  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics
-  nameWithType: ISoccerStatistics
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.PeriodStatistics
-  name: PeriodStatistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerStatistics_PeriodStatistics
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.PeriodStatistics
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.PeriodStatistics
-  nameWithType: ISoccerStatistics.PeriodStatistics
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.PeriodStatistics*
-  name: PeriodStatistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerStatistics_PeriodStatistics_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.PeriodStatistics
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.PeriodStatistics
-  nameWithType: ISoccerStatistics.PeriodStatistics
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.TotalStatistics
-  name: TotalStatistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerStatistics_TotalStatistics
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.TotalStatistics
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.TotalStatistics
-  nameWithType: ISoccerStatistics.TotalStatistics
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.TotalStatistics*
-  name: TotalStatistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerStatistics_TotalStatistics_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.TotalStatistics
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.TotalStatistics
-  nameWithType: ISoccerStatistics.TotalStatistics
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus
-  name: ISoccerStatus
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.html
-  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus
-  nameWithType: ISoccerStatus
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.Statistics
-  name: Statistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerStatus_Statistics
-  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.Statistics
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.Statistics
-  nameWithType: ISoccerStatus.Statistics
-- uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.Statistics*
-  name: Statistics
-  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.html#Sportradar_OddsFeed_SDK_Entities_Rest_ISoccerStatus_Statistics_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.Statistics
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.Statistics
-  nameWithType: ISoccerStatus.Statistics
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.ISport
   name: ISport
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.ISport.html

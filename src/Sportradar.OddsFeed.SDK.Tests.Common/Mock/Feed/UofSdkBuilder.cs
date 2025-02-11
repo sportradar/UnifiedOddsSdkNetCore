@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit.Abstractions;
@@ -24,6 +24,7 @@ public class UofSdkBuilder
     private bool _openSdk;
     private string _apiUrl;
     private ITestOutputHelper _outputHelper;
+    private ExceptionHandlingStrategy _exceptionHandlingStrategy;
 
     public static UofSdkBuilder Create()
     {
@@ -72,6 +73,12 @@ public class UofSdkBuilder
         return this;
     }
 
+    public UofSdkBuilder WithExceptionHandlingStrategy(ExceptionHandlingStrategy exceptionHandlingStrategy)
+    {
+        _exceptionHandlingStrategy = exceptionHandlingStrategy;
+        return this;
+    }
+
     public UofSdkWrapper Build()
     {
         if (_enabledProducers.IsNullOrEmpty())
@@ -114,19 +121,59 @@ public class UofSdkBuilder
                               .SetDesiredLanguages(_cultures)
                               .SetMinIntervalBetweenRecoveryRequests(20)
                               .SetDisabledProducers(disabledProducers)
+                              .SetExceptionHandlingStrategy(_exceptionHandlingStrategy)
+                              .EnableUsageExport(false)
                               .Build();
 
         var serviceCollection = new ServiceCollection();
         if (_useSdkLogging)
         {
             var xLoggerFactory = new XunitLoggerFactory(_outputHelper);
-            serviceCollection.AddSingleton<IConfiguration>(projectConfiguration.Configuration);
+            serviceCollection.AddSingleton(projectConfiguration.Configuration);
             serviceCollection.AddLogging(options =>
                                          {
                                              options.AddConfiguration(projectConfiguration.Configuration.GetSection("Logging"));
                                              options.SetMinimumLevel(LogLevel.Information);
                                              options.AddProvider(new XUnitLoggerProvider(xLoggerFactory));
                                          });
+        }
+        serviceCollection.AddUofSdk(sdkConfig);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        return new UofSdkWrapper(serviceProvider, _messageInterests, _outputHelper, _openSdk);
+    }
+
+    public UofSdkWrapper BuildWithCustomConfig(IUofConfiguration sdkConfig)
+    {
+        if (_enabledProducers.IsNullOrEmpty())
+        {
+            throw new InvalidOperationException("At least one producer must be enabled");
+        }
+        if (_messageInterests.IsNullOrEmpty())
+        {
+            throw new InvalidOperationException("At least one message interest must be set");
+        }
+        if (_cultures.IsNullOrEmpty())
+        {
+            throw new InvalidOperationException("At least one language must be set");
+        }
+        if (_outputHelper == null)
+        {
+            throw new InvalidOperationException("TestOutputHelper must be set");
+        }
+
+        var projectConfiguration = new ProjectConfiguration();
+        var serviceCollection = new ServiceCollection();
+        if (_useSdkLogging)
+        {
+            var xLoggerFactory = new XunitLoggerFactory(_outputHelper);
+            serviceCollection.AddSingleton(projectConfiguration.Configuration);
+            serviceCollection.AddLogging(options =>
+            {
+                options.AddConfiguration(projectConfiguration.Configuration.GetSection("Logging"));
+                options.SetMinimumLevel(LogLevel.Information);
+                options.AddProvider(new XUnitLoggerProvider(xLoggerFactory));
+            });
         }
         serviceCollection.AddUofSdk(sdkConfig);
         var serviceProvider = serviceCollection.BuildServiceProvider();

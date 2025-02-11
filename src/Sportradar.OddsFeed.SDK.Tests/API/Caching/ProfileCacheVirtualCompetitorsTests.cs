@@ -71,8 +71,6 @@ public class ProfileCacheVirtualCompetitorsTests
         var matchDtoWithVirtualCompetitors = GetMatchDtoWithCompetitors(true, true);
         _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
                                       .ReturnsAsync(matchDtoWithVirtualCompetitors);
-        _competitorProfileProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
-                                      .ReturnsAsync(GetCompetitorProfileWithoutVirtualFlag());
 
         await _dataRouterManager.GetSportEventSummaryAsync(_defaultMatchId, TestConfiguration.GetConfig().DefaultLanguage, null);
         var profile = await _profileCache.GetCompetitorProfileAsync(Urn.Parse("sr:competitor:4698"), new[] { TestConfiguration.GetConfig().DefaultLanguage }, true);
@@ -96,7 +94,7 @@ public class ProfileCacheVirtualCompetitorsTests
     }
 
     [Fact]
-    public async Task GetSportEventSummaryWhenCalledWithoutSpecifyingVirtualFlagShouldSetCompetitorCacheItemVirtualFlagNull()
+    public async Task GetSportEventSummaryWithEmptyVirtualFlagShouldReturnVirtualCompetitorCacheItem()
     {
         var matchDtoWithNoVirtualCompetitors = GetMatchDtoWithCompetitors(false, false);
         _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
@@ -107,7 +105,7 @@ public class ProfileCacheVirtualCompetitorsTests
         await _dataRouterManager.GetSportEventSummaryAsync(_defaultMatchId, TestConfiguration.GetConfig().DefaultLanguage, null);
         var profile = await _profileCache.GetCompetitorProfileAsync(Urn.Parse("sr:competitor:4698"), new[] { TestConfiguration.GetConfig().DefaultLanguage }, true);
 
-        profile.IsVirtual.Should().BeNull();
+        profile.IsVirtual.Should().BeFalse();
     }
 
     private static CompetitorProfileDto GetCompetitorProfileWithoutVirtualFlag()

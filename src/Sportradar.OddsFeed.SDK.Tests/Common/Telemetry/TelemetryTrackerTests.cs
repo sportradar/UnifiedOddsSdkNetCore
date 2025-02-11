@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Xunit;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Telemetry;
 public class TelemetryTrackerTests
 {
     private readonly Meter _meter;

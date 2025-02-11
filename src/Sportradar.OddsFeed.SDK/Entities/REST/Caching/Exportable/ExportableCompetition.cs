@@ -48,12 +48,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable
         public IDictionary<string, IDictionary<string, string>> CompetitorsReferences { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="IList{T}"/> specifying the competitors which are market virtual
-        /// </summary>
-        [Obsolete("Competitors virtual is not used anymore. Use Competitor.IsVirtual property to identify virtual competitors.")]
-        public IList<string> CompetitorsVirtual { get; set; }
-
-        /// <summary>
         /// Gets a liveOdds
         /// </summary>
         /// <returns>A liveOdds</returns>

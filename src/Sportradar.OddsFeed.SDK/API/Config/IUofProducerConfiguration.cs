@@ -11,12 +11,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
     public interface IUofProducerConfiguration
     {
         /// <summary>
-        /// Gets a value indicating whether the after age should be adjusted before executing recovery request
-        /// </summary>
-        /// <value><c>true</c> if [adjust after age]; otherwise, <c>false</c></value>
-        bool AdjustAfterAge { get; }
-
-        /// <summary>
         /// Gets the maximum allowed timeout, between consecutive AMQP messages associated with the same producer.
         /// If this value is exceeded, the producer is considered to be down (seconds)
         /// </summary>

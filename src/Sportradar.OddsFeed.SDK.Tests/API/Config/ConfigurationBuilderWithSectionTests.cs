@@ -268,54 +268,15 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void LoadEnvironmentProxyTokyoAppConfig()
-    {
-        const string accessToken = "AccessToken";
-        var config = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en' environment='ProxyTokyo' />".ToSdkConfiguration();
-
-        ValidateConfiguration(config,
-            accessToken,
-            SdkEnvironment.ProxyTokyo,
-            "en",
-            1,
-            EnvironmentManager.GetMqHost(SdkEnvironment.ProxyTokyo),
-            EnvironmentManager.GetApiHost(SdkEnvironment.ProxyTokyo),
-            EnvironmentManager.DefaultMqHostPort,
-            accessToken,
-            null,
-            TestData.VirtualHost);
-    }
-
-    [Fact]
-    public void BuilderEnvironmentProxyTokyo()
-    {
-        const string accessToken = "AccessToken";
-        var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en' environment='ProxyTokyo' />".ToSection();
-        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider()).BuildFromConfigFile();
-
-        ValidateConfiguration(config,
-            accessToken,
-            SdkEnvironment.ProxyTokyo,
-            "en",
-            1,
-            EnvironmentManager.GetMqHost(SdkEnvironment.ProxyTokyo),
-            EnvironmentManager.GetApiHost(SdkEnvironment.ProxyTokyo),
-            EnvironmentManager.DefaultMqHostPort,
-            accessToken,
-            null,
-            TestData.VirtualHost);
-    }
-
-    [Fact]
     public void BuilderEnvironmentGlobalProduction()
     {
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
+
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
             .SetAccessTokenFromConfigFile()
             .SelectEnvironment(SdkEnvironment.GlobalProduction)
             .LoadFromConfigFile()
-            .SetAdjustAfterAge(true)
             .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
             .SetHttpClientTimeout(45)
             .SetInactivitySeconds(45)
@@ -323,6 +284,7 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
             .SetMinIntervalBetweenRecoveryRequests(45)
             .SetHttpClientRecoveryTimeout(55)
             .Build();
+
         ValidateConfiguration(config,
             accessToken,
             SdkEnvironment.GlobalProduction,
@@ -342,7 +304,6 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
             11,
             0,
             ExceptionHandlingStrategy.Throw,
-            true,
             45,
             55);
     }
@@ -352,11 +313,11 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
     {
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
+
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
             .SetAccessTokenFromConfigFile()
             .SelectEnvironment(SdkEnvironment.GlobalIntegration)
             .LoadFromConfigFile()
-            .SetAdjustAfterAge(true)
             .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
             .SetHttpClientTimeout(45)
             .SetInactivitySeconds(45)
@@ -364,6 +325,7 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
             .SetMinIntervalBetweenRecoveryRequests(45)
             .SetHttpClientRecoveryTimeout(55)
             .Build();
+
         ValidateConfiguration(config,
             accessToken,
             SdkEnvironment.GlobalIntegration,
@@ -383,7 +345,6 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
             11,
             0,
             ExceptionHandlingStrategy.Throw,
-            true,
             45,
             55);
     }
@@ -393,11 +354,11 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
     {
         const string accessToken = "AccessToken";
         var section = $"<uofSdkSection accessToken='{accessToken}' desiredLanguages='en,de' nodeId='11' />".ToSection();
+
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
             .SetAccessTokenFromConfigFile()
             .SelectEnvironment(SdkEnvironment.Replay)
             .LoadFromConfigFile()
-            .SetAdjustAfterAge(true)
             .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
             .SetHttpClientTimeout(45)
             .SetInactivitySeconds(45)
@@ -405,6 +366,7 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
             .SetMinIntervalBetweenRecoveryRequests(45)
             .SetHttpClientRecoveryTimeout(45)
             .Build();
+
         Assert.Equal(SdkEnvironment.Replay, config.Environment);
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), config.Api.Host);
         ValidateConfiguration(config,
@@ -426,7 +388,6 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
             11,
             0,
             ExceptionHandlingStrategy.Throw,
-            true,
             45,
             45);
     }
@@ -451,8 +412,7 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
         int minIntervalBetweenRecoveryRequests = ConfigLimit.MinIntervalBetweenRecoveryRequestDefault,
         int nodeId = 0,
         int disabledProducers = 0,
-        ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Catch,
-        bool adjustAfterAge = true,
+        ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw,
         int httpClientTimeout = ConfigLimit.HttpClientTimeoutDefault,
         int recoveryHttpClientTimeout = ConfigLimit.HttpClientRecoveryTimeoutDefault)
     {
@@ -475,7 +435,6 @@ public class ConfigurationBuilderWithSectionTests : ConfigurationBuilderSetup
         Assert.Equal(nodeId, config.NodeId);
         Assert.Equal(disabledProducers, config.Producer.DisabledProducers?.Count ?? 0);
         Assert.Equal(exceptionHandlingStrategy, config.ExceptionHandlingStrategy);
-        Assert.Equal(adjustAfterAge, config.Producer.AdjustAfterAge);
         Assert.Equal(httpClientTimeout, config.Api.HttpClientTimeout.TotalSeconds);
         Assert.Equal(recoveryHttpClientTimeout, config.Api.HttpClientRecoveryTimeout.TotalSeconds);
 

@@ -106,10 +106,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string Iso860124HFullFormat = "yyyy-MM-dd’T’HH:mm:ssXXX";
         /// <summary>
-        /// The soccer sport urns
-        /// </summary>
-        public static readonly IReadOnlyCollection<Urn> SoccerSportUrns = new[] { Urn.Parse("sr:sport:1"), Urn.Parse("sr:sport:137") };
-        /// <summary>
         /// The date when it was created
         /// </summary>
         public static readonly DateTime Created = DateTime.Now;

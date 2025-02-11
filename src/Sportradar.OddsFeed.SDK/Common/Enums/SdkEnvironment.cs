@@ -34,16 +34,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Enums
         /// <summary>
         /// The global integration
         /// </summary>
-        GlobalIntegration,
-
-        /// <summary>
-        /// The Singapore proxy
-        /// </summary>
-        ProxySingapore,
-
-        /// <summary>
-        /// The Tokyo proxy
-        /// </summary>
-        ProxyTokyo
+        GlobalIntegration
     }
 }

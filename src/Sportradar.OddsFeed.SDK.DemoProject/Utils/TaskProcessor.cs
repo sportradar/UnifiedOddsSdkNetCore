@@ -9,82 +9,81 @@ using System.Threading.Tasks;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 
-namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
+namespace Sportradar.OddsFeed.SDK.DemoProject.Utils;
+
+/// <summary>
+/// A class used keep track of the ongoing asynchronous operations
+/// </summary>
+public class TaskProcessor
 {
     /// <summary>
-    /// A class used keep track of the ongoing asynchronous operations
+    /// The number of currently running tasks
     /// </summary>
-    public class TaskProcessor
+    private long _runningTaskCount;
+
+    /// <summary>
+    /// A <see cref="AutoResetEvent"/> used to wait for un-completed tasks
+    /// </summary>
+    private readonly AutoResetEvent _autoReset = new AutoResetEvent(true);
+
+    /// <summary>
+    /// A <see cref="TimeSpan"/> defining the max wait time
+    /// </summary>
+    private readonly TimeSpan _maxWaitTime;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TaskProcessor"/> class
+    /// </summary>
+    /// <param name="maxWaitTime"> A <see cref="TimeSpan"/> defining the max wait time</param>
+    public TaskProcessor(TimeSpan maxWaitTime)
     {
-        /// <summary>
-        /// The number of currently running tasks
-        /// </summary>
-        private long _runningTaskCount;
+        Guard.Argument(maxWaitTime, nameof(maxWaitTime)).Require(maxWaitTime > TimeSpan.Zero);
 
-        /// <summary>
-        /// A <see cref="AutoResetEvent"/> used to wait for un-completed tasks
-        /// </summary>
-        private readonly AutoResetEvent _autoReset = new AutoResetEvent(true);
+        _maxWaitTime = maxWaitTime;
+    }
 
-        /// <summary>
-        /// A <see cref="TimeSpan"/> defining the max wait time
-        /// </summary>
-        private readonly TimeSpan _maxWaitTime;
+    /// <summary>
+    /// Waits for the provided <see cref="Task{T}"/> to complete and returns it's result
+    /// </summary>
+    /// <typeparam name="T">The type returned by the task</typeparam>
+    /// <param name="task">A <see cref="Task{T}"/> on from which to get the result</param>
+    /// <returns>A <see cref="T"/> representing the result of the task</returns>
+    public T GetTaskResult<T>(Task<T> task)
+    {
+        Guard.Argument(task, nameof(task)).NotNull();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TaskProcessor"/> class
-        /// </summary>
-        /// <param name="maxWaitTime"> A <see cref="TimeSpan"/> defining the max wait time</param>
-        public TaskProcessor(TimeSpan maxWaitTime)
+        Interlocked.Increment(ref _runningTaskCount);
+        try
         {
-            Guard.Argument(maxWaitTime, nameof(maxWaitTime)).Require(maxWaitTime > TimeSpan.Zero);
-
-            _maxWaitTime = maxWaitTime;
+            return task.Result;
         }
-
-        /// <summary>
-        /// Waits for the provided <see cref="Task{T}"/> to complete and returns it's result
-        /// </summary>
-        /// <typeparam name="T">The type returned by the task</typeparam>
-        /// <param name="task">A <see cref="Task{T}"/> on from which to get the result</param>
-        /// <returns>A <see cref="T"/> representing the result of the task</returns>
-        public T GetTaskResult<T>(Task<T> task)
+        catch (AggregateException ex)
         {
-            Guard.Argument(task, nameof(task)).NotNull();
-
-            Interlocked.Increment(ref _runningTaskCount);
-            try
+            if (!ex.InnerExceptions.IsNullOrEmpty())
             {
-                return task.Result;
+                throw ex.InnerExceptions.First();
             }
-            catch (AggregateException ex)
+            throw;
+        }
+        finally
+        {
+            if (Interlocked.Decrement(ref _runningTaskCount) == 0)
             {
-                if (!ex.InnerExceptions.IsNullOrEmpty())
-                {
-                    throw ex.InnerExceptions.First();
-                }
-                throw;
+                _autoReset.Set();
             }
-            finally
+            else
             {
-                if (Interlocked.Decrement(ref _runningTaskCount) == 0)
-                {
-                    _autoReset.Set();
-                }
-                else
-                {
-                    _autoReset.Reset();
-                }
+                _autoReset.Reset();
             }
         }
+    }
 
-        /// <summary>
-        /// Waits for all un-finished tasks
-        /// </summary>
-        /// <returns>True if all unfinished tasks completed within the allocated time. Otherwise false</returns>
-        public bool WaitForTasks()
-        {
-            return _autoReset.WaitOne(_maxWaitTime);
-        }
+    /// <summary>
+    /// Waits for all un-finished tasks
+    /// </summary>
+    /// <returns>True if all unfinished tasks completed within the allocated time. Otherwise false</returns>
+    public bool WaitForTasks()
+    {
+        return _autoReset.WaitOne(_maxWaitTime);
     }
 }

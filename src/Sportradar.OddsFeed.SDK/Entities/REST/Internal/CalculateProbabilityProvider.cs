@@ -68,10 +68,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
                     outcome_id = selection.OutcomeId,
                     specifiers = selection.Specifiers
                 };
-                var selectionV1 = selection as ISelectionV1;
-                if (selectionV1?.Odds != null)
+
+                if (selection.Odds != null)
                 {
-                    capiSelection.odds = selectionV1.Odds.Value;
+                    capiSelection.odds = selection.Odds.Value;
                     capiSelection.oddsSpecified = true;
                 }
                 capiSelections.Add(capiSelection);

@@ -73,5 +73,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// Gets the additional settings
         /// </summary>
         IUofAdditionalConfiguration Additional { get; }
+
+        /// <summary>
+        /// Gets the settings for usage exporter
+        /// </summary>
+        IUofUsageConfiguration Usage { get; }
     }
 }

@@ -37,8 +37,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         {
             Guard.Argument(item, nameof(item)).NotNull();
 
-            Nationality = new Dictionary<CultureInfo, string>();
-            Nationality[culture] = item.Nationality;
+            Nationality = new Dictionary<CultureInfo, string> { { culture, item.Nationality } };
             CountryCode = item.CountryCode;
         }
 

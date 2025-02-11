@@ -170,7 +170,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 
         public IReadOnlyDictionary<CultureInfo, string> Abbreviations => new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => GetOrLoadCompetitor().GetAbbreviation(c) != null).ToDictionary(c => c, c => GetOrLoadCompetitor().GetAbbreviation(c)));
 
-        public bool IsVirtual => GetOrLoadCompetitor()?.IsVirtual ?? false;
+        public bool? IsVirtual => GetOrLoadCompetitor()?.IsVirtual;
 
         public IReference References
         {

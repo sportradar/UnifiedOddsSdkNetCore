@@ -3,13 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Api.Managers;
-using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
@@ -49,11 +49,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         private bool _locked;
 
         /// <summary>
-        /// Gets the indication whether the after age should be adjusted before executing recovery request
-        /// </summary>
-        private readonly bool _adjustAfterAge;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ProducerManager"/> class
         /// </summary>
         /// <param name="config">The <see cref="IUofConfiguration"/> used for retrieve disabled producers</param>
@@ -77,7 +72,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             }
 
             _locked = false;
-            _adjustAfterAge = config.Producer.AdjustAfterAge;
+
+            _ = UofSdkTelemetry.DefaultMeter.CreateObservableGauge(UofSdkTelemetry.MetricNameForProducerStatus, GetProducersStatuses, description: UofSdkTelemetry.MetricDescForProducerStatus);
+            _ = UsageTelemetry.UsageMeter.CreateObservableGauge(UofSdkTelemetry.MetricNameForProducerStatus, GetProducersStatuses, description: UofSdkTelemetry.MetricDescForProducerStatus);
+        }
+
+        private IEnumerable<Measurement<int>> GetProducersStatuses()
+        {
+            return _producers.Where(w => w.IsAvailable && !w.IsDisabled)
+                             .Select(producer => new Measurement<int>(producer.IsProducerDown ? 0 : 1,
+                                                                      new KeyValuePair<string, object>("producer", $"{producer.Id}-{producer.Name}"),
+                                                                      new KeyValuePair<string, object>("reason", producer.IsProducerDown ? "unknown" : string.Empty)));
         }
 
         /// <summary>
@@ -173,25 +178,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             }
             if (timestamp > DateTime.Now)
             {
-                if (_adjustAfterAge)
-                {
-                    timestamp = DateTime.Now;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time in the future");
-                }
+                throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time in the future");
             }
             if (timestamp < DateTime.Now.Subtract(p.MaxAfterAge()))
             {
-                if (_adjustAfterAge)
-                {
-                    timestamp = DateTime.Now.Subtract(p.MaxAfterAge());
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time to far in the past. Timestamp must be greater then {DateTime.Now.Subtract(p.MaxAfterAge())}");
-                }
+                throw new ArgumentOutOfRangeException(nameof(timestamp), $"The value {timestamp} specifies the time to far in the past. Timestamp must be greater then {DateTime.Now.Subtract(p.MaxAfterAge())}");
             }
             p.SetLastTimestampBeforeDisconnect(timestamp);
         }
@@ -219,21 +210,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         /// <remarks>Also checks if at least 1 producer is enabled and if all LastTimestamps are valid</remarks>
         public void Lock()
         {
-            if (_producers == null)
-            {
-                throw new CommunicationException("No producer available.", "API:AvailableProducers", null);
-            }
             if (!_producers.Any() || _producers.Count(c => c.IsAvailable && !c.IsDisabled) == 0)
             {
-                throw new InvalidOperationException("No producer available or all are disabled.");
-            }
-            foreach (var producer in _producers)
-            {
-                if (!_adjustAfterAge && producer.LastTimestampBeforeDisconnect != DateTime.MinValue && producer.LastTimestampBeforeDisconnect < DateTime.Now.Subtract(producer.MaxAfterAge()))
-                {
-                    var err = $"Recovery timestamp for producer {producer} is too far in the past. TimeStamp={producer.LastTimestampBeforeDisconnect}";
-                    throw new InvalidOperationException(err);
-                }
+                throw new InvalidOperationException("No producer available or all are disabled");
             }
             _locked = true;
         }
@@ -267,7 +246,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         /// Gets the unknown producer
         /// </summary>
         /// <returns>The <see cref="IProducer"/> instance</returns>
-        public static IProducer GetUnknownProducer()
+        private static IProducer GetUnknownProducer()
         {
             return new Producer(id: SdkInfo.UnknownProducerId, name: "Unknown", description: "Unknown producer", apiUrl: "unknown", active: true, maxInactivitySeconds: 20, maxRecoveryTime: 3600, scope: "live|prematch|virtual", statefulRecoveryWindowInMinutes: 100);
         }

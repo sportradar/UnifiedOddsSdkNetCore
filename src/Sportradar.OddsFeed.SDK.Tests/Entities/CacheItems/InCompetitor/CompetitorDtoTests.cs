@@ -112,7 +112,7 @@ public class CompetitorDtoTests : CompetitorSetup
 
         var competitorDto = new CompetitorDto(apiTeam);
 
-        Assert.Null(competitorDto.IsVirtual);
+        Assert.False(competitorDto.IsVirtual);
         ValidateTeamWithCompetitor(apiTeam, competitorDto);
     }
 
@@ -125,7 +125,7 @@ public class CompetitorDtoTests : CompetitorSetup
 
         var competitorDto = new CompetitorDto(apiTeam);
 
-        Assert.Null(competitorDto.IsVirtual);
+        Assert.False(competitorDto.IsVirtual);
         ValidateTeamWithCompetitor(apiTeam, competitorDto);
     }
 
@@ -183,7 +183,7 @@ public class CompetitorDtoTests : CompetitorSetup
     {
         var apiTeam = new teamExtended
         {
-            id = Urn.Parse("sr:competitor:123").ToString(),
+            id = "sr:competitor:123",
             name = "Competitor 123",
             sport = new sport { id = "sr:sport:1", name = "Soccer" },
             category = new category { id = "sr:category:1", name = "Category 1" }

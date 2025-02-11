@@ -1,5 +1,24 @@
 # Change Log
 
+## 2025-02-11  3.0.0 (breaking change)
+- ExceptionHandlingStrategy default value is changed to Throw (before Catch).
+- Code is cleaned up. Outdated classes are removed. Affected classes are - SoccerEvent, SoccerStatistics, SoccerStatus.
+- Asian proxy environments are no longer supported therefore they are removed from enum SdkEnvironment.
+- Removed interfaces ICustomBetSelectionBuilderV1, ICalculationFilterV1, ICalculationV1, ISelectionV1, and IMatchStatusV1. Properties from these interfaces have been consolidated into ICustomBetSelectionBuilder, ICalculationFilter, ICalculation, ISelection, and IMatchStatus respectively.
+- ExportableCompetitor.IsVirtual is null if the competitor's virtual flag was not retrieved initially.
+- Removed configuration option for settings AdjustAfterAge for producer recoveries (now always true)
+- Updated all dependencies to the latest versions (check migration guide)
+- Renamed IAvailableSelections.Event to EventId
+- Renamed IAvailableSelectionsFilter.Event to EventId
+- ICompetitor.IsVirtual can be null if the actual value is not retrieved
+- Added dependency on OpenTelemetry.Instrumentation.Runtime
+- Added dependency on OpenTelemetry.Exporter.OpenTelemetryProtocol
+- IUofUsageConfiguration exposed as IUofConfiguration.Usage for properties configuring usage export (metrics)
+- IUofConfiguration.Usage.IsExportEnabled (default: enabled)
+- Added IConfigurationBuilder.EnableUsageExport(bool enable) method
+- Updated Sdk dependencies
+- Check associated migration guide for more details
+
 ## 2025-01-22  2.4.2
 - SportDataProvider.GetListOfSportEventsAsync issues the call to the right endpoint and properly returns data 
 
@@ -140,11 +159,6 @@ to
 - Fixed WNS API endpoints (removed /sports/ from url)
 - Optimized daily cache population of available sport and category data (does not delete any previous ones anymore)
 - Optimized execution of some internal async  methods
-
-## 2023-02-XY  1.30.2
-- Fixed lock issue when calling SportDataProvider.GetActiveTournamentsAsync repeatedly
-- Improved performance for market/outcome name generation
-- Fixed WNS API endpoints
 
 ## 2023-02-03  1.30.1
 - Improved speed on API requests with high concurrency

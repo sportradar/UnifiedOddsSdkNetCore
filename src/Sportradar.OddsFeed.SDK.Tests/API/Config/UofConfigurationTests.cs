@@ -163,8 +163,6 @@ public class UofConfigurationTests
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    [InlineData(SdkEnvironment.ProxyTokyo)]
-    [InlineData(SdkEnvironment.ProxySingapore)]
     public void SettingEnvironmentHasCorrectValue(SdkEnvironment environment)
     {
         var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
@@ -320,7 +318,6 @@ public class UofConfigurationTests
         Assert.Contains("MaxRecoveryTime=", summary);
         Assert.Contains("MinIntervalBetweenRecoveryRequests=", summary);
         Assert.Contains("DisabledProducers=", summary);
-        Assert.Contains("AdjustAfterAge=", summary);
     }
 
     [Fact]
@@ -338,6 +335,19 @@ public class UofConfigurationTests
         Assert.Contains("Password=", summary);
         Assert.Contains("ConnectionTimeout=", summary);
         Assert.Contains("Heartbeat=", summary);
+    }
+
+    [Fact]
+    public void UsageConfigurationToStringHasAllTheValues()
+    {
+        var summary = new UofUsageConfiguration().ToString();
+
+        Assert.NotNull(summary);
+        Assert.Contains("UsageConfiguration{", summary);
+        Assert.Contains("IsExportEnabled=", summary);
+        Assert.Contains("ExportIntervalInSec=", summary);
+        Assert.Contains("ExportTimeoutInSec=", summary);
+        Assert.Contains("Host=", summary);
     }
 
     [Fact]
@@ -371,6 +381,7 @@ public class UofConfigurationTests
         Assert.Contains("ProducerConfiguration{", summary);
         Assert.Contains("RabbitConfiguration{", summary);
         Assert.Contains("AdditionalConfiguration{", summary);
+        Assert.Contains("UsageConfiguration{", summary);
         Assert.Contains("BookmakerId=", summary);
         Assert.Contains("AccessToken=", summary);
         Assert.Contains("NodeId=", summary);
@@ -387,7 +398,7 @@ public class UofConfigurationTests
         Assert.Single(config.Languages);
         Assert.Contains(TestData.Culture, config.Languages);
         Assert.Equal(TestData.Culture, config.DefaultLanguage);
-        Assert.Equal(ExceptionHandlingStrategy.Catch, config.ExceptionHandlingStrategy);
+        Assert.Equal(ExceptionHandlingStrategy.Throw, config.ExceptionHandlingStrategy);
         Assert.Equal(0, config.NodeId);
     }
 
@@ -397,7 +408,6 @@ public class UofConfigurationTests
         Assert.Equal(ConfigLimit.InactivitySecondsDefault, config.Producer.InactivitySeconds.TotalSeconds);
         Assert.Equal(ConfigLimit.InactivitySecondsPrematchDefault, config.Producer.InactivitySecondsPrematch.TotalSeconds);
         Assert.Equal(ConfigLimit.MaxRecoveryTimeDefault, config.Producer.MaxRecoveryTime.TotalSeconds);
-        Assert.True(config.Producer.AdjustAfterAge);
         Assert.Equal(ConfigLimit.MinIntervalBetweenRecoveryRequestDefault, config.Producer.MinIntervalBetweenRecoveryRequests.TotalSeconds);
     }
 

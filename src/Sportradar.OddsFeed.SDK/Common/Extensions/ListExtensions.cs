@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Extensions
                 throw new ArgumentNullException(nameof(collection), "Collection is missing");
             }
 
-            if (item == null)
+            if (Equals(item, default(T)))
             {
                 return;
             }

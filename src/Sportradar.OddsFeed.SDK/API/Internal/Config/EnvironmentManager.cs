@@ -21,6 +21,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <value>The list of environment settings.</value>
         public static List<EnvironmentSetting> EnvironmentSettings { get; }
 
+        private const string UsageHostForProduction = "https://usage.uofsdk.betradar.com";
+        private const string UsageHostForIntegration = "https://usage-int.uofsdk.betradar.com";
+
         static EnvironmentManager()
         {
             var basicRetryList = new List<SdkEnvironment>
@@ -35,8 +38,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                       new EnvironmentSetting(SdkEnvironment.Replay, "replaymq.betradar.com", "stgapi.betradar.com", true, basicRetryList),
                       new EnvironmentSetting(SdkEnvironment.GlobalProduction, "global.mq.betradar.com", "global.api.betradar.com", true, basicRetryList),
                       new EnvironmentSetting(SdkEnvironment.GlobalIntegration, "global.stgmq.betradar.com", "global.stgapi.betradar.com", true, basicRetryList),
-                      new EnvironmentSetting(SdkEnvironment.ProxySingapore, "mq.ap-southeast-1.betradar.com", "api.ap-southeast-1.betradar.com", true, basicRetryList),
-                      new EnvironmentSetting(SdkEnvironment.ProxyTokyo, "mq.ap-northeast-1.betradar.com", "api.ap-northeast-1.betradar.com", true, basicRetryList)
                   };
         }
 
@@ -81,6 +82,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             }
 
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Gets the API host for specified <see cref="SdkEnvironment"/>
+        /// </summary>
+        /// <param name="environment">The environment</param>
+        /// <returns>The API host for specified <see cref="SdkEnvironment"/></returns>
+        public static string GetUsageHost(SdkEnvironment environment)
+        {
+            return environment == SdkEnvironment.Production || environment == SdkEnvironment.GlobalProduction
+                       ? UsageHostForProduction
+                       : UsageHostForIntegration;
         }
     }
 }

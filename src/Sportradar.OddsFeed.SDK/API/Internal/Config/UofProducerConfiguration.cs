@@ -11,7 +11,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 {
     internal class UofProducerConfiguration : IUofProducerConfiguration
     {
-        public bool AdjustAfterAge { get; set; }
         public TimeSpan InactivitySeconds { get; set; }
         public TimeSpan InactivitySecondsPrematch { get; set; }
         public List<int> DisabledProducers { get; set; }
@@ -21,7 +20,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         public UofProducerConfiguration()
         {
-            AdjustAfterAge = true;
             DisabledProducers = new List<int>();
             InactivitySeconds = TimeSpan.FromSeconds(ConfigLimit.InactivitySecondsDefault);
             InactivitySecondsPrematch = TimeSpan.FromSeconds(ConfigLimit.InactivitySecondsPrematchDefault);
@@ -42,8 +40,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 { "InactivitySecondsPrematch", InactivitySecondsPrematch.TotalSeconds.ToString(CultureInfo.InvariantCulture) },
                 { "MaxRecoveryTime", MaxRecoveryTime.TotalSeconds.ToString(CultureInfo.InvariantCulture) },
                 { "MinIntervalBetweenRecoveryRequests", MinIntervalBetweenRecoveryRequests.TotalSeconds.ToString(CultureInfo.InvariantCulture) },
-                { "DisabledProducers", disabledProducers },
-                { "AdjustAfterAge", AdjustAfterAge.ToString(CultureInfo.InvariantCulture) }
+                { "DisabledProducers", disabledProducers }
             };
             return "ProducerConfiguration{" + SdkInfo.DictionaryToString(summaryValues) + "}";
         }

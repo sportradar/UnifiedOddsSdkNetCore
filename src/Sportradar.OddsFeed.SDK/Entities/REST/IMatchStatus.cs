@@ -57,5 +57,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         /// Gets the indicator wither the event is decided by fed
         /// </summary>
         bool? DecidedByFed { get; }
+
+        /// <summary>
+        /// Gets the match statistics
+        /// </summary>
+        /// <value>The match statistics</value>
+        IMatchStatistics Statistics { get; }
     }
 }

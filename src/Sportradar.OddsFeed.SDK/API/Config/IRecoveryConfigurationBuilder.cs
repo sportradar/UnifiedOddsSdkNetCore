@@ -37,13 +37,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         T SetMinIntervalBetweenRecoveryRequests(int minIntervalBetweenRecoveryRequests);
 
         /// <summary>
-        /// Sets the value indicating whether the after age should be adjusted before executing recovery request
-        /// </summary>
-        /// <param name="adjustAfterAge">True if age should be adjusted; False otherwise</param>
-        /// <returns>The <see cref="IRecoveryConfigurationBuilder{T}"/> instance used to set additional values</returns>
-        T SetAdjustAfterAge(bool adjustAfterAge);
-
-        /// <summary>
         /// Sets the timeout for HTTP requests for this instance of the sdk
         /// </summary>
         /// <param name="httpClientTimeout">The timeout for recovery HTTP requests</param>
@@ -145,5 +138,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// <param name="omit">if set to <c>true</c> omit, otherwise include market mapping data</param>
         /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
         T OmitMarketMappings(bool omit);
+
+        /// <summary>
+        /// Sets the value indicating whether sdk usage (metrics) can be exported
+        /// </summary>
+        /// <param name="enableUsageExport">if set to <c>true</c> export is permitted, otherwise not</param>
+        /// <returns>A <see cref="IRecoveryConfigurationBuilder{T}"/> derived instance used to set general configuration properties</returns>
+        T EnableUsageExport(bool enableUsageExport);
     }
 }

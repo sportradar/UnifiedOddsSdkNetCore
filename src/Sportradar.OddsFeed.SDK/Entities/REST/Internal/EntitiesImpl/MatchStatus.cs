@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     /// </summary>
     /// <seealso cref="CompetitionStatus" />
     /// <seealso cref="IMatchStatus" />
-    internal class MatchStatus : CompetitionStatus, IMatchStatusV1
+    internal class MatchStatus : CompetitionStatus, IMatchStatus
     {
         /// <summary>
         /// Gets the <see cref="IEventClock" /> instance describing the timings in the current event

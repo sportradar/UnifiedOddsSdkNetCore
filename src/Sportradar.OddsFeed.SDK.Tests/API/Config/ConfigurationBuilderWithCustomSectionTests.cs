@@ -219,7 +219,6 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             .SetAccessTokenFromConfigFile()
             .SelectCustom()
             .LoadFromConfigFile()
-            .SetAdjustAfterAge(true)
             .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
             .SetHttpClientTimeout(45)
             .SetInactivitySeconds(45)
@@ -248,7 +247,6 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             11,
             0,
             ExceptionHandlingStrategy.Throw,
-            true,
             45,
             55);
     }
@@ -263,7 +261,6 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             .SetAccessTokenFromConfigFile()
             .SelectCustom()
             .LoadFromConfigFile()
-            .SetAdjustAfterAge(true)
             .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
             .SetHttpClientTimeout(45)
             .SetInactivitySeconds(45)
@@ -292,7 +289,6 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             11,
             0,
             ExceptionHandlingStrategy.Throw,
-            true,
             45,
             55);
     }
@@ -309,7 +305,6 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             .SetAccessTokenFromConfigFile()
             .SelectCustom()
             .LoadFromConfigFile()
-            .SetAdjustAfterAge(true)
             .SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw)
             .SetHttpClientTimeout(45)
             .SetInactivitySeconds(45)
@@ -338,7 +333,6 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             11,
             0,
             ExceptionHandlingStrategy.Throw,
-            true,
             45,
             55);
     }
@@ -370,12 +364,7 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
             ConfigLimit.InactivitySecondsDefault,
             ConfigLimit.MaxRecoveryTimeDefault,
             ConfigLimit.MinIntervalBetweenRecoveryRequestDefault,
-            11,
-            0,
-            ExceptionHandlingStrategy.Catch,
-            true,
-            ConfigLimit.HttpClientTimeoutDefault,
-            ConfigLimit.HttpClientRecoveryTimeoutDefault);
+            11);
     }
 
     // ReSharper disable once TooManyArguments
@@ -398,8 +387,7 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
         int minIntervalBetweenRecoveryRequests = ConfigLimit.MinIntervalBetweenRecoveryRequestDefault,
         int nodeId = 0,
         int disabledProducers = 0,
-        ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Catch,
-        bool adjustAfterAge = true,
+        ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw,
         int httpClientTimeout = ConfigLimit.HttpClientTimeoutDefault,
         int recoveryHttpClientTimeout = ConfigLimit.HttpClientRecoveryTimeoutDefault)
     {
@@ -422,7 +410,6 @@ public class ConfigurationBuilderWithCustomSectionTests : ConfigurationBuilderSe
         Assert.Equal(nodeId, config.NodeId);
         Assert.Equal(disabledProducers, config.Producer.DisabledProducers?.Count ?? 0);
         Assert.Equal(exceptionHandlingStrategy, config.ExceptionHandlingStrategy);
-        Assert.Equal(adjustAfterAge, config.Producer.AdjustAfterAge);
         Assert.Equal(httpClientTimeout, config.Api.HttpClientTimeout.TotalSeconds);
         Assert.Equal(recoveryHttpClientTimeout, config.Api.HttpClientRecoveryTimeout.TotalSeconds);
     }

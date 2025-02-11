@@ -26,7 +26,7 @@ public class CompetitorSetup
         var resultCompetitorId = competitorId == 0 ? Random.Shared.Next(1, 10_000) : competitorId;
         return new team
         {
-            id = Urn.Parse($"sr:competitor:{resultCompetitorId}").ToString(),
+            id = $"sr:competitor:{resultCompetitorId}",
             name = $"Competitor {resultCompetitorId}",
             players = GetApiPlayerCompetitors(playerSize),
             abbreviation = $"P{resultCompetitorId}",
@@ -50,7 +50,7 @@ public class CompetitorSetup
         var resultCompetitorId = competitorId == 0 ? Random.Shared.Next(1, 10_000) : competitorId;
         return new teamExtended
         {
-            id = Urn.Parse($"sr:competitor:{resultCompetitorId}").ToString(),
+            id = $"sr:competitor:{resultCompetitorId}",
             name = $"Competitor {resultCompetitorId}",
             players = GetApiPlayerCompetitors(playerSize),
             abbreviation = $"P{resultCompetitorId}",
@@ -103,7 +103,7 @@ public class CompetitorSetup
         var resultCompetitorId = competitorId == 0 ? Random.Shared.Next(1, 10_000) : competitorId;
         return new raceTeam
         {
-            id = Urn.Parse($"sr:competitor:{resultCompetitorId}").ToString(),
+            id = $"sr:competitor:{resultCompetitorId}",
             name = $"Competitor {resultCompetitorId}",
             players = GetApiPlayerCompetitors(playerSize),
             abbreviation = $"P{resultCompetitorId}",
@@ -127,7 +127,7 @@ public class CompetitorSetup
         var resultCompetitorId = competitorId == 0 ? Random.Shared.Next(1, 10_000) : competitorId;
         return new teamCompetitor
         {
-            id = Urn.Parse($"sr:competitor:{resultCompetitorId}").ToString(),
+            id = $"sr:competitor:{resultCompetitorId}",
             name = $"Competitor {resultCompetitorId}",
             players = GetApiPlayerCompetitors(playerSize),
             abbreviation = $"P{resultCompetitorId}",
@@ -195,7 +195,7 @@ public class CompetitorSetup
 
         return new playerCompetitor
         {
-            id = Urn.Parse($"sr:player:{resultPlayerId}").ToString(),
+            id = $"sr:player:{resultPlayerId}",
             name = $"Player {resultPlayerId}",
             abbreviation = $"P{resultPlayerId}",
             nationality = $"Nationality {resultPlayerId}"
@@ -235,7 +235,7 @@ public class CompetitorSetup
         {
             reference_ids = GetApiCompetitorReference(resultId, 100),
             players = GetApiPlayerCompetitors(5),
-            id = Urn.Parse($"sr:competitor:{resultId}").ToString(),
+            id = $"sr:competitor:{resultId}",
             name = $"Competitor {resultId}",
             abbreviation = $"P{resultId}",
             divisionSpecified = true,
@@ -264,7 +264,7 @@ public class CompetitorSetup
         var resultId = competitorId == 0 ? Random.Shared.Next(1, 10_000) : competitorId;
         return new manager
         {
-            id = Urn.Parse($"sr:competitor:{resultId}").ToString(),
+            id = $"sr:competitor:{resultId}",
             name = $"Competitor {resultId}",
             country_code = "UK",
             nationality = "some-nationality"
@@ -429,7 +429,7 @@ public class CompetitorSetup
         Assert.Equal(dto.CategoryId, ci.CategoryId);
         Assert.Equal(dto.CountryCode, ci.CountryCode);
         Assert.Equal(dto.Gender, ci.Gender);
-        Assert.Null(dto.IsVirtual);
+        Assert.False(dto.IsVirtual);
         Assert.Equal(dto.ShortName, ci.ShortName);
         Assert.Equal(dto.SportId, ci.SportId);
         Assert.Equal(dto.State, ci.State);

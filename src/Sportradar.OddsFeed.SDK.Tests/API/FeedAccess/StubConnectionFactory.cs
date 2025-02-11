@@ -44,6 +44,16 @@ internal class StubConnectionFactory : IConnectionFactory
 
     public IDictionary<string, object> ClientProperties { get; set; } = new Dictionary<string, object>();
     public string Password { get; set; }
+    public ICredentialsProvider CredentialsProvider
+    {
+        get;
+        set;
+    }
+    public ICredentialsRefresher CredentialsRefresher
+    {
+        get;
+        set;
+    }
     public ushort RequestedChannelMax { get; set; }
     public uint RequestedFrameMax { get; set; }
     public TimeSpan RequestedHeartbeat { get; set; }

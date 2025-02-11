@@ -29,5 +29,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet
         /// DateTime when API response was generated
         /// </summary>
         DateTime? GeneratedAt { get; }
+
+        /// <summary>
+        /// Get the value specifying if the calculation used harmonized method
+        /// </summary>
+        bool? Harmonization { get; }
     }
 }

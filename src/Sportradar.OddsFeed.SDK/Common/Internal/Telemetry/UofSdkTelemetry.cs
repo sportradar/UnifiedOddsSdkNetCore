@@ -8,13 +8,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
     internal static class UofSdkTelemetry
     {
         // .NET runtime libraries have metric names using '-' if a separator is needed.
-        public const string MetricNamePrefix = "uofsdk-";
+        internal const string MetricNamePrefix = "uofsdk-";
 
-        public static readonly string ServiceName = "UofSdk-" + SdkInfo.SdkType;
+        public const string ServiceName = "UofSdk-" + SdkInfo.SdkType;
 
         public static readonly ActivitySource ActivitySource = new ActivitySource(ServiceName);
 
-        public static readonly Meter DefaultMeter = new Meter(ServiceName);
+        public static readonly Meter DefaultMeter = new Meter(ServiceName, SdkInfo.GetVersion());
 
         private const string MetricNameForSportDataCacheGetAll = MetricNamePrefix + "sportdatacache-getall";
         private const string MetricNameForSportEventStatusCacheGetSportEventStatus = MetricNamePrefix + "sporteventstatuscache-getsporteventstatus";
@@ -76,5 +76,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
 
         private const string MetricNameForCacheDistribution = MetricNamePrefix + "cache-distribution";
         public static readonly Histogram<long> CacheDistribution = DefaultMeter.CreateHistogram<long>(MetricNameForCacheDistribution);
+
+        public const string MetricNameForProducerStatus = MetricNamePrefix + "producer-status";
+        public const string MetricDescForProducerStatus = "Producer status with optional information about down reason";
     }
 }

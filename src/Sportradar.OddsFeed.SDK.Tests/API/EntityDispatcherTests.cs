@@ -6,7 +6,6 @@ using Moq;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
 using Sportradar.OddsFeed.SDK.Api.Internal;
-using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
@@ -25,33 +24,33 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void SpecificEntityDispatcher_Constructor_Initialization()
+    public void SpecificEntityDispatcherConstructorInitialization()
     {
-        var dispatcher = new SpecificEntityDispatcher<ISportEvent>(_mockFeedMessageMapper.Object, new[] { TestData.Culture });
+        var dispatcher = new SpecificEntityDispatcher<ISportEvent>(_mockFeedMessageMapper.Object, [TestData.Culture]);
 
         Assert.NotNull(dispatcher);
     }
 
     [Fact]
-    public void SpecificEntityDispatcher_NullMessageReceiver_Throws()
+    public void SpecificEntityDispatcherWhenNullMessageReceiverThenThrows()
     {
-        Assert.Throws<ArgumentNullException>(() => new SpecificEntityDispatcher<ISportEvent>(null, new[] { TestData.Culture }));
+        Assert.Throws<ArgumentNullException>(() => new SpecificEntityDispatcher<ISportEvent>(null, [TestData.Culture]));
     }
 
     [Fact]
-    public void SpecificEntityDispatcher_NullDefaultCulture_Throws()
+    public void SpecificEntityDispatcherWhenNullDefaultCultureThenThrows()
     {
         Assert.Throws<ArgumentNullException>(() => new SpecificEntityDispatcher<ISportEvent>(_mockFeedMessageMapper.Object, null));
     }
 
     [Fact]
-    public void SpecificEntityDispatcher_EmptyDefaultCulture_Throws()
+    public void SpecificEntityDispatcherWhenEmptyDefaultCultureThenThrows()
     {
         Assert.Throws<ArgumentException>(() => new SpecificEntityDispatcher<ISportEvent>(_mockFeedMessageMapper.Object, Array.Empty<CultureInfo>()));
     }
 
     [Fact]
-    public void Dispatcher_Open_IsOpened()
+    public void DispatcherWhenCallOpenThenIsOpened()
     {
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
         dispatcher.Open();
@@ -60,7 +59,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void Dispatcher_OpenedTwice_Throws()
+    public void DispatcherWhenOpenedTwiceThenThrows()
     {
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
         dispatcher.Open();
@@ -70,7 +69,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void Dispatcher_CloseOpenedInstance_IsOpened()
+    public void DispatcherWhenCloseOpenedInstanceThenIsOpened()
     {
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
         dispatcher.Open();
@@ -81,7 +80,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void Dispatcher_ClosingClosedInstance_Throws()
+    public void DispatcherWhenClosingClosedInstanceThenThrows()
     {
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
         Assert.False(dispatcher.IsOpened);
@@ -90,15 +89,16 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void Dispatch_NonFeedMessage_Throws()
+    public void DispatchNonFeedMessageThenThrows()
     {
+        var mockMessage = new Mock<FeedMessage>();
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
 
-        Assert.Throws<ArgumentException>(() => dispatcher.Dispatch(new FakeMessage(), new byte[1]));
+        Assert.Throws<ArgumentException>(() => dispatcher.Dispatch(mockMessage.Object, new byte[1]));
     }
 
     [Fact]
-    public void DispatchFeedMessage_WithoutHandler()
+    public void DispatchFeedMessageWithoutHandler()
     {
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
         dispatcher.Dispatch(new odds_change(), new byte[1]);
@@ -108,7 +108,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchFeedMessage_WithHandler()
+    public void DispatchFeedMessageWithHandlerThenMessageIsDispatched()
     {
         var msgIsDispatched = false;
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
@@ -119,7 +119,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchFeedMessage_WithHandlerThrowingError()
+    public void DispatchFeedMessageWithHandlerThrowingError()
     {
         var msgIsDispatched = false;
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
@@ -134,7 +134,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void Dispatch_OnCloseInvoked_CloseEvent()
+    public void DispatchWhenOnCloseInvokedThenCloseEvent()
     {
         var msgIsDispatched = false;
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
@@ -147,7 +147,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void Dispatch_OnCloseInvoked_WithoutHandler()
+    public void DispatchWhenOnCloseInvokedWithoutHandler()
     {
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
 
@@ -159,7 +159,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void Dispatch_OnCloseInvoked_WithHandlerThrowingError()
+    public void DispatchOnCloseInvokedWithHandlerThrowingError()
     {
         var msgIsDispatched = false;
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
@@ -176,7 +176,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchOddsChangeMessage_WithHandler_InvokesProperEvent()
+    public void DispatchOddsChangeMessageWithHandlerThenInvokesProperEvent()
     {
         var oddsChangeIsDispatched = false;
         var fixtureChangeIsDispatched = false;
@@ -207,7 +207,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchFixtureChangeMessage_WithHandler_InvokesProperEvent()
+    public void DispatchFixtureChangeMessageWithHandlerThenInvokesProperEvent()
     {
         var oddsChangeIsDispatched = false;
         var fixtureChangeIsDispatched = false;
@@ -238,7 +238,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchBetStopMessage_WithHandler_InvokesProperEvent()
+    public void DispatchBetStopMessageWithHandlerThenInvokesProperEvent()
     {
         var oddsChangeIsDispatched = false;
         var fixtureChangeIsDispatched = false;
@@ -269,7 +269,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchBetCancelMessage_WithHandler_InvokesProperEvent()
+    public void DispatchBetCancelMessageWithHandlerThenInvokesProperEvent()
     {
         var oddsChangeIsDispatched = false;
         var fixtureChangeIsDispatched = false;
@@ -331,7 +331,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchRollbackBetCancelMessage_WithHandler_InvokesProperEvent()
+    public void DispatchRollbackBetCancelMessageWithHandlerThenInvokesProperEvent()
     {
         var oddsChangeIsDispatched = false;
         var fixtureChangeIsDispatched = false;
@@ -362,7 +362,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchRollbackBetSettlementMessage_WithHandler_InvokesProperEvent()
+    public void DispatchRollbackBetSettlementMessageWithHandlerThenInvokesProperEvent()
     {
         var oddsChangeIsDispatched = false;
         var fixtureChangeIsDispatched = false;
@@ -393,7 +393,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchGlobalEvent_CloseInvoked_Invokes()
+    public void DispatchGlobalEventWhenCloseInvokedThenInvokes()
     {
         var msgIsDispatched = false;
         var dispatcher = new StubEntityDispatcher();
@@ -405,9 +405,9 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchGlobalEvent_CloseInvoked_WithoutHandler()
+    public void DispatchGlobalEventWhenCloseInvokedWithoutHandler()
     {
-        var msgIsDispatched = false;
+        const bool msgIsDispatched = false;
         var dispatcher = new StubEntityDispatcher();
 
         dispatcher.CallCloseEvent(new FeedCloseEventArgs("any"), "OnClose", 1);
@@ -416,7 +416,7 @@ public class EntityDispatcherTests
     }
 
     [Fact]
-    public void DispatchGlobalEvent_CloseInvoked_WithHandlerThrowingError()
+    public void DispatchGlobalEventWhenCloseInvokedWithHandlerThrowingError()
     {
         var msgIsDispatched = false;
         var dispatcher = new StubEntityDispatcher();
@@ -433,21 +433,7 @@ public class EntityDispatcherTests
 
     private SpecificEntityDispatcher<T> GetDefaultSpecificEntityDispatcher<T>() where T : ISportEvent
     {
-        return new SpecificEntityDispatcher<T>(_mockFeedMessageMapper.Object, new[] { TestData.Culture });
-    }
-
-    private class FakeMessage : FeedMessage
-    {
-        public override string Name { get; }
-        public override int ProducerId { get; }
-        public override long? RequestId { get; }
-        public override PropertyUsage RequestIdUsage { get; }
-        public override bool IsEventRelated { get; }
-        public override bool IsStateful { get; }
-        public override string EventId { get; }
-        public override long GeneratedAt { get; }
-        public override long SentAt { get; set; }
-        public override long ReceivedAt { get; set; }
+        return new SpecificEntityDispatcher<T>(_mockFeedMessageMapper.Object, [TestData.Culture]);
     }
 
     private sealed class StubEntityDispatcher : EntityDispatcherBase

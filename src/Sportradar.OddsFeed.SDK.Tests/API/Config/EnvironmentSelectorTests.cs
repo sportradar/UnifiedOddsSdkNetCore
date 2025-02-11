@@ -176,9 +176,11 @@ public class EnvironmentSelectorTests : ConfigurationBuilderSetup
         Assert.Single(config.Languages);
         Assert.Equal(baseLanguage, config.Languages[0]);
 
-        ValidateApiConfigForEnvironment(config, environment);
+        ValidateApiConfigForEnvironment(config.Api, environment);
         ValidateRabbitConfigForEnvironment(config, environment);
-        ValidateDefaultCacheConfig(config);
-        ValidateDefaultProducerConfig(config);
+        ValidateDefaultCacheConfig(config.Cache);
+        ValidateDefaultProducerConfig(config.Producer);
+        ValidateDefaultAdditionalConfig(config.Additional);
+        ValidateDefaultUsageConfig(config);
     }
 }

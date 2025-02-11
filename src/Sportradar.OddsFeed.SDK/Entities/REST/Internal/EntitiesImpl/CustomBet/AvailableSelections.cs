@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
     /// </summary>
     internal class AvailableSelections : IAvailableSelections
     {
-        public Urn Event { get; }
+        public Urn EventId { get; }
 
         public IEnumerable<Rest.CustomBet.IMarket> Markets { get; }
 
@@ -29,7 +29,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet
                 throw new ArgumentNullException(nameof(availableSelections));
             }
 
-            Event = availableSelections.Event;
+            EventId = availableSelections.EventId;
             Markets = availableSelections.Markets.Select(m => new Market(m));
         }
     }

@@ -11,7 +11,6 @@ using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
@@ -36,9 +35,6 @@ internal class TestSportEntityFactory : ISportEntityFactory
     [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
     private readonly ILocalizedNamedValueCache _matchStatusCache;
     private readonly IProfileCache _profileCache;
-    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
-    private readonly IReadOnlyCollection<Urn> _soccerSportUrns;
-
     private readonly TestCacheStoreManager _testCacheStoreManager;
 
     public TestSportEntityFactory(ITestOutputHelper outputHelper,
@@ -60,7 +56,6 @@ internal class TestSportEntityFactory : ISportEntityFactory
         _matchStatusCache = matchStatusCache;
         var dataRouterManager = new TestDataRouterManager(_testCacheStoreManager.CacheManager, outputHelper);
         _profileCache = profileCache ?? new ProfileCache(profileMemoryCache, dataRouterManager, _testCacheStoreManager.CacheManager, sportEventCache, loggerFactory);
-        _soccerSportUrns = soccerSportUrns ?? SdkInfo.SoccerSportUrns;
     }
 
     public Task<IEnumerable<ISport>> BuildSportsAsync(IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy)

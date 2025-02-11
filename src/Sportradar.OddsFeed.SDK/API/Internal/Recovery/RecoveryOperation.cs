@@ -10,7 +10,6 @@ using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
@@ -27,6 +26,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         /// A <see cref="ILogger"/> used for execution logging
         /// </summary>
         private static readonly ILogger ExecutionLog = SdkLoggerFactory.GetLoggerForExecution(typeof(RecoveryOperation));
+
+        private const int AfterAdjustmentInMin = 10;
 
         /// <summary>
         /// The producer whose recovery is being tracked by current instance
@@ -79,7 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        /// Gets a request Id of the current recovery operation or a null reference if recovery is not running
+        /// Gets a requestId of the current recovery operation or a null reference if recovery is not running
         /// </summary>
         public long? RequestId => IsRunning ? (long?)_requestId : null;
 
@@ -94,21 +95,14 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         public DateTime LastStartTime => _startTime;
 
         /// <summary>
-        /// Gets a value indicating whether [adjusted after age]
-        /// </summary>
-        /// <value><c>true</c> if [adjusted after age]; otherwise, <c>false</c></value>
-        private bool _adjustedAfterAge;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RecoveryOperation"/> class
         /// </summary>
         /// <param name="producer">The producer whose recovery is being tracked by current instance</param>
         /// <param name="recoveryRequestIssuer">A <see cref="IRecoveryRequestIssuer"/> used to start recovery requests</param>
         /// <param name="allInterests">A <see cref="MessageInterest"/> containing interests on all sessions</param>
         /// <param name="nodeId">The node id of the current feed instance</param>
-        /// <param name="adjustAfterAge">The value indicating whether the after age should be enforced before executing recovery request</param>
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public RecoveryOperation(Producer producer, IRecoveryRequestIssuer recoveryRequestIssuer, IEnumerable<MessageInterest> allInterests, int nodeId, bool adjustAfterAge)
+        public RecoveryOperation(Producer producer, IRecoveryRequestIssuer recoveryRequestIssuer, IEnumerable<MessageInterest> allInterests, int nodeId)
         {
             Guard.Argument(producer, nameof(producer)).NotNull();
             Guard.Argument(recoveryRequestIssuer, nameof(recoveryRequestIssuer)).NotNull();
@@ -118,7 +112,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
             _recoveryRequestIssuer = recoveryRequestIssuer;
             _allInterests = allInterests as List<MessageInterest> ?? new List<MessageInterest>(allInterests);
             _nodeId = nodeId;
-            _adjustedAfterAge = adjustAfterAge;
         }
 
         /// <summary>
@@ -178,7 +171,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         /// </summary>
         /// <returns>True if the operation was successfully started; False otherwise</returns>
         /// <exception cref="InvalidOperationException">The recovery operation is already running</exception>
-        /// <exception cref="RecoveryInitiationException">The after parameter is to far in the past</exception>
+        /// <exception cref="RecoveryInitiationException">The after parameter is too far in the past</exception>
         public bool Start()
         {
             if (IsRunning)
@@ -199,17 +192,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
                 {
                     if (TimeProviderAccessor.Current.Now > after + _producer.MaxAfterAge())
                     {
-                        if (_adjustedAfterAge)
-                        {
-                            ExecutionLog.LogInformation("{ProducerName}: After time {After} is adjusted", _producer.Name, after);
-                            after = TimeProviderAccessor.Current.Now - _producer.MaxAfterAge() + TimeSpan.FromMinutes(1);
-                        }
-                        else
-                        {
-                            throw new RecoveryInitiationException("The after parameter is to far in the past", after);
-                        }
+                        ExecutionLog.LogInformation("{ProducerName}: After time {After} is adjusted", _producer.Name, after);
+                        after = TimeProviderAccessor.Current.Now - _producer.MaxAfterAge() + TimeSpan.FromMinutes(AfterAdjustmentInMin);
                     }
-
                     _lastAttempt = TimeProviderAccessor.Current.Now;
                     _requestId = _recoveryRequestIssuer.RequestRecoveryAfterTimestampAsync(_producer, after, _nodeId).GetAwaiter().GetResult();
                 }
@@ -218,10 +203,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
             {
                 var actualException = ex.InnerException ?? ex;
                 ExecutionLog.LogError(actualException, "{ProducerName} There was an error requesting recovery", _producer.Name);
-                if (actualException.Message.Contains("Forbidden", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    _adjustedAfterAge = true;
-                }
                 if (ex is RecoveryInitiationException)
                 {
                     throw;
@@ -232,13 +213,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
             IsRunning = true;
             _startTime = TimeProviderAccessor.Current.Now;
             InterruptionTime = null;
-            _adjustedAfterAge = true; // so if several attempts fails, it will eventually adjust timestamp
             return true;
         }
 
         /// <summary>
-        /// Stores the time when the operation was interrupted if this is the fist interruption.
-        /// Otherwise it does nothing
+        /// Stores the time when the operation was interrupted if this is the fist interruption, otherwise it does nothing
         /// </summary>
         /// <param name="interruptionTime">A <see cref="DateTime"/> specifying to when to set the interruption time</param>
         /// <exception cref="InvalidOperationException">The recovery operation is not running</exception>
@@ -308,7 +287,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         /// Completes the timed-out recovery operation
         /// </summary>
         /// <returns>A <see cref="RecoveryResult"/> containing recovery info</returns>
-        /// <exception cref="InvalidOperationException">The recovery operation is not running or it has not timed-out</exception>
+        /// <exception cref="InvalidOperationException">The recovery operation is not running, or it has not timed-out</exception>
         public RecoveryResult CompleteTimedOut()
         {
             if (!IsRunning)
@@ -327,7 +306,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         }
 
         /// <summary>
-        /// Resets the operation to it's default (not started) state. If operation is already not started, it does nothing.
+        /// Resets the operation to its default (not started) state. If operation is already not started, it does nothing.
         /// </summary>
         public void Reset()
         {

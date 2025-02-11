@@ -7,19 +7,24 @@ The SDK is also available via NuGet package manager. Use the following command i
 
 `Install-Package Sportradar.OddsFeed.SDKCore`
     
-The SDK uses the following 3rd party libraries which must be added via the NuGet package manager
-- OpenTelemetry (1.6.0)
-- Dawn.Guard (1.12.0)
-- Humanizer (2.14.1)
-- Microsoft.Extensions.Logging (7.0.0)
-- Microsoft.Extensions.Caching.Memory (7.0.0)
-- Microsoft.Extensions.Configuration (7.0.0)
-- Microsoft.Extensions.Diagnostics.HealthChecks (7.0.11)
-- Microsoft.Extensions.Http (7.0.0)
-- RabbitMQ.Client (6.5.0)
+The SDK uses the following 3rd party libraries:
+- RabbitMQ.Client 6.8.1
+- Dawn.Guard 1.12.0
+- Humanizer 2.14.1
+- Microsoft.Bcl.AsyncInterfaces 9.0.1
+- Microsoft.Extensions.Caching.Memory 9.0.1
+- Microsoft.Extensions.Configuration 9.0.1
+- Microsoft.Extensions.DependencyInjection 9.0.1
+- Microsoft.Extensions.Diagnostics.HealthChecks 9.0.1
+- Microsoft.Extensions.Http 9.0.1
+- System.Configuration.ConfigurationManager 9.0.1
+- OpenTelemetry 1.11.1
+- OpenTelemetry.Extensions.Hosting 1.11.1
+- OpenTelemetry.Instrumentation.Runtime 1.10.0
+- OpenTelemetry.Exporter.OpenTelemetryProtocol 1.11.1
 
 The package contains:
-- DemoProject: A solution containing a demo project showing the basic usage of the SDK
+- DemoProject: solution containing a demo project showing the basic usage of the SDK
 - libs: DLL file composing the Odds Feed SDK
 - Resources containing the log4net configuration needed by the Odds Feed SDK
 

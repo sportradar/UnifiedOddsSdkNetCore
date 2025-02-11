@@ -12,7 +12,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 public class CompetitorCiVirtualFlagTests : CompetitorSetup
 {
     [Theory]
-    [InlineData(null, null)]
+    [InlineData(null, false)]
     [InlineData(false, false)]
     [InlineData(true, true)]
     public void ConstructorWithCompetitorDtoThenVirtualIsCorrectlySet(bool? actualVirtual, bool? expectedVirtual)
@@ -25,7 +25,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null)]
+    [InlineData(null, false)]
     [InlineData(false, false)]
     [InlineData(true, true)]
     public void ConstructorWithCompetitorProfileDtoThenVirtualIsCorrectlySet(bool? actualVirtual, bool? expectedVirtual)
@@ -38,7 +38,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null)]
+    [InlineData(null, false)]
     [InlineData(false, false)]
     [InlineData(true, true)]
     public void ConstructorWithSimpleTeamProfileDtoThenVirtualIsCorrectlySet(bool? actualVirtual, bool? expectedVirtual)
@@ -62,7 +62,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null)]
+    [InlineData(null, false)]
     [InlineData(false, false)]
     [InlineData(true, true)]
     public void ConstructorWithCompetitorCiThenVirtualIsCorrectlySet(bool? actualVirtual, bool? expectedVirtual)
@@ -76,7 +76,7 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null)]
+    [InlineData(null, false)]
     [InlineData(false, false)]
     [InlineData(true, true)]
     public void ConstructorWithTeamCompetitorDtoThenVirtualIsCorrectlySet(bool? actualVirtual, bool? expectedVirtual)
@@ -118,8 +118,8 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null, null)]
-    [InlineData(true, null, true)]
+    [InlineData(null, null, false)]
+    [InlineData(true, null, false)]
     [InlineData(false, null, false)]
     [InlineData(true, false, false)]
     [InlineData(false, true, true)]
@@ -137,8 +137,8 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null, null)]
-    [InlineData(true, null, true)]
+    [InlineData(null, null, false)]
+    [InlineData(true, null, false)]
     [InlineData(false, null, false)]
     [InlineData(true, false, false)]
     [InlineData(false, true, true)]
@@ -156,8 +156,8 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null, null)]
-    [InlineData(true, null, true)]
+    [InlineData(null, null, false)]
+    [InlineData(true, null, false)]
     [InlineData(false, null, false)]
     [InlineData(true, false, false)]
     [InlineData(false, true, true)]
@@ -175,8 +175,8 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null, null)]
-    [InlineData(true, null, true)]
+    [InlineData(null, null, false)]
+    [InlineData(true, null, false)]
     [InlineData(false, null, false)]
     [InlineData(true, false, false)]
     [InlineData(false, true, true)]
@@ -195,8 +195,8 @@ public class CompetitorCiVirtualFlagTests : CompetitorSetup
     }
 
     [Theory]
-    [InlineData(null, null, null)]
-    [InlineData(true, null, true)]
+    [InlineData(null, null, false)]
+    [InlineData(true, null, false)]
     [InlineData(false, null, false)]
     [InlineData(true, false, false)]
     [InlineData(false, true, true)]

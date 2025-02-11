@@ -315,7 +315,7 @@ public class CompetitorTests : CompetitorSetup
     [InlineData(true, true)]
     [InlineData(false, false)]
     [InlineData(null, false)]
-    public void ConstructorWithCompetitorCacheItemInitializesVirtualFlag(bool? competitorIsVirtual, bool expectedVirtualFlag)
+    public void ConstructorWithCompetitorCacheItemInitializesVirtualFlag(bool? competitorIsVirtual, bool? expectedVirtualFlag)
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithVirtualFlagSet(competitorIsVirtual), TestData.Culture, _mockDataRouterManager.Object);
         SetupProfileCacheMockWithCompetitorCi(competitorCi);
@@ -329,7 +329,7 @@ public class CompetitorTests : CompetitorSetup
     [InlineData(true, true)]
     [InlineData(false, false)]
     [InlineData(null, false)]
-    public void ConstructorWithCompetitorCacheItemAndCompetitorsReferencesInitializesVirtualFlag(bool? competitorIsVirtual, bool expectedVirtualFlag)
+    public void ConstructorWithCompetitorCacheItemAndCompetitorsReferencesInitializesVirtualFlag(bool? competitorIsVirtual, bool? expectedVirtualFlag)
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithVirtualFlagSet(competitorIsVirtual), TestData.Culture, _mockDataRouterManager.Object);
         SetupProfileCacheMockWithCompetitorCi(competitorCi);
@@ -343,7 +343,7 @@ public class CompetitorTests : CompetitorSetup
     [InlineData(true, true)]
     [InlineData(false, false)]
     [InlineData(null, false)]
-    public void ConstructorWithProfileCacheInitializesVirtualFlag(bool? competitorIsVirtual, bool expectedVirtualFlag)
+    public void ConstructorWithProfileCacheInitializesVirtualFlag(bool? competitorIsVirtual, bool? expectedVirtualFlag)
     {
         var competitorCi = new CompetitorCacheItem(GetCompetitorWithVirtualFlagSet(competitorIsVirtual), TestData.Culture, _mockDataRouterManager.Object);
         SetupProfileCacheMockWithCompetitorCi(competitorCi);
@@ -438,13 +438,6 @@ public class CompetitorTests : CompetitorSetup
         Assert.Equal(competitorCi.ShortName, competitor.ShortName);
         Assert.Equal(competitorCi.Division.Id, competitor.Division.Id);
         Assert.Equal(competitorCi.Division.Name, competitor.Division.Name);
-        if (competitorCi.IsVirtual.HasValue)
-        {
-            Assert.Equal(competitorCi.IsVirtual.Value, competitor.IsVirtual);
-        }
-        else
-        {
-            Assert.False(competitor.IsVirtual);
-        }
+        Assert.Equal(competitorCi.IsVirtual, competitor.IsVirtual);
     }
 }

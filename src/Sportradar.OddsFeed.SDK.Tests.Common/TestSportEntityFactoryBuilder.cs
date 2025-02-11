@@ -88,7 +88,7 @@ public class TestSportEntityFactoryBuilder
         var namedValuesProviderMock = new Mock<INamedValuesProvider>();
         namedValuesProviderMock.Setup(args => args.MatchStatuses).Returns(MatchStatusCache);
         EventStatusCache = new SportEventStatusCache(SportEventStatusMemoryCache, new SportEventStatusMapperFactory(), SportEventCache, CacheManager, IgnoreTimelineMemoryCache, TestConfiguration.GetConfig(), LoggerFactory);
-        SportEntityFactory = new SportEntityFactory(SportDataCache, SportEventCache, EventStatusCache, MatchStatusCache, ProfileCache, SdkInfo.SoccerSportUrns);
+        SportEntityFactory = new SportEntityFactory(SportDataCache, SportEventCache, EventStatusCache, MatchStatusCache, ProfileCache);
     }
 
     public async Task InitializeSportEntities()

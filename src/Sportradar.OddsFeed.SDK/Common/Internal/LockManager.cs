@@ -77,7 +77,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
             if (stopWatch.ElapsedMilliseconds > lockTimeout.TotalMilliseconds)
             {
-                _log.LogWarning("Waiting for end of processing for key {} took {} ms", key, stopWatch.ElapsedMilliseconds);
+                _log.LogWarning("Waiting for end of processing for key {LockKey} took {Elapsed} ms", key, stopWatch.ElapsedMilliseconds);
             }
 
             uniqueItems.AddOrUpdate(key, DateTime.Now, UpdateValueFactory);
@@ -105,7 +105,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
 
             if (stopWatch.ElapsedMilliseconds > lockTimeout.TotalMilliseconds)
             {
-                _log.LogWarning("Waiting for end of processing for key {} took {} ms", key, stopWatch.ElapsedMilliseconds);
+                _log.LogWarning("Waiting for end of processing for key {LockKey} took {Elapsed} ms", key, stopWatch.ElapsedMilliseconds);
             }
 
             uniqueItems.AddOrUpdate(key, DateTime.Now, UpdateValueFactory);

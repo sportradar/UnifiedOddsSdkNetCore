@@ -196,13 +196,6 @@
             <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1" /> instance used to set general configuration properties</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.SetAdjustAfterAge(System.Boolean)">
-            <summary>
-            Sets the value indicating whether the after age should be adjusted before executing recovery request
-            </summary>
-            <param name="adjustAfterAge">True if age should be adjusted; False otherwise</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1"/> instance used to set additional values</returns>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.SetHttpClientTimeout(System.Int32)">
             <summary>
             Sets the timeout for HTTP requests for this instance of the sdk
@@ -304,6 +297,13 @@
             Sets the value indicating whether to ignore market mappings when fetching market descriptions from API
             </summary>
             <param name="omit">if set to <c>true</c> omit, otherwise include market mapping data</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1"/> derived instance used to set general configuration properties</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1.EnableUsageExport(System.Boolean)">
+            <summary>
+            Sets the value indicating whether sdk usage (metrics) can be exported
+            </summary>
+            <param name="enableUsageExport">if set to <c>true</c> export is permitted, otherwise not</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1"/> derived instance used to set general configuration properties</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter">
@@ -511,16 +511,15 @@
             Gets the additional settings
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration.Usage">
+            <summary>
+            Gets the settings for usage exporter
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration">
             <summary>
             Defines a contract implemented by classes representing api connection configuration / settings
             </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.AdjustAfterAge">
-            <summary>
-            Gets a value indicating whether the after age should be adjusted before executing recovery request
-            </summary>
-            <value><c>true</c> if [adjust after age]; otherwise, <c>false</c></value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofProducerConfiguration.InactivitySeconds">
             <summary>
@@ -605,6 +604,32 @@
             </summary>
             <value>A heartbeat timeout to use when negotiating with the server (in seconds)</value>
             <remarks>Between 10 and 180 (default 60s)</remarks>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration">
+            <summary>
+            Defines a contract implemented by classes representing additional uof sdk configuration / settings
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.IsExportEnabled">
+            <summary>
+            Indicates if the sdk usage (metrics) export is enabled
+            </summary>
+            <remarks>Default value is true</remarks>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportIntervalInSec">
+            <summary>
+            Get the interval in seconds in which the usage metrics are exported
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.ExportTimeoutInSec">
+            <summary>
+            Get the timeout for exporting usage metrics
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.IUofUsageConfiguration.Host">
+            <summary>
+            Get the host to which the usage metrics are exported
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.MessageInterest">
             <summary>
@@ -4842,6 +4867,13 @@
             <param name="environment">The environment</param>
             <returns>The API host for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/></returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentManager.GetUsageHost(Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment)">
+            <summary>
+            Gets the API host for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/>
+            </summary>
+            <param name="environment">The environment</param>
+            <returns>The API host for specified <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment"/></returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Config.EnvironmentSelector">
             <summary>
             Class EnvironmentSelector
@@ -5085,13 +5117,6 @@
             </summary>
             <param name="minIntervalBetweenRecoveryRequests">The minimal interval between recovery requests initiated by alive messages (seconds)</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1" /> instance used to set general configuration properties</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.RecoveryConfigurationBuilder`1.SetAdjustAfterAge(System.Boolean)">
-            <summary>
-            Sets the value indicating whether the after age should be enforced before executing recovery request
-            </summary>
-            <param name="adjustAfterAge">True if age should be enforced; False otherwise</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IRecoveryConfigurationBuilder`1"/> instance used to set additional values</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.RecoveryConfigurationBuilder`1.SetHttpClientTimeout(System.Int32)">
             <summary>
@@ -6452,11 +6477,6 @@
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Managers.ProducerManager._locked">
             <summary>
             Indicates if user can still change anything
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Managers.ProducerManager._adjustAfterAge">
-            <summary>
-            Gets the indication whether the after age should be adjusted before executing recovery request
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Managers.ProducerManager.#ctor(Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration)">
@@ -7913,7 +7933,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation.RequestId">
             <summary>
-            Gets a request Id of the current recovery operation or a null reference if recovery is not running
+            Gets a requestId of the current recovery operation or a null reference if recovery is not running
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation.LastAttemptTime">
@@ -7926,13 +7946,7 @@
             Gets the start time of the last issued recovery request.
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation._adjustedAfterAge">
-            <summary>
-            Gets a value indicating whether [adjusted after age]
-            </summary>
-            <value><c>true</c> if [adjusted after age]; otherwise, <c>false</c></value>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Producer,Sportradar.OddsFeed.SDK.Api.Internal.Recovery.IRecoveryRequestIssuer,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Api.Config.MessageInterest},System.Int32,System.Boolean)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Producer,Sportradar.OddsFeed.SDK.Api.Internal.Recovery.IRecoveryRequestIssuer,System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Api.Config.MessageInterest},System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation"/> class
             </summary>
@@ -7940,7 +7954,6 @@
             <param name="recoveryRequestIssuer">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.IRecoveryRequestIssuer"/> used to start recovery requests</param>
             <param name="allInterests">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.MessageInterest"/> containing interests on all sessions</param>
             <param name="nodeId">The node id of the current feed instance</param>
-            <param name="adjustAfterAge">The value indicating whether the after age should be enforced before executing recovery request</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation.WereSnapshotsReceivedOnSessions(Sportradar.OddsFeed.SDK.Api.Config.MessageInterest[])">
             <summary>
@@ -7961,12 +7974,11 @@
             </summary>
             <returns>True if the operation was successfully started; False otherwise</returns>
             <exception cref="T:System.InvalidOperationException">The recovery operation is already running</exception>
-            <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.RecoveryInitiationException">The after parameter is to far in the past</exception>
+            <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.RecoveryInitiationException">The after parameter is too far in the past</exception>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation.Interrupt(System.DateTime)">
             <summary>
-            Stores the time when the operation was interrupted if this is the fist interruption.
-            Otherwise it does nothing
+            Stores the time when the operation was interrupted if this is the fist interruption, otherwise it does nothing
             </summary>
             <param name="interruptionTime">A <see cref="T:System.DateTime"/> specifying to when to set the interruption time</param>
             <exception cref="T:System.InvalidOperationException">The recovery operation is not running</exception>
@@ -7992,11 +8004,11 @@
             Completes the timed-out recovery operation
             </summary>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryResult"/> containing recovery info</returns>
-            <exception cref="T:System.InvalidOperationException">The recovery operation is not running or it has not timed-out</exception>
+            <exception cref="T:System.InvalidOperationException">The recovery operation is not running, or it has not timed-out</exception>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryOperation.Reset">
             <summary>
-            Resets the operation to it's default (not started) state. If operation is already not started, it does nothing.
+            Resets the operation to its default (not started) state. If operation is already not started, it does nothing.
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Recovery.RecoveryResult">
@@ -9173,29 +9185,7 @@
             </summary>
             <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String)">
-            <summary>
-            Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance
-            </summary>
-            <param name="eventId">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> representing the event id</param>
-            <param name="marketId">A value representing the market id</param>
-            <param name="specifiers">A value representing the specifiers</param>
-            <param name="outcomeId">A value representing the outcome id</param>
-            <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance</returns>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1">
-            <summary>
-            Defines methods used to build selections
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.SetOdds(System.Double)">
-            <summary>
-            Sets outcome odds to the provided value
-            </summary>
-            <param name="odds">A value representing the outcome odds</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder"/> instance used to set additional values</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilderV1.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String,System.Nullable{System.Double})">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.Build(Sportradar.OddsFeed.SDK.Common.Urn,System.Int32,System.String,System.String,System.Nullable{System.Double})">
             <summary>
             Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance
             </summary>
@@ -9205,6 +9195,13 @@
             <param name="outcomeId">A value representing the outcome id</param>
             <param name="odds">A odds value for the outcome</param>
             <returns>The constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection"/> instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.SetOdds(System.Double)">
+            <summary>
+            Sets outcome odds to the provided value
+            </summary>
+            <param name="odds">A value representing the outcome odds</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder"/> instance used to set additional values</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.IEventChangeManager">
             <summary>
@@ -10349,16 +10346,6 @@
             The global integration
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxySingapore">
-            <summary>
-            The Singapore proxy
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Enums.SdkEnvironment.ProxyTokyo">
-            <summary>
-            The Tokyo proxy
-            </summary>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Common.Exceptions.CacheItemNotFoundException">
             <summary>
             An exception thrown by the SDK cache components when the requested key was not found in the cache
@@ -11357,11 +11344,6 @@
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.Iso860124HFullFormat">
             <summary>
             The Iso8601 24h full format
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.SoccerSportUrns">
-            <summary>
-            The soccer sport urns
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Common.Internal.SdkInfo.Created">
@@ -14839,12 +14821,7 @@
             The profile cache
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory._soccerSportUrns">
-            <summary>
-            The list of sport urns that represents soccer sport
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportDataCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ILocalizedNamedValueCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache,System.Collections.Generic.IReadOnlyCollection{Sportradar.OddsFeed.SDK.Common.Urn})">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportDataCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.ILocalizedNamedValueCache,Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory"/> class
             </summary>
@@ -14853,7 +14830,6 @@
             <param name="eventStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventStatusCache"/> used to retrieve statuses of sport events</param>
             <param name="matchStatusCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ILocalizedNamedValueCache"/> used to retrieve match statuses</param>
             <param name="profileCache">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.Caching.IProfileCache"/> used to retrieve player profiles</param>
-            <param name="soccerSportUrns">A list of sport urns that have soccer matches</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.SportEntityFactory.BuildSportInternal(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports.SportData,System.Collections.Generic.IReadOnlyCollection{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy)">
             <summary>
@@ -15325,11 +15301,6 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsReferences">
             <summary>
             Gets the <see cref="T:System.Collections.Generic.IDictionary`2"/> specifying the competitors qualifiers
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.CompetitorsVirtual">
-            <summary>
-            Gets the <see cref="T:System.Collections.Generic.IList`1"/> specifying the competitors which are market virtual
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableCompetition.LiveOdds">
@@ -16732,7 +16703,7 @@
             Provides an available selections for a particular event
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.Event">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelections.EventId">
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> of the event
             </summary>
@@ -16747,7 +16718,7 @@
             Provides an available selections for a particular event
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.Event">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IAvailableSelectionsFilter.EventId">
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> of the event
             </summary>
@@ -16782,6 +16753,11 @@
             DateTime when API response was generated
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculation.Harmonization">
+            <summary>
+            Get the value specifying if the calculation used harmonized method
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter">
             <summary>
             Provides a probability calculation filter
@@ -16807,22 +16783,7 @@
             DateTime when API response was generated
             </summary>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1">
-            <summary>
-            Provides a probability calculation filter
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilterV1.Harmonization">
-            <summary>
-            Get the value specifying if the calculation used harmonized method
-            </summary>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1">
-            <summary>
-            Provides a probability calculation
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationV1.Harmonization">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter.Harmonization">
             <summary>
             Get the value specifying if the calculation used harmonized method
             </summary>
@@ -16912,12 +16873,7 @@
             Gets the outcome id
             </summary>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1">
-            <summary>
-            Provides an requested selection
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelectionV1.Odds">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection.Odds">
             <summary>
             Gets the odds
             </summary>
@@ -18722,16 +18678,11 @@
             Gets the indicator wither the event is decided by fed
             </summary>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus.Statistics">
             <summary>
-            Defines a contract implemented by classes representing sport events of match type
+            Gets the match statistics
             </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatusV1.Statistics">
-            <summary>
-            Gets the soccer match statistics
-            </summary>
-            <value>The soccer match statistics</value>
+            <value>The match statistics</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue">
             <summary>
@@ -23528,7 +23479,7 @@
             Defines a data-transfer-object for available selections for the event
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.AvailableSelectionsDto.Event">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.AvailableSelectionsDto.EventId">
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> of the event
             </summary>
@@ -23578,7 +23529,7 @@
             Defines a data-transfer-object for available selections for the event
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.FilteredAvailableSelectionsDto.Event">
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.FilteredAvailableSelectionsDto.EventId">
             <summary>
             Gets the <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> of the event
             </summary>
@@ -32670,46 +32621,6 @@
             Gets the associated tournament identifier.
             </summary>
             <value>The associated tournament identifier.</value>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent">
-            <summary>
-            Defines a contract for classes representing soccer sport events
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerEvent.GetStatusAsync">
-            <summary>
-            Asynchronously get the status of the soccer match
-            </summary>
-            <returns>The status of the soccer match</returns>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics">
-            <summary>
-            Defines a contract for classes implementing soccer match specific statistics
-            </summary>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.TotalStatistics">
-            <summary>
-            Gets the list of complete team statistics data
-            </summary>
-            <value>The list of complete team statistics data</value>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatistics.PeriodStatistics">
-            <summary>
-            Gets the list of separate period statistics
-            </summary>
-            <value>The list of separate period statistics</value>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus">
-            <summary>
-            Defines a contract for classes representing soccer status
-            </summary>
-            <seealso cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.IMatchStatus" />
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.ISoccerStatus.Statistics">
-            <summary>
-            Gets the soccer match statistics
-            </summary>
-            <value>The soccer match statistics</value>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISport">
             <summary>

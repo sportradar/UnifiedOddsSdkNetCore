@@ -55,11 +55,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private readonly IProfileCache _profileCache;
 
         /// <summary>
-        /// The list of sport urns that represents soccer sport
-        /// </summary>
-        private readonly IReadOnlyCollection<Urn> _soccerSportUrns;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SportEntityFactory"/> class
         /// </summary>
         /// <param name="sportDataCache">A <see cref="ISportDataCache"/> instance used to retrieve sport related info</param>
@@ -67,27 +62,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         /// <param name="eventStatusCache">A <see cref="ISportEventStatusCache"/> used to retrieve statuses of sport events</param>
         /// <param name="matchStatusCache">A <see cref="ILocalizedNamedValueCache"/> used to retrieve match statuses</param>
         /// <param name="profileCache">A <see cref="IProfileCache"/> used to retrieve player profiles</param>
-        /// <param name="soccerSportUrns">A list of sport urns that have soccer matches</param>
         public SportEntityFactory(ISportDataCache sportDataCache,
                                   ISportEventCache sportEventCache,
                                   ISportEventStatusCache eventStatusCache,
                                   ILocalizedNamedValueCache matchStatusCache,
-                                  IProfileCache profileCache,
-                                  IReadOnlyCollection<Urn> soccerSportUrns)
+                                  IProfileCache profileCache)
         {
             Guard.Argument(sportDataCache, nameof(sportDataCache)).NotNull();
             Guard.Argument(sportEventCache, nameof(sportEventCache)).NotNull();
             Guard.Argument(eventStatusCache, nameof(eventStatusCache)).NotNull();
             Guard.Argument(matchStatusCache, nameof(matchStatusCache)).NotNull();
             Guard.Argument(profileCache, nameof(profileCache)).NotNull();
-            Guard.Argument(soccerSportUrns, nameof(soccerSportUrns)).NotNull().NotEmpty();
 
             _sportDataCache = sportDataCache;
             _sportEventCache = sportEventCache;
             _eventStatusCache = eventStatusCache;
             _matchStatusCache = matchStatusCache;
             _profileCache = profileCache;
-            _soccerSportUrns = soccerSportUrns;
         }
 
         /// <summary>
@@ -243,14 +234,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             {
                 case ResourceTypeGroup.Match:
                     {
-                        if (sportId != null && _soccerSportUrns.Contains(sportId))
-                        {
-                            sportEvent = new SoccerEvent(eventId, sportId, this, _sportEventCache, _eventStatusCache, _matchStatusCache, cultures, exceptionStrategy);
-                        }
-                        else
-                        {
-                            sportEvent = new Match(eventId, sportId, this, _sportEventCache, _eventStatusCache, _matchStatusCache, cultures, exceptionStrategy);
-                        }
+                        sportEvent = new Match(eventId, sportId, this, _sportEventCache, _eventStatusCache, _matchStatusCache, cultures, exceptionStrategy);
                         break;
                     }
                 case ResourceTypeGroup.Stage:

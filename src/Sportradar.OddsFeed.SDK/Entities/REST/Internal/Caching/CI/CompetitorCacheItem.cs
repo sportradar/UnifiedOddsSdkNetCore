@@ -144,7 +144,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         {
             get
             {
-                FetchProfileIfNeeded(_primaryCulture);
+                if (!_isVirtual.HasValue)
+                {
+                    FetchProfileIfNeeded(_primaryCulture);
+                }
+
                 return _isVirtual;
             }
         }
@@ -674,10 +678,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 {
                     Division = item.Division;
                 }
-                if (item.IsVirtual.HasValue)
-                {
-                    _isVirtual = item.IsVirtual.Value;
-                }
+
+                _isVirtual = item.IsVirtual;
                 CultureCompetitorProfileFetched = item.CultureCompetitorProfileFetched.ToDictionary(pair => pair.Key, pair => pair.Value);
             }
         }
@@ -778,10 +780,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             {
                 Division = new DivisionCacheItem(competitorDto.Division);
             }
-            if (competitorDto.IsVirtual.HasValue)
-            {
-                _isVirtual = competitorDto.IsVirtual.Value;
-            }
+
+            _isVirtual = competitorDto.IsVirtual;
         }
 
         private ReferenceIdCacheItem UpdateReferenceIds(Urn id, IDictionary<string, string> referenceIds)
@@ -873,7 +873,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 Abbreviations = _abbreviations.IsNullOrEmpty() ? new Dictionary<CultureInfo, string>() : new Dictionary<CultureInfo, string>(_abbreviations),
                 AssociatedPlayerIds = _associatedPlayerIds.IsNullOrEmpty() ? new List<string>() : new List<string>(_associatedPlayerIds.Select(i => i.ToString()).ToList()),
                 AssociatedPlayersJerseyNumbers = _associatedPlayerJerseyNumbers.ToDictionary(pair => pair.Key.ToString(), pair => pair.Value),
-                IsVirtual = _isVirtual ?? false,
+                IsVirtual = _isVirtual,
                 ReferenceIds = _referenceId?.ReferenceIds == null ? new Dictionary<string, string>() : new Dictionary<string, string>((IDictionary<string, string>)_referenceId.ReferenceIds),
                 Jerseys = jerseysList.IsNullOrEmpty() ? new List<ExportableJersey>() : new List<ExportableJersey>(jerseysList),
                 CountryCode = _countryCode,

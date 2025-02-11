@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
     /// <summary>
     /// The run-time implementation of the <see cref="ICustomBetSelectionBuilder"/> interface
     /// </summary>
-    internal class CustomBetSelectionBuilder : ICustomBetSelectionBuilderV1
+    internal class CustomBetSelectionBuilder : ICustomBetSelectionBuilder
     {
         private Urn _eventId;
         private int _marketId;
@@ -58,15 +58,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             return selection;
         }
 
-        public ISelection Build(Urn eventId, int marketId, string specifiers, string outcomeId)
-        {
-            _eventId = eventId;
-            _marketId = marketId;
-            _outcomeId = outcomeId;
-            _specifiers = specifiers;
-            return Build();
-        }
-
         public ISelection Build(Urn eventId, int marketId, string specifiers, string outcomeId, double? odds)
         {
             _eventId = eventId;
@@ -74,6 +65,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             _outcomeId = outcomeId;
             _specifiers = specifiers;
             _odds = odds;
+
             return Build();
         }
     }
