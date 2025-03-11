@@ -1,0 +1,82 @@
+@startuml
+
+hide empty members
+
+interface IUofConfiguration {
+  +string AccessToken
+  +SdkEnvironment Environment
+  +CultureInfo DefaultLanguage
+  +List<CultureInfo> Languages
+  +int NodeId
+  +ExceptionHandlingStrategy ExceptionHandlingStrategy
+  +IBookmakerDetails BookmakerDetails
+  +IUofApiConfiguration Api
+  +IUofRabbitConfiguration Rabbit
+  +IUofProducerConfiguration Producer
+  +IUofCacheConfiguration Cache
+  +IUofAdditionalConfiguration Additional
+}
+
+interface IUofApiConfiguration {
+  +string Host
+  +string BaseUrl
+  +string ReplayHost
+  +string ReplayBaseUrl
+  +bool UseSsl
+  +TimeSpan HttpClientTimeout
+  +TimeSpan HttpClientRecoveryTimeout
+  +TimeSpan HttpClientFastFailingTimeout
+  +int MaxConnectionsPerServer
+}
+
+interface IUofRabbitConfiguration {
+  +string Host
+  +int Port
+  +string VirtualHost
+  +string Username
+  +string Password
+  +bool UseSsl
+  +TimeSpan ConnectionTimeout
+  +TimeSpan Heartbeat
+}
+
+interface IUofProducerConfiguration {
+  +List<int> DisabledProducers
+  +TimeSpan InactivitySeconds
+  +TimeSpan InactivitySecondsPrematch
+  +TimeSpan MaxRecoveryTime
+  +TimeSpan MinIntervalBetweenRecoveryRequests
+  +IReadOnlyCollection<IProducer> Producers
+}
+
+interface IUofCacheConfiguration {
+  +bool IgnoreBetPalTimelineSportEventStatus
+  +TimeSpan IgnoreBetPalTimelineSportEventStatusCacheTimeout
+  +TimeSpan ProfileCacheTimeout
+  +TimeSpan SportEventCacheTimeout
+  +TimeSpan SportEventStatusCacheTimeout
+  +TimeSpan VariantMarketDescriptionCacheTimeout
+}
+
+interface IUofAdditionalConfiguration {
+  +bool OmitMarketMappings
+  +TimeSpan StatisticsInterval
+}
+
+interface IBookmakerDetails {
+  +int BookmakerId
+  +DateTime ExpireAt
+  +string Message
+  +HttpStatusCode? ResponseCode
+  +TimeSpan ServerTimeDifference
+  +string VirtualHost
+}
+
+IUofConfiguration -right-> IUofRabbitConfiguration
+IUofConfiguration -left-> IUofApiConfiguration
+IUofConfiguration -down-> IUofProducerConfiguration
+IUofConfiguration -down-> IUofCacheConfiguration
+IUofConfiguration -down-> IUofAdditionalConfiguration
+IUofConfiguration -down-> IBookmakerDetails
+
+@enduml

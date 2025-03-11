@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
 
 public class CustomBetEndpoint
 {
-    public static AvailableSelectionsType GetAvailableSelections(Urn eventId)
+    private static AvailableSelectionsType GetAvailableSelections(Urn eventId)
     {
         const string resourceName = "available_selections.xml";
         var restDeserializer = new Deserializer<AvailableSelectionsType>();

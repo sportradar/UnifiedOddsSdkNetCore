@@ -1,0 +1,72 @@
+@startuml
+
+hide empty members
+
+interface ISportEvent {
+  +Urn Id
+  +Task<string> GetNameAsync(CultureInfo culture)
+  +Task<Urn> GetSportIdAsync()
+  +Task<DateTime?> GetScheduledTimeAsync()
+  +Task<DateTime?> GetScheduledEndTimeAsync()
+  +Task<bool?> GetStartTimeTbdAsync()
+  +Task<Urn> GetReplacedByAsync()
+}
+
+interface ILongTermEvent {
+  +Task<ISportSummary> GetSportAsync()
+  +Task<ITournamentCoverage> GetTournamentCoverage()
+}
+
+interface IBasicTournament {
+  +Task<ICategorySummary> GetCategoryAsync()
+  +Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
+  +Task<bool?> GetExhibitionGamesAsync()
+  +Task<IEnumerable<ISportEvent>> GetScheduleAsync()
+}
+
+interface ITournament {
+  +Task<ICategorySummary> GetCategoryAsync()
+  +Task<ICurrentSeasonInfo> GetCurrentSeasonAsync()
+  +Task<IEnumerable<ISeason>> GetSeasonsAsync()
+  +Task<bool?> GetExhibitionGamesAsync()
+  +Task<IEnumerable<ISportEvent>> GetScheduleAsync()
+}
+
+interface ISeason {
+  +Task<ISeasonCoverage> GetSeasonCoverageAsync()
+  +Task<IEnumerable<IGroup>> GetGroupsAsync()
+  +Task<IEnumerable<ICompetition>> GetScheduleAsync()
+  +Task<IRound> GetCurrentRoundAsync()
+  +Task<string> GetYearAsync()
+  +Task<ITournamentInfo> GetTournamentInfoAsync()
+  +Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
+}
+
+interface ICurrentSeasonInfo {
+  +Urn Id
+  +IReadOnlyDictionary<CultureInfo, string> Names
+  +string Year
+  +DateTime StartDate
+  +DateTime EndDate
+  +string GetName(CultureInfo culture)
+  +ISeasonCoverage Coverage
+  +IEnumerable<IGroup> Groups
+  +IRound CurrentRound
+  +IEnumerable<ICompetitor> Competitors
+  +IEnumerable<ISportEvent> Schedule
+}
+
+interface ITournamentInfo {
+  +Urn Id
+  +IReadOnlyDictionary<CultureInfo, string> Names
+  +string GetName(CultureInfo culture)
+  +ICategorySummary Category
+  +ICurrentSeasonInfo CurrentSeason
+}
+
+ISportEvent <|-- ILongTermEvent
+ILongTermEvent <|-- IBasicTournament
+ILongTermEvent <|-- ITournament
+ILongTermEvent <|-- ISeason
+
+@enduml

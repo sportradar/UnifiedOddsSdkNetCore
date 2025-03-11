@@ -1,5 +1,8 @@
 # Change Log
 
+## 2025-03-11  3.1.0
+- Updated OpenTelemetry dependent libraries to the latest versions (removed security vulnerability)
+
 ## 2025-02-11  3.0.0 (breaking change)
 - ExceptionHandlingStrategy default value is changed to Throw (before Catch).
 - Code is cleaned up. Outdated classes are removed. Affected classes are - SoccerEvent, SoccerStatistics, SoccerStatus.

@@ -1,0 +1,61 @@
+@startuml
+
+hide empty members
+
+interface IMessage {
+  +IProducer Producer
+  +IMessageTimestamp Timestamps
+}
+
+interface IEventMessage<ISportEvent> extends IMessage {
+  +ISportEvent Event
+  +long? RequestId
+  +byte[] RawMessage
+}
+
+interface IFixtureChange<ISportEvent> extends IEventMessage<ISportEvent> {
+  +FixtureChangeType ChangeType
+  +long? NextLiveTime
+  +long StartTime
+}
+
+interface IMarketMessage<IMarket, ISportEvent> extends IEventMessage<ISportEvent> {
+  +IEnumerable<IMarket> Markets
+}
+
+interface IBetStop<ISportEvent> extends IEventMessage<ISportEvent> {
+  +MarketStatus MarketStatus
+  +IEnumerable<string> Groups
+}
+
+interface IOddsChange<IMarketWithOdds, ISportEvent> extends IMarketMessage<IMarketWithOdds, ISportEvent> {
+  +OddsChangeReason? ChangeReason
+  +INamedValue BetStopReason
+  +INamedValue BettingStatus
+  +IOddsGeneration OddsGenerationProperties
+}
+
+interface IBetCancel<IMarketCancel, ISportEvent> extends IMarketMessage<IMarketCancel, ISportEvent> {
+  +long? StartTime
+  +long? EndTime
+  +Urn SupersededBy
+}
+
+interface IBetSettlement<IMarketWithSettlement, ISportEvent> extends IMarketMessage<IMarketWithSettlement, ISportEvent> {
+  +BetSettlementCertainty Certainty
+}
+
+interface IRollbackBetCancel<IMarketCancel, ISportEvent> extends IMarketMessage<IMarketCancel, ISportEvent> {
+  +long? StartTime
+  +long? EndTime
+}
+
+interface IRollbackBetSettlement<IMarketCancel, ISportEvent> extends IMarketMessage<IMarketCancel, ISportEvent> {
+}
+
+interface ICashOutProbabilities<IMarketWithProbabilities, ISportEvent> extends IMarketMessage<IMarketWithProbabilities, ISportEvent> {
+  +INamedValue BetStopReason
+  +INamedValue BettingStatus
+}
+
+@enduml

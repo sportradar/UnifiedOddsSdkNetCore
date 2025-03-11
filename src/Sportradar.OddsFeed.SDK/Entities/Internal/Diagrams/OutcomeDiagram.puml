@@ -1,0 +1,33 @@
+@startuml
+
+hide empty members
+
+interface IOutcome {
+  +string Id
+  +IOutcomeDefinition OutcomeDefinition
+  +Task<string> GetNameAsync(CultureInfo culture)
+  +Task<IEnumerable<IOutcomeMapping>> GetMappedOutcomeIdsAsync()
+}
+
+interface IOutcomeProbabilities extends IOutcome {
+  +bool? Active
+  +double? Probabilities
+  +IAdditionalProbabilities AdditionalProbabilities
+}
+
+interface IOutcomeOdds extends IOutcomeProbabilities {
+  +double? GetOdds(OddsDisplayType oddsDisplayType = OddsDisplayType.Decimal)
+}
+
+interface IOutcomeSettlement extends IOutcome {
+  +double? DeadHeatFactor
+  +VoidFactor? VoidFactor
+  +OutcomeResult OutcomeResult
+}
+
+interface IPlayerOutcomeOdds extends IOutcomeOdds {
+  +HomeAway HomeOrAwayTeam
+  +Task<ITeamCompetitor> GetCompetitorAsync()
+}
+
+@enduml

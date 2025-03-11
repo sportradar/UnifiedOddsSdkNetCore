@@ -1,0 +1,62 @@
+@startuml
+interface IEntityPrinter {
+  +string ToString()
+  +string ToString(IFormatProvider formatProvider)
+  +string ToString(string format, IFormatProvider formatProvider = null)
+}
+
+interface IPlayer {
+  +Urn Id
+  +IReadOnlyDictionary<CultureInfo, string> Names
+  +string GetName(CultureInfo culture)
+}
+
+interface IPlayerProfile {
+  +string CountryCode
+  +DateTime? DateOfBirth
+  +string FullName
+  +string Nickname
+  +string Gender
+  +int? Height
+  +int? Weight
+  +string Type
+  +IReadOnlyDictionary<CultureInfo, string> Nationalities
+  +string GetNationality(CultureInfo culture)
+}
+
+interface IAssist {
+  +string Type
+}
+
+interface ICompetitor {
+  +string AgeGroup
+  +IReadOnlyDictionary<CultureInfo, string> Abbreviations
+  +IEnumerable<IPlayer> AssociatedPlayers
+  +string CountryCode
+  +IReadOnlyDictionary<CultureInfo, string> Countries
+  +IDivision Division
+  +string Gender
+  +bool IsVirtual
+  +IEnumerable<IJersey> Jerseys
+  +IManager Manager
+  +IReference References
+  +IRaceDriverProfile RaceDriverProfile
+  +string ShortName
+  +string State
+  +IVenue Venue
+  +string GetAbbreviation(CultureInfo culture)
+  +string GetCountry(CultureInfo culture)
+  +Task<ISport> GetSportAsync()
+  +Task<ICategorySummary> GetCategoryAsync()
+}
+
+interface ITeamCompetitor {
+  +string Qualifier
+}
+
+IPlayer <|-- IPlayerProfile
+IPlayer <|-- IAssist
+IPlayer <|-- ICompetitor
+ICompetitor <|-- ITeamCompetitor
+IEntityPrinter <|-- IPlayer
+@enduml

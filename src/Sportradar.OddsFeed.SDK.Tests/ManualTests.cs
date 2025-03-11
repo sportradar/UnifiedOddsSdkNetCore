@@ -5,6 +5,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests;
@@ -21,6 +22,17 @@ public class ManualTests
         //CheckIfInvalidInvariantMarketListIsConsumed();
         CheckIfInvalidVariantMarketListIsConsumed();
         // Dummy(null);
+    }
+
+    [Fact]
+    public void Manual2Test()
+    {
+        var apiData = MarketDescriptionEndpoint.GetDefaultVariantList();
+
+        var dtoData = apiData.variant.Select(s => new VariantDescriptionDto(s));
+
+        Assert.NotNull(dtoData);
+        Assert.NotEmpty(dtoData);
     }
 
     // private void CheckIfInvalidInvariantMarketListIsConsumed()

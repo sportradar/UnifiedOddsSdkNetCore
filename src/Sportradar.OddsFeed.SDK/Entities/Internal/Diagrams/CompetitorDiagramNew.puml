@@ -1,0 +1,80 @@
+@startuml
+interface IEntityPrinter {
+  +string ToString()
+  +string ToString(IFormatProvider formatProvider)
+  +string ToString(string format, IFormatProvider formatProvider = null)
+}
+
+interface ITranslatable {
+  +IReadOnlyDictionary<CultureInfo, string> Translations
+  +string GetTranslation(CultureInfo culture)
+  +string GetDefault()
+}
+
+interface IPlayer {
+  +Urn Id
+  +**ITranslatable** Names
+  +**REMOVE** string GetName(CultureInfo culture)
+  +string CountryCode
+  +DateTime? DateOfBirth
+  +string FullName
+  +string Gender
+  +int? Height
+  +**ITranslatable** Nationalities
+  +string Nickname
+  +int? Weight
+  +string Type
+  +**REMOVE** string GetNationality(CultureInfo culture)
+}
+
+interface ICompetitorPlayer {
+  +int? JerseyNumber
+}
+
+interface IAssist {
+  +string Type
+}
+
+interface ICompetitor {
+  +Urn Id
+  +**ITranslatable** Names
+  +string AgeGroup
+  +**ITranslatable** Abbreviations
+  #ICollection<**ICompetitorPlayer**> AssociatedPlayers
+  +string CountryCode
+  +**ITranslatable** Countries
+  -IDivision Division
+  -string Gender
+  +bool IsVirtual
+  #ICollection<IJersey> Jerseys
+  +IManager Manager
+  +IReference References
+  +IRaceDriverProfile RaceDriverProfile
+  +string ShortName
+  +string State
+  +IVenue Venue
+  +**REMOVE** IReadOnlyDictionary<CultureInfo, string> Abbreviations
+  +**REMOVE** IReadOnlyDictionary<CultureInfo, string> Countries
+  +Task<ICategorySummary> GetCategoryAsync()
+  +Task<**ISportSummary**> GetSportAsync()
+  +**REMOVE** string GetAbbreviation(CultureInfo culture)
+  +**REMOVE** string GetCountry(CultureInfo culture)
+}
+
+interface IEventCompetitor {
+  +string Qualifier
+}
+
+interface ISportDataProvider{
+    +Task<ICompetitor> GetCompetitorAsync(Urn id, CultureInfo culture = null)
+    +**Task<IPlayer> GetPlayerAsync(Urn id, CultureInfo culture = null)**
+    +void DeleteCompetitorFromCache(Urn id)
+    +void **DeletePlayerFromCache**(Urn id)
+}
+
+ICompetitorPlayer <|-- IAssist
+IPlayer <|-- ICompetitorPlayer
+IEntityPrinter <|-- ICompetitor
+ICompetitor <|-- IEventCompetitor
+IEntityPrinter <|-- IPlayer
+@enduml

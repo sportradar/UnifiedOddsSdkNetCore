@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Common logs | Sportradar.OddsFeed.SDK </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Common logs | Sportradar.OddsFeed.SDK ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/uf-ns-h60.png" alt="Sportradar.OddsFeed.SDK">
+            Sportradar.OddsFeed.SDK
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="common-logs">Common logs</h1>
+
+<p>The following are the examples of sdk logs you'll find for some common scenarios</p>
+<ol>
+<li>Most of the validation problems are because of the mismatch between market-associated specifiers and which specifiers are expected based on the market description. This is just a log entry; the
+message is processed and dispatched to the user code normally.</li>
+</ol>
+<pre><code>    14:54:46,260     INFO    [19]    FeedMessageValidator    Specifiers check failed. Producer=5, market[id=877], Required:inningnr,total,maxovers, Actual:matchinningnr,maxovers,total,inningnr
+    14:54:46,264     WARN    [19]    OddsFeedSession     Live: Problems were detected while validating message=[odds_change ProducerId=5, EventId=sr:match:40481547, GeneratedAt=1686141350193, ReceivedAt=1686142486152, Age=1135959], but the message is still eligible for further processing.
+</code></pre>
+<ol start="2">
+<li>When subscribing to raw data (feed and API) utilizing FeedExt instead of a normal Feed instance, SDK logs how long it took in user code to process the raw message. Long times could indicate
+problems in user code and will slow down message processing in the SDK pipeline.</li>
+</ol>
+<pre><code>    13:08:59,474     INFO    [com:5671)]     FeedExt     Dispatching raw feed message [prematch]: odds_change for event sr:match:39497539 (173202793) took 1 ms.
+</code></pre>
+<ol start="3">
+<li>Each feed message is logged when picked up by the SDK from the underlying rabbit mq library. GeneratedAt is the timestamp when the message was created on the server side, ReceivedAt when it was
+picked up by the SDK (when it entered SDK processing pipeline) and Age the difference in ms. Depends on the message type it may or may not have associated EventId.</li>
+</ol>
+<pre><code>    13:08:32,571     INFO    [com:5671)]     RabbitMqMessageReceiver     Message received. Message=[alive ProducerId=5, GeneratedAt=1684235311215, ReceivedAt=1684235312545, Age=1330].
+    13:08:32,571     INFO    [com:5671)]     RabbitMqMessageReceiver     Message received. Message=[odds_change ProducerId=3, EventId=sr:match:41286131, GeneratedAt=1684235310565, ReceivedAt=1684235312544, Age=1979].
+</code></pre>
+<ol start="4">
+<li>Handling recovery process and monitoring producer state is complex mechanism within SDK. It produces log messages for every change between states, with relevant data. Some of the checks are
+done on every message, and some on timer (in case no message arrive). <br>On timer (every 10s) it also checks the state of the producer. That is the state as sdk sees it, and does not reflect
+the state of the server producer.</li>
+</ol>
+<pre><code>    13:08:35,108     INFO    [com:5671)]     ProducerRecoveryManager     Recovery with requestId=173202825 for producer=15 completed in 527 ms.
+    13:08:35,108     INFO    [com:5671)]     ProducerRecoveryManager     VBI Status changed from Started to Completed.
+</code></pre>
+<ol start="5">
+<li>When criteria is met which would cause the change of sdk internal state of producer, logs can provide insight what is the reason for change.</li>
+</ol>
+<pre><code>    13:09:46,972     WARN    [16]    ProducerRecoveryManager     Producer id=9: no alive messages arrived since 16/05/2023 13:08:23. New recovery will be done.
+    13:09:46,972     INFO    [16]    ProducerRecoveryManager     Producer=9: Recovery operation skipped. Last done at 16/05/2023 13:09:26
+</code></pre>
+<ol start="6">
+<li>On timer the state of each available producer is checked. Tracking is also done for each configured session.
+<ul>
+<li>The &quot;age&quot; specifies the time elapsed from message generation (by the feed) and the current time (i.e. current_time - message_generation_time).</li>
+<li>The &quot;latency&quot; specifies the time elapsed message generation (by the feed) and when it was received by the SDK(i.e. message_receival_time - message_generation_time).</li>
+</ul>
+</li>
+</ol>
+<p>Log entry explanation: The entry can be break-down into two parts:</p>
+<ul>
+<li>Producer info: <strong>1(LO):[IsUp=False,Timestamp=01.01.0001-00:00:00.000(Started)</strong>
+<ul>
+<li><strong>1(LO)</strong> - the id and name of the producer</li>
+<li><strong>IsUp=False</strong> - whether the producer is marked as &quot;up&quot; or &quot;down&quot; at a moment the entry was written</li>
+<li><strong>Timestamp=01.01.0001-00:00:00.000</strong> - The &quot;Timestamp before disconnect&quot; - indicating the time from which the recovery has to be made if the SDK is restarted. Value 01.01.0001-00:00:00.000 is a
+min date/time that can be represented in .net framework and indicates that a full recovery needs to be done.</li>
+<li><strong>(Started)</strong> - internal state of the producer. The following values are defined:
+<ul>
+<li><strong>NotStarted</strong> - the recovery has not been started yet</li>
+<li><strong>Started</strong> - the recovery has been started and is still in progress</li>
+<li><strong>Completed</strong> - the recovery has been completed and the status of the producer is up-to-date</li>
+<li><strong>Error</strong> - the recovery has failed and will be re-started when the next alive is received from the feed</li>
+<li><strong>FatalError</strong> - the recovery has failed with un-recoverable error and will not be attempted again. This only happens when the recovery timestamp is set to much in the past and therefore
+cannot be initiated.</li>
+<li><strong>Delayed</strong> - the recovery has been completed and the status of the producer is up-to-date, but the user is falling behind with message processing (processing is to slow).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>timing info: <strong>[[Ping(Ok):age=00:00:01,918],[IsBehind(True):Alive(s)[all:age=00:08:17,088],NonAlives[all:latency=00:05:20,859]]]</strong>
+<ul>
+<li><strong>Ping(Ok)</strong> - whether the producer is behaving as expected (based on the age of the last alive message being smaller than maxInactivitySeconds config property</li>
+<li><strong>age=00:00:01,918</strong> - the age of the last alive message received on a session which is not affected by other messages</li>
+<li><strong>IsBehind(True)</strong> - specifies whether the user is falling behind on message processing. The producer is considered as &quot;behind&quot; when either latency or age of any message is larger than
+maxInactivitySeconds</li>
+<li><strong>Alive(s)[all:age=00:08:17,088]</strong> - the age of last alive message received on user created sessions. If the user created more than one session, the output will specify multiple ages</li>
+<li><strong>NonAlives[all:latency=00:05:20,859]</strong> - the latency of last non-alive (bet_stop, odds_change) message received on user created sessions. If the user created more than one session, the output
+will
+specify multiple latencies</li>
+</ul>
+</li>
+</ul>
+<pre><code>13:10:17,277    INFO    [11]    ProducerRecoveryManager     Status check: Producer=5(PremiumCricket):[IsUp=False,Timestamp=16.05.2023-11:28:23.693](Started), Timing Info=[[Ping(Ok):age=00:00:06.453],[IsBehind(True):Alive(s)[prematch:age=00:01:46.062,live:age=00:01:53.498],NonAlives[prematch:latency=00:00:27.918,live:latency=00:00:00.000]]]
+</code></pre>
+<ol start="7">
+<li>Closely related is also RecoveryRequestIssuer. When new API call for recovery request needs to be made, it logs which kind of recovery is done.</li>
+</ol>
+<pre><code>13:08:36,715    INFO    [23]    RecoveryRequestIssuer   Recovery since after timestamp for Producer=8(VBL):[IsUp=False,Timestamp=16.05.2023-11:28:23.693], RequestId=173202830, After=16/05/2023 11:28:23 succeeded.
+13:08:38,653     INFO    [15]    RecoveryRequestIssuer   Full odds recovery for Producer=17(VCI):[IsUp=False,Timestamp=01.01.0001-00:00:00.000], RequestId=173202841 succeeded.
+</code></pre>
+<ol start="8">
+<li>DataRouterManager handles majority of API calls. The log message shows which endpoint was called, parameters and how long it took. Taken time is for the full method execution and not just pure
+HttpClient request (for that associated log entry can be checked in RestTraffic log). Saving indicates how long the sdk needed to distribute received data between internal caches. This is logged
+only
+if it takes longer then 20ms.</li>
+</ol>
+<pre><code>13:08:35,510     INFO    [27]    DataRouterManager   Executing GetSportEventsForDateAsync for date=18/05/2023 and culture=en took 1711 ms.
+13:09:03,438     INFO    [23]    DataRouterManager   Executing GetSportEventSummaryAsync for id=sr:match:39463751 and culture=en took 103 ms.
+13:09:19,873     INFO    [23]    DataRouterManager   Executing GetSportEventSummaryAsync for id=sr:season:95457 and culture=es took 106 ms. Saving took 205 ms.
+</code></pre>
+<ol start="9">
+<li>All the API calls are logged in RestTraffic. Based on the log level set by the user, the logs can be different. On info level just url and duration is logged. On debug level also the actual xml
+received from the API is logged. Debug level is recommended during integration period. When exception happens all the data is logged.</li>
+</ol>
+<pre><code>13:12:59,372     INFO    [30]    RestTraffic     Id:173212998 Fetching url: https://global.api.betradar.com/v1/sports/en/sport_events/sr:match:41285751/summary.xml Duration: 135 ms
+13:12:48,904     ERROR   [27]    RestTraffic     Id:173212749 Fetching url: https://global.api.betradar.com/v1/sports/en/tournaments/sr:tournament:27522/schedule.xml ResponseCode:NotFound Duration: 85 ms Response:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;&lt;response xmlns=&quot;http://schemas.sportradar.com/sportsapi/v1/unified&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; response_code=&quot;NOT_FOUND&quot; generated_at=&quot;2023-05-16T11:12:48Z&quot; xsi:schemaLocation=&quot;http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd&quot;&gt;&lt;message&gt;Content not found: No schedule for this tournament.&lt;/message&gt;&lt;/response&gt;
+13:10:31,156     ERROR   [27]    RestTraffic     Id:173207421 Fetching url: https://global.api.betradar.com/v1/sports/en/tournaments/sr:tournament:32133/schedule.xml ResponseCode:NotFound Duration: 67 ms Response:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;&lt;response xmlns=&quot;http://schemas.sportradar.com/sportsapi/v1/unified&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; response_code=&quot;NOT_FOUND&quot; generated_at=&quot;2023-05-16T11:10:31Z&quot; xsi:schemaLocation=&quot;http://schemas.sportradar.com/sportsapi/v1/unified http://schemas.sportradar.com/ufsportsapi/v1/endpoints/unified/ufsportsapi.xsd&quot;&gt;&lt;message&gt;Content not found: No schedule for this tournament.&lt;/message&gt;&lt;/response&gt;
+</code></pre>
+<ol start="10">
+<li>Receiving SportEventStatus from timeline endpoint can be cached or ignored based on user configuration property IgnoreBetPalTimelineSportEventStatus (default false). As name implies only
+SportEventStatus received in response from timeline endpoint for events associated with BetPal producer will be ignored.</li>
+</ol>
+<pre><code>13:08:35,510     INFO    [27]  SportEventStatusCache  Received SES for {EventId} from {Source} with EventStatus:{SportEventStatus} (timeline ignored) {StatusOnEvent}
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2025, Sportradar AG. Send comments or questions to <a href='mailto:sdk%40sportradar.com?Subject=Odds%20Feed%20SDK%20Std%20Documentation: UnifiedFeed SDK .NET Standard 2.0&amp;body=Your%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report%2C%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed%2C%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.'>SDK Team</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

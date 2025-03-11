@@ -1,0 +1,55 @@
+@startuml
+
+hide empty members
+
+interface ISportEvent {
+  +Urn Id
+  +Task<string> GetNameAsync(CultureInfo culture)
+  +Task<Urn> GetSportIdAsync()
+  +Task<DateTime?> GetScheduledTimeAsync()
+  +Task<DateTime?> GetScheduledEndTimeAsync()
+  +Task<bool?> GetStartTimeTbdAsync()
+  +Task<Urn> GetReplacedByAsync()
+}
+
+interface ICompetition {
+  +Task<ICompetitionStatus> GetStatusAsync()
+  +Task<BookingStatus?> GetBookingStatusAsync()
+  +Task<IVenue> GetVenueAsync()
+  +Task<ISportEventConditions> GetConditionsAsync()
+  +Task<IEnumerable<ICompetitor>> GetCompetitorsAsync()
+  +Task<EventStatus?> GetEventStatusAsync()
+  +Task<SportEventType?> GetSportEventTypeAsync()
+  +Task<string> GetLiveOddsAsync()
+  +Task<IEnumerable<ICompetitor>> GetCompetitorsAsync(CultureInfo culture)
+}
+
+interface IStage {
+  +Task<ISportSummary> GetSportAsync()
+  +Task<ICategorySummary> GetCategoryAsync()
+  +Task<IStage> GetParentStageAsync()
+  +Task<IEnumerable<IStage>> GetStagesAsync()
+  +Task<StageType?> GetStageTypeAsync()
+  +Task<IEnumerable<IStage>> GetAdditionalParentStagesAsync()
+  +Task<IStageStatus> GetStatusAsync()
+}
+
+interface IMatch {
+  +Task<IMatchStatus> GetStatusAsync()
+  +Task<ITeamCompetitor> GetHomeCompetitorAsync()
+  +Task<ITeamCompetitor> GetAwayCompetitorAsync()
+  +Task<ISeasonInfo> GetSeasonAsync()
+  +Task<IRound> GetTournamentRoundAsync()
+  +Task<ILongTermEvent> GetTournamentAsync()
+  +Task<IFixture> GetFixtureAsync()
+  +Task<IEventTimeline> GetEventTimelineAsync()
+  +Task<IEventTimeline> GetEventTimelineAsync(CultureInfo culture)
+  +Task<IDelayedInfo> GetDelayedInfoAsync()
+  +Task<ICoverageInfo> GetCoverageInfoAsync()
+}
+
+ISportEvent <|-- ICompetition
+ICompetition <|-- IStage
+ICompetition <|-- IMatch
+
+@enduml

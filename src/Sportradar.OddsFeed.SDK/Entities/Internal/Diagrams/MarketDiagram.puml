@@ -1,0 +1,37 @@
+@startuml
+
+hide empty members
+
+interface IMarket {
+  +int Id
+  +IReadOnlyDictionary<string, string> Specifiers
+  +IReadOnlyDictionary<string, string> AdditionalInfo
+  +IMarketDefinition MarketDefinition
+  +Task<string> GetNameAsync(CultureInfo culture)
+  +Task<IEnumerable<IMarketMapping>> GetMappedMarketIdsAsync()
+}
+
+interface IMarketCancel extends IMarket {
+  +INamedValue VoidReason
+}
+
+interface IMarketWithOdds extends IMarket {
+  +MarketStatus Status
+  +CashoutStatus? CashoutStatus
+  +bool IsFavorite
+  +IEnumerable<IOutcomeOdds> OutcomeOdds
+  +IMarketMetadata MarketMetadata
+}
+
+interface IMarketWithProbabilities extends IMarket {
+  +MarketStatus Status
+  +IEnumerable<IOutcomeProbabilities> OutcomeProbabilities
+  +CashoutStatus? CashoutStatus
+  +IMarketMetadata MarketMetadata
+}
+
+interface IMarketWithSettlement extends IMarketCancel {
+  +IEnumerable<IOutcomeSettlement> OutcomeSettlements
+}
+
+@enduml

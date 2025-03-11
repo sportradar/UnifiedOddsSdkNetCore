@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Moq;
+using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -23,6 +24,11 @@ internal static class DataRouterManagerBuilderExtensions
     public static DataRouterManagerBuilder WithMockedProducerManager(this DataRouterManagerBuilder builder)
     {
         var mockProducerManager = new Mock<IProducerManager>();
+        var mockProducer = new Mock<IProducer>();
+        mockProducerManager.Setup(pm => pm.GetProducer(7)).Returns(mockProducer.Object);
+        mockProducer.Setup(p => p.IsAvailable).Returns(true);
+        mockProducer.Setup(p => p.IsDisabled).Returns(false);
+
         return builder.WithProducerManager(mockProducerManager.Object);
     }
 

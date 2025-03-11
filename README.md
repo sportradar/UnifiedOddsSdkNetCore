@@ -18,10 +18,10 @@ The SDK uses the following 3rd party libraries:
 - Microsoft.Extensions.Diagnostics.HealthChecks 9.0.1
 - Microsoft.Extensions.Http 9.0.1
 - System.Configuration.ConfigurationManager 9.0.1
-- OpenTelemetry 1.11.1
-- OpenTelemetry.Extensions.Hosting 1.11.1
-- OpenTelemetry.Instrumentation.Runtime 1.10.0
-- OpenTelemetry.Exporter.OpenTelemetryProtocol 1.11.1
+- OpenTelemetry 1.11.2
+- OpenTelemetry.Extensions.Hosting 1.11.2
+- OpenTelemetry.Instrumentation.Runtime 1.11.1
+- OpenTelemetry.Exporter.OpenTelemetryProtocol 1.11.2
 
 The package contains:
 - DemoProject: solution containing a demo project showing the basic usage of the SDK

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Log4net configuration file | Sportradar.OddsFeed.SDK </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Log4net configuration file | Sportradar.OddsFeed.SDK ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/uf-ns-h60.png" alt="Sportradar.OddsFeed.SDK">
+            Sportradar.OddsFeed.SDK
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="log4net-configuration-file">Log4net configuration file</h1>
+
+<h3 id="linking-log4net-configuration-file-in-appconfig">Linking log4net configuration file in app.config</h3>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;configuration&gt;
+  &lt;configSections&gt;
+    &lt;sectionGroup name=&quot;common&quot;&gt;
+      &lt;section name=&quot;logging&quot; type=&quot;Common.Logging.ConfigurationSectionHandler, Common.Logging&quot;/&gt;
+    &lt;/sectionGroup&gt;
+    &lt;section name=&quot;oddsFeedSection&quot; type=&quot;Sportradar.OddsFeed.SDK.API.Internal.OddsFeedConfigurationSection, Sportradar.OddsFeed.SDK.API&quot; /&gt;
+  &lt;/configSections&gt;
+ 
+  &lt;oddsFeedSection
+    accessToken=&quot;my_token&quot;
+    supportedLanguages=&quot;en,de&quot;
+    defaultLanguage=&quot;en&quot;
+    nodeId=&quot;123&quot;
+  /&gt;
+ 
+  &lt;!-- Configuration of a Common.Logging library. The configuration of the logging platform is in separate file --&gt;
+  &lt;common&gt;
+    &lt;logging&gt;
+      &lt;factoryAdapter type=&quot;Common.Logging.Log4Net.Log4NetLoggerFactoryAdapter, Common.Logging.Log4Net208&quot;&gt;
+        &lt;arg key=&quot;configType&quot; value=&quot;FILE&quot;/&gt;
+        &lt;arg key=&quot;configFile&quot; value=&quot;log4net.config&quot;/&gt;
+      &lt;/factoryAdapter&gt;
+    &lt;/logging&gt;
+  &lt;/common&gt;
+  
+&lt;/configuration&gt;
+</code></pre>
+<h3 id="log4net-configuration-file-1">Log4net configuration file</h3>
+<p>The .NET SDK uses Common.Logging library to allow the users to provide their own implementation of the logging framework. The selected logging library must be specified in the application
+configuration file (see example above). Below is a sample configuration file for log4net logging library.</p>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;configuration&gt;
+  &lt;configSections&gt;
+    &lt;section name=&quot;log4net&quot; type=&quot;log4net.Config.Log4NetConfigurationSectionHandler,Log4net&quot;/&gt;
+  &lt;/configSections&gt;
+
+  &lt;log4net&gt;
+    &lt;!-- Debug appender outputs data to the output (debug) console--&gt;
+    &lt;appender name=&quot;DebugAppender&quot; type=&quot;log4net.Appender.DebugAppender&quot;&gt;
+      &lt;immediateFlush value=&quot;true&quot;/&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{HH:mm:ss,fff}&amp;#9; %level&amp;#9; %logger{1}&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;!-- Console appender writes to console --&gt;
+    &lt;appender name=&quot;ConsoleAppender&quot; type=&quot;log4net.Appender.ColoredConsoleAppender&quot;&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{HH:mm:ss,fff}&amp;#9; %level&amp;#9; %logger{1}&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+      &lt;mapping&gt;
+        &lt;level value=&quot;INFO&quot; /&gt;
+        &lt;foreColor value=&quot;White&quot; /&gt;
+      &lt;/mapping&gt;
+      &lt;mapping&gt;
+        &lt;level value=&quot;DEBUG&quot; /&gt;
+        &lt;foreColor value=&quot;CYAN&quot; /&gt;
+      &lt;/mapping&gt;
+      &lt;mapping&gt;
+        &lt;level value=&quot;WARN&quot; /&gt;
+        &lt;foreColor value=&quot;Purple&quot; /&gt;
+      &lt;/mapping&gt;
+      &lt;mapping&gt;
+        &lt;level value=&quot;ERROR&quot; /&gt;
+        &lt;foreColor value=&quot;Red&quot; /&gt;
+      &lt;/mapping&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FileAppenderExample&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+      &lt;file type=&quot;log4net.Util.PatternString&quot;&gt;
+        &lt;conversionPattern value=&quot;../../Logs/Example/logExample-%date{yyyyMMdd}.log&quot; /&gt;
+      &lt;/file&gt;
+      &lt;encoding type=&quot;System.Text.UTF8Encoding&quot; /&gt;
+      &lt;appendToFile value=&quot;true&quot; /&gt;
+      &lt;rollingStyle value=&quot;Composite&quot; /&gt;
+      &lt;datePattern value=&quot;yyyyMMdd&quot; /&gt;
+      &lt;maxSizeRollBackups value=&quot;10&quot; /&gt;
+      &lt;maximumFileSize value=&quot;100MB&quot; /&gt;
+      &lt;staticLogFileName value=&quot;true&quot; /&gt;
+      &lt;preserveLogFileNameExtension value=&quot;true&quot; /&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{yyyy-MM-dd HH:mm:ss,fff}&amp;#9; %level&amp;#9; %thread&amp;#9; %logger{1}&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FileAppenderExec&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+      &lt;file type=&quot;log4net.Util.PatternString&quot;&gt;
+        &lt;conversionPattern value=&quot;../../Logs/Execution/logExec-%date{yyyyMMdd}.log&quot; /&gt;
+      &lt;/file&gt;
+      &lt;encoding type=&quot;System.Text.UTF8Encoding&quot; /&gt;
+      &lt;appendToFile value=&quot;true&quot; /&gt;
+      &lt;rollingStyle value=&quot;Composite&quot; /&gt;
+      &lt;datePattern value=&quot;yyyyMMdd&quot; /&gt;
+      &lt;maxSizeRollBackups value=&quot;10&quot; /&gt;
+      &lt;maximumFileSize value=&quot;100MB&quot; /&gt;
+      &lt;staticLogFileName value=&quot;true&quot; /&gt;
+      &lt;preserveLogFileNameExtension value=&quot;true&quot; /&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{yyyy-MM-dd HH:mm:ss,fff}&amp;#9; %level&amp;#9; %thread&amp;#9; %logger{1}&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FileAppenderFeed&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+      &lt;file type=&quot;log4net.Util.PatternString&quot;&gt;
+        &lt;conversionPattern value=&quot;../../Logs/Feed/logFeed-%date{yyyyMMdd}.log&quot; /&gt;
+      &lt;/file&gt;
+      &lt;encoding type=&quot;System.Text.UTF8Encoding&quot; /&gt;
+      &lt;appendToFile value=&quot;true&quot; /&gt;
+      &lt;rollingStyle value=&quot;Composite&quot; /&gt;
+      &lt;datePattern value=&quot;yyyyMMdd&quot; /&gt;
+      &lt;maxSizeRollBackups value=&quot;10&quot; /&gt;
+      &lt;maximumFileSize value=&quot;100MB&quot; /&gt;
+      &lt;staticLogFileName value=&quot;true&quot; /&gt;
+      &lt;preserveLogFileNameExtension value=&quot;true&quot; /&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{yyyy-MM-dd HH:mm:ss,fff}&amp;#9; %thread&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FileAppenderRest&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+      &lt;file type=&quot;log4net.Util.PatternString&quot;&gt;
+        &lt;conversionPattern value=&quot;../../Logs/Rest/logRest-%date{yyyyMMdd}.log&quot; /&gt;
+      &lt;/file&gt;
+      &lt;encoding type=&quot;System.Text.UTF8Encoding&quot; /&gt;
+      &lt;appendToFile value=&quot;true&quot; /&gt;
+      &lt;rollingStyle value=&quot;Composite&quot; /&gt;
+      &lt;datePattern value=&quot;yyyyMMdd&quot; /&gt;
+      &lt;maxSizeRollBackups value=&quot;10&quot; /&gt;
+      &lt;maximumFileSize value=&quot;100MB&quot; /&gt;
+      &lt;staticLogFileName value=&quot;true&quot; /&gt;
+      &lt;preserveLogFileNameExtension value=&quot;true&quot; /&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{yyyy-MM-dd HH:mm:ss,fff}&amp;#9; %thread&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FileAppenderInteraction&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+      &lt;file type=&quot;log4net.Util.PatternString&quot;&gt;
+        &lt;conversionPattern value=&quot;../../Logs/Interaction/logInteraction-%date{yyyyMMdd}.log&quot; /&gt;
+      &lt;/file&gt;
+      &lt;encoding type=&quot;System.Text.UTF8Encoding&quot; /&gt;
+      &lt;appendToFile value=&quot;true&quot; /&gt;
+      &lt;rollingStyle value=&quot;Composite&quot; /&gt;
+      &lt;datePattern value=&quot;yyyyMMdd&quot; /&gt;
+      &lt;maxSizeRollBackups value=&quot;10&quot; /&gt;
+      &lt;maximumFileSize value=&quot;100MB&quot; /&gt;
+      &lt;staticLogFileName value=&quot;true&quot; /&gt;
+      &lt;preserveLogFileNameExtension value=&quot;true&quot; /&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{yyyy-MM-dd HH:mm:ss,fff}&amp;#9; %level&amp;#9; %thread&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FileAppenderCache&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+      &lt;file type=&quot;log4net.Util.PatternString&quot;&gt;
+        &lt;conversionPattern value=&quot;../../Logs/Cache/logCache-%date{yyyyMMdd}.log&quot; /&gt;
+      &lt;/file&gt;
+      &lt;encoding type=&quot;System.Text.UTF8Encoding&quot; /&gt;
+      &lt;appendToFile value=&quot;true&quot; /&gt;
+      &lt;rollingStyle value=&quot;Composite&quot; /&gt;
+      &lt;datePattern value=&quot;yyyyMMdd&quot; /&gt;
+      &lt;maxSizeRollBackups value=&quot;10&quot; /&gt;
+      &lt;maximumFileSize value=&quot;100MB&quot; /&gt;
+      &lt;staticLogFileName value=&quot;true&quot; /&gt;
+      &lt;preserveLogFileNameExtension value=&quot;true&quot; /&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{yyyy-MM-dd HH:mm:ss,fff}&amp;#9; %level&amp;#9; %thread&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FileAppenderStats&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+      &lt;file type=&quot;log4net.Util.PatternString&quot;&gt;
+        &lt;conversionPattern value=&quot;../../Logs/Stats/logStats-%date{yyyyMMdd}.log&quot; /&gt;
+      &lt;/file&gt;
+      &lt;encoding type=&quot;System.Text.UTF8Encoding&quot; /&gt;
+      &lt;appendToFile value=&quot;true&quot; /&gt;
+      &lt;rollingStyle value=&quot;Composite&quot; /&gt;
+      &lt;datePattern value=&quot;yyyyMMdd&quot; /&gt;
+      &lt;maxSizeRollBackups value=&quot;10&quot; /&gt;
+      &lt;maximumFileSize value=&quot;100MB&quot; /&gt;
+      &lt;staticLogFileName value=&quot;true&quot; /&gt;
+      &lt;preserveLogFileNameExtension value=&quot;true&quot; /&gt;
+      &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        &lt;conversionPattern value=&quot;%date{yyyy-MM-dd HH:mm:ss,fff}&amp;#9; %level&amp;#9; %logger{1}&amp;#9; %message%newline&quot; /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;!-- ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF - the levels are defined in order of increasing priority --&gt;
+    &lt;root name=&quot;RootLog&quot;&gt;
+      &lt;level value=&quot;ALL&quot; /&gt;
+      &lt;appender-ref ref=&quot;DebugAppender&quot;/&gt;
+      &lt;appender-ref ref=&quot;ConsoleAppender&quot;/&gt;
+      &lt;appender-ref ref=&quot;FileAppenderExec&quot;/&gt;
+    &lt;/root&gt;
+
+    &lt;!-- Logs from the DemoProject are logged only to debug output &amp; console --&gt;
+    &lt;logger name=&quot;Sportradar.OddsFeed.SDK.DemoProject&quot; additivity=&quot;false&quot;&gt;
+      &lt;level value=&quot;DEBUG&quot;/&gt;
+      &lt;appender-ref ref=&quot;DebugAppender&quot;/&gt;
+      &lt;appender-ref ref=&quot;ConsoleAppender&quot;/&gt;
+      &lt;appender-ref ref=&quot;FileAppenderExample&quot; /&gt;
+    &lt;/logger&gt;
+
+    &lt;!-- This section configures the log where execution message are written. You can set the level and appender which will process the log entries. Please note that each appender
+    referenced by the &lt;appender-ref /&gt; tag has to be defined first. If either the level or the appender list is not specified it will be taken from the RootLog --&gt;
+    &lt;logger name=&quot;Sportradar.OddsFeed.SDK&quot; additivity=&quot;false&quot;&gt;
+      &lt;level value=&quot;DEBUG&quot;/&gt;
+      &lt;!-- &lt;appender-ref ref=&quot;DebugAppender&quot;/&gt; --&gt;
+      &lt;!-- &lt;appender-ref ref=&quot;ConsoleAppender&quot;/&gt; --&gt;
+      &lt;appender-ref ref=&quot;FileAppenderExec&quot;/&gt;
+    &lt;/logger&gt;
+
+    &lt;!-- This section configures AMQP traffic log. You can set the level and appender which will process the log entries. Please note that each appender
+    referenced by the &lt;appender-ref /&gt; tag has to be defined first. If either the level or the appender list is not specified it will be taken from the RootLog --&gt;
+    &lt;logger name=&quot;Sportradar.OddsFeed.SDK.FeedTraffic&quot;  additivity=&quot;false&quot;&gt;
+      &lt;level value=&quot;INFO&quot;/&gt;
+      &lt;appender-ref ref=&quot;FileAppenderFeed&quot;/&gt;
+    &lt;/logger&gt;
+
+    &lt;!-- This section configures REST traffic log. You can set the level and appender which will process the log entries. Please note that each appender
+    referenced by the &lt;appender-ref /&gt; tag has to be defined first. If either the level or the appender list is not specified it will be taken from the RootLog --&gt;
+    &lt;logger name=&quot;Sportradar.OddsFeed.SDK.RestTraffic&quot; additivity=&quot;false&quot;&gt;
+      &lt;level value=&quot;INFO&quot;/&gt;
+      &lt;appender-ref ref=&quot;FileAppenderRest&quot;/&gt;
+    &lt;/logger&gt;
+
+    &lt;!-- This section configures the log for client interaction log. You can set the level and appender which will process the log entries. Please note that each appender
+    referenced by the &lt;appender-ref /&gt; tag has to be defined first. If either the level or the appender list is not specified it will be taken from the RootLog --&gt;
+    &lt;logger name=&quot;Sportradar.OddsFeed.SDK.ClientInteraction&quot; additivity=&quot;false&quot;&gt;
+      &lt;level value=&quot;INFO&quot;/&gt;
+      &lt;appender-ref ref=&quot;FileAppenderInteraction&quot;/&gt;
+    &lt;/logger&gt;
+
+    &lt;!-- This section configures the log used by the caching component within the SDK. You can set the level and appender which will process the log entries. Please note that each appender
+    referenced by the &lt;appender-ref /&gt; tag has to be defined first. If either the level or the appender list is not specified it will be taken from the RootLog --&gt;
+    &lt;logger name=&quot;Sportradar.OddsFeed.SDK.Cache&quot; additivity=&quot;false&quot;&gt;
+      &lt;level value=&quot;INFO&quot;/&gt;
+      &lt;appender-ref ref=&quot;FileAppenderCache&quot;/&gt;
+    &lt;/logger&gt;
+
+    &lt;!-- This section configures the log statistic component within the SDK. You can set the level and appender which will process the log entries. Please note that each appender
+    referenced by the &lt;appender-ref /&gt; tag has to be defined first. If either the level or the appender list is not specified it will be taken from the RootLog --&gt;
+    &lt;logger name=&quot;Sportradar.OddsFeed.SDK.Stats&quot; additivity=&quot;false&quot;&gt;
+      &lt;level value=&quot;INFO&quot;/&gt;
+      &lt;appender-ref ref=&quot;FileAppenderStats&quot;/&gt;
+    &lt;/logger&gt;
+  &lt;/log4net&gt;
+
+&lt;/configuration&gt;
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2025, Sportradar AG. Send comments or questions to <a href='mailto:sdk%40sportradar.com?Subject=Odds%20Feed%20SDK%20Std%20Documentation: UnifiedFeed SDK .NET Standard 2.0&amp;body=Your%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report%2C%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed%2C%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.'>SDK Team</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

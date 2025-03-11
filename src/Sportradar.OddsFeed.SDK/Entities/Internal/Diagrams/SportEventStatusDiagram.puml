@@ -1,0 +1,67 @@
+@startuml
+
+hide empty members
+
+interface ISportEventStatus {
+  +EventStatus Status
+  +int? IsReported
+  +decimal? HomeScore
+  +decimal? AwayScore
+  +object GetPropertyValue(string propertyName)
+  +IReadOnlyDictionary<string, object> Properties
+  +Task<ILocalizedNamedValue> GetMatchStatusAsync()
+}
+
+interface ICompetitionStatus {
+  +Urn WinnerId
+  +EventStatus Status
+  +ReportingStatus ReportingStatus
+  +IEnumerable<IEventResult> EventResults
+  +int? PeriodOfLadder
+  +object GetPropertyValue(string propertyName)
+  +IReadOnlyDictionary<string, object> Properties
+}
+
+interface IMatchStatus extends ICompetitionStatus {
+  +IEventClock EventClock
+  +IEnumerable<IPeriodScore> PeriodScores
+  +decimal? HomeScore
+  +decimal? AwayScore
+  +int? HomePenaltyScore
+  +int? AwayPenaltyScore
+  +bool? DecidedByFed
+  +IMatchStatistics Statistics
+  +Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture)
+}
+
+interface IStageStatus extends ICompetitionStatus {
+  +Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture)
+}
+
+interface ITeamStatistics {
+  +HomeAway? HomeAway
+  +int? Cards
+  +int? YellowCards
+  +int? RedCards
+  +int? YellowRedCards
+  +int? CornerKicks
+  +Urn TeamId
+  +string Name
+  +int? GreenCards
+}
+
+interface IPeriodStatistics {
+  +string PeriodName
+  +IEnumerable<ITeamStatistics> TeamStatistics
+}
+
+interface IMatchStatistics {
+  +IEnumerable<ITeamStatistics> TotalStatistics
+  +IEnumerable<IPeriodStatistics> PeriodStatistics
+}
+
+IMatchStatus ..> IMatchStatistics
+IMatchStatistics ..> ITeamStatistics
+IMatchStatistics ..> IPeriodStatistics
+
+@enduml
