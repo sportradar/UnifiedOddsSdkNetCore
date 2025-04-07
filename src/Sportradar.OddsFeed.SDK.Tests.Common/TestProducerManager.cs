@@ -17,4 +17,9 @@ internal class TestProducerManager : ProducerManager
     {
         return new TestProducerManager(TestConfiguration.GetConfig());
     }
+
+    public static IProducerManager Create(IUofConfiguration config)
+    {
+        return new TestProducerManager(config);
+    }
 }

@@ -47,6 +47,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         }
 
         /// <inheritdoc />
+        public async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
+        {
+            var httpClient = _httpClientFactory.CreateClient(_httpClientName);
+            return await httpClient.SendAsync(request).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<HttpResponseMessage> PostAsync(Uri requestUri, HttpContent content)
         {
             var httpClient = _httpClientFactory.CreateClient(_httpClientName);

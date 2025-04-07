@@ -2514,12 +2514,11 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" />
             <remarks>ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF - the levels are defined in order of increasing priority</remarks>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcher.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClient,Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Rest.response},Microsoft.Extensions.Logging.ILogger,System.Int32,System.Int32)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcher.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClient,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Rest.response},Microsoft.Extensions.Logging.ILogger,System.Int32,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcher"/> class.
             </summary>
             <param name="sdkHttpClient">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClient"/> used to invoke HTTP requests</param>
-            <param name="sequenceGenerator">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator"/> used to identify requests</param>
             <param name="responseDeserializer">The deserializer for unexpected response</param>
             <param name="logger">Logger to log rest requests</param>
             <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
@@ -2557,12 +2556,11 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" />
             <remarks>ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF - the levels are defined in order of increasing priority</remarks>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcherFastFailing.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClientFastFailing,Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Rest.response},Microsoft.Extensions.Logging.ILogger,System.Int32,System.Int32)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcherFastFailing.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClientFastFailing,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Rest.response},Microsoft.Extensions.Logging.ILogger,System.Int32,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcherRecovery"/> class.
             </summary>
             <param name="sdkHttpClient">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClientFastFailing"/> used to invoke HTTP requests</param>
-            <param name="sequenceGenerator">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator"/> used to identify requests</param>
             <param name="responseDeserializer">The deserializer for unexpected response</param>
             <param name="logger">Logger to log rest requests</param>
             <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
@@ -2575,12 +2573,11 @@
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher" />
             <remarks>ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF - the levels are defined in order of increasing priority</remarks>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcherRecovery.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClientRecovery,Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Rest.response},Microsoft.Extensions.Logging.ILogger,System.Int32,System.Int32)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcherRecovery.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClientRecovery,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Rest.response},Microsoft.Extensions.Logging.ILogger,System.Int32,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.LogHttpDataFetcherRecovery"/> class.
             </summary>
             <param name="sdkHttpClient">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClientRecovery"/> used to invoke HTTP requests</param>
-            <param name="sequenceGenerator">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISequenceGenerator"/> used to identify requests</param>
             <param name="responseDeserializer">The deserializer for unexpected response</param>
             <param name="logger">Logger to log rest requests</param>
             <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
@@ -2590,6 +2587,9 @@
             <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClient.GetAsync(System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClient.SendRequestAsync(System.Net.Http.HttpRequestMessage)">
             <inheritdoc />
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.SdkHttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent)">
@@ -4237,19 +4237,19 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.SetDtoTypes">
             <summary>
-                Set the list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.DtoType" /> in the this cache
+            Set the list of <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.DtoType" /> in this cache
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.CacheDeleteItem(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.CacheItemType)">
             <summary>
-                Purges item from cache
+            Purges item from cache
             </summary>
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn" /> representing the id of the item in the cache to be purged</param>
             <param name="cacheItemType">A cache item type</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.SportEventStatusCache.CacheHasItem(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums.CacheItemType)">
             <summary>
-                Does item exists in the cache
+            Does item exists in the cache
             </summary>
             <param name="id">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn" /> representing the id of the item to be checked</param>
             <param name="cacheItemType">A cache item type</param>
@@ -6127,6 +6127,26 @@
             <param name="sportId">If the method returned true the sportId; Otherwise undefined</param>
             <returns>True if sportId could be retrieved from <c>routingKey</c>; Otherwise false</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler">
+            <summary>
+            Custom message handler which adds a unique request id to the request headers
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="requestDecorator">Http request decorator</param>
+            <param name="innerHandler">Inner message handler</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+            <summary>
+            Adds a unique request id to the request headers
+            </summary>
+            <param name="request">request being sent</param>
+            <param name="cancellationToken">cancellation token</param>
+            <returns></returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.IDispatcherStore">
             <summary>
             Defines a contract implemented by classes used to hold user registered dispatchers
@@ -6224,6 +6244,17 @@
             </summary>
             <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/> instance whose type is to be determined.</param>
             <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.MessageType"/> enum member specifying the type of the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/></returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator">
+            <summary>
+            Request decorator used to decorate the <see cref="T:System.Net.Http.HttpRequestMessage"/> before it is sent
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Decorates the provided <see cref="T:System.Net.Http.HttpRequestMessage"/>
+            </summary>
+            <param name="request">Http request</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.ISessionMessageManager">
             <summary>
@@ -8377,6 +8408,17 @@
             Returns a <see cref="T:System.String" /> that represents this instance
             </summary>
             <returns>A <see cref="T:System.String" /> that represents this instance</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator">
+            <summary>
+            Request decorator used to decorate the <see cref="T:System.Net.Http.HttpRequestMessage"/> before it is sent
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Decorates the provided <see cref="T:System.Net.Http.HttpRequestMessage"/>
+            </summary>
+            <param name="request">Http request</param>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.SessionMessageManager">
             <summary>

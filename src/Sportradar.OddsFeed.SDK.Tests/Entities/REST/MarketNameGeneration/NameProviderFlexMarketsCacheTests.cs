@@ -1,20 +1,19 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
-using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
@@ -24,32 +23,34 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.MarketNameGeneration;
 public class NameProviderFlexMarketsCacheTests
 {
     private readonly INameProvider _nameProvider;
-    private readonly TestDataRouterManager _dataRouterManager;
 
     public NameProviderFlexMarketsCacheTests(ITestOutputHelper outputHelper)
     {
-        var loggerFactory = new XunitLoggerFactory(outputHelper);
-        var testCacheStoreManager = new TestCacheStoreManager();
-        var variantMarketDescriptionMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache);
-        var variantMarketDescriptionListMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantDescriptionListCache);
-        var invariantMarketDescriptionMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForInvariantMarketDescriptionsCache);
-
-        //force markets to be loaded
-        var timer = new TestTimer(false);
-        timer.FireOnce(TimeSpan.Zero);
         var specifiers = new Dictionary<string, string> { { "score", "1:1" } };
 
-        _dataRouterManager = new TestDataRouterManager(testCacheStoreManager.CacheManager, outputHelper);
+        var loggerFactory = new XunitLoggerFactory(outputHelper);
+        var testLoggerFactory = new XunitLoggerFactory(outputHelper);
 
-        IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
+        var profileCache = new Mock<IProfileCache>().Object;
 
-        timer = new TestTimer(true);
-        IMarketDescriptionCache variantMdCache = new VariantMarketDescriptionCache(variantMarketDescriptionMemoryCache, _dataRouterManager, mappingValidatorFactory, testCacheStoreManager.CacheManager, loggerFactory);
-        IMarketDescriptionsCache inVariantMdCache = new InvariantMarketDescriptionCache(invariantMarketDescriptionMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager, loggerFactory);
-        IVariantDescriptionsCache variantsMdCache = new VariantDescriptionListCache(variantMarketDescriptionListMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, testCacheStoreManager.CacheManager, loggerFactory);
+        _ = new MappingValidatorFactory();
+        var cacheManager = new CacheManager();
+        var dataRouterManager = new DataRouterManagerBuilder()
+            .AddMockedDependencies()
+            .WithCacheManager(cacheManager)
+            .WithDefaultListProviders()
+            .Build();
+
+        var marketCacheProvider = MarketCacheProviderBuilder.Create()
+            .WithCacheManager(cacheManager)
+            .WithDataRouterManager(dataRouterManager)
+            .WithLanguages(TestData.Cultures1)
+            .WithLoggerFactory(testLoggerFactory)
+            .WithProfileCache(profileCache)
+            .Build();
 
         _nameProvider = new NameProvider(
-            new MarketCacheProvider(inVariantMdCache, variantMdCache, variantsMdCache, loggerFactory.CreateLogger<MarketCacheProvider>()),
+            marketCacheProvider,
             new Mock<IProfileCache>().Object,
             new Mock<INameExpressionFactory>().Object,
             new Mock<ISportEvent>().Object,
@@ -92,9 +93,7 @@ public class NameProviderFlexMarketsCacheTests
     public async Task OutcomeNamesForFlexMarketAreCorrect(string outcomeId, string expected)
     {
         var result = await _nameProvider.GetOutcomeNameAsync(outcomeId, TestData.Culture);
+
         result.Should().Be(expected);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
     }
 }

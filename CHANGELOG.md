@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.2.0
+- All outgoing HTTP requests include the trace-id header with a unique value for improved tracing
+- Recovery requests configuration is respected for all recovery requests
+
 ## 2025-03-11  3.1.0
 - Updated OpenTelemetry dependent libraries to the latest versions (removed security vulnerability)
 

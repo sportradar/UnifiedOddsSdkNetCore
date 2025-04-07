@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Dawn;
@@ -24,24 +25,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
     {
         private readonly ILogger _restLog;
 
-        private readonly ISequenceGenerator _sequenceGenerator;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LogHttpDataFetcher"/> class.
         /// </summary>
         /// <param name="sdkHttpClient">A <see cref="ISdkHttpClient"/> used to invoke HTTP requests</param>
-        /// <param name="sequenceGenerator">A <see cref="ISequenceGenerator"/> used to identify requests</param>
         /// <param name="responseDeserializer">The deserializer for unexpected response</param>
         /// <param name="logger">Logger to log rest requests</param>
         /// <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
         /// <param name="connectionFailureTimeout">indicates the timeout after which comes out of "blocking mode" (in seconds)</param>
-        public LogHttpDataFetcher(ISdkHttpClient sdkHttpClient, ISequenceGenerator sequenceGenerator, IDeserializer<response> responseDeserializer, ILogger logger, int connectionFailureLimit = 50, int connectionFailureTimeout = 15)
+        public LogHttpDataFetcher(ISdkHttpClient sdkHttpClient, IDeserializer<response> responseDeserializer, ILogger logger, int connectionFailureLimit = 50, int connectionFailureTimeout = 15)
             : base(sdkHttpClient, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
         {
-            Guard.Argument(sequenceGenerator, nameof(sequenceGenerator)).NotNull();
             Guard.Argument(logger, nameof(logger)).NotNull();
-
-            _sequenceGenerator = sequenceGenerator;
 
             _restLog = logger;
         }
@@ -54,39 +49,48 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <exception cref="CommunicationException">Failed to execute http get</exception>
         public override async Task<Stream> GetDataAsync(Uri uri)
         {
-            var dataId = _sequenceGenerator.GetNext().ToString("D7", CultureInfo.InvariantCulture); // because request can take long time, there may be several request at the same time; Id to know what belongs together.
-
             var watch = Stopwatch.StartNew();
             Stream responseStream;
+            HttpRequestMessage requestMessage = null;
+            var traceId = "";
             try
             {
-                responseStream = await base.GetDataAsync(uri).ConfigureAwait(false);
-                watch.Stop();
+                requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                var responseMessage = await SendRequestAsync(requestMessage);
+                responseStream = await GetResponseStreamAsync(uri, responseMessage);
+            }
+            catch (CommunicationException ex)
+            {
+                traceId = GetTraceId(requestMessage);
+                const string msgErrorTemplate = "TraceId: {TraceId} GET: {GetUri} Response: {ResponseStatusCode} took {Elapsed} ms Response: {ResponseContent}";
+                _restLog.LogError(ex, msgErrorTemplate, traceId, uri.AbsoluteUri, ex.ResponseCode, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture), GetCommunicationExceptionContent(ex));
+                throw;
             }
             catch (Exception ex)
             {
-                watch.Stop();
-                if (!(ex is CommunicationException commException))
-                {
-                    throw new CommunicationException("Failed to execute http get", uri.ToString(), ex);
-                }
-                const string msgErrorTemplate = "Id:{DataId} GET: {GetUri} Response: {ResponseStatusCode} took {Elapsed} ms Response: {ResponseContent}";
-                _restLog.LogError(msgErrorTemplate, dataId, uri.AbsoluteUri, commException.ResponseCode, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture), GetCommunicationExceptionContent(commException));
-                throw;
+                traceId = GetTraceId(requestMessage);
+                _restLog.LogError(ex, "Failed to execute http get with TraceId: {TraceId} for the Url: {Url}", traceId, uri?.AbsoluteUri);
+                throw new CommunicationException($"Failed to execute http get with TraceId: {traceId}", uri?.ToString(), ex);
             }
+            finally
+            {
+                watch.Stop();
+            }
+
+            traceId = GetTraceId(requestMessage);
 
             if (!_restLog.IsEnabled(LogLevel.Debug))
             {
-                const string msgSuccessTemplate = "Id:{DataId} GET: {GetUri} took {Elapsed} ms";
-                _restLog.LogInformation(msgSuccessTemplate, dataId, uri.AbsoluteUri, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture));
+                const string msgSuccessTemplate = "TraceId: {TraceId} GET: {GetUri} took {Elapsed} ms";
+                _restLog.LogInformation(msgSuccessTemplate, traceId, uri.AbsoluteUri, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture));
                 return responseStream;
             }
 
-            const string msgSuccessWithContentTemplate = "Id:{DataId} GET: {GetUri} took {Elapsed} ms Response: {ResponseContent}";
+            const string msgSuccessWithContentTemplate = "TraceId: {TraceId} GET: {GetUri} took {Elapsed} ms Response: {ResponseContent}";
             var responseContent = await new StreamReader(responseStream).ReadToEndAsync();
             responseContent = responseContent.Replace("\n", string.Empty);
 
-            _restLog.LogDebug(msgSuccessWithContentTemplate, dataId, uri.AbsoluteUri, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture), responseContent);
+            _restLog.LogDebug(msgSuccessWithContentTemplate, traceId, uri.AbsoluteUri, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture), responseContent);
 
             var memoryStream = new MemoryStream();
             var writer = new StreamWriter(memoryStream);
@@ -116,35 +120,45 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <exception cref="CommunicationException">Failed to execute http post</exception>
         public override async Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null)
         {
-            var dataId = _sequenceGenerator.GetNext().ToString("D7", CultureInfo.InvariantCulture);
-
-            await LogPostRequestHttpContent(dataId, uri, content);
+            await LogPostRequestHttpContent(uri, content);
 
             var watch = Stopwatch.StartNew();
 
             HttpResponseMessage response = null;
+            HttpRequestMessage requestMessage = null;
+            string traceId;
             try
             {
-                response = await base.PostDataAsync(uri, content).ConfigureAwait(false);
-                watch.Stop();
+                requestMessage = new HttpRequestMessage(HttpMethod.Post, uri)
+                {
+                    Content = content ?? new StringContent(string.Empty)
+                };
+                response = await PostHttpRequestAsync(requestMessage);
             }
             catch (Exception ex)
             {
-                watch.Stop();
-                _restLog.LogError("Id:{PostRequestId} POST: {PostUri} Response: {ResponseStatusCode} took {Elapsed} ms", dataId, uri.AbsoluteUri, response?.StatusCode, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture));
+                traceId = GetTraceId(requestMessage);
+                _restLog.LogError(ex, "TraceId: {TraceId} POST: {PostUri} took {Elapsed} ms", traceId, uri?.AbsoluteUri, watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture));
+
                 if (ex.GetType() != typeof(ObjectDisposedException) && ex.GetType() != typeof(TaskCanceledException))
                 {
                     _restLog.LogError(ex, "{ErrorMessage}", ex.Message);
                 }
+
                 throw;
             }
+            finally
+            {
+                watch.Stop();
+            }
 
-            await LogPostResponseHttpContent(dataId, uri, response, watch);
+            traceId = GetTraceId(requestMessage);
+            await LogPostResponseHttpContent(traceId, uri, response, watch);
 
             return response;
         }
 
-        private async Task LogPostRequestHttpContent(string dataId, Uri uri, HttpContent content)
+        private async Task LogPostRequestHttpContent(Uri uri, HttpContent content)
         {
             if (content != null)
             {
@@ -153,11 +167,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     if (_restLog.IsEnabled(LogLevel.Debug))
                     {
                         var s = await content.ReadAsStringAsync().ConfigureAwait(false);
-                        _restLog.LogDebug("Id:{PostRequestId} POST url: {PostUri} {PostContent}", dataId, uri.AbsoluteUri, s);
+                        _restLog.LogDebug("POST url: {PostUri} {PostContent}", uri.AbsoluteUri, s);
                     }
                     else
                     {
-                        _restLog.LogInformation("Id:{PostRequestId} POST url: {PostUri}", dataId, uri.AbsoluteUri);
+                        _restLog.LogInformation("POST url: {PostUri}", uri.AbsoluteUri);
                     }
                 }
                 catch
@@ -167,11 +181,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
             else
             {
-                _restLog.LogInformation("Id:{PostRequestId} POST url: {PostUri}", dataId, uri.AbsoluteUri);
+                _restLog.LogInformation("POST url: {PostUri}", uri.AbsoluteUri);
             }
         }
 
-        private async Task LogPostResponseHttpContent(string dataId, Uri uri, HttpResponseMessage response, Stopwatch watch)
+        private async Task LogPostResponseHttpContent(string traceId, Uri uri, HttpResponseMessage response, Stopwatch watch)
         {
             var responseContent = string.Empty;
             if (response.Content != null)
@@ -195,10 +209,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             {
                 responseContent = string.Empty;
             }
-            const string msgTemplate = "Id:{DataId} POST: {PostUri} took {Elapsed} ms. Response: {ResponseStatusCode}-{ResponseReasonPhrase} {ResponseContent}";
+            const string msgTemplate = "TraceId: {TraceId} POST: {PostUri} took {Elapsed} ms. Response: {ResponseStatusCode}-{ResponseReasonPhrase} {ResponseContent}";
             _restLog.Log(wantedLogLevel,
                 msgTemplate,
-                dataId,
+                traceId,
                 uri.AbsoluteUri,
                 watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture),
                 ((int)response.StatusCode).ToString(CultureInfo.InvariantCulture),
@@ -219,6 +233,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             return commException.Response == null
                 ? commException.Message
                 : commException.Response.Replace("\n", string.Empty);
+        }
+
+        private static string GetTraceId(HttpRequestMessage responseMessage)
+        {
+            var traceId = "";
+            var requestHeaders = responseMessage?.Headers;
+            if (requestHeaders != null && requestHeaders.TryGetValues(HttpApiConstants.TraceIdHeaderName, out var headers))
+            {
+                traceId = headers?.FirstOrDefault() ?? "";
+            }
+
+            return traceId;
         }
     }
 }

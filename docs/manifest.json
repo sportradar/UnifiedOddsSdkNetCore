@@ -1019,6 +1019,76 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.yml\" sourcestartlinenumber=\"1\">Custom message handler which adds a unique request id to the request headers</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Internal.Handlers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.yml\" sourcestartlinenumber=\"1\">Request decorator used to decorate the <xref href=\"System.Net.Http.HttpRequestMessage\" data-throw-if-not-resolved=\"false\"></xref> before it is sent</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.yml\" sourcestartlinenumber=\"1\">Request decorator used to decorate the <xref href=\"System.Net.Http.HttpRequestMessage\" data-throw-if-not-resolved=\"false\"></xref> before it is sent</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Internal",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IBookingManager.yml",
       "output": {
         ".html": {

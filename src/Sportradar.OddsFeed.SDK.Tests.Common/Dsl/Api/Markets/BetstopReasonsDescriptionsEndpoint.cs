@@ -1,0 +1,101 @@
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
+using Sportradar.OddsFeed.SDK.Messages.Rest;
+
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
+
+public static class BetstopReasonsDescriptionsEndpoint
+{
+    public static betstop_reasons_descriptions GetDescriptionWithAllBetstopReasons()
+    {
+        return new betstop_reasons_descriptions
+        {
+            response_code = response_code.OK,
+            response_codeSpecified = true,
+            location = "location",
+            betstop_reason =
+                [
+                    new desc_betstop_reason { id = 0, description = "UNKNOWN" },
+                    new desc_betstop_reason { id = 1, description = "POSSIBLE_GOAL" },
+                    new desc_betstop_reason { id = 2, description = "POSSIBLE_RED_CARD" },
+                    new desc_betstop_reason { id = 3, description = "SCOUT_LOST" },
+                    new desc_betstop_reason { id = 4, description = "POSSIBLE_GOAL_HOME" },
+                    new desc_betstop_reason { id = 5, description = "POSSIBLE_GOAL_AWAY" },
+                    new desc_betstop_reason { id = 6, description = "POSSIBLE_RED_CARD_HOME" },
+                    new desc_betstop_reason { id = 7, description = "POSSIBLE_RED_CARD_AWAY" },
+                    new desc_betstop_reason { id = 8, description = "POSSIBLE_PENALTY" },
+                    new desc_betstop_reason { id = 9, description = "POSSIBLE_PENALTY_HOME" },
+                    new desc_betstop_reason { id = 10, description = "POSSIBLE_PENALTY_AWAY" },
+                    new desc_betstop_reason { id = 11, description = "CONNECTED_TO_SUPERVISOR" },
+                    new desc_betstop_reason { id = 12, description = "MATCH_ENDED" },
+                    new desc_betstop_reason { id = 13, description = "GAMEPOINT" },
+                    new desc_betstop_reason { id = 14, description = "TIEBREAK" },
+                    new desc_betstop_reason { id = 15, description = "POSSIBLE_DIRECT_FOUL_HOME" },
+                    new desc_betstop_reason { id = 16, description = "POSSIBLE_DIRECT_FOUL_AWAY" },
+                    new desc_betstop_reason { id = 17, description = "POSSIBLE_DIRECT_FOUL" },
+                    new desc_betstop_reason { id = 18, description = "DANGEROUS_FREE_KICK_HOME" },
+                    new desc_betstop_reason { id = 19, description = "DANGEROUS_FREE_KICK_AWAY" },
+                    new desc_betstop_reason { id = 20, description = "DANGEROUS_GOAL_POSITION_HOME" },
+                    new desc_betstop_reason { id = 21, description = "DANGEROUS_GOAL_POSITION_AWAY" },
+                    new desc_betstop_reason { id = 22, description = "GOAL_UNDER_REVIEW" },
+                    new desc_betstop_reason { id = 23, description = "SCORE_UNDER_REVIEW" },
+                    new desc_betstop_reason { id = 24, description = "DISCONNECTION" },
+                    new desc_betstop_reason { id = 25, description = "POSSIBLE_CHECKOUT" },
+                    new desc_betstop_reason { id = 26, description = "MULTIPLE_SUSPENSIONS" },
+                    new desc_betstop_reason { id = 27, description = "POSSIBLE_DANGEROUS_FREE_KICK" },
+                    new desc_betstop_reason { id = 28, description = "POSSIBLE_DANGEROUS_GOAL_POSITION" },
+                    new desc_betstop_reason { id = 29, description = "POSSIBLE_TOUCHDOWN_HOME" },
+                    new desc_betstop_reason { id = 30, description = "POSSIBLE_TOUCHDOWN_AWAY" },
+                    new desc_betstop_reason { id = 31, description = "POSSIBLE_FIELDGOAL_HOME" },
+                    new desc_betstop_reason { id = 32, description = "POSSIBLE_FIELDGOAL_AWAY" },
+                    new desc_betstop_reason { id = 33, description = "POSSIBLE_SAFETY_HOME" },
+                    new desc_betstop_reason { id = 34, description = "POSSIBLE_SAFETY_AWAY" },
+                    new desc_betstop_reason { id = 35, description = "POSSIBLE_TURNOVER_HOME" },
+                    new desc_betstop_reason { id = 36, description = "POSSIBLE_TURNOVER_AWAY" },
+                    new desc_betstop_reason { id = 37, description = "VIDEO_REVIEW" },
+                    new desc_betstop_reason { id = 38, description = "REDZONE_HOME" },
+                    new desc_betstop_reason { id = 39, description = "REDZONE_AWAY" },
+                    new desc_betstop_reason { id = 40, description = "POSSIBLE_BOUNDARY" },
+                    new desc_betstop_reason { id = 41, description = "POSSIBLE_WICKET" },
+                    new desc_betstop_reason { id = 42, description = "POSSIBLE_CHALLENGE_HOME" },
+                    new desc_betstop_reason { id = 43, description = "POSSIBLE_CHALLENGE_AWAY" },
+                    new desc_betstop_reason { id = 44, description = "POSSIBLE_TURNOVER" },
+                    new desc_betstop_reason { id = 45, description = "UNKNOWN_OPERATOR" },
+                    new desc_betstop_reason { id = 46, description = "FREEBALL" },
+                    new desc_betstop_reason { id = 47, description = "DEEP_BALL" },
+                    new desc_betstop_reason { id = 48, description = "POSSIBLE_RUN" },
+                    new desc_betstop_reason { id = 49, description = "MAINTENANCE" },
+                    new desc_betstop_reason { id = 50, description = "BASE_HIT_DELETED" },
+                    new desc_betstop_reason { id = 51, description = "MATCH_DELAYED" },
+                    new desc_betstop_reason { id = 52, description = "MATCH_POSTPONED" },
+                    new desc_betstop_reason { id = 53, description = "SCOUT_DISCONNECTION_TV_SIGNAL" },
+                    new desc_betstop_reason { id = 54, description = "POSSIBLE_PENALTY_OFFSETTING" },
+                    new desc_betstop_reason { id = 55, description = "POSSIBLE_PUNT_HOME" },
+                    new desc_betstop_reason { id = 56, description = "POSSIBLE_PUNT_AWAY" },
+                    new desc_betstop_reason { id = 57, description = "POSSIBLE_FOURTH_DOWN_ATTEMPT_HOME" },
+                    new desc_betstop_reason { id = 58, description = "POSSIBLE_FOURTH_DOWN_ATTEMPT_AWAY" },
+                    new desc_betstop_reason { id = 59, description = "POSSIBLE_ONSIDE_KICK_HOME" },
+                    new desc_betstop_reason { id = 60, description = "POSSIBLE_ONSIDE_KICK_AWAY" },
+                    new desc_betstop_reason { id = 61, description = "POSSIBLE_CHALLENGE" },
+                    new desc_betstop_reason { id = 62, description = "POSSIBLE_CARD" },
+                    new desc_betstop_reason { id = 63, description = "DELAYED_PENALTY" },
+                    new desc_betstop_reason { id = 64, description = "SHOOTOUT_BEGINS" },
+                    new desc_betstop_reason { id = 65, description = "EMPTY_NET" },
+                    new desc_betstop_reason { id = 66, description = "POSSIBLE_TRY_HOME" },
+                    new desc_betstop_reason { id = 67, description = "POSSIBLE_TRY_AWAY" },
+                    new desc_betstop_reason { id = 68, description = "POSSIBLE_DROP_GOAL_HOME" },
+                    new desc_betstop_reason { id = 69, description = "POSSIBLE_DROP_GOAL_AWAY" },
+                    new desc_betstop_reason { id = 70, description = "POSSIBLE_CARD_HOME" },
+                    new desc_betstop_reason { id = 71, description = "POSSIBLE_CARD_AWAY" },
+                    new desc_betstop_reason { id = 72, description = "POSSIBLE_PENALTY_HOME_HOCKEY" },
+                    new desc_betstop_reason { id = 73, description = "POSSIBLE_PENALTY_AWAY_HOCKEY" },
+                    new desc_betstop_reason { id = 74, description = "DELAYED_PENALTY_HOME_HOCKEY" },
+                    new desc_betstop_reason { id = 75, description = "DELAYED_PENALTY_AWAY_HOCKEY" },
+                    new desc_betstop_reason { id = 76, description = "TWO_MAN_ADVANTAGE_HOME" },
+                    new desc_betstop_reason { id = 77, description = "TWO_MAN_ADVANTAGE_AWAY" },
+                    new desc_betstop_reason { id = 78, description = "POSSIBLE_FIELD_GOAL" },
+                    new desc_betstop_reason { id = 79, description = "ROLLBACK_EVENT" }
+                ]
+        };
+    }
+}

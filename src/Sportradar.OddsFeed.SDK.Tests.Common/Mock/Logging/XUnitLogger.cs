@@ -11,21 +11,24 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 public class XUnitLogger : ILogger
 {
     private string LoggerName { get; }
+    private LogLevel LoggerLevel { get; }
     private readonly ITestOutputHelper _output;
     internal ConcurrentBag<string> Messages { get; }
 
-    public XUnitLogger(string loggerName, ITestOutputHelper output)
+    public XUnitLogger(string loggerName, ITestOutputHelper output, LogLevel level = LogLevel.Trace)
     {
         LoggerName = loggerName;
         _output = output;
-        Messages = new ConcurrentBag<string>();
+        Messages = [];
+        LoggerLevel = level;
     }
 
-    public XUnitLogger(Type loggerName, ITestOutputHelper output)
+    public XUnitLogger(Type loggerName, ITestOutputHelper output, LogLevel level = LogLevel.Trace)
     {
         LoggerName = loggerName.FullName;
         _output = output;
-        Messages = new ConcurrentBag<string>();
+        Messages = [];
+        LoggerLevel = level;
     }
 
     public IDisposable BeginScope<TState>(TState state)
@@ -35,7 +38,7 @@ public class XUnitLogger : ILogger
 
     public bool IsEnabled(LogLevel logLevel)
     {
-        return true;
+        return logLevel >= LoggerLevel;
     }
 
     public int CountByLevel(LogLevel logLevel)

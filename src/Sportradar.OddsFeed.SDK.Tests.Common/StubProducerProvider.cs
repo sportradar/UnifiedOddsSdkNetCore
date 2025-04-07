@@ -63,7 +63,27 @@ internal class StubProducerProvider : IDataProvider<producers>
         return resultProducers;
     }
 
-    private producer LoadProducer(int producerId, string producerName, string producerDesc, string prodApiUrl, bool isActive, string scope, int recoveryWindow)
+    public static producers GetProducers(string url)
+    {
+        var producerList = new List<producer>
+                               {
+                                   LoadProducer(1, "LO", "Live Odds", $"{url}/v1/liveodds/", true, "live", 600),
+                                   LoadProducer(3, "Ctrl", "Betradar Ctrl", $"{url}/v1/pre/", true, "prematch", 4320),
+                                   LoadProducer(4, "BetPal", "BetPal", $"{url}/v1/betpal/", true, "live", 4320),
+                                   LoadProducer(5, "PremiumCricket", "Premium Cricket", $"{url}/v1/premium_cricket/", true, "live|prematch", 4320),
+                                   LoadProducer(6, "VF", "Virtual football", $"{url}/v1/vf/", true, "virtual", 180),
+                                   LoadProducer(7, "WNS", "Numbers Betting", $"{url}/v1/wns/", true, "prematch", 4320),
+                                   LoadProducer(8, "VBL", "Virtual Basketball League", $"{url}/v1/vbl/", false, "virtual", 180)
+                               };
+
+        var resultProducers = new producers();
+        resultProducers.location = "some-location";
+        resultProducers.producer = producerList.ToArray();
+
+        return resultProducers;
+    }
+
+    private static producer LoadProducer(int producerId, string producerName, string producerDesc, string prodApiUrl, bool isActive, string scope, int recoveryWindow)
     {
         return new producer
         {

@@ -19,7 +19,7 @@ public class LockManagerTests
     private readonly LockManager _lockManager;
     private readonly XUnitLogger _logger;
     private readonly ConcurrentDictionary<string, DateTime> _uniqueItems;
-    private readonly TimeSpan _lockTimeout = TimeSpan.FromSeconds(1);
+    private readonly TimeSpan _lockTimeout = TimeSpan.FromMilliseconds(1000);
     private readonly TimeSpan _lockSleep = TimeSpan.FromMilliseconds(100);
 
     public LockManagerTests(ITestOutputHelper outputHelper)
@@ -231,7 +231,7 @@ public class LockManagerTests
         await _lockManager.WaitAsync(Id);
         Assert.Contains(Id, _uniqueItems.Keys);
 
-        await Task.Delay(_lockTimeout.Add(TimeSpan.FromMilliseconds(100)));
+        await Task.Delay(_lockTimeout.Add(TimeSpan.FromMilliseconds(50)));
         await _lockManager.CleanAsync();
 
         Assert.DoesNotContain(Id, _uniqueItems.Keys);
@@ -370,7 +370,7 @@ public class LockManagerTests
         Assert.True(stopWatch.Elapsed >= _lockTimeout, $"{stopWatch.ElapsedMilliseconds} >= {_lockTimeout.TotalMilliseconds}");
     }
 
-    [Fact(Timeout = 20000)]
+    [Fact(Timeout = 5000)]
     public async Task CleanOneRespectsLockTimeout()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -388,7 +388,7 @@ public class LockManagerTests
         Assert.True(stopWatch.Elapsed >= _lockTimeout, $"{stopWatch.ElapsedMilliseconds} >= {_lockTimeout.TotalMilliseconds}");
     }
 
-    [Fact(Timeout = 20000)]
+    [Fact(Timeout = 5000)]
     public async Task CleanOneWithZeroTimeout()
     {
         var stopWatch = Stopwatch.StartNew();

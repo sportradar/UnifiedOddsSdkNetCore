@@ -3,5 +3,6 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests")]
+[assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests.Acceptance")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests.Integration")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Tests.Performance")]

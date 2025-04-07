@@ -10,6 +10,7 @@ using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
+using Sportradar.OddsFeed.SDK.Api.Internal.Handlers;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Api.Internal.Recovery;
 using Sportradar.OddsFeed.SDK.Api.Internal.Replay;
@@ -130,6 +131,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
             services.AddSingleton(configuration);
 
+            services.AddSingleton<IRequestDecorator, RequestDecorator>();
             services.AddSingleton<IMessageDataExtractor, MessageDataExtractor>();
             services.AddSingleton<IEntityTypeMapper, EntityTypeMapper>();
             services.AddSingleton<IDispatcherStore, DispatcherStore>();
@@ -157,7 +159,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
-                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer, AllowAutoRedirect = true });
+                    .ConfigurePrimaryHttpMessageHandler((serviceProvider) =>
+                                                            new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
+                                                                    new HttpClientHandler
+                                                                    {
+                                                                        MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
+                                                                        AllowAutoRedirect = true
+                                                                    })
+                                                       )
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10));
             services.AddHttpClient(HttpClientNameForRecovery)
                     .ConfigureHttpClient(configureClient =>
                                          {
@@ -165,7 +175,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
-                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer, AllowAutoRedirect = true });
+                    .ConfigurePrimaryHttpMessageHandler((serviceProvider) =>
+                                                            new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
+                                                                                        new HttpClientHandler
+                                                                                        {
+                                                                                            MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
+                                                                                            AllowAutoRedirect = true
+                                                                                        })
+                                                       )
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10));
             services.AddHttpClient(HttpClientNameForFastFailing)
                     .ConfigureHttpClient(configureClient =>
                                          {
@@ -173,7 +191,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForAccessToken, configuration.AccessToken);
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
-                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer, AllowAutoRedirect = true });
+                    .ConfigurePrimaryHttpMessageHandler((serviceProvider) =>
+                                                            new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
+                                                                                        new HttpClientHandler
+                                                                                        {
+                                                                                            MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
+                                                                                            AllowAutoRedirect = true
+                                                                                        })
+                                                       )
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10));
 
             services.AddTransient<ISdkHttpClient, SdkHttpClient>(serviceProvider => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForNormal));
             services.AddTransient<ISdkHttpClientRecovery, SdkHttpClientRecovery>(serviceProvider => new SdkHttpClientRecovery(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForRecovery));
@@ -184,15 +210,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddSingleton<IDataFetcher, LogHttpDataFetcher>(serviceProvider =>
                 new LogHttpDataFetcher(
                     serviceProvider.GetRequiredService<ISdkHttpClient>(),
-                    serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
                     serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
 
-            services.AddSingleton<IDataPoster, LogHttpDataFetcher>(serviceProvider =>
-                new LogHttpDataFetcher(
-                    serviceProvider.GetRequiredService<ISdkHttpClient>(),
-                    serviceProvider.GetRequiredService<ISequenceGenerator>(),
+            services.AddSingleton<IDataPoster, LogHttpDataFetcherRecovery>(serviceProvider =>
+                new LogHttpDataFetcherRecovery(
+                    serviceProvider.GetRequiredService<ISdkHttpClientRecovery>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
                     serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
@@ -206,7 +230,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddSingleton<ILogHttpDataFetcher, LogHttpDataFetcher>(serviceProvider =>
                 new LogHttpDataFetcher(
                     serviceProvider.GetRequiredService<ISdkHttpClient>(),
-                    serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
                     serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
@@ -214,7 +237,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddSingleton<ILogHttpDataFetcherRecovery, LogHttpDataFetcherRecovery>(serviceProvider =>
                 new LogHttpDataFetcherRecovery(
                     serviceProvider.GetRequiredService<ISdkHttpClientRecovery>(),
-                    serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
                     serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );
@@ -222,7 +244,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddSingleton<ILogHttpDataFetcherFastFailing, LogHttpDataFetcherFastFailing>(serviceProvider =>
                 new LogHttpDataFetcherFastFailing(
                     serviceProvider.GetRequiredService<ISdkHttpClientFastFailing>(),
-                    serviceProvider.GetRequiredService<ISequenceGenerator>(),
                     serviceProvider.GetRequiredService<IDeserializer<response>>(),
                     serviceProvider.GetService<ILoggerFactory>().CreateLogger(restTrafficLoggerName))
             );

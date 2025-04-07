@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -90,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             try
             {
                 responseMessage = await SdkHttpClient.GetAsync(uri).ConfigureAwait(false);
-                return await ProcessGetDataAsync(responseMessage, uri).ConfigureAwait(false);
+                return await GetResponseStreamAsync(uri, responseMessage);
             }
             catch (CommunicationException)
             {
@@ -129,10 +130,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 var responseContent = string.Empty;
                 try
                 {
-                    var contentStream = await responseMessage.Content.ReadAsStreamAsync();
-                    var contentStreamReader = new StreamReader(contentStream);
-                    responseContent = await contentStreamReader.ReadToEndAsync();
-                    responseContent = await DeserializeResponseContent(responseContent);
+                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    {
+                        var contentStreamReader = new StreamReader(contentStream);
+                        responseContent = await contentStreamReader.ReadToEndAsync();
+                        responseContent = await DeserializeResponseContent(responseContent);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -179,22 +182,28 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <exception cref="CommunicationException">Failed to execute http post</exception>
         public virtual async Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null)
         {
+            var httpRequestmessage = new HttpRequestMessage(HttpMethod.Post, uri)
+            {
+                Content = content ?? new StringContent(string.Empty)
+            };
+            return await PostHttpRequestAsync(httpRequestmessage);
+        }
+
+        protected async Task<HttpResponseMessage> PostHttpRequestAsync(HttpRequestMessage httpRequestMessage)
+        {
+            var uri = httpRequestMessage.RequestUri;
             ValidateConnection(uri);
             HttpResponseMessage responseMessage = null;
             try
             {
-                responseMessage = await SdkHttpClient.PostAsync(uri, content ?? new StringContent(string.Empty)).ConfigureAwait(false);
+                responseMessage = await SendRequestAsync(httpRequestMessage);
 
                 RecordSuccess();
                 if (_saveResponseHeaders)
                 {
-                    var responseHeaders = new Dictionary<string, IEnumerable<string>>();
-                    foreach (var header in responseMessage.Headers)
-                    {
-                        responseHeaders.Add(header.Key, header.Value);
-                    }
-                    ResponseHeaders = responseHeaders;
+                    ResponseHeaders = responseMessage.Headers.ToDictionary(header => header.Key, header => header.Value);
                 }
+
                 return responseMessage;
             }
             catch (CommunicationException)
@@ -212,6 +221,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 RecordFailure();
                 throw new CommunicationException("Failed to execute http post", uri.ToString(), responseMessage?.StatusCode ?? HttpStatusCode.OK, ex);
             }
+        }
+
+        protected async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
+        {
+            return await SdkHttpClient.SendRequestAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -257,6 +271,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             {
                 throw new CommunicationException("Failed to execute request due to previous failures", uri.ToString(), null);
             }
+        }
+
+        protected async Task<Stream> GetResponseStreamAsync(Uri uri, HttpResponseMessage responseMessage)
+        {
+            return await ProcessGetDataAsync(responseMessage, uri).ConfigureAwait(false);
         }
     }
 }

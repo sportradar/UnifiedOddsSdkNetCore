@@ -17,6 +17,7 @@ public class MarketDescriptionEndpoint
     {
         var marketList = new List<desc_market>
         {
+            MdForInvariantList.GetMarketWithScore41(),
             MdForInvariantList.GetMarketForVariantList199(),
             MdForInvariantList.GetMarketWithCompetitor282(),
             MdForInvariantList.GetPreOutcomeTextMarket534(),

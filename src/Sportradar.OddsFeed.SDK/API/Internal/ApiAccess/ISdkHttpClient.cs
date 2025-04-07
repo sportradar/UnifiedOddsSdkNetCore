@@ -13,12 +13,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 
         HttpRequestHeaders DefaultRequestHeaders { get; }
 
+        Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request);
+
         Task<HttpResponseMessage> GetAsync(Uri requestUri);
 
         Task<HttpResponseMessage> PostAsync(Uri requestUri, HttpContent content);
 
         Task<HttpResponseMessage> DeleteAsync(Uri requestUri);
-
         Task<HttpResponseMessage> PutAsync(Uri requestUri, HttpContent content);
     }
 }

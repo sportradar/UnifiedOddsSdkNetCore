@@ -1,8 +1,10 @@
 ﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -206,5 +208,11 @@ public class FeedMessageMapperTests
         Assert.NotNull(entity);
         Assert.NotNull(entity.Markets);
         Assert.Equal(1, entity.Markets.Count(w => w.CashoutStatus != null));
+    }
+
+    [Fact]
+    public void WhenOddsChangeIsMissingItThrows()
+    {
+        Should.Throw<ArgumentNullException>(() => _mapper.MapOddsChange<ICompetition>(null, [TestData.Culture], null));
     }
 }

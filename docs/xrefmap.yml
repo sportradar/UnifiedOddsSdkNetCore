@@ -3027,6 +3027,94 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.IUofSessionBuilder.SetMessageInterest
   nameWithType: IUofSessionBuilder.SetMessageInterest
+- uid: Sportradar.OddsFeed.SDK.Api.Internal
+  name: Sportradar.OddsFeed.SDK.Api.Internal
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.html
+  commentId: N:Sportradar.OddsFeed.SDK.Api.Internal
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal
+  nameWithType: Sportradar.OddsFeed.SDK.Api.Internal
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.Handlers
+  name: Sportradar.OddsFeed.SDK.Api.Internal.Handlers
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.html
+  commentId: N:Sportradar.OddsFeed.SDK.Api.Internal.Handlers
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.Handlers
+  nameWithType: Sportradar.OddsFeed.SDK.Api.Internal.Handlers
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler
+  name: HttpRequestDecoratorHandler
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html
+  commentId: T:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler
+  nameWithType: HttpRequestDecoratorHandler
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator,System.Net.Http.HttpMessageHandler)
+  name: HttpRequestDecoratorHandler(IRequestDecorator, HttpMessageHandler)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html#Sportradar_OddsFeed_SDK_Api_Internal_Handlers_HttpRequestDecoratorHandler__ctor_Sportradar_OddsFeed_SDK_Api_Internal_IRequestDecorator_System_Net_Http_HttpMessageHandler_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator,System.Net.Http.HttpMessageHandler)
+  name.vb: New(IRequestDecorator, HttpMessageHandler)
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.HttpRequestDecoratorHandler(Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator, System.Net.Http.HttpMessageHandler)
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.New(Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator, System.Net.Http.HttpMessageHandler)
+  nameWithType: HttpRequestDecoratorHandler.HttpRequestDecoratorHandler(IRequestDecorator, HttpMessageHandler)
+  nameWithType.vb: HttpRequestDecoratorHandler.New(IRequestDecorator, HttpMessageHandler)
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.#ctor*
+  name: HttpRequestDecoratorHandler
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html#Sportradar_OddsFeed_SDK_Api_Internal_Handlers_HttpRequestDecoratorHandler__ctor_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.HttpRequestDecoratorHandler
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.New
+  nameWithType: HttpRequestDecoratorHandler.HttpRequestDecoratorHandler
+  nameWithType.vb: HttpRequestDecoratorHandler.New
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
+  name: SendAsync(HttpRequestMessage, CancellationToken)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html#Sportradar_OddsFeed_SDK_Api_Internal_Handlers_HttpRequestDecoratorHandler_SendAsync_System_Net_Http_HttpRequestMessage_System_Threading_CancellationToken_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.SendAsync(System.Net.Http.HttpRequestMessage, System.Threading.CancellationToken)
+  nameWithType: HttpRequestDecoratorHandler.SendAsync(HttpRequestMessage, CancellationToken)
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.SendAsync*
+  name: SendAsync
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html#Sportradar_OddsFeed_SDK_Api_Internal_Handlers_HttpRequestDecoratorHandler_SendAsync_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.SendAsync
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.SendAsync
+  nameWithType: HttpRequestDecoratorHandler.SendAsync
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator
+  name: IRequestDecorator
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.html
+  commentId: T:Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator
+  nameWithType: IRequestDecorator
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)
+  name: Decorate(HttpRequestMessage)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.html#Sportradar_OddsFeed_SDK_Api_Internal_IRequestDecorator_Decorate_System_Net_Http_HttpRequestMessage_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)
+  nameWithType: IRequestDecorator.Decorate(HttpRequestMessage)
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.Decorate*
+  name: Decorate
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.html#Sportradar_OddsFeed_SDK_Api_Internal_IRequestDecorator_Decorate_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.Decorate
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.Decorate
+  nameWithType: IRequestDecorator.Decorate
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator
+  name: RequestDecorator
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.html
+  commentId: T:Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator
+  nameWithType: RequestDecorator
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)
+  name: Decorate(HttpRequestMessage)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.html#Sportradar_OddsFeed_SDK_Api_Internal_RequestDecorator_Decorate_System_Net_Http_HttpRequestMessage_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.Decorate(System.Net.Http.HttpRequestMessage)
+  nameWithType: RequestDecorator.Decorate(HttpRequestMessage)
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.Decorate*
+  name: Decorate
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.html#Sportradar_OddsFeed_SDK_Api_Internal_RequestDecorator_Decorate_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.Decorate
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.Decorate
+  nameWithType: RequestDecorator.Decorate
 - uid: Sportradar.OddsFeed.SDK.Api.Managers
   name: Sportradar.OddsFeed.SDK.Api.Managers
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.html

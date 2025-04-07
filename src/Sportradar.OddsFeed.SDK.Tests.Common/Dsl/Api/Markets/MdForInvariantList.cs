@@ -184,4 +184,48 @@ public static class MdForInvariantList
                                        .AddSpecifier("variant", "variable_text")
                                        .Build();
     }
+
+    /// <summary>
+    /// Get market definition for market with score in name template
+    /// This market definition lacks mappings (there are a lot of them)
+    /// </summary>
+    /// <returns>Returns market definition</returns>
+    public static desc_market GetMarketWithScore41()
+    {
+        return MarketDescriptionBuilder.Create()
+            .WithId(41)
+            .WithName("Correct score [{score}]")
+            .WithGroups("all|score|regular_play")
+            .AddOutcome(b => b.WithId("110").WithName("0:0"))
+            .AddOutcome(b => b.WithId("114").WithName("1:0"))
+            .AddOutcome(b => b.WithId("116").WithName("2:0"))
+            .AddOutcome(b => b.WithId("118").WithName("3:0"))
+            .AddOutcome(b => b.WithId("120").WithName("4:0"))
+            .AddOutcome(b => b.WithId("122").WithName("5:0"))
+            .AddOutcome(b => b.WithId("124").WithName("6:0"))
+            .AddOutcome(b => b.WithId("126").WithName("0:1"))
+            .AddOutcome(b => b.WithId("128").WithName("1:1"))
+            .AddOutcome(b => b.WithId("130").WithName("2:1"))
+            .AddOutcome(b => b.WithId("132").WithName("3:1"))
+            .AddOutcome(b => b.WithId("134").WithName("4:1"))
+            .AddOutcome(b => b.WithId("136").WithName("5:1"))
+            .AddOutcome(b => b.WithId("138").WithName("0:2"))
+            .AddOutcome(b => b.WithId("140").WithName("1:2"))
+            .AddOutcome(b => b.WithId("142").WithName("2:2"))
+            .AddOutcome(b => b.WithId("144").WithName("3:2"))
+            .AddOutcome(b => b.WithId("146").WithName("4:2"))
+            .AddOutcome(b => b.WithId("148").WithName("0:3"))
+            .AddOutcome(b => b.WithId("150").WithName("1:3"))
+            .AddOutcome(b => b.WithId("152").WithName("2:3"))
+            .AddOutcome(b => b.WithId("154").WithName("3:3"))
+            .AddOutcome(b => b.WithId("156").WithName("0:4"))
+            .AddOutcome(b => b.WithId("158").WithName("1:4"))
+            .AddOutcome(b => b.WithId("160").WithName("2:4"))
+            .AddOutcome(b => b.WithId("162").WithName("0:5"))
+            .AddOutcome(b => b.WithId("164").WithName("1:5"))
+            .AddOutcome(b => b.WithId("166").WithName("0:6"))
+            .AddSpecifier("score", "string", "current score in match")
+            .AddAttribute("is_flex_score", "Outcomes should be adjusted according to score specifier")
+            .Build();
+    }
 }

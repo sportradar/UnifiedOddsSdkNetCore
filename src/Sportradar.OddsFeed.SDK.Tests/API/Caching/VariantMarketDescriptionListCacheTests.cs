@@ -32,9 +32,9 @@ public class VariantMarketDescriptionListCacheTests
     private readonly VariantDescriptionListCache _variantsListCache;
 
     private readonly TestDataRouterManager _dataRouterManager;
-    private readonly ICacheStore<string> _variantsListMemoryCache;
+    private readonly CacheStore<string> _variantsListMemoryCache;
     private readonly CacheManager _cacheManager;
-    private readonly IReadOnlyList<CultureInfo> _cultures;
+    private readonly List<CultureInfo> _cultures;
     private readonly XunitLoggerFactory _testLoggerFactory;
     private const string DefaultVariantId = "sr:correct_score:bestof:12";
     private readonly SdkTimer _timer;
@@ -876,7 +876,7 @@ public class VariantMarketDescriptionListCacheTests
     [Fact]
     public async Task WhenMarketDescriptionsReceivedButWrongDtoTypeThenItIsIgnored()
     {
-        var apiMds = await GetVariantsListXml(_cultures[0]);
+        var apiMds = await GetVariantsListFromXmlFile(_cultures[0]);
         var dtoMds = apiMds.variant.Select(s => new VariantDescriptionDto(s));
         var entityListVariantDescriptions = new EntityList<VariantDescriptionDto>(dtoMds);
 
@@ -893,7 +893,7 @@ public class VariantMarketDescriptionListCacheTests
     [Fact]
     public async Task WhenDtoItemDoesNotMuchExpectedThenItIsIgnored()
     {
-        var apiMds = await GetVariantsListXml(_cultures[0]);
+        var apiMds = await GetVariantsListFromXmlFile(_cultures[0]);
         var dtoMds = apiMds.variant.Select(s => new VariantDescriptionDto(s));
 
         await _cacheManager.SaveDtoAsync(Urn.Parse("sr:markets:123"), dtoMds, _cultures[0], DtoType.VariantDescriptionList, null);
@@ -904,7 +904,7 @@ public class VariantMarketDescriptionListCacheTests
     [Fact]
     public async Task WhenCacheDisposedThenAddingIsIgnored()
     {
-        var apiMds = await GetVariantsListXml(_cultures[0]);
+        var apiMds = await GetVariantsListFromXmlFile(_cultures[0]);
         var dtoMds = apiMds.variant.Select(s => new VariantDescriptionDto(s));
         var entityListMarketDescriptions = new EntityList<VariantDescriptionDto>(dtoMds);
         _variantsListCache.Dispose();
@@ -919,7 +919,7 @@ public class VariantMarketDescriptionListCacheTests
     {
         var logCache = _testLoggerFactory.GetOrCreateLogger(typeof(Cache));
         var logExec = _testLoggerFactory.GetOrCreateLogger(typeof(VariantDescriptionListCache));
-        var apiMds = await GetVariantsListXml(_cultures[0]);
+        var apiMds = await GetVariantsListFromXmlFile(_cultures[0]);
         var dtoMds = apiMds.variant.Select(s => new VariantDescriptionDto(s));
 
         await _cacheManager.SaveDtoAsync(Urn.Parse("sr:markets:123"), dtoMds, _cultures[0], DtoType.VariantDescriptionList, null);
@@ -937,7 +937,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.Equal(HealthStatus.Healthy, healthCheck.Status);
     }
 
-    private async Task<variant_descriptions> GetVariantsListXml(CultureInfo language)
+    private static async Task<variant_descriptions> GetVariantsListFromXmlFile(CultureInfo language)
     {
         var resourceName = $"variant_market_descriptions_{language.TwoLetterISOLanguageName}.xml";
         var restDeserializer = new Deserializer<variant_descriptions>();

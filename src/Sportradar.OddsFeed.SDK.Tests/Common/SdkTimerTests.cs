@@ -3,36 +3,25 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class SdkTimerTests
 {
-    private readonly ISdkTimer _sdkTimer;
-    private readonly IList<string> _timerMsgs;
-
-    public SdkTimerTests()
-    {
-        ThreadPool.SetMinThreads(100, 100);
-        _timerMsgs = new List<string>();
-        _sdkTimer = new SdkTimer("defaultTimer", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
-    }
-
-    private void SdkTimerOnElapsed(object sender, EventArgs e)
-    {
-        _timerMsgs.Add($"{_timerMsgs.Count + 1}. message");
-    }
+    private readonly SdkTimer _sdkTimer = new SdkTimer("defaultTimer", TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(100));
+    private readonly List<string> _timerMsgs = [];
 
     [Fact]
     public void TimerNormalInitialization()
     {
-        Assert.NotNull(_sdkTimer);
-        Assert.Empty(_timerMsgs);
+        _sdkTimer.ShouldNotBeNull();
+        _timerMsgs.ShouldBeEmpty();
     }
 
     [Fact]
@@ -41,13 +30,6 @@ public class SdkTimerTests
         Action action = () => SdkTimer.Create("wrongTimer", TimeSpan.FromSeconds(-1), TimeSpan.FromSeconds(10));
         action.Should().Throw<ArgumentException>();
     }
-
-    //[Fact]
-    //public void TimerWrongPeriodTime()
-    //{
-    //    Action action = () => SdkTimer.Create(TimeSpan.FromSeconds(1), TimeSpan.Zero);
-    //    action.Should().Throw<ArgumentException>();
-    //}
 
     [Fact]
     public void TimerStartWrongDueTime()
@@ -68,40 +50,32 @@ public class SdkTimerTests
     {
         _sdkTimer.Elapsed += SdkTimerOnElapsed;
         _sdkTimer.Start();
-        await Task.Delay(5500);
-        Assert.NotNull(_sdkTimer);
-        Assert.NotEmpty(_timerMsgs);
-        Assert.True(5 <= _timerMsgs.Count, $"Expected 5, actual {_timerMsgs.Count}");
+
+        await Task.Delay(300);
+
+        _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
 
-    // [Fact]
-    // public async Task TimerFailedOnTickWillNotBreak()
-    // {
-    //     _sdkTimer.Elapsed += (sender, args) =>
-    //     {
-    //         _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
-    //         throw new InvalidOperationException("Some error");
-    //     };
-    //     _sdkTimer.Start();
-    //     await Task.Delay(1200);
-    //     Assert.NotNull(_sdkTimer);
-    //     Assert.NotEmpty(_timerMsgs);
-    //     Assert.Single(_timerMsgs);
-    // }
+    [Fact]
+    public async Task TimerFailedOnTickWillNotBreak()
+    {
+        SetupTimerWithFailingEventHandler();
+        _sdkTimer.Start();
+
+        await Task.Delay(300);
+
+        _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
+    }
 
     [Fact]
     public async Task TimerFailedOnTickWillContinueOnPeriod()
     {
-        _sdkTimer.Elapsed += (sender, args) =>
-        {
-            _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
-            throw new InvalidOperationException("Some error");
-        };
+        SetupTimerWithFailingEventHandler();
         _sdkTimer.Start();
-        await Task.Delay(5200);
-        Assert.NotNull(_sdkTimer);
-        Assert.NotEmpty(_timerMsgs);
-        Assert.True(5 <= _timerMsgs.Count, $"Expected 5, actual {_timerMsgs.Count}");
+
+        await Task.Delay(300);
+
+        _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
 
     [Fact]
@@ -109,11 +83,11 @@ public class SdkTimerTests
     {
         var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
         sdkTimer.Elapsed += SdkTimerOnElapsed;
+
         sdkTimer.FireOnce(TimeSpan.Zero);
-        await Task.Delay(3200);
-        Assert.NotNull(_sdkTimer);
-        Assert.NotEmpty(_timerMsgs);
-        Assert.Single(_timerMsgs);
+        await Task.Delay(50);
+
+        _timerMsgs.Count.ShouldBe(1);
     }
 
     [Fact]
@@ -123,7 +97,7 @@ public class SdkTimerTests
 
         sdkTimer.Dispose();
 
-        Assert.True(sdkTimer.IsDisposed());
+        sdkTimer.IsDisposed().ShouldBeTrue();
     }
 
     [Fact]
@@ -135,7 +109,7 @@ public class SdkTimerTests
         sdkTimer.Dispose();
         sdkTimer.Dispose();
 
-        Assert.True(sdkTimer.IsDisposed());
+        sdkTimer.IsDisposed().ShouldBeTrue();
     }
 
     [Fact]
@@ -144,7 +118,9 @@ public class SdkTimerTests
         var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
         sdkTimer.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(() => sdkTimer.Start());
+        var action = () => sdkTimer.Start();
+
+        action.Should().Throw<ObjectDisposedException>();
     }
 
     [Fact]
@@ -153,6 +129,22 @@ public class SdkTimerTests
         var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
         sdkTimer.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(() => sdkTimer.Start(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)));
+        var action = () => sdkTimer.Start(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+
+        action.Should().Throw<ObjectDisposedException>();
+    }
+
+    private void SdkTimerOnElapsed(object sender, EventArgs e)
+    {
+        _timerMsgs.Add($"{_timerMsgs.Count + 1}. message");
+    }
+
+    private void SetupTimerWithFailingEventHandler()
+    {
+        _sdkTimer.Elapsed += (_, _) =>
+        {
+            _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
+            throw new InvalidOperationException("Some error");
+        };
     }
 }

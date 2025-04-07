@@ -1,5 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System.Collections.Generic;
+using System.Globalization;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
@@ -10,6 +12,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
 
@@ -123,5 +126,34 @@ internal static class DataRouterManagerBuilderExtensions
               .WithAllMockedDataProviders()
               .WithMockedCalculateProbabilityProvider()
               .WithMockedCalculateProbabilityFilteredProvider();
+    }
+
+    public static DataRouterManagerBuilder WithDefaultListProviders(this DataRouterManagerBuilder builder)
+    {
+        var invariantMdProviderMock = new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>();
+        var variantMdProviderMock = new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>();
+
+        invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>())).ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(MarketDescriptionEndpoint.GetDefaultInvariantList().market));
+        variantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>())).ReturnsAsync(MarketDescriptionEndpoint.GetVariantDto(MarketDescriptionEndpoint.GetDefaultVariantList().variant));
+
+        return builder
+            .WithInvariantMarketDescriptionsProvider(invariantMdProviderMock.Object)
+            .WithVariantDescriptionsProvider(variantMdProviderMock.Object);
+    }
+
+    public static DataRouterManagerBuilder WithDefaultListProviders(this DataRouterManagerBuilder builder, IReadOnlyList<CultureInfo> languages)
+    {
+        var invariantMdProviderMock = new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>();
+        var variantMdProviderMock = new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>();
+
+        foreach (var language in languages)
+        {
+            invariantMdProviderMock.Setup(s => s.GetDataAsync(language.TwoLetterISOLanguageName)).ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(MarketDescriptionEndpoint.GetDefaultInvariantList(language).market));
+            variantMdProviderMock.Setup(s => s.GetDataAsync(language.TwoLetterISOLanguageName)).ReturnsAsync(MarketDescriptionEndpoint.GetVariantDto(MarketDescriptionEndpoint.GetDefaultVariantList(language).variant));
+        }
+
+        return builder
+            .WithInvariantMarketDescriptionsProvider(invariantMdProviderMock.Object)
+            .WithVariantDescriptionsProvider(variantMdProviderMock.Object);
     }
 }

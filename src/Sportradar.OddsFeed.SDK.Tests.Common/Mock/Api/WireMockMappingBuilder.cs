@@ -11,6 +11,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
 using WireMock;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
@@ -87,7 +88,6 @@ public class WireMockMappingBuilder
 
     public WireMockMappingBuilder MapWhoAmI()
     {
-
         const string fileNameTemplate = "whoami.xml";
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
@@ -189,6 +189,26 @@ public class WireMockMappingBuilder
         return this;
     }
 
+    public WireMockMappingBuilder WithDefaultInvariantMarketList(ICollection<CultureInfo> cultures)
+    {
+        foreach (var culture in cultures)
+        {
+            WithDefaultInvariantMarketList(culture);
+        }
+        return this;
+    }
+
+    public WireMockMappingBuilder WithDefaultInvariantMarketList(CultureInfo culture)
+    {
+        var marketDescriptions = MarketDescriptionEndpoint.GetDefaultInvariantList(culture);
+        var responseBody = DeserializerHelper.SerializeApiMessageToXml(marketDescriptions);
+
+        _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets.xml").UsingGet())
+               .WithTitle(MappingNameForInvariantMarketList)
+               .RespondWith(Response.Create().WithBody(responseBody));
+        return this;
+    }
+
     public WireMockMappingBuilder WithInvariantMarketList(CultureInfo culture)
     {
         var fileNameTemplate = $"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
@@ -245,6 +265,26 @@ public class WireMockMappingBuilder
             }
         }
         //LogIgnoreXmls.Remove("<market_descriptions");
+    }
+
+    public WireMockMappingBuilder WithDefaultVariantMarketList(ICollection<CultureInfo> cultures)
+    {
+        foreach (var culture in cultures)
+        {
+            WithDefaultVariantMarketList(culture);
+        }
+        return this;
+    }
+
+    public WireMockMappingBuilder WithDefaultVariantMarketList(CultureInfo culture)
+    {
+        var marketDescriptions = MarketDescriptionEndpoint.GetDefaultVariantList(culture);
+        var responseBody = DeserializerHelper.SerializeApiMessageToXml(marketDescriptions);
+
+        _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/variants.xml").UsingGet())
+               .WithTitle(MappingNameForVariantMarketList)
+               .RespondWith(Response.Create().WithBody(responseBody));
+        return this;
     }
 
     public WireMockMappingBuilder WithVariantMarketList(CultureInfo culture)

@@ -46,4 +46,9 @@ internal class TestHttpClient : ISdkHttpClient
     {
         return await DataFetcher.PutDataAsync(requestUri, content).ConfigureAwait(false);
     }
+
+    public Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -87,11 +87,9 @@ public class TelemetryTrackerTests
     {
         var hist = _meter.CreateHistogram<long>("some-name");
         using var tracker = new TelemetryTracker(hist);
-        await Task.Delay(TimeSpan.FromMilliseconds(500));
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
 
-        Assert.NotNull(hist);
-        Assert.NotNull(tracker);
-        Assert.True(tracker.Elapsed.TotalMilliseconds >= 450, $"Expected: {tracker.Elapsed.TotalMilliseconds} >= 450");
+        Assert.True(tracker.Elapsed.TotalMilliseconds >= 200, $"Expected: {tracker.Elapsed.TotalMilliseconds} >= 200");
     }
 
     [Fact]

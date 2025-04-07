@@ -4,50 +4,73 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using FluentAssertions;
 using Moq;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
+using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Match.Endpoints;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
 public class LocalizedNamedValueCacheTests
 {
-    private Mock<IDataFetcher> _fetcherMock;
-    private Uri _enMatchStatusUri;
-    private Uri _deMatchStatusUri;
-    private Uri _huMatchStatusUri;
-    private Uri _nlMatchStatusUri;
+    private readonly Uri _deMatchStatusUri;
+    private readonly Uri _enMatchStatusUri;
+    private readonly Uri _huMatchStatusUri;
+    private readonly Uri _nlMatchStatusUri;
+    private readonly match_status_descriptions _matchStatusDescriptionEn;
+    private readonly match_status_descriptions _matchStatusDescriptionDe;
+    private readonly match_status_descriptions _matchStatusDescriptionHu;
+    private readonly match_status_descriptions _matchStatusDescriptionNl;
 
-    private LocalizedNamedValueCache Setup(ExceptionHandlingStrategy exceptionStrategy, SdkTimer cacheSdkTimer = null)
+    private Mock<IDataFetcher> _fetcherMock;
+
+    public LocalizedNamedValueCacheTests()
+    {
+        _matchStatusDescriptionEn = MatchStatusDescriptionsEndpoint.GetMatchStatusDescriptionForStatus01En();
+        _matchStatusDescriptionDe = MatchStatusDescriptionsEndpoint.GetMatchStatusDescriptionForStatus01De();
+        _matchStatusDescriptionHu = MatchStatusDescriptionsEndpoint.GetMatchStatusDescriptionForStatus01Hu();
+        _matchStatusDescriptionNl = MatchStatusDescriptionsEndpoint.GetMatchStatusDescriptionForStatus01Nl();
+        _enMatchStatusUri = new Uri("http://localhost/match_status_descriptions_en.xml", UriKind.Absolute);
+        _deMatchStatusUri = new Uri("http://localhost/match_status_descriptions_de.xml", UriKind.Absolute);
+        _huMatchStatusUri = new Uri("http://localhost/match_status_descriptions_hu.xml", UriKind.Absolute);
+        _nlMatchStatusUri = new Uri("http://localhost/match_status_descriptions_nl.xml", UriKind.Absolute);
+    }
+
+    private LocalizedNamedValueCache Setup(ExceptionHandlingStrategy exceptionStrategy, ISdkTimer cacheSdkTimer = null)
     {
         var dataFetcher = new TestDataFetcher();
         _fetcherMock = new Mock<IDataFetcher>();
 
-        _enMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_en.xml", UriKind.Absolute);
-        _fetcherMock.Setup(args => args.GetDataAsync(_enMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_enMatchStatusUri));
+        _fetcherMock.Setup(args => args.GetDataAsync(_enMatchStatusUri)).ReturnsAsync(GetMatchStatusStream(_matchStatusDescriptionEn));
 
-        _deMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_de.xml", UriKind.Absolute);
-        _fetcherMock.Setup(args => args.GetDataAsync(_deMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_deMatchStatusUri));
+        _fetcherMock.Setup(args => args.GetDataAsync(_deMatchStatusUri)).ReturnsAsync(GetMatchStatusStream(_matchStatusDescriptionDe));
 
-        _huMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_hu.xml", UriKind.Absolute);
-        _fetcherMock.Setup(args => args.GetDataAsync(_huMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_huMatchStatusUri));
+        _fetcherMock.Setup(args => args.GetDataAsync(_huMatchStatusUri)).ReturnsAsync(GetMatchStatusStream(_matchStatusDescriptionHu));
 
-        _nlMatchStatusUri = new Uri($"{TestData.RestXmlPath}/match_status_descriptions_nl.xml", UriKind.Absolute);
-        _fetcherMock.Setup(args => args.GetDataAsync(_nlMatchStatusUri)).Returns(dataFetcher.GetDataAsync(_nlMatchStatusUri));
+        _fetcherMock.Setup(args => args.GetDataAsync(_nlMatchStatusUri)).ReturnsAsync(GetMatchStatusStream(_matchStatusDescriptionNl));
 
-        var uriFormat = $"{TestData.RestXmlPath}/match_status_descriptions_{{0}}.xml";
+        const string uriFormat = "http://localhost/match_status_descriptions_{0}.xml";
         var nameCacheSdkTimer = cacheSdkTimer ?? SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
-        return new LocalizedNamedValueCache("MatchStatus", exceptionStrategy, new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, uriFormat, _fetcherMock.Object, "match_status"), nameCacheSdkTimer, new[] { new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu") });
+        return new LocalizedNamedValueCache("MatchStatus",
+                                            exceptionStrategy,
+                                            new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, uriFormat, _fetcherMock.Object, "match_status"),
+                                            nameCacheSdkTimer,
+                                                [new CultureInfo("en"), new CultureInfo("de"), new CultureInfo("hu")]);
     }
 
     [Fact]
@@ -55,45 +78,69 @@ public class LocalizedNamedValueCacheTests
     {
         var sdkTimer = SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
         var dataProvider = new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, "any", new TestDataFetcher(), "match_status");
-        Assert.Throws<ArgumentNullException>(() => new LocalizedNamedValueCache(null, ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, new List<CultureInfo> { new CultureInfo("en") }));
+
+        var exception = Should.Throw<ArgumentNullException>(() =>
+                                                                new LocalizedNamedValueCache(null, ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, new List<CultureInfo> { new("en") }));
+
+        exception.ParamName.ShouldBe("cacheName");
     }
 
     [Fact]
     public void ConstructingWithEmptyCacheNameThrows()
     {
-        var sdkTimer = SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
+        var sdkTimer = new TestTimer(false);
         var dataProvider = new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, "any", new TestDataFetcher(), "match_status");
-        Assert.Throws<ArgumentNullException>(() => new LocalizedNamedValueCache(string.Empty, ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, new List<CultureInfo> { new CultureInfo("en") }));
+
+        var exception = Should.Throw<ArgumentNullException>(() =>
+                                                                new LocalizedNamedValueCache(string.Empty, ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, new List<CultureInfo> { new("en") }));
+
+        exception.ParamName.ShouldBe("cacheName");
     }
 
     [Fact]
     public void ConstructingWithNullDataProviderThrows()
     {
-        var sdkTimer = SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
-        Assert.Throws<ArgumentNullException>(() => new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, null, sdkTimer, new List<CultureInfo> { new CultureInfo("en") }));
+        var sdkTimer = new TestTimer(false);
+
+        var exception = Should.Throw<ArgumentNullException>(() =>
+                                                                new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, null, sdkTimer, new List<CultureInfo> { new("en") }));
+
+        exception.ParamName.ShouldBe("dataProvider");
     }
 
     [Fact]
     public void ConstructingWithNullSdkTimerThrows()
     {
         var dataProvider = new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, "any", new TestDataFetcher(), "match_status");
-        Assert.Throws<ArgumentNullException>(() => new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, dataProvider, null, new List<CultureInfo> { new CultureInfo("en") }));
+
+        var exception = Should.Throw<ArgumentNullException>(() =>
+                                                                new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, dataProvider, null, new List<CultureInfo> { new("en") }));
+
+        exception.ParamName.ShouldBe("sdkTimer");
     }
 
     [Fact]
     public void ConstructingWithEmptyCulturesThrows()
     {
-        var sdkTimer = SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
+        var sdkTimer = new TestTimer(false);
         var dataProvider = new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, "any", new TestDataFetcher(), "match_status");
-        Assert.Throws<ArgumentNullException>(() => new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, new List<CultureInfo>()));
+
+        var exception = Should.Throw<ArgumentNullException>(() =>
+                                                                new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, new List<CultureInfo>()));
+
+        exception.ParamName.ShouldBe("cultures");
     }
 
     [Fact]
     public void ConstructingWithNullCulturesThrows()
     {
-        var sdkTimer = SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
+        var sdkTimer = new TestTimer(false);
         var dataProvider = new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, "any", new TestDataFetcher(), "match_status");
-        Assert.Throws<ArgumentNullException>(() => new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, null));
+
+        var exception = Should.Throw<ArgumentNullException>(() =>
+                                                                new LocalizedNamedValueCache("AnyCacheName", ExceptionHandlingStrategy.Catch, dataProvider, sdkTimer, null));
+
+        exception.ParamName.ShouldBe("cultures");
     }
 
     [Fact]
@@ -102,22 +149,23 @@ public class LocalizedNamedValueCacheTests
     public async Task DataIsFetchedOnlyOncePerLocale()
     {
         var cache = Setup(ExceptionHandlingStrategy.Throw);
-        var namedValue = await cache.GetAsync(0);
-        namedValue = await cache.GetAsync(0, new[] { new CultureInfo("en") });
-        namedValue = await cache.GetAsync(0, new[] { new CultureInfo("de") });
-        namedValue = await cache.GetAsync(0, new[] { new CultureInfo("hu") });
 
-        Assert.NotNull(namedValue);
+        var namedValue = await cache.GetAsync(0);
+        namedValue = await cache.GetAsync(0, [new CultureInfo("en")]);
+        namedValue = await cache.GetAsync(0, [new CultureInfo("de")]);
+        namedValue = await cache.GetAsync(0, [new CultureInfo("hu")]);
+
+        namedValue.ShouldNotBeNull();
 
         _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
         _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
         _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
         _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
 
-        namedValue = await cache.GetAsync(0, new[] { new CultureInfo("nl") });
+        namedValue = await cache.GetAsync(0, [new CultureInfo("nl")]);
         namedValue = await cache.GetAsync(0, TestData.Cultures4);
 
-        Assert.NotNull(namedValue);
+        namedValue.ShouldNotBeNull();
 
         _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
         _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
@@ -139,43 +187,44 @@ public class LocalizedNamedValueCacheTests
     public void InitialDataFetchStartedByConstructor()
     {
         Setup(ExceptionHandlingStrategy.Catch, SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
-
         var finished = TestExecutionHelper.WaitToComplete(() =>
-        {
-            _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
-            _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
-            _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
-            _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
-        }, 15000);
+                                                          {
+                                                              _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
+                                                              _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
+                                                              _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
+                                                              _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
+                                                          },
+                                                          15000);
 
-        Assert.True(finished);
+        finished.ShouldBeTrue();
     }
 
     [Fact]
     public async Task CorrectValuesAreLoaded()
     {
         var cache = Setup(ExceptionHandlingStrategy.Throw);
-        var doc = XDocument.Load($"{TestData.RestXmlPath}/match_status_descriptions_en.xml");
-        Assert.NotNull(doc);
-        Assert.NotNull(doc.Element("match_status_descriptions"));
+        var doc = XDocument.Load(GetMatchStatusStream(_matchStatusDescriptionEn));
+
+        doc.ShouldNotBeNull();
+        doc.Element("match_status_descriptions").ShouldNotBeNull();
 
         foreach (var xElement in doc.Element("match_status_descriptions")!.Elements("match_status"))
         {
-            Assert.NotNull(xElement.Attribute("id"));
+            xElement.Attribute("id").ShouldNotBeNull();
             var id = int.Parse(xElement.Attribute("id")!.Value);
             var namedValue = await cache.GetAsync(id);
 
-            Assert.NotNull(namedValue);
-            Assert.Equal(id, namedValue.Id);
+            namedValue.ShouldNotBeNull();
+            namedValue.Id.ShouldBe(id);
 
-            Assert.True(namedValue.Descriptions.ContainsKey(new CultureInfo("en")));
-            Assert.True(namedValue.Descriptions.ContainsKey(new CultureInfo("de")));
-            Assert.True(namedValue.Descriptions.ContainsKey(new CultureInfo("hu")));
-            Assert.False(namedValue.Descriptions.ContainsKey(new CultureInfo("nl")));
+            namedValue.Descriptions.Should().ContainKey(new CultureInfo("en"));
+            namedValue.Descriptions.Should().ContainKey(new CultureInfo("de"));
+            namedValue.Descriptions.Should().ContainKey(new CultureInfo("hu"));
+            namedValue.Descriptions.Should().NotContainKey(new CultureInfo("nl"));
 
-            Assert.NotEqual(namedValue.GetDescription(new CultureInfo("en")), new CultureInfo("de").Name);
-            Assert.NotEqual(namedValue.GetDescription(new CultureInfo("en")), new CultureInfo("hu").Name);
-            Assert.NotEqual(namedValue.GetDescription(new CultureInfo("de")), new CultureInfo("hu").Name);
+            namedValue.GetDescription(new CultureInfo("en")).ShouldNotBe(new CultureInfo("de").Name);
+            namedValue.GetDescription(new CultureInfo("en")).ShouldNotBe(new CultureInfo("hu").Name);
+            namedValue.GetDescription(new CultureInfo("de")).ShouldNotBe(new CultureInfo("hu").Name);
         }
     }
 
@@ -183,8 +232,8 @@ public class LocalizedNamedValueCacheTests
     public async Task ThrowingExceptionStrategyIsRespected()
     {
         var cache = Setup(ExceptionHandlingStrategy.Throw);
-        Func<Task> action = () => cache.GetAsync(1000);
-        await action.Should().ThrowAsync<ArgumentOutOfRangeException>();
+
+        await Should.ThrowAsync<ArgumentOutOfRangeException>(() => cache.GetAsync(1000));
     }
 
     [Fact]
@@ -193,8 +242,21 @@ public class LocalizedNamedValueCacheTests
         var cache = Setup(ExceptionHandlingStrategy.Catch);
         var value = await cache.GetAsync(1000);
 
-        Assert.Equal(1000, value.Id);
-        Assert.NotNull(value.Descriptions);
-        Assert.False(value.Descriptions.Any());
+        value.Id.ShouldBe(1000);
+        value.Descriptions.ShouldNotBeNull();
+        value.Descriptions.Any().ShouldBeFalse();
+    }
+
+    private static MemoryStream GetMatchStatusStream(match_status_descriptions matchStatusDescriptionEn)
+    {
+        var serializer = new XmlSerializer(typeof(match_status_descriptions));
+
+        var memoryStream = new MemoryStream();
+        var writer = new StreamWriter(memoryStream, new UTF8Encoding(false), leaveOpen: true);
+        serializer.Serialize(writer, matchStatusDescriptionEn);
+        writer.Flush();
+        memoryStream.Position = 0;
+
+        return memoryStream;
     }
 }

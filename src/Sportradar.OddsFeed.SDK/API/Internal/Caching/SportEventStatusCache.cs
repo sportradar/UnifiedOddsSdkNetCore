@@ -165,7 +165,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         }
 
         /// <summary>
-        ///     Set the list of <see cref="DtoType" /> in the this cache
+        /// Set the list of <see cref="DtoType" /> in this cache
         /// </summary>
         public override void SetDtoTypes()
         {
@@ -177,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         }
 
         /// <summary>
-        ///     Purges item from cache
+        /// Purges item from cache
         /// </summary>
         /// <param name="id">A <see cref="Urn" /> representing the id of the item in the cache to be purged</param>
         /// <param name="cacheItemType">A cache item type</param>
@@ -197,7 +197,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         }
 
         /// <summary>
-        ///     Does item exists in the cache
+        /// Does item exists in the cache
         /// </summary>
         /// <param name="id">A <see cref="Urn" /> representing the id of the item to be checked</param>
         /// <param name="cacheItemType">A cache item type</param>

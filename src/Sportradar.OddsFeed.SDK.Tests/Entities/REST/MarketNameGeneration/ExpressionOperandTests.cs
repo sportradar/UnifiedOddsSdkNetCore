@@ -13,7 +13,7 @@ public class ExpressionOperandTests
 {
     private const string SpecifierName = "score";
 
-    private static IReadOnlyDictionary<string, string> GetSpecifiers(string name, string value)
+    private static Dictionary<string, string> GetSpecifiers(string name, string value)
     {
         return new Dictionary<string, string> { { name, value } };
     }

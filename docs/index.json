@@ -304,6 +304,31 @@
     "title": "Interface IUofSessionBuilder | Sportradar.OddsFeed.SDK",
     "summary": "Interface IUofSessionBuilder Namespace Sportradar.OddsFeed.SDK.Api Assembly Sportradar.OddsFeed.SDK.dll Represents a first step when building a IUofSession instance public interface IUofSessionBuilder Methods SetMessageInterest(MessageInterest) Sets a MessageInterest specifying which type of messages should be received from the feed ISessionBuilder SetMessageInterest(MessageInterest msgInterest) Parameters msgInterest MessageInterest a MessageInterest specifying which type of messages should be received from the feed Returns ISessionBuilder A ISessionBuilder representing the second step when building a IUofSession instance"
   },
+  "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html": {
+    "href": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.html",
+    "title": "Class HttpRequestDecoratorHandler | Sportradar.OddsFeed.SDK",
+    "summary": "Class HttpRequestDecoratorHandler Namespace Sportradar.OddsFeed.SDK.Api.Internal.Handlers Assembly Sportradar.OddsFeed.SDK.dll Custom message handler which adds a unique request id to the request headers public class HttpRequestDecoratorHandler : DelegatingHandler, IDisposable Inheritance object HttpMessageHandler DelegatingHandler HttpRequestDecoratorHandler Implements IDisposable Inherited Members DelegatingHandler.Dispose(bool) DelegatingHandler.InnerHandler HttpMessageHandler.Dispose() object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors HttpRequestDecoratorHandler(IRequestDecorator, HttpMessageHandler) Constructor public HttpRequestDecoratorHandler(IRequestDecorator requestDecorator, HttpMessageHandler innerHandler) Parameters requestDecorator IRequestDecorator Http request decorator innerHandler HttpMessageHandler Inner message handler Methods SendAsync(HttpRequestMessage, CancellationToken) Adds a unique request id to the request headers protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) Parameters request HttpRequestMessage request being sent cancellationToken CancellationToken cancellation token Returns Task<HttpResponseMessage>"
+  },
+  "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.html": {
+    "href": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.html",
+    "title": "Namespace Sportradar.OddsFeed.SDK.Api.Internal.Handlers | Sportradar.OddsFeed.SDK",
+    "summary": "Namespace Sportradar.OddsFeed.SDK.Api.Internal.Handlers Classes HttpRequestDecoratorHandler Custom message handler which adds a unique request id to the request headers"
+  },
+  "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.html": {
+    "href": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.IRequestDecorator.html",
+    "title": "Interface IRequestDecorator | Sportradar.OddsFeed.SDK",
+    "summary": "Interface IRequestDecorator Namespace Sportradar.OddsFeed.SDK.Api.Internal Assembly Sportradar.OddsFeed.SDK.dll Request decorator used to decorate the HttpRequestMessage before it is sent public interface IRequestDecorator Methods Decorate(HttpRequestMessage) Decorates the provided HttpRequestMessage void Decorate(HttpRequestMessage request) Parameters request HttpRequestMessage Http request"
+  },
+  "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.html": {
+    "href": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.RequestDecorator.html",
+    "title": "Class RequestDecorator | Sportradar.OddsFeed.SDK",
+    "summary": "Class RequestDecorator Namespace Sportradar.OddsFeed.SDK.Api.Internal Assembly Sportradar.OddsFeed.SDK.dll Request decorator used to decorate the HttpRequestMessage before it is sent public class RequestDecorator : IRequestDecorator Inheritance object RequestDecorator Implements IRequestDecorator Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods Decorate(HttpRequestMessage) Decorates the provided HttpRequestMessage public void Decorate(HttpRequestMessage request) Parameters request HttpRequestMessage Http request"
+  },
+  "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.html": {
+    "href": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.html",
+    "title": "Namespace Sportradar.OddsFeed.SDK.Api.Internal | Sportradar.OddsFeed.SDK",
+    "summary": "Namespace Sportradar.OddsFeed.SDK.Api.Internal Classes RequestDecorator Request decorator used to decorate the HttpRequestMessage before it is sent Interfaces IRequestDecorator Request decorator used to decorate the HttpRequestMessage before it is sent"
+  },
   "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IBookingManager.html": {
     "href": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IBookingManager.html",
     "title": "Interface IBookingManager | Sportradar.OddsFeed.SDK",

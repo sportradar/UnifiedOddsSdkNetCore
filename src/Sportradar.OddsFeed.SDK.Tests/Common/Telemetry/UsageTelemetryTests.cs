@@ -122,9 +122,7 @@ public class UsageTelemetryTests
     private static WireMockServer SetupWireMockServerWithEndpoint(string endpoint = UsageTelemetry.EndpointUrl)
     {
         var wireMockServer = WireMockServer.Start();
-        wireMockServer.Given(Request.Create()
-                .WithPath(endpoint)
-                .UsingPost())
+        wireMockServer.Given(Request.Create().WithPath(endpoint).UsingPost())
             .RespondWith(Response.Create().WithBody("data-received").WithStatusCode(HttpStatusCode.Accepted));
         return wireMockServer;
     }
@@ -133,11 +131,13 @@ public class UsageTelemetryTests
     {
         var mockApiConfig = new Mock<IUofApiConfiguration>();
         mockApiConfig.Setup(s => s.Host).Returns(wireMockServer.Urls[0]);
+
         var mockUsageConfig = new Mock<IUofUsageConfiguration>();
         mockUsageConfig.Setup(s => s.IsExportEnabled).Returns(enableUsageExport);
         mockUsageConfig.Setup(s => s.Host).Returns(wireMockServer.Urls[0]);
         mockUsageConfig.Setup(s => s.ExportIntervalInSec).Returns(10);
         mockUsageConfig.Setup(s => s.ExportTimeoutInSec).Returns(5);
+
         var mockConfig = new Mock<IUofConfiguration>();
         mockConfig.Setup(s => s.AccessToken).Returns("MyAccessToken");
         mockConfig.Setup(s => s.NodeId).Returns(123);
