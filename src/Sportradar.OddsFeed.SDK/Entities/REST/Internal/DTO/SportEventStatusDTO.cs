@@ -62,11 +62,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{TKey,TValue}"/> containing additional event status values
         /// </summary>
-        /// <value>a <see cref="IReadOnlyDictionary{String, Object}"/> containing additional event status values</value>
+        /// <value>a <see cref="IReadOnlyDictionary{String,Object}"/> containing additional event status values</value>
         public IReadOnlyDictionary<string, object> Properties { get; }
 
         /// <summary>
-        /// Gets the match status for specific locale
+        /// Gets the match status for a specific locale
         /// </summary>
         public int MatchStatusId { get; }
 
@@ -79,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         /// <summary>
         /// Gets the period of ladder.
         /// </summary>
-        /// <value>The period of ladder</value>
+        /// <value>The period of the ladder</value>
         public int? PeriodOfLadder { get; }
 
         /// <summary>
@@ -112,13 +112,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         public SportEventStatisticsDto SportEventStatistics { get; internal set; }
 
         /// <summary>
-        /// Gets the indicator for competitors if there are home or away
+        /// Gets the indicator for competitors if they are home or away
         /// </summary>
         /// <value>The indicator for competitors if there are home or away</value>
         public IDictionary<HomeAway, Urn> HomeAwayCompetitors { get; }
 
         /// <summary>
-        /// Gets the penalty score of the home competitor competing on the associated sport event (for Ice Hockey)
+        /// Gets the penalty score of the home competitor competing in the associated sport event (for Ice Hockey)
         /// </summary>
         public int? HomePenaltyScore { get; }
 

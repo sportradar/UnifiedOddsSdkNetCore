@@ -281,7 +281,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// <returns>Returns combined date and time</returns>
         public static DateTime CombineDateAndTime(DateTime date, DateTime time)
         {
-            return date.AddHours(time.ToUniversalTime().Hour).AddMinutes(time.ToUniversalTime().Minute).AddSeconds(time.Second);
+            return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second, time.Millisecond, DateTimeKind.Utc);
         }
 
         /// <summary>

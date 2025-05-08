@@ -15799,6 +15799,25 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IReference.RotationNumber
   nameWithType: IReference.RotationNumber
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1
+  name: IReferenceV1
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1
+  nameWithType: IReferenceV1
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.LugasId
+  name: LugasId
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_IReferenceV1_LugasId
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.LugasId
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.LugasId
+  nameWithType: IReferenceV1.LugasId
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.LugasId*
+  name: LugasId
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.html#Sportradar_OddsFeed_SDK_Entities_Rest_IReferenceV1_LugasId_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.LugasId
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.LugasId
+  nameWithType: IReferenceV1.LugasId
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.IRestMessage
   name: IRestMessage
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IRestMessage.html

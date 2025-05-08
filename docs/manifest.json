@@ -4015,6 +4015,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.yml\" sourcestartlinenumber=\"1\">A contract for classes implementing array a+of references</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.IRestMessage.yml",
       "output": {
         ".html": {

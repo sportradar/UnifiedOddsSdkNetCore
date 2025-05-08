@@ -19926,6 +19926,11 @@
             The AAMS id for this instance if provided among reference ids, null otherwise
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem._lugasId">
+            <summary>
+            The Lugas id for this instance if provided among reference ids, null otherwise
+            </summary>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem.BetradarId">
             <summary>
             Gets the Betradar id for this instance if provided among reference ids
@@ -19955,6 +19960,12 @@
             Returns the AAMS id for this instance if provided among reference ids, null otherwise
             </summary>
             <returns>The AAMS id for this instance if provided among reference ids, null otherwise</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem.LugasId">
+            <summary>
+            Returns the Lugas id for this instance if provided among reference ids, null otherwise
+            </summary>
+            <returns>The Lugas id for this instance if provided among reference ids, null otherwise</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem.#ctor(System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
@@ -24931,7 +24942,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventStatusDto.MatchStatusId">
             <summary>
-            Gets the match status for specific locale
+            Gets the match status for a specific locale
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventStatusDto.WinnerId">
@@ -24944,7 +24955,7 @@
             <summary>
             Gets the period of ladder.
             </summary>
-            <value>The period of ladder</value>
+            <value>The period of the ladder</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventStatusDto.ReportingStatus">
             <summary>
@@ -24977,13 +24988,13 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventStatusDto.HomeAwayCompetitors">
             <summary>
-            Gets the indicator for competitors if there are home or away
+            Gets the indicator for competitors if they are home or away
             </summary>
             <value>The indicator for competitors if there are home or away</value>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventStatusDto.HomePenaltyScore">
             <summary>
-            Gets the penalty score of the home competitor competing on the associated sport event (for Ice Hockey)
+            Gets the penalty score of the home competitor competing in the associated sport event (for Ice Hockey)
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventStatusDto.AwayPenaltyScore">
@@ -27601,6 +27612,12 @@
             Returns the AAMS id for this instance if provided among reference ids, null otherwise
             </summary>
             <returns>The AAMS id for this instance if provided among reference ids, null otherwise</returns>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Reference.LugasId">
+            <summary>
+            Returns the Lugas id for this instance if provided among reference ids, null otherwise
+            </summary>
+            <returns>The Lugas id for this instance if provided among reference ids, null otherwise</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.Reference.#ctor(Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI.ReferenceIdCacheItem)">
             <summary>
@@ -32405,6 +32422,17 @@
             Returns the AAMS id for this instance if provided among reference ids, null otherwise
             </summary>
             <returns>The AAMS id for this instance if provided among reference ids, null otherwise</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1">
+            <summary>
+            A contract for classes implementing array a+of references
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.IReferenceV1.LugasId">
+            <summary>
+            Returns the Lugas id for this instance if provided among reference ids, null otherwise
+            </summary>
+            <returns>The Lugas id for this instance if provided among reference ids, null otherwise</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.IRestMessage">
             <summary>

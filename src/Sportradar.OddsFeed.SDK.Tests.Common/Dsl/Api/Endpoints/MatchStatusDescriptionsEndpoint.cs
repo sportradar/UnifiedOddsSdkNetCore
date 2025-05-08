@@ -1,9 +1,9 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Sportradar.OddsFeed.SDK.Messages.Rest;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Match.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.SportEventBlock.Builders;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Match.Endpoints;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Endpoints;
 
 public static class MatchStatusDescriptionsEndpoint
 {

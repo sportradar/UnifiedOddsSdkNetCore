@@ -21,7 +21,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Match.Endpoints;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Endpoints;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;

@@ -24,6 +24,19 @@ public static class DeserializerHelper
         return stringWriter.ToString();
     }
 
+    public static Stream SerializeToMemoryStream<T>(T restMessage) where T : RestMessage
+    {
+        var serializer = new XmlSerializer(typeof(T));
+
+        var memoryStream = new MemoryStream();
+        using var writer = new StreamWriter(memoryStream, new UTF8Encoding(false), leaveOpen: true);
+        serializer.Serialize(writer, restMessage);
+        writer.Flush();
+        memoryStream.Position = 0;
+
+        return memoryStream;
+    }
+
     private class Utf8StringWriter : StringWriter
     {
         public override Encoding Encoding => Encoding.UTF8;

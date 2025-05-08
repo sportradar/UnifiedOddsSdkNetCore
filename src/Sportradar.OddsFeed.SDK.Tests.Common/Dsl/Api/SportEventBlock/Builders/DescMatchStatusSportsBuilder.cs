@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Match.Builders;
+namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.SportEventBlock.Builders;
 
 public class DescMatchStatusSportsBuilder
 {

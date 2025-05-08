@@ -10,7 +10,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     /// <summary>
     /// A implementation of <see cref="IReference" /> used to return results to user
     /// </summary>
-    internal class Reference : EntityPrinter, IReference
+    internal class Reference : EntityPrinter, IReferenceV1
     {
         /// <summary>
         /// Gets the Betradar id for this instance if provided amount reference ids
@@ -41,6 +41,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public int? AamsId { get; }
 
         /// <summary>
+        /// Returns the Lugas id for this instance if provided among reference ids, null otherwise
+        /// </summary>
+        /// <returns>The Lugas id for this instance if provided among reference ids, null otherwise</returns>
+        public string LugasId { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Reference"/> class
         /// </summary>
         /// <param name="referenceCacheItem">The reference cache item</param>
@@ -56,6 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             BetfairId = referenceCacheItem.BetfairId;
             RotationNumber = referenceCacheItem.RotationNumber;
             AamsId = referenceCacheItem.AamsId;
+            LugasId = referenceCacheItem.LugasId;
         }
 
         /// <summary>

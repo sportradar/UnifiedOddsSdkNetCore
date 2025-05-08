@@ -31,6 +31,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         private int? _aamsId;
 
         /// <summary>
+        /// The Lugas id for this instance if provided among reference ids, null otherwise
+        /// </summary>
+        private string _lugasId;
+
+        /// <summary>
         /// Gets the Betradar id for this instance if provided among reference ids
         /// </summary>
         /// <returns>If exists among reference ids, result is greater then 0</returns>
@@ -61,6 +66,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         public int? AamsId => _aamsId;
 
         /// <summary>
+        /// Returns the Lugas id for this instance if provided among reference ids, null otherwise
+        /// </summary>
+        /// <returns>The Lugas id for this instance if provided among reference ids, null otherwise</returns>
+        public string LugasId => _lugasId;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ReferenceIdCacheItem"/> class
         /// </summary>
         public ReferenceIdCacheItem(IDictionary<string, string> referenceIds)
@@ -69,6 +80,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             _betfairId = 0;
             _rotationNumber = 0;
             _aamsId = null;
+            _lugasId = null;
             if (referenceIds == null)
             {
                 return;
@@ -113,18 +125,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                               ? (int?)i
                               : null;
             }
+            referenceIds.TryGetValue("lugas", out _lugasId);
 
-            if (checkDic)
+            if (!checkDic)
             {
-                var refIds = ReferenceIds == null
-                                 ? new Dictionary<string, string>()
-                                 : new Dictionary<string, string>(referenceIds);
-                foreach (var id in referenceIds)
-                {
-                    refIds[id.Key] = id.Value;
-                }
-                ReferenceIds = new ReadOnlyDictionary<string, string>(refIds);
+                return;
             }
+
+            var refIds = ReferenceIds == null
+                             ? new Dictionary<string, string>()
+                             : new Dictionary<string, string>(referenceIds);
+            foreach (var id in referenceIds)
+            {
+                refIds[id.Key] = id.Value;
+            }
+            ReferenceIds = new ReadOnlyDictionary<string, string>(refIds);
         }
     }
 }

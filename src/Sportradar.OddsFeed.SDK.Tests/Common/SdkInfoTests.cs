@@ -7,12 +7,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Moq;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InCompetitor;
 using Xunit;
 
@@ -271,7 +273,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetObjectSize_ForNonSerializableObject()
+    public void GetObjectSizeWhenNonSerializableObject()
     {
         var urn = Urn.Parse("sr:sport:1234");
 
@@ -282,7 +284,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetObjectSize_ForSerializableObject()
+    public void GetObjectSizeWhenSerializableObject()
     {
         var serializableObject = new MappingException();
 
@@ -307,7 +309,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetOrCreateReadOnlyNames_NamesValidCultureIncluded()
+    public void GetOrCreateReadOnlyNamesWhenNamesValidCultureIncluded()
     {
         const string firstName = "Name 1";
         var inputNames = new Dictionary<CultureInfo, string> { { TestData.Culture, firstName } };
@@ -322,7 +324,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetOrCreateReadOnlyNames_NamesValidCultureNotIncluded()
+    public void GetOrCreateReadOnlyNamesWhenNamesValidCultureNotIncluded()
     {
         const string firstName = "Name 1";
         var inputNames = new Dictionary<CultureInfo, string> { { TestData.Culture, firstName } };
@@ -337,7 +339,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetOrCreateReadOnlyNames_NullWantedCultures()
+    public void GetOrCreateReadOnlyNamesWhenNullWantedCultures()
     {
         const string firstName = "Name 1";
         var inputNames = new Dictionary<CultureInfo, string> { { TestData.Culture, firstName } };
@@ -361,7 +363,7 @@ public class SdkInfoTests
     }
 
     [Fact]
-    public void GetOrCreateReadOnlyNames_NamesEmpty()
+    public void GetOrCreateReadOnlyNamesWhenNamesEmpty()
     {
         var inputNames = new Dictionary<CultureInfo, string>();
         var wantedCultures = new Collection<CultureInfo> { TestData.Culture };
@@ -424,7 +426,7 @@ public class SdkInfoTests
     [InlineData("1:-2")]
     [InlineData("-1:-2")]
     [InlineData("-112:2453")]
-    public void IsMarketMappingMarketIdValid_Valid(string mappingMarketId)
+    public void IsMarketMappingMarketIdValidWhenValid(string mappingMarketId)
     {
         Assert.True(SdkInfo.IsMarketMappingMarketIdValid(mappingMarketId));
     }
@@ -434,7 +436,7 @@ public class SdkInfoTests
     [InlineData("2:a")]
     [InlineData("2|123")]
     [InlineData("2-245")]
-    public void IsMarketMappingMarketIdValid_NotValid(string mappingMarketId)
+    public void IsMarketMappingMarketIdValidWhenNotValid(string mappingMarketId)
     {
         Assert.False(SdkInfo.IsMarketMappingMarketIdValid(mappingMarketId));
     }
@@ -445,7 +447,7 @@ public class SdkInfoTests
     [InlineData("1")]
     [InlineData("1|2")]
     [InlineData("1|3|5|6|7|8")]
-    public void IsMarketMappingProducerIdsValid_Valid(string producerIds)
+    public void IsMarketMappingProducerIdsValidWhenProducerValid(string producerIds)
     {
         Assert.True(SdkInfo.IsMarketMappingProducerIdsValid(producerIds));
     }
@@ -461,8 +463,56 @@ public class SdkInfoTests
     [InlineData("2-245")]
     [InlineData("2|a")]
     [InlineData("2|123|5|1|-5")]
-    public void IsMarketMappingProducerIdsValid_NotValid(string producerIds)
+    public void IsMarketMappingProducerIdsValidWhenProducerNotValid(string producerIds)
     {
         Assert.False(SdkInfo.IsMarketMappingProducerIdsValid(producerIds));
+    }
+
+    public class CombineDateAndTimeTests
+    {
+        [Fact]
+        public void WhenInitialDateHasNoTimeThenUseTimeFromSecond()
+        {
+            var date = new DateTime(2023, 10, 1, 0, 0, 0);
+            var time = new DateTime(1, 1, 1, 12, 30, 45);
+
+            var result = SdkInfo.CombineDateAndTime(date, time);
+
+            result.ShouldBe(new DateTime(2023, 10, 1, 12, 30, 45));
+        }
+
+        [Fact]
+        public void WhenInitialDateHasTimeDefinedThenReplaceTimeFromSecond()
+        {
+            var date = new DateTime(2023, 10, 1, 10, 10, 10);
+            var time = new DateTime(1, 1, 1, 12, 30, 45);
+
+            var result = SdkInfo.CombineDateAndTime(date, time);
+
+            result.ShouldBe(new DateTime(2023, 10, 1, 12, 30, 45));
+        }
+
+        [Fact]
+        public void ShouldHandleEndOfDayTime()
+        {
+            var date = new DateTime(2023, 10, 1, 0, 0, 0);
+            var time = new DateTime(1, 1, 1, 23, 59, 59);
+
+            var result = SdkInfo.CombineDateAndTime(date, time);
+
+            result.ShouldBe(new DateTime(2023, 10, 1, 23, 59, 59));
+        }
+
+        [Fact]
+        public void ShouldHandleLeapYearDate()
+        {
+            var date = new DateTime(2024, 2, 29, 0, 0, 0);
+            var time = new DateTime(1, 1, 1, 10, 15, 30);
+
+            var resultDateTime = SdkInfo.CombineDateAndTime(date, time);
+
+            resultDateTime.Date.ShouldBe(date.Date);
+            resultDateTime.ShouldHaveSameTime(time);
+        }
     }
 }

@@ -1,6 +1,11 @@
 # Change Log
 
-## 3.2.0
+## 3.3.0
+- Added Lugas property to sport event fixture references (implemented in the IReferenceV1 interface). It is currently in preview mode until supported by the UF API. 
+- Start and end times of seasons with start_time and end_time attributes are now correctly calculated as UTC date-time values.
+
+
+## 2025-04-07 3.2.0
 - All outgoing HTTP requests include the trace-id header with a unique value for improved tracing
 - Recovery requests configuration is respected for all recovery requests
 

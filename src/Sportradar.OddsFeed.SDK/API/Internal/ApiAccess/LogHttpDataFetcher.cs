@@ -52,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             var watch = Stopwatch.StartNew();
             Stream responseStream;
             HttpRequestMessage requestMessage = null;
-            var traceId = "";
+            string traceId;
             try
             {
                 requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);

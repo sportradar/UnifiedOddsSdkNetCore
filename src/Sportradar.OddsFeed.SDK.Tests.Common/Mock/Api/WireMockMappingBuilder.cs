@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
@@ -34,8 +35,10 @@ public class WireMockMappingBuilder
     private const string MappingNameForVariantMarketList = "VariantMarketListMapping";
     private const string MappingNameForAllSports = "AllSportsMapping";
     private const string MappingNameForAllTournamentsForAllSports = "AllTournamentsForAllSportsMapping";
+    private const string MappingNameForSportCategory = "SportCategoryMapping";
     private const string MappingNameForScheduleForDate = "ScheduleForDateMapping";
     private const string MappingNameForRecoveryRequest = "ScheduleForRecoveryRequestMapping";
+    private const string MappingNameForCompetitorProfile = "CompetitorProfileRequestMapping";
 
     public static ICollection<string> LogIgnoreXmls { get; } = new List<string>
     {
@@ -309,6 +312,40 @@ public class WireMockMappingBuilder
         return this;
     }
 
+    public WireMockMappingBuilder WithSportCategory(Urn sportId, CultureInfo culture)
+    {
+        var fileNameTemplate = $"sport_categories_{culture.TwoLetterISOLanguageName}.xml";
+        var responseBody = FileHelper.GetFileContent(fileNameTemplate);
+        var endpoint = DeserializerHelper.GetDeserializedApiMessage<sportCategoriesEndpoint>(responseBody);
+        endpoint.sport.id = sportId.ToString();
+        responseBody = DeserializerHelper.SerializeApiMessageToXml(endpoint);
+
+        _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports/{sportId}/categories.xml").UsingGet())
+            .WithTitle(MappingNameForSportCategory)
+               .RespondWith(Response.Create().WithBody(responseBody));
+        return this;
+    }
+
+    public WireMockMappingBuilder WithSportCategory(sportCategoriesEndpoint response, CultureInfo culture)
+    {
+        var responseBody = DeserializerHelper.SerializeApiMessageToXml(response);
+
+        _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports/{response.sport.id}/categories.xml").UsingGet())
+            .WithTitle(MappingNameForSportCategory)
+               .RespondWith(Response.Create().WithBody(responseBody));
+        return this;
+    }
+
+    public WireMockMappingBuilder WithCompetitorProfile(competitorProfileEndpoint content, CultureInfo culture)
+    {
+        var responseBody = DeserializerHelper.SerializeApiMessageToXml(content);
+
+        _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/competitors/{content.competitor.id}/profile.xml").UsingGet())
+            .WithTitle(MappingNameForCompetitorProfile)
+            .RespondWith(Response.Create().WithBody(responseBody));
+        return this;
+    }
+
     public WireMockMappingBuilder WithAllTournamentsForAllSports(CultureInfo culture)
     {
         var fileNameTemplate = $"tournaments_{culture.TwoLetterISOLanguageName}.xml";
@@ -349,7 +386,7 @@ public class WireMockMappingBuilder
         return this;
     }
 
-    private ResponseMessage GenerateResponseForScheduleForDate(IRequestMessage request)
+    private static ResponseMessage GenerateResponseForScheduleForDate(IRequestMessage request)
     {
         // Extract the language code from the URL
         var languageCode = request.PathSegments[2]; // Adjust the index based on the actual URL structure
@@ -357,14 +394,14 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
         responseBody = UrlUtils.SanitizeHtml(responseBody);
 
-        return new ResponseMessage()
+        return new ResponseMessage
         {
             StatusCode = StatusCodes.Status200OK,
             BodyOriginal = responseBody,
             Headers = new Dictionary<string, WireMockList<string>>()
-            {
-                { "Content-Type", new WireMockList<string>("application/xml") }
-            }
+                                     {
+                                         { "Content-Type", new WireMockList<string>("application/xml") }
+                                     }
         };
     }
 

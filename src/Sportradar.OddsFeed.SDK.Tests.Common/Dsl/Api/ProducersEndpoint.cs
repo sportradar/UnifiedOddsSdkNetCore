@@ -9,7 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
 
 public class ProducersEndpoint
 {
-    private readonly producers _producers = new producers { producer = Array.Empty<producer>(), response_code = response_code.OK, response_codeSpecified = true };
+    private readonly producers _producers = new producers { producer = [], response_code = response_code.OK, response_codeSpecified = true };
     private readonly List<producer> _producerList = new List<producer>();
 
     public static producers BuildAll()

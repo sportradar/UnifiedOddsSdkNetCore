@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<odds_change product="1" event_id="sr:match:52631577" timestamp="1743228021019">
+    <sport_event_status status="3" match_status="100" home_score="129" away_score="93">
+        <clock match_time="48:00" remaining_time="00:00" remaining_time_in_period="00:00" stopped="true"/>
+        <period_scores>
+            <period_score match_status_code="16" number="4" home_score="43" away_score="28"/>
+            <period_score match_status_code="13" number="1" home_score="26" away_score="15"/>
+            <period_score match_status_code="14" number="2" home_score="31" away_score="32"/>
+            <period_score match_status_code="15" number="3" home_score="29" away_score="18"/>
+        </period_scores>
+        <results>
+            <result match_status_code="100" home_score="129" away_score="93"/>
+        </results>
+    </sport_event_status>
+    <odds>
+        <market status="0" id="1346" specifiers="fieldgoalnr=1|score=69-57"/>
+        <market status="0" id="1343" specifiers="fieldgoalnr=1|score=61-51"/>
+        <market status="0" id="1346" specifiers="fieldgoalnr=1|score=93-65"/>
+        <market status="0" id="1345" specifiers="fieldgoalnr=1|score=68"/>
+        <market status="0" id="1346" specifiers="fieldgoalnr=1|score=72-57"/>
+        <market status="0" id="1343" specifiers="fieldgoalnr=1|score=57-47"/>
+        <market status="0" id="1346" specifiers="fieldgoalnr=1|score=72-59"/>
+        <market status="0" id="1343" specifiers="fieldgoalnr=1|score=57-49"/>
+        <market status="0" id="1344" specifiers="fieldgoalnr=1|score=79"/>
+        <market status="0" id="1345" specifiers="fieldgoalnr=1|score=59"/>
+    </odds>
+</odds_change>
