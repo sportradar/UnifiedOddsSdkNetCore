@@ -63,13 +63,60 @@ public class MatchBasicPropertiesTests
 
         var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherProvidingSummary(iceHokeyMatchSummary, matchSummaryUri);
-        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock, _loggerFactory);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
 
         var match = sportEntityFactory.BuildSportEvent<IMatch>(matchId, sportId, [_uofConfiguration.DefaultLanguage], ExceptionHandlingStrategy.Catch);
-        var matchStartDateToBeDetermined = await match.GetStartTimeTbdAsync();
+        var matchStartDateToBeDetermined1 = await match.GetStartTimeTbdAsync();
+        var matchStartDateToBeDetermined2 = await match.GetStartTimeTbdAsync();
 
-        matchStartDateToBeDetermined.ShouldNotBeNull();
-        matchStartDateToBeDetermined.ShouldBe(iceHokeyMatchSummary.sport_event.start_time_tbd);
+        matchStartDateToBeDetermined1.ShouldNotBeNull();
+        matchStartDateToBeDetermined1.ShouldBe(iceHokeyMatchSummary.sport_event.start_time_tbd);
+        matchStartDateToBeDetermined2.ShouldBe(matchStartDateToBeDetermined1);
+    }
+
+    [Fact]
+    public async Task GetSportIdWhenSummaryWasLoadedAndSportIdIsNotNullReturnsValueWithoutRequestingItAgain()
+    {
+        var iceHokeyMatchSummary = IceHockey.Summary();
+        var matchId = iceHokeyMatchSummary.GetMatchId();
+        var sportId = iceHokeyMatchSummary.GetSportId();
+
+        var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
+        var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherProvidingSummary(iceHokeyMatchSummary, matchSummaryUri);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
+
+        var match1 = sportEntityFactory.BuildSportEvent<IMatch>(matchId, null, [_uofConfiguration.DefaultLanguage], ExceptionHandlingStrategy.Catch);
+        var match2 = sportEntityFactory.BuildSportEvent<IMatch>(matchId, null, [_uofConfiguration.DefaultLanguage], ExceptionHandlingStrategy.Catch);
+        var matchSportId1 = await match1.GetSportIdAsync();
+        var matchSportId2 = await match2.GetSportIdAsync();
+        await match1.GetSportIdAsync();
+
+        matchSportId1.ShouldNotBeNull();
+        matchSportId2.ShouldNotBeNull();
+        matchSportId1.ShouldBe(sportId);
+        matchSportId2.ShouldBe(sportId);
+        dataFetcherMock.Verify(dataFetcher => dataFetcher.GetDataAsync(matchSummaryUri), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetSportIdWhenSummaryWasLoadedAndSportIdIsNullReturnsValueWithoutRequestingItAgain()
+    {
+        var iceHokeyMatchSummary = IceHockey.Summary();
+        var matchId = iceHokeyMatchSummary.GetMatchId();
+        iceHokeyMatchSummary.sport_event.start_time_tbdSpecified = false;
+
+        var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
+        var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherProvidingSummary(iceHokeyMatchSummary, matchSummaryUri);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
+
+        var match1 = sportEntityFactory.BuildSportEvent<IMatch>(matchId, null, [_uofConfiguration.DefaultLanguage], ExceptionHandlingStrategy.Catch);
+        var match2 = sportEntityFactory.BuildSportEvent<IMatch>(matchId, null, [_uofConfiguration.DefaultLanguage], ExceptionHandlingStrategy.Catch);
+        var startTimeTbd1 = await match1.GetStartTimeTbdAsync();
+        var startTimeTbd2 = await match2.GetStartTimeTbdAsync();
+
+        startTimeTbd1.ShouldBeNull();
+        startTimeTbd2.ShouldBeNull();
+        dataFetcherMock.Verify(dataFetcher => dataFetcher.GetDataAsync(matchSummaryUri), Times.Once);
     }
 
     [Fact]
@@ -81,7 +128,7 @@ public class MatchBasicPropertiesTests
 
         var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherProvidingSummary(iceHokeyMatchSummary, matchSummaryUri);
-        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock, _loggerFactory);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
 
         var match = sportEntityFactory.BuildSportEvent<IMatch>(matchId, sportId, [_uofConfiguration.DefaultLanguage], ExceptionHandlingStrategy.Catch);
         var scheduledTime = await match.GetScheduledTimeAsync();
@@ -99,7 +146,7 @@ public class MatchBasicPropertiesTests
 
         var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(matchSummaryUri);
-        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock, _loggerFactory);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
 
         var match = sportEntityFactory.BuildSportEvent<IMatch>(matchId, sportId, [_uofConfiguration.DefaultLanguage], ExceptionHandlingStrategy.Catch);
 
@@ -118,7 +165,7 @@ public class MatchBasicPropertiesTests
 
         var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(matchSummaryUri);
-        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock, _loggerFactory);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
 
         var match = sportEntityFactory.BuildSportEvent<IMatch>(matchId,
                                                                 sportId,
@@ -137,7 +184,7 @@ public class MatchBasicPropertiesTests
 
         var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(matchSummaryUri);
-        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock, _loggerFactory);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
 
         var match = sportEntityFactory.BuildSportEvent<IMatch>(matchId,
                                                                sportId,
@@ -159,7 +206,7 @@ public class MatchBasicPropertiesTests
 
         var matchSummaryUri = iceHokeyMatchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(matchSummaryUri);
-        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock, _loggerFactory);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
 
         var match = sportEntityFactory.BuildSportEvent<IMatch>(matchId,
                                                                sportId,
@@ -176,10 +223,11 @@ public class MatchBasicPropertiesTests
                                                                                            dataFetcherFastFailing,
                                                                                            new Deserializer<RestMessage>(),
                                                                                            new SportEventSummaryMapperFactory());
+        var executionPathDataProvider = new SDK.Entities.Rest.Internal.ExecutionPathDataProvider<SportEventSummaryDto>(matchSummaryDataProvider, new Mock<IDataProvider<SportEventSummaryDto>>().Object);
         return new DataRouterManagerBuilder()
               .AddMockedDependencies()
               .WithConfiguration(uofConfiguration)
-              .WithSportEventSummaryProvider(matchSummaryDataProvider)
+              .WithSportEventSummaryProvider(executionPathDataProvider)
               .WithCacheManager(cacheManager)
               .Build();
     }

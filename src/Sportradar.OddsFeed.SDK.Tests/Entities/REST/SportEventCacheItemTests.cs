@@ -133,7 +133,7 @@ public class SportEventCacheItemTests
         var cacheItem = (IMatchCacheItem)_sportEventCache.GetEventCacheItem(TestData.EventMatchId);
 
         await cacheItem.GetScheduledAsync();
-        await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
+        await cacheItem.GetVenueAsync([new CultureInfo("de")]);
 
         Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
@@ -145,7 +145,7 @@ public class SportEventCacheItemTests
         var cacheItem = (IMatchCacheItem)_sportEventCache.GetEventCacheItem(TestData.EventMatchId);
 
         await cacheItem.GetScheduledEndAsync();
-        await cacheItem.GetVenueAsync(new[] { new CultureInfo("de") });
+        await cacheItem.GetVenueAsync([new CultureInfo("de")]);
 
         Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));
@@ -205,9 +205,9 @@ public class SportEventCacheItemTests
     {
         var cacheItem = (IMatchCacheItem)_sportEventCache.GetEventCacheItem(TestData.EventMatchId);
 
-        await cacheItem.GetVenueAsync(new[] { new CultureInfo("en") });
-        await cacheItem.GetFixtureAsync(new[] { new CultureInfo("de") });
-        await cacheItem.GetTournamentRoundAsync(new[] { new CultureInfo("hu") });
+        await cacheItem.GetVenueAsync([new CultureInfo("en")]);
+        await cacheItem.GetFixtureAsync([new CultureInfo("de")]);
+        await cacheItem.GetTournamentRoundAsync([new CultureInfo("hu")]);
 
         Assert.Equal(2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventFixture));

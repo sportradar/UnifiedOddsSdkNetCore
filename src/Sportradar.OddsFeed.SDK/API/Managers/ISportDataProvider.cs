@@ -230,7 +230,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Managers
         Task<IEnumerable<IPeriodStatus>> GetPeriodStatusesAsync(Urn id, CultureInfo culture = null, IEnumerable<Urn> competitorIds = null, IEnumerable<int> periods = null);
 
         /// <summary>
-        /// Get the associated event timeline for single culture
+        /// Get the associated event timeline for a single culture
         /// </summary>
         /// <param name="sportEventId">The id of the sport event to be fetched</param>
         /// <param name="culture">The language to be fetched</param>

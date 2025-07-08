@@ -3033,6 +3033,24 @@ references:
   commentId: N:Sportradar.OddsFeed.SDK.Api.Internal
   fullName: Sportradar.OddsFeed.SDK.Api.Internal
   nameWithType: Sportradar.OddsFeed.SDK.Api.Internal
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath
+  name: ExecutionPath
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.html
+  commentId: T:Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath
+  nameWithType: ExecutionPath
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.NonTimeCritical
+  name: NonTimeCritical
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.html#Sportradar_OddsFeed_SDK_Api_Internal_ExecutionPath_NonTimeCritical
+  commentId: F:Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.NonTimeCritical
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.NonTimeCritical
+  nameWithType: ExecutionPath.NonTimeCritical
+- uid: Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.TimeCritical
+  name: TimeCritical
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.html#Sportradar_OddsFeed_SDK_Api_Internal_ExecutionPath_TimeCritical
+  commentId: F:Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.TimeCritical
+  fullName: Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.TimeCritical
+  nameWithType: ExecutionPath.TimeCritical
 - uid: Sportradar.OddsFeed.SDK.Api.Internal.Handlers
   name: Sportradar.OddsFeed.SDK.Api.Internal.Handlers
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.html

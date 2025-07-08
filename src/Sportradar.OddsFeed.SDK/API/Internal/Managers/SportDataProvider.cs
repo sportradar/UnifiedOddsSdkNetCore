@@ -15,6 +15,7 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
@@ -30,7 +31,14 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
     /// </summary>
     internal class SportDataProvider : ISportDataProvider
     {
+        private static readonly HashSet<Urn> PrefetchableSportEvents = new HashSet<Urn>
+                                                                           {
+                                                                               Urn.Parse("sr:simple_tournament:86"),
+                                                                               Urn.Parse("sr:tournament:853")
+                                                                           };
+
         private static readonly ILogger LogInt = SdkLoggerFactory.GetLoggerForClientInteraction(typeof(SportDataProvider));
+        private static readonly RequestOptions NonTimeCriticalRequestOptions = new RequestOptions(ExecutionPath.NonTimeCritical);
 
         /// <summary>
         /// A <see cref="ISportEntityFactory"/> used to construct <see cref="ITournament"/> instances
@@ -279,14 +287,16 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
             LogInt.LogInformation("Invoked GetTournament: [Id={SportEventId}, Cultures={Langs}]", id, s);
 
-            var sportEventCi = _sportEventCache.GetEventCacheItem(id);
-
+            var defaultCultures = culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture };
             var result = _sportEntityFactory.BuildSportEvent<ILongTermEvent>(id,
-                                                                             sportEventCi?.GetSportIdAsync().GetAwaiter().GetResult(),
-                                                                             culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture },
+                                                                             null,
+                                                                             defaultCultures,
                                                                              _exceptionStrategy);
 
             LogInt.LogInformation("GetTournament returned: {SportEventId}", result?.Id);
+
+            EnsureClubFriendlySimpleTournamentSummaryIsFetchedWithNonCriticalPathTimeout(defaultCultures, result).GetAwaiter().GetResult();
+
             return result;
         }
 
@@ -327,7 +337,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         /// <param name="id">A <see cref="Urn"/> specifying the sport event to retrieve</param>
         /// <param name="culture">A <see cref="CultureInfo"/> specifying the language or a null reference to use the languages specified in the configuration</param>
         /// <returns>A <see cref="ICompetition"/> representing the specified sport event or a null reference if the requested sport event does not exist</returns>
-        /// <remarks>It is recommended to use GetCompetition method with sportId</remarks>
+        /// <remarks>It is recommended to use the GetCompetition method with sportId</remarks>
         public ICompetition GetCompetition(Urn id, CultureInfo culture = null)
         {
             return GetCompetition(id, null, culture);
@@ -342,17 +352,16 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
             LogInt.LogInformation("Invoked GetSportEvent: [Id={SportEventId}, SportId={SportId}, Cultures={Langs}]", id, sportId, s);
 
-            if (sportId == null && id.TypeGroup.Equals(ResourceTypeGroup.Match))
-            {
-                sportId = _sportEventCache.GetEventSportIdAsync(id).GetAwaiter().GetResult();
-            }
-
+            var cultures = culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture };
             var result = _sportEntityFactory.BuildSportEvent<ISportEvent>(id,
-                                                                        sportId,
-                                                                        culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture },
-                                                                        _exceptionStrategy);
+                                                                          sportId,
+                                                                          cultures,
+                                                                          _exceptionStrategy);
 
             LogInt.LogInformation("GetSportEvent returned: {SportEventId} for sport {SportId}", result?.Id, sportId);
+
+            EnsureClubFriendlySimpleTournamentSummaryIsFetchedWithNonCriticalPathTimeout(cultures, result).GetAwaiter().GetResult();
+
             return result;
         }
 
@@ -819,6 +828,19 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
             LogInt.LogInformation("GetTimelineEventsAsync returned 0 results");
             return new List<ITimelineEvent>();
+        }
+
+        private static async Task EnsureClubFriendlySimpleTournamentSummaryIsFetchedWithNonCriticalPathTimeout(List<CultureInfo> cultures, ISportEvent sportEvent)
+        {
+            if (sportEvent == null || !PrefetchableSportEvents.Contains(sportEvent.Id))
+            {
+                return;
+            }
+
+            if (sportEvent is IPreloadableEntity preloadableEntity)
+            {
+                await preloadableEntity.EnsureSummaryIsFetchedForLanguages(cultures, NonTimeCriticalRequestOptions).ConfigureAwait(false);
+            }
         }
     }
 }

@@ -90,6 +90,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private const string BookmakerDetailsProviderUrl = "{0}/v1/users/whoami.xml";
 
+        private const string NonTimeCriticalDataProviderServiceKey = "NonTimeCriticalDataProvider";
+        private const string TimeCriticalDataProviderServiceKey = "TimeCriticalDataProvider";
+
         public static void AddUofSdkServices(this IServiceCollection services, IUofConfiguration configuration)
         {
             if (services == null)
@@ -501,6 +504,27 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<IDeserializer<RestMessage>>(),
                     serviceProvider.GetRequiredService<ISingleTypeMapperFactory<RestMessage, SportEventSummaryDto>>()));
 
+            services.AddKeyedSingleton<IDataProvider<SportEventSummaryDto>, DataProvider<RestMessage, SportEventSummaryDto>>(TimeCriticalDataProviderServiceKey, (serviceProvider, obj) =>
+                                                                                                                                                                     new DataProvider<RestMessage, SportEventSummaryDto>(summaryEndpoint,
+                                                                                                                                                                                                                         serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>(),
+                                                                                                                                                                                                                         serviceProvider.GetRequiredService<IDeserializer<RestMessage>>(),
+                                                                                                                                                                                                                         serviceProvider.GetRequiredService<ISingleTypeMapperFactory<RestMessage, SportEventSummaryDto>>()));
+
+            services.AddKeyedSingleton<IDataProvider<SportEventSummaryDto>, DataProvider<RestMessage, SportEventSummaryDto>>(NonTimeCriticalDataProviderServiceKey, (serviceProvider, obj) =>
+                                                                                                                                                               new DataProvider<RestMessage, SportEventSummaryDto>(summaryEndpoint,
+                                                                                                                                                                                                                   serviceProvider.GetRequiredService<ILogHttpDataFetcher>(),
+                                                                                                                                                                                                                   serviceProvider.GetRequiredService<IDeserializer<RestMessage>>(),
+                                                                                                                                                                                                                   serviceProvider.GetRequiredService<ISingleTypeMapperFactory<RestMessage, SportEventSummaryDto>>()));
+
+            // data routing provider
+            services.AddSingleton<IExecutionPathDataProvider<SportEventSummaryDto>, ExecutionPathDataProvider<SportEventSummaryDto>>(serviceProvider => new ExecutionPathDataProvider<SportEventSummaryDto>(serviceProvider
+                                                                                                                                                                                             .GetRequiredKeyedService<
+                                                                                                                                                                                                  IDataProvider<SportEventSummaryDto>>(TimeCriticalDataProviderServiceKey),
+                                                                                                                                                                                          serviceProvider
+                                                                                                                                                                                             .GetRequiredKeyedService<
+                                                                                                                                                                                                  IDataProvider<
+                                                                                                                                                                                                      SportEventSummaryDto>>(NonTimeCriticalDataProviderServiceKey)));
+
             // sport event fixture provider
             services.AddSingleton<IDeserializer<fixturesEndpoint>, Deserializer<fixturesEndpoint>>();
             services.AddSingleton<ISingleTypeMapperFactory<fixturesEndpoint, FixtureDto>, FixtureMapperFactory>();
@@ -816,7 +840,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                     serviceProvider.GetRequiredService<ICacheManager>(),
                     serviceProvider.GetRequiredService<IProducerManager>(),
                     serviceProvider.GetRequiredService<IUofConfiguration>(),
-                    serviceProvider.GetRequiredService<IDataProvider<SportEventSummaryDto>>(),
+                    serviceProvider.GetRequiredService<IExecutionPathDataProvider<SportEventSummaryDto>>(),
                     serviceProvider.GetRequiredService<IDataProvider<FixtureDto>>(),
                     serviceProvider.GetDataProviderNamed<FixtureDto>(DataProviderForFixtureChangeFixtureEndpoint),
                     serviceProvider.GetDataProviderNamed<EntityList<SportDto>>(DataProviderForAllTournamentsForAllSports),

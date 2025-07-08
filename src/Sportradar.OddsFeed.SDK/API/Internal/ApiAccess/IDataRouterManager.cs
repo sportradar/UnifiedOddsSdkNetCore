@@ -36,6 +36,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <param name="id">The id of the sport event to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
         /// <param name="requester">The cache item which invoked request</param>
+        /// <param name="requestOptions">Request options for fetching summaries</param>
+        Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester, RequestOptions requestOptions);
+
+        /// <summary>
+        /// Gets the <see cref="SportEventSummaryDto"/> or its derived type from the summary endpoint
+        /// </summary>
+        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="culture">The language to be fetched</param>
+        /// <param name="requester">The cache item which invoked request</param>
         Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester);
 
         /// <summary>

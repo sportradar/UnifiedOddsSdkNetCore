@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
@@ -1022,5 +1023,10 @@ internal class TestDataRouterManagerCached : IDataRouterManager
                 _outputHelper.WriteLine($"Saving took {stopWatch.ElapsedMilliseconds} ms. For id={id}, culture={culture.TwoLetterISOLanguageName} and dtoType={dtoType}.");
             }
         }
+    }
+
+    public Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester, RequestOptions requestOptions)
+    {
+        throw new NotImplementedException();
     }
 }

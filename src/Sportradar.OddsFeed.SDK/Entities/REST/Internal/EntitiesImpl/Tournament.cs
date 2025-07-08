@@ -7,11 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Sports;
@@ -22,7 +24,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     /// Represents a sport tournament
     /// </summary>
     /// <seealso cref="ITournament" />
-    internal class Tournament : SportEvent, ITournament
+    internal class Tournament : SportEvent, ITournament, IPreloadableEntity
     {
         /// <summary>
         /// This <see cref="ILogger"/> should not be used since it is also exposed by the base class
@@ -285,6 +287,37 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 
             var competitorIds = await tournamentInfoCacheItem.GetCompetitorsIdsAsync(culture).ConfigureAwait(false);
             return competitorIds.ToList();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves and populates the entity's data from the API.
+        /// </summary>
+        /// <param name="languages">Languages to fetch the summary for.</param>
+        /// <param name="requestOptions">Options for the request.</param>
+        /// <returns>A task that represents the asynchronous preload operation.</returns>
+        public async Task EnsureSummaryIsFetchedForLanguages(IReadOnlyCollection<CultureInfo> languages, RequestOptions requestOptions)
+        {
+            var sportEventCacheItem = SportEventCache.GetEventCacheItem(Id);
+            if (sportEventCacheItem == null)
+            {
+                LogMissingCacheItem();
+                return;
+            }
+
+            if (ExceptionStrategy == ExceptionHandlingStrategy.Throw)
+            {
+                await sportEventCacheItem.FetchMissingSummary(languages, requestOptions, false).ConfigureAwait(false);
+            }
+            else
+            {
+                await new Func<Task>(() => sportEventCacheItem.FetchMissingSummary(languages, requestOptions, false))
+                     .SafeInvokeAsync(ExecutionLog, GetFetchEntityErrorMessage()).ConfigureAwait(false);
+            }
+        }
+
+        private string GetFetchEntityErrorMessage()
+        {
+            return $"Error occurred while attempting to fetch a summary for a tournament with Id={Id} from the API";
         }
     }
 }

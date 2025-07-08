@@ -8,6 +8,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
@@ -45,8 +46,8 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     private readonly CultureInfo _culture = CultureInfo.CurrentCulture;
     private readonly CultureInfo[] _cultures = { CultureInfo.CurrentCulture };
 
-    private readonly Mock<IDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock = new Mock<IDataProvider<SportEventSummaryDto>>();
-    private readonly Mock<IDataProvider<FixtureDto>> _fixtureProviderMock = new Mock<IDataProvider<FixtureDto>>();
+    private readonly Mock<IExecutionPathDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock = new();
+    private readonly Mock<IDataProvider<FixtureDto>> _fixtureProviderMock = new();
 
     protected SportEventCacheTests(ITestOutputHelper outputHelper)
     {
@@ -83,7 +84,7 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         public async Task Then_event_is_retrieved_from_provider_and_added_to_cache()
         {
             _sportEventSummaryProviderMock
-                .Setup(x => x.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(BuildSportEventSummary(_eventId));
 
             var sportId = await _sportEventCache.GetEventSportIdAsync(_eventId);
@@ -91,7 +92,7 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
             using (new AssertionScope())
             {
                 // the sport event should be retrieved from the provider (because it wasn't in the cache)
-                _sportEventSummaryProviderMock.Verify(x => x.GetDataAsync(_eventId.ToString(), "en"), Times.Once);
+                _sportEventSummaryProviderMock.Verify(x => x.GetDataAsync(It.IsAny<RequestOptions>(), _eventId.ToString(), "en"), Times.Once);
 
                 // the sport event should now be in the cache
                 _sportEventMemoryCache.Get(_eventId.ToString()).Should().NotBeNull();
@@ -113,7 +114,7 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         public async Task Then_event_is_retrieved_from_provider_and_added_to_cache()
         {
             _sportEventSummaryProviderMock
-                .Setup(x => x.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(BuildMatch(_eventId));
 
             _fixtureProviderMock
@@ -128,7 +129,7 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
             using (new AssertionScope())
             {
                 // the sport event should be retrieved from the provider (because it wasn't in the cache)
-                _sportEventSummaryProviderMock.Verify(x => x.GetDataAsync(_eventId.ToString(), "en"), Times.Once);
+                _sportEventSummaryProviderMock.Verify(x => x.GetDataAsync(It.IsAny<RequestOptions>(), _eventId.ToString(), "en"), Times.Once);
 
                 // the sport event should now be in the cache
                 _sportEventMemoryCache.Get(_eventId.ToString()).Should().NotBeNull();
@@ -161,7 +162,7 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
             using (new AssertionScope())
             {
                 // the sport event should not be retrieved from the provider (because it is in the cache)
-                _sportEventSummaryProviderMock.Verify(x => x.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+                _sportEventSummaryProviderMock.Verify(x => x.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
 
                 sportId.Should().BeEquivalentTo(_sportId);
             }

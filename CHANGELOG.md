@@ -1,6 +1,9 @@
 # Change Log
 
-## 3.3.0
+## 2025-06-30 3.4.0
+- Soccer tournaments 86 and 853 (Club Friendly Games) with increased amount of data are preloaded using a longer timeout.
+
+## 2025-05-08 3.3.0
 - Added Lugas property to sport event fixture references (implemented in the IReferenceV1 interface). It is currently in preview mode until supported by the UF API. 
 - Start and end times of seasons with start_time and end_time attributes are now correctly calculated as UTC date-time values.
 
@@ -15,11 +18,11 @@
 ## 2025-02-11  3.0.0 (breaking change)
 - ExceptionHandlingStrategy default value is changed to Throw (before Catch).
 - Code is cleaned up. Outdated classes are removed. Affected classes are - SoccerEvent, SoccerStatistics, SoccerStatus.
-- Asian proxy environments are no longer supported therefore they are removed from enum SdkEnvironment.
+- Asian proxy environments are no longer supported; therefore, they are removed from enum SdkEnvironment.
 - Removed interfaces ICustomBetSelectionBuilderV1, ICalculationFilterV1, ICalculationV1, ISelectionV1, and IMatchStatusV1. Properties from these interfaces have been consolidated into ICustomBetSelectionBuilder, ICalculationFilter, ICalculation, ISelection, and IMatchStatus respectively.
 - ExportableCompetitor.IsVirtual is null if the competitor's virtual flag was not retrieved initially.
 - Removed configuration option for settings AdjustAfterAge for producer recoveries (now always true)
-- Updated all dependencies to the latest versions (check migration guide)
+- Updated all dependencies to the latest versions (check a migration guide)
 - Renamed IAvailableSelections.Event to EventId
 - Renamed IAvailableSelectionsFilter.Event to EventId
 - ICompetitor.IsVirtual can be null if the actual value is not retrieved
@@ -29,20 +32,20 @@
 - IUofConfiguration.Usage.IsExportEnabled (default: enabled)
 - Added IConfigurationBuilder.EnableUsageExport(bool enable) method
 - Updated Sdk dependencies
-- Check associated migration guide for more details
+- Check an associated migration guide for more details
 
 ## 2025-01-22  2.4.2
 - SportDataProvider.GetListOfSportEventsAsync issues the call to the right endpoint and properly returns data 
 
 ## 2024-11-08  2.4.1
-- Improved how api requests are made (utilizing IHttpClientFactory)
+- Improved how api requests are made (using IHttpClientFactory)
 
 ## 2024-10-22  2.4.0
 - CustomBet ICalculation and ICalculationFilter extended with new property Harmonization (extended with ICalculationV1 and ICalculationFilterV1)
 - CustomBet ISelection extended with new property Odds (extended with ISelectionV1)
 - CustomBetSelectionBuilder extended with new method SetOdds (extended with ICustomBetSelectionBuilderV1)
-- Fix: calling SportDataProvider.GetFixtureChangesAsync without additional filter
-- Fix: calling SportDataProvider.GetResultChangesAsync without additional filter
+- Fix: calling SportDataProvider.GetFixtureChangesAsync without an additional filter
+- Fix: calling SportDataProvider.GetResultChangesAsync without an additional filter
 
 ## 2024-09-30  2.3.0
 - A player can now have different jersey numbers assigned for different teams (new interface ICompetitorPlayer)
@@ -50,7 +53,7 @@
 
 ## 2024-08-28  2.2.1
 - Changed registering of ICustomBetManager to singleton
-- Fix: Information whether competitor is virtual or not can reliably be fetched on all applicable sport events
+- Fix: Information whether a competitor is virtual or not can reliably be fetched on all applicable sport events
 
 ## 2024-07-29  2.2.0
 - Enabled accessing match statistics on MatchStatus received via IMatch.GetStatus object (beside Soccer also supports Kabaddi statistics)

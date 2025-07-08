@@ -78,7 +78,7 @@ public class CompetitorBuilder
         return this;
     }
 
-    public CompetitorBuilder IsMale(bool isMale)
+    public CompetitorBuilder IsMale(bool isMale = true)
     {
         _isMaleGender = isMale;
         return this;

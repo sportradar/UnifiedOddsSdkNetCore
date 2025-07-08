@@ -80,7 +80,7 @@ public class CompetitorProfileEndpoint
         };
     }
 
-    public competitorProfileEndpoint BuildCompetitor(teamCompetitor team)
+    public static competitorProfileEndpoint BuildCompetitor(teamCompetitor team)
     {
         var teamExtendedCompetitor = new teamExtended
         {

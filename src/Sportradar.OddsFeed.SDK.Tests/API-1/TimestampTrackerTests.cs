@@ -15,6 +15,7 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class TimestampTrackerTests
 {
     private readonly FakeTimeProvider _timeProvider;

@@ -57,7 +57,7 @@ public class StubMessageHandler : HttpMessageHandler
         var responseMessage = new HttpResponseMessage
         {
             StatusCode = HttpStatusCode.Accepted,
-            ReasonPhrase = HttpStatusCode.Accepted.ToString(),
+            ReasonPhrase = nameof(HttpStatusCode.Accepted),
             RequestMessage = request,
             Content = new StringContent("some text")
         };

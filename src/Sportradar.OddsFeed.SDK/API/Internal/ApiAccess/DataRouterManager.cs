@@ -39,6 +39,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
     /// <seealso cref="IDataRouterManager" />
     internal class DataRouterManager : IDataRouterManager
     {
+        private static readonly RequestOptions TimeCriticalRequestOptions = new RequestOptions(ExecutionPath.TimeCritical);
+
         /// <summary>
         /// Occurs when data from Sports API arrives
         /// </summary>
@@ -50,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <summary>
         /// The sport event summary provider
         /// </summary>
-        private readonly IDataProvider<SportEventSummaryDto> _sportEventSummaryProvider;
+        private readonly IExecutionPathDataProvider<SportEventSummaryDto> _sportEventSummaryProvider;
         /// <summary>
         /// The sport event fixture provider
         /// </summary>
@@ -234,7 +236,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         public DataRouterManager(ICacheManager cacheManager,
                                  IProducerManager producerManager,
                                  IUofConfiguration configuration,
-                                 IDataProvider<SportEventSummaryDto> sportEventSummaryProvider,
+                                 IExecutionPathDataProvider<SportEventSummaryDto> sportEventSummaryProvider,
                                  IDataProvider<FixtureDto> sportEventFixtureProvider,
                                  IDataProvider<FixtureDto> sportEventFixtureChangeFixtureProvider,
                                  IDataProvider<EntityList<SportDto>> allTournamentsForAllSportsProvider,
@@ -379,8 +381,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <param name="id">The id of the sport event to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
         /// <param name="requester">The cache item which invoked request</param>
+        /// <param name="requestOptions">Request options for fetching summaries</param>
         /// <returns>Task</returns>
-        public async Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester)
+        public async Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester, RequestOptions requestOptions)
         {
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "SportEventSummary"))
             {
@@ -391,7 +394,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 try
                 {
                     result = await _sportEventSummaryProvider
-                        .GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                        .GetDataAsync(requestOptions, id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
@@ -413,6 +416,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 
                 WriteLog($"Executing GetSportEventSummaryAsync for id={id} and language={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
             }
+        }
+
+        /// <summary>
+        /// Get sport event summary as an asynchronous operation
+        /// </summary>
+        /// <param name="id">The id of the sport event to be fetched</param>
+        /// <param name="culture">The language to be fetched</param>
+        /// <param name="requester">The cache item which invoked request</param>
+        /// <returns>Task</returns>
+        public async Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester)
+        {
+            await GetSportEventSummaryAsync(id, culture, requester, TimeCriticalRequestOptions).ConfigureAwait(false);
         }
 
         /// <summary>

@@ -25,17 +25,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         bool UseSsl { get; }
 
         /// <summary>
-        /// Gets a value specifying timeout set for HTTP requests
+        /// Gets a value specifying a timeout set for HTTP requests
         /// </summary>
         TimeSpan HttpClientTimeout { get; }
 
         /// <summary>
-        /// Gets a value specifying timeout set for HTTP request for recovery endpoints
+        /// Gets a value specifying a timeout set for HTTP request for recovery endpoints
         /// </summary>
         TimeSpan HttpClientRecoveryTimeout { get; }
 
         /// <summary>
-        /// Gets a value specifying timeout set for fast failing HTTP requests
+        /// Gets a value specifying a timeout set for fast-failing HTTP requests
         /// </summary>
         /// <remarks>Applies for API calls to endpoints: summary, competitor and player profile, draw summary, single variant markets</remarks>
         TimeSpan HttpClientFastFailingTimeout { get; }

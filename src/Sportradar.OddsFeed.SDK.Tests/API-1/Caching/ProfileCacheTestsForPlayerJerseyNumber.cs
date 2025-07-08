@@ -6,11 +6,13 @@ using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -27,7 +29,7 @@ public class ProfileCacheTestsForPlayerJerseyNumber
 {
     private readonly Mock<IDataProvider<CompetitorProfileDto>> _competitorProfileProviderMock;
     private readonly Mock<IDataProvider<PlayerProfileDto>> _playerProfileProviderMock;
-    private readonly Mock<IDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock;
+    private readonly Mock<IExecutionPathDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock;
     private readonly DataRouterManager _dataRouterManager;
     private readonly Urn _defaultCompetitorId = Urn.Parse("sr:competitor:1");
     private readonly Urn _defaultPlayerId = Urn.Parse("sr:player:5");
@@ -49,7 +51,7 @@ public class ProfileCacheTestsForPlayerJerseyNumber
 
         _competitorProfileProviderMock = new Mock<IDataProvider<CompetitorProfileDto>>();
         _playerProfileProviderMock = new Mock<IDataProvider<PlayerProfileDto>>();
-        _sportEventSummaryProviderMock = new Mock<IDataProvider<SportEventSummaryDto>>();
+        _sportEventSummaryProviderMock = new Mock<IExecutionPathDataProvider<SportEventSummaryDto>>();
         var productManagerMock = GetProductManagerMock();
 
         var cacheManager = new CacheManager();
@@ -113,7 +115,7 @@ public class ProfileCacheTestsForPlayerJerseyNumber
         api.sport_event.competitors[0].id = _defaultCompetitorId.ToString();
         var matchDto = new MatchDto(api);
 
-        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(matchDto);
+        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(matchDto);
         const int jerseyNumber = 5;
         _competitorProfileProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(GetCompetitorProfileContainingPlayerWithJerseyNumber(jerseyNumber));
 

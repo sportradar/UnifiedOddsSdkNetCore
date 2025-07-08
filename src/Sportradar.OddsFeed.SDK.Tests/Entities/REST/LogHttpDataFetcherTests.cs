@@ -15,7 +15,6 @@ using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -24,14 +23,12 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
-[SuppressMessage("Usage", "xUnit1013:Public method should be marked as test")]
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class LogHttpDataFetcherTests
 {
-    private readonly ITestOutputHelper _outputHelper;
     private const string HttpClientDefaultName = "test";
-    private readonly IncrementalSequenceGenerator _incrementalSequenceGenerator;
     private readonly SdkHttpClient _sdkHttpClient;
-    private LogHttpDataFetcher _logHttpDataFetcher;
+    private readonly LogHttpDataFetcher _logHttpDataFetcher;
     private readonly Uri _badUri = new Uri("http://www.unexisting-url.com");
     private readonly Uri _getUri = new Uri("http://test.domain.com/get");
     private readonly Uri _postUri = new Uri("http://test.domain.com/post");
@@ -39,8 +36,7 @@ public class LogHttpDataFetcherTests
 
     public LogHttpDataFetcherTests(ITestOutputHelper outputHelper)
     {
-        _outputHelper = outputHelper;
-        _stubMessageHandler = new StubMessageHandler(_outputHelper, 100, 50);
+        _stubMessageHandler = new StubMessageHandler(outputHelper, 100, 50);
         var services = new ServiceCollection();
         services.AddHttpClient(HttpClientDefaultName)
                 .ConfigureHttpClient(configureClient =>
@@ -53,7 +49,6 @@ public class LogHttpDataFetcherTests
         var serviceProvider = services.BuildServiceProvider();
         _sdkHttpClient = new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName);
 
-        _incrementalSequenceGenerator = new IncrementalSequenceGenerator(new NullLogger<IncrementalSequenceGenerator>());
         _logHttpDataFetcher = new LogHttpDataFetcher(_sdkHttpClient, new Deserializer<response>(), new NullLogger<LogHttpDataFetcher>());
     }
 
@@ -282,12 +277,13 @@ public class LogHttpDataFetcherTests
         var logHttpDataFetcher = new LogHttpDataFetcher(_sdkHttpClient, new Deserializer<response>(), mockLocker.Object);
 
         HttpResponseMessage result = null;
-        var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => result = await logHttpDataFetcher.PostDataAsync(null, new StringContent("test string")));
+        _ = await Assert.ThrowsAsync<NullReferenceException>(async () => result = await logHttpDataFetcher.PostDataAsync(null, new StringContent("test string")));
 
         Assert.Null(result);
     }
 
     [Fact]
+    [SuppressMessage("ReSharper", "UseCollectionExpression", Justification = "Throws formatting issue in pipeline")]
     public async Task PostDataWhenEmptyResponseContent()
     {
         _stubMessageHandler.SetWantedResponse(new HttpResponseMessage(HttpStatusCode.Accepted)

@@ -15,4 +15,9 @@ public static class TimeExtensions
     {
         return dateTime?.AddTime(time) ?? DateTime.MinValue.AddTime(time);
     }
+
+    public static string ToDetailedTime(this DateTime dateTime)
+    {
+        return $"{dateTime.Hour}:{dateTime.Minute}:{dateTime.Second}.{dateTime.Millisecond}";
+    }
 }

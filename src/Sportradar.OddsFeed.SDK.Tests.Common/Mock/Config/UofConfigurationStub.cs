@@ -46,6 +46,7 @@ public class UofConfigurationStub : IUofConfiguration
     public IUofApiConfiguration Api
     {
         get;
+        set;
     }
     public IUofProducerConfiguration Producer
     {

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common;
@@ -128,7 +129,7 @@ public class VariantMarketDescriptionListCacheTests
     [Fact]
     public void ConstructorWhenEmptyLanguagesThenThrow()
     {
-        _ = Assert.Throws<ArgumentException>(() => new VariantDescriptionListCache(_variantsListMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timer, Array.Empty<CultureInfo>(), _cacheManager, _testLoggerFactory));
+        _ = Assert.Throws<ArgumentException>(() => new VariantDescriptionListCache(_variantsListMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timer, [], _cacheManager, _testLoggerFactory));
     }
 
     [Fact]
@@ -220,7 +221,7 @@ public class VariantMarketDescriptionListCacheTests
     public async Task CacheDeleteItemWhenValidUrnThenNothingIsDeleted()
     {
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();
-        var marketUrn = Urn.Parse($"sr:market:123");
+        var marketUrn = Urn.Parse("sr:market:123");
 
         _variantsListCache.CacheDeleteItem(marketUrn, CacheItemType.All);
 
@@ -254,7 +255,7 @@ public class VariantMarketDescriptionListCacheTests
     public async Task CacheDeleteItemWhenValidUrnThenDeletingIsNotLogged()
     {
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();
-        var marketUrn = Urn.Parse($"sr:market:1302");
+        var marketUrn = Urn.Parse("sr:market:1302");
         var logCache = _testLoggerFactory.GetOrCreateLogger(typeof(Cache));
         var logExec = _testLoggerFactory.GetOrCreateLogger(typeof(VariantDescriptionListCache));
         logExec.Messages.Clear();
@@ -269,7 +270,7 @@ public class VariantMarketDescriptionListCacheTests
     public async Task CacheDeleteItemWithUrnWhenCallingWithUnregisteredDtoTypeThenNothingIsDeleted()
     {
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();
-        var marketUrn = Urn.Parse($"sr:market:1302");
+        var marketUrn = Urn.Parse("sr:market:1302");
 
         _variantsListCache.CacheDeleteItem(marketUrn, EnumUtilities.GetRandomCacheItemTypeExcludingSpecified(CacheItemType.All, CacheItemType.VariantDescription));
 
@@ -367,7 +368,7 @@ public class VariantMarketDescriptionListCacheTests
     public async Task CacheHasItemWithUrnWhenCallingThenFalse()
     {
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();
-        var marketUrn = Urn.Parse($"sr:market:123");
+        var marketUrn = Urn.Parse("sr:market:123");
 
         Assert.False(_variantsListCache.CacheHasItem(marketUrn, CacheItemType.All));
     }
@@ -376,7 +377,7 @@ public class VariantMarketDescriptionListCacheTests
     public async Task CacheHasItemWithUrnWhenCallingWithRegisteredCacheTypeThenFalse()
     {
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();
-        var marketUrn = Urn.Parse($"sr:market:123");
+        var marketUrn = Urn.Parse("sr:market:123");
 
         Assert.False(_variantsListCache.CacheHasItem(marketUrn, CacheItemType.VariantDescription));
     }
@@ -385,7 +386,7 @@ public class VariantMarketDescriptionListCacheTests
     public async Task CacheHasItemWithUrnWhenCallingWithUnregisteredCacheTypeThenAlwaysFalse()
     {
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();
-        var marketUrn = Urn.Parse($"sr:market:123");
+        var marketUrn = Urn.Parse("sr:market:123");
 
         Assert.False(_variantsListCache.CacheHasItem(marketUrn, EnumUtilities.GetRandomCacheItemTypeExcludingSpecified(CacheItemType.All, CacheItemType.VariantDescription)));
     }
@@ -479,7 +480,7 @@ public class VariantMarketDescriptionListCacheTests
     [Fact]
     public async Task GetMarketDescriptionWhenLanguagesMissingThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentException>(() => _variantsListCache.GetVariantDescriptorAsync(DefaultVariantId, Array.Empty<CultureInfo>()));
+        _ = await Assert.ThrowsAsync<ArgumentException>(() => _variantsListCache.GetVariantDescriptorAsync(DefaultVariantId, []));
     }
 
     [Fact]
@@ -550,21 +551,19 @@ public class VariantMarketDescriptionListCacheTests
     {
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        WaitForCacheToBeFilled();
 
-        Assert.True(success);
-        Assert.Equal(ScheduleData.VariantListCacheCount, _variantsListMemoryCache.Count());
+        _variantsListMemoryCache.Count().ShouldBe(ScheduleData.VariantListCacheCount);
     }
 
     [Fact]
     public async Task OnTimerWhenConstructedThenCacheItemHasAllLanguages()
     {
         _timer.FireOnce(TimeSpan.Zero);
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        WaitForCacheToBeFilled();
 
         var marketDescription = await _variantsListCache.GetVariantDescriptorAsync(DefaultVariantId, _cultures);
 
-        Assert.True(success);
         Assert.NotNull(marketDescription);
         Assert.True(_cultures.All(culture => !string.IsNullOrEmpty(marketDescription.Outcomes.First().GetName(culture))));
     }
@@ -575,9 +574,9 @@ public class VariantMarketDescriptionListCacheTests
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml", new ObjectDisposedException("Drm disposed")));
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions), timeoutMs: 20000);
+        WaitForCacheToBeFilled();
 
-        Assert.True(success);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions).ShouldBe(_cultures.Count);
     }
 
     [Fact]
@@ -586,10 +585,9 @@ public class VariantMarketDescriptionListCacheTests
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml", new ObjectDisposedException("Drm disposed")));
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        WaitForCacheToBeFilled();
 
-        Assert.True(success);
-        Assert.Equal(0, _variantsListMemoryCache.Count());
+        _variantsListMemoryCache.Count().ShouldBe(0);
     }
 
     [Fact]
@@ -598,9 +596,10 @@ public class VariantMarketDescriptionListCacheTests
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml", new TaskCanceledException("Call not finished in time")));
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        WaitForCacheToBeFilled();
 
-        Assert.True(success);
+        _variantsListMemoryCache.Count().ShouldBe(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions).ShouldBe(_cultures.Count);
     }
 
     [Fact]
@@ -609,10 +608,10 @@ public class VariantMarketDescriptionListCacheTests
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml", new TaskCanceledException("Call not finished in time")));
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        WaitForCacheToBeFilled();
 
-        Assert.True(success);
-        Assert.Equal(0, _variantsListMemoryCache.Count());
+        _variantsListMemoryCache.Count().ShouldBe(0);
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions).ShouldBe(_cultures.Count);
     }
 
     [Fact]
@@ -623,8 +622,8 @@ public class VariantMarketDescriptionListCacheTests
 
         var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions), 100, 1000);
 
-        Assert.False(success);
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        success.ShouldBeFalse();
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions).ShouldBe(0);
     }
 
     [Fact]
@@ -730,11 +729,7 @@ public class VariantMarketDescriptionListCacheTests
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();
 
-        var md = await _variantsListCache.GetVariantDescriptorAsync("sr:correct_score:max:6",
-                                                                    new[]
-                                                                    {
-                                                                        _cultures[0]
-                                                                    });
+        var md = await _variantsListCache.GetVariantDescriptorAsync("sr:correct_score:max:6", [_cultures[0]]);
 
         Assert.NotNull(md);
         var outcome = md.Outcomes.First(f => f.Id.Equals("sr:correct_score:max:6:1304", StringComparison.OrdinalIgnoreCase));
@@ -948,8 +943,8 @@ public class VariantMarketDescriptionListCacheTests
                    : throw new InvalidOperationException("No data");
     }
 
-    // private async Task<MarketDescriptionCacheItem> GetCacheItem(string variantId, IReadOnlyCollection<CultureInfo> languages)
-    // {
-    //     return await _variantsListCache.GetVariantDescriptorAsync(variantId, languages).ConfigureAwait(false);
-    // }
+    private void WaitForCacheToBeFilled()
+    {
+        _ = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions), 200, 20000);
+    }
 }

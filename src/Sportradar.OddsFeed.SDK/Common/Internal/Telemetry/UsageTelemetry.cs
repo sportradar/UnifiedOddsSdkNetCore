@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
     {
         private const string MetricsVersion = "v1";
         internal const string EndpointUrl = "/v1/metrics";
-        private const string UsageServiceName = "UofSdk-NetStd";
+        private const string UsageServiceName = "UofSdk-NetStd-Usage";
         internal static readonly Meter UsageMeter = new Meter(UsageServiceName, SdkInfo.GetVersion());
 
         public static MeterProvider SetupUsageTelemetry(IUofConfiguration config)

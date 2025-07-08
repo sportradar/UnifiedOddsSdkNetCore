@@ -61,7 +61,7 @@ internal class SportEventCacheBuilder
         return this;
     }
 
-    public SportEventCacheBuilder WithLanguages(CultureInfo[] languages)
+    public SportEventCacheBuilder WithLanguages(IReadOnlyCollection<CultureInfo> languages)
     {
         _langauges = languages;
         return this;

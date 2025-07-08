@@ -147,6 +147,21 @@ public class SportEventBuilder
         return this;
     }
 
+    public SportEventBuilder WithParent(Func<ParentStageBuilder, ParentStageBuilder> builderFunc)
+    {
+        _sportEvent.parent = builderFunc(new ParentStageBuilder()).Build();
+        return this;
+    }
+
+    public SportEventBuilder AddRace(Func<SportEventChildrenBuilder> builder)
+    {
+        _sportEvent.races ??= [];
+        var list = _sportEvent.races.ToList();
+        list.Add(builder().Build());
+        _sportEvent.races = list.ToArray();
+        return this;
+    }
+
     public sportEvent Build()
     {
         return _sportEvent;

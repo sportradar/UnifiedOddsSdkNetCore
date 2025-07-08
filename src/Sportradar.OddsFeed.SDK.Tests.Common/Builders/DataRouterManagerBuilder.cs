@@ -42,7 +42,7 @@ internal class DataRouterManagerBuilder
     private IDataProvider<EntityList<SportEventSummaryDto>> _sportEventsForDateProvider;
     private IDataProvider<EntityList<SportEventSummaryDto>> _sportEventsForRaceTournamentProvider;
     private IDataProvider<EntityList<SportEventSummaryDto>> _sportEventsForTournamentProvider;
-    private IDataProvider<SportEventSummaryDto> _sportEventSummaryProvider;
+    private IExecutionPathDataProvider<SportEventSummaryDto> _sportEventSummaryProvider;
     private IDataProvider<PeriodSummaryDto> _stagePeriodSummaryProvider;
     private IDataProvider<TournamentSeasonsDto> _tournamentSeasonsProvider;
     private IDataProvider<EntityList<VariantDescriptionDto>> _variantDescriptionsProvider;
@@ -66,7 +66,7 @@ internal class DataRouterManagerBuilder
         return this;
     }
 
-    public DataRouterManagerBuilder WithSportEventSummaryProvider(IDataProvider<SportEventSummaryDto> provider)
+    public DataRouterManagerBuilder WithSportEventSummaryProvider(IExecutionPathDataProvider<SportEventSummaryDto> provider)
     {
         _sportEventSummaryProvider = provider;
         return this;

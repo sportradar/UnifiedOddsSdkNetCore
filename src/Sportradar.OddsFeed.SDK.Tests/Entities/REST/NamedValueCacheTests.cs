@@ -21,6 +21,7 @@ using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class NamedValueCacheTests
 {
     private Mock<IDataFetcher> _fetcherMock;

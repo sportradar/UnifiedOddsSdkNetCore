@@ -43,7 +43,7 @@ internal class StubProducerProvider : IDataProvider<producers>
         return Producers;
     }
 
-    public producers GetProducers()
+    private static producers GetProducers()
     {
         var producerList = new List<producer>
         {
@@ -56,9 +56,11 @@ internal class StubProducerProvider : IDataProvider<producers>
             LoadProducer(8, "VBL", "Virtual Basketball League", "https://stgapi.betradar.com/v1/vbl/", false, "virtual", 180)
         };
 
-        var resultProducers = new producers();
-        resultProducers.location = "some-location";
-        resultProducers.producer = producerList.ToArray();
+        var resultProducers = new producers
+        {
+            location = "some-location",
+            producer = producerList.ToArray()
+        };
 
         return resultProducers;
     }
@@ -76,9 +78,11 @@ internal class StubProducerProvider : IDataProvider<producers>
                                    LoadProducer(8, "VBL", "Virtual Basketball League", $"{url}/v1/vbl/", false, "virtual", 180)
                                };
 
-        var resultProducers = new producers();
-        resultProducers.location = "some-location";
-        resultProducers.producer = producerList.ToArray();
+        var resultProducers = new producers
+        {
+            location = "some-location",
+            producer = producerList.ToArray()
+        };
 
         return resultProducers;
     }

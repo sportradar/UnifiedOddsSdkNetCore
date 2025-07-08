@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.IdentityModel.Tokens;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
@@ -8,6 +9,12 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
 
 public static class MarketDescriptionExtensions
 {
+    public static desc_market AddSuffix(this desc_market market, CultureInfo language)
+    {
+        market.AddSuffix($" [{language.TwoLetterISOLanguageName.ToUpperInvariant()}]");
+        return market;
+    }
+
     public static desc_market AddSuffix(this desc_market market, string suffix)
     {
         market.name += suffix;

@@ -42,4 +42,6 @@ public static class UofConfigurations
     }
 
     public static IUofConfiguration SingleLanguage => GetUofConfiguration(new CultureInfo("en"));
+
+    public static IUofConfiguration TwoLanguages => GetUofConfiguration(new CultureInfo("en"), [new CultureInfo("en"), new CultureInfo("fr")]);
 }

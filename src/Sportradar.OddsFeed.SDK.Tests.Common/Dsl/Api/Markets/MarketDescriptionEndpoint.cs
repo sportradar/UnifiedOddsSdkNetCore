@@ -25,7 +25,13 @@ public class MarketDescriptionEndpoint
             MdForInvariantList.GetPreOutcomeTextMarket536(),
             MdForInvariantList.GetMarketWithSpecifier701(),
             MdForInvariantList.GetOrdinalMarket739(),
-            MdForInvariantList.GetPlayerPropsMarket768()
+            MdForInvariantList.GetPlayerPropsMarket768(),
+            MdForInvariantList.GetFakePlayerPropsMarket1768(),
+            MdForInvariantList.GetMarketWithVariant374(),
+            MdForInvariantList.GetMarketWithGenericnNameVariant239(),
+            MdForInvariantList.GetMarketForCompetitor1109(),
+            MdForInvariantList.GetMarketForPlayer679(),
+            MdForInvariantList.GetMarketWithCompetitorInOutcome303()
         };
         return new market_descriptions
         {
@@ -62,7 +68,8 @@ public class MarketDescriptionEndpoint
     {
         var variantList = new List<desc_variant>
         {
-            MdForVariantList.GetCorrectScoreBestOf12()
+            MdForVariantList.GetCorrectScoreBestOf12(),
+            MdForVariantList.GetDecidedByExtraPointsBestOf5()
         };
         return new variant_descriptions
         {

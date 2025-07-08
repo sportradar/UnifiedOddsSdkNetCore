@@ -21,6 +21,7 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class HttpDataFetcherTests
 {
     private readonly ITestOutputHelper _outputHelper;

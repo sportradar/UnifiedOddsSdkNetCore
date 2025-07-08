@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 
@@ -14,6 +15,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
     /// </summary>
     internal interface ISportEventCacheItem
     {
+        /// <summary>
+        /// Fetches sport event detail info for those of the specified languages which are not yet fetched
+        /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the required languages</param>
+        /// <param name="requestOptions">Request options</param>
+        /// <param name="forceFetch">Should the cached data be ignored</param>
+        /// <returns>A <see cref="Task" /> representing the async operation</returns>
+        Task FetchMissingSummary(IEnumerable<CultureInfo> cultures, RequestOptions requestOptions, bool forceFetch);
+
         /// <summary>
         /// Gets a <see cref="Urn"/> specifying the id of the sport event associated with the current instance
         /// </summary>

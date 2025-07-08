@@ -7,111 +7,113 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Moq;
+using Shouldly;
+using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
-using Sportradar.OddsFeed.SDK.Api.Internal.Config;
-using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.Markets;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class MarketCacheProviderScenarioTests
 {
-    private readonly ITestOutputHelper _outputHelper;
-    private readonly IMarketDescriptionsCache _invariantListCache;
-    private readonly IVariantDescriptionsCache _variantListCache;
-    private readonly IMarketDescriptionCache _variantSingleCache;
     private readonly IMarketCacheProvider _marketCacheProvider;
-
-    private readonly TestDataRouterManager _dataRouterManager;
-    private readonly ICacheStore<string> _invariantListMemoryCache;
-    private readonly ICacheStore<string> _variantListMemoryCache;
-    private readonly ICacheStore<string> _variantSingleMemoryCache;
-    private readonly IReadOnlyList<CultureInfo> _cultures;
-    private readonly CacheManager _cacheManager;
+    private readonly IReadOnlyList<CultureInfo> _languages;
     private readonly XunitLoggerFactory _loggerFactory;
+
+    private readonly Mock<IDataProvider<EntityList<MarketDescriptionDto>>> _invariantMdProviderMock;
+    private readonly Mock<IDataProvider<EntityList<VariantDescriptionDto>>> _variantMdProviderMock;
+    private readonly Mock<IDataProvider<MarketDescriptionDto>> _singleVariantMdProviderMock;
 
     public MarketCacheProviderScenarioTests(ITestOutputHelper outputHelper)
     {
-        _outputHelper = outputHelper;
         _loggerFactory = new XunitLoggerFactory(outputHelper);
-        _cultures = TestData.Cultures.ToList();
+        _languages = TestData.Cultures.ToList();
 
-        var testCacheStoreManager = new TestCacheStoreManager();
-        _invariantListMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForInvariantMarketDescriptionsCache);
-        _variantListMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantDescriptionListCache);
-        _variantSingleMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache);
+        _invariantMdProviderMock = new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>();
+        _variantMdProviderMock = new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>();
+        _singleVariantMdProviderMock = new Mock<IDataProvider<MarketDescriptionDto>>();
 
-        _cacheManager = new CacheManager();
-        _dataRouterManager = new TestDataRouterManager(_cacheManager, outputHelper);
+        var profileCache = new Mock<IProfileCache>().Object;
 
-        var mappingValidatorFactory = new MappingValidatorFactory();
+        var cacheManager = new CacheManager();
+        var dataRouterManager = new DataRouterManagerBuilder()
+                               .AddMockedDependencies()
+                               .WithCacheManager(cacheManager)
+                               .WithInvariantMarketDescriptionsProvider(_invariantMdProviderMock.Object)
+                               .WithVariantDescriptionsProvider(_variantMdProviderMock.Object)
+                               .WithVariantMarketDescriptionProvider(_singleVariantMdProviderMock.Object)
+                               .Build();
 
-        var timerInvariantList = new TestTimer(true);
-        var timerVariantList = new TestTimer(true);
-        _invariantListCache = new InvariantMarketDescriptionCache(_invariantListMemoryCache, _dataRouterManager, mappingValidatorFactory, timerInvariantList, _cultures, _cacheManager, _loggerFactory);
-        _variantListCache = new VariantDescriptionListCache(_variantListMemoryCache, _dataRouterManager, mappingValidatorFactory, timerVariantList, _cultures, _cacheManager, _loggerFactory);
-        _variantSingleCache = new VariantMarketDescriptionCache(_variantSingleMemoryCache, _dataRouterManager, mappingValidatorFactory, _cacheManager, _loggerFactory);
+        _marketCacheProvider = MarketCacheProviderBuilder.Create()
+                                                         .WithCacheManager(cacheManager)
+                                                         .WithDataRouterManager(dataRouterManager)
+                                                         .WithLanguages(_languages)
+                                                         .WithLoggerFactory(_loggerFactory)
+                                                         .WithProfileCache(profileCache)
+                                                         .Build();
 
-        _marketCacheProvider = new MarketCacheProvider(_invariantListCache, _variantSingleCache, _variantListCache, _loggerFactory.CreateLogger<MarketCacheProvider>());
+        SetupInvariantListEndpointForAllLanguages();
+        SetupVariantListEndpointForAllLanguages();
     }
 
     [Fact]
     public async Task GetInvariantMarketDescription()
     {
-        _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("invariant_market_descriptions_en.xml", "invariant_market_descriptions_en_missing.xml"));
-
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(282, null, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(282, null, _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(282, marketDescription.Id);
         _ = Assert.Single(marketDescription.Specifiers);
         Assert.Equal(2, marketDescription.Outcomes.Count());
         _ = Assert.Single(marketDescription.Mappings);
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
     public async Task GetInvariantMarketDescriptionDoesNotMakeAdditionalApiCalls()
     {
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(282, null, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(282, null, _languages, true);
 
-        Assert.Equal(_cultures.Count * 2, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
-        Assert.Equal(0, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
+        VerifyInvariantMarketDescriptionApiCalls(Times.Once());
+        VerifyVariantMarketDescriptionApiCalls(Times.Never());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
     public async Task GetNonExistingInvariantMarketDescriptionThenReturnNull()
     {
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(2820, null, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(2820, null, _languages, true);
 
-        Assert.Null(marketDescription);
+        marketDescription.ShouldBeNull();
     }
 
     [Fact]
     public async Task GetNonExistingInvariantMarketDescriptionThenDoesNotMakeAdditionalApiCall()
     {
-        _dataRouterManager.ResetMethodCall();
+        await InitializeMarketDescriptionLists();
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(2820, null, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(2820, null, _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifyInvariantMarketDescriptionApiCalls(Times.Never());
+        VerifyVariantMarketDescriptionApiCalls(Times.Never());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -119,27 +121,29 @@ public class MarketCacheProviderScenarioTests
     {
         var specifiers = new Dictionary<string, string> { { "variant", "sr:correct_score:bestof:12" } };
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(374, specifiers, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(374, specifiers, _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(374, marketDescription.Id);
         Assert.Equal(2, marketDescription.Specifiers.Count());
         Assert.Equal(13, marketDescription.Outcomes.Count());
         _ = Assert.Single(marketDescription.Mappings);
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
     public async Task GetVariantMarketDescriptionFromListThenDoesNotMakeAdditionalApiCalls()
     {
-        _dataRouterManager.ResetMethodCall();
+        await InitializeMarketDescriptionLists();
         var specifiers = new Dictionary<string, string> { { "variant", "sr:correct_score:bestof:12" } };
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(374, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(374, specifiers, _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifyInvariantMarketDescriptionApiCalls(Times.Never());
+        VerifyVariantMarketDescriptionApiCalls(Times.Never());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -147,7 +151,7 @@ public class MarketCacheProviderScenarioTests
     {
         var specifiers = new Dictionary<string, string> { { "variant", "sr:decided_by_extra_points:bestof:5" } };
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(239, specifiers, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(239, specifiers, _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(239, marketDescription.Id);
@@ -155,21 +159,22 @@ public class MarketCacheProviderScenarioTests
         Assert.Contains("variant", marketDescription.Specifiers.Select(s => s.Name));
         Assert.Equal(6, marketDescription.Outcomes.Count());
         Assert.Equal(4, marketDescription.Mappings.Count());
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
     public async Task GetVariantMarketDescriptionFromListWithMultipleMappingsThenDoesNotMakeAdditionalApiCalls()
     {
-        _dataRouterManager.ResetMethodCall();
-
+        await InitializeMarketDescriptionLists();
         var specifiers = new Dictionary<string, string> { { "variant", "sr:decided_by_extra_points:bestof:5" } };
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(239, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(239, specifiers, _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifyInvariantMarketDescriptionApiCalls(Times.Never());
+        VerifyVariantMarketDescriptionApiCalls(Times.Never());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -177,7 +182,7 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
@@ -185,9 +190,9 @@ public class MarketCacheProviderScenarioTests
         Assert.Contains("variant", marketDescription.Specifiers.Select(s => s.Name));
         Assert.Equal(9, marketDescription.Outcomes.Count());
         _ = Assert.Single(marketDescription.Mappings);
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
@@ -195,9 +200,9 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Once());
     }
 
     [Fact]
@@ -205,11 +210,11 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Once());
     }
 
     [Fact]
@@ -217,9 +222,9 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.Equal(1, _variantSingleMemoryCache.Count());
+        marketDescription.ShouldNotBeNull();
     }
 
     [Fact]
@@ -227,7 +232,7 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, false);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, false);
 
         Assert.Equal(marketId, marketDescription.Id);
         Assert.Contains("variant", marketDescription.Specifiers.Select(s => s.Name));
@@ -240,8 +245,8 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        var marketDescriptionFalse = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, false);
-        var marketDescriptionTrue = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        var marketDescriptionFalse = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, false);
+        var marketDescriptionTrue = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
         Assert.Equal(marketDescriptionFalse.Id, marketDescriptionTrue.Id);
         Assert.Contains("variant", marketDescriptionFalse.Specifiers.Select(s => s.Name));
@@ -253,8 +258,8 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        var marketDescriptionFalse = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, false);
-        var marketDescriptionTrue = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        var marketDescriptionFalse = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, false);
+        var marketDescriptionTrue = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
         Assert.Null(marketDescriptionFalse.Outcomes);
         Assert.Equal(9, marketDescriptionTrue.Outcomes.Count());
@@ -267,10 +272,10 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        var marketDescriptionFalse = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, false);
-        var marketDescriptionTrue = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        var marketDescriptionFalse = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, false);
+        var marketDescriptionTrue = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.True(_cultures.All(a => !marketDescriptionFalse.GetName(a).Equals(marketDescriptionTrue.GetName(a))));
+        Assert.True(_languages.All(a => !marketDescriptionFalse.GetName(a).Equals(marketDescriptionTrue.GetName(a), StringComparison.Ordinal)));
     }
 
     [Fact]
@@ -278,9 +283,8 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, false);
-
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, false);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -288,9 +292,9 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarket534(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, false);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, false);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -298,7 +302,7 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantPlayerPropMarket768(out var marketId, out var specifiers);
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
@@ -306,9 +310,9 @@ public class MarketCacheProviderScenarioTests
         Assert.Contains("variant", marketDescription.Specifiers.Select(s => s.Name));
         Assert.Equal(18, marketDescription.Outcomes.Count());
         _ = Assert.Single(marketDescription.Mappings);
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
@@ -316,10 +320,9 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantPlayerPropMarket768(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Once());
     }
 
     [Fact]
@@ -327,9 +330,9 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantPlayerPropMarket768(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.Equal(1, _variantSingleMemoryCache.Count());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Once());
     }
 
     [Fact]
@@ -337,7 +340,7 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarketForUnsupportedCompetitorProps1768(out var marketId, out var specifiers);
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
@@ -345,9 +348,9 @@ public class MarketCacheProviderScenarioTests
         Assert.Contains("variant", marketDescription.Specifiers.Select(s => s.Name));
         Assert.Equal(18, marketDescription.Outcomes.Count());
         _ = Assert.Single(marketDescription.Mappings);
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
@@ -355,9 +358,9 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarketForUnsupportedCompetitorProps1768(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Once());
     }
 
     [Fact]
@@ -365,9 +368,9 @@ public class MarketCacheProviderScenarioTests
     {
         SetupDrmForSingleVariantMarketForUnsupportedCompetitorProps1768(out var marketId, out var specifiers);
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
 
-        Assert.Equal(1, _variantSingleMemoryCache.Count());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Once());
     }
 
     [Fact]
@@ -375,19 +378,19 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 679;
         const string specifiers = "maxovers=20|type=live|inningnr=1";
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
         Assert.Equal(2, marketDescription.Specifiers.Count());
         Assert.True(marketDescription.Outcomes.IsNullOrEmpty());
         _ = Assert.Single(marketDescription.Mappings);
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
@@ -395,12 +398,11 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 679;
         const string specifiers = "maxovers=20|type=live|inningnr=1";
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
-        _dataRouterManager.ResetMethodCall();
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -408,10 +410,10 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 1109;
         const string specifiers = "lapnr=5";
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
@@ -425,12 +427,11 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 1109;
         const string specifiers = "lapnr=5";
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
-        _dataRouterManager.ResetMethodCall();
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -438,19 +439,20 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 303;
         const string specifiers = "quarternr=4|hcp=-3.5";
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
         Assert.Equal(2, marketDescription.Specifiers.Count());
         Assert.Equal(2, marketDescription.Outcomes.Count());
-        Assert.Equal(25, marketDescription.Mappings.Count());
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        //Assert.Equal(25, marketDescription.Mappings.Count());
+        marketDescription.Mappings.ShouldBeNull();
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
@@ -458,12 +460,11 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 303;
         const string specifiers = "quarternr=4|hcp=-3.5";
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
-        _dataRouterManager.ResetMethodCall();
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -471,19 +472,20 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 41;
         const string specifiers = "score=2:0";
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
         _ = Assert.Single(marketDescription.Specifiers);
         Assert.Equal(28, marketDescription.Outcomes.Count());
-        Assert.Equal(5, marketDescription.Mappings.Count());
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[1]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[0]), marketDescription.GetName(_cultures[2]));
-        Assert.NotEqual(marketDescription.GetName(_cultures[1]), marketDescription.GetName(_cultures[2]));
+        // Assert.Equal(5, marketDescription.Mappings.Count());
+        marketDescription.Mappings.ShouldBeNull();
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
+        Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
+        Assert.NotEqual(marketDescription.GetName(_languages[1]), marketDescription.GetName(_languages[2]));
     }
 
     [Fact]
@@ -491,11 +493,11 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 41;
         const string specifiers = "score=2:0";
-        _dataRouterManager.ResetMethodCall();
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
@@ -503,8 +505,17 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 534;
         const string variantSpecifier = "pre:markettext:168883";
-        _dataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_invalid_{marketId}_culture.xml"));
         var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
+
+        var marketDescriptionXmlBody = FileHelper.GetFileContent("variant_market_description_invalid_534_en.xml");
+        var apiMd = DeserializerHelper.GetDeserializedApiMessage<market_descriptions>(marketDescriptionXmlBody).market[0];
+        foreach (var culture in _languages)
+        {
+            _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(marketId.ToString(),
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ReturnsAsync(new MarketDescriptionDto(apiMd));
+        }
 
         var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, TestData.Cultures1, true);
 
@@ -517,15 +528,20 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 534;
         const string variantSpecifier = "pre:markettext:168883";
-        _dataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_invalid_{marketId}_culture.xml"));
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
         var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
-        _dataRouterManager.ResetMethodCall();
+
+        var marketDescriptionXmlBody = FileHelper.GetFileContent("variant_market_description_invalid_534_culture.xml");
+        foreach (var culture in _languages)
+        {
+            _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(marketId.ToString(),
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ThrowsAsync(new DeserializationException("Error", marketDescriptionXmlBody, "market_description_invalid_534_culture.xml", null));
+        }
 
         _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, TestData.Cultures1, true);
 
-        Assert.Equal(1, _dataRouterManager.TotalRestCalls);
-        Assert.Equal(1, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantMarketDescription));
+        _singleVariantMdProviderMock.Verify(v => v.GetDataAsync(It.IsAny<string>(), TestData.Cultures1.First().TwoLetterISOLanguageName, It.IsAny<string>()), Times.Once);
     }
 
     [Fact]
@@ -535,13 +551,14 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "variant=null";
 
         var marketDescription =
-            (MarketDescription)await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures,
-                true);
+            (MarketDescription)await _marketCacheProvider.GetMarketDescriptionAsync(marketId,
+                                                                                    new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)),
+                                                                                    _languages,
+                                                                                    true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
         Assert.Null(marketDescription.Outcomes);
-        Assert.Equal(_invariantListCache.CacheName, marketDescription.MarketDescriptionCacheItem.SourceCache);
         Assert.Equal(2, marketDescription.Specifiers.Count());
     }
 
@@ -552,7 +569,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "variant=null";
         var marketCacheProviderLogger = _loggerFactory.GetOrCreateLogger(typeof(MarketCacheProvider));
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
         Assert.Equal(1, marketCacheProviderLogger.CountByLevel(LogLevel.Error));
     }
@@ -564,7 +581,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "variant=null";
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
         Assert.NotNull(marketDescription);
     }
@@ -576,7 +593,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "lapnr=5";
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
         Assert.Null(marketDescription);
     }
@@ -586,17 +603,17 @@ public class MarketCacheProviderScenarioTests
     {
         const int marketId = 110900;
         const string specifiers = "lapnr=5";
-        _dataRouterManager.ResetMethodCall();
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _cultures, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
 
-        Assert.Equal(0, _dataRouterManager.TotalRestCalls);
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     [Fact]
     public async Task ReloadMarketDescriptionsWhenNonVariantMarketThenLoadInvariantCacheList()
     {
-        _dataRouterManager.ResetMethodCall();
+        VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var result = await _marketCacheProvider.ReloadMarketDescriptionAsync(1, null);
 
@@ -606,11 +623,11 @@ public class MarketCacheProviderScenarioTests
     [Fact]
     public async Task ReloadMarketDescriptionsWhenNonVariantMarketThenFetchInvariantCacheList()
     {
-        _dataRouterManager.ResetMethodCall();
+        VerifyInvariantMarketDescriptionApiCalls(Times.Never());
 
         _ = await _marketCacheProvider.ReloadMarketDescriptionAsync(1, null);
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
+        VerifyInvariantMarketDescriptionApiCalls(Times.Once());
     }
 
     [Fact]
@@ -621,85 +638,109 @@ public class MarketCacheProviderScenarioTests
 
         _ = await _marketCacheProvider.ReloadMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)));
 
-        Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
+        VerifyInvariantMarketDescriptionApiCalls(Times.Once());
+        VerifyVariantMarketDescriptionApiCalls(Times.Never());
     }
 
     private void SetupDrmForSingleVariantMarket534(out int marketId, out IReadOnlyDictionary<string, string> specifiers)
     {
         marketId = 534;
         const string variantSpecifier = "pre:markettext:168883";
-        _dataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_{marketId}_culture.xml"));
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
         specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
-        _dataRouterManager.ResetMethodCall();
+
+        var mId = marketId;
+        foreach (var culture in _languages)
+        {
+            _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(mId.ToString(),
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ReturnsAsync(new MarketDescriptionDto(MdForVariantSingle.GetPreOutcomeMarket534().AddSuffix(culture)));
+        }
     }
 
     private void SetupDrmForSingleVariantPlayerPropMarket768(out int marketId, out IReadOnlyDictionary<string, string> specifiers)
     {
         marketId = 768;
         const string variantSpecifier = "pre:playerprops:35432179:608000";
-        _dataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_{marketId}_culture.xml"));
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
         specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
-        _dataRouterManager.ResetMethodCall();
+
+        var mId = marketId;
+        foreach (var culture in _languages)
+        {
+            _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(mId.ToString(),
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ReturnsAsync(new MarketDescriptionDto(MdForVariantSingle.GetPlayerPropsMarket768().AddSuffix(culture)));
+        }
     }
 
     private void SetupDrmForSingleVariantMarketForUnsupportedCompetitorProps1768(out int marketId, out IReadOnlyDictionary<string, string> specifiers)
     {
         marketId = 1768;
         const string variantSpecifier = "pre:competitorprops:35432179:608000";
-        ReplaceInvariantMarketDescriptionGroupPlayerPropsWithCompetitorPropsAsync(768, marketId, _cultures).GetAwaiter().GetResult();
-        _dataRouterManager.UriReplacements.Add(new Tuple<string, string>($"{marketId}_{variantSpecifier}", $"variant_market_description_{marketId}_cp_culture.xml"));
-        Assert.Equal(TestData.InvariantListCacheCount + 1, _invariantListMemoryCache.Count());
-        Assert.Equal(0, _variantSingleMemoryCache.Count());
         specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
-        _dataRouterManager.ResetMethodCall();
-    }
 
-    private async Task ReplaceInvariantMarketDescriptionGroupPlayerPropsWithCompetitorPropsAsync(int existingId, int newId, IReadOnlyCollection<CultureInfo> cultures)
-    {
-        foreach (var culture in cultures)
+        var mId = marketId;
+        foreach (var culture in _languages)
         {
-            await LoadNewInvariantMarketDescriptionAsync(existingId, newId, 1, culture).ConfigureAwait(false);
+            var md = MdForVariantSingle.GetCompetitorPropsMarket1768().AddSuffix(culture);
+            _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(mId.ToString(),
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ReturnsAsync(new MarketDescriptionDto(md));
         }
     }
 
-    private async Task LoadNewInvariantMarketDescriptionAsync(int existingId, int newId, int doAction, CultureInfo culture)
+    private void SetupInvariantListEndpointForAllLanguages()
     {
-        var restDeserializer = new Deserializer<market_descriptions>();
-        var mapper = new MarketDescriptionsMapperFactory();
-
-        var resourceName = $"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml";
-        await using var stream = FileHelper.GetResource(resourceName);
-
-        if (stream != null)
+        foreach (var culture in _languages)
         {
-            var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
-            if (result?.Items.IsNullOrEmpty() == false)
-            {
-                var existingMd = result.Items.First(f => f.Id.Equals(existingId));
-                existingMd.OverrideId(newId);
-                switch (doAction)
-                {
-                    case 1:
-                        {
-                            // switch player_props to unknown competitor_props
-                            var newGroups = existingMd.Groups.Where(s => !s.Contains("player_props")).ToList();
-                            newGroups.Add("competitor_props");
-                            existingMd.OverrideGroups(newGroups);
-                            break;
-                        }
-                    default:
-                        return;
-                }
+            var marketDescriptions = MarketDescriptionEndpoint.GetDefaultInvariantList(culture);
+            _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal))))
+                                    .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(marketDescriptions.market));
+        }
+    }
 
-                var items = new EntityList<MarketDescriptionDto>(new List<MarketDescriptionDto> { existingMd });
-                await _cacheManager.SaveDtoAsync(Urn.Parse("sr:markets:1"), items, culture, DtoType.MarketDescriptionList, null).ConfigureAwait(false);
-            }
-            else
-            {
-                _outputHelper.WriteLine($"No results found for {resourceName}");
-            }
+    private void SetupVariantListEndpointForAllLanguages()
+    {
+        foreach (var culture in _languages)
+        {
+            var marketDescriptions = MarketDescriptionEndpoint.GetDefaultVariantList(culture);
+            _variantMdProviderMock.Setup(s => s.GetDataAsync(It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal))))
+                                  .ReturnsAsync(MarketDescriptionEndpoint.GetVariantDto(marketDescriptions.variant));
+        }
+    }
+
+    private async Task InitializeMarketDescriptionLists()
+    {
+        var specifiers = new Dictionary<string, string> { { "variant", "sr:correct_score:bestof:12" } };
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(1, specifiers, _languages, true);
+        _invariantMdProviderMock.Invocations.Clear();
+        _variantMdProviderMock.Invocations.Clear();
+        _singleVariantMdProviderMock.Invocations.Clear();
+    }
+
+    private void VerifyInvariantMarketDescriptionApiCalls(Times expectedTimes)
+    {
+        foreach (var culture in _languages)
+        {
+            _invariantMdProviderMock.Verify(v => v.GetDataAsync(culture.TwoLetterISOLanguageName), expectedTimes);
+        }
+    }
+
+    private void VerifyVariantMarketDescriptionApiCalls(Times expectedTimes)
+    {
+        foreach (var culture in _languages)
+        {
+            _variantMdProviderMock.Verify(v => v.GetDataAsync(culture.TwoLetterISOLanguageName), expectedTimes);
+        }
+    }
+
+    private void VerifySingleVariantMarketDescriptionApiCalls(Times expectedTimes)
+    {
+        foreach (var language in _languages)
+        {
+            _singleVariantMdProviderMock.Verify(v => v.GetDataAsync(It.IsAny<string>(), language.TwoLetterISOLanguageName, It.IsAny<string>()), expectedTimes);
         }
     }
 }

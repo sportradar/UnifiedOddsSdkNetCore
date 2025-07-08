@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dawn;
 using Microsoft.Extensions.Logging;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
@@ -307,9 +308,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// Fetches sport event detail info for those of the specified languages which are not yet fetched
         /// </summary>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the required languages</param>
+        /// <param name="requestOptions">Request options for fetching summaries</param>
         /// <param name="forceFetch">Should the cached data be ignored</param>
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
-        protected async Task FetchMissingSummary(IEnumerable<CultureInfo> cultures, bool forceFetch)
+        public async Task FetchMissingSummary(IEnumerable<CultureInfo> cultures, RequestOptions requestOptions, bool forceFetch)
         {
             // to improve performance check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
@@ -358,7 +360,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                     else
                     {
                         fetchTasks = missingCultures.ToDictionary(missingCulture => missingCulture,
-                            missingCulture => DataRouterManager.GetSportEventSummaryAsync(Id, missingCulture, this));
+                            missingCulture => DataRouterManager.GetSportEventSummaryAsync(Id, missingCulture, this, requestOptions));
                     }
 
                     await Task.WhenAll(fetchTasks.Values).ConfigureAwait(false);
@@ -406,13 +408,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         }
 
         /// <summary>
+        /// Fetches sport event detail info for those of the specified languages which are not yet fetched
+        /// </summary>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the required languages</param>
+        /// <param name="forceFetch">Should the cached data be ignored</param>
+        /// <returns>A <see cref="Task" /> representing the async operation</returns>
+        protected async Task FetchMissingSummary(IEnumerable<CultureInfo> cultures, bool forceFetch)
+        {
+            await FetchMissingSummary(cultures, GetTimeCriticalRequestOptions(), forceFetch).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Fetches fixture info for those of the specified languages which are not yet fetched
         /// </summary>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the required languages</param>
         /// <returns>A <see cref="Task" /> representing the async operation</returns>
         protected async Task FetchMissingFixtures(IEnumerable<CultureInfo> cultures)
         {
-            // to improve performance check if anything is missing without acquiring a lock
+            // to improve performance, check if anything is missing without acquiring a lock
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
             if (cultureInfos.IsNullOrEmpty())
             {
@@ -577,6 +590,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         public virtual async Task<ExportableBase> ExportAsync()
         {
             return await CreateExportableBaseAsync<ExportableSportEvent>().ConfigureAwait(false);
+        }
+
+        private static RequestOptions GetTimeCriticalRequestOptions()
+        {
+            return new RequestOptions(ExecutionPath.TimeCritical);
         }
     }
 }

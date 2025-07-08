@@ -61,8 +61,8 @@ public class TournamentInfoTournamentTests
         var sportId = tournamentInfo.GetSportId();
         var sportEventUri = tournamentInfo.GetTournamentSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var defaultLanguage = _uofConfiguration.DefaultLanguage;
-        var failingFetcher = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(sportEventUri);
-        var sportEntityFactory = GetSportEntityFactory(failingFetcher, _loggerFactory);
+        var failingFetcherMock = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(sportEventUri);
+        var sportEntityFactory = GetSportEntityFactory(failingFetcherMock.Object, _loggerFactory);
 
         var tournament = sportEntityFactory.BuildSportEvent<ITournament>(tournamentId, sportId, [defaultLanguage], ExceptionHandlingStrategy.Catch);
 
@@ -79,8 +79,8 @@ public class TournamentInfoTournamentTests
         var sportId = tournamentInfo.GetSportId();
         var sportEventUri = tournamentInfo.GetTournamentSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var defaultLanguage = _uofConfiguration.DefaultLanguage;
-        var failingFetcher = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(sportEventUri);
-        var sportEntityFactory = GetSportEntityFactory(failingFetcher, _loggerFactory);
+        var failingFetcherMock = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(sportEventUri);
+        var sportEntityFactory = GetSportEntityFactory(failingFetcherMock.Object, _loggerFactory);
 
         var tournament = sportEntityFactory.BuildSportEvent<ITournament>(tournamentId, sportId, [defaultLanguage], ExceptionHandlingStrategy.Throw);
 
@@ -96,7 +96,7 @@ public class TournamentInfoTournamentTests
         var sportEventUri = tournamentInfo.GetTournamentSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
         var defaultLanguage = _uofConfiguration.DefaultLanguage;
         var dataFetcherMock = DataFetcherMockHelper.GetDataFetcherProvidingSummary(tournamentInfo, sportEventUri);
-        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock, _loggerFactory);
+        var sportEntityFactory = GetSportEntityFactory(dataFetcherMock.Object, _loggerFactory);
 
         var tournament = sportEntityFactory.BuildSportEvent<ITournament>(tournamentId, sportId, [defaultLanguage], ExceptionHandlingStrategy.Catch);
 
@@ -112,10 +112,11 @@ public class TournamentInfoTournamentTests
                                                                                            dataFetcherFastFailing,
                                                                                            new Deserializer<RestMessage>(),
                                                                                            new SportEventSummaryMapperFactory());
+        var executionPathDataProvider = new SDK.Entities.Rest.Internal.ExecutionPathDataProvider<SportEventSummaryDto>(matchSummaryDataProvider, new Mock<IDataProvider<SportEventSummaryDto>>().Object);
         return new DataRouterManagerBuilder()
               .AddMockedDependencies()
               .WithConfiguration(uofConfiguration)
-              .WithSportEventSummaryProvider(matchSummaryDataProvider)
+              .WithSportEventSummaryProvider(executionPathDataProvider)
               .WithCacheManager(cacheManager)
               .Build();
     }

@@ -6,11 +6,13 @@ using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
@@ -32,7 +34,7 @@ public class ProfileCacheVirtualCompetitorsTests
     private readonly ProfileCache _profileCache;
     private readonly ICacheStore<string> _profileMemoryCache;
     private readonly Mock<ISportEventCache> _sportEventCacheMock;
-    private readonly Mock<IDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock;
+    private readonly Mock<IExecutionPathDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock;
     private readonly XunitLoggerFactory _testLoggerFactory;
 
     public ProfileCacheVirtualCompetitorsTests(ITestOutputHelper outputHelper)
@@ -49,7 +51,7 @@ public class ProfileCacheVirtualCompetitorsTests
                                                      TestConfiguration.GetConfig().Cache.ProfileCacheTimeout,
                                                      1);
 
-        _sportEventSummaryProviderMock = new Mock<IDataProvider<SportEventSummaryDto>>();
+        _sportEventSummaryProviderMock = new Mock<IExecutionPathDataProvider<SportEventSummaryDto>>();
         _competitorProfileProviderMock = new Mock<IDataProvider<CompetitorProfileDto>>();
         _productManagerMock = GetProductManagerMock();
 
@@ -69,10 +71,10 @@ public class ProfileCacheVirtualCompetitorsTests
     public async Task GetSportEventSummaryWhenCalledWithVirtualCompetitorsShouldSetVirtualFlagTrue()
     {
         var matchDtoWithVirtualCompetitors = GetMatchDtoWithCompetitors(true, true);
-        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
                                       .ReturnsAsync(matchDtoWithVirtualCompetitors);
 
-        await _dataRouterManager.GetSportEventSummaryAsync(_defaultMatchId, TestConfiguration.GetConfig().DefaultLanguage, null);
+        await _dataRouterManager.GetSportEventSummaryAsync(_defaultMatchId, TestConfiguration.GetConfig().DefaultLanguage, null, new RequestOptions(ExecutionPath.NonTimeCritical));
         var profile = await _profileCache.GetCompetitorProfileAsync(Urn.Parse("sr:competitor:4698"), new[] { TestConfiguration.GetConfig().DefaultLanguage }, true);
 
         profile.IsVirtual.Should().BeTrue();
@@ -82,7 +84,7 @@ public class ProfileCacheVirtualCompetitorsTests
     public async Task GetSportEventSummaryWhenCalledWithoutVirtualCompetitorsShouldSetVirtualFlagFalse()
     {
         var matchDtoWithNoVirtualCompetitors = GetMatchDtoWithCompetitors(false, true);
-        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
                                       .ReturnsAsync(matchDtoWithNoVirtualCompetitors);
         _competitorProfileProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
                                       .ReturnsAsync(GetCompetitorProfileWithoutVirtualFlag());
@@ -97,7 +99,7 @@ public class ProfileCacheVirtualCompetitorsTests
     public async Task GetSportEventSummaryWithEmptyVirtualFlagShouldReturnVirtualCompetitorCacheItem()
     {
         var matchDtoWithNoVirtualCompetitors = GetMatchDtoWithCompetitors(false, false);
-        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _sportEventSummaryProviderMock.Setup(m => m.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
                                       .ReturnsAsync(matchDtoWithNoVirtualCompetitors);
         _competitorProfileProviderMock.Setup(m => m.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
                                       .ReturnsAsync(GetCompetitorProfileWithoutVirtualFlag());

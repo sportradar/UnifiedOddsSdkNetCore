@@ -1019,6 +1019,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.ExecutionPath.yml\" sourcestartlinenumber=\"1\">Defines the execution priority of a request.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Internal.Handlers.HttpRequestDecoratorHandler.yml",
       "output": {
         ".html": {

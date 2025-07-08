@@ -19,15 +19,15 @@ using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
 using Xunit;
 
-namespace Sportradar.OddsFeed.SDK.Tests.Api;
+namespace Sportradar.OddsFeed.SDK.Tests.API.SportDataProviderTests;
 
-public class SportDataProviderTests
+public class SportDataProviderExceptionStrategyTests
 {
     private readonly Urn _competitorId;
     private readonly Mock<IProfileCache> _profileCacheMock;
     private readonly TestUofConfigurationSection _uofConfigurationSection;
 
-    public SportDataProviderTests()
+    public SportDataProviderExceptionStrategyTests()
     {
         _competitorId = Urn.Parse("sr:competitor:1234");
         _uofConfigurationSection = new TestUofConfigurationSection();

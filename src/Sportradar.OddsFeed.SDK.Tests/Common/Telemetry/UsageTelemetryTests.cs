@@ -3,9 +3,9 @@
 using System.Linq;
 using System.Net;
 using System.Text;
-using FluentAssertions;
 using Moq;
 using OpenTelemetry.Metrics;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -18,6 +18,7 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Telemetry;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class UsageTelemetryTests
 {
     private const string MetricNameForTestHistogram = UofSdkTelemetry.MetricNamePrefix + "test-histogram";
@@ -32,7 +33,7 @@ public class UsageTelemetryTests
     [Fact]
     public void UsageTelemetryMeterWhenSetupIsNotRunThenMeterIsInitialized()
     {
-        UsageTelemetry.UsageMeter.Should().NotBeNull();
+        UsageTelemetry.UsageMeter.ShouldNotBeNull();
     }
 
     [Fact]
@@ -49,9 +50,9 @@ public class UsageTelemetryTests
         var flushSucceeded = meterProvider.ForceFlush();
         var logEntries = wireMockServer.LogEntries.ToList();
 
-        flushSucceeded.Should().BeTrue();
-        logEntries.Should().HaveCount(1);
-        logEntries.First().ResponseMessage.StatusCode.Should().Be(202);
+        flushSucceeded.ShouldBeTrue();
+        logEntries.ShouldHaveSingleItem();
+        logEntries.First().ResponseMessage.StatusCode.ShouldBe(202);
     }
 
     [Fact]
@@ -68,9 +69,9 @@ public class UsageTelemetryTests
         var flushSucceeded = meterProvider.ForceFlush();
         var logEntries = wireMockServer.LogEntries.ToList();
 
-        flushSucceeded.Should().BeFalse();
-        logEntries.Should().HaveCount(1);
-        logEntries.First().ResponseMessage.StatusCode.Should().Be(404);
+        flushSucceeded.ShouldBeFalse();
+        logEntries.ShouldHaveSingleItem();
+        logEntries.First().ResponseMessage.StatusCode.ShouldBe(404);
     }
 
     [Fact]
@@ -81,7 +82,7 @@ public class UsageTelemetryTests
 
         var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
 
-        meterProvider.Should().BeNull();
+        meterProvider.ShouldBeNull();
     }
 
     [Fact]
@@ -94,7 +95,7 @@ public class UsageTelemetryTests
         var testHistogram = UsageTelemetry.UsageMeter.CreateHistogram<long>(MetricNameForTestHistogram);
         testHistogram.Record(1234);
 
-        meterProvider.Should().BeNull();
+        meterProvider.ShouldBeNull();
     }
 
     [Fact]
@@ -112,11 +113,11 @@ public class UsageTelemetryTests
         var flushSucceeded = meterProvider.ForceFlush();
 
         var logEntries = wireMockServer.LogEntries.ToList();
-        flushSucceeded.Should().BeTrue();
-        logEntries.Should().HaveCount(1);
+        flushSucceeded.ShouldBeTrue();
+        logEntries.ShouldHaveSingleItem();
         var usageRequestBody = Encoding.UTF8.GetString(logEntries.First().RequestMessage.BodyAsBytes!);
         _outputHelper.WriteLine(usageRequestBody);
-        usageRequestBody.Should().Contain(UofSdkTelemetry.MetricNameForProducerStatus);
+        usageRequestBody.ShouldContain(UofSdkTelemetry.MetricNameForProducerStatus);
     }
 
     private static WireMockServer SetupWireMockServerWithEndpoint(string endpoint = UsageTelemetry.EndpointUrl)

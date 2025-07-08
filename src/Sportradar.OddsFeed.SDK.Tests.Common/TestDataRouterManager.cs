@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
@@ -256,6 +257,11 @@ internal class TestDataRouterManager : IDataRouterManager
     }
 
     public async Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester)
+    {
+        await GetSportEventSummaryAsync(id, culture, requester, new RequestOptions(ExecutionPath.TimeCritical));
+    }
+
+    public async Task GetSportEventSummaryAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester, RequestOptions requestOptions)
     {
         RecordMethodCall(EndpointSportEventSummary);
 

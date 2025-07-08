@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common;
@@ -28,6 +29,7 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.Caching;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class InvariantMarketDescriptionCacheTests
 {
     private const int DefaultMarketId282 = 282;
@@ -129,7 +131,7 @@ public class InvariantMarketDescriptionCacheTests
     [Fact]
     public void ConstructorWhenEmptyLanguagesThenThrow()
     {
-        _ = Assert.Throws<ArgumentException>(() => new InvariantMarketDescriptionCache(_invariantMarketDescriptionMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timer, Array.Empty<CultureInfo>(), _cacheManager, _testLoggerFactory));
+        _ = Assert.Throws<ArgumentException>(() => new InvariantMarketDescriptionCache(_invariantMarketDescriptionMemoryCache, _dataRouterManager, _mappingValidatorFactory, _timer, [], _cacheManager, _testLoggerFactory));
     }
 
     [Fact]
@@ -147,11 +149,7 @@ public class InvariantMarketDescriptionCacheTests
     [Fact]
     public async Task UpdateCacheItemDoesUpdateSource()
     {
-        var mdCacheItem = await GetCacheItem(DefaultMarketId282,
-                                             new[]
-                                             {
-                                                 _cultures[0]
-                                             });
+        var mdCacheItem = await GetCacheItem(DefaultMarketId282, [_cultures[0]]);
         mdCacheItem.SetFetchInfo("some-source");
         var initialSource = mdCacheItem.SourceCache;
 
@@ -164,11 +162,7 @@ public class InvariantMarketDescriptionCacheTests
     [Fact]
     public async Task UpdateCacheItemWhenDisposedThenIgnores()
     {
-        var mdCacheItem = await GetCacheItem(DefaultMarketId282,
-                                             new[]
-                                             {
-                                                 _cultures[0]
-                                             });
+        var mdCacheItem = await GetCacheItem(DefaultMarketId282, [_cultures[0]]);
         mdCacheItem.SetFetchInfo("some-source");
         var initialSource = mdCacheItem.SourceCache;
         _invariantMarketDescriptionCache.Dispose();
@@ -501,7 +495,7 @@ public class InvariantMarketDescriptionCacheTests
     [Fact]
     public async Task GetMarketDescriptionWhenLanguagesMissingThenThrow()
     {
-        _ = await Assert.ThrowsAsync<ArgumentException>(() => _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, Array.Empty<CultureInfo>()));
+        _ = await Assert.ThrowsAsync<ArgumentException>(() => _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, []));
     }
 
     [Fact]
@@ -566,14 +560,15 @@ public class InvariantMarketDescriptionCacheTests
     }
 
     [Fact]
-    public void OnTimerWhenConstructedThenCallForAllLanguages()
+    public void OnTimerWhenConstructedThenMakeApiCallForAllLanguages()
     {
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions), 1000, 30000);
+        var success = MakeApiCallForAllLanguagesAndWaitTillSaved();
 
-        Assert.True(success);
-        Assert.Equal(ScheduleData.InvariantListCacheCount, _invariantMarketDescriptionMemoryCache.Count());
+        success.ShouldBeTrue();
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions).ShouldBe(_cultures.Count);
+        _invariantMarketDescriptionMemoryCache.Count().ShouldBe(ScheduleData.InvariantListCacheCount);
     }
 
     [Fact]
@@ -584,9 +579,9 @@ public class InvariantMarketDescriptionCacheTests
 
         var marketDescription = await _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, _cultures);
 
-        Assert.True(success);
-        Assert.NotNull(marketDescription);
-        Assert.True(_cultures.All(a => !string.IsNullOrEmpty(marketDescription.GetName(a))));
+        success.ShouldBeTrue();
+        marketDescription.ShouldNotBeNull();
+        _cultures.All(a => !string.IsNullOrEmpty(marketDescription.GetName(a))).ShouldBeTrue();
     }
 
     [Fact]
@@ -597,7 +592,7 @@ public class InvariantMarketDescriptionCacheTests
 
         var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
 
-        Assert.True(success);
+        success.ShouldBeTrue();
     }
 
     [Fact]
@@ -608,8 +603,9 @@ public class InvariantMarketDescriptionCacheTests
 
         var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
 
-        Assert.True(success);
-        Assert.Equal(0, _invariantMarketDescriptionMemoryCache.Count());
+        success.ShouldBeTrue();
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions).ShouldBe(_cultures.Count);
+        _invariantMarketDescriptionMemoryCache.Count().ShouldBe(0);
     }
 
     [Fact]
@@ -618,9 +614,10 @@ public class InvariantMarketDescriptionCacheTests
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("invariant_market_descriptions.xml", new TaskCanceledException("Call not finished in time")));
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
+        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions), 200, 20000);
 
-        Assert.True(success);
+        success.ShouldBeTrue();
+        _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions).ShouldBe(_cultures.Count);
     }
 
     [Fact]
@@ -629,10 +626,10 @@ public class InvariantMarketDescriptionCacheTests
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("invariant_market_descriptions.xml", new TaskCanceledException("Call not finished in time")));
         _timer.FireOnce(TimeSpan.Zero);
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions));
+        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions), 200, 20000);
 
-        Assert.True(success);
-        Assert.Equal(0, _invariantMarketDescriptionMemoryCache.Count());
+        success.ShouldBeTrue();
+        _invariantMarketDescriptionMemoryCache.Count().ShouldBe(0);
     }
 
     [Fact]
@@ -962,7 +959,7 @@ public class InvariantMarketDescriptionCacheTests
         Assert.Equal(HealthStatus.Healthy, healthCheck.Status);
     }
 
-    private async Task<market_descriptions> GetInvariantXml(CultureInfo language)
+    private static async Task<market_descriptions> GetInvariantXml(CultureInfo language)
     {
         var resourceName = $"invariant_market_descriptions_{language.TwoLetterISOLanguageName}.xml";
         var restDeserializer = new Deserializer<market_descriptions>();
@@ -976,5 +973,16 @@ public class InvariantMarketDescriptionCacheTests
     private async Task<MarketDescriptionCacheItem> GetCacheItem(int marketId, IReadOnlyCollection<CultureInfo> languages)
     {
         return await _invariantMarketDescriptionCache.GetMarketInternalAsync(marketId, languages).ConfigureAwait(false);
+    }
+
+    private bool MakeApiCallForAllLanguagesAndWaitTillSaved()
+    {
+        return TestExecutionHelper.WaitToComplete(ValidationCheck, 200, 30000);
+    }
+
+    private bool ValidationCheck()
+    {
+        return ScheduleData.InvariantListCacheCount == _invariantMarketDescriptionMemoryCache.Count()
+               && _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointMarketDescriptions);
     }
 }

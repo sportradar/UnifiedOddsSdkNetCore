@@ -1,5 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
+using System.Linq;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 
@@ -22,6 +24,20 @@ public class TournamentBuilder
     public TournamentBuilder WithName(string name)
     {
         _tournament.name = name;
+        return this;
+    }
+
+    public TournamentBuilder WithScheduled(DateTime scheduled)
+    {
+        _tournament.scheduled = scheduled;
+        _tournament.scheduledSpecified = true;
+        return this;
+    }
+
+    public TournamentBuilder WithScheduledEnd(DateTime scheduled)
+    {
+        _tournament.scheduled_end = scheduled;
+        _tournament.scheduled_endSpecified = true;
         return this;
     }
 
@@ -55,6 +71,15 @@ public class TournamentBuilder
     public TournamentBuilder WithSeasonCoverageInfo(seasonCoverageInfo seasonCoverageInfo)
     {
         _tournament.season_coverage_info = seasonCoverageInfo;
+        return this;
+    }
+
+    public TournamentBuilder AddTeam(Func<CompetitorBuilder> builder)
+    {
+        _tournament.competitors ??= [];
+        var list = _tournament.competitors.ToList();
+        list.Add(builder().Build());
+        _tournament.competitors = list.ToArray();
         return this;
     }
 

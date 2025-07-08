@@ -45,13 +45,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the initialized instance will handle potential exceptions</param>
         public Match(Urn id,
-                    Urn sportId,
-                    ISportEntityFactory sportEntityFactory,
-                    ISportEventCache sportEventCache,
-                    ISportEventStatusCache sportEventStatusCache,
-                    ILocalizedNamedValueCache matchStatusCache,
-                    IReadOnlyCollection<CultureInfo> cultures,
-                    ExceptionHandlingStrategy exceptionStrategy)
+            Urn sportId,
+            ISportEntityFactory sportEntityFactory,
+            ISportEventCache sportEventCache,
+            ISportEventStatusCache sportEventStatusCache,
+            ILocalizedNamedValueCache matchStatusCache,
+            IReadOnlyCollection<CultureInfo> cultures,
+            ExceptionHandlingStrategy exceptionStrategy)
             : base(ExecutionLogPrivate, id, sportId, sportEntityFactory, sportEventStatusCache, sportEventCache, cultures, exceptionStrategy, matchStatusCache)
         {
             _sportEntityFactory = sportEntityFactory;

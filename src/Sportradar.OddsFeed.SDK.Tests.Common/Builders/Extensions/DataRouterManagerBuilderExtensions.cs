@@ -55,7 +55,7 @@ internal static class DataRouterManagerBuilderExtensions
 
     public static DataRouterManagerBuilder WithAllMockedDataProviders(this DataRouterManagerBuilder builder)
     {
-        var mockSportEventSummaryProvider = new Mock<IDataProvider<SportEventSummaryDto>>();
+        var mockSportEventSummaryProvider = new Mock<IExecutionPathDataProvider<SportEventSummaryDto>>();
         var mockSportEventFixtureProvider = new Mock<IDataProvider<FixtureDto>>();
         var mockSportEventFixtureChangeFixtureProvider = new Mock<IDataProvider<FixtureDto>>();
         var mockAllTournamentsForAllSportsProvider = new Mock<IDataProvider<EntityList<SportDto>>>();

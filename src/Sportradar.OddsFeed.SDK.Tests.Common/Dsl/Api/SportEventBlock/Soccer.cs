@@ -223,7 +223,7 @@ public static class Soccer
               .WithShortName("Liverpool")
               .WithCountry("England")
               .WithCountryCode("ENG")
-              .IsMale(true)
+              .IsMale()
               .IsHome(true)
               .WithReferences(new ReferencesBuilder().WithBetradar(45745));
     }
@@ -238,7 +238,7 @@ public static class Soccer
               .WithShortName("PSG")
               .WithCountry("France")
               .WithCountryCode("FRA")
-              .IsMale(true)
+              .IsMale()
               .IsHome(false)
               .WithReferences(new ReferencesBuilder().WithBetradar(6866));
     }

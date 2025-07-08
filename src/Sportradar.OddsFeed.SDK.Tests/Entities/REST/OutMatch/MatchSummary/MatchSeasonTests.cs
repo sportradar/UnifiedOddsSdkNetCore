@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Moq;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
@@ -161,17 +162,17 @@ public class MatchSeasonTests
     private ISportEntityFactory CreateSummaryFactoryReturning(matchSummaryEndpoint matchSummary)
     {
         var summaryUri = matchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
-        var workingFetcher = DataFetcherMockHelper.GetDataFetcherProvidingSummary(matchSummary, summaryUri);
+        var workingFetcherMock = DataFetcherMockHelper.GetDataFetcherProvidingSummary(matchSummary, summaryUri);
 
-        return GetSportEntityFactory(workingFetcher, _loggerFactory);
+        return GetSportEntityFactory(workingFetcherMock.Object, _loggerFactory);
     }
 
     private ISportEntityFactory CreateFactoryWithFailingSummaryFetcherFor(matchSummaryEndpoint matchSummary)
     {
         var summaryUri = matchSummary.GetMatchSummaryUri(_uofConfiguration.Api.BaseUrl, _uofConfiguration.DefaultLanguage);
-        var failingFetcher = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(summaryUri);
+        var failingFetcherMock = DataFetcherMockHelper.GetDataFetcherThrowingCommunicationException(summaryUri);
 
-        return GetSportEntityFactory(failingFetcher, _loggerFactory);
+        return GetSportEntityFactory(failingFetcherMock.Object, _loggerFactory);
     }
 
     private static DataRouterManager GetDataRouterManager(CacheManager cacheManager, IUofConfiguration uofConfiguration, IDataFetcher dataFetcherFastFailing)
@@ -181,10 +182,11 @@ public class MatchSeasonTests
                                                                                            dataFetcherFastFailing,
                                                                                            new Deserializer<RestMessage>(),
                                                                                            new SportEventSummaryMapperFactory());
+        var executionPathDataProvider = new SDK.Entities.Rest.Internal.ExecutionPathDataProvider<SportEventSummaryDto>(matchSummaryDataProvider, new Mock<IDataProvider<SportEventSummaryDto>>().Object);
         return new DataRouterManagerBuilder()
               .AddMockedDependencies()
               .WithConfiguration(uofConfiguration)
-              .WithSportEventSummaryProvider(matchSummaryDataProvider)
+              .WithSportEventSummaryProvider(executionPathDataProvider)
               .WithCacheManager(cacheManager)
               .Build();
     }

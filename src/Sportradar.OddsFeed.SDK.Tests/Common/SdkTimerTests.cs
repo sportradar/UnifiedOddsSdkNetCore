@@ -14,7 +14,9 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 [Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class SdkTimerTests
 {
-    private readonly SdkTimer _sdkTimer = new SdkTimer("defaultTimer", TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(100));
+    private const int TimerDueTimeInMs = 500;
+    private const int TimerPeriodInMs = 500;
+    private readonly SdkTimer _sdkTimer = new SdkTimer("defaultTimer", TimeSpan.FromMilliseconds(TimerDueTimeInMs), TimeSpan.FromMilliseconds(TimerPeriodInMs));
     private readonly List<string> _timerMsgs = [];
 
     [Fact]
@@ -51,7 +53,7 @@ public class SdkTimerTests
         _sdkTimer.Elapsed += SdkTimerOnElapsed;
         _sdkTimer.Start();
 
-        await Task.Delay(300);
+        await PauseForTwoPeriods();
 
         _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
@@ -62,7 +64,7 @@ public class SdkTimerTests
         SetupTimerWithFailingEventHandler();
         _sdkTimer.Start();
 
-        await Task.Delay(300);
+        await PauseForTwoPeriods();
 
         _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
@@ -73,7 +75,7 @@ public class SdkTimerTests
         SetupTimerWithFailingEventHandler();
         _sdkTimer.Start();
 
-        await Task.Delay(300);
+        await PauseForTwoPeriods();
 
         _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
@@ -146,5 +148,10 @@ public class SdkTimerTests
             _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
             throw new InvalidOperationException("Some error");
         };
+    }
+
+    private static async Task PauseForTwoPeriods()
+    {
+        await Task.Delay(TimerDueTimeInMs + TimerPeriodInMs + (TimerPeriodInMs / 2));
     }
 }
