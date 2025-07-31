@@ -1,7 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
-using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 

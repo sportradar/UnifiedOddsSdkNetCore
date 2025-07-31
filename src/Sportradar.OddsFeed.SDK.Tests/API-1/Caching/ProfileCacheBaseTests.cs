@@ -416,7 +416,8 @@ public class ProfileCacheBaseTests : ProfileCacheSetup
 
         await _profileCache.ImportAsync(exported);
 
-        TestExecutionHelper.WaitToComplete(() => exported.Count == _profileMemoryCache.GetKeys().Count, 5000, 100);
+        await TestExecutionHelper.WaitToCompleteAsync(() => exported.Count == _profileMemoryCache.GetKeys().Count, 100, 5000);
+
         Assert.Equal(exported.Count, _profileMemoryCache.GetKeys().Count);
     }
 

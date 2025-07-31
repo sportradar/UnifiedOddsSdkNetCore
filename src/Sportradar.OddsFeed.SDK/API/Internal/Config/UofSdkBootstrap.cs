@@ -374,16 +374,23 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddSingleton<IMappingValidatorFactory, MappingValidatorFactory>();
             services.AddSingleton<IFeedMessageHandler, FeedMessageHandler>(serviceProvider => new FeedMessageHandler(serviceProvider.GetSdkCacheStore<string>(CacheStoreNameForFixtureChangeCache)));
 
-            services.AddSingleton<IFeedMessageMapper, FeedMessageMapper>(serviceProvider =>
-                new FeedMessageMapper(
-                    serviceProvider.GetRequiredService<ISportEntityFactory>(),
+            services.AddSingleton<IMarketFactory, MarketFactory>(serviceProvider =>
+                new MarketFactory(
+                    serviceProvider.GetRequiredService<IMarketCacheProvider>(),
                     serviceProvider.GetRequiredService<INameProviderFactory>(),
                     serviceProvider.GetRequiredService<IMarketMappingProviderFactory>(),
                     serviceProvider.GetRequiredService<INamedValuesProvider>(),
-                    serviceProvider.GetRequiredService<IUofConfiguration>().ExceptionHandlingStrategy,
+                    serviceProvider.GetNamedValueCache(NamedValueCacheNameForVoidReason),
+                    serviceProvider.GetRequiredService<IUofConfiguration>().ExceptionHandlingStrategy
+                ));
+
+            services.AddSingleton<IFeedMessageMapper, FeedMessageMapper>(serviceProvider =>
+                new FeedMessageMapper(
+                    serviceProvider.GetRequiredService<ISportEntityFactory>(),
+                    serviceProvider.GetRequiredService<IMarketFactory>(),
                     serviceProvider.GetRequiredService<IProducerManager>(),
-                    serviceProvider.GetRequiredService<IMarketCacheProvider>(),
-                    serviceProvider.GetNamedValueCache(NamedValueCacheNameForVoidReason)
+                    serviceProvider.GetRequiredService<INamedValuesProvider>(),
+                    serviceProvider.GetRequiredService<IUofConfiguration>().ExceptionHandlingStrategy
                 ));
 
             services.AddSingleton<IFeedMessageValidator, FeedMessageValidator>(serviceProvider =>

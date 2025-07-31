@@ -44,6 +44,12 @@ public class OddsChangeBuilder
         return this;
     }
 
+    public OddsChangeBuilder WithTimestampNow()
+    {
+        _oddsChange.timestamp = DateTime.Now.ToEpochTime();
+        return this;
+    }
+
     public odds_change Build()
     {
         if (_markets.Any())
@@ -75,12 +81,4 @@ public class OddsChangeBuilder
         _oddsChange.sport_event_status = ses;
         return this;
     }
-
-    // public OddsChangeBuilder AddMarkets(int marketSize, int outcomeSize)
-    // {
-    //     var marketBuilder = MarketWithOddsBuilder.Create();
-    //     marketBuilderAction.Invoke(marketBuilder);
-    //     _markets.Add(marketBuilder.Build());
-    //     return this;
-    // }
 }

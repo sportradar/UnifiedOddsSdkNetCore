@@ -45,15 +45,6 @@ public class UofSdkBootstrapBase
         ServiceScope2 = serviceProvider.CreateScope();
     }
 
-    //protected void ReplaceProducerManager()
-    //{
-    //    //TODO: LoadProducers should be removed from ctor
-    //    ServiceCollection.AddSingleton<IProducersProvider>(_ => new TestProducersProvider());
-    //    ServiceScope1 = ServiceCollection.BuildServiceProvider(true).CreateScope();
-    //    ServiceScope2 = ServiceCollection.BuildServiceProvider(true).CreateScope();
-    //    CheckSingletonType<IProducerManager>();
-    //}
-
     protected void CheckTransientType<T>(bool registeredOnce = true) where T : class
     {
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<T>();

@@ -82,13 +82,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         public const string PlayerMarketOutcomeType = "player";
         /// <summary>
-        /// Defines the beginning of the outcome id for player outcomes
+        /// Defines the type of Urn part of the outcome id for player outcomes
         /// </summary>
-        public const string PlayerProfileMarketPrefix = "sr:player:";
+        public const string PlayerProfileGroupIdentifierForMarket = ":player:";
         /// <summary>
-        /// Defines the beginning of the outcome id for competitor outcomes
+        /// Defines the type of Urn part of the outcome id for competitor outcomes
         /// </summary>
-        public const string CompetitorProfileMarketPrefix = "sr:competitor";
+        public const string CompetitorProfileGroupIdentifierForMarket = ":competitor:";
         /// <summary>
         /// Defines the type of the player URI
         /// </summary>

@@ -128,7 +128,7 @@ internal static class DataRouterManagerBuilderExtensions
               .WithMockedCalculateProbabilityFilteredProvider();
     }
 
-    public static DataRouterManagerBuilder WithDefaultListProviders(this DataRouterManagerBuilder builder)
+    public static DataRouterManagerBuilder WithDefaultMarketListProviders(this DataRouterManagerBuilder builder)
     {
         var invariantMdProviderMock = new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>();
         var variantMdProviderMock = new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>();
@@ -141,7 +141,7 @@ internal static class DataRouterManagerBuilderExtensions
             .WithVariantDescriptionsProvider(variantMdProviderMock.Object);
     }
 
-    public static DataRouterManagerBuilder WithDefaultListProviders(this DataRouterManagerBuilder builder, IReadOnlyList<CultureInfo> languages)
+    public static DataRouterManagerBuilder WithDefaultMarketListProviders(this DataRouterManagerBuilder builder, IReadOnlyList<CultureInfo> languages)
     {
         var invariantMdProviderMock = new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>();
         var variantMdProviderMock = new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>();

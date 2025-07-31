@@ -262,7 +262,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         /// <param name="culture">Optional culture in which we want to fetch competitor data (otherwise default is used)</param>
         /// <returns>A <see cref="Task{T}"/> representing the retrieval operation</returns>
-        public async Task<IEnumerable<Urn>> GetCompetitorIdsAsync(CultureInfo culture = null)
+        public virtual async Task<IEnumerable<Urn>> GetCompetitorIdsAsync(CultureInfo culture = null)
         {
             var competitionCacheItem = (CompetitionCacheItem)SportEventCache.GetEventCacheItem(Id);
             if (competitionCacheItem == null)

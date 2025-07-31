@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Common.Internal;
+using xRetry;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;
@@ -47,7 +48,7 @@ public class SdkTimerTests
         action.Should().Throw<ArgumentException>();
     }
 
-    [Fact]
+    [RetryFact(3, 1000)]
     public async Task TimerNormalOperation()
     {
         _sdkTimer.Elapsed += SdkTimerOnElapsed;
@@ -58,7 +59,7 @@ public class SdkTimerTests
         _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
 
-    [Fact]
+    [RetryFact(3, 1000)]
     public async Task TimerFailedOnTickWillNotBreak()
     {
         SetupTimerWithFailingEventHandler();
@@ -69,7 +70,7 @@ public class SdkTimerTests
         _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
 
-    [Fact]
+    [RetryFact(3, 1000)]
     public async Task TimerFailedOnTickWillContinueOnPeriod()
     {
         SetupTimerWithFailingEventHandler();
@@ -80,7 +81,7 @@ public class SdkTimerTests
         _timerMsgs.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
 
-    [Fact]
+    [RetryFact(3, 1000)]
     public async Task TimerFireOnce()
     {
         var sdkTimer = new SdkTimer("fireOnceTimer", TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));

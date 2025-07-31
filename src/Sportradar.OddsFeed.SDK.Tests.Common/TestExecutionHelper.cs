@@ -80,4 +80,34 @@ public static class TestExecutionHelper
         }
         return finished;
     }
+
+    /// <summary>
+    /// Try to execute action till success or timeout
+    /// </summary>
+    /// <param name="action">Action to be invoked</param>
+    /// <param name="delayMs">Delay step</param>
+    /// <param name="timeoutMs">Maximum execution time</param>
+    /// <returns>Indication if the action completed successfully</returns>
+    public static async Task<bool> WaitToCompleteAsync(Func<bool> action, int delayMs = 100, int timeoutMs = 10000)
+    {
+        var stopWatch = Stopwatch.StartNew();
+        var finished = false;
+        while (!finished && stopWatch.ElapsedMilliseconds < timeoutMs)
+        {
+            try
+            {
+                finished = action.Invoke();
+            }
+            catch
+            {
+                // ignored
+            }
+            if (!finished)
+            {
+                await Task.Delay(delayMs).ConfigureAwait(false);
+            }
+        }
+        return finished;
+    }
 }
+

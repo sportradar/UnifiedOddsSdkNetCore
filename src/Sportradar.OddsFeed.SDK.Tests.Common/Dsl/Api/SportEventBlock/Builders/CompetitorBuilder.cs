@@ -27,6 +27,8 @@ public class CompetitorBuilder
     private int? _divisionId;
     private string _divisionName;
     private string _ageGroup;
+    private sport _sport;
+    private category _category;
     private ReferencesBuilder _referencesBuilder;
     private List<playerCompetitor> _players = [];
 
@@ -115,6 +117,27 @@ public class CompetitorBuilder
         return this;
     }
 
+    public CompetitorBuilder WithSport(Urn sportId, string name)
+    {
+        _sport = new sport
+        {
+            id = sportId.ToString(),
+            name = name
+        };
+        return this;
+    }
+
+    public CompetitorBuilder WithCategory(Urn categoryId, string name, string countryCode)
+    {
+        _category = new category
+        {
+            id = categoryId.ToString(),
+            name = name,
+            country_code = countryCode
+        };
+        return this;
+    }
+
     public team Build()
     {
         var team = new team();
@@ -140,6 +163,8 @@ public class CompetitorBuilder
     {
         var team = new teamExtended();
         UpdateTeamFields(team);
+        team.sport = _sport;
+        team.category = _category;
 
         return team;
     }

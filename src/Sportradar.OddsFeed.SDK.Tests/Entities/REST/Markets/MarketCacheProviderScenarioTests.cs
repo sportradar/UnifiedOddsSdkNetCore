@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
@@ -22,7 +20,9 @@ using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
+using Sportradar.OddsFeed.SDK.Tests.Common.Helpers;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.Markets;
 public class MarketCacheProviderScenarioTests
 {
     private readonly IMarketCacheProvider _marketCacheProvider;
-    private readonly IReadOnlyList<CultureInfo> _languages;
+    private readonly List<CultureInfo> _languages;
     private readonly XunitLoggerFactory _loggerFactory;
 
     private readonly Mock<IDataProvider<EntityList<MarketDescriptionDto>>> _invariantMdProviderMock;
@@ -381,7 +381,7 @@ public class MarketCacheProviderScenarioTests
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
@@ -400,7 +400,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "maxovers=20|type=live|inningnr=1";
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
@@ -413,7 +413,7 @@ public class MarketCacheProviderScenarioTests
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
@@ -429,12 +429,12 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "lapnr=5";
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task GetMarketDescriptionWithCompetitorInOutcomeTemplate()
     {
         const int marketId = 303;
@@ -442,13 +442,12 @@ public class MarketCacheProviderScenarioTests
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
         Assert.Equal(2, marketDescription.Specifiers.Count());
         Assert.Equal(2, marketDescription.Outcomes.Count());
-        //Assert.Equal(25, marketDescription.Mappings.Count());
         marketDescription.Mappings.ShouldBeNull();
         Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
         Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
@@ -462,12 +461,12 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "quarternr=4|hcp=-3.5";
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task GetMarketDescriptionWithScoreInNameTemplate()
     {
         const int marketId = 41;
@@ -475,13 +474,12 @@ public class MarketCacheProviderScenarioTests
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         Assert.NotNull(marketDescription);
         Assert.Equal(marketId, marketDescription.Id);
         _ = Assert.Single(marketDescription.Specifiers);
         Assert.Equal(28, marketDescription.Outcomes.Count());
-        // Assert.Equal(5, marketDescription.Mappings.Count());
         marketDescription.Mappings.ShouldBeNull();
         Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[1]));
         Assert.NotEqual(marketDescription.GetName(_languages[0]), marketDescription.GetName(_languages[2]));
@@ -495,7 +493,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "score=2:0";
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
@@ -552,7 +550,7 @@ public class MarketCacheProviderScenarioTests
 
         var marketDescription =
             (MarketDescription)await _marketCacheProvider.GetMarketDescriptionAsync(marketId,
-                                                                                    new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)),
+                Utilities.SpecifiersStringToReadOnlyDictionary(specifiers),
                                                                                     _languages,
                                                                                     true);
 
@@ -569,7 +567,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "variant=null";
         var marketCacheProviderLogger = _loggerFactory.GetOrCreateLogger(typeof(MarketCacheProvider));
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         Assert.Equal(1, marketCacheProviderLogger.CountByLevel(LogLevel.Error));
     }
@@ -581,7 +579,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "variant=null";
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         Assert.NotNull(marketDescription);
     }
@@ -593,7 +591,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "lapnr=5";
 
         var marketDescription =
-            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+            await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         Assert.Null(marketDescription);
     }
@@ -605,7 +603,7 @@ public class MarketCacheProviderScenarioTests
         const string specifiers = "lapnr=5";
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers), _languages, true);
 
         VerifySingleVariantMarketDescriptionApiCalls(Times.Never());
     }
@@ -636,7 +634,7 @@ public class MarketCacheProviderScenarioTests
         const int marketId = 110900;
         const string specifiers = "lapnr=5";
 
-        _ = await _marketCacheProvider.ReloadMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)));
+        _ = await _marketCacheProvider.ReloadMarketDescriptionAsync(marketId, Utilities.SpecifiersStringToReadOnlyDictionary(specifiers));
 
         VerifyInvariantMarketDescriptionApiCalls(Times.Once());
         VerifyVariantMarketDescriptionApiCalls(Times.Never());

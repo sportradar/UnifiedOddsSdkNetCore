@@ -30,7 +30,7 @@ public class MapBetStopTests : MapEntityTestBase
     [Fact]
     public void BetStopIsMapped()
     {
-        var record = Load<bet_stop>("bet_stop.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<bet_stop>("bet_stop.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         var entity = Mapper.MapBetStop<ICompetition>(record, Cultures, null);
         Assert.NotNull(entity);
@@ -39,7 +39,7 @@ public class MapBetStopTests : MapEntityTestBase
     [Fact]
     public void TestBetStopMapping()
     {
-        var record = Load<bet_stop>("bet_stop.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<bet_stop>("bet_stop.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         var entity = Mapper.MapBetStop<ICompetition>(record, Cultures, null);
         TestEntityValues(entity, record);

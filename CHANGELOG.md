@@ -1,6 +1,9 @@
 # Change Log
 
-## 2025-06-30 3.4.0
+## 3.5.0
+- enabling player and competitor URNs to support varied prefixes
+
+## 2025-07-07 3.4.0
 - Soccer tournaments 86 and 853 (Club Friendly Games) with increased amount of data are preloaded using a longer timeout.
 
 ## 2025-05-08 3.3.0

@@ -175,7 +175,7 @@ public class CacheStoreRefTests
         Assert.False(getSuccess);
         Assert.Null(expiredCacheItem);
 
-        _ = TestExecutionHelper.WaitToComplete(() =>
+        _ = await TestExecutionHelper.WaitToCompleteAsync(() =>
                                                {
                                                    storeKeys = cacheStore.GetKeys();
                                                    Assert.Empty(storeKeys);
@@ -243,14 +243,14 @@ public class CacheStoreRefTests
     }
 
     [Fact]
-    public void RemoveThenLogEvictionMessage()
+    public async Task RemoveThenLogEvictionMessage()
     {
         var myCacheItem = GenerateCacheItem(1, "Sport Entity Name 1");
         _ = AddCacheItem(1, myCacheItem);
 
         _cacheStore.Remove(myCacheItem.Id);
 
-        TestExecutionHelper.WaitToComplete(() => !_testLogger.Messages.IsEmpty);
+        await TestExecutionHelper.WaitToCompleteAsync(() => !_testLogger.Messages.IsEmpty);
 
         _ = Assert.Single(_testLogger.Messages);
         _ = Assert.Single(_testLogger.Messages, w => w.Contains("evicted cache item", StringComparison.InvariantCultureIgnoreCase));

@@ -28,7 +28,7 @@ public class MapFixtureChangeTests : MapEntityTestBase
     [Fact]
     public void FixtureChangeIsMapped()
     {
-        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         var entity = Mapper.MapFixtureChange<ICompetition>(record, Cultures, null);
         Assert.NotNull(entity);
@@ -37,7 +37,7 @@ public class MapFixtureChangeTests : MapEntityTestBase
     [Fact]
     public void TestFixtureChangeMapping()
     {
-        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         var entity = Mapper.MapFixtureChange<ICompetition>(record, Cultures, null);
         TestEntityValues(entity, record);
@@ -46,7 +46,7 @@ public class MapFixtureChangeTests : MapEntityTestBase
     [Fact]
     public void TestFixtureChangeTypeMapping()
     {
-        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         record.change_typeSpecified = true;
         record.change_type = 1;
@@ -60,7 +60,7 @@ public class MapFixtureChangeTests : MapEntityTestBase
     [Fact]
     public void TestFixtureChangeTypeMappingOther()
     {
-        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         record.change_typeSpecified = true;
         record.change_type = 10;
@@ -74,7 +74,7 @@ public class MapFixtureChangeTests : MapEntityTestBase
     [Fact]
     public void TestFixtureChangeTypeMappingNa()
     {
-        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<fixture_change>("fixture_change.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         record.change_typeSpecified = false;
         record.change_type = 1;

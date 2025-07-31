@@ -179,10 +179,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
         /// <param name="outcomeId">The outcome identifier</param>
         /// <param name="culture">The language of the returned name</param>
         /// <returns>A <see cref="Task{String}"/> representing the asynchronous operation</returns>
+        [SuppressMessage("ReSharper", "CognitiveComplexity")]
         public async Task<string> GetOutcomeNameAsync(string outcomeId, CultureInfo culture)
         {
-            if (outcomeId.StartsWith(SdkInfo.PlayerProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase)
-             || outcomeId.StartsWith(SdkInfo.CompetitorProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase))
+            if (outcomeId.Contains(SdkInfo.PlayerProfileGroupIdentifierForMarket)
+                || outcomeId.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket))
             {
                 try
                 {
@@ -264,6 +265,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
         /// <param name="culture">The language of the returned name</param>
         /// <returns>A <see cref="Task{String}"/> representing the async operation</returns>
         /// <exception cref="NameExpressionException">The name of the specified outcome could not be generated</exception>
+        [SuppressMessage("ReSharper", "CognitiveComplexity")]
         private async Task<string> GetOutcomeNameFromProfileAsync(string outcomeId, CultureInfo culture)
         {
             var idParts = outcomeId.Split(new[] { SdkInfo.NameProviderCompositeIdSeparator }, StringSplitOptions.RemoveEmptyEntries);
@@ -283,7 +285,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
 
                 try
                 {
-                    if (idPart.StartsWith(SdkInfo.PlayerProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase))
+                    if (idPart.Contains(SdkInfo.PlayerProfileGroupIdentifierForMarket))
                     {
                         var cachedPlayerName = await _profileCache.GetPlayerNameAsync(profileId, culture, false).ConfigureAwait(false);
                         if (!string.IsNullOrEmpty(cachedPlayerName))
@@ -313,7 +315,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
                         names.Add(playerName);
                         continue;
                     }
-                    if (idPart.StartsWith(SdkInfo.CompetitorProfileMarketPrefix, StringComparison.InvariantCultureIgnoreCase))
+                    if (idPart.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket))
                     {
                         var cachedCompetitorName = await _profileCache.GetCompetitorNameAsync(profileId, culture, false).ConfigureAwait(false);
                         if (!string.IsNullOrEmpty(cachedCompetitorName))
@@ -353,7 +355,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
                     throw new NameExpressionException("Error occurred while evaluating name expression", ex);
                 }
 
-                throw new ArgumentException($"OutcomeId={idPart} must start with '{SdkInfo.PlayerProfileMarketPrefix}' or '{SdkInfo.CompetitorProfileMarketPrefix}'");
+                throw new NameExpressionException($"OutcomeId={idPart} must contain '{SdkInfo.PlayerProfileGroupIdentifierForMarket}' or '{SdkInfo.CompetitorProfileGroupIdentifierForMarket}'", null);
             }
             return string.Join(SdkInfo.NameProviderCompositeIdSeparator, names);
         }

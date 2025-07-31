@@ -146,7 +146,7 @@ public class NameProviderTests
     public async Task GetVariantListMarketName()
     {
         var specifiers = new Dictionary<string, string> { { "variant", "sr:correct_score:bestof:12" } };
-        var apiInvariantMd = MdForInvariantList.GetMarketForVariantList199();
+        var apiInvariantMd = MdForInvariantList.GetMarket199ForVariantList();
         var apiVariantMd = MdForVariantList.GetCorrectScoreBestOf12();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>())).ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(apiInvariantMd));
         _variantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>())).ReturnsAsync(MarketDescriptionEndpoint.GetVariantDto(apiVariantMd));

@@ -33,26 +33,33 @@ public class WireMockMappingBuilder
     private const string MappingNameForBettingStatus = "BettingStatusMapping";
     private const string MappingNameForInvariantMarketList = "InvariantMarketListMapping";
     private const string MappingNameForVariantMarketList = "VariantMarketListMapping";
+    private const string MappingNameForSingleVariantMarket = "SingleVariantMarketMapping";
     private const string MappingNameForAllSports = "AllSportsMapping";
     private const string MappingNameForAllTournamentsForAllSports = "AllTournamentsForAllSportsMapping";
     private const string MappingNameForSportCategory = "SportCategoryMapping";
     private const string MappingNameForScheduleForDate = "ScheduleForDateMapping";
     private const string MappingNameForRecoveryRequest = "ScheduleForRecoveryRequestMapping";
     private const string MappingNameForCompetitorProfile = "CompetitorProfileRequestMapping";
+    private const string MappingNameForPlayerProfile = "PlayerProfileRequestMapping";
+    private const string MappingNameForMatchSummary = "MatchSummaryMapping";
 
-    public static ICollection<string> LogIgnoreXmls { get; } = new List<string>
+    public static ICollection<string> LogIgnoreUris { get; } = ResetLogIgnoreUri();
+
+    public static ICollection<string> ResetLogIgnoreUri()
     {
-        "<match_status",
-        "<betstop_reasons_descriptions",
-        "<betting_status_descriptions",
-        "<void_reasons_descriptions",
-        "<match_status_descriptions",
-        "<market_descriptions",
-        "<variant_descriptions ",
-        "<schedule",
-        "<sports ",
-        "<tournaments "
-    };
+        return new List<string>
+        {
+            "/match_status.xml",
+            "/void_reasons.xml",
+            "/betstop_reasons.xml",
+            "/betting_status.xml",
+            "/variants.xml",
+            "/markets.xml",
+            "/schedules/",
+            "/sports.xml",
+            "/tournaments.xml"
+        };
+    }
 
     public WireMockMappingBuilder(WireMockServer server)
     {
@@ -96,7 +103,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/users/whoami.xml").UsingGet())
             .WithTitle(MappingNameForWhoAmI)
-               .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -109,7 +116,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/users/whoami.xml").UsingGet())
             .WithTitle(MappingNameForWhoAmI)
-               .RespondWith(Response.Create().WithBody(responseXmlBody));
+            .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -120,7 +127,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/producers.xml").UsingGet())
             .WithTitle(MappingNameForProducers)
-               .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -133,7 +140,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/producers.xml").UsingGet())
             .WithTitle(MappingNameForProducers)
-               .RespondWith(Response.Create().WithBody(responseXmlBody));
+            .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -144,7 +151,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/producers.xml").UsingGet())
             .WithTitle(MappingNameForProducers)
-               .RespondWith(Response.Create().WithBody(responseXmlBody));
+            .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -155,7 +162,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/match_status.xml").UsingGet())
             .WithTitle(MappingNameForMatchStatus)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -166,7 +173,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/void_reasons.xml").UsingGet())
             .WithTitle(MappingNameForVoidReasons)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -177,7 +184,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/betstop_reasons.xml").UsingGet())
             .WithTitle(MappingNameForBetstopReasons)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -188,7 +195,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/betting_status.xml").UsingGet())
             .WithTitle(MappingNameForBettingStatus)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -208,7 +215,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets.xml").UsingGet())
                .WithTitle(MappingNameForInvariantMarketList)
-               .RespondWith(Response.Create().WithBody(responseBody));
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -219,7 +226,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets.xml").UsingGet())
             .WithTitle(MappingNameForInvariantMarketList)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -241,7 +248,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets.xml").UsingGet())
                .WithTitle(MappingNameForInvariantMarketList)
-               .RespondWith(Response.Create().WithBody(apiMarketDescriptionsXml));
+               .RespondWith(Response.Create().WithBody(apiMarketDescriptionsXml).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
     private static void ModifyApiMarketDescription(int marketId, string marketNameTemplate, IDictionary<string, string> newOutcomes, market_descriptions apiMarketDescriptions)
@@ -267,7 +274,6 @@ public class WireMockMappingBuilder
                 }
             }
         }
-        //LogIgnoreXmls.Remove("<market_descriptions");
     }
 
     public WireMockMappingBuilder WithDefaultVariantMarketList(ICollection<CultureInfo> cultures)
@@ -286,7 +292,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/variants.xml").UsingGet())
                .WithTitle(MappingNameForVariantMarketList)
-               .RespondWith(Response.Create().WithBody(responseBody));
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -297,7 +303,22 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/variants.xml").UsingGet())
             .WithTitle(MappingNameForVariantMarketList)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+        return this;
+    }
+
+    public WireMockMappingBuilder WithSingleVariantMarketDescription(CultureInfo culture, desc_market marketDescription)
+    {
+        var singleVariantMarketEndpointResponse = new market_descriptions
+        {
+            market = [marketDescription],
+            response_codeSpecified = false
+        };
+        var responseBody = MsgSerializer.SerializeToXml(singleVariantMarketEndpointResponse);
+
+        _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets/{marketDescription.id}/variants/{marketDescription.variant}").UsingGet())
+            .WithTitle(MappingNameForSingleVariantMarket)
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -308,7 +329,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports.xml").UsingGet())
             .WithTitle(MappingNameForAllSports)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -322,7 +343,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports/{sportId}/categories.xml").UsingGet())
             .WithTitle(MappingNameForSportCategory)
-               .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -332,7 +353,17 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports/{response.sport.id}/categories.xml").UsingGet())
             .WithTitle(MappingNameForSportCategory)
-               .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+        return this;
+    }
+
+    public WireMockMappingBuilder WithSummary(matchSummaryEndpoint content, CultureInfo culture)
+    {
+        var responseBody = DeserializerHelper.SerializeApiMessageToXml(content);
+
+        _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sport_events/{content.sport_event.id}/summary.xml").UsingGet())
+            .WithTitle(MappingNameForMatchSummary)
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -342,7 +373,17 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/competitors/{content.competitor.id}/profile.xml").UsingGet())
             .WithTitle(MappingNameForCompetitorProfile)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+        return this;
+    }
+
+    public WireMockMappingBuilder WithPlayerProfile(playerProfileEndpoint content, CultureInfo culture)
+    {
+        var responseBody = DeserializerHelper.SerializeApiMessageToXml(content);
+
+        _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/players/{content.player.id}/profile.xml").UsingGet())
+            .WithTitle(MappingNameForPlayerProfile)
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -353,7 +394,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/tournaments.xml").UsingGet())
             .WithTitle(MappingNameForAllTournamentsForAllSports)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -368,7 +409,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath(new RegexMatcher(pathPattern)).UsingGet())
             .WithTitle(MappingNameForScheduleForDate)
-            .RespondWith(Response.Create().WithBody(responseBody));
+            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
 
         return this;
     }
@@ -381,7 +422,7 @@ public class WireMockMappingBuilder
 
         _server.Given(Request.Create().WithPath(new RegexMatcher(pathPattern)).UsingGet())
             .WithTitle(MappingNameForScheduleForDate)
-            .RespondWith(Response.Create().WithCallback(GenerateResponseForScheduleForDate));
+            .RespondWith(Response.Create().WithCallback(GenerateResponseForScheduleForDate).WithStatusCode(StatusCodes.Status200OK));
 
         return this;
     }

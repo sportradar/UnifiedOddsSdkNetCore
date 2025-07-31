@@ -38,7 +38,7 @@ public class NameProviderFlexMarketsCacheTests
         var dataRouterManager = new DataRouterManagerBuilder()
             .AddMockedDependencies()
             .WithCacheManager(cacheManager)
-            .WithDefaultListProviders()
+            .WithDefaultMarketListProviders()
             .Build();
 
         var marketCacheProvider = MarketCacheProviderBuilder.Create()

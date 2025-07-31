@@ -47,7 +47,7 @@ public static class MdForVariantList
         // </variant>
         return VariantDescriptionBuilder.Create()
             .WithId("sr:correct_score:bestof:12")
-                                        .AddOutcome(builder => builder.WithId("sr:correct_score:bestof:12:192").WithName("7:0"))
+            .AddOutcome(builder => builder.WithId("sr:correct_score:bestof:12:192").WithName("7:0"))
             .AddOutcome(builder => builder.WithId("sr:correct_score:bestof:12:193").WithName("7:1"))
             .AddOutcome(builder => builder.WithId("sr:correct_score:bestof:12:194").WithName("7:2"))
             .AddOutcome(builder => builder.WithId("sr:correct_score:bestof:12:195").WithName("7:3"))

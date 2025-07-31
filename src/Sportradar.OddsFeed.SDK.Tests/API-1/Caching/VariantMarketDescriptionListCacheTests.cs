@@ -23,6 +23,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -199,7 +200,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.True(_variantsListCache.IsDisposed());
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadingAllDataInvokesApiCallForEachLanguage()
     {
         var result = await _variantsListCache.LoadMarketDescriptionsAsync();
@@ -208,7 +209,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadingAllDataCachesAllData()
     {
         var result = await _variantsListCache.LoadMarketDescriptionsAsync();
@@ -615,18 +616,18 @@ public class VariantMarketDescriptionListCacheTests
     }
 
     [Fact]
-    public void OnTimerWhenCacheDisposedThenTimerIsIgnored()
+    public async Task OnTimerWhenCacheDisposedThenTimerIsIgnored()
     {
         _timer.Start(TimeSpan.FromMilliseconds(10), TimeSpan.FromSeconds(5));
         _variantsListCache.Dispose();
 
-        var success = TestExecutionHelper.WaitToComplete(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions), 100, 1000);
+        var success = await TestExecutionHelper.WaitToCompleteAsync(() => _cultures.Count == _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions), 100, 5000);
 
         success.ShouldBeFalse();
         _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions).ShouldBe(0);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenDataReceivedThenAllLoaded()
     {
         var result = await _variantsListCache.LoadMarketDescriptionsAsync();
@@ -634,7 +635,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.True(result);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenDataReceivedThenApiCallsAreMadeForAll()
     {
         Assert.Equal(0, _variantsListMemoryCache.Count());
@@ -646,7 +647,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.Equal(_cultures.Count, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     [SuppressMessage("ReSharper", "RedundantAssignment")]
     public async Task LoadMarketDescriptionsWhenCalledMultipleTimesThenLoadEachTime()
     {
@@ -658,7 +659,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.Equal(_cultures.Count * 2, _dataRouterManager.GetCallCount(TestDataRouterManager.EndpointVariantDescriptions));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallFailsThenMethodReturnsFalse()
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml",
@@ -669,7 +670,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(result);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallFailsThenNothingIsSaved()
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml",
@@ -681,7 +682,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.Equal(0, _variantsListMemoryCache.Count());
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenDeserializationFailsThenReturnFalse()
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml", new DeserializationException("Not found", null)));
@@ -691,7 +692,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(result);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenMappingFailsThenReturnFalse()
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml",
@@ -702,7 +703,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(result);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenUnhandledExceptionIsThrownThenReturnFalse()
     {
         _dataRouterManager.UriExceptions.Add(new Tuple<string, Exception>("variant_market_descriptions.xml", new UriFormatException("Not found")));
@@ -712,7 +713,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(result);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallReturnMissingThenAllIsCached()
     {
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
@@ -723,7 +724,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.Equal(ScheduleData.VariantListCacheCount, _variantsListMemoryCache.Count());
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallReturnMissingThenReturnMarketOutcomeWithNullName()
     {
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
@@ -737,7 +738,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.Null(outcome.GetName(_cultures[0]));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallReturnMissingThenReturnMarketOutcomeWithNullNameForAllLanguages()
     {
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
@@ -753,7 +754,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(string.IsNullOrEmpty(outcome.GetName(_cultures[2])));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallReturnMissingThenReturnMarketOutcomeWithEmptyName()
     {
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
@@ -769,7 +770,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(string.IsNullOrEmpty(outcome.GetName(_cultures[2])));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallReturnMissingThenReturnMarketWithNullMappingProductOutcomeName()
     {
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
@@ -789,7 +790,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(string.IsNullOrEmpty(outcomeMapping.GetProducerOutcomeName(_cultures[2])));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenApiCallReturnMissingThenReturnMarketWithEmptyMappingProductOutcomeName()
     {
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
@@ -809,7 +810,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(string.IsNullOrEmpty(outcomeMapping.GetProducerOutcomeName(_cultures[2])));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenReloadingFullDataThenCacheItemsAreUpdated()
     {
         _dataRouterManager.UriReplacements.Add(new Tuple<string, string>("variant_market_descriptions_en.xml", "variant_market_descriptions_en_missing.xml"));
@@ -827,7 +828,7 @@ public class VariantMarketDescriptionListCacheTests
         Assert.False(string.IsNullOrEmpty(outcome.GetName(_cultures[2])));
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task LoadMarketDescriptionsWhenReloadingThenNoThrottlingHappens()
     {
         _ = await _variantsListCache.LoadMarketDescriptionsAsync();

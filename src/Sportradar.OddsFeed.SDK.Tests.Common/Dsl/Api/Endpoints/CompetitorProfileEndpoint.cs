@@ -50,7 +50,7 @@ public class CompetitorProfileEndpoint
         return this;
     }
 
-    public CompetitorProfileEndpoint AddJersey(Func<PlayerBuilder, PlayerBuilder> builderFunc)
+    public CompetitorProfileEndpoint AddPlayer(Func<PlayerBuilder, PlayerBuilder> builderFunc)
     {
         _players ??= [];
         var list = _players.ToList();

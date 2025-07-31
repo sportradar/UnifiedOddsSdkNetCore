@@ -216,31 +216,142 @@ public static class Soccer
 
     private static CompetitorBuilder GetHomeCompetitorBuilder()
     {
-        return new CompetitorBuilder()
-              .WithId(UrnCreate.CompetitorId(44))
-              .WithName("Liverpool FC")
-              .WithAbbreviation("LFC")
-              .WithShortName("Liverpool")
-              .WithCountry("England")
-              .WithCountryCode("ENG")
-              .IsMale()
-              .IsHome(true)
-              .WithReferences(new ReferencesBuilder().WithBetradar(45745));
+        return GetBaseHomeCompetitorBuilder().IsHome(true);
     }
 
     private static CompetitorBuilder GetAwayCompetitorBuilder()
     {
         // in fixture, it has additional reference_id with the name "aams" and value "1644"
+        return GetBaseAwayCompetitorBuilder().IsHome(false);
+    }
+
+    private static CompetitorBuilder GetBaseHomeCompetitorBuilder()
+    {
         return new CompetitorBuilder()
-              .WithId(UrnCreate.CompetitorId(1644))
-              .WithName("Paris Saint-Germain")
-              .WithAbbreviation("PSG")
-              .WithShortName("PSG")
-              .WithCountry("France")
-              .WithCountryCode("FRA")
-              .IsMale()
-              .IsHome(false)
-              .WithReferences(new ReferencesBuilder().WithBetradar(6866));
+            .WithId(UrnCreate.CompetitorId(44))
+            .WithName("Liverpool FC")
+            .WithAbbreviation("LFC")
+            .WithShortName("Liverpool")
+            .WithCountry("England")
+            .WithCountryCode("ENG")
+            .IsMale()
+            .WithReferences(new ReferencesBuilder().WithBetradar(45745));
+    }
+
+    private static CompetitorBuilder GetBaseAwayCompetitorBuilder()
+    {
+        // in fixture, it has additional reference_id with the name "aams" and value "1644"
+        return new CompetitorBuilder()
+            .WithId(UrnCreate.CompetitorId(1644))
+            .WithName("Paris Saint-Germain")
+            .WithAbbreviation("PSG")
+            .WithShortName("PSG")
+            .WithCountry("France")
+            .WithCountryCode("FRA")
+            .IsMale()
+            .WithReferences(new ReferencesBuilder().WithBetradar(6866));
+    }
+
+    public static competitorProfileEndpoint GetHomeCompetitorProfileEndpoint()
+    {
+        return new Endpoints.CompetitorProfileEndpoint()
+            .WithCompetitor(_ => GetBaseHomeCompetitorBuilder()
+                .WithSport(UrnCreate.SportId(1), "Soccer")
+                .WithCategory(UrnCreate.CategoryId(1), "England", "ENG"))
+            .WithVenue(_ => GetVenueBuilder())
+            .AddJersey(b => b.WithType("home").WithBase("e41e2c").WithSleeve("e41e2c").WithNumber("ffffff").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves").WithSleeveDetail("f20202"))
+            .AddJersey(b => b.WithType("away").WithBase("000000").WithSleeve("4fb5c1").WithNumber("ffffff").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves"))
+            .AddJersey(b => b.WithType("goalkeeper").WithBase("18fffb").WithSleeve("121820").WithNumber("f3f5f0").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves"))
+            .AddJersey(b => b.WithType("third").WithBase("ffffff").WithSleeve("de020e").WithNumber("000000").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves"))
+            .WithManager(UrnCreate.PlayerId(2250), "Slot, Arne", "NLD", "Netherlands")
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(284417)).WithName("Woodman, Freddie").WithType("goalkeeper").WithDateOfBirth("1997-03-04").WithNationality("England").WithCountryCode("ENG").WithHeight(188).WithWeight(83).WithFullName("Frederick John Woodman"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1989917)).WithName("Kerkez, Milos").WithType("defender").WithDateOfBirth("2003-11-07").WithNationality("Hungary").WithCountryCode("HUN").WithHeight(176).WithWeight(71).WithFullName("Milos Kerkez"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2352479)).WithName("Pecsi, Armin").WithType("goalkeeper").WithDateOfBirth("2005-02-24").WithNationality("Hungary").WithCountryCode("HUN").WithHeight(190).WithFullName("Armin Pecsi"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2041927)).WithName("Wirtz, Florian").WithType("midfielder").WithDateOfBirth("2003-05-03").WithNationality("Germany").WithCountryCode("DEU").WithHeight(177).WithWeight(71).WithFullName("Florian Wirtz"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(243609)).WithName("Alisson").WithType("goalkeeper").WithDateOfBirth("1992-10-02").WithNationality("Brazil").WithCountryCode("BRA").WithHeight(193).WithWeight(91).WithJerseyNumber(1).WithFullName("Alisson Ramses Becker"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(318927)).WithName("Gomez, Joe").WithType("defender").WithDateOfBirth("1997-05-23").WithNationality("England").WithCountryCode("ENG").WithHeight(188).WithWeight(77).WithJerseyNumber(2).WithFullName("Joseph Dave Gomez"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(143040)).WithName("Endo, Wataru").WithType("midfielder").WithDateOfBirth("1993-02-09").WithNationality("Japan").WithCountryCode("JPN").WithHeight(178).WithWeight(76).WithJerseyNumber(3).WithFullName("Wataru Endo"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(151545)).WithName("Van Dijk, Virgil").WithType("defender").WithDateOfBirth("1991-07-08").WithNationality("Netherlands").WithCountryCode("NLD").WithHeight(195).WithWeight(92).WithJerseyNumber(4).WithFullName("Virgil van Dijk"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(936572)).WithName("Konate, Ibrahima").WithType("defender").WithDateOfBirth("1999-05-25").WithNationality("France").WithCountryCode("FRA").WithHeight(194).WithWeight(84).WithJerseyNumber(5).WithFullName("Ibrahima Konate"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1134923)).WithName("Diaz, Luis").WithType("forward").WithDateOfBirth("1997-01-13").WithNationality("Colombia").WithCountryCode("COL").WithHeight(180).WithWeight(68).WithJerseyNumber(7).WithFullName("Luis Fernando Diaz Marulanda"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1064588)).WithName("Szoboszlai, Dominik").WithType("midfielder").WithDateOfBirth("2000-10-25").WithNationality("Hungary").WithCountryCode("HUN").WithHeight(186).WithWeight(74).WithJerseyNumber(8).WithFullName("Dominik Szoboszlai"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1406549)).WithName("Nunez, Darwin").WithType("forward").WithDateOfBirth("1999-06-24").WithNationality("Uruguay").WithCountryCode("URY").WithHeight(187).WithWeight(79).WithJerseyNumber(9).WithFullName("Darwin Gabriel Nunez Ribeiro"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1245194)).WithName("Mac Allister, Alexis").WithType("midfielder").WithDateOfBirth("1998-12-24").WithNationality("Argentina").WithCountryCode("ARG").WithHeight(176).WithWeight(70).WithJerseyNumber(10).WithFullName("Alexis Mac Allister"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(159665)).WithName("Salah, Mohamed").WithType("forward").WithDateOfBirth("1992-06-15").WithNationality("Egypt").WithCountryCode("EGY").WithHeight(175).WithWeight(71).WithJerseyNumber(11).WithFullName("Mohamed Salah Hamed Mahrous Ghaly"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1012117)).WithName("Chiesa, Federico").WithType("midfielder").WithDateOfBirth("1997-10-25").WithNationality("Italy").WithCountryCode("ITA").WithHeight(175).WithWeight(70).WithJerseyNumber(14).WithFullName("Federico Chiesa"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1298510)).WithName("Jones, Curtis").WithType("midfielder").WithDateOfBirth("2001-01-30").WithNationality("England").WithCountryCode("ENG").WithHeight(185).WithWeight(81).WithJerseyNumber(17).WithFullName("Curtis Jones"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1058437)).WithName("Gakpo, Cody").WithType("forward").WithDateOfBirth("1999-05-07").WithNationality("Netherlands").WithCountryCode("NLD").WithHeight(193).WithWeight(76).WithJerseyNumber(18).WithFullName("Cody Mathes Gakpo"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1604594)).WithName("Elliott, Harvey").WithType("midfielder").WithDateOfBirth("2003-04-04").WithNationality("England").WithCountryCode("ENG").WithHeight(175).WithWeight(64).WithJerseyNumber(19).WithFullName("Harvey Elliott"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(605434)).WithName("Tsimikas, Kostas").WithType("defender").WithDateOfBirth("1996-05-12").WithNationality("Greece").WithCountryCode("GRC").WithHeight(178).WithWeight(77).WithJerseyNumber(21).WithFullName("Konstantinos Tsimikas"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(262911)).WithName("Robertson, Andy").WithType("defender").WithDateOfBirth("1994-03-11").WithNationality("Scotland").WithCountryCode("SCO").WithHeight(178).WithWeight(64).WithJerseyNumber(26).WithFullName("Andrew Robertson"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1299404)).WithName("Frimpong, Jeremie").WithType("defender").WithDateOfBirth("2000-12-10").WithNationality("Netherlands").WithCountryCode("NLD").WithHeight(172).WithWeight(65).WithJerseyNumber(30).WithFullName("Jeremie Agyekum Frimpong"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1319220)).WithName("Gravenberch, Ryan").WithType("midfielder").WithDateOfBirth("2002-05-16").WithNationality("Netherlands").WithCountryCode("NLD").WithHeight(190).WithWeight(77).WithJerseyNumber(38).WithFullName("Ryan Jiro Gravenberch"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2439483)).WithName("Kone-Doherty, Trent").WithType("forward").WithDateOfBirth("2006-06-30").WithNationality("Ireland").WithCountryCode("IRL").WithJerseyNumber(51).WithFullName("Trent Kone Doherty"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2263171)).WithName("Mabaya, Isaac").WithType("midfielder").WithDateOfBirth("2004-09-22").WithNationality("England").WithCountryCode("ENG").WithJerseyNumber(52).WithFullName("Isaac Mabaya"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2263797)).WithName("McConnell, James").WithType("midfielder").WithDateOfBirth("2004-09-13").WithNationality("England").WithCountryCode("ENG").WithHeight(180).WithWeight(75).WithJerseyNumber(53).WithFullName("James McConnell"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2772009)).WithName("Nallo, Amara").WithType("defender").WithDateOfBirth("2006-11-18").WithNationality("England").WithCountryCode("ENG").WithHeight(186).WithWeight(74).WithJerseyNumber(65).WithFullName("Amara Nallo"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2569099)).WithName("Morrison, Kieran").WithType("midfielder").WithDateOfBirth("2006-11-09").WithNationality("Northern Ireland").WithCountryCode("NIR").WithJerseyNumber(68).WithFullName("Kieran Morrison"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2915821)).WithName("Ngumoha, Rio").WithType("forward").WithDateOfBirth("2008-08-29").WithNationality("England").WithCountryCode("ENG").WithHeight(170).WithWeight(75).WithJerseyNumber(73).WithFullName("Rio Bass Ray Ngumoha Adigun"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1939964)).WithName("Morton, Tyler").WithType("midfielder").WithDateOfBirth("2002-10-31").WithNationality("England").WithCountryCode("ENG").WithHeight(178).WithWeight(68).WithJerseyNumber(80).WithFullName("Tyler Morton"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2439493)).WithName("Young, Ranel").WithType("forward").WithDateOfBirth("2005-12-26").WithNationality("England").WithCountryCode("ENG").WithHeight(175).WithWeight(65).WithJerseyNumber(82).WithFullName("Ranel Young"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1939996)).WithName("Bradley, Conor").WithType("defender").WithDateOfBirth("2003-07-09").WithNationality("Northern Ireland").WithCountryCode("NIR").WithHeight(181).WithWeight(76).WithJerseyNumber(84).WithFullName("Conor Bradley"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2263163)).WithName("Mrozek, Fabian").WithType("goalkeeper").WithDateOfBirth("2003-09-28").WithNationality("Poland").WithCountryCode("POL").WithHeight(192).WithWeight(86).WithJerseyNumber(93).WithFullName("Fabian Mrozek"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2714270)).WithName("Nyoni, Treymaurice").WithType("midfielder").WithDateOfBirth("2007-06-30").WithNationality("England").WithCountryCode("ENG").WithHeight(180).WithWeight(75).WithJerseyNumber(98).WithFullName("Treymaurice Nyoni"))
+            .Build();
+    }
+
+    public static playerProfileEndpoint GetHomeCompetitorPlayerProfile151545()
+    {
+        return PlayerProfileEndpoint.Build(b => b.WithId(UrnCreate.PlayerId(151545)).WithName("Van Dijk, Virgil").WithType("D").WithDateOfBirth("1991-07-08").WithNationality("Netherlands").WithCountryCode("NLD").WithHeight(195).WithWeight(92).WithFullName("Virgil van Dijk").IsMale());
+    }
+
+    public static competitorProfileEndpoint GetAwayCompetitorProfileEndpoint()
+    {
+        return new Endpoints.CompetitorProfileEndpoint()
+            .WithCompetitor(_ => GetBaseAwayCompetitorBuilder()
+                .WithSport(UrnCreate.SportId(1), "Soccer")
+                .WithCategory(UrnCreate.CategoryId(7), "France", "FRA"))
+            .WithVenue(_ => new VenueBuilder().WithId(UrnCreate.VenueId(843)).WithName("Parc des Princes").WithCapacity(48229).WithCityName("Paris").WithCountryName("France").WithCountryCode("FRA").WithMapCoordinates(48.841389, 2.253056))
+            .AddJersey(b => b.WithType("home").WithBase("18345)e").WithSleeve("18345e").WithNumber("ffffff").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves"))
+            .AddJersey(b => b.WithType("away").WithBase("fcfcfc").WithSleeve("bd1125").WithNumber("1f317a").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves"))
+            .AddJersey(b => b.WithType("goalkeeper").WithBase("1d9613").WithSleeve("ffffff").WithNumber("000000").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves"))
+            .AddJersey(b => b.WithType("third").WithBase("af1f1f").WithSleeve("424a9d").WithNumber("ffffff").WithStripes(false).WithHorizontalStripes(false).WithSquares(false).WithSplit(false).WithShirtType("short_sleeves"))
+            .WithManager(UrnCreate.PlayerId(129465), "Luis Enrique", "ESP", "Spain")
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(318967)).WithName("Sanches, Renato").WithType("midfielder").WithDateOfBirth("1997-08-18").WithNationality("Portugal").WithCountryCode("PRT").WithHeight(176).WithWeight(70).WithFullName("Renato Junior Luz Sanches"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(756514)).WithName("Donnarumma, Gianluigi").WithType("goalkeeper").WithDateOfBirth("1999-02-25").WithNationality("Italy").WithCountryCode("ITA").WithHeight(196).WithWeight(90).WithJerseyNumber(1).WithFullName("Gianluigi Donnarumma"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(903858)).WithName("Hakimi, Achraf").WithType("defender").WithDateOfBirth("1998-11-04").WithNationality("Morocco").WithCountryCode("MAR").WithHeight(181).WithWeight(73).WithJerseyNumber(2).WithFullName("Achraf Hakimi Mouh"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(352916)).WithName("Kimpembe, Presnel").WithType("defender").WithDateOfBirth("1995-08-13").WithNationality("France").WithCountryCode("FRA").WithHeight(182).WithWeight(79).WithJerseyNumber(3).WithFullName("Presnel Kimpembe"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2157426)).WithName("Beraldo").WithType("defender").WithDateOfBirth("2003-11-24").WithNationality("Brazil").WithCountryCode("BRA").WithHeight(186).WithWeight(78).WithJerseyNumber(4).WithFullName("Lucas Lopes Beraldo"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(155995)).WithName("Marquinhos").WithType("defender").WithDateOfBirth("1994-05-14").WithNationality("Brazil").WithCountryCode("BRA").WithHeight(183).WithWeight(75).WithJerseyNumber(5).WithFullName("Marcos Aoas Correa"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1061013)).WithName("Kvaratskhelia, Khvicha").WithType("forward").WithDateOfBirth("2001-02-12").WithNationality("Georgia").WithCountryCode("GEO").WithHeight(183).WithWeight(76).WithJerseyNumber(7).WithFullName("Khvicha Kvaratskhelia"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(784655)).WithName("Ruiz, Fabian").WithType("midfielder").WithDateOfBirth("1996-04-03").WithNationality("Spain").WithCountryCode("ESP").WithHeight(189).WithWeight(70).WithJerseyNumber(8).WithFullName("Fabian Ruiz Pena"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1479784)).WithName("Ramos, Goncalo").WithType("forward").WithDateOfBirth("2001-06-20").WithNationality("Portugal").WithCountryCode("PRT").WithHeight(185).WithWeight(79).WithJerseyNumber(9).WithFullName("Goncalo Matias Ramos"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(361350)).WithName("Dembele, Ousmane").WithType("forward").WithDateOfBirth("1997-05-15").WithNationality("France").WithCountryCode("FRA").WithHeight(178).WithWeight(67).WithJerseyNumber(10).WithFullName("Masour Ousmane Dembele"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2304851)).WithName("Doue, Desire").WithType("forward").WithDateOfBirth("2005-06-03").WithNationality("France").WithCountryCode("FRA").WithHeight(181).WithWeight(79).WithJerseyNumber(14).WithFullName("Desire Nonka Maho Doue"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1055229)).WithName("Vitinha").WithType("midfielder").WithDateOfBirth("2000-02-13").WithNationality("Portugal").WithCountryCode("PRT").WithHeight(172).WithWeight(64).WithJerseyNumber(17).WithFullName("Vitor Machado Ferreira"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1493461)).WithName("Kang-in, Lee").WithType("midfielder").WithDateOfBirth("2001-02-19").WithNationality("Republic Of Korea").WithCountryCode("KOR").WithHeight(173).WithWeight(66).WithJerseyNumber(19).WithFullName("Kang-in Lee"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2607567)).WithName("Moscardo, Gabriel").WithType("midfielder").WithDateOfBirth("2005-09-28").WithNationality("Brazil").WithCountryCode("BRA").WithHeight(185).WithWeight(73).WithJerseyNumber(20).WithFullName("Gabriel Silva Moscardo de Salles"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(352370)).WithName("Hernandez, Lucas").WithType("defender").WithDateOfBirth("1996-02-14").WithNationality("France").WithCountryCode("FRA").WithHeight(184).WithWeight(79).WithJerseyNumber(21).WithFullName("Lucas Francois Bernard Hernandez"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2568589)).WithName("Mayulu, Senny").WithType("midfielder").WithDateOfBirth("2006-05-17").WithNationality("France").WithCountryCode("FRA").WithHeight(183).WithWeight(78).WithJerseyNumber(24).WithFullName("Senny Mayulu"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1834794)).WithName("Mendes, Nuno").WithType("defender").WithDateOfBirth("2002-06-19").WithNationality("Portugal").WithCountryCode("PRT").WithHeight(180).WithWeight(70).WithJerseyNumber(25).WithFullName("Nuno Alexandre Tavares Mendes"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1948356)).WithName("Barcola, Bradley").WithType("forward").WithDateOfBirth("2002-09-02").WithNationality("France").WithCountryCode("FRA").WithHeight(182).WithWeight(73).WithJerseyNumber(29).WithFullName("Bradley Barcola"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2256607)).WithName("Zaire-Emery, Warren").WithType("midfielder").WithDateOfBirth("2006-03-08").WithNationality("France").WithCountryCode("FRA").WithHeight(178).WithWeight(68).WithJerseyNumber(33).WithFullName("Warren Zaire-Emery"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2986107)).WithName("Slama, Wassim").WithType("midfielder").WithDateOfBirth("2008-09-26").WithNationality("France").WithCountryCode("FRA").WithJerseyNumber(34).WithFullName("Wassim Slama"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(861998)).WithName("Safonov, Matvey").WithType("goalkeeper").WithDateOfBirth("1999-02-25").WithNationality("Russia").WithCountryCode("RUS").WithHeight(192).WithWeight(82).WithJerseyNumber(39).WithFullName("Matvey Safonov"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2952657)).WithName("Kamara, Noham").WithType("defender").WithDateOfBirth("2007-01-22").WithNationality("France").WithCountryCode("FRA").WithJerseyNumber(43).WithFullName("Noham Kamara"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2805303)).WithName("Ndjantou Mbitcha, Quentin").WithType("forward").WithDateOfBirth("2007-07-23").WithNationality("France").WithCountryCode("FRA").WithJerseyNumber(44).WithFullName("Quentin Ndjantou Mbitcha"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2716386)).WithName("Mbaye, Ibrahim").WithType("forward").WithDateOfBirth("2008-01-24").WithNationality("France").WithCountryCode("FRA").WithHeight(188).WithWeight(69).WithJerseyNumber(49).WithFullName("Ibrahim Mbaye"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2256493)).WithName("Lavallee, Lucas").WithType("goalkeeper").WithDateOfBirth("2003-02-18").WithNationality("France").WithCountryCode("FRA").WithHeight(195).WithJerseyNumber(50).WithFullName("Lucas Michel Daniel Lavallee"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1414159)).WithName("Pacho, Willian").WithType("defender").WithDateOfBirth("2001-10-16").WithNationality("Ecuador").WithCountryCode("ECU").WithHeight(188).WithWeight(81).WithJerseyNumber(51).WithFullName("Willian Joel Pacho Tenorio"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2256499)).WithName("Mouquet, Louis").WithType("goalkeeper").WithDateOfBirth("2004-07-21").WithNationality("Portugal").WithCountryCode("PRT").WithHeight(187).WithWeight(81).WithJerseyNumber(70).WithFullName("Louis Moise Nascimento Mouquet"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(1297824)).WithName("Tenas, Arnau").WithType("goalkeeper").WithDateOfBirth("2001-05-30").WithNationality("Spain").WithCountryCode("ESP").WithHeight(185).WithWeight(85).WithJerseyNumber(80).WithFullName("Arnau Tenas Urena"))
+            .AddPlayer(b => b.WithId(UrnCreate.PlayerId(2240523)).WithName("Neves, Joao").WithType("midfielder").WithDateOfBirth("2004-09-27").WithNationality("Portugal").WithCountryCode("PRT").WithHeight(174).WithWeight(66).WithJerseyNumber(87).WithFullName("Joao Pedro Goncalves Neves"))
+            .Build();
+    }
+
+    public static playerProfileEndpoint GetAwayCompetitorPlayerProfile784655()
+    {
+        return PlayerProfileEndpoint.Build(b => b.WithId(UrnCreate.PlayerId(784655)).WithName("Ruiz, Fabian").WithType("midfielder").WithDateOfBirth("1996-04-03").WithNationality("Spain").WithCountryCode("ESP").WithHeight(189).WithWeight(70).WithFullName("Fabian Ruiz Pena").IsMale());
     }
 
     private static VenueBuilder GetVenueBuilder()

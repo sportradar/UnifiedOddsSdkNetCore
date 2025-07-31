@@ -17,21 +17,31 @@ public class MarketDescriptionEndpoint
     {
         var marketList = new List<desc_market>
         {
-            MdForInvariantList.GetMarketWithScore41(),
-            MdForInvariantList.GetMarketForVariantList199(),
-            MdForInvariantList.GetMarketWithCompetitor282(),
+            MdForInvariantList.GetMarket41WithScoreSpecifier(),
+            MdForInvariantList.GetMarket199ForVariantList(),
+            MdForInvariantList.GetMarket282WithCompetitorInMarketName(),
             MdForInvariantList.GetPreOutcomeTextMarket534(),
             MdForInvariantList.GetPreOutcomeTextMarket535(),
             MdForInvariantList.GetPreOutcomeTextMarket536(),
-            MdForInvariantList.GetMarketWithSpecifier701(),
+            MdForInvariantList.GetMarket701WithSpecifierInMarketName(),
             MdForInvariantList.GetOrdinalMarket739(),
             MdForInvariantList.GetPlayerPropsMarket768(),
             MdForInvariantList.GetFakePlayerPropsMarket1768(),
-            MdForInvariantList.GetMarketWithVariant374(),
-            MdForInvariantList.GetMarketWithGenericnNameVariant239(),
-            MdForInvariantList.GetMarketForCompetitor1109(),
-            MdForInvariantList.GetMarketForPlayer679(),
-            MdForInvariantList.GetMarketWithCompetitorInOutcome303()
+            MdForInvariantList.GetMarket374WithVariant(),
+            MdForInvariantList.GetMarket239WithGenericNameVariant(),
+            MdForInvariantList.GetMarket1109ForCompetitorOutcomeType(),
+            MdForInvariantList.GetMarket676ForPlayerOutcomeType(),
+            MdForInvariantList.GetMarket303WithCompetitorReferenceInOutcome(),
+            MdForInvariantList.GetFlexScoreMarket118(),
+            MdForInvariantList.GetGoalScorerMarket892WithVersion(),
+            MdForInvariantList.GetGolfThreeBallsMarket1022(),
+            MdForInvariantList.GetHead2HeadMarket1103(),
+            MdForInvariantList.GetMarket915WithPlayerInNameFromSpecifier(),
+            MdForInvariantList.GetMarket717WithPlayerInOutcomeNameFromSpecifier(),
+            MdForInvariantList.GetMarket1140WithPlayerInNameWithoutSpecifier(),
+            MdForInvariantList.GetGoalScorerMarket40(),
+            MdForInvariantList.GetLastGoalscorerMarket39(),
+            MdForInvariantList.GetPlayerToScoreIncludingOvertimeMarket882()
         };
         return new market_descriptions
         {
@@ -62,6 +72,11 @@ public class MarketDescriptionEndpoint
     internal static EntityList<MarketDescriptionDto> GetInvariantDto(params desc_market[] markets)
     {
         return new EntityList<MarketDescriptionDto>(markets.Select(m => new MarketDescriptionDto(m)).ToList());
+    }
+
+    internal static MarketDescriptionDto GetSingleVariantDto(desc_market market)
+    {
+        return new MarketDescriptionDto(market);
     }
 
     public static variant_descriptions GetDefaultVariantList()

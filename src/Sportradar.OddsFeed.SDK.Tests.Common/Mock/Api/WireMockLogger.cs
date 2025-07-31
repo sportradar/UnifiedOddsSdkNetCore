@@ -57,11 +57,11 @@ public class WireMockLogger : IWireMockLogger
         var sb = new StringBuilder();
         var body = logEntryModel.Request.Body.IsNullOrEmpty() ? string.Empty : $" Body: {logEntryModel.Request.Body}";
         sb.AppendLine($"Request: {logEntryModel.Request.DateTime.ToLongTimeString()} {logEntryModel.Request.Method} {logEntryModel.Request.Url}{body}");
-        sb.AppendLine($"Response StatusCode: {logEntryModel.Response.StatusCode} Body: {FormatResponseBody(logEntryModel.Response.Body)}");
+        sb.AppendLine($"Response StatusCode: {logEntryModel.Response.StatusCode?.ToString()} Body: {FormatResponseBody(logEntryModel.Request.Url, logEntryModel.Response.Body)}");
         return sb.ToString();
     }
 
-    private string FormatResponseBody(string responseBody)
+    private string FormatResponseBody(string requestUrl, string responseBody)
     {
         if (responseBody.IsNullOrEmpty())
         {
@@ -69,9 +69,9 @@ public class WireMockLogger : IWireMockLogger
         }
         if (_ignoreBaseResponses)
         {
-            foreach (var xmlSubstring in WireMockMappingBuilder.LogIgnoreXmls)
+            foreach (var xmlSubstring in WireMockMappingBuilder.LogIgnoreUris)
             {
-                if (responseBody.Contains(xmlSubstring, StringComparison.InvariantCultureIgnoreCase))
+                if (requestUrl.Contains(xmlSubstring, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return $"{responseBody.Length} characters of xml response";
                 }

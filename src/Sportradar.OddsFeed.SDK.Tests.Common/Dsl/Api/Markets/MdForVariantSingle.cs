@@ -46,6 +46,31 @@ public static class MdForVariantSingle
             .Build();
     }
 
+    /// <summary>
+    /// Market description for pre:markettext market 535
+    /// </summary>
+    /// <example>
+    /// <market_descriptions response_code="OK">
+    ///   <market id="535" name="Magical Kenya Open 2025 - Round 1 - 18 Hole Match Bet - H Li vs A Saddier" variant="pre:markettext:289339">
+    ///     <outcomes>
+    ///       <outcome id="pre:outcometext:6388892" name="Saddier, Adrien"/>
+    ///       <outcome id="pre:outcometext:5725004" name="Li, Haotong"/>
+    ///     </outcomes>
+    ///   </market>
+    /// </market_descriptions>
+    /// </example>
+    /// <returns></returns>
+    public static desc_market GetPreMarketTextMarket535()
+    {
+        return MarketDescriptionBuilder.Create()
+            .WithId(535)
+            .WithName("Magical Kenya Open 2025 - Round 1 - 18 Hole Match Bet - H Li vs A Saddier")
+            .WithVariant("pre:markettext:289339")
+            .AddOutcome(builder => builder.WithId("pre:outcometext:6388892").WithName("Saddier, Adrien"))
+            .AddOutcome(builder => builder.WithId("pre:outcometext:5725004").WithName("Li, Haotong"))
+            .Build();
+    }
+
     public static desc_market GetPlayerPropsMarket768()
     {
         return MarketDescriptionBuilder.Create()
@@ -101,32 +126,7 @@ public static class MdForVariantSingle
     }
 
     /// <summary>
-    /// Market description for pre:markettext market 535
-    /// </summary>
-    /// <example>
-    /// <market_descriptions response_code="OK">
-    ///   <market id="535" name="Magical Kenya Open 2025 - Round 1 - 18 Hole Match Bet - H Li vs A Saddier" variant="pre:markettext:289339">
-    ///     <outcomes>
-    ///       <outcome id="pre:outcometext:6388892" name="Saddier, Adrien"/>
-    ///       <outcome id="pre:outcometext:5725004" name="Li, Haotong"/>
-    ///     </outcomes>
-    ///   </market>
-    /// </market_descriptions>
-    /// </example>
-    /// <returns></returns>
-    public static desc_market GetPreMarketTextMarket535()
-    {
-        return MarketDescriptionBuilder.Create()
-            .WithId(535)
-            .WithName("Magical Kenya Open 2025 - Round 1 - 18 Hole Match Bet - H Li vs A Saddier")
-            .WithVariant("pre:markettext:289339")
-            .AddOutcome(builder => builder.WithId("pre:outcometext:6388892").WithName("Saddier, Adrien"))
-            .AddOutcome(builder => builder.WithId("pre:outcometext:5725004").WithName("Li, Haotong"))
-            .Build();
-    }
-
-    /// <summary>
-    /// Calling single variant market description with unknown marketId or variantId can result in NOT_FOUND response
+    /// Calling a single variant market description with unknown marketId or variantId can result in NOT_FOUND response
     /// This can also be result for valid market, but just not available at the moment
     /// </summary>
     /// <example>

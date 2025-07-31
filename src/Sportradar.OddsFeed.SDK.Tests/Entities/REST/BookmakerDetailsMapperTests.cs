@@ -61,8 +61,8 @@ public class BookmakerDetailsMapperTests
 
     private static void ValidateBookmakerDetailsFromXml(IBookmakerDetails details)
     {
-        Assert.Equal(TestData.BookmakerId, details.BookmakerId);
-        Assert.Equal(TestData.VirtualHost, details.VirtualHost);
+        Assert.Equal(TestConsts.AnyBookmakerId, details.BookmakerId);
+        Assert.Equal(TestConsts.AnyVirtualHost, details.VirtualHost);
         Assert.Null(details.Message);
         Assert.Equal(HttpStatusCode.OK, details.ResponseCode);
         Assert.Equal(DateTime.Parse("2016-07-26T17:44:24Z").ToUniversalTime(), details.ExpireAt.ToUniversalTime());

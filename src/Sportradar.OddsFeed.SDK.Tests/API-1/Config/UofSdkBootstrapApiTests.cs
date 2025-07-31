@@ -133,18 +133,20 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     {
         var sdkHttpClient = (ISdkHttpClient)ServiceScope1.ServiceProvider.GetRequiredService<T>();
         Assert.NotNull(sdkHttpClient);
-        Assert.IsAssignableFrom<T>(sdkHttpClient);
+        Assert.IsType<T>(sdkHttpClient, false);
         Assert.NotNull(sdkHttpClient.DefaultRequestHeaders);
         Assert.NotEmpty(sdkHttpClient.DefaultRequestHeaders);
         Assert.NotNull(sdkHttpClient.DefaultRequestHeaders.UserAgent);
         Assert.True(sdkHttpClient.DefaultRequestHeaders.TryGetValues(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, out var accessToken));
         Assert.True(sdkHttpClient.DefaultRequestHeaders.TryGetValues(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, out var userAgent));
-        Assert.Single(accessToken);
-        Assert.False(string.IsNullOrEmpty(accessToken.First()));
-        Assert.Equal(UofConfig.AccessToken, accessToken.First());
-        Assert.Equal(2, userAgent.Count());
-        Assert.False(string.IsNullOrEmpty(userAgent.First()));
-        Assert.StartsWith("UfSdk-", userAgent.First());
+        var accessTokens = accessToken.ToList();
+        Assert.Single(accessTokens);
+        Assert.False(string.IsNullOrEmpty(accessTokens.First()));
+        Assert.Equal(UofConfig.AccessToken, accessTokens.First());
+        var userAgents = userAgent.ToList();
+        Assert.Equal(2, userAgents.Count);
+        Assert.False(string.IsNullOrEmpty(userAgents.First()));
+        Assert.StartsWith("UfSdk-", userAgents.First());
     }
 
     [Fact]
@@ -187,7 +189,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataRestful>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<HttpDataRestful>(service1);
+        Assert.IsType<HttpDataRestful>(service1, false);
     }
 
     [Fact]
@@ -197,7 +199,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ILogHttpDataFetcher>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<LogHttpDataFetcher>(service1);
+        Assert.IsType<LogHttpDataFetcher>(service1, false);
         var logHttpDataFetcher = (LogHttpDataFetcher)service1;
         Assert.NotNull(logHttpDataFetcher);
         Assert.NotNull(logHttpDataFetcher.SdkHttpClient);
@@ -211,7 +213,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ILogHttpDataFetcherRecovery>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<LogHttpDataFetcherRecovery>(service1);
+        Assert.IsType<LogHttpDataFetcherRecovery>(service1, false);
         var logHttpDataFetcherRecovery = (LogHttpDataFetcherRecovery)service1;
         Assert.NotNull(logHttpDataFetcherRecovery);
         Assert.NotNull(logHttpDataFetcherRecovery.SdkHttpClient);
@@ -225,7 +227,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<LogHttpDataFetcherFastFailing>(service1);
+        Assert.IsType<LogHttpDataFetcherFastFailing>(service1, false);
         var logHttpDataFetcherFastFailing = (LogHttpDataFetcherFastFailing)service1;
         Assert.NotNull(logHttpDataFetcherFastFailing);
         Assert.NotNull(logHttpDataFetcherFastFailing.SdkHttpClient);
@@ -239,7 +241,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDeserializer<scheduleEndpoint>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<Deserializer<scheduleEndpoint>>(service1);
+        Assert.IsType<Deserializer<scheduleEndpoint>>(service1, false);
     }
 
     [Fact]
@@ -249,7 +251,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportEventsScheduleMapperFactory>(service1);
+        Assert.IsType<SportEventsScheduleMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -265,7 +267,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<RestMessage, SportEventSummaryDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportEventSummaryMapperFactory>(service1);
+        Assert.IsType<SportEventSummaryMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -275,8 +277,8 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<SportEventSummaryDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<RestMessage, SportEventSummaryDto>>(service1);
-        Assert.IsAssignableFrom<ILogHttpDataFetcherFastFailing>(service1.DataFetcher);
+        Assert.IsType<DataProvider<RestMessage, SportEventSummaryDto>>(service1, false);
+        Assert.IsType<ILogHttpDataFetcherFastFailing>(service1.DataFetcher, false);
     }
 
     [Fact]
@@ -292,7 +294,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<fixturesEndpoint, FixtureDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<FixtureMapperFactory>(service1);
+        Assert.IsType<FixtureMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -302,7 +304,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<FixtureDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<fixturesEndpoint, FixtureDto>>(service1);
+        Assert.IsType<DataProvider<fixturesEndpoint, FixtureDto>>(service1, false);
     }
 
     [Fact]
@@ -312,7 +314,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProviderNamed<FixtureDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<fixturesEndpoint, FixtureDto>>(service1);
+        Assert.IsType<DataProviderNamed<fixturesEndpoint, FixtureDto>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForFixtureChangeFixtureEndpoint, service1.DataProviderName);
     }
 
@@ -329,7 +331,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<tournamentInfoEndpoint, TournamentInfoDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<TournamentInfoMapperFactory>(service1);
+        Assert.IsType<TournamentInfoMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -339,7 +341,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<TournamentInfoDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<tournamentInfoEndpoint, TournamentInfoDto>>(service1);
+        Assert.IsType<DataProvider<tournamentInfoEndpoint, TournamentInfoDto>>(service1, false);
     }
 
     [Fact]
@@ -349,7 +351,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProviderNamed<TournamentInfoDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<tournamentInfoEndpoint, TournamentInfoDto>>(service1);
+        Assert.IsType<DataProviderNamed<tournamentInfoEndpoint, TournamentInfoDto>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForFixtureChangeFixtureEndpointForTournamentInfo, service1.DataProviderName);
     }
 
@@ -366,7 +368,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<tournamentsEndpoint, EntityList<SportDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<TournamentsMapperFactory>(service1);
+        Assert.IsType<TournamentsMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -376,7 +378,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<SportDto>>(UofSdkBootstrap.DataProviderForAllTournamentsForAllSports);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<tournamentsEndpoint, EntityList<SportDto>>>(service1);
+        Assert.IsType<DataProviderNamed<tournamentsEndpoint, EntityList<SportDto>>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForAllTournamentsForAllSports, service1.DataProviderName);
     }
 
@@ -393,7 +395,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<sportsEndpoint, EntityList<SportDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportsMapperFactory>(service1);
+        Assert.IsType<SportsMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -403,7 +405,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<SportDto>>(UofSdkBootstrap.DataProviderForAllSports);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<sportsEndpoint, EntityList<SportDto>>>(service1);
+        Assert.IsType<DataProviderNamed<sportsEndpoint, EntityList<SportDto>>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForAllSports, service1.DataProviderName);
     }
 
@@ -414,7 +416,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<SportEventSummaryDto>>(UofSdkBootstrap.DataProviderForDateSchedule);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DateScheduleProvider>(service1);
+        Assert.IsType<DateScheduleProvider>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForDateSchedule, service1.DataProviderName);
     }
 
@@ -431,7 +433,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<tournamentSchedule, EntityList<SportEventSummaryDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<TournamentScheduleMapperFactory>(service1);
+        Assert.IsType<TournamentScheduleMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -441,7 +443,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<SportEventSummaryDto>>(UofSdkBootstrap.DataProviderForTournamentSchedule);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<tournamentSchedule, EntityList<SportEventSummaryDto>>>(service1);
+        Assert.IsType<DataProviderNamed<tournamentSchedule, EntityList<SportEventSummaryDto>>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForTournamentSchedule, service1.DataProviderName);
     }
 
@@ -458,7 +460,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<raceScheduleEndpoint, EntityList<SportEventSummaryDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<TournamentRaceScheduleMapperFactory>(service1);
+        Assert.IsType<TournamentRaceScheduleMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -468,7 +470,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<SportEventSummaryDto>>(UofSdkBootstrap.DataProviderForStageTournamentSchedule);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<raceScheduleEndpoint, EntityList<SportEventSummaryDto>>>(service1);
+        Assert.IsType<DataProviderNamed<raceScheduleEndpoint, EntityList<SportEventSummaryDto>>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForStageTournamentSchedule, service1.DataProviderName);
     }
 
@@ -485,7 +487,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<tournamentSeasons, TournamentSeasonsDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<TournamentSeasonsMapperFactory>(service1);
+        Assert.IsType<TournamentSeasonsMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -495,7 +497,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<TournamentSeasonsDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<tournamentSeasons, TournamentSeasonsDto>>(service1);
+        Assert.IsType<DataProvider<tournamentSeasons, TournamentSeasonsDto>>(service1, false);
     }
 
     [Fact]
@@ -511,7 +513,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<playerProfileEndpoint, PlayerProfileDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<PlayerProfileMapperFactory>(service1);
+        Assert.IsType<PlayerProfileMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -521,8 +523,8 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<PlayerProfileDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<playerProfileEndpoint, PlayerProfileDto>>(service1);
-        Assert.IsAssignableFrom<ILogHttpDataFetcherFastFailing>(service1.DataFetcher);
+        Assert.IsType<DataProvider<playerProfileEndpoint, PlayerProfileDto>>(service1, false);
+        Assert.IsType<ILogHttpDataFetcherFastFailing>(service1.DataFetcher, false);
     }
 
     [Fact]
@@ -538,7 +540,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<competitorProfileEndpoint, CompetitorProfileDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<CompetitorProfileMapperFactory>(service1);
+        Assert.IsType<CompetitorProfileMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -548,8 +550,8 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<CompetitorProfileDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<competitorProfileEndpoint, CompetitorProfileDto>>(service1);
-        Assert.IsAssignableFrom<ILogHttpDataFetcherFastFailing>(service1.DataFetcher);
+        Assert.IsType<DataProvider<competitorProfileEndpoint, CompetitorProfileDto>>(service1, false);
+        Assert.IsType<ILogHttpDataFetcherFastFailing>(service1.DataFetcher, false);
     }
 
     [Fact]
@@ -565,7 +567,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<simpleTeamProfileEndpoint, SimpleTeamProfileDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SimpleTeamProfileMapperFactory>(service1);
+        Assert.IsType<SimpleTeamProfileMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -575,8 +577,8 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<SimpleTeamProfileDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<simpleTeamProfileEndpoint, SimpleTeamProfileDto>>(service1);
-        Assert.IsAssignableFrom<ILogHttpDataFetcherFastFailing>(service1.DataFetcher);
+        Assert.IsType<DataProvider<simpleTeamProfileEndpoint, SimpleTeamProfileDto>>(service1, false);
+        Assert.IsType<ILogHttpDataFetcherFastFailing>(service1.DataFetcher, false);
     }
 
     [Fact]
@@ -592,7 +594,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<matchTimelineEndpoint, MatchTimelineDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<MatchTimelineMapperFactory>(service1);
+        Assert.IsType<MatchTimelineMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -602,7 +604,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<MatchTimelineDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<matchTimelineEndpoint, MatchTimelineDto>>(service1);
+        Assert.IsType<DataProvider<matchTimelineEndpoint, MatchTimelineDto>>(service1, false);
     }
 
     [Fact]
@@ -618,7 +620,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<sportCategoriesEndpoint, SportCategoriesDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportCategoriesMapperFactory>(service1);
+        Assert.IsType<SportCategoriesMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -628,7 +630,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<SportCategoriesDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<sportCategoriesEndpoint, SportCategoriesDto>>(service1);
+        Assert.IsType<DataProvider<sportCategoriesEndpoint, SportCategoriesDto>>(service1, false);
     }
 
     [Fact]
@@ -644,7 +646,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<fixtureChangesEndpoint, EntityList<FixtureChangeDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<FixtureChangesMapperFactory>(service1);
+        Assert.IsType<FixtureChangesMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -654,7 +656,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<EntityList<FixtureChangeDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<fixtureChangesEndpoint, EntityList<FixtureChangeDto>>>(service1);
+        Assert.IsType<DataProvider<fixtureChangesEndpoint, EntityList<FixtureChangeDto>>>(service1, false);
     }
 
     [Fact]
@@ -670,7 +672,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<market_descriptions, EntityList<MarketDescriptionDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<MarketDescriptionsMapperFactory>(service1);
+        Assert.IsType<MarketDescriptionsMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -680,7 +682,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<MarketDescriptionDto>>(UofSdkBootstrap.DataProviderForInvariantMarketList);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<market_descriptions, EntityList<MarketDescriptionDto>>>(service1);
+        Assert.IsType<DataProviderNamed<market_descriptions, EntityList<MarketDescriptionDto>>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForInvariantMarketList, service1.DataProviderName);
     }
 
@@ -697,7 +699,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<variant_descriptions, EntityList<VariantDescriptionDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<VariantDescriptionsMapperFactory>(service1);
+        Assert.IsType<VariantDescriptionsMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -707,7 +709,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<VariantDescriptionDto>>(UofSdkBootstrap.DataProviderForVariantMarketList);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<variant_descriptions, EntityList<VariantDescriptionDto>>>(service1);
+        Assert.IsType<DataProviderNamed<variant_descriptions, EntityList<VariantDescriptionDto>>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForVariantMarketList, service1.DataProviderName);
     }
 
@@ -724,7 +726,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<market_descriptions, MarketDescriptionDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<MarketDescriptionMapperFactory>(service1);
+        Assert.IsType<MarketDescriptionMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -734,9 +736,9 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<MarketDescriptionDto>(UofSdkBootstrap.DataProviderForVariantMarket);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<market_descriptions, MarketDescriptionDto>>(service1);
+        Assert.IsType<DataProviderNamed<market_descriptions, MarketDescriptionDto>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForVariantMarket, service1.DataProviderName);
-        Assert.IsAssignableFrom<ILogHttpDataFetcherFastFailing>(service1.DataFetcher);
+        Assert.IsType<ILogHttpDataFetcherFastFailing>(service1.DataFetcher, false);
     }
 
     [Fact]
@@ -752,7 +754,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<draw_summary, DrawDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DrawSummaryMapperFactory>(service1);
+        Assert.IsType<DrawSummaryMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -762,7 +764,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<DrawDto>(UofSdkBootstrap.DataProviderForLotteryDrawSummary);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<draw_summary, DrawDto>>(service1);
+        Assert.IsType<DataProviderNamed<draw_summary, DrawDto>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForLotteryDrawSummary, service1.DataProviderName);
     }
 
@@ -779,7 +781,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<draw_fixtures, DrawDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DrawFixtureMapperFactory>(service1);
+        Assert.IsType<DrawFixtureMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -789,7 +791,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<DrawDto>(UofSdkBootstrap.DataProviderForLotteryDrawFixture);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<draw_fixtures, DrawDto>>(service1);
+        Assert.IsType<DataProviderNamed<draw_fixtures, DrawDto>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForLotteryDrawFixture, service1.DataProviderName);
     }
 
@@ -806,7 +808,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<lottery_schedule, LotteryDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<LotteryScheduleMapperFactory>(service1);
+        Assert.IsType<LotteryScheduleMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -816,7 +818,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<LotteryDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<lottery_schedule, LotteryDto>>(service1);
+        Assert.IsType<DataProvider<lottery_schedule, LotteryDto>>(service1, false);
     }
 
     [Fact]
@@ -832,7 +834,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<lotteries, EntityList<LotteryDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<LotteriesMapperFactory>(service1);
+        Assert.IsType<LotteriesMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -842,7 +844,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<EntityList<LotteryDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<lotteries, EntityList<LotteryDto>>>(service1);
+        Assert.IsType<DataProvider<lotteries, EntityList<LotteryDto>>>(service1, false);
     }
 
     [Fact]
@@ -852,7 +854,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<SportEventSummaryDto>>(UofSdkBootstrap.DataProviderForSportEventList);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProviderNamed<scheduleEndpoint, EntityList<SportEventSummaryDto>>>(service1);
+        Assert.IsType<DataProviderNamed<scheduleEndpoint, EntityList<SportEventSummaryDto>>>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForSportEventList, service1.DataProviderName);
     }
 
@@ -869,7 +871,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<sportTournamentsEndpoint, EntityList<TournamentInfoDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<ListSportAvailableTournamentMapperFactory>(service1);
+        Assert.IsType<ListSportAvailableTournamentMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -879,7 +881,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<EntityList<TournamentInfoDto>>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<sportTournamentsEndpoint, EntityList<TournamentInfoDto>>>(service1);
+        Assert.IsType<DataProvider<sportTournamentsEndpoint, EntityList<TournamentInfoDto>>>(service1, false);
     }
 
     [Fact]
@@ -895,7 +897,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<stagePeriodEndpoint, PeriodSummaryDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<PeriodSummaryMapperFactory>(service1);
+        Assert.IsType<PeriodSummaryMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -905,7 +907,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<PeriodSummaryDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<stagePeriodEndpoint, PeriodSummaryDto>>(service1);
+        Assert.IsType<DataProvider<stagePeriodEndpoint, PeriodSummaryDto>>(service1, false);
     }
 
     [Fact]
@@ -921,7 +923,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<AvailableSelectionsType, AvailableSelectionsDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<AvailableSelectionsMapperFactory>(service1);
+        Assert.IsType<AvailableSelectionsMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -931,7 +933,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<AvailableSelectionsDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<DataProvider<AvailableSelectionsType, AvailableSelectionsDto>>(service1);
+        Assert.IsType<DataProvider<AvailableSelectionsType, AvailableSelectionsDto>>(service1, false);
     }
 
     [Fact]
@@ -947,7 +949,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<CalculationResponseType, CalculationDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<CalculationMapperFactory>(service1);
+        Assert.IsType<CalculationMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -957,7 +959,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ICalculateProbabilityProvider>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<CalculateProbabilityProvider>(service1);
+        Assert.IsType<CalculateProbabilityProvider>(service1, false);
     }
 
     [Fact]
@@ -973,7 +975,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<FilteredCalculationResponseType, FilteredCalculationDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<CalculationFilteredMapperFactory>(service1);
+        Assert.IsType<CalculationFilteredMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -983,7 +985,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ICalculateProbabilityFilteredProvider>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<CalculateProbabilityFilteredProvider>(service1);
+        Assert.IsType<CalculateProbabilityFilteredProvider>(service1, false);
     }
 
     [Fact]
@@ -999,7 +1001,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<NamedValueDto>>(UofSdkBootstrap.DataProviderForNamedValueCacheVoidReason);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NamedValueDataProvider>(service1);
+        Assert.IsType<NamedValueDataProvider>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForNamedValueCacheVoidReason, service1.DataProviderName);
     }
 
@@ -1010,7 +1012,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<NamedValueDto>>(UofSdkBootstrap.DataProviderForNamedValueCacheBetStopReason);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NamedValueDataProvider>(service1);
+        Assert.IsType<NamedValueDataProvider>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForNamedValueCacheBetStopReason, service1.DataProviderName);
     }
 
@@ -1021,7 +1023,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<NamedValueDto>>(UofSdkBootstrap.DataProviderForNamedValueCacheBettingStatus);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NamedValueDataProvider>(service1);
+        Assert.IsType<NamedValueDataProvider>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForNamedValueCacheBettingStatus, service1.DataProviderName);
     }
 
@@ -1032,7 +1034,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetDataProviderNamed<EntityList<NamedValueDto>>(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NamedValueDataProvider>(service1);
+        Assert.IsType<NamedValueDataProvider>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, service1.DataProviderName);
     }
 }

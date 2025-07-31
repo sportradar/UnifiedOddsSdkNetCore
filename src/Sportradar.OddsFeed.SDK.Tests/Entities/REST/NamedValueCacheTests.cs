@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Moq;
 using Shouldly;
@@ -98,10 +99,15 @@ public class NamedValueCacheTests
     }
 
     [Fact]
-    public void InitialDataFetchStartedByConstructor()
+    public async Task InitialDataFetchStartedByConstructor()
     {
         Setup(ExceptionHandlingStrategy.Catch, SdkTimer.Create(UofSdkBootstrap.TimerForNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
-        var finished = TestExecutionHelper.WaitToComplete(() => _fetcherMock.Verify(x => x.GetDataAsync(_betStopReasonsUri), Times.Once), 15000);
+
+        var finished = await TestExecutionHelper.WaitToCompleteAsync(() =>
+        {
+            _fetcherMock.Verify(x => x.GetDataAsync(_betStopReasonsUri), Times.Once);
+            return true;
+        }, 100, 15000);
 
         finished.ShouldBeTrue();
     }

@@ -27,10 +27,10 @@ internal class TestBookmakerDetailsProvider : IBookmakerDetailsProvider
     {
         return new BookmakerDetailsDto(
             RestMessageBuilder.BuildBookmakerDetails(
-                TestData.BookmakerId,
+                TestConsts.AnyBookmakerId,
                 DateTime.Now.AddDays(1),
                 response_code.OK,
-                TestData.VirtualHost),
+                TestConsts.AnyVirtualHost),
             TimeSpan.Zero);
     }
 }

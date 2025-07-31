@@ -311,7 +311,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IEventRecoveryRequestIssuer>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<RecoveryRequestIssuer>(service);
+        Assert.IsType<RecoveryRequestIssuer>(service, false);
     }
 
     [Fact]
@@ -321,7 +321,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IRecoveryRequestIssuer>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<RecoveryRequestIssuer>(service);
+        Assert.IsType<RecoveryRequestIssuer>(service, false);
     }
 
     [Fact]
@@ -337,7 +337,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IRabbitMqChannel>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<RabbitMqChannel>(service);
+        Assert.IsType<RabbitMqChannel>(service, false);
     }
 
     [Fact]
@@ -347,7 +347,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IMessageReceiver>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<RabbitMqMessageReceiver>(service);
+        Assert.IsType<RabbitMqMessageReceiver>(service, false);
     }
 
     [Fact]
@@ -357,7 +357,17 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IFeedMessageValidator>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<FeedMessageValidator>(service);
+        Assert.IsType<FeedMessageValidator>(service, false);
+    }
+
+    [Fact]
+    public void MarketFactoryIsSingleton()
+    {
+        CheckSingletonType<IMarketFactory>();
+
+        var service = ServiceScope1.ServiceProvider.GetRequiredService<IMarketFactory>();
+        Assert.NotNull(service);
+        Assert.IsType<MarketFactory>(service, false);
     }
 
     [Fact]
@@ -367,7 +377,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IFeedMessageMapper>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<FeedMessageMapper>(service);
+        Assert.IsType<FeedMessageMapper>(service, false);
     }
 
     [Fact]
@@ -377,7 +387,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IFeedMessageHandler>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<FeedMessageHandler>(service);
+        Assert.IsType<FeedMessageHandler>(service, false);
     }
 
     [Fact]
@@ -415,7 +425,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<CompositeMessageProcessor>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<CompositeMessageProcessor>(service);
+        Assert.IsType<CompositeMessageProcessor>(service, false);
     }
 
     [Fact]
@@ -449,7 +459,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<ISportDataProvider>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<SportDataProvider>(service);
+        Assert.IsType<SportDataProvider>(service, false);
     }
 
     [Fact]
@@ -459,7 +469,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IBookingManager>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<BookingManager>(service);
+        Assert.IsType<BookingManager>(service, false);
     }
 
     [Fact]
@@ -469,7 +479,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IMarketDescriptionManager>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<MarketDescriptionManager>(service);
+        Assert.IsType<MarketDescriptionManager>(service, false);
     }
 
     [Fact]
@@ -479,7 +489,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<ICustomBetSelectionBuilder>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<CustomBetSelectionBuilder>(service);
+        Assert.IsType<CustomBetSelectionBuilder>(service, false);
     }
 
     [Fact]
@@ -489,7 +499,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<ICustomBetSelectionBuilderFactory>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<CustomBetSelectionBuilderFactory>(service);
+        Assert.IsType<CustomBetSelectionBuilderFactory>(service, false);
     }
 
     [Fact]
@@ -499,7 +509,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<ICustomBetManager>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<CustomBetManager>(service);
+        Assert.IsType<CustomBetManager>(service, false);
     }
 
     [Fact]
@@ -522,7 +532,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IEventChangeManager>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<EventChangeManager>(service);
+        Assert.IsType<EventChangeManager>(service, false);
     }
 
     [Fact]
@@ -532,7 +542,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IReplayManager>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<ReplayManager>(service);
+        Assert.IsType<ReplayManager>(service, false);
     }
 
     [Fact]
@@ -548,7 +558,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<IDataProvider<cashout>>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<NonMappingDataProvider<cashout>>(service);
+        Assert.IsType<NonMappingDataProvider<cashout>>(service, false);
     }
 
     [Fact]
@@ -558,7 +568,7 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
 
         var service = ServiceScope1.ServiceProvider.GetRequiredService<ICashOutProbabilitiesProvider>();
         Assert.NotNull(service);
-        Assert.IsAssignableFrom<CashOutProbabilitiesProvider>(service);
+        Assert.IsType<CashOutProbabilitiesProvider>(service, false);
     }
 
     [Fact]

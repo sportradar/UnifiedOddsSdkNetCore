@@ -19,7 +19,7 @@ public class MapAliveTests : MapEntityTestBase
     [Fact]
     public void AliveIsMapped()
     {
-        var record = Load<alive>("alive.xml", null, null);
+        var record = Load<alive>("alive.xml", null);
         TestData.FillMessageTimestamp(record);
         var entity = Mapper.MapAlive(record);
         Assert.NotNull(entity);
@@ -28,7 +28,7 @@ public class MapAliveTests : MapEntityTestBase
     [Fact]
     public void TestAliveMapping()
     {
-        var record = Load<alive>("alive.xml", null, null);
+        var record = Load<alive>("alive.xml", null);
         TestData.FillMessageTimestamp(record);
         var entity = Mapper.MapAlive(record);
         TestEntityValues(entity, record);

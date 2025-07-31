@@ -61,8 +61,8 @@ public class NameProviderPlayerProfileTests
     {
         var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor1PlayerId1.ToString(), ScheduleData.CultureEn);
         Assert.Equal(_scheduleData.MatchCompetitor1Player1.Names[ScheduleData.CultureEn], name);
-        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
-        Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.PlayerProfileMarketPrefix)));
+        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
+        Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.PlayerProfileGroupIdentifierForMarket)));
         Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
@@ -150,7 +150,7 @@ public class NameProviderPlayerProfileTests
         var name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId2.ToString(), ScheduleData.CultureEn);
         Assert.Equal(_scheduleData.MatchCompetitor2Player2.GetName(ScheduleData.CultureEn), name);
         Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
@@ -159,7 +159,7 @@ public class NameProviderPlayerProfileTests
         name = await _nameProvider.GetOutcomeNameAsync(ScheduleData.MatchCompetitor2PlayerId2.ToString(), ScheduleData.CultureEn);
         Assert.Equal(_scheduleData.MatchCompetitor2Player2.GetName(ScheduleData.CultureEn), name);
         Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(2, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
@@ -216,7 +216,7 @@ public class NameProviderPlayerProfileTests
             Assert.False(string.IsNullOrEmpty(name));
         }
         Assert.Equal(ScheduleData.MatchCompetitor1PlayerCount + ScheduleData.MatchCompetitor2PlayerCount + 2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(7, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(6, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
@@ -236,7 +236,7 @@ public class NameProviderPlayerProfileTests
             Assert.Equal(_scheduleData.MatchCompetitor1.GetName(cultureInfo), name);
         }
         Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(2, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
@@ -348,7 +348,7 @@ public class NameProviderPlayerProfileTests
             Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
         }
         Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
@@ -379,7 +379,7 @@ public class NameProviderPlayerProfileTests
             Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
         }
         Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointCompetitor));
@@ -403,7 +403,7 @@ public class NameProviderPlayerProfileTests
             Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
         }
         Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("tournament")));
@@ -429,7 +429,7 @@ public class NameProviderPlayerProfileTests
             Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
         }
         Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(ScheduleData.MatchTournamentCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("tournament")));
@@ -455,7 +455,7 @@ public class NameProviderPlayerProfileTests
             Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
         }
         Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("season")));
@@ -481,7 +481,7 @@ public class NameProviderPlayerProfileTests
             Assert.Equal(_scheduleData.MatchCompetitor2.GetName(cultureInfo), name2);
         }
         Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
-        Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileMarketPrefix)));
+        Assert.Equal(ScheduleData.MatchSeasonCompetitorCount, _sportEntityFactoryBuilder.ProfileMemoryCache.GetKeys().Count(c => c.Contains(SdkInfo.CompetitorProfileGroupIdentifierForMarket)));
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(3, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointSportEventSummary));
         Assert.Equal(1, _sportEntityFactoryBuilder.DataRouterManager.RestUrlCalls.Count(c => c.Contains("season")));

@@ -32,7 +32,7 @@ public class MapOddsChangeTests : MapEntityTestBase
     [Fact]
     public void OddsChangeWithoutOddsIsMapped()
     {
-        var record = Load<odds_change>("odds_change.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<odds_change>("odds_change.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         record.odds.market = null;
         var entity = Mapper.MapOddsChange<ICompetition>(record, Cultures, null);
@@ -42,7 +42,7 @@ public class MapOddsChangeTests : MapEntityTestBase
     [Fact]
     public void TestOddsChangeMapping()
     {
-        var record = Load<odds_change>("odds_change.xml", Urn.Parse("sr:sport:1000"), Cultures);
+        var record = Load<odds_change>("odds_change.xml", Urn.Parse("sr:sport:1000"));
         TestData.FillMessageTimestamp(record);
         Validator.Validate(record);
         var entity = Mapper.MapOddsChange<ICompetition>(record, Cultures, null);

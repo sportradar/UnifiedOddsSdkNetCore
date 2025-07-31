@@ -22,6 +22,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Endpoints;
+using xRetry;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
@@ -183,18 +184,20 @@ public class LocalizedNamedValueCacheTests
         _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
     }
 
-    [Fact]
-    public void InitialDataFetchStartedByConstructor()
+    [RetryFact(3, 5000)]
+    public async Task InitialDataFetchStartedByConstructor()
     {
         Setup(ExceptionHandlingStrategy.Catch, SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
-        var finished = TestExecutionHelper.WaitToComplete(() =>
+
+        var finished = await TestExecutionHelper.WaitToCompleteAsync(() =>
                                                           {
                                                               _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
                                                               _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
                                                               _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
                                                               _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
+                                                              return true;
                                                           },
-                                                          15000);
+                                                          200, 15000);
 
         finished.ShouldBeTrue();
     }

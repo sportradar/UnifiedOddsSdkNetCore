@@ -4,7 +4,7 @@ using Sportradar.OddsFeed.SDK.Common;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 
-public class UrnCreate
+public static class UrnCreate
 {
     public static Urn SportId(int id)
     {
@@ -59,5 +59,15 @@ public class UrnCreate
     public static Urn GroupId(int id)
     {
         return Urn.Parse($"sr:group:{id}");
+    }
+
+    public static Urn DrawId(int id)
+    {
+        return Urn.Parse($"sr:draw:{id}");
+    }
+
+    public static Urn LotteryId(int id)
+    {
+        return Urn.Parse($"sr:lottery:{id}");
     }
 }

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -43,18 +42,18 @@ public abstract class MapEntityTestBase
         namedValuesProviderMock.Setup(x => x.VoidReasons).Returns(voidReasonCache);
 
         var sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
+
+        var marketFactory = new MarketFactory(new Mock<IMarketCacheProvider>().Object, nameProviderFactoryMock.Object, new Mock<IMarketMappingProviderFactory>().Object, namedValuesProviderMock.Object, voidReasonCache, ExceptionHandlingStrategy.Throw);
+
         Mapper = new FeedMessageMapper(
             sportEntityFactoryBuilder.SportEntityFactory,
-            nameProviderFactoryMock.Object,
-            new Mock<IMarketMappingProviderFactory>().Object,
-            namedValuesProviderMock.Object,
-            ExceptionHandlingStrategy.Throw,
+            marketFactory,
             TestProducerManager.Create(),
-            new Mock<IMarketCacheProvider>().Object,
-            voidReasonCache);
+            namedValuesProviderMock.Object,
+            ExceptionHandlingStrategy.Throw);
     }
 
-    protected T Load<T>(string fileName, Urn sportId, IEnumerable<CultureInfo> cultures)
+    protected static T Load<T>(string fileName, Urn sportId)
         where T : FeedMessage
     {
         var stream = FileHelper.OpenFile(TestData.FeedXmlPath, fileName);
@@ -71,7 +70,7 @@ public abstract class MapEntityTestBase
             return marketSpecifiers == null;
         }
 
-        var specifierParts = recordSpecifiers.Split(new[] { SdkInfo.SpecifiersDelimiter }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        var specifierParts = recordSpecifiers.Split([SdkInfo.SpecifiersDelimiter], StringSplitOptions.RemoveEmptyEntries).ToList();
         specifierParts = specifierParts.OrderBy(p => p).ToList();
 
         var orderedRecordSpecifiers = string.Join(SdkInfo.SpecifiersDelimiter, specifierParts);
@@ -94,13 +93,13 @@ public abstract class MapEntityTestBase
             : outcomes.FirstOrDefault(o => o.Id == id);
     }
 
-    protected void TestMessageProperties(IMessage message, long timestamp, int productId)
+    protected static void TestMessageProperties(IMessage message, long timestamp, int productId)
     {
         Assert.Equal(message.Timestamps.Created, timestamp);
         Assert.Equal(message.Producer, TestProducerManager.Create().GetProducer(productId));
     }
 
-    protected void TestEventMessageProperties<T>(IEventMessage<T> message, long timestamp, int productId, string eventId, long? requestId) where T : class, ISportEvent
+    protected static void TestEventMessageProperties<T>(IEventMessage<T> message, long timestamp, int productId, string eventId, long? requestId) where T : class, ISportEvent
     {
         TestMessageProperties(message, timestamp, productId);
         Assert.NotNull(message.Event);

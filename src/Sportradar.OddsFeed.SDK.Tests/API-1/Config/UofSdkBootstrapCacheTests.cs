@@ -29,7 +29,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISportEventCache>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportEventCache>(service1);
+        Assert.IsType<SportEventCache>(service1, false);
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISportDataCache>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportDataCache>(service1);
+        Assert.IsType<SportDataCache>(service1, false);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISportEventStatusCache>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportEventStatusCache>(service1);
+        Assert.IsType<SportEventStatusCache>(service1, false);
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<ISingleTypeMapperFactory<sportEventStatus, SportEventStatusDto>>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<SportEventStatusMapperFactory>(service1);
+        Assert.IsType<SportEventStatusMapperFactory>(service1, false);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetNamedValueCache(UofSdkBootstrap.NamedValueCacheNameForVoidReason);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NamedValueCache>(service1);
+        Assert.IsType<NamedValueCache>(service1, false);
         Assert.Equal(UofSdkBootstrap.NamedValueCacheNameForVoidReason, service1.CacheName);
     }
 
@@ -80,7 +80,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetNamedValueCache(UofSdkBootstrap.NamedValueCacheNameForBetStopReason);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NamedValueCache>(service1);
+        Assert.IsType<NamedValueCache>(service1, false);
         Assert.Equal(UofSdkBootstrap.NamedValueCacheNameForBetStopReason, service1.CacheName);
     }
 
@@ -91,7 +91,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetNamedValueCache(UofSdkBootstrap.NamedValueCacheNameForBettingStatus);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NamedValueCache>(service1);
+        Assert.IsType<NamedValueCache>(service1, false);
         Assert.Equal(UofSdkBootstrap.NamedValueCacheNameForBettingStatus, service1.CacheName);
     }
 
@@ -102,7 +102,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetLocalizedNamedValueCache(UofSdkBootstrap.NamedValueCacheNameForMatchStatus);
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<LocalizedNamedValueCache>(service1);
+        Assert.IsType<LocalizedNamedValueCache>(service1, false);
         Assert.Equal(UofSdkBootstrap.NamedValueCacheNameForMatchStatus, service1.CacheName);
     }
 
@@ -113,7 +113,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IOperandFactory>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<OperandFactory>(service1);
+        Assert.IsType<OperandFactory>(service1, false);
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<INameExpressionFactory>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NameExpressionFactory>(service1);
+        Assert.IsType<NameExpressionFactory>(service1, false);
     }
 
     [Fact]
@@ -133,7 +133,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<INameProviderFactory>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<NameProviderFactory>(service1);
+        Assert.IsType<NameProviderFactory>(service1, false);
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IMarketMappingProviderFactory>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<MarketMappingProviderFactory>(service1);
+        Assert.IsType<MarketMappingProviderFactory>(service1, false);
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IMarketCacheProvider>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<MarketCacheProvider>(service1);
+        Assert.IsType<MarketCacheProvider>(service1, false);
     }
 
     [Fact]
@@ -163,7 +163,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IMarketDescriptionsCache>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<InvariantMarketDescriptionCache>(service1);
+        Assert.IsType<InvariantMarketDescriptionCache>(service1, false);
     }
 
     [Fact]
@@ -173,7 +173,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IMarketDescriptionCache>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<VariantMarketDescriptionCache>(service1);
+        Assert.IsType<VariantMarketDescriptionCache>(service1, false);
     }
 
     [Fact]
@@ -183,7 +183,7 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IVariantDescriptionsCache>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<VariantDescriptionListCache>(service1);
+        Assert.IsType<VariantDescriptionListCache>(service1, false);
     }
 
     [Fact]
@@ -193,6 +193,6 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IProfileCache>();
         Assert.NotNull(service1);
-        Assert.IsAssignableFrom<ProfileCache>(service1);
+        Assert.IsType<ProfileCache>(service1, false);
     }
 }

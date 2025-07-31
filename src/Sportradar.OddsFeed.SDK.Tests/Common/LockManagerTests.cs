@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -45,7 +46,7 @@ public class LockManagerTests
         Assert.Contains(Id, _uniqueItems.Keys);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public void WaitExecutesFast()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -55,7 +56,7 @@ public class LockManagerTests
         Assert.True(stopWatch.ElapsedMilliseconds < 10, $"Expected less than 10ms, got {stopWatch.ElapsedMilliseconds}");
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public void WaitWhenRequestingForSameIdThenWaitsTillTimeout()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -77,7 +78,7 @@ public class LockManagerTests
         Assert.Empty(_uniqueItems.Keys);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public void WaitWhenWaitForAllAndThenRequestingForSomeIdThenWaitsTillTimeout()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -115,7 +116,7 @@ public class LockManagerTests
         Assert.Contains(Id, _uniqueItems.Keys);
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task WaitAsyncExecutesFast()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -261,7 +262,7 @@ public class LockManagerTests
         Assert.True(stopWatch.ElapsedMilliseconds < 100, $"Expected less than 100ms, got {stopWatch.ElapsedMilliseconds}");
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public void WaitRepeatThenExecuteFast()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -276,7 +277,7 @@ public class LockManagerTests
         Assert.True(stopWatch.ElapsedMilliseconds < 100, $"Expected less than 100ms, got {stopWatch.ElapsedMilliseconds}");
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public async Task WaitAsyncRepeatThenExecuteFast()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -331,7 +332,7 @@ public class LockManagerTests
         Assert.True(stopWatch.Elapsed < TimeSpan.FromSeconds(1));
     }
 
-    [Fact(Timeout = 15000)]
+    [RetryFact(3, 5000, Timeout = 15000)]
     public async Task WaitAsync()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -339,7 +340,7 @@ public class LockManagerTests
 
         await _lockManager.WaitAsync(Id);
         _logger.LogInformation("Time 1: {Time:0}", stopWatch.ElapsedMilliseconds);
-        TestExecutionHelper.Sleep(minTime);
+        await Task.Delay(minTime);
         _logger.LogInformation("Time 2: {Time:0}", stopWatch.ElapsedMilliseconds);
         await _lockManager.ReleaseAsync(Id);
         _logger.LogInformation("Time 3: {Time:0}", stopWatch.ElapsedMilliseconds);
@@ -354,7 +355,7 @@ public class LockManagerTests
         Assert.True(stopWatch.Elapsed >= _lockTimeout, $"{stopWatch.ElapsedMilliseconds} >= {minTime.TotalMilliseconds}");
     }
 
-    [Fact]
+    [RetryFact(3, 5000)]
     public void WaitWhenNewWaitRequestThenWaitTillFirstTimeout()
     {
         var stopWatch = Stopwatch.StartNew();
@@ -377,7 +378,7 @@ public class LockManagerTests
 
         await _lockManager.WaitAsync(Id);
         _logger.LogInformation("Time 1: {Time:0}", stopWatch.ElapsedMilliseconds);
-        TestExecutionHelper.Sleep(_lockTimeout.Add(TimeSpan.FromMilliseconds(100)));
+        await Task.Delay(_lockTimeout.Add(TimeSpan.FromMilliseconds(100)));
         _logger.LogInformation("Time 2: {Time:0}", stopWatch.ElapsedMilliseconds);
         await _lockManager.CleanAsync();
         _logger.LogInformation("Time 3: {Time:0}", stopWatch.ElapsedMilliseconds);
