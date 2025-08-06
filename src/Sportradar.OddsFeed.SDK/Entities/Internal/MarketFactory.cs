@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dawn;
@@ -261,10 +262,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 outcome.refund_probabilitiesSpecified ? outcome.refund_probabilities : (double?)null);
         }
 
+        [SuppressMessage("ReSharper", "ArrangeRedundantParentheses")]
         private static MarketMetadata GetMarketMetadata(marketMetadata marketMetadata)
         {
             return marketMetadata == null ||
-                   // ReSharper disable once ArrangeRedundantParentheses
                    (!marketMetadata.aams_idSpecified
                     && !marketMetadata.start_timeSpecified
                     && !marketMetadata.end_timeSpecified

@@ -74,7 +74,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             _locked = false;
 
             _ = UofSdkTelemetry.DefaultMeter.CreateObservableGauge(UofSdkTelemetry.MetricNameForProducerStatus, GetProducersStatuses, description: UofSdkTelemetry.MetricDescForProducerStatus);
-            _ = UsageTelemetry.UsageMeter.CreateObservableGauge(UofSdkTelemetry.MetricNameForProducerStatus, GetProducersStatuses, description: UofSdkTelemetry.MetricDescForProducerStatus);
         }
 
         private IEnumerable<Measurement<int>> GetProducersStatuses()

@@ -7,10 +7,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
 {
     internal static class UofSdkTelemetry
     {
+        internal const string MetricsVersion = "v1";
+
         // .NET runtime libraries have metric names using '-' if a separator is needed.
         internal const string MetricNamePrefix = "uofsdk-";
 
-        public const string ServiceName = "UofSdk-" + SdkInfo.SdkType;
+        public const string ServiceName = "UofSdk-Net";
 
         public static readonly ActivitySource ActivitySource = new ActivitySource(ServiceName);
 

@@ -9,7 +9,9 @@ using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -23,11 +25,14 @@ public class UsageTelemetryTests
 {
     private const string MetricNameForTestHistogram = UofSdkTelemetry.MetricNamePrefix + "test-histogram";
     private const int AnyRecordedValue = 1234;
+    private const int BookmakerId = 1111;
+    private const int NodeId = 2222;
+    private const string AccessToken = "my-access-token";
 
     [Fact]
     public void WhenSetupIsNotRunThenMeterIsInitialized()
     {
-        UsageTelemetry.UsageMeter.ShouldNotBeNull();
+        UofSdkTelemetry.DefaultMeter.ShouldNotBeNull();
     }
 
     [RetryFact(3, 5000)]
@@ -38,7 +43,7 @@ public class UsageTelemetryTests
         var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, true);
 
         var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
-        var testHistogram = UsageTelemetry.UsageMeter.CreateHistogram<long>(MetricNameForTestHistogram);
+        var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
         testHistogram.Record(AnyRecordedValue);
 
         var flushSucceeded = meterProvider.ForceFlush();
@@ -57,7 +62,7 @@ public class UsageTelemetryTests
         var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, true);
 
         var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
-        var testHistogram = UsageTelemetry.UsageMeter.CreateHistogram<long>(MetricNameForTestHistogram);
+        var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
         testHistogram.Record(AnyRecordedValue);
 
         var flushSucceeded = meterProvider.ForceFlush();
@@ -86,7 +91,7 @@ public class UsageTelemetryTests
         var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, false);
 
         var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
-        var testHistogram = UsageTelemetry.UsageMeter.CreateHistogram<long>(MetricNameForTestHistogram);
+        var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
         testHistogram.Record(AnyRecordedValue);
 
         meterProvider.ShouldBeNull();
@@ -105,7 +110,7 @@ public class UsageTelemetryTests
     }
 
     [RetryFact(3, 5000)]
-    public void WhenExportedNoNonUsageMetricsAreIncluded()
+    public void WhenExportedNonUsageMetricsAreNotIncluded()
     {
         var wireMockServer = SetupWireMockServerWithEndpoint();
         var meterProvider = PrepareMeterProviderWithProducerManager(wireMockServer);
@@ -116,17 +121,62 @@ public class UsageTelemetryTests
         EnsureAttributeNotInUsageRequestBody(UofSdkTelemetry.MetricNameForSemaphorePoolAcquireSize, wireMockServer);
     }
 
+    [RetryFact(3, 5000)]
+    public void GivenNonUsageHistogramHasRecordWhenExportedNonUsageMetricsAreNotIncluded()
+    {
+        var wireMockServer = SetupWireMockServerWithEndpoint();
+        var meterProvider = PrepareMeterProviderWithProducerManager(wireMockServer);
+
+        UofSdkTelemetry.SportEventCacheGetAll.Record(AnyRecordedValue);
+
+        var flushSucceeded = meterProvider.ForceFlush();
+        flushSucceeded.ShouldBeTrue();
+
+        EnsureAttributeNotInUsageRequestBody(UofSdkTelemetry.SportEventCacheGetAll.Name, wireMockServer);
+    }
+
+    [RetryFact(3, 5000)]
+    public void GivenNonUsageCounterHasRecordWhenExportedNonUsageMetricsAreNotIncluded()
+    {
+        var wireMockServer = SetupWireMockServerWithEndpoint();
+        var meterProvider = PrepareMeterProviderWithProducerManager(wireMockServer);
+
+        UofSdkTelemetry.RabbitMessageReceiverMessageReceived.Add(1);
+
+        var flushSucceeded = meterProvider.ForceFlush();
+        flushSucceeded.ShouldBeTrue();
+
+        EnsureAttributeNotInUsageRequestBody(UofSdkTelemetry.RabbitMessageReceiverMessageReceived.Name, wireMockServer);
+    }
+
+    [RetryFact(3, 5000)]
+    public void UofSdkServiceNameIsExportedOnlyWhenAtLeastOneUsageMetricHasRecordInTheBody()
+    {
+        var wireMockServer = SetupWireMockServerWithEndpoint();
+        var meterProvider = PrepareMeterProviderWithProducerManager(wireMockServer);
+
+        var flushSucceeded = meterProvider.ForceFlush();
+        flushSucceeded.ShouldBeTrue();
+
+        EnsureAttributeInUsageRequestBody("UofSdk-Net", wireMockServer);
+    }
+
     [RetryTheory(3, 5000)]
     [InlineData("nodeId")]
+    [InlineData(NodeId)]
     [InlineData("environment")]
+    [InlineData("integration")]
     [InlineData("metricsVersion")]
+    [InlineData("v1")]
+    [InlineData("bookmakerId")]
+    [InlineData(BookmakerId)]
     [InlineData("Sportradar.OddsFeed.SDKCore")]
     [InlineData("odds-feed-sdk_usage_integration")]
-    [InlineData("UofSdk-NetStd-Usage")]
     [InlineData("service.instance.id")]
     [InlineData("service.namespace")]
     [InlineData("service.name")]
-    public void WhenExportedThenExporterResourceAttributesAreIncluded(string attributeName)
+    [InlineData("UofSdk-Net")]
+    public void WhenExportedThenExporterResourceAttributesAreIncludedInTheBody(string attributeName)
     {
         var wireMockServer = SetupWireMockServerWithEndpoint();
         var meterProvider = PrepareMeterProviderWithProducerManager(wireMockServer);
@@ -138,9 +188,11 @@ public class UsageTelemetryTests
     }
 
     [RetryTheory(3, 5000)]
-    [InlineData("bookmakerId")]
     [InlineData("producerId")]
-    public void WhenExportedThenExporterResourceAttributesAreNotIncluded(string attributeName)
+    [InlineData("UofSdk-NetStd-Usage")]
+    [InlineData("UofSdk-NetStd")]
+    [InlineData("UofSdk-NETStd")]
+    public void WhenExportedThenExporterResourceAttributesAreNotIncludedInTheBody(string attributeName)
     {
         var wireMockServer = SetupWireMockServerWithEndpoint();
         var meterProvider = PrepareMeterProviderWithProducerManager(wireMockServer);
@@ -149,6 +201,21 @@ public class UsageTelemetryTests
         flushSucceeded.ShouldBeTrue();
 
         EnsureAttributeNotInUsageRequestBody(attributeName, wireMockServer);
+    }
+
+    [RetryFact(3, 5000)]
+    public void WhenExportedThenExporterResourceHeaderAttributesAreIncluded()
+    {
+        var wireMockServer = SetupWireMockServerWithEndpoint();
+        var meterProvider = PrepareMeterProviderWithProducerManager(wireMockServer);
+
+        var flushSucceeded = meterProvider.ForceFlush();
+        flushSucceeded.ShouldBeTrue();
+
+        EnsureAttributeInUsageRequestHeader("x-access-token", AccessToken, wireMockServer);
+        EnsureAttributeInUsageRequestHeader("x-environment", "integration", wireMockServer);
+        EnsureAttributeInUsageRequestHeader("x-node-id", NodeId.ToString(), wireMockServer);
+        EnsureAttributeInUsageRequestHeader("x-sdk-version", SdkInfo.GetVersion(), wireMockServer);
     }
 
     private static MeterProvider PrepareMeterProviderWithProducerManager(WireMockServer wireMockServer)
@@ -182,22 +249,28 @@ public class UsageTelemetryTests
         mockUsageConfig.Setup(s => s.ExportIntervalInSec).Returns(10);
         mockUsageConfig.Setup(s => s.ExportTimeoutInSec).Returns(5);
 
+        var mockBookmakerDetails = new Mock<IBookmakerDetails>();
+        mockBookmakerDetails.Setup(s => s.BookmakerId).Returns(BookmakerId);
+
         var mockConfig = new Mock<IUofConfiguration>();
-        mockConfig.Setup(s => s.AccessToken).Returns(TestConsts.AnyAccessToken);
-        mockConfig.Setup(s => s.NodeId).Returns(TestConsts.AnyNodeId);
+        mockConfig.Setup(s => s.AccessToken).Returns(AccessToken);
+        mockConfig.Setup(s => s.NodeId).Returns(NodeId);
         mockConfig.Setup(s => s.Environment).Returns(SdkEnvironment.Integration);
         mockConfig.Setup(s => s.Api).Returns(mockApiConfig.Object);
         mockConfig.Setup(s => s.Usage).Returns(mockUsageConfig.Object);
+        mockConfig.Setup(s => s.BookmakerDetails).Returns(mockBookmakerDetails.Object);
         return mockConfig;
     }
 
-    private static void EnsureAttributeNotInUsageRequestBody(string attributeName, WireMockServer wireMockServer)
+    private static void EnsureAttributeInUsageRequestHeader(string headerKey, string headerValue, WireMockServer wireMockServer)
     {
         var logEntries = wireMockServer.LogEntries.ToList();
         logEntries.ShouldHaveSingleItem();
 
-        var usageRequestBody = Encoding.UTF8.GetString(logEntries.First().RequestMessage.BodyAsBytes!);
-        usageRequestBody.ShouldNotContain(attributeName);
+        var requestMessageHeaders = logEntries.First().RequestMessage.Headers;
+        requestMessageHeaders.ShouldNotBeNull();
+        requestMessageHeaders.ShouldContainKey(headerKey);
+        requestMessageHeaders[headerKey].ShouldBe(headerValue);
     }
 
     private static void EnsureAttributeInUsageRequestBody(string attributeName, WireMockServer wireMockServer)
@@ -207,5 +280,14 @@ public class UsageTelemetryTests
 
         var usageRequestBody = Encoding.UTF8.GetString(logEntries.First().RequestMessage.BodyAsBytes!);
         usageRequestBody.ShouldContain(attributeName);
+    }
+
+    private static void EnsureAttributeNotInUsageRequestBody(string attributeName, WireMockServer wireMockServer)
+    {
+        var logEntries = wireMockServer.LogEntries.ToList();
+        logEntries.ShouldHaveSingleItem();
+
+        var usageRequestBody = Encoding.UTF8.GetString(logEntries.First().RequestMessage.BodyAsBytes!);
+        usageRequestBody.ShouldNotContain(attributeName);
     }
 }

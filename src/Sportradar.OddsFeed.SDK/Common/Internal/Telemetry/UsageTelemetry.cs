@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
@@ -14,23 +13,13 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
 {
     internal static class UsageTelemetry
     {
-        private const string MetricsVersion = "v1";
         internal const string EndpointUrl = "/v1/metrics";
-        private const string UsageServiceName = "UofSdk-NetStd-Usage";
-        internal static readonly Meter UsageMeter = new Meter(UsageServiceName, SdkInfo.GetVersion());
 
         public static MeterProvider SetupUsageTelemetry(IUofConfiguration config)
         {
-            SetupTelemetryObjects();
-
             return config.Usage.IsExportEnabled
                 ? SetupUsageExporter(config)
                 : null;
-        }
-
-        private static void SetupTelemetryObjects()
-        {
-            // setup all histograms and counters
         }
 
         private static MeterProvider SetupUsageExporter(IUofConfiguration config)
@@ -42,14 +31,15 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
                                                  .AddService(resourceServiceName, resourceServiceNamespace, SdkInfo.GetVersion())
                                                  .AddAttributes(new[]
                                                                     {
-                                                                        new KeyValuePair<string, object>("nodeId", config.NodeId),
+                                                                        new KeyValuePair<string, object>("nodeId", config.NodeId.ToString()),
                                                                         new KeyValuePair<string, object>("environment", config.Environment.ToString().ToLowerInvariant()),
-                                                                        new KeyValuePair<string, object>("metricsVersion", MetricsVersion)
+                                                                        new KeyValuePair<string, object>("metricsVersion", UofSdkTelemetry.MetricsVersion),
+                                                                        new KeyValuePair<string, object>("bookmakerId", config.BookmakerDetails.BookmakerId.ToString())
                                                                     });
 
             var usageMeterProvider = Sdk
                                     .CreateMeterProviderBuilder()
-                                    .AddMeter(UsageServiceName)
+                                    .SetupUsageMetricsForExporter()
                                     .AddOtlpExporter((exporterOptions, metricReaderOptions) =>
                                                      {
                                                          exporterOptions.Endpoint = new Uri(config.Usage.Host + EndpointUrl);
@@ -62,7 +52,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
                                                              ScheduledDelayMilliseconds = config.Usage.ExportIntervalInSec * 1000,
                                                              ExporterTimeoutMilliseconds = config.Usage.ExportTimeoutInSec * 1000
                                                          };
-                                                         exporterOptions.Headers = $"x-access-token={config.AccessToken},x-environment={config.Environment},x-node-id={config.NodeId},x-sdk-version={SdkInfo.GetVersion()}";
+                                                         exporterOptions.Headers = $"x-access-token={config.AccessToken},x-environment={config.Environment.ToString().ToLowerInvariant()},x-node-id={config.NodeId},x-sdk-version={SdkInfo.GetVersion()}";
                                                          exporterOptions.TimeoutMilliseconds = config.Usage.ExportTimeoutInSec * 1000;
                                                          metricReaderOptions.TemporalityPreference = MetricReaderTemporalityPreference.Delta;
                                                          metricReaderOptions.PeriodicExportingMetricReaderOptions = new PeriodicExportingMetricReaderOptions
@@ -75,6 +65,14 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Telemetry
                                     .Build();
 
             return usageMeterProvider;
+        }
+
+        private static MeterProviderBuilder SetupUsageMetricsForExporter(this MeterProviderBuilder builder)
+        {
+            return builder
+                  .AddMeter(UofSdkTelemetry.ServiceName)
+                  .AddView(UofSdkTelemetry.MetricNameForProducerStatus, UofSdkTelemetry.MetricNameForProducerStatus)
+                  .AddView("*", MetricStreamConfiguration.Drop);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
     internal class CacheStore<T> : ICacheStore<T>
     {
         private readonly ILogger _logCache;
-        private readonly List<T> _cacheStoreKeys;
+        private readonly HashSet<T> _cacheStoreKeys;
         private readonly IMemoryCache _memoryCache;
         private readonly TimeSpan _absoluteExpiration;
         private readonly TimeSpan _slidingExpiration;
@@ -34,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 throw new ArgumentException("Expiration variance must be 0 or greater", nameof(slidingExpirationVariance));
             }
 
-            _cacheStoreKeys = new List<T>();
+            _cacheStoreKeys = new HashSet<T>();
             StoreName = cacheStoreName;
             _logCache = logger;
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
@@ -182,10 +182,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 LogCacheItemPostEviction(_logCache, StoreName, key.ToString(), reason, null);
                 lock (_storeKeysLock)
                 {
-                    if (_cacheStoreKeys.Contains((T)key))
-                    {
-                        _cacheStoreKeys.Remove((T)key);
-                    }
+                    _cacheStoreKeys.Remove((T)key);
                 }
             }
         }

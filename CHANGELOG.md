@@ -1,7 +1,10 @@
 # Change Log
 
-## 3.5.0
-- enabling player and competitor URNs to support varied prefixes
+## 3.6.0
+- Telemetry exports now support bookmaker id, improving metric correlation and issue analysis.
+
+## 2025-07-31 3.5.0
+- Enabling player and competitor URNs to support varied prefixes
 
 ## 2025-07-07 3.4.0
 - Soccer tournaments 86 and 853 (Club Friendly Games) with increased amount of data are preloaded using a longer timeout.
