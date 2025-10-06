@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -550,7 +550,7 @@ public class MarketCacheProviderScenarioTests
 
         var marketDescription =
             (MarketDescription)await _marketCacheProvider.GetMarketDescriptionAsync(marketId,
-                Utilities.SpecifiersStringToReadOnlyDictionary(specifiers),
+                                                                                    Utilities.SpecifiersStringToReadOnlyDictionary(specifiers),
                                                                                     _languages,
                                                                                     true);
 

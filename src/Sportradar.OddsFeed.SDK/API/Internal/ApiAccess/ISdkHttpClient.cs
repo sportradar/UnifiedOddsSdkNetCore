@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Net.Http;
@@ -20,6 +20,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         Task<HttpResponseMessage> PostAsync(Uri requestUri, HttpContent content);
 
         Task<HttpResponseMessage> DeleteAsync(Uri requestUri);
+
         Task<HttpResponseMessage> PutAsync(Uri requestUri, HttpContent content);
     }
 }

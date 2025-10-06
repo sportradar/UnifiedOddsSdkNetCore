@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics;
@@ -17,14 +17,14 @@ public static class TestExecutionHelper
         Sleep((int)timeSpan.TotalMilliseconds);
     }
 
-    public static void Sleep(int milliseconds)
+    private static void Sleep(int milliseconds)
     {
         var mre = new ManualResetEventSlim();
         Task.Run(async () =>
-        {
-            await Task.Delay(milliseconds);
-            mre.Set();
-        });
+                 {
+                     await Task.Delay(milliseconds);
+                     mre.Set();
+                 });
 
         mre.Wait();
     }
@@ -110,4 +110,3 @@ public static class TestExecutionHelper
         return finished;
     }
 }
-

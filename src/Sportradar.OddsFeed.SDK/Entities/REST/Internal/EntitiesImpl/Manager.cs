@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,8 +33,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public string GetNationality(CultureInfo culture)
         {
             return Nationalities == null || !Nationalities.ContainsKey(culture)
-                ? null
-                : Nationalities[culture];
+                       ? null
+                       : Nationalities[culture];
         }
 
         /// <summary>

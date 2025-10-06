@@ -1,10 +1,11 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InVenue;
+
 public class VenueDtoTests : VenueHelper
 {
     [Fact]

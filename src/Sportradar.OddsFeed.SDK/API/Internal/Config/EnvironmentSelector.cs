@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Dawn;
@@ -30,9 +30,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <param name="producersProvider">Provider for available producers</param>
         // ReSharper disable once TooManyDependencies
         internal EnvironmentSelector(UofConfiguration configuration,
-            IUofConfigurationSectionProvider sectionProvider,
-            IBookmakerDetailsProvider bookmakerDetailsProvider,
-            IProducersProvider producersProvider)
+                                     IUofConfigurationSectionProvider sectionProvider,
+                                     IBookmakerDetailsProvider bookmakerDetailsProvider,
+                                     IProducersProvider producersProvider)
         {
             Guard.Argument(configuration, nameof(configuration)).NotNull();
             Guard.Argument(sectionProvider, nameof(sectionProvider)).NotNull();
@@ -45,7 +45,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         public IConfigurationBuilder SelectReplay()
         {
-            return new ConfigurationBuilder(_configuration, _sectionProvider, SdkEnvironment.Replay, _bookmakerDetailsProvider, _producersProvider);
+            return SelectEnvironment(SdkEnvironment.Replay);
         }
 
         public ICustomConfigurationBuilder SelectCustom()

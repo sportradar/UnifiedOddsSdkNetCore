@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
@@ -25,8 +25,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
             Guard.Argument(item, nameof(item)).NotNull();
 
             Value = item.valueSpecified
-                ? item.value
-                : (int?)null;
+                        ? item.value
+                        : (int?)null;
             Name = item.name;
         }
     }

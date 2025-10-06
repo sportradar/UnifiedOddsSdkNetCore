@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
@@ -39,32 +39,33 @@ namespace Sportradar.OddsFeed.SDK.Common
         /// <summary>
         /// Defines supported resource types
         /// </summary>
-        private static readonly Tuple<string, ResourceTypeGroup>[] Types = {
-            new Tuple<string, ResourceTypeGroup>("sport_event", ResourceTypeGroup.Match),
-            new Tuple<string, ResourceTypeGroup>("race_event", ResourceTypeGroup.Stage),
-            new Tuple<string, ResourceTypeGroup>("season", ResourceTypeGroup.Season),
-            new Tuple<string, ResourceTypeGroup>("tournament", ResourceTypeGroup.Tournament),
-            new Tuple<string, ResourceTypeGroup>("race_tournament", ResourceTypeGroup.Stage),
-            new Tuple<string, ResourceTypeGroup>("stage", ResourceTypeGroup.Stage),
-            new Tuple<string, ResourceTypeGroup>("simple_tournament", ResourceTypeGroup.BasicTournament),
-            new Tuple<string, ResourceTypeGroup>("h2h_tournament", ResourceTypeGroup.Tournament),
-            new Tuple<string, ResourceTypeGroup>("outright", ResourceTypeGroup.Tournament),
-            new Tuple<string, ResourceTypeGroup>("sport", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("category", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("match", ResourceTypeGroup.Match),
-            new Tuple<string, ResourceTypeGroup>("team", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("competitor", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("simpleteam", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("simple_team", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("venue", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("player", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("referee", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("market", ResourceTypeGroup.Other),
-            new Tuple<string, ResourceTypeGroup>("lottery", ResourceTypeGroup.Lottery),
-            new Tuple<string, ResourceTypeGroup>("draw", ResourceTypeGroup.Draw),
-            new Tuple<string, ResourceTypeGroup>("competition_group", ResourceTypeGroup.Stage),
-            new Tuple<string, ResourceTypeGroup>("group", ResourceTypeGroup.Other)
-        };
+        private static readonly Tuple<string, ResourceTypeGroup>[] Types =
+            {
+                new Tuple<string, ResourceTypeGroup>("sport_event", ResourceTypeGroup.Match),
+                new Tuple<string, ResourceTypeGroup>("race_event", ResourceTypeGroup.Stage),
+                new Tuple<string, ResourceTypeGroup>("season", ResourceTypeGroup.Season),
+                new Tuple<string, ResourceTypeGroup>("tournament", ResourceTypeGroup.Tournament),
+                new Tuple<string, ResourceTypeGroup>("race_tournament", ResourceTypeGroup.Stage),
+                new Tuple<string, ResourceTypeGroup>("stage", ResourceTypeGroup.Stage),
+                new Tuple<string, ResourceTypeGroup>("simple_tournament", ResourceTypeGroup.BasicTournament),
+                new Tuple<string, ResourceTypeGroup>("h2h_tournament", ResourceTypeGroup.Tournament),
+                new Tuple<string, ResourceTypeGroup>("outright", ResourceTypeGroup.Tournament),
+                new Tuple<string, ResourceTypeGroup>("sport", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("category", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("match", ResourceTypeGroup.Match),
+                new Tuple<string, ResourceTypeGroup>("team", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("competitor", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("simpleteam", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("simple_team", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("venue", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("player", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("referee", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("market", ResourceTypeGroup.Other),
+                new Tuple<string, ResourceTypeGroup>("lottery", ResourceTypeGroup.Lottery),
+                new Tuple<string, ResourceTypeGroup>("draw", ResourceTypeGroup.Draw),
+                new Tuple<string, ResourceTypeGroup>("competition_group", ResourceTypeGroup.Stage),
+                new Tuple<string, ResourceTypeGroup>("group", ResourceTypeGroup.Other)
+            };
 
         /// <summary>
         /// Gets the prefix of the current instance.
@@ -151,10 +152,9 @@ namespace Sportradar.OddsFeed.SDK.Common
                 SdkLoggerFactory.GetLoggerForExecution(typeof(Urn)).LogDebug("Urn resource type name: {UrnType} is not supported. Input={Urn}", type, urnString);
             }
 
-            return new Urn(
-                match.Groups[PrefixGroupName].Value,
-                match.Groups[TypeGroupName].Value,
-                long.Parse(match.Groups[IdGroupName].Value));
+            return new Urn(match.Groups[PrefixGroupName].Value,
+                           match.Groups[TypeGroupName].Value,
+                           long.Parse(match.Groups[IdGroupName].Value));
         }
 
         /// <summary>

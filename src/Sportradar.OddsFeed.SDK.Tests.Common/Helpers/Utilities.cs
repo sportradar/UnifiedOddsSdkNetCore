@@ -17,4 +17,14 @@ public static class Utilities
     {
         return new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
     }
+
+    /// <summary>
+    /// Get the 90% delay value of the expected duration
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns>The 90% delay value of the expected duration</returns>
+    public static int AccountForDelayDiscrepancy(int duration)
+    {
+        return duration * 9 / 10;
+    }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -31,11 +31,10 @@ public class SportListMapperTests
         var dataFetcher = new TestDataFetcher();
         var mapperFactory = new TournamentsMapperFactory();
 
-        var dataProvider = new DataProvider<tournamentsEndpoint, EntityList<SportDto>>(
-            TestData.RestXmlPath + InputXml,
-            dataFetcher,
-            deserializer,
-            mapperFactory);
+        var dataProvider = new DataProvider<tournamentsEndpoint, EntityList<SportDto>>(TestData.RestXmlPath + InputXml,
+                                                                                       dataFetcher,
+                                                                                       deserializer,
+                                                                                       mapperFactory);
         Entity = dataProvider.GetData("en");
     }
 

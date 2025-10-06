@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -65,8 +65,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             Guard.Argument(factory, nameof(factory)).NotNull();
 
             return string.IsNullOrEmpty(dto.ValidFor)
-                ? new MarketMappingCacheItem(dto, null, culture)
-                : new MarketMappingCacheItem(dto, factory.Build(dto.ValidFor), culture);
+                       ? new MarketMappingCacheItem(dto, null, culture)
+                       : new MarketMappingCacheItem(dto, factory.Build(dto.ValidFor), culture);
         }
 
         internal void Merge(MarketMappingDto dto, CultureInfo culture)

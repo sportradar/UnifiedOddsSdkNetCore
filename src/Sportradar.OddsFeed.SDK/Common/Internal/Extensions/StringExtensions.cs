@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 
@@ -41,8 +41,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Extensions
             }
 
             return postfix
-                ? result + space
-                : space + result;
+                       ? result + space
+                       : space + result;
         }
 
         /// <summary>

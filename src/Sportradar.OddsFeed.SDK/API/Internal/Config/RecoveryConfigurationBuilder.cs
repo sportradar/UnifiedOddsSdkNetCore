@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -23,9 +23,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
         /// <param name="producersProvider">Provider for available producers</param>
         internal RecoveryConfigurationBuilder(UofConfiguration configuration,
-            IUofConfigurationSectionProvider sectionProvider,
-            IBookmakerDetailsProvider bookmakerDetailsProvider,
-            IProducersProvider producersProvider)
+                                              IUofConfigurationSectionProvider sectionProvider,
+                                              IBookmakerDetailsProvider bookmakerDetailsProvider,
+                                              IProducersProvider producersProvider)
             : base(configuration, sectionProvider, bookmakerDetailsProvider, producersProvider)
         {
         }

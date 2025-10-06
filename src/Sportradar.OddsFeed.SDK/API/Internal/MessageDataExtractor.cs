@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
@@ -24,27 +24,27 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         /// A formats describing search targets
         /// </summary>
         private static readonly string[] TargetFormats =
-        {
-            "<{0} ", //'<odds_change '
-            "<{0}>", //'<odds_change>'
-            "</{0}>"  //'</odds_change>
-        };
+            {
+                "<{0} ", //'<odds_change '
+                "<{0}>", //'<odds_change>'
+                "</{0}>" //'</odds_change>
+            };
 
         /// <summary>
         /// Names of supported xml messages
         /// </summary>
         private static readonly Tuple<string, MessageType>[] MessageTypes =
-        {
-            new Tuple<string, MessageType>(odds_change.MessageName, MessageType.OddsChange),
-            new Tuple<string, MessageType>(bet_settlement.MessageName, MessageType.BetSettlement),
-            new Tuple<string, MessageType>(rollback_bet_settlement.MessageName, MessageType.RollbackBetSettlement),
-            new Tuple<string, MessageType>(bet_cancel.MessageName, MessageType.BetCancel),
-            new Tuple<string, MessageType>(rollback_bet_cancel.MessageName, MessageType.RollbackBetCancel),
-            new Tuple<string, MessageType>(alive.MessageName, MessageType.Alive),
-            new Tuple<string, MessageType>(snapshot_complete.MessageName, MessageType.SnapshotComplete),
-            new Tuple<string, MessageType>(fixture_change.MessageName, MessageType.FixtureChange),
-            new Tuple<string, MessageType>(bet_stop.MessageName, MessageType.BetStop)
-        };
+            {
+                new Tuple<string, MessageType>(odds_change.MessageName, MessageType.OddsChange),
+                new Tuple<string, MessageType>(bet_settlement.MessageName, MessageType.BetSettlement),
+                new Tuple<string, MessageType>(rollback_bet_settlement.MessageName, MessageType.RollbackBetSettlement),
+                new Tuple<string, MessageType>(bet_cancel.MessageName, MessageType.BetCancel),
+                new Tuple<string, MessageType>(rollback_bet_cancel.MessageName, MessageType.RollbackBetCancel),
+                new Tuple<string, MessageType>(alive.MessageName, MessageType.Alive),
+                new Tuple<string, MessageType>(snapshot_complete.MessageName, MessageType.SnapshotComplete),
+                new Tuple<string, MessageType>(fixture_change.MessageName, MessageType.FixtureChange),
+                new Tuple<string, MessageType>(bet_stop.MessageName, MessageType.BetStop)
+            };
 
         /// <summary>
         /// A string containing a single double quote
@@ -104,8 +104,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
             var quoteIndex = message.IndexOf(Quote, searchStartIndex, StringComparison.Ordinal);
 
             return quoteIndex <= searchStartIndex
-                ? null
-                : message.Substring(searchStartIndex, quoteIndex - searchStartIndex);
+                       ? null
+                       : message.Substring(searchStartIndex, quoteIndex - searchStartIndex);
         }
 
         /// <summary>

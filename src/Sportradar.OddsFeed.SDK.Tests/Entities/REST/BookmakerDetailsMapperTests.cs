@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Net;
@@ -27,11 +27,10 @@ public class BookmakerDetailsMapperTests
         var dataFetcher = new TestDataFetcher();
         var mapperFactory = new BookmakerDetailsMapperFactory();
 
-        var dataProvider = new DataProvider<bookmaker_details, BookmakerDetailsDto>(
-            TestData.RestXmlPath + InputXml,
-            dataFetcher,
-            deserializer,
-            mapperFactory);
+        var dataProvider = new DataProvider<bookmaker_details, BookmakerDetailsDto>(TestData.RestXmlPath + InputXml,
+                                                                                    dataFetcher,
+                                                                                    deserializer,
+                                                                                    mapperFactory);
         _entity = dataProvider.GetData();
 
         _bookmakerDetailsFetcher = new BookmakerDetailsFetcher(dataProvider);

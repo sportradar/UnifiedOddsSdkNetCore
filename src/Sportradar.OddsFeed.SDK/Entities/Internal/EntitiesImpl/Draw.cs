@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -61,8 +61,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await drawCacheItem.GetLotteryIdAsync().ConfigureAwait(false)
-                : await new Func<Task<Urn>>(drawCacheItem.GetLotteryIdAsync).SafeInvokeAsync(ExecutionLog, "LotteryId").ConfigureAwait(false);
+                           ? await drawCacheItem.GetLotteryIdAsync().ConfigureAwait(false)
+                           : await new Func<Task<Urn>>(drawCacheItem.GetLotteryIdAsync).SafeInvokeAsync(ExecutionLog, "LotteryId").ConfigureAwait(false);
 
             return item;
         }
@@ -81,8 +81,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return DrawStatus.Unknown;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await drawCacheItem.GetStatusAsync().ConfigureAwait(false)
-                : await new Func<Task<DrawStatus>>(drawCacheItem.GetStatusAsync).SafeInvokeAsync(ExecutionLog, "DrawStatus").ConfigureAwait(false);
+                           ? await drawCacheItem.GetStatusAsync().ConfigureAwait(false)
+                           : await new Func<Task<DrawStatus>>(drawCacheItem.GetStatusAsync).SafeInvokeAsync(ExecutionLog, "DrawStatus").ConfigureAwait(false);
 
             return item;
         }
@@ -101,8 +101,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await drawCacheItem.GetResultsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<DrawResultCacheItem>>>(drawCacheItem.GetResultsAsync).SafeInvokeAsync(Cultures, ExecutionLog, "DrawResults").ConfigureAwait(false);
+                           ? await drawCacheItem.GetResultsAsync(Cultures).ConfigureAwait(false)
+                           : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<DrawResultCacheItem>>>(drawCacheItem.GetResultsAsync).SafeInvokeAsync(Cultures, ExecutionLog, "DrawResults").ConfigureAwait(false);
 
             return item?.Select(s => new DrawResult(s));
         }

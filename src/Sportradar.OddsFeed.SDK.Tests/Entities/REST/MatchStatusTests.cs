@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -19,6 +19,7 @@ using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
+
 public class MatchStatusTests
 {
     private readonly Mock<ILocalizedNamedValueCache> _matchStatusesCacheMock;
@@ -29,7 +30,7 @@ public class MatchStatusTests
         _matchStatusesCacheMock = new Mock<ILocalizedNamedValueCache>();
         _matchStatusesCacheMock.Setup(x => x.CacheName).Returns("AnyCacheName");
         _matchStatusesCacheMock.Setup(x => x.GetAsync(1, It.IsAny<IEnumerable<CultureInfo>>()))
-            .Returns(Task.FromResult((ILocalizedNamedValue)new LocalizedNamedValue(1, matchStatuses, TestData.Culture)));
+                               .Returns(Task.FromResult((ILocalizedNamedValue)new LocalizedNamedValue(1, matchStatuses, TestData.Culture)));
         _matchStatusesCacheMock.Setup(x => x.IsValueDefined(1)).Returns(true);
         _matchStatusesCacheMock.Setup(x => x.IsValueDefined(It.IsNotIn(1))).Returns(false);
     }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,13 +31,13 @@ public class NameProviderPlayerProfileTests
         _sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
         var match = _sportEntityFactoryBuilder.SportEntityFactory.BuildSportEvent<IMatch>(ScheduleData.MatchId, ScheduleData.MatchSportId, ScheduleData.Cultures3, _sportEntityFactoryBuilder.ThrowingStrategy);
         _nameProvider = new NameProvider(new Mock<IMarketCacheProvider>().Object,
-            _sportEntityFactoryBuilder.ProfileCache,
-            new Mock<INameExpressionFactory>().Object,
-            match,
-            1,
-            null,
-            ExceptionHandlingStrategy.Throw,
-            _namedProviderLogger);
+                                         _sportEntityFactoryBuilder.ProfileCache,
+                                         new Mock<INameExpressionFactory>().Object,
+                                         match,
+                                         1,
+                                         null,
+                                         ExceptionHandlingStrategy.Throw,
+                                         _namedProviderLogger);
     }
 
     [Fact]
@@ -329,13 +329,13 @@ public class NameProviderPlayerProfileTests
     {
         var tournament = _sportEntityFactoryBuilder.SportEntityFactory.BuildSportEvent<ITournament>(ScheduleData.MatchTournamentId, ScheduleData.MatchSportId, ScheduleData.Cultures3, _sportEntityFactoryBuilder.ThrowingStrategy);
         var nameProvider = new NameProvider(new Mock<IMarketCacheProvider>().Object,
-            _sportEntityFactoryBuilder.ProfileCache,
-            new Mock<INameExpressionFactory>().Object,
-            tournament,
-            1,
-            null,
-            ExceptionHandlingStrategy.Throw,
-            _namedProviderLogger);
+                                            _sportEntityFactoryBuilder.ProfileCache,
+                                            new Mock<INameExpressionFactory>().Object,
+                                            tournament,
+                                            1,
+                                            null,
+                                            ExceptionHandlingStrategy.Throw,
+                                            _namedProviderLogger);
         Assert.Equal(0, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));
@@ -360,13 +360,13 @@ public class NameProviderPlayerProfileTests
     {
         var season = _sportEntityFactoryBuilder.SportEntityFactory.BuildSportEvent<ISeason>(ScheduleData.MatchSeasonId, ScheduleData.MatchSportId, ScheduleData.Cultures3, _sportEntityFactoryBuilder.ThrowingStrategy);
         var nameProvider = new NameProvider(new Mock<IMarketCacheProvider>().Object,
-            _sportEntityFactoryBuilder.ProfileCache,
-            new Mock<INameExpressionFactory>().Object,
-            season,
-            1,
-            null,
-            ExceptionHandlingStrategy.Throw,
-            _namedProviderLogger);
+                                            _sportEntityFactoryBuilder.ProfileCache,
+                                            new Mock<INameExpressionFactory>().Object,
+                                            season,
+                                            1,
+                                            null,
+                                            ExceptionHandlingStrategy.Throw,
+                                            _namedProviderLogger);
         Assert.Equal(0, _sportEntityFactoryBuilder.ProfileMemoryCache.Count());
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.TotalRestCalls);
         Assert.Equal(0, _sportEntityFactoryBuilder.DataRouterManager.GetCallCount(TestDataRouterManager.EndpointPlayerProfile));

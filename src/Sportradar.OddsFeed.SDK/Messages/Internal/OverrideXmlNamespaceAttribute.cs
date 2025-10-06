@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 
@@ -17,7 +17,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         /// </summary>
         public bool IgnoreNamespace
         {
-            get; set;
+            get;
+            set;
         }
 
         /// <summary>

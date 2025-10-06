@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -55,20 +55,20 @@ public class MarketCacheProviderTests
 
         var cacheManager = new CacheManager();
         var dataRouterManager = new DataRouterManagerBuilder()
-            .AddMockedDependencies()
-            .WithCacheManager(cacheManager)
-            .WithInvariantMarketDescriptionsProvider(_invariantMdProviderMock.Object)
-            .WithVariantDescriptionsProvider(_variantMdProviderMock.Object)
-            .WithVariantMarketDescriptionProvider(_singleVariantMdProviderMock.Object)
-            .Build();
+                               .AddMockedDependencies()
+                               .WithCacheManager(cacheManager)
+                               .WithInvariantMarketDescriptionsProvider(_invariantMdProviderMock.Object)
+                               .WithVariantDescriptionsProvider(_variantMdProviderMock.Object)
+                               .WithVariantMarketDescriptionProvider(_singleVariantMdProviderMock.Object)
+                               .Build();
 
         _marketCacheProvider = MarketCacheProviderBuilder.Create()
-            .WithCacheManager(cacheManager)
-            .WithDataRouterManager(dataRouterManager)
-            .WithLanguages(_languages)
-            .WithLoggerFactory(_loggerFactory)
-            .WithProfileCache(profileCache)
-            .Build();
+                                                         .WithCacheManager(cacheManager)
+                                                         .WithDataRouterManager(dataRouterManager)
+                                                         .WithLanguages(_languages)
+                                                         .WithLoggerFactory(_loggerFactory)
+                                                         .WithProfileCache(profileCache)
+                                                         .Build();
 
         foreach (var culture in _languages)
         {
@@ -77,9 +77,9 @@ public class MarketCacheProviderTests
             var variantList = MarketDescriptionEndpoint.GetDefaultVariantList();
             variantList.variant = variantList.variant.Select(m => m.AddSuffix(culture.TwoLetterISOLanguageName)).ToArray();
             _invariantMdProviderMock.Setup(s => s.GetDataAsync(culture.TwoLetterISOLanguageName))
-                .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(invariantList.market));
+                                    .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(invariantList.market));
             _variantMdProviderMock.Setup(s => s.GetDataAsync(culture.TwoLetterISOLanguageName))
-                .ReturnsAsync(MarketDescriptionEndpoint.GetVariantDto(variantList.variant));
+                                  .ReturnsAsync(MarketDescriptionEndpoint.GetVariantDto(variantList.variant));
         }
     }
 
@@ -562,9 +562,9 @@ public class MarketCacheProviderTests
         var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
 
         _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(marketId.ToString(),
-                It.Is<string>(x => x.Equals(_languages.First().TwoLetterISOLanguageName, StringComparison.Ordinal)),
-                variantSpecifier))
-            .ReturnsAsync(result);
+                                                               It.Is<string>(x => x.Equals(_languages.First().TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                               variantSpecifier))
+                                    .ReturnsAsync(result);
         var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
 
         var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiers, _languages, true);
@@ -587,9 +587,9 @@ public class MarketCacheProviderTests
         var result = mapper.CreateMapper(restDeserializer.Deserialize(stream)).Map();
 
         _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(marketId.ToString(),
-                It.Is<string>(x => x.Equals(_languages.First().TwoLetterISOLanguageName, StringComparison.Ordinal)),
-                variantSpecifier))
-            .ReturnsAsync(result);
+                                                               It.Is<string>(x => x.Equals(_languages.First().TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                               variantSpecifier))
+                                    .ReturnsAsync(result);
         var specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
         ResetMarketApiCalls();
 
@@ -707,9 +707,9 @@ public class MarketCacheProviderTests
         foreach (var culture in _languages)
         {
             _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(mId.ToString(),
-                    It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
-                    variantSpecifier))
-                .ReturnsAsync(new MarketDescriptionDto(MdForVariantSingle.GetPreOutcomeMarket534().AddSuffix(culture)));
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ReturnsAsync(new MarketDescriptionDto(MdForVariantSingle.GetPreOutcomeMarket534().AddSuffix(culture)));
         }
     }
 
@@ -723,9 +723,9 @@ public class MarketCacheProviderTests
         foreach (var culture in _languages)
         {
             _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(mId.ToString(),
-                    It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
-                    variantSpecifier))
-                .ReturnsAsync(new MarketDescriptionDto(MdForVariantSingle.GetPlayerPropsMarket768().AddSuffix(culture)));
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ReturnsAsync(new MarketDescriptionDto(MdForVariantSingle.GetPlayerPropsMarket768().AddSuffix(culture)));
         }
     }
 
@@ -741,9 +741,9 @@ public class MarketCacheProviderTests
             apiMarket.id = marketId;
             apiMarket.variant = variantSpecifier;
             _singleVariantMdProviderMock.Setup(s => s.GetDataAsync(mId.ToString(),
-                    It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
-                    variantSpecifier))
-                .ReturnsAsync(new MarketDescriptionDto(apiMarket));
+                                                                   It.Is<string>(x => x.Equals(culture.TwoLetterISOLanguageName, StringComparison.Ordinal)),
+                                                                   variantSpecifier))
+                                        .ReturnsAsync(new MarketDescriptionDto(apiMarket));
         }
         specifiers = new Dictionary<string, string> { { "variant", variantSpecifier } };
         ResetMarketApiCalls();
@@ -760,7 +760,7 @@ public class MarketCacheProviderTests
             existingMd.groups = existingMd.groups.Replace("player_props", "competitor_props");
             invariantList.market = invariantList.market.Select(m => m.AddSuffix(culture.TwoLetterISOLanguageName)).ToArray();
             _invariantMdProviderMock.Setup(s => s.GetDataAsync(culture.TwoLetterISOLanguageName))
-                .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(invariantList.market));
+                                    .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(invariantList.market));
         }
     }
 

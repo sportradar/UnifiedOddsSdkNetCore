@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -176,11 +176,11 @@ public class CacheStoreRefTests
         Assert.Null(expiredCacheItem);
 
         _ = await TestExecutionHelper.WaitToCompleteAsync(() =>
-                                               {
-                                                   storeKeys = cacheStore.GetKeys();
-                                                   Assert.Empty(storeKeys);
-                                                   return true;
-                                               });
+                                                          {
+                                                              storeKeys = cacheStore.GetKeys();
+                                                              Assert.Empty(storeKeys);
+                                                              return true;
+                                                          });
 
         storeKeys = cacheStore.GetKeys();
         storeValues = cacheStore.GetValues();
@@ -318,7 +318,6 @@ public class CacheStoreRefTests
 
     private class MyCacheEntry : ICacheEntry
     {
-
         public MyCacheEntry(Urn key)
         {
             Key = key;

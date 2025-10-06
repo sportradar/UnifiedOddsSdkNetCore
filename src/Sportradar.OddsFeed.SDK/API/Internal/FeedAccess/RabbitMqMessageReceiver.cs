@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -164,13 +164,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
                             outcomeCounts = betSettlement.outcomes?.Where(w => w.Items != null).SelectMany(list => list.Items).Count() ?? 0;
                         }
                         ExecutionLog.LogDebug("Deserialization of {FeedMessageType} for {EventId} ({GeneratedAt}) and sport {SportId} took {Elapsed}ms. Markets={MarketCount}, Outcomes={OutcomeCount}",
-                            feedMessage.GetType().Name,
-                            feedMessage.EventId,
-                            feedMessage.GeneratedAt.ToString(CultureInfo.InvariantCulture),
-                            sportId,
-                            t.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture),
-                            marketCounts.ToString(CultureInfo.InvariantCulture),
-                            outcomeCounts.ToString(CultureInfo.InvariantCulture));
+                                              feedMessage.GetType().Name,
+                                              feedMessage.EventId,
+                                              feedMessage.GeneratedAt.ToString(CultureInfo.InvariantCulture),
+                                              sportId,
+                                              t.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture),
+                                              marketCounts.ToString(CultureInfo.InvariantCulture),
+                                              outcomeCounts.ToString(CultureInfo.InvariantCulture));
                     }
                 }
 

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -58,18 +58,16 @@ public class SportDataCacheTests
         _dataRouterManager = new TestDataRouterManager(_cacheManager, outputHelper);
         _timer = new TestTimer(false);
 
-        _sportEventCache = new SportEventCache(
-            testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache),
-            _dataRouterManager,
-            new SportEventCacheItemFactory(
-                _dataRouterManager,
-                new SemaphorePool(5, ExceptionHandlingStrategy.Throw),
-                testCacheStoreManager.UofConfig,
-                testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
-            _timer,
-            TestData.Cultures,
-            _cacheManager,
-            loggerFactory);
+        _sportEventCache = new SportEventCache(testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache),
+                                               _dataRouterManager,
+                                               new SportEventCacheItemFactory(_dataRouterManager,
+                                                                              new SemaphorePool(5, ExceptionHandlingStrategy.Throw),
+                                                                              testCacheStoreManager.UofConfig,
+                                                                              testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
+                                               _timer,
+                                               TestData.Cultures,
+                                               _cacheManager,
+                                               loggerFactory);
 
         _sportDataCache = new SportDataCache(_dataRouterManager, _timer, TestData.Cultures, _sportEventCache, _cacheManager, loggerFactory);
     }

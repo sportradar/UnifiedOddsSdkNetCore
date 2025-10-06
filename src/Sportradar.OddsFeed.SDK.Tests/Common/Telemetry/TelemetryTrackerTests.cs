@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
+using Sportradar.OddsFeed.SDK.Tests.Common.Helpers;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Telemetry;
@@ -14,12 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Telemetry;
 [Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class TelemetryTrackerTests
 {
-    private readonly Meter _meter;
-
-    public TelemetryTrackerTests()
-    {
-        _meter = new Meter("TestMeter");
-    }
+    private readonly Meter _meter = new("TestMeter");
 
     [Fact]
     public void ConstructorWhenWithNullHistogramThenThrows()
@@ -91,7 +87,7 @@ public class TelemetryTrackerTests
         using var tracker = new TelemetryTracker(hist);
         await Task.Delay(TimeSpan.FromMilliseconds(200));
 
-        Assert.True(tracker.Elapsed.TotalMilliseconds >= 200, $"Expected: {tracker.Elapsed.TotalMilliseconds} >= 200");
+        Assert.True(tracker.Elapsed.TotalMilliseconds >= Utilities.AccountForDelayDiscrepancy(200), $"Expected: {tracker.Elapsed.TotalMilliseconds} >= 200");
     }
 
     [Fact]

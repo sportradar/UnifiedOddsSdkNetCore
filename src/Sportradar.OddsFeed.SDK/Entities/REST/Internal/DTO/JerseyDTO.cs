@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
@@ -47,17 +47,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             SleeveColor = item.sleeve;
             Type = item.type;
             HorizontalStripes = item.horizontal_stripesSpecified
-                ? (bool?)item.horizontal_stripes
-                : null;
+                                    ? (bool?)item.horizontal_stripes
+                                    : null;
             Split = item.splitSpecified
-                ? (bool?)item.split
-                : null;
+                        ? (bool?)item.split
+                        : null;
             Squares = item.squaresSpecified
-                ? (bool?)item.squares
-                : null;
+                          ? (bool?)item.squares
+                          : null;
             Stripes = item.stripesSpecified
-                ? (bool?)item.stripes
-                : null;
+                          ? (bool?)item.stripes
+                          : null;
             StripesColor = item.stripes_color;
             SplitColor = item.split_color;
             ShirtType = item.shirt_type;

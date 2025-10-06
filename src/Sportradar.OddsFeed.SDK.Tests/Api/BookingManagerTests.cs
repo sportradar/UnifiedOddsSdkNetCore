@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Globalization;
@@ -39,8 +39,8 @@ public abstract class BookingManagerTests : AutoMockerUnitTest
         public WhenBookLiveOddsEventIsSuccessful()
         {
             Mocker.GetMock<IDataPoster>()
-                .Setup(x => x.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+                  .Setup(x => x.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
+                  .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
             _result = _sut.BookLiveOddsEvent(_urn);
         }
@@ -49,8 +49,8 @@ public abstract class BookingManagerTests : AutoMockerUnitTest
         public void Then_event_id_is_saved_to_cache()
         {
             Mocker.GetMock<ICacheManager>()
-                .Verify(x => x.SaveDto(_urn, _urn, CultureInfo.CurrentCulture, DtoType.BookingStatus, null),
-                    Times.Once);
+                  .Verify(x => x.SaveDto(_urn, _urn, CultureInfo.CurrentCulture, DtoType.BookingStatus, null),
+                          Times.Once);
         }
 
         [Fact]
@@ -65,8 +65,8 @@ public abstract class BookingManagerTests : AutoMockerUnitTest
         public WhenBookLiveOddsEventFails()
         {
             Mocker.GetMock<IDataPoster>()
-                .Setup(x => x.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+                  .Setup(x => x.PostDataAsync(It.IsAny<Uri>(), It.IsAny<HttpContent>()))
+                  .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
             Assert.Throws<CommunicationException>(() => _result = _sut.BookLiveOddsEvent(_urn));
         }
@@ -75,7 +75,7 @@ public abstract class BookingManagerTests : AutoMockerUnitTest
         public void Then_event_id_is_removed_from_cache()
         {
             Mocker.GetMock<ICacheManager>()
-                .Verify(x => x.RemoveCacheItem(_urn, CacheItemType.SportEvent, "BookingManager"), Times.Once);
+                  .Verify(x => x.RemoveCacheItem(_urn, CacheItemType.SportEvent, "BookingManager"), Times.Once);
         }
 
         [Fact]

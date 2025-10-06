@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -52,9 +52,9 @@ public static class MessageFactorySdk
 
     public static IAssist GetAssist(int id = 0)
     {
-        return new Assist(
-            SR.Urn(id == 0 ? SR.I1000 : id),
-            new Dictionary<CultureInfo, string> { { new CultureInfo("en"), "Assist name" } }, "assist type");
+        return new Assist(SR.Urn(id == 0 ? SR.I1000 : id),
+                          new Dictionary<CultureInfo, string> { { new CultureInfo("en"), "Assist name" } },
+                          "assist type");
     }
 
     public static IBookmakerDetails GetBookmakerDetails(int id = 0, bool idSpecified = true, bool expireAtSpecified = true, bool responseCodeSpecified = true)
@@ -70,11 +70,11 @@ public static class MessageFactorySdk
     public static ICompetitor GetCompetitor(int id = 0, int playerCount = 0)
     {
         return new Competitor(new CompetitorCacheItem(new CompetitorDto(MFR.GetTeam(id)), ScheduleData.CultureEn, SportEntityFactoryBuilder.DataRouterManager),
-            SportEntityFactoryBuilder.ProfileCache,
-            ScheduleData.Cultures3.ToList(),
-            SportEntityFactoryBuilder.SportEntityFactory,
-            ExceptionHandlingStrategy.Throw,
-            (ICompetitionCacheItem)null);
+                              SportEntityFactoryBuilder.ProfileCache,
+                              ScheduleData.Cultures3.ToList(),
+                              SportEntityFactoryBuilder.SportEntityFactory,
+                              ExceptionHandlingStrategy.Throw,
+                              (ICompetitionCacheItem)null);
     }
 
     internal static ICoverageInfo GetCoverageInfo(int subItemCount = 0)
@@ -120,16 +120,16 @@ public static class MessageFactorySdk
             type = "regular_period",
             numberSpecified = true,
             number = 1
-        }), null);
+        }),
+                               null);
     }
 
     public static IPlayer GetPlayer(int id = 0)
     {
-        return new Player(
-            id == 0
-                ? SR.Urn("", 10000)
-                : SR.Urn(id),
-            new Dictionary<CultureInfo, string> { { new CultureInfo("en"), "Player " + SR.I1000 } });
+        return new Player(id == 0
+                              ? SR.Urn("", 10000)
+                              : SR.Urn(id),
+                          new Dictionary<CultureInfo, string> { { new CultureInfo("en"), "Player " + SR.I1000 } });
     }
 
     internal static IPlayerProfile GetPlayerProfile(int id = 0)
@@ -180,9 +180,8 @@ public static class MessageFactorySdk
 
     internal static IReferee GetReferee(int id = 0)
     {
-        return new Referee(
-            new RefereeCacheItem(new RefereeDto(MFR.GetReferee(id)), new CultureInfo("en")),
-            new[] { new CultureInfo("en") });
+        return new Referee(new RefereeCacheItem(new RefereeDto(MFR.GetReferee(id)), new CultureInfo("en")),
+                           new[] { new CultureInfo("en") });
     }
 
     public static IRound GetRoundSummary(int id = 0)
@@ -207,9 +206,8 @@ public static class MessageFactorySdk
 
     public static ISportEventConditions GetSportEventConditions()
     {
-        return new SportEventConditions(
-            new SportEventConditionsCacheItem(new SportEventConditionsDto(MFR.GetSportEventConditions()), new CultureInfo("en")),
-            new[] { new CultureInfo("en") });
+        return new SportEventConditions(new SportEventConditionsCacheItem(new SportEventConditionsDto(MFR.GetSportEventConditions()), new CultureInfo("en")),
+                                        new[] { new CultureInfo("en") });
     }
 
     internal static IStreamingChannel GetStreamingChannel(int id = 0)
@@ -221,13 +219,13 @@ public static class MessageFactorySdk
     public static ITeamCompetitor GetTeamCompetitor(int id = 0)
     {
         return new TeamCompetitor(new TeamCompetitorCacheItem(new TeamCompetitorDto(MFR.GetTeamCompetitor(id)),
-                ScheduleData.CultureEn,
-                SportEntityFactoryBuilder.DataRouterManager),
-            ScheduleData.Cultures3.ToList(),
-            SportEntityFactoryBuilder.SportEntityFactory,
-            ExceptionHandlingStrategy.Throw,
-            SportEntityFactoryBuilder.ProfileCache,
-            null);
+                                                              ScheduleData.CultureEn,
+                                                              SportEntityFactoryBuilder.DataRouterManager),
+                                  ScheduleData.Cultures3.ToList(),
+                                  SportEntityFactoryBuilder.SportEntityFactory,
+                                  ExceptionHandlingStrategy.Throw,
+                                  SportEntityFactoryBuilder.ProfileCache,
+                                  null);
     }
 
     public static ITournament GetTournament(int id = 0)
@@ -279,14 +277,19 @@ public static class MessageFactorySdk
             if (tour != null)
             {
                 var tourDto = new TournamentInfoDto(tour);
-                var tourCacheItem = new TournamentInfoCacheItem(tourDto, SportEntityFactoryBuilder.DataRouterManager, semaphorePool, ScheduleData.CultureEn, ScheduleData.CultureEn, TestCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache));
+                var tourCacheItem = new TournamentInfoCacheItem(tourDto,
+                                                                SportEntityFactoryBuilder.DataRouterManager,
+                                                                semaphorePool,
+                                                                ScheduleData.CultureEn,
+                                                                ScheduleData.CultureEn,
+                                                                TestCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache));
                 var tourEntity = new Tournament(tourCacheItem.Id,
-                    tourCacheItem.GetSportIdAsync().GetAwaiter().GetResult(),
-                    SportEntityFactoryBuilder.SportEntityFactory,
-                    SportEntityFactoryBuilder.SportEventCache,
-                    SportEntityFactoryBuilder.SportDataCache,
-                    TestData.Cultures.ToList(),
-                    ExceptionHandlingStrategy.Throw);
+                                                tourCacheItem.GetSportIdAsync().GetAwaiter().GetResult(),
+                                                SportEntityFactoryBuilder.SportEntityFactory,
+                                                SportEntityFactoryBuilder.SportEventCache,
+                                                SportEntityFactoryBuilder.SportDataCache,
+                                                TestData.Cultures.ToList(),
+                                                ExceptionHandlingStrategy.Throw);
                 tours.Add(tourEntity);
             }
         }

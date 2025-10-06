@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 /*
  * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
@@ -95,12 +95,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
         /// <param name="loggerFactory">The logger factory for creating Cache and Execution logs</param>
         public VariantDescriptionListCache(ICacheStore<string> cacheStore,
-            IDataRouterManager dataRouterManager,
-            IMappingValidatorFactory mappingValidatorFactory,
-            ISdkTimer timer,
-            IReadOnlyCollection<CultureInfo> prefetchLanguages,
-            ICacheManager cacheManager,
-            ILoggerFactory loggerFactory)
+                                           IDataRouterManager dataRouterManager,
+                                           IMappingValidatorFactory mappingValidatorFactory,
+                                           ISdkTimer timer,
+                                           IReadOnlyCollection<CultureInfo> prefetchLanguages,
+                                           ICacheManager cacheManager,
+                                           ILoggerFactory loggerFactory)
             : base(cacheManager, loggerFactory)
         {
             Guard.Argument(cacheStore, nameof(cacheStore)).NotNull();
@@ -237,8 +237,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             description = GetItemFromCache(id);
 
             return description != null && !LanguageHelper.GetMissingCultures(cultures, description.FetchedLanguages).Any()
-                ? description
-                : null;
+                       ? description
+                       : null;
         }
 
         private void LogFetchException(Exception ex, ICollection<CultureInfo> missingLanguages)
@@ -316,8 +316,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
 
             return cacheItem == null
-                ? null
-                : new VariantDescription(cacheItem, cultures);
+                       ? null
+                       : new VariantDescription(cacheItem, cultures);
         }
 
         /// <summary>

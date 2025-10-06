@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -93,16 +93,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             Guard.Argument(sportData, nameof(sportData)).NotNull();
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
 
-            var categories = sportData.Categories?.Select(categoryData => new Category(
-                categoryData.Id,
-                categoryData.Names,
-                categoryData.CountryCode,
-                categoryData.Tournaments.Select(tournamentUrn => BuildSportEvent<ISportEvent>(tournamentUrn, sportData.Id, cultures, exceptionStrategy)).ToList())).Cast<ICategory>().ToList();
+            var categories = sportData.Categories?.Select(categoryData => new Category(categoryData.Id,
+                                                                                       categoryData.Names,
+                                                                                       categoryData.CountryCode,
+                                                                                       categoryData.Tournaments.Select(tournamentUrn => BuildSportEvent<ISportEvent>(tournamentUrn, sportData.Id, cultures, exceptionStrategy)).ToList()))
+                                      .Cast<ICategory>()
+                                      .ToList();
 
-            return new Sport(
-                sportData.Id,
-                sportData.Names,
-                categories);
+            return new Sport(sportData.Id,
+                             sportData.Names,
+                             categories);
         }
 
         /// <summary>
@@ -128,8 +128,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         {
             var sportData = await _sportDataCache.GetSportAsync(sportId, cultures).ConfigureAwait(false);
             return sportData == null
-                ? null
-                : BuildSportInternal(sportData, cultures, exceptionStrategy);
+                       ? null
+                       : BuildSportInternal(sportData, cultures, exceptionStrategy);
         }
 
         /// <summary>
@@ -144,14 +144,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             {
                 var competitorCacheItem = await _profileCache.GetCompetitorProfileAsync(playerId, cultures, false).ConfigureAwait(false);
                 return competitorCacheItem == null
-                    ? null
-                    : new Competitor(competitorCacheItem, _profileCache, cultures, this, exceptionStrategy, (ICompetitionCacheItem)null);
+                           ? null
+                           : new Competitor(competitorCacheItem, _profileCache, cultures, this, exceptionStrategy, (ICompetitionCacheItem)null);
             }
 
             var playerProfileCacheItem = await _profileCache.GetPlayerProfileAsync(playerId, cultures, false).ConfigureAwait(false);
             return playerProfileCacheItem == null
-                ? null
-                : new PlayerProfile(playerProfileCacheItem, cultures);
+                       ? null
+                       : new PlayerProfile(playerProfileCacheItem, cultures);
         }
 
         public async Task<IEnumerable<IPlayer>> BuildPlayersAsync(IReadOnlyCollection<Urn> playersIds, IReadOnlyCollection<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy, IDictionary<Urn, int> playersJerseyNumbers)

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -26,19 +26,20 @@ public class TestSection : IUofConfigurationSection
     public SdkEnvironment Environment { get; set; }
 
     public TestSection(string accessToken,
-        string host,
-        string virtualHost,
-        int port, string username,
-        string password,
-        string apiHost,
-        bool useSsl,
-        bool useApiSsl,
-        string supportedLanguages,
-        string defaultLanguage,
-        ExceptionHandlingStrategy exceptionHandlingStrategy,
-        string disabledProducers,
-        int nodeId,
-        SdkEnvironment environment)
+                       string host,
+                       string virtualHost,
+                       int port,
+                       string username,
+                       string password,
+                       string apiHost,
+                       bool useSsl,
+                       bool useApiSsl,
+                       string supportedLanguages,
+                       string defaultLanguage,
+                       ExceptionHandlingStrategy exceptionHandlingStrategy,
+                       string disabledProducers,
+                       int nodeId,
+                       SdkEnvironment environment)
     {
         AccessToken = accessToken;
         RabbitHost = host;
@@ -57,94 +58,89 @@ public class TestSection : IUofConfigurationSection
         Environment = environment;
     }
 
-    internal static IUofConfigurationSection MinimalIntegrationSection = new TestSection(
-        TestData.AccessToken,
-        null,
-        null,
-        0,
-        null,
-        null,
-        null,
-        true,
-        true,
-        "en",
-        null,
-        ExceptionHandlingStrategy.Catch,
-        null,
-        0,
-        SdkEnvironment.Integration);
+    internal static IUofConfigurationSection MinimalIntegrationSection = new TestSection(TestData.AccessToken,
+                                                                                         null,
+                                                                                         null,
+                                                                                         0,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         true,
+                                                                                         true,
+                                                                                         "en",
+                                                                                         null,
+                                                                                         ExceptionHandlingStrategy.Catch,
+                                                                                         null,
+                                                                                         0,
+                                                                                         SdkEnvironment.Integration);
 
-    internal static IUofConfigurationSection MinimalProductionSection = new TestSection(
-        TestData.AccessToken,
-        null,
-        null,
-        0,
-        null,
-        null,
-        null,
-        true,
-        true,
-        "en",
-        null,
-        ExceptionHandlingStrategy.Catch,
-        null,
-        0,
-        SdkEnvironment.Production);
+    internal static IUofConfigurationSection MinimalProductionSection = new TestSection(TestData.AccessToken,
+                                                                                        null,
+                                                                                        null,
+                                                                                        0,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        true,
+                                                                                        true,
+                                                                                        "en",
+                                                                                        null,
+                                                                                        ExceptionHandlingStrategy.Catch,
+                                                                                        null,
+                                                                                        0,
+                                                                                        SdkEnvironment.Production);
 
     internal static IUofConfigurationSection GetCustomSection()
     {
-        return new TestSection(
-            TestData.AccessToken,
-            "stgmq.localhost.com",
-            "virtual_host",
-            5000,
-            "username",
-            "password",
-            "stgapi.localhost.com",
-            false,
-            false,
-            "en",
-            "en",
-            ExceptionHandlingStrategy.Throw,
-            "1,3",
-            11,
-            SdkEnvironment.Custom);
+        return new TestSection(TestData.AccessToken,
+                               "stgmq.localhost.com",
+                               "virtual_host",
+                               5000,
+                               "username",
+                               "password",
+                               "stgapi.localhost.com",
+                               false,
+                               false,
+                               "en",
+                               "en",
+                               ExceptionHandlingStrategy.Throw,
+                               "1,3",
+                               11,
+                               SdkEnvironment.Custom);
     }
 
-    internal static IUofConfigurationSection CustomProductionSection = new TestSection(
-        TestData.AccessToken,
-        "mq.localhost.com",
-        "virtual_host",
-        5000,
-        "username",
-        "password",
-        "api.localhost.com",
-        false,
-        false,
-        "en,de,it",
-        "en",
-        ExceptionHandlingStrategy.Throw,
-        "1,3",
-        11,
-        SdkEnvironment.Custom);
+    internal static IUofConfigurationSection CustomProductionSection = new TestSection(TestData.AccessToken,
+                                                                                       "mq.localhost.com",
+                                                                                       "virtual_host",
+                                                                                       5000,
+                                                                                       "username",
+                                                                                       "password",
+                                                                                       "api.localhost.com",
+                                                                                       false,
+                                                                                       false,
+                                                                                       "en,de,it",
+                                                                                       "en",
+                                                                                       ExceptionHandlingStrategy.Throw,
+                                                                                       "1,3",
+                                                                                       11,
+                                                                                       SdkEnvironment.Custom);
 
     internal static IUofConfigurationSection GetDefaultSection()
     {
-        return new TestSection(
-            TestData.AccessToken,
-            null,
-            null,
-            0,
-            null,
-            string.Empty,
-            null,
-            true,
-            true,
-            "en",
-            null,
-            ExceptionHandlingStrategy.Catch,
-            null,
-            0,
-            SdkEnvironment.Integration);
+        return new TestSection(TestData.AccessToken,
+                               null,
+                               null,
+                               0,
+                               null,
+                               string.Empty,
+                               null,
+                               true,
+                               true,
+                               "en",
+                               null,
+                               ExceptionHandlingStrategy.Catch,
+                               null,
+                               0,
+                               SdkEnvironment.Integration);
     }
 }

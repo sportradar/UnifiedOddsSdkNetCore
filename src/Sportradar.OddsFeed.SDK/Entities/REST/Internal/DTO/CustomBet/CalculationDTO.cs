@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -50,8 +50,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
             Probability = calculation.calculation.probability;
             GeneratedAt = calculation.generated_at;
             AvailableSelections = calculation.available_selections.IsNullOrEmpty()
-                ? new List<AvailableSelectionsDto>()
-                : calculation.available_selections.Select(s => new AvailableSelectionsDto(s, calculation.generated_at)).ToList();
+                                      ? new List<AvailableSelectionsDto>()
+                                      : calculation.available_selections.Select(s => new AvailableSelectionsDto(s, calculation.generated_at)).ToList();
             Harmonization = !calculation.calculation.harmonizationSpecified ? (bool?)null : calculation.calculation.harmonization;
         }
     }

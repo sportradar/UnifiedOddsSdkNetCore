@@ -1,10 +1,11 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
 using RabbitMQ.Client;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
+
 internal class StubConnectionFactory : IConnectionFactory
 {
     public IAuthMechanismFactory AuthMechanismFactory(IList<string> mechanismNames)

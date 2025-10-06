@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -61,9 +61,10 @@ public class MapBetSettlementTests : MapEntityTestBase
         Assert.Equal(entity.Event.Id.ToString(), record.event_id);
         var rProduct = TestProducerManager.Create().GetProducer(record.product);
         Assert.Equal(entity.Producer, rProduct);
-        Assert.Equal(entity.RequestId, record.request_idSpecified
-            ? record.request_id
-            : null);
+        Assert.Equal(entity.RequestId,
+                     record.request_idSpecified
+                         ? record.request_id
+                         : null);
         Assert.Equal(entity.Timestamps.Created, record.timestamp);
 
         TestMarketOutcomes(entity.Markets.ToList(), record.outcomes);
@@ -78,12 +79,14 @@ public class MapBetSettlementTests : MapEntityTestBase
             Assert.Equal(m.Id, b.id);
             var marketSpecifiersMatch = CompareMarketSpecifiers(m.Specifiers, b.specifiers);
             var marketOutcomeSettlementMatch = CompareMarketOutcomeSettlement(m.OutcomeSettlements.ToList(), b.Items);
-            Assert.Equal(m.Specifiers, marketSpecifiersMatch
-                ? m.Specifiers
-                : null);
-            Assert.Equal(m.OutcomeSettlements, marketOutcomeSettlementMatch
-                ? m.OutcomeSettlements
-                : null);
+            Assert.Equal(m.Specifiers,
+                         marketSpecifiersMatch
+                             ? m.Specifiers
+                             : null);
+            Assert.Equal(m.OutcomeSettlements,
+                         marketOutcomeSettlementMatch
+                             ? m.OutcomeSettlements
+                             : null);
         }
     }
 
@@ -134,9 +137,10 @@ public class MapBetSettlementTests : MapEntityTestBase
                 if (b.id == m.Id)
                 {
                     Assert.Equal(m.Id, b.id);
-                    Assert.Equal(m.DeadHeatFactor, b.dead_heat_factorSpecified
-                        ? b.dead_heat_factor
-                        : null);
+                    Assert.Equal(m.DeadHeatFactor,
+                                 b.dead_heat_factorSpecified
+                                     ? b.dead_heat_factor
+                                     : null);
                     Assert.Equal((int)m.OutcomeResult, b.result);
 
                     var voidFactor = (VoidFactor?)MessageMapperHelper.GetVoidFactor(b.void_factorSpecified, b.void_factor);

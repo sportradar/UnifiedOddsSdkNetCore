@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -99,8 +99,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             // SportEventStatusCacheItem and MatchStatusCache cannot be null
             //return SportEventStatusCacheItem == null || SportEventStatusCacheItem.MatchStatusId < 0 || MatchStatusCache == null
             return SportEventStatusCacheItem.MatchStatusId < 0
-                ? null
-                : await MatchStatusCache.GetAsync(SportEventStatusCacheItem.MatchStatusId, new List<CultureInfo> { culture }).ConfigureAwait(false);
+                       ? null
+                       : await MatchStatusCache.GetAsync(SportEventStatusCacheItem.MatchStatusId, new List<CultureInfo> { culture }).ConfigureAwait(false);
         }
     }
 }

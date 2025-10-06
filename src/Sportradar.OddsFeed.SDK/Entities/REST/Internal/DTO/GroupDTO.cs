@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,8 +26,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Id = group.id ?? string.Empty;
             Name = group.name ?? string.Empty;
             Competitors = group.competitor == null
-                ? null
-                : new ReadOnlyCollection<CompetitorDto>(group.competitor.Select(c => new CompetitorDto(c)).ToList());
+                              ? null
+                              : new ReadOnlyCollection<CompetitorDto>(group.competitor.Select(c => new CompetitorDto(c)).ToList());
         }
     }
 }

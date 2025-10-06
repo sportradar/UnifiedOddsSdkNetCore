@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -45,11 +45,11 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         public override string ToString()
         {
             var producerId = string.IsNullOrEmpty(ProducerId)
-                ? "[null]"
-                : ProducerId;
+                                 ? "[null]"
+                                 : ProducerId;
             var eventId = string.IsNullOrEmpty(EventId)
-                ? "[null]"
-                : EventId;
+                              ? "[null]"
+                              : EventId;
 
             return $"MessageType={Enum.GetName(typeof(MessageType), MessageType)} ProducerId={producerId} EventId={eventId}";
         }

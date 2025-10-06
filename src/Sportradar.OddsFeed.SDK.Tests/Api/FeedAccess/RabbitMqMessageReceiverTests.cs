@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,6 @@ public class RabbitMqMessageReceiverTests
     [Fact]
     public void NullOrEmptyDataDoesNotRaiseDeserializationFailedEvent()
     {
-
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
 
         var deserializationFailed = false;

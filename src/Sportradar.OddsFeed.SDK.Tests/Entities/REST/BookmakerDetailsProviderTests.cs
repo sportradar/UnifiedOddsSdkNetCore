@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Net;
@@ -281,10 +281,10 @@ public class BookmakerDetailsProviderTests
         RawApiDataEventArgs receivedArgs = null;
         SetupDataFetcherWithValidResponse();
         _bookmakerDetailsProvider.RawApiDataReceived += (_, args) =>
-        {
-            Assert.NotNull(args);
-            receivedArgs = args;
-        };
+                                                        {
+                                                            Assert.NotNull(args);
+                                                            receivedArgs = args;
+                                                        };
 
         await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]);
 
@@ -297,10 +297,10 @@ public class BookmakerDetailsProviderTests
         RawApiDataEventArgs receivedArgs = null;
         SetupDataFetcherWithValidResponse();
         _bookmakerDetailsProvider.RawApiDataReceived += (_, args) =>
-        {
-            Assert.NotNull(args);
-            receivedArgs = args;
-        };
+                                                        {
+                                                            Assert.NotNull(args);
+                                                            receivedArgs = args;
+                                                        };
 
         _ = _bookmakerDetailsProvider.GetData([DefaultLanguageCode]);
 
@@ -313,10 +313,10 @@ public class BookmakerDetailsProviderTests
         RawApiDataEventArgs receivedArgs = null;
         SetupDataFetcherWithValidResponse();
         _bookmakerDetailsProvider.RawApiDataReceived += (_, args) =>
-        {
-            receivedArgs = args;
-            throw new InvalidOperationException("Test exception");
-        };
+                                                        {
+                                                            receivedArgs = args;
+                                                            throw new InvalidOperationException("Test exception");
+                                                        };
 
         var dto = await _bookmakerDetailsProvider.GetDataAsync([DefaultLanguageCode]);
 
@@ -330,10 +330,10 @@ public class BookmakerDetailsProviderTests
         RawApiDataEventArgs receivedArgs = null;
         SetupDataFetcherWithValidResponse();
         _bookmakerDetailsProvider.RawApiDataReceived += (_, args) =>
-        {
-            receivedArgs = args;
-            throw new InvalidOperationException("Test exception");
-        };
+                                                        {
+                                                            receivedArgs = args;
+                                                            throw new InvalidOperationException("Test exception");
+                                                        };
 
         var dto = _bookmakerDetailsProvider.GetData([DefaultLanguageCode]);
 

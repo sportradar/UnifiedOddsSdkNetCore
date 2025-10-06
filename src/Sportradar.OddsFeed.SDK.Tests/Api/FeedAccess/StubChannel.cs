@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
+
 internal class StubChannel : IModel
 {
     public void Dispose()

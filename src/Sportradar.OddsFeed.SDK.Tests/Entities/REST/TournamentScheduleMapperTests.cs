@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Linq;
 using System.Xml.Linq;
@@ -23,11 +23,10 @@ public class TournamentScheduleMapperTests
         var dataFetcher = new TestDataFetcher();
         var mapperFactory = new TournamentScheduleMapperFactory();
 
-        var dataProvider = new DataProvider<tournamentSchedule, EntityList<SportEventSummaryDto>>(
-            TestData.RestXmlPath + InputXml,
-            dataFetcher,
-            deserializer,
-            mapperFactory);
+        var dataProvider = new DataProvider<tournamentSchedule, EntityList<SportEventSummaryDto>>(TestData.RestXmlPath + InputXml,
+                                                                                                  dataFetcher,
+                                                                                                  deserializer,
+                                                                                                  mapperFactory);
         _entity = dataProvider.GetData("en");
     }
 
@@ -61,8 +60,8 @@ public class TournamentScheduleMapperTests
         Assert.NotNull(element);
         Assert.Equal(eventSummary.Id.ToString(), element.Attribute(XName.Get("id"))?.Value);
         var scheduled = element.Attribute(XName.Get("scheduled")) == null
-            ? null
-            : element.Attribute(XName.Get("scheduled"))?.Value.Substring(0, 10);
+                            ? null
+                            : element.Attribute(XName.Get("scheduled"))?.Value.Substring(0, 10);
 
         Assert.Equal(eventSummary.Scheduled?.ToString("yyyy-MM-dd"), scheduled);
 

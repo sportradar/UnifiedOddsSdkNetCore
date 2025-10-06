@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -63,12 +63,12 @@ public class LogHttpDataFetcherTests
     {
         var services = new ServiceCollection();
         services.AddHttpClient(HttpClientDefaultName)
-            .ConfigureHttpClient(configureClient =>
-            {
-                configureClient.Timeout = TimeSpan.FromSeconds(5);
-                configureClient.DefaultRequestHeaders.Clear();
-            })
-            .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+                .ConfigureHttpClient(configureClient =>
+                                     {
+                                         configureClient.Timeout = TimeSpan.FromSeconds(5);
+                                         configureClient.DefaultRequestHeaders.Clear();
+                                     })
+                .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
         var serviceProvider = services.BuildServiceProvider();
 
         Assert.Throws<InvalidOperationException>(() => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName));
@@ -111,14 +111,14 @@ public class LogHttpDataFetcherTests
     {
         var services = new ServiceCollection();
         services.AddHttpClient(HttpClientDefaultName)
-            .ConfigureHttpClient(configureClient =>
-            {
-                configureClient.Timeout = TimeSpan.FromSeconds(5);
-                configureClient.DefaultRequestHeaders.Clear();
-                configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
-                configureClient.DefaultRequestHeaders.Add("user-agent", "UofSdk-Net");
-            })
-            .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
+                .ConfigureHttpClient(configureClient =>
+                                     {
+                                         configureClient.Timeout = TimeSpan.FromSeconds(5);
+                                         configureClient.DefaultRequestHeaders.Clear();
+                                         configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "aaa");
+                                         configureClient.DefaultRequestHeaders.Add("user-agent", "UofSdk-Net");
+                                     })
+                .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
         var serviceProvider = services.BuildServiceProvider();
 
         var sdkHttpClient = new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName);

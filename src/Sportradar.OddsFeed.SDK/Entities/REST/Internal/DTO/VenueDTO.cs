@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -57,16 +57,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             : base(venue.id, venue.name)
         {
             Capacity = venue.capacitySpecified
-                ? (int?)venue.capacity
-                : null;
+                           ? (int?)venue.capacity
+                           : null;
             City = venue.city_name;
             Country = venue.country_name;
             CountryCode = venue.country_code;
             State = venue.state;
             Coordinates = venue.map_coordinates;
             Courses = venue.course.IsNullOrEmpty()
-                ? new List<CourseDto>()
-                : venue.course.Select(s => new CourseDto(s)).ToList();
+                          ? new List<CourseDto>()
+                          : venue.course.Select(s => new CourseDto(s)).ToList();
         }
     }
 }

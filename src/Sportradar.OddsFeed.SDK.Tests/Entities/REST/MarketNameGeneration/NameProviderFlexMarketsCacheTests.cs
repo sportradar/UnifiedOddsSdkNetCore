@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,29 +36,27 @@ public class NameProviderFlexMarketsCacheTests
         _ = new MappingValidatorFactory();
         var cacheManager = new CacheManager();
         var dataRouterManager = new DataRouterManagerBuilder()
-            .AddMockedDependencies()
-            .WithCacheManager(cacheManager)
-            .WithDefaultMarketListProviders()
-            .Build();
+                               .AddMockedDependencies()
+                               .WithCacheManager(cacheManager)
+                               .WithDefaultMarketListProviders()
+                               .Build();
 
         var marketCacheProvider = MarketCacheProviderBuilder.Create()
-            .WithCacheManager(cacheManager)
-            .WithDataRouterManager(dataRouterManager)
-            .WithLanguages(TestData.Cultures1)
-            .WithLoggerFactory(testLoggerFactory)
-            .WithProfileCache(profileCache)
-            .Build();
+                                                            .WithCacheManager(cacheManager)
+                                                            .WithDataRouterManager(dataRouterManager)
+                                                            .WithLanguages(TestData.Cultures1)
+                                                            .WithLoggerFactory(testLoggerFactory)
+                                                            .WithProfileCache(profileCache)
+                                                            .Build();
 
-        _nameProvider = new NameProvider(
-            marketCacheProvider,
-            new Mock<IProfileCache>().Object,
-            new Mock<INameExpressionFactory>().Object,
-            new Mock<ISportEvent>().Object,
-            41,
-            specifiers,
-            ExceptionHandlingStrategy.Throw,
-            loggerFactory.CreateLogger<NameProvider>()
-        );
+        _nameProvider = new NameProvider(marketCacheProvider,
+                                         new Mock<IProfileCache>().Object,
+                                         new Mock<INameExpressionFactory>().Object,
+                                         new Mock<ISportEvent>().Object,
+                                         41,
+                                         specifiers,
+                                         ExceptionHandlingStrategy.Throw,
+                                         loggerFactory.CreateLogger<NameProvider>());
     }
 
     [Theory]

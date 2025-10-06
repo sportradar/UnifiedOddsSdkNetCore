@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,6 @@ internal class StubConnection : IConnection
     public int RemotePort { get; }
     public void Dispose()
     {
-
     }
 
     public void PrepareForThrowOnClose()

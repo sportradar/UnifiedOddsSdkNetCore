@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable
     public class ExportableTimelineEvent
     {
         /// <summary>
-        /// A <see cref="int" /> specifying the id
+        /// A <see cref="long" /> specifying the id
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// A <see cref="decimal" /> specifying the home score

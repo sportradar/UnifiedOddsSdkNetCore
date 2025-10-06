@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -172,7 +172,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         {
             ExecutionLog.LogInformation("Opening the channel ...");
             _channel = _channelFactory.CreateChannel();
-            ExecutionLog.LogInformation("Channel opened with channelNumber: {ChannelNumber}. MaxAllowedTimeBetweenMessages={MaxTimeBetweenMessages}s", _channel.ChannelNumber.ToString(CultureInfo.InvariantCulture), _maxTimeBetweenMessages.TotalSeconds.ToString(CultureInfo.InvariantCulture));
+            ExecutionLog.LogInformation("Channel opened with channelNumber: {ChannelNumber}. MaxAllowedTimeBetweenMessages={MaxTimeBetweenMessages}s",
+                                        _channel.ChannelNumber.ToString(CultureInfo.InvariantCulture),
+                                        _maxTimeBetweenMessages.TotalSeconds.ToString(CultureInfo.InvariantCulture));
 
             var queueName = BindChannelWithRoutingKeys();
 
@@ -287,7 +289,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             }
 
             var isOpen = _channelFactory.IsConnectionOpen() ? "s" : string.Empty;
-            ExecutionLog.LogWarning("There were no message{Text} in more then {MaxTimeBetweenMessages}s for the channel with channelNumber: {ChannelNumber}. Last message arrived: {LastMessageReceived}. Recreating channel ...", isOpen, _maxTimeBetweenMessages.TotalSeconds.ToString(CultureInfo.InvariantCulture), _channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture), _lastMessageReceived.ToString(CultureInfo.InvariantCulture));
+            ExecutionLog.LogWarning("There were no message{Text} in more then {MaxTimeBetweenMessages}s for the channel with channelNumber: {ChannelNumber}. Last message arrived: {LastMessageReceived}. Recreating channel ...",
+                                    isOpen,
+                                    _maxTimeBetweenMessages.TotalSeconds.ToString(CultureInfo.InvariantCulture),
+                                    _channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture),
+                                    _lastMessageReceived.ToString(CultureInfo.InvariantCulture));
             DetachEventsAndCloseChannel();
             CreateChannelAndAttachEvents();
         }
@@ -299,7 +305,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             if (_lastMessageReceived > DateTime.MinValue && lastMessageDiff > _maxTimeBetweenMessages)
             {
                 var isOpen = _channelFactory.IsConnectionOpen() ? "s" : string.Empty;
-                ExecutionLog.LogWarning("There were no message{Text} in more then {MaxTimeBetweenMessages}s for the channel with channelNumber: {ChannelNumber}. Last message arrived: {LastMessageReceived}", isOpen, _maxTimeBetweenMessages.TotalSeconds.ToString(CultureInfo.InvariantCulture), _channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture), _lastMessageReceived.ToString(CultureInfo.InvariantCulture));
+                ExecutionLog.LogWarning("There were no message{Text} in more then {MaxTimeBetweenMessages}s for the channel with channelNumber: {ChannelNumber}. Last message arrived: {LastMessageReceived}",
+                                        isOpen,
+                                        _maxTimeBetweenMessages.TotalSeconds.ToString(CultureInfo.InvariantCulture),
+                                        _channel?.ChannelNumber.ToString(CultureInfo.InvariantCulture),
+                                        _lastMessageReceived.ToString(CultureInfo.InvariantCulture));
 
                 DetachEventsAndCloseChannel();
                 if (_channelFactory.ConnectionCreated < _channelStarted)

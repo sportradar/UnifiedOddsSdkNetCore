@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -49,8 +49,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             : base(Urn.Parse(exportable.Id), new Dictionary<CultureInfo, string>(exportable.Names))
         {
             Nationality = exportable.Nationality != null
-                ? new Dictionary<CultureInfo, string>(exportable.Nationality)
-                : null;
+                              ? new Dictionary<CultureInfo, string>(exportable.Nationality)
+                              : null;
             CountryCode = exportable.CountryCode;
         }
 

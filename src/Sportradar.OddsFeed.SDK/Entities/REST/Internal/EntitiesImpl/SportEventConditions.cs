@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -83,14 +83,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         protected override string PrintC()
         {
             var refereeStr = Referee == null
-                ? string.Empty
-                : ((Referee)Referee).ToString("c");
+                                 ? string.Empty
+                                 : ((Referee)Referee).ToString("c");
             var weatherStr = WeatherInfo == null
-                ? string.Empty
-                : ((WeatherInfo)WeatherInfo).ToString("c");
+                                 ? string.Empty
+                                 : ((WeatherInfo)WeatherInfo).ToString("c");
             var pitcherStr = Pitchers == null
-                ? string.Empty
-                : string.Join(",", Pitchers.Select(s => s.Id));
+                                 ? string.Empty
+                                 : string.Join(",", Pitchers.Select(s => s.Id));
             return $"Attendance={Attendance}, EventMode={EventMode}, Referee={refereeStr}, WeatherInfo={weatherStr}, Pitchers=[{pitcherStr}]";
         }
 
@@ -101,14 +101,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         protected override string PrintF()
         {
             var refereeStr = Referee == null
-                ? string.Empty
-                : ((Referee)Referee).ToString("f");
+                                 ? string.Empty
+                                 : ((Referee)Referee).ToString("f");
             var weatherStr = WeatherInfo == null
-                ? string.Empty
-                : ((WeatherInfo)WeatherInfo).ToString("f");
+                                 ? string.Empty
+                                 : ((WeatherInfo)WeatherInfo).ToString("f");
             var pitcherStr = Pitchers == null
-                ? string.Empty
-                : string.Join(",", Pitchers.Select(s => s.Id));
+                                 ? string.Empty
+                                 : string.Join(",", Pitchers.Select(s => s.Id));
             return $"Attendance={Attendance}, EventMode={EventMode}, Referee={refereeStr}, WeatherInfo={weatherStr}, Pitchers=[{pitcherStr}]";
         }
 

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +36,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             }
             Name = course.name;
             Holes = course.hole.IsNullOrEmpty()
-                ? new List<HoleDto>()
-                : course.hole.Select(s => new HoleDto(s)).ToList();
+                        ? new List<HoleDto>()
+                        : course.hole.Select(s => new HoleDto(s)).ToList();
         }
     }
 }

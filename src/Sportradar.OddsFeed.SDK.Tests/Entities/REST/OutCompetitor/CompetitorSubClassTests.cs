@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -193,13 +193,13 @@ public class CompetitorSubClassTests : CompetitorSetup
     public void ReferenceId_Constructor()
     {
         var references = new Dictionary<string, string>
-        {
-            { "betradar", "12345" },
-            { "BetradarCtrl", "12345" },
-            { "betfair", "2222" },
-            { "rotation_number", "1111" },
-            { "aams", "9876" }
-        };
+                             {
+                                 { "betradar", "12345" },
+                                 { "BetradarCtrl", "12345" },
+                                 { "betfair", "2222" },
+                                 { "rotation_number", "1111" },
+                                 { "aams", "9876" }
+                             };
         var referenceCi = new ReferenceIdCacheItem(references);
 
         var reference = new Reference(referenceCi);
@@ -246,10 +246,10 @@ public class CompetitorSubClassTests : CompetitorSetup
     public void ReferenceId_ConstructorWithAdditionalUnknownValue()
     {
         var references = new Dictionary<string, string>
-        {
-            { "betradar", "12345" },
-            { "UnknownKey", "12345" },
-        };
+                             {
+                                 { "betradar", "12345" },
+                                 { "UnknownKey", "12345" },
+                             };
         var referenceCi = new ReferenceIdCacheItem(references);
 
         var reference = new Reference(referenceCi);

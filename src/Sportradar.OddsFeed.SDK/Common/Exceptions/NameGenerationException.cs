@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -75,7 +75,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
-        public NameGenerationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public NameGenerationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             MarketId = info.GetInt32("sdkMarketId");
             MarketSpecifiers = (IReadOnlyDictionary<string, string>)info.GetValue("sdkMarketSpecifiers", typeof(IReadOnlyDictionary<string, string>));
@@ -106,15 +107,20 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         public override string ToString()
         {
             var specifiersString = MarketSpecifiers == null
-                ? "null"
-                : string.Join(SdkInfo.SpecifiersDelimiter, MarketSpecifiers.Select(k => $"{k.Key}={k.Value}"));
+                                       ? "null"
+                                       : string.Join(SdkInfo.SpecifiersDelimiter, MarketSpecifiers.Select(k => $"{k.Key}={k.Value}"));
 
             var sb = new StringBuilder(base.ToString());
-            sb.Append(" MarketId=").Append(MarketId)
-                .Append(" MarketSpecifiers=").Append(specifiersString)
-                .Append(" OutcomeId=").Append(OutcomeId ?? "null")
-                .Append(" NameDescriptor=").Append(NameDescriptor ?? "null")
-                .Append(" Culture=").Append(Culture?.TwoLetterISOLanguageName ?? "null");
+            sb.Append(" MarketId=")
+              .Append(MarketId)
+              .Append(" MarketSpecifiers=")
+              .Append(specifiersString)
+              .Append(" OutcomeId=")
+              .Append(OutcomeId ?? "null")
+              .Append(" NameDescriptor=")
+              .Append(NameDescriptor ?? "null")
+              .Append(" Culture=")
+              .Append(Culture?.TwoLetterISOLanguageName ?? "null");
             return sb.ToString();
         }
     }

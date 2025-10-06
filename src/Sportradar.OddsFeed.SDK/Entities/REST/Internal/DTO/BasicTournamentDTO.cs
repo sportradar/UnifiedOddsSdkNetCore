@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +39,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             TournamentCoverage = null;
             Category = sportEvent.tournament.category == null
-                ? null
-                : Urn.Parse(sportEvent.tournament.category.id);
+                           ? null
+                           : Urn.Parse(sportEvent.tournament.category.id);
             Competitors = sportEvent.competitors.Select(s => new CompetitorDto(s));
         }
 
@@ -65,8 +65,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             TournamentCoverage = new TournamentCoverageDto(tournamentInfo.coverage_info);
             Category = tournamentInfo.tournament.category == null
-                ? null
-                : Urn.Parse(tournamentInfo.tournament.category.id);
+                           ? null
+                           : Urn.Parse(tournamentInfo.tournament.category.id);
             Competitors = tournamentInfo.competitors.Select(s => new CompetitorDto(s));
         }
 
@@ -90,8 +90,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(tournament, nameof(tournament)).NotNull();
 
             Category = tournament.category == null
-                ? null
-                : Urn.Parse(tournament.category.id);
+                           ? null
+                           : Urn.Parse(tournament.category.id);
             Competitors = tournament.competitors.Select(s => new CompetitorDto(s));
         }
     }

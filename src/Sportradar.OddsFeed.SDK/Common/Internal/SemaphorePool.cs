@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -223,9 +223,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
                     return;
                 }
                 _executionLog.LogWarning("No semaphores are acquired with Id:{EventId} (used: {Used}/{Max})",
-                    id,
-                    SemaphoreHolders.Count(c => !c.Id.IsNullOrEmpty()).ToString(CultureInfo.InvariantCulture),
-                    SemaphoreHolders.Count.ToString(CultureInfo.InvariantCulture));
+                                         id,
+                                         SemaphoreHolders.Count(c => !c.Id.IsNullOrEmpty()).ToString(CultureInfo.InvariantCulture),
+                                         SemaphoreHolders.Count.ToString(CultureInfo.InvariantCulture));
 
                 if (_exceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                 {

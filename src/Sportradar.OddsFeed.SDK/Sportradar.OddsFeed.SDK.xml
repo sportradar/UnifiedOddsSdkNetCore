@@ -4831,15 +4831,15 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.LoadFromConfigFile">
             <summary>
-            Sets the custom configuration properties to values read from configuration file. Only value which can be set
-            through <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> methods are set.
-            Any values already set by methods on the current instance are overridden
+            Sets the custom configuration properties to values read from the configuration file.
+            Only value which can be set through <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> methods are set.
+            Any values already set by methods on the current instance are overridden.
             </summary>
-            <returns>T.</returns>
+            <returns>Returns <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.PreBuildCheck">
             <summary>
-            Check the properties values before build the configuration and throws an exception is invalid values are found
+            Check the properties values before build the configuration and throws an exception if invalid values are found
             </summary>
             <exception cref="T:System.InvalidOperationException">The value of one or more properties is not correct</exception>
         </member>
@@ -16415,7 +16415,7 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTimelineEvent.Id">
             <summary>
-            A <see cref="T:System.Int32" /> specifying the id
+            A <see cref="T:System.Int64" /> specifying the id
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Caching.Exportable.ExportableTimelineEvent.HomeScore">
@@ -36096,6 +36096,135 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.category.country_code">
             <remarks/>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.lottery">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.sport">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.category">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.draw_info">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.bonus_info">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.name">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.draw_type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.draw_typeSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.time_type">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.time_typeSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.game_type">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.drawType">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawType.drum">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawType.rng">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.timeType">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.timeType.interval">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.timeType.fixed">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_balls">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_ballsSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_drum">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_drumSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_range">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType.same">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType.additional">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.open">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.closed">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.finished">
+            <remarks/>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.canceled">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_result">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_result.draws">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.draw">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.chronological">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.chronologicalSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.name">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.value">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.valueSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.fixtureChange">
             <remarks/>
         </member>
@@ -36663,6 +36792,30 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.sportEventChildrenSport_event.replaced_by">
             <remarks/>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.scheduled">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.scheduledSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.status">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.statusSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.display_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.display_idSpecified">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.restSportEventStatusBase">
             <remarks/>
         </member>
@@ -36888,76 +37041,43 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.eventPlayerAssist.type">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.sport_event">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.competitor">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.sport_event_conditions">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.number">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.sport_event_status">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.numberSpecified">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.coverage_info">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.type">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.generated_at">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.status">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.generated_atSpecified">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor.result">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.result">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor.id">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.generated_at">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.generated_atSpecified">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.value">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.result">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.type">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.result.sport_event">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.result.sport_event_status">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLiveCoverageInfo">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLiveCoverageInfo.live_coverage">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.competitor">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.name">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.id">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.venue">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.home_teams">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.generated_at">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.specifiers">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.stageSportEventStatus">
@@ -37077,157 +37197,85 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.stageResultCompetitorResult.specifiers">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.lottery">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.sport">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.sport_event">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.category">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.sport_event_conditions">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.draw_info">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.sport_event_status">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.bonus_info">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.coverage_info">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.id">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.generated_at">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lottery.name">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultEndpoint.generated_atSpecified">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.resultChange">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.draw_type">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultChange.sport_event_id">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.draw_typeSpecified">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultChange.update_time">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.time_type">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.time_typeSpecified">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.result">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryDraw_info.game_type">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.generated_at">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.drawType">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultsEndpoint.generated_atSpecified">
             <remarks/>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawType.drum">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.result">
             <remarks/>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawType.rng">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.result.sport_event">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.timeType">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.result.sport_event_status">
             <remarks/>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.timeType.interval">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLiveCoverageInfo">
             <remarks/>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.timeType.fixed">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentLiveCoverageInfo.live_coverage">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_balls">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.competitor">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_ballsSpecified">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.name">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_drum">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.tournamentGroup.id">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_drumSpecified">
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint">
             <remarks/>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.lotteryBonus_info.bonus_range">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.venue">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.home_teams">
             <remarks/>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType.same">
-            <remarks/>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.bonusDrumType.additional">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.scheduled">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.scheduledSpecified">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.status">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.statusSpecified">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.display_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_event.display_idSpecified">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus">
-            <remarks/>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.open">
-            <remarks/>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.closed">
-            <remarks/>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.finished">
-            <remarks/>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Messages.Rest.drawStatus.canceled">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_result">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_result.draws">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.draw">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.chronological">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDraws.chronologicalSpecified">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.name">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.value">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.draw_resultDrawsDraw.valueSpecified">
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.venueSummaryEndpoint.generated_at">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.EventType">
@@ -37287,87 +37335,6 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.ResponseType.generated_at">
             <remarks/>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.resultChange">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultChange.sport_event_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.resultChange.update_time">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.competitor">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.number">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.numberSpecified">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.type">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatus.status">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor.result">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitor.id">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.value">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.type">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.periodStatusCompetitorResult.specifiers">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType.selection">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.market">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.id">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.market_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.specifiers">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.outcome_id">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.odds">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.oddsSpecified">
-            <remarks/>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredCalculationResultType">
             <remarks/>
         </member>
@@ -37420,6 +37387,87 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilteredOutcomeType.conflictSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionsType.selection">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.market">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionType.id">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.market_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.specifiers">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.outcome_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.oddsSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.event">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.requested_recommendations">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.recommendations">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.provided_recommendation">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.source">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.selection">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.odds">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.probability">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.market_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.outcome_id">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.specifiers">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.SelectionsType">

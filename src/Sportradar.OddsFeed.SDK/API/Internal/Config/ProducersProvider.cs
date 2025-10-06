@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -53,8 +53,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             var data = _dataProvider.GetData(_config.DefaultLanguage.TwoLetterISOLanguageName);
 
             return data == null
-                ? null
-                : MapProducers(data);
+                       ? null
+                       : MapProducers(data);
         }
 
         /// <summary>
@@ -77,7 +77,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                     (int)_config.Producer.InactivitySeconds.TotalSeconds,
                                                                     (int)_config.Producer.MaxRecoveryTime.TotalSeconds,
                                                                     producer.scope,
-                                                                    producer.stateful_recovery_window_in_minutes)).Cast<IProducer>().ToList();
+                                                                    producer.stateful_recovery_window_in_minutes))
+                          .Cast<IProducer>()
+                          .ToList();
         }
 
         private string ReplaceProducerApiUrl(string url)

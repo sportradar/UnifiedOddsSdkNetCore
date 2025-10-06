@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -524,9 +524,9 @@ public class VariantMarketDescriptionListCacheTests
     public async Task GetMarketDescriptionWhenUnknownLanguageIsRequestedThenReturnNull()
     {
         var languages = new List<CultureInfo>
-                        {
-                            new CultureInfo("na")
-                        };
+                            {
+                                new CultureInfo("na")
+                            };
 
         var mdCi = await _variantsListCache.GetVariantDescriptorAsync(DefaultVariantId, languages);
 
@@ -537,9 +537,9 @@ public class VariantMarketDescriptionListCacheTests
     public async Task GetMarketDescriptionWhenUnknownLanguageIsRequestedThenApiCallIsMade()
     {
         var languages = new List<CultureInfo>
-                        {
-                            new CultureInfo("na")
-                        };
+                            {
+                                new CultureInfo("na")
+                            };
         _dataRouterManager.ResetMethodCall();
 
         _ = await _variantsListCache.GetVariantDescriptorAsync(DefaultVariantId, languages);

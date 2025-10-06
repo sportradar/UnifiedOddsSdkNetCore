@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -178,7 +178,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             ApplyPropertyValue(ses.possessionSpecified, "Possession", ses.possession, tempProperties);
             ApplyPropertyValue(ses.remaining_redsSpecified, "RemainingReds", ses.remaining_reds, tempProperties);
             ApplyPropertyValue(ses.reportingSpecified, "Reporting", ses.reporting, tempProperties); // BELOW
-            ApplyPropertyValue(true, "Status", ses.status, tempProperties);    //BELOW
+            ApplyPropertyValue(true, "Status", ses.status, tempProperties); //BELOW
             ApplyPropertyValue(ses.strikesSpecified, "Strikes", ses.strikes, tempProperties);
             ApplyPropertyValue(ses.tiebreakSpecified, "Tiebreak", ses.tiebreak, tempProperties);
             ApplyPropertyValue(ses.visitSpecified, "Visit", ses.visit, tempProperties);
@@ -245,16 +245,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Status = MessageMapperHelper.GetEnumValue(ses.status, EventStatus.Unknown);
 
             IsReported = ses.reportingSpecified
-                ? (int?)ses.reporting
-                : null;
+                             ? (int?)ses.reporting
+                             : null;
 
             HomeScore = ses.home_scoreSpecified
-                ? (decimal?)ses.home_score
-                : null;
+                            ? (decimal?)ses.home_score
+                            : null;
 
             AwayScore = ses.away_scoreSpecified
-                ? (decimal?)ses.away_score
-                : null;
+                            ? (decimal?)ses.away_score
+                            : null;
 
             MatchStatusId = ses.match_status;
 
@@ -371,10 +371,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             else
             {
                 Status = int.TryParse(restSes.status, out var statusId)
-                    ? MessageMapperHelper.GetEnumValue(statusId, EventStatus.Unknown)
-                    : MessageMapperHelper.GetEnumValue(restSes.status, EventStatus.Unknown);
+                             ? MessageMapperHelper.GetEnumValue(statusId, EventStatus.Unknown)
+                             : MessageMapperHelper.GetEnumValue(restSes.status, EventStatus.Unknown);
             }
-            ApplyPropertyValue(true, "Status", (int)Status, tempProperties);    //BELOW
+            ApplyPropertyValue(true, "Status", (int)Status, tempProperties); //BELOW
 
             HomeScore = decimal.TryParse(restSes.home_score, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out var homeScore)
                             ? (decimal?)homeScore

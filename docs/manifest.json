@@ -4981,6 +4981,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.EventType.yml",
       "output": {
         ".html": {
@@ -5131,6 +5145,48 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.OutcomeType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsSelectionType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Messages.Rest.RecommendationsType",
       "Summary": null
     },
     {

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -150,8 +150,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
                      && _allInterests.All(MessageInterest.MessageScopes.Contains))
             {
                 done = _producer.Scope
-                    .Select(MessageInterest.FromScope)
-                    .All(interest => _snapshotReceivedSessions.Contains(interest));
+                                .Select(MessageInterest.FromScope)
+                                .All(interest => _snapshotReceivedSessions.Contains(interest));
             }
             else
             {

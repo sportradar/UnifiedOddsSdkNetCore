@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,8 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             var recordList = tournaments as List<tournamentExtended> ?? tournaments.ToList();
             Tournaments = new ReadOnlyCollection<TournamentDto>(recordList
-                .Distinct(EqualityComparer)
-                .Select(t => new TournamentDto(t)).ToList());
+                                                               .Distinct(EqualityComparer)
+                                                               .Select(t => new TournamentDto(t))
+                                                               .ToList());
         }
 
         /// <summary>

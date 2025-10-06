@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -131,7 +131,6 @@ internal class TestDataRouterManagerCached : IDataRouterManager
         if (fi.Exists)
         {
             return fi.FullName;
-
         }
         return string.Empty;
     }
@@ -556,8 +555,8 @@ internal class TestDataRouterManagerCached : IDataRouterManager
     {
         RecordMethodCall(EndpointCompetitor);
         return id.IsSimpleTeam()
-            ? GetSimpleTeamProfileAsync(id, culture, requester)
-            : GetCompetitorProfileAsync(id, culture, requester);
+                   ? GetSimpleTeamProfileAsync(id, culture, requester)
+                   : GetCompetitorProfileAsync(id, culture, requester);
     }
 
     private async Task GetCompetitorProfileAsync(Urn id, CultureInfo culture, ISportEventCacheItem requester)

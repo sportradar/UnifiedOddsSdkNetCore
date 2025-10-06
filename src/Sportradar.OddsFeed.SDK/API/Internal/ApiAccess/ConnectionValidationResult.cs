@@ -1,4 +1,5 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 {
     /// <summary>

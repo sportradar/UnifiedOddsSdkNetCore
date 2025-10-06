@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -145,10 +145,10 @@ public class SdkTimerTests
     private void SetupTimerWithFailingEventHandler()
     {
         _sdkTimer.Elapsed += (_, _) =>
-        {
-            _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
-            throw new InvalidOperationException("Some error");
-        };
+                             {
+                                 _timerMsgs.Add($"{_timerMsgs.Count + 1}. message with error");
+                                 throw new InvalidOperationException("Some error");
+                             };
     }
 
     private static async Task PauseForTwoPeriods()

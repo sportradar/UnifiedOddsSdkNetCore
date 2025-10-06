@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -50,12 +50,15 @@ public class TournamentTests
 
         var timer = new TestTimer(false);
         var sportEventCache = new SportEventCache(testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache),
-            dataRouterManager,
-            new SportEventCacheItemFactory(dataRouterManager, new SemaphorePool(5, ExceptionHandlingStrategy.Throw), testCacheStoreManager.UofConfig, testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
-            timer,
-            TestData.Cultures3,
-            cacheManager,
-            loggerFactory);
+                                                  dataRouterManager,
+                                                  new SportEventCacheItemFactory(dataRouterManager,
+                                                                                 new SemaphorePool(5, ExceptionHandlingStrategy.Throw),
+                                                                                 testCacheStoreManager.UofConfig,
+                                                                                 testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
+                                                  timer,
+                                                  TestData.Cultures3,
+                                                  cacheManager,
+                                                  loggerFactory);
 
         var deserializer = new Deserializer<tournamentInfoEndpoint>();
         var dataFetcher = new TestDataFetcher();

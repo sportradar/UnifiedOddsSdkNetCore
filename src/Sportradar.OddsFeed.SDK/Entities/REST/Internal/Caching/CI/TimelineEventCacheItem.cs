@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
     /// </summary>
     internal class TimelineEventCacheItem
     {
-        public int Id;
+        public readonly long Id;
         public decimal? HomeScore;
         public decimal? AwayScore;
         public int? MatchTime;
@@ -157,14 +157,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 Value = Value,
                 Type = Type,
                 GoalScorer = GoalScorer != null
-                    ? new ExportableEventPlayer
-                    {
-                        Id = GoalScorer.Id.ToString(),
-                        Names = new Dictionary<CultureInfo, string>(GoalScorer.Name ?? new Dictionary<CultureInfo, string>()),
-                        Bench = GoalScorer.Bench,
-                        Method = GoalScorer.Method
-                    }
-                    : null,
+                                            ? new ExportableEventPlayer
+                                            {
+                                                Id = GoalScorer.Id.ToString(),
+                                                Names = new Dictionary<CultureInfo, string>(GoalScorer.Name ?? new Dictionary<CultureInfo, string>()),
+                                                Bench = GoalScorer.Bench,
+                                                Method = GoalScorer.Method
+                                            }
+                                            : null,
                 MatchStatusCode = MatchStatusCode,
                 Assists = assistsTasks != null ? await Task.WhenAll(assistsTasks).ConfigureAwait(false) : null,
                 HomeScore = HomeScore,
@@ -180,14 +180,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
                 Y = Y,
                 X = X,
                 Player = Player != null
-                    ? new ExportableEventPlayer
-                    {
-                        Id = Player.Id.ToString(),
-                        Names = new Dictionary<CultureInfo, string>(Player.Name ?? new Dictionary<CultureInfo, string>()),
-                        Bench = Player.Bench,
-                        Method = Player.Method
-                    }
-                    : null
+                                        ? new ExportableEventPlayer
+                                        {
+                                            Id = Player.Id.ToString(),
+                                            Names = new Dictionary<CultureInfo, string>(Player.Name ?? new Dictionary<CultureInfo, string>()),
+                                            Bench = Player.Bench,
+                                            Method = Player.Method
+                                        }
+                                        : null
             };
         }
     }

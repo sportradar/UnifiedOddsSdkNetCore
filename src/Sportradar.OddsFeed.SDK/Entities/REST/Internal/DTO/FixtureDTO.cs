@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -51,31 +51,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(fixture, nameof(fixture)).NotNull();
 
             StartTime = fixture.start_timeSpecified
-                ? (DateTime?)fixture.start_time.ToLocalTime()
-                : null;
+                            ? (DateTime?)fixture.start_time.ToLocalTime()
+                            : null;
             if (!string.IsNullOrEmpty(fixture.next_live_time))
             {
                 NextLiveTime = SdkInfo.ParseDate(fixture.next_live_time);
             }
             StartTimeConfirmed = fixture.start_time_confirmedSpecified && fixture.start_time_confirmed;
             ExtraInfo = fixture.extra_info != null && fixture.extra_info.Any()
-                ? new ReadOnlyDictionary<string, string>(fixture.extra_info.ToDictionary(e => e.key, e => e.value))
-                : new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
+                            ? new ReadOnlyDictionary<string, string>(fixture.extra_info.ToDictionary(e => e.key, e => e.value))
+                            : new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
             TvChannels = fixture.tv_channels != null && fixture.tv_channels.Any()
-                ? new ReadOnlyCollection<TvChannelDto>(fixture.tv_channels.Select(t => new TvChannelDto(t)).ToList())
-                : null;
+                             ? new ReadOnlyCollection<TvChannelDto>(fixture.tv_channels.Select(t => new TvChannelDto(t)).ToList())
+                             : null;
             ProductInfo = fixture.product_info != null
-                ? new ProductInfoDto(fixture.product_info)
-                : null;
+                              ? new ProductInfoDto(fixture.product_info)
+                              : null;
             Venue = fixture.venue == null
-                ? null
-                : new VenueDto(fixture.venue);
+                        ? null
+                        : new VenueDto(fixture.venue);
             ReferenceIds = fixture.reference_ids == null
-                ? null
-                : new ReadOnlyDictionary<string, string>(fixture.reference_ids.ToDictionary(r => r.name, r => r.value));
+                               ? null
+                               : new ReadOnlyDictionary<string, string>(fixture.reference_ids.ToDictionary(r => r.name, r => r.value));
             DelayedInfo = fixture.delayed_info == null
-                ? null
-                : new DelayedInfoDto(fixture.delayed_info.id, fixture.delayed_info.description);
+                              ? null
+                              : new DelayedInfoDto(fixture.delayed_info.id, fixture.delayed_info.description);
             if (fixture.scheduled_start_time_changes != null && fixture.scheduled_start_time_changes.Any())
             {
                 ScheduledStartTimeChanges = fixture.scheduled_start_time_changes.Select(s => new ScheduledStartTimeChangeDto(s));

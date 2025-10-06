@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -28,22 +28,19 @@ internal class TestSportEntityFactory : ISportEntityFactory
 {
     private readonly ITestOutputHelper _outputHelper;
 
-    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
-    private readonly ISportDataCache _sportDataCache;
-    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
-    private readonly ISportEventStatusCache _eventStatusCache;
-    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
-    private readonly ILocalizedNamedValueCache _matchStatusCache;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")] private readonly ISportDataCache _sportDataCache;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")] private readonly ISportEventStatusCache _eventStatusCache;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")] private readonly ILocalizedNamedValueCache _matchStatusCache;
     private readonly IProfileCache _profileCache;
     private readonly TestCacheStoreManager _testCacheStoreManager;
 
     public TestSportEntityFactory(ITestOutputHelper outputHelper,
-        ISportDataCache sportDataCache = null,
-        ISportEventCache sportEventCache = null,
-        ISportEventStatusCache eventStatusCache = null,
-        ILocalizedNamedValueCache matchStatusCache = null,
-        IProfileCache profileCache = null,
-        IReadOnlyCollection<Urn> soccerSportUrns = null)
+                                  ISportDataCache sportDataCache = null,
+                                  ISportEventCache sportEventCache = null,
+                                  ISportEventStatusCache eventStatusCache = null,
+                                  ILocalizedNamedValueCache matchStatusCache = null,
+                                  IProfileCache profileCache = null,
+                                  IReadOnlyCollection<Urn> soccerSportUrns = null)
     {
         var loggerFactory = new XunitLoggerFactory(outputHelper);
 
@@ -152,8 +149,10 @@ internal class TestSportEntityFactory : ISportEntityFactory
         return (T)competition;
     }
 
-    public ICompetitor BuildCompetitor(Urn competitorId, IReadOnlyCollection<CultureInfo> cultures, IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences,
-        ExceptionHandlingStrategy exceptionStrategy)
+    public ICompetitor BuildCompetitor(Urn competitorId,
+                                       IReadOnlyCollection<CultureInfo> cultures,
+                                       IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences,
+                                       ExceptionHandlingStrategy exceptionStrategy)
     {
         return new Competitor(competitorId, _profileCache, cultures, this, exceptionStrategy, competitorsReferences);
     }

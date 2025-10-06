@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -60,10 +60,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public DrawCacheItem(Urn id,
-                      IDataRouterManager dataRouterManager,
-                      ISemaphorePool semaphorePool,
-                      CultureInfo defaultCulture,
-                      ICacheStore<string> fixtureTimestampCacheStore)
+                             IDataRouterManager dataRouterManager,
+                             ISemaphorePool semaphorePool,
+                             CultureInfo defaultCulture,
+                             ICacheStore<string> fixtureTimestampCacheStore)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
         }
@@ -100,10 +100,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public DrawCacheItem(ExportableDraw exportable,
-            IDataRouterManager dataRouterManager,
-            ISemaphorePool semaphorePool,
-            CultureInfo defaultCulture,
-            ICacheStore<string> fixtureTimestampCacheStore)
+                             IDataRouterManager dataRouterManager,
+                             ISemaphorePool semaphorePool,
+                             CultureInfo defaultCulture,
+                             ICacheStore<string> fixtureTimestampCacheStore)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
             _lotteryId = Urn.Parse(exportable.LotteryId);
@@ -255,8 +255,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
             }
 
             var tempResults = _results == null
-                ? new List<DrawResultCacheItem>()
-                : new List<DrawResultCacheItem>(_results);
+                                  ? new List<DrawResultCacheItem>()
+                                  : new List<DrawResultCacheItem>(_results);
 
             foreach (var result in results)
             {

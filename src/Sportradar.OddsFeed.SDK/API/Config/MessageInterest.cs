@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -75,13 +75,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// Constructs a <see cref="MessageInterest"/> indicating an interest in live messages
         /// </summary>
         /// <returns>A <see cref="MessageInterest"/> indicating an interest in live messages</returns>
-        public static readonly MessageInterest LiveMessagesOnly = new MessageInterest("live", 1, null, "live");       // LO
+        public static readonly MessageInterest LiveMessagesOnly = new MessageInterest("live", 1, null, "live"); // LO
 
         /// <summary>
         /// Constructs a <see cref="MessageInterest"/> indicating an interest in pre-match messages
         /// </summary>
         /// <returns>A <see cref="MessageInterest"/> indicating an interest in pre-match messages</returns>
-        public static readonly MessageInterest PrematchMessagesOnly = new MessageInterest("prematch", 3, null, "prematch");   //LCOO
+        public static readonly MessageInterest PrematchMessagesOnly = new MessageInterest("prematch", 3, null, "prematch"); //LCOO
 
         /// <summary>
         /// Constructs a <see cref="MessageInterest"/> indicating an interest in hi priority messages
@@ -125,24 +125,25 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// <summary>
         /// List of <see cref="MessageInterest"/> representing defined messages scopes
         /// </summary>
-        public static readonly MessageInterest[] MessageScopes = {
-            LiveMessagesOnly,
-            PrematchMessagesOnly,
-            VirtualSportMessages,
-        };
+        public static readonly MessageInterest[] MessageScopes =
+            {
+                LiveMessagesOnly,
+                PrematchMessagesOnly,
+                VirtualSportMessages,
+            };
 
         /// <summary>
         /// Gets all available <see cref="MessageInterest"/> instances
         /// </summary>
         public static readonly IEnumerable<MessageInterest> DefinedInterests = new[]
-        {
-            AllMessages,
-            LiveMessagesOnly,
-            PrematchMessagesOnly,
-            VirtualSportMessages,
-            HighPriorityMessages,
-            LowPriorityMessages
-        };
+                                                                                   {
+                                                                                       AllMessages,
+                                                                                       LiveMessagesOnly,
+                                                                                       PrematchMessagesOnly,
+                                                                                       VirtualSportMessages,
+                                                                                       HighPriorityMessages,
+                                                                                       LowPriorityMessages
+                                                                                   };
 
         /// <summary>
         /// Gets a <see cref="MessageInterest"/> representing a scope specified by it's name.

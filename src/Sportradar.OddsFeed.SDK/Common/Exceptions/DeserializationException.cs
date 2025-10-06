@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Runtime.Serialization;
@@ -87,8 +87,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Exceptions
         public override string ToString()
         {
             var sb = new StringBuilder(base.ToString());
-            sb.Append(" RootElementName=").Append(RootElementName)
-                .Append(" Xml=").Append(Xml);
+            sb.Append(" RootElementName=")
+              .Append(RootElementName)
+              .Append(" Xml=")
+              .Append(Xml);
 
             return sb.ToString();
         }

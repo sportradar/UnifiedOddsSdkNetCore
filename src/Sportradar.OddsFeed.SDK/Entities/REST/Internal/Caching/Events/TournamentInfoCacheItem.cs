@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -105,10 +105,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public TournamentInfoCacheItem(Urn id,
-                                IDataRouterManager dataRouterManager,
-                                ISemaphorePool semaphorePool,
-                                CultureInfo defaultCulture,
-                                ICacheStore<string> fixtureTimestampCache)
+                                       IDataRouterManager dataRouterManager,
+                                       ISemaphorePool semaphorePool,
+                                       CultureInfo defaultCulture,
+                                       ICacheStore<string> fixtureTimestampCache)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
         }
@@ -123,11 +123,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public TournamentInfoCacheItem(TournamentInfoDto eventSummary,
-                                IDataRouterManager dataRouterManager,
-                                ISemaphorePool semaphorePool,
-                                CultureInfo currentCulture,
-                                CultureInfo defaultCulture,
-                                ICacheStore<string> fixtureTimestampCache)
+                                       IDataRouterManager dataRouterManager,
+                                       ISemaphorePool semaphorePool,
+                                       CultureInfo currentCulture,
+                                       CultureInfo defaultCulture,
+                                       ICacheStore<string> fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(eventSummary, currentCulture, true);
@@ -143,11 +143,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public TournamentInfoCacheItem(FixtureDto fixture,
-            IDataRouterManager dataRouterManager,
-            ISemaphorePool semaphorePool,
-            CultureInfo currentCulture,
-            CultureInfo defaultCulture,
-            ICacheStore<string> fixtureTimestampCache)
+                                       IDataRouterManager dataRouterManager,
+                                       ISemaphorePool semaphorePool,
+                                       CultureInfo currentCulture,
+                                       CultureInfo defaultCulture,
+                                       ICacheStore<string> fixtureTimestampCache)
             : base(fixture, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(fixture, currentCulture, true);
@@ -162,31 +162,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public TournamentInfoCacheItem(ExportableTournamentInfo exportable,
-            IDataRouterManager dataRouterManager,
-            ISemaphorePool semaphorePool,
-            CultureInfo defaultCulture,
-            ICacheStore<string> fixtureTimestampCache)
+                                       IDataRouterManager dataRouterManager,
+                                       ISemaphorePool semaphorePool,
+                                       CultureInfo defaultCulture,
+                                       ICacheStore<string> fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _categoryId = exportable.CategoryId == null ? null : Urn.Parse(exportable.CategoryId);
             _tournamentCoverage = exportable.TournamentCoverage != null
-                ? new TournamentCoverageCacheItem(exportable.TournamentCoverage)
-                : null;
+                                      ? new TournamentCoverageCacheItem(exportable.TournamentCoverage)
+                                      : null;
             _competitors = exportable.Competitors?.Select(Urn.Parse).ToList();
             _currentSeasonInfo = exportable.CurrentSeasonInfo != null
-                ? new CurrentSeasonInfoCacheItem(exportable.CurrentSeasonInfo)
-                : null;
+                                     ? new CurrentSeasonInfoCacheItem(exportable.CurrentSeasonInfo)
+                                     : null;
             _groups = exportable.Groups?.Select(g => new GroupCacheItem(g)).ToList();
             _scheduleUrns = exportable.ScheduleUrns?.Select(Urn.Parse).ToList();
             _round = exportable.Round != null ? new RoundCacheItem(exportable.Round) : null;
             _year = exportable.Year;
             _tournamentInfoBasic = exportable.TournamentInfoBasic != null
-                ? new TournamentInfoBasicCacheItem(exportable.TournamentInfoBasic)
-                : null;
+                                       ? new TournamentInfoBasicCacheItem(exportable.TournamentInfoBasic)
+                                       : null;
             _referenceId = exportable.ReferenceId != null ? new ReferenceIdCacheItem(exportable.ReferenceId) : null;
             _seasonCoverage = exportable.SeasonCoverage != null
-                ? new SeasonCoverageCacheItem(exportable.SeasonCoverage)
-                : null;
+                                  ? new SeasonCoverageCacheItem(exportable.SeasonCoverage)
+                                  : null;
             _seasons = exportable.Seasons?.Select(Urn.Parse).ToList();
             _loadedSeasons = new List<CultureInfo>(exportable.LoadedSeasons ?? new List<CultureInfo>());
             _loadedSchedules = new List<CultureInfo>(exportable.LoadedSchedules ?? new List<CultureInfo>());
@@ -672,8 +672,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
             }
 
             var tempCompetitors = _competitors == null
-                ? new List<Urn>()
-                : new List<Urn>(_competitors);
+                                      ? new List<Urn>()
+                                      : new List<Urn>(_competitors);
 
             foreach (var competitor in competitors)
             {
@@ -702,8 +702,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
             }
 
             var tmpGroups = _groups == null
-                ? new List<GroupCacheItem>()
-                : new List<GroupCacheItem>(_groups);
+                                ? new List<GroupCacheItem>()
+                                : new List<GroupCacheItem>(_groups);
 
             var groupDtos = groups.ToList();
             // remove obsolete groups

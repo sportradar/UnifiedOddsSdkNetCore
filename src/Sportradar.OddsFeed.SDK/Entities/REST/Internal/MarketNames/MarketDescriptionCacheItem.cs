@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -91,28 +91,28 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
 
             var names = new Dictionary<CultureInfo, string> { { culture, dto.Name } };
             var descriptions = string.IsNullOrEmpty(dto.Description)
-                ? new Dictionary<CultureInfo, string>()
-                : new Dictionary<CultureInfo, string> { { culture, dto.Description } };
+                                   ? new Dictionary<CultureInfo, string>()
+                                   : new Dictionary<CultureInfo, string> { { culture, dto.Description } };
 
             var outcomes = dto.Outcomes == null
-                ? null
-                : new ReadOnlyCollection<MarketOutcomeCacheItem>(dto.Outcomes.Select(o => new MarketOutcomeCacheItem(o, culture)).ToList());
+                               ? null
+                               : new ReadOnlyCollection<MarketOutcomeCacheItem>(dto.Outcomes.Select(o => new MarketOutcomeCacheItem(o, culture)).ToList());
 
             var mappings = dto.Mappings == null
-                ? null
-                : new ReadOnlyCollection<MarketMappingCacheItem>(dto.Mappings.Select(m => MarketMappingCacheItem.Build(m, factory, culture)).ToList());
+                               ? null
+                               : new ReadOnlyCollection<MarketMappingCacheItem>(dto.Mappings.Select(m => MarketMappingCacheItem.Build(m, factory, culture)).ToList());
 
             var specifiers = dto.Specifiers == null
-                ? null
-                : new ReadOnlyCollection<MarketSpecifierCacheItem>(dto.Specifiers.Select(s => new MarketSpecifierCacheItem(s)).ToList());
+                                 ? null
+                                 : new ReadOnlyCollection<MarketSpecifierCacheItem>(dto.Specifiers.Select(s => new MarketSpecifierCacheItem(s)).ToList());
 
             var attributes = dto.Attributes == null
-                ? null
-                : new ReadOnlyCollection<MarketAttributeCacheItem>(dto.Attributes.Select(a => new MarketAttributeCacheItem(a)).ToList());
+                                 ? null
+                                 : new ReadOnlyCollection<MarketAttributeCacheItem>(dto.Attributes.Select(a => new MarketAttributeCacheItem(a)).ToList());
 
             var groups = dto.Groups == null
-                ? null
-                : new ReadOnlyCollection<string>(dto.Groups.ToList());
+                             ? null
+                             : new ReadOnlyCollection<string>(dto.Groups.ToList());
 
             return new MarketDescriptionCacheItem(dto.Id, names, descriptions, dto.Variant, dto.OutcomeType, outcomes, mappings, specifiers, attributes, groups, culture, source);
         }
@@ -134,8 +134,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         internal bool HasTranslationsFor(CultureInfo culture)
         {
             return culture == null
-                ? throw new ArgumentNullException(nameof(culture))
-                : Names.ContainsKey(culture);
+                       ? throw new ArgumentNullException(nameof(culture))
+                       : Names.ContainsKey(culture);
         }
 
         public void SetFetchInfo(string source)

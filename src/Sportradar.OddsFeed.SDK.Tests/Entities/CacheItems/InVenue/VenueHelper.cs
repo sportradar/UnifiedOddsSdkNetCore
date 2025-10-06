@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -100,14 +100,13 @@ public class VenueHelper
         return courses.ToArray();
     }
 
-    public static venue GenerateApiVenue(
-        bool capacitySpecified = true,
-        bool cityIsNull = false,
-        bool countryIsNull = false,
-        bool countryCodeIsNull = false,
-        bool stateIsNull = false,
-        bool mapIsNull = false,
-        int courseSize = 0)
+    public static venue GenerateApiVenue(bool capacitySpecified = true,
+                                         bool cityIsNull = false,
+                                         bool countryIsNull = false,
+                                         bool countryCodeIsNull = false,
+                                         bool stateIsNull = false,
+                                         bool mapIsNull = false,
+                                         int courseSize = 0)
     {
         return new venue
         {

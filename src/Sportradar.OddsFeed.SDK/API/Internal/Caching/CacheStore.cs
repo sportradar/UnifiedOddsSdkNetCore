@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -194,9 +194,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         }
 
         private static readonly Action<ILogger, string, string, EvictionReason, Exception> LogCacheItemPostEviction =
-            LoggerMessage.Define<string, string, EvictionReason>(
-                LogLevel.Debug,
-                new EventId(1, nameof(CacheStore<T>)),
-                "{CacheName}: evicted cache item {CacheItem} with reason: {EvictionReason}");
+            LoggerMessage.Define<string, string, EvictionReason>(LogLevel.Debug,
+                                                                 new EventId(1, nameof(CacheStore<T>)),
+                                                                 "{CacheName}: evicted cache item {CacheItem} with reason: {EvictionReason}");
     }
 }

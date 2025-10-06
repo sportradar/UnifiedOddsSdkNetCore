@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -22,10 +22,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
         /// <param name="connectionFailureTimeout">indicates the timeout after which comes out of "blocking mode" (in seconds)</param>
         public LogHttpDataFetcherRecovery(ISdkHttpClientRecovery sdkHttpClient,
-                                        IDeserializer<response> responseDeserializer,
-                                        ILogger logger,
-                                        int connectionFailureLimit = 5,
-                                        int connectionFailureTimeout = 15)
+                                          IDeserializer<response> responseDeserializer,
+                                          ILogger logger,
+                                          int connectionFailureLimit = 5,
+                                          int connectionFailureTimeout = 15)
             : base(sdkHttpClient, responseDeserializer, logger, connectionFailureLimit, connectionFailureTimeout)
         {
         }

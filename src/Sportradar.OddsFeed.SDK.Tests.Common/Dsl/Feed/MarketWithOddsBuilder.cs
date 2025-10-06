@@ -21,6 +21,18 @@ public class MarketWithOddsBuilder
         return this;
     }
 
+    public MarketWithOddsBuilder WithStatus(int status)
+    {
+        _market.status = status;
+        return this;
+    }
+
+    public MarketWithOddsBuilder WithFavourite(int favourite)
+    {
+        _market.favourite = favourite;
+        return this;
+    }
+
     public MarketWithOddsBuilder WithOutcome(string outcomeId, double odds, bool isActive = true)
     {
         var outcome = new oddsChangeMarketOutcome

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -45,11 +45,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             var categories = new List<CategoryDto>();
             foreach (var distinctRecord in recordList.Distinct(EqualityComparer))
             {
-                categories.Add(new CategoryDto(
-                    distinctRecord.category.id,
-                    distinctRecord.category.name,
-                    distinctRecord.category.country_code,
-                    recordList.Where(record => record.category.id == distinctRecord.category.id).ToList()));
+                categories.Add(new CategoryDto(distinctRecord.category.id,
+                                               distinctRecord.category.name,
+                                               distinctRecord.category.country_code,
+                                               recordList.Where(record => record.category.id == distinctRecord.category.id).ToList()));
             }
             Categories = new ReadOnlyCollection<CategoryDto>(categories);
         }

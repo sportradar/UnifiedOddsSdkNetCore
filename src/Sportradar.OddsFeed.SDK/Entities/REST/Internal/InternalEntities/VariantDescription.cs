@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,11 +28,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
 
             Id = cacheItem.Id;
             Outcomes = cacheItem.Outcomes == null
-                ? null
-                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription)new OutcomeDescription(o, cultures)).ToList());
+                           ? null
+                           : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription)new OutcomeDescription(o, cultures)).ToList());
             Mappings = cacheItem.Mappings == null
-                ? null
-                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData)new MarketMapping(m)).ToList());
+                           ? null
+                           : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData)new MarketMapping(m)).ToList());
 
             VariantDescriptionCacheItem = cacheItem;
         }

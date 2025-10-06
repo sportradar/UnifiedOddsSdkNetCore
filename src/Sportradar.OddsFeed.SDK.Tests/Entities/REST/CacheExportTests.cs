@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -41,18 +41,16 @@ public class CacheExportTests
         var timer = new TestTimer(false);
         var semaphorePool = new SemaphorePool(5, ExceptionHandlingStrategy.Throw);
 
-        _sportEventCache = new SportEventCache(
-            testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache),
-            _dataRouterManager,
-            new SportEventCacheItemFactory(
-                _dataRouterManager,
-                semaphorePool,
-                testCacheStoreManager.UofConfig,
-                testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
-            timer,
-            TestData.Cultures,
-            cacheManager,
-            loggerFactory);
+        _sportEventCache = new SportEventCache(testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCache),
+                                               _dataRouterManager,
+                                               new SportEventCacheItemFactory(_dataRouterManager,
+                                                                              semaphorePool,
+                                                                              testCacheStoreManager.UofConfig,
+                                                                              testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
+                                               timer,
+                                               TestData.Cultures,
+                                               cacheManager,
+                                               loggerFactory);
 
         _sportDataCache = new SportDataCache(_dataRouterManager, timer, TestData.Cultures, _sportEventCache, cacheManager, loggerFactory);
         _profileMemoryCache = testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForProfileCache);

@@ -42,10 +42,10 @@ public static class UofConfigurations
         return builder.Build();
     }
 
-    public static IUofConfiguration GetUofConfiguration(CultureInfo defaultLanguage, List<CultureInfo> desiredLanguages = null, int nodeId = 1, string token = "", ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw)
+    public static IUofConfiguration GetUofConfiguration(CultureInfo defaultLanguage, List<CultureInfo> desiredLanguages = null, int nodeId = 1, ExceptionHandlingStrategy exceptionHandlingStrategy = ExceptionHandlingStrategy.Throw)
     {
         var builder = new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessToken(token)
+            .SetAccessToken("AnyToken")
             .SelectCustom()
             .SetNodeId(nodeId)
             .SetDefaultLanguage(defaultLanguage)
@@ -67,7 +67,7 @@ public static class UofConfigurations
         return builder.Build();
     }
 
-    public static IUofConfiguration SingleLanguage => GetUofConfiguration(TestData.Culture, null, 1, "AnyToken");
+    public static IUofConfiguration SingleLanguage => GetUofConfiguration(TestData.Culture, null, 1);
 
-    public static IUofConfiguration TwoLanguages => GetUofConfiguration(TestData.Culture, [TestData.Culture, TestData.CultureNl], 1, "AnyToken");
+    public static IUofConfiguration TwoLanguages => GetUofConfiguration(TestData.Culture, [TestData.Culture, TestData.CultureNl], 1);
 }

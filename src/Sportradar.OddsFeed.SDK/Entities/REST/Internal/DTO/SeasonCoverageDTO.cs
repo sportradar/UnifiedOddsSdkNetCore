@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
@@ -51,16 +51,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(coverageInfo, nameof(coverageInfo)).NotNull();
 
             MaxCovered = coverageInfo.max_coveredSpecified
-                ? (int?)coverageInfo.max_covered
-                : null;
+                             ? (int?)coverageInfo.max_covered
+                             : null;
 
             MaxCoverageLevel = coverageInfo.max_coverage_level;
             MinCoverageLevel = coverageInfo.min_coverage_level;
             Played = coverageInfo.played;
             Scheduled = coverageInfo.scheduled;
             SeasonId = string.IsNullOrEmpty(coverageInfo.season_id)
-                ? null
-                : Urn.Parse(coverageInfo.season_id);
+                           ? null
+                           : Urn.Parse(coverageInfo.season_id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -85,11 +85,13 @@ public static class TestData
         {
             var checkCulture = new[] { culture };
             Task.Run(async () =>
-            {
-                date = await ci.GetScheduledAsync();
-                round = await ci.GetTournamentRoundAsync(checkCulture);
-                season = await ci.GetSeasonAsync(checkCulture);
-            }).GetAwaiter().GetResult();
+                     {
+                         date = await ci.GetScheduledAsync();
+                         round = await ci.GetTournamentRoundAsync(checkCulture);
+                         season = await ci.GetSeasonAsync(checkCulture);
+                     })
+                .GetAwaiter()
+                .GetResult();
 
             Assert.NotNull(date);
             Assert.Equal(new DateTime(2016, 08, 10), new DateTime(date.Value.Year, date.Value.Month, date.Value.Day));

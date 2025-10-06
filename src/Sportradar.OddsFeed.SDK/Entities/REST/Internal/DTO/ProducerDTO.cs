@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -62,8 +62,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Active = producer.active;
             Url = producer.api_url;
             ScopeNames = string.IsNullOrEmpty(producer.scope)
-                ? null
-                : producer.scope.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                             ? null
+                             : producer.scope.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
             StatefulRecoveryWindow = producer.stateful_recovery_window_in_minutes;
         }
     }

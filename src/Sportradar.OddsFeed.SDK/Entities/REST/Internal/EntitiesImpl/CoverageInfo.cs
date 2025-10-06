@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -58,7 +58,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 
         public CoverageInfo(CoverageInfoCacheItem ci)
             : this(ci.Level, ci.IsLive, ci.Includes, ci.CoveredFrom)
-        { }
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoverageInfo"/> class.

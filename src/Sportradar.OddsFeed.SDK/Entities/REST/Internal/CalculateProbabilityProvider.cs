@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -85,9 +85,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             {
                 var message = SdkInfo.ExtractHttpResponseMessage(responseMessage.Content);
                 throw new CommunicationException($"Getting probability calculations failed with message={message}",
-                    _uriFormat,
-                    responseMessage.StatusCode,
-                    null);
+                                                 _uriFormat,
+                                                 responseMessage.StatusCode,
+                                                 null);
             }
 
             var stream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);

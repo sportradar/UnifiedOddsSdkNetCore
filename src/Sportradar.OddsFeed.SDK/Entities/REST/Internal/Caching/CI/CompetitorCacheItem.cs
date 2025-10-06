@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -78,8 +78,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             }
 
             return Names.TryGetValue(culture, out var name)
-                ? name
-                : null;
+                       ? name
+                       : null;
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             }
 
             return _countryNames.TryGetValue(culture, out var country)
-                ? country
-                : null;
+                       ? country
+                       : null;
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             }
 
             return _abbreviations.TryGetValue(culture, out var abbreviation)
-                ? abbreviation
-                : null;
+                       ? abbreviation
+                       : null;
         }
 
         /// <summary>
@@ -631,8 +631,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
 
             Names[culture] = playerCompetitor.Name;
             _abbreviations[culture] = string.IsNullOrEmpty(playerCompetitor.Abbreviation)
-                ? SdkInfo.GetAbbreviationFromName(playerCompetitor.Name)
-                : playerCompetitor.Abbreviation;
+                                          ? SdkInfo.GetAbbreviationFromName(playerCompetitor.Name)
+                                          : playerCompetitor.Abbreviation;
             // NATIONALITY
         }
 
@@ -744,8 +744,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             Names[culture] = competitorDto.Name;
             _countryNames[culture] = competitorDto.CountryName;
             _abbreviations[culture] = string.IsNullOrEmpty(competitorDto.Abbreviation)
-                ? SdkInfo.GetAbbreviationFromName(competitorDto.Name)
-                : competitorDto.Abbreviation;
+                                          ? SdkInfo.GetAbbreviationFromName(competitorDto.Name)
+                                          : competitorDto.Abbreviation;
             _referenceId = UpdateReferenceIds(competitorDto.Id, competitorDto.ReferenceIds);
             if (!string.IsNullOrEmpty(competitorDto.CountryCode))
             {

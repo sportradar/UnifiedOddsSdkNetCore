@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -60,10 +60,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public MatchCacheItem(Urn id,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo defaultCulture,
-                       ICacheStore<string> fixtureTimestampCacheStore)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCacheStore)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
         }
@@ -78,11 +78,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public MatchCacheItem(MatchDto eventSummary,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo currentCulture,
-                       CultureInfo defaultCulture,
-                       ICacheStore<string> fixtureTimestampCache)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo currentCulture,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(eventSummary, currentCulture, true);
@@ -98,11 +98,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public MatchCacheItem(FixtureDto fixture,
-                        IDataRouterManager dataRouterManager,
-                        ISemaphorePool semaphorePool,
-                        CultureInfo currentCulture,
-                        CultureInfo defaultCulture,
-                        ICacheStore<string> fixtureTimestampCache)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo currentCulture,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCache)
             : base(fixture, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(fixture, currentCulture, true);
@@ -117,10 +117,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public MatchCacheItem(ExportableMatch exportable,
-            IDataRouterManager dataRouterManager,
-            ISemaphorePool semaphorePool,
-            CultureInfo defaultCulture,
-            ICacheStore<string> fixtureTimestampCacheStore)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCacheStore)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
             _season = exportable.Season != null ? new SeasonCacheItem(exportable.Season) : null;
@@ -408,29 +408,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
             if (exportable is ExportableMatch match)
             {
                 match.Season = _season != null
-                    ? await _season.ExportAsync().ConfigureAwait(false)
-                    : null;
+                                   ? await _season.ExportAsync().ConfigureAwait(false)
+                                   : null;
                 match.TournamentRound = _tournamentRound != null
-                    ? await _tournamentRound.ExportAsync().ConfigureAwait(false)
-                    : null;
+                                            ? await _tournamentRound.ExportAsync().ConfigureAwait(false)
+                                            : null;
                 match.TournamentId = _tournamentId?.ToString();
                 match.Fixture = _fixture != null
-                    ? await ((Fixture)_fixture).ExportAsync().ConfigureAwait(false)
-                    : null;
+                                    ? await ((Fixture)_fixture).ExportAsync().ConfigureAwait(false)
+                                    : null;
                 match.EventTimeline = _eventTimeline != null
-                    ? await _eventTimeline.ExportAsync().ConfigureAwait(false)
-                    : null;
+                                          ? await _eventTimeline.ExportAsync().ConfigureAwait(false)
+                                          : null;
                 match.DelayedInfo =
                     _delayedInfo != null ? await _delayedInfo.ExportAsync().ConfigureAwait(false) : null;
                 match.CoverageInfo = _coverageInfo != null
-                    ? new ExportableCoverageInfo
-                    {
-                        CoveredFrom = _coverageInfo.CoveredFrom,
-                        Includes = _coverageInfo.Includes,
-                        IsLive = _coverageInfo.IsLive,
-                        Level = _coverageInfo.Level
-                    }
-                    : null;
+                                         ? new ExportableCoverageInfo
+                                         {
+                                             CoveredFrom = _coverageInfo.CoveredFrom,
+                                             Includes = _coverageInfo.Includes,
+                                             IsLive = _coverageInfo.IsLive,
+                                             Level = _coverageInfo.Level
+                                         }
+                                         : null;
             }
 
             return exportable;

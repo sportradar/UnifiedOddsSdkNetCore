@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -57,17 +57,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             if (nodeId > 0)
             {
                 return new List<string>
-                       {
-                           "-.-.-.product_down.#",
-                           $"-.-.-.snapshot_complete.-.-.-.{nodeId.ToString()}"
-                       };
+                           {
+                               "-.-.-.product_down.#",
+                               $"-.-.-.snapshot_complete.-.-.-.{nodeId.ToString()}"
+                           };
             }
 
             return new List<string>
-                   {
-                       "-.-.-.product_down.#",
-                       "-.-.-.snapshot_complete.#"
-                   };
+                       {
+                           "-.-.-.product_down.#",
+                           "-.-.-.snapshot_complete.#"
+                       };
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         public static IEnumerable<string> GetLiveKeys()
         {
             return new List<string>
-            {
-                "-.-.-.alive.#"
-            };
+                       {
+                           "-.-.-.alive.#"
+                       };
         }
 
         private static void ValidateInterestCombination(IEnumerable<MessageInterest> interests)
@@ -191,16 +191,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static IEnumerable<string> AllMessages()
         {
             return new[]
-            {
-                //$"*.*.*.{odds_change.MessageName}.*.*.*",
-                //$"*.*.*.{bet_stop.MessageName}.*.*.*",
-                //$"*.*.*.{bet_settlement.MessageName}.*.*.*",
-                //$"*.*.*.{rollback_bet_settlement.MessageName}.*.*.*",
-                //$"*.*.*.{bet_cancel.MessageName}.*.*.*",
-                //$"*.*.*.{rollback_bet_cancel.MessageName}.*.*.*",
-                //$"*.*.*.{fixture_change.MessageName}.*.*.*"
-                "*.*.*.*.*.*.*"
-            };
+                       {
+                           //$"*.*.*.{odds_change.MessageName}.*.*.*",
+                           //$"*.*.*.{bet_stop.MessageName}.*.*.*",
+                           //$"*.*.*.{bet_settlement.MessageName}.*.*.*",
+                           //$"*.*.*.{rollback_bet_settlement.MessageName}.*.*.*",
+                           //$"*.*.*.{bet_cancel.MessageName}.*.*.*",
+                           //$"*.*.*.{rollback_bet_cancel.MessageName}.*.*.*",
+                           //$"*.*.*.{fixture_change.MessageName}.*.*.*"
+                           "*.*.*.*.*.*.*"
+                       };
         }
 
         /// <summary>
@@ -210,16 +210,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static IEnumerable<string> LiveMessagesOnly()
         {
             return new[]
-            {
-                //$"*.*.live.{odds_change.MessageName}.*.*.*",
-                //$"*.*.live.{bet_stop.MessageName}.*.*.*",
-                //$"*.*.live.{bet_settlement.MessageName}.*.*.*",
-                //$"*.*.live.{rollback_bet_settlement.MessageName}.*.*.*",
-                //$"*.*.live.{bet_cancel.MessageName}.*.*.*",
-                //$"*.*.live.{rollback_bet_cancel.MessageName}.*.*.*",
-                //$"*.*.live.{fixture_change.MessageName}.*.*.*"
-                "*.*.live.*.*.*.*"
-            };
+                       {
+                           //$"*.*.live.{odds_change.MessageName}.*.*.*",
+                           //$"*.*.live.{bet_stop.MessageName}.*.*.*",
+                           //$"*.*.live.{bet_settlement.MessageName}.*.*.*",
+                           //$"*.*.live.{rollback_bet_settlement.MessageName}.*.*.*",
+                           //$"*.*.live.{bet_cancel.MessageName}.*.*.*",
+                           //$"*.*.live.{rollback_bet_cancel.MessageName}.*.*.*",
+                           //$"*.*.live.{fixture_change.MessageName}.*.*.*"
+                           "*.*.live.*.*.*.*"
+                       };
         }
 
         /// <summary>
@@ -229,16 +229,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static IEnumerable<string> PrematchMessagesOnly()
         {
             return new[]
-            {
-                //$"*.pre.*.{odds_change.MessageName}.*.*.*",
-                //$"*.pre.*.{bet_stop.MessageName}.*.*.*",
-                //$"*.pre.*.{bet_settlement.MessageName}.*.*.*",
-                //$"*.pre.*.{rollback_bet_settlement.MessageName}.*.*.*",
-                //$"*.pre.*.{bet_cancel.MessageName}.*.*.*",
-                //$"*.pre.*.{rollback_bet_cancel.MessageName}.*.*.*",
-                //$"*.pre.*.{fixture_change.MessageName}.*.*.*"
-                "*.pre.*.*.*.*.*"
-            };
+                       {
+                           //$"*.pre.*.{odds_change.MessageName}.*.*.*",
+                           //$"*.pre.*.{bet_stop.MessageName}.*.*.*",
+                           //$"*.pre.*.{bet_settlement.MessageName}.*.*.*",
+                           //$"*.pre.*.{rollback_bet_settlement.MessageName}.*.*.*",
+                           //$"*.pre.*.{bet_cancel.MessageName}.*.*.*",
+                           //$"*.pre.*.{rollback_bet_cancel.MessageName}.*.*.*",
+                           //$"*.pre.*.{fixture_change.MessageName}.*.*.*"
+                           "*.pre.*.*.*.*.*"
+                       };
         }
 
         /// <summary>
@@ -248,9 +248,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static IEnumerable<string> HighPriorityMessages()
         {
             return new[]
-            {
-                "hi.*.*.*.*.*.*"
-            };
+                       {
+                           "hi.*.*.*.*.*.*"
+                       };
         }
 
         /// <summary>
@@ -260,9 +260,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static IEnumerable<string> LowPriorityMessages()
         {
             return new[]
-            {
-                "lo.*.*.*.*.*.*"
-            };
+                       {
+                           "lo.*.*.*.*.*.*"
+                       };
         }
 
         /// <summary>
@@ -272,10 +272,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         private static IEnumerable<string> VirtualSportMessages()
         {
             return new[]
-            {
-                "*.virt.*.*.*.*.*",
-                "*.*.virt.*.*.*.*"
-            };
+                       {
+                           "*.virt.*.*.*.*.*",
+                           "*.*.virt.*.*.*.*"
+                       };
         }
 
         /// <summary>

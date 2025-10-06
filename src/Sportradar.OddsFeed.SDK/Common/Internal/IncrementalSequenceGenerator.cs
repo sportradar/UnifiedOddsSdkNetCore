@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Threading;
@@ -63,8 +63,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
             {
                 currentValue = Interlocked.Read(ref _value);
                 newValue = currentValue + 1 < _maxValue
-                    ? currentValue + 1
-                    : _minValue;
+                               ? currentValue + 1
+                               : _minValue;
             } while (currentValue != Interlocked.CompareExchange(ref _value, newValue, currentValue));
             return newValue;
         }

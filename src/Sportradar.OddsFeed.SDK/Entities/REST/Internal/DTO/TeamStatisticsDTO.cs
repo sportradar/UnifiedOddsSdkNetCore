@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -74,8 +74,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             Name = statistics.name;
             TeamId = !string.IsNullOrEmpty(statistics.id)
-                ? Urn.Parse(statistics.id)
-                : null;
+                         ? Urn.Parse(statistics.id)
+                         : null;
 
             HomeOrAway = null;
             if (TeamId != null && homeAwayCompetitors != null)

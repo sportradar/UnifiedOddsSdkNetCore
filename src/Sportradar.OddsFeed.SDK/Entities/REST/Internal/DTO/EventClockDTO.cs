@@ -1,4 +1,5 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 {
     internal class EventClockDto
@@ -16,12 +17,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         public bool? IsStopped { get; }
 
         public EventClockDto(string eventTime,
-                            string stoppageTime,
-                            string stoppageTimeAnnounced,
-                            string remainingTime,
-                            string remainingTimeInPeriod,
-                            bool isStoppedSpecified,
-                            bool isStopped)
+                             string stoppageTime,
+                             string stoppageTimeAnnounced,
+                             string remainingTime,
+                             string remainingTimeInPeriod,
+                             bool isStoppedSpecified,
+                             bool isStopped)
         {
             EventTime = eventTime;
             StoppageTime = stoppageTime;

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -103,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             if (!_isFinalized && dto.SportEventStatus != null)
             {
                 if (dto.SportEventStatus.Status == EventStatus.Closed
-                 || dto.SportEventStatus.Status == EventStatus.Ended)
+                    || dto.SportEventStatus.Status == EventStatus.Ended)
                 {
                     _isFinalized = true;
                 }

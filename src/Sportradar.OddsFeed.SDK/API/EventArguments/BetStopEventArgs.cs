@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -73,12 +73,11 @@ namespace Sportradar.OddsFeed.SDK.Api.EventArguments
                 return _betStop;
             }
 
-            return _messageMapper.MapBetStop<T>(
-                _feedMessage,
-                culture == null
-                    ? _defaultCultures
-                    : new[] { culture },
-                _rawMessage);
+            return _messageMapper.MapBetStop<T>(_feedMessage,
+                                                culture == null
+                                                    ? _defaultCultures
+                                                    : new[] { culture },
+                                                _rawMessage);
         }
     }
 }

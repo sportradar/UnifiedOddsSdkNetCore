@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -130,7 +130,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             else
             {
                 await new Func<Task>(() => sportEventCacheItem.FetchMissingSummary(languages, requestOptions, false))
-                     .SafeInvokeAsync(ExecutionLog, GetFetchEntityErrorMessage()).ConfigureAwait(false);
+                     .SafeInvokeAsync(ExecutionLog, GetFetchEntityErrorMessage())
+                     .ConfigureAwait(false);
             }
         }
 
@@ -148,8 +149,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var cacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Catch
-                ? await tournamentInfoCacheItem.GetTournamentCoverageAsync().ConfigureAwait(false)
-                : await new Func<Task<TournamentCoverageCacheItem>>(tournamentInfoCacheItem.GetTournamentCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentCoverage")).ConfigureAwait(false);
+                                ? await tournamentInfoCacheItem.GetTournamentCoverageAsync().ConfigureAwait(false)
+                                : await new Func<Task<TournamentCoverageCacheItem>>(tournamentInfoCacheItem.GetTournamentCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentCoverage")).ConfigureAwait(false);
 
             return cacheItem == null ? null : new TournamentCoverage(cacheItem);
         }
@@ -191,8 +192,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await tournamentInfoCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(tournamentInfoCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+                            ? await tournamentInfoCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                            : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(tournamentInfoCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
             var competitorsIds = items == null ? new List<Urn>() : items.ToList();
             if (!competitorsIds.Any())
@@ -221,8 +222,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             }
 
             var exhibitionGames = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await tournamentInfoCacheItem.GetExhibitionGamesAsync().ConfigureAwait(false)
-                : await new Func<Task<bool?>>(tournamentInfoCacheItem.GetExhibitionGamesAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ExhibitionGames")).ConfigureAwait(false);
+                                      ? await tournamentInfoCacheItem.GetExhibitionGamesAsync().ConfigureAwait(false)
+                                      : await new Func<Task<bool?>>(tournamentInfoCacheItem.GetExhibitionGamesAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ExhibitionGames")).ConfigureAwait(false);
 
             return exhibitionGames;
         }
@@ -240,8 +241,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await tournamentInfoCacheItem.GetScheduleAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(tournamentInfoCacheItem.GetScheduleAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
+                           ? await tournamentInfoCacheItem.GetScheduleAsync(Cultures).ConfigureAwait(false)
+                           : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(tournamentInfoCacheItem.GetScheduleAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Schedule")).ConfigureAwait(false);
 
             return item?.Select(s => _sportEntityFactory.BuildSportEvent<ISportEvent>(s, SportId, Cultures.ToList(), ExceptionStrategy));
         }

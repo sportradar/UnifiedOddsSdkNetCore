@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -247,7 +247,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         /// <returns>The <see cref="IProducer"/> instance</returns>
         private static IProducer GetUnknownProducer()
         {
-            return new Producer(id: SdkInfo.UnknownProducerId, name: "Unknown", description: "Unknown producer", apiUrl: "unknown", active: true, maxInactivitySeconds: 20, maxRecoveryTime: 3600, scope: "live|prematch|virtual", statefulRecoveryWindowInMinutes: 100);
+            return new Producer(id: SdkInfo.UnknownProducerId,
+                                name: "Unknown",
+                                description: "Unknown producer",
+                                apiUrl: "unknown",
+                                active: true,
+                                maxInactivitySeconds: 20,
+                                maxRecoveryTime: 3600,
+                                scope: "live|prematch|virtual",
+                                statefulRecoveryWindowInMinutes: 100);
         }
 
         /// <summary>

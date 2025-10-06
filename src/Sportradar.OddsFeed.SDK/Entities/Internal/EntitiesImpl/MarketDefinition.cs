@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -64,12 +64,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">The cultures</param>
         /// <param name="exceptionHandlingStrategy">The exception handling strategy</param>
         internal MarketDefinition(int marketId,
-            IMarketCacheProvider marketCacheProvider,
-            Urn sportId,
-            int producerId,
-            IReadOnlyDictionary<string, string> specifiers,
-            IReadOnlyCollection<CultureInfo> cultures,
-            ExceptionHandlingStrategy exceptionHandlingStrategy)
+                                  IMarketCacheProvider marketCacheProvider,
+                                  Urn sportId,
+                                  int producerId,
+                                  IReadOnlyDictionary<string, string> specifiers,
+                                  IReadOnlyCollection<CultureInfo> cultures,
+                                  ExceptionHandlingStrategy exceptionHandlingStrategy)
         {
             _marketId = marketId;
             _sportId = sportId;
@@ -113,8 +113,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         {
             GetMarketDefinition();
             return _marketDescription?.Groups == null || _marketDescription.Groups.IsNullOrEmpty()
-                ? null
-                : new ReadOnlyCollection<string>(_marketDescription.Groups.ToList());
+                       ? null
+                       : new ReadOnlyCollection<string>(_marketDescription.Groups.ToList());
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         {
             GetMarketDefinition();
             return _marketDescription?.Attributes == null || _marketDescription.Attributes.IsNullOrEmpty()
-                ? null
-                : new ReadOnlyDictionary<string, string>(_marketDescription.Attributes.ToDictionary(k => k.Name, v => v.Description));
+                       ? null
+                       : new ReadOnlyDictionary<string, string>(_marketDescription.Attributes.ToDictionary(k => k.Name, v => v.Description));
         }
 
         /// <summary>
@@ -137,8 +137,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         {
             GetMarketDefinition();
             return _producerId == 5 || _marketDescription?.Mappings == null || _marketDescription.Mappings.IsNullOrEmpty()
-                ? Enumerable.Empty<IMarketMappingData>()
-                : _marketDescription.Mappings.Where(m => m.CanMap(_producerId, _sportId, _specifiers));
+                       ? Enumerable.Empty<IMarketMappingData>()
+                       : _marketDescription.Mappings.Where(m => m.CanMap(_producerId, _sportId, _specifiers));
         }
 
         /// <summary>

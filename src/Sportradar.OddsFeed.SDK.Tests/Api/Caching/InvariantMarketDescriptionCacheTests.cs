@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -78,10 +78,10 @@ public class InvariantMarketDescriptionCacheTests
         _mappingValidatorFactory = new MappingValidatorFactory();
         _cacheManager = new CacheManager();
         var dataRouterManager = new DataRouterManagerBuilder()
-            .AddMockedDependencies()
-            .WithCacheManager(_cacheManager)
-            .WithInvariantMarketDescriptionsProvider(_invariantMdProviderMock.Object)
-            .Build();
+                               .AddMockedDependencies()
+                               .WithCacheManager(_cacheManager)
+                               .WithInvariantMarketDescriptionsProvider(_invariantMdProviderMock.Object)
+                               .Build();
 
         _invariantMarketDescriptionCache = new InvariantMarketDescriptionCache(_invariantMarketDescriptionMemoryCache, dataRouterManager, _mappingValidatorFactory, _timer, _languages, _cacheManager, _testLoggerFactory);
 
@@ -515,7 +515,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new CommunicationException("Not found", "http://local/someurl", HttpStatusCode.NotFound, null));
+                                .ThrowsAsync(new CommunicationException("Not found", "http://local/someurl", HttpStatusCode.NotFound, null));
 
         _ = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, _languages));
     }
@@ -525,7 +525,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new DeserializationException("Not found", null));
+                                .ThrowsAsync(new DeserializationException("Not found", null));
 
         _ = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, _languages));
     }
@@ -535,7 +535,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new MappingException("Not found", "some-property", "property-value", nameof(market_descriptions), null));
+                                .ThrowsAsync(new MappingException("Not found", "some-property", "property-value", nameof(market_descriptions), null));
 
         _ = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, _languages));
     }
@@ -545,7 +545,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new UriFormatException("Not found"));
+                                .ThrowsAsync(new UriFormatException("Not found"));
 
         var resultException = await Assert.ThrowsAsync<CacheItemNotFoundException>(() => _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, _languages));
 
@@ -556,9 +556,9 @@ public class InvariantMarketDescriptionCacheTests
     public async Task GetMarketDescriptionWhenUnknownLanguageIsRequestedThenReturnNull()
     {
         var oneLanguage = new List<CultureInfo>
-                        {
-                            new CultureInfo("na")
-                        };
+                              {
+                                  new CultureInfo("na")
+                              };
 
         var mdCi = await _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, oneLanguage);
 
@@ -569,9 +569,9 @@ public class InvariantMarketDescriptionCacheTests
     public async Task GetMarketDescriptionWhenUnknownLanguageIsRequestedThenApiCallIsMade()
     {
         var oneLanguage = new List<CultureInfo>
-                        {
-                            new CultureInfo("na")
-                        };
+                              {
+                                  new CultureInfo("na")
+                              };
         ResetMarketApiCalls();
 
         _ = await _invariantMarketDescriptionCache.GetMarketDescriptionAsync(DefaultMarketId282, null, oneLanguage);
@@ -609,7 +609,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new ObjectDisposedException("Drm disposed"));
+                                .ThrowsAsync(new ObjectDisposedException("Drm disposed"));
         _timer.FireOnce(TimeSpan.Zero);
 
         var success = await TestExecutionHelper.WaitToCompleteAsync(() => _languages.Count == _invariantMdProviderMock.Invocations.Count);
@@ -622,7 +622,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new ObjectDisposedException("Drm disposed"));
+                                .ThrowsAsync(new ObjectDisposedException("Drm disposed"));
         _timer.FireOnce(TimeSpan.Zero);
 
         var success = await TestExecutionHelper.WaitToCompleteAsync(() => _languages.Count == _invariantMdProviderMock.Invocations.Count);
@@ -637,7 +637,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new TaskCanceledException("Call not finished in time"));
+                                .ThrowsAsync(new TaskCanceledException("Call not finished in time"));
         _timer.FireOnce(TimeSpan.Zero);
 
         var success = await TestExecutionHelper.WaitToCompleteAsync(() => _languages.Count == _invariantMdProviderMock.Invocations.Count, 200, 20000);
@@ -651,7 +651,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new TaskCanceledException("Call not finished in time"));
+                                .ThrowsAsync(new TaskCanceledException("Call not finished in time"));
         _timer.FireOnce(TimeSpan.Zero);
 
         var success = await TestExecutionHelper.WaitToCompleteAsync(() => _languages.Count == _invariantMdProviderMock.Invocations.Count, 200, 20000);
@@ -709,7 +709,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new CommunicationException("Not found", "http://local/someurl", HttpStatusCode.NotFound, null));
+                                .ThrowsAsync(new CommunicationException("Not found", "http://local/someurl", HttpStatusCode.NotFound, null));
 
         var result = await _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync();
 
@@ -721,7 +721,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new CommunicationException("Not found", "http://local/someurl", HttpStatusCode.NotFound, null));
+                                .ThrowsAsync(new CommunicationException("Not found", "http://local/someurl", HttpStatusCode.NotFound, null));
 
         var result = await _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync();
 
@@ -734,7 +734,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new DeserializationException("Not found", null));
+                                .ThrowsAsync(new DeserializationException("Not found", null));
 
         var result = await _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync();
 
@@ -746,7 +746,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new MappingException("Not found", "some-property", "property-value", nameof(market_descriptions), null));
+                                .ThrowsAsync(new MappingException("Not found", "some-property", "property-value", nameof(market_descriptions), null));
 
         var result = await _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync();
 
@@ -758,7 +758,7 @@ public class InvariantMarketDescriptionCacheTests
     {
         _invariantMdProviderMock.Reset();
         _invariantMdProviderMock.Setup(s => s.GetDataAsync(It.IsAny<string>()))
-            .ThrowsAsync(new UriFormatException("Not found"));
+                                .ThrowsAsync(new UriFormatException("Not found"));
 
         var result = await _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync();
 
@@ -783,9 +783,9 @@ public class InvariantMarketDescriptionCacheTests
 
         _ = await _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync();
         var useCultures = new[]
-                          {
-                              _languages[0]
-                          };
+                              {
+                                  _languages[0]
+                              };
 
         var md = await _invariantMarketDescriptionCache.GetMarketDescriptionAsync(282, null, useCultures);
 
@@ -1054,7 +1054,7 @@ public class InvariantMarketDescriptionCacheTests
             var invariantList = MarketDescriptionEndpoint.GetDefaultInvariantList();
             invariantList.market = invariantList.market.Select(m => m.AddSuffix(culture.TwoLetterISOLanguageName)).ToArray();
             _invariantMdProviderMock.Setup(s => s.GetDataAsync(culture.TwoLetterISOLanguageName))
-                .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(invariantList.market));
+                                    .ReturnsAsync(MarketDescriptionEndpoint.GetInvariantDto(invariantList.market));
         }
     }
 
@@ -1064,10 +1064,10 @@ public class InvariantMarketDescriptionCacheTests
         foreach (var culture in _languages)
         {
             var marketDtos = culture.TwoLetterISOLanguageName.Equals("en", StringComparison.OrdinalIgnoreCase)
-                ? await GetInvariantMarketDescriptionsFromFile("invariant_market_descriptions_en_missing.xml")
-                : await GetInvariantMarketDescriptionsFromFile($"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml");
+                                 ? await GetInvariantMarketDescriptionsFromFile("invariant_market_descriptions_en_missing.xml")
+                                 : await GetInvariantMarketDescriptionsFromFile($"invariant_market_descriptions_{culture.TwoLetterISOLanguageName}.xml");
             _invariantMdProviderMock.Setup(s => s.GetDataAsync(culture.TwoLetterISOLanguageName))
-                .ReturnsAsync(marketDtos);
+                                    .ReturnsAsync(marketDtos);
         }
     }
 

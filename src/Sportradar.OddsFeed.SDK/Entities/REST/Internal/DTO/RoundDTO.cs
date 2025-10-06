@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common;
@@ -45,8 +45,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             Type = round.type;
             Number = round.numberSpecified
-                ? (int?)round.number
-                : null;
+                         ? (int?)round.number
+                         : null;
             Name = !string.IsNullOrEmpty(round.name) ? round.name : null;
             PhaseOrGroupLongName = !string.IsNullOrEmpty(round.group_long_name) ? round.group_long_name : null;
             Group = round.group;
@@ -61,14 +61,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             }
             OtherMatchId = round.other_match_id;
             CupRoundMatches = round.cup_round_matchesSpecified
-                ? (int?)round.cup_round_matches
-                : null;
+                                  ? (int?)round.cup_round_matches
+                                  : null;
             CupRoundMatchNumber = round.cup_round_match_numberSpecified
-                ? (int?)round.cup_round_match_number
-                : null;
+                                      ? (int?)round.cup_round_match_number
+                                      : null;
             BetradarId = round.betradar_idSpecified
-                ? (int?)round.betradar_id
-                : null;
+                             ? (int?)round.betradar_id
+                             : null;
             BetradarName = round.betradar_name;
         }
     }

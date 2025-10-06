@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -19,10 +19,10 @@ public class TestStage : IStage
     {
         Id = id;
         _competitors = new List<ITeamCompetitor>()
-        {
-            new TestTeamCompetitor(Urn.Parse("sr:competitor:1"), "First competitor", new CultureInfo("en")),
-            new TestTeamCompetitor(Urn.Parse("sr:competitor:2"), "Second competitor", new CultureInfo("en"))
-        };
+                           {
+                               new TestTeamCompetitor(Urn.Parse("sr:competitor:1"), "First competitor", new CultureInfo("en")),
+                               new TestTeamCompetitor(Urn.Parse("sr:competitor:2"), "Second competitor", new CultureInfo("en"))
+                           };
     }
 
     public void SetCompetitors(ICollection<ITeamCompetitor> competitors)

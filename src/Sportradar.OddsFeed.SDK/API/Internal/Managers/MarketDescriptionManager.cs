@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -140,10 +140,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         public async Task<bool> LoadMarketDescriptionsAsync()
         {
             var tasks = new List<Task<bool>>
-                        {
-                            _variantDescriptionListCache.LoadMarketDescriptionsAsync(),
-                            _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync()
-                        };
+                            {
+                                _variantDescriptionListCache.LoadMarketDescriptionsAsync(),
+                                _invariantMarketDescriptionCache.LoadMarketDescriptionsAsync()
+                            };
 
             await Task.WhenAll(tasks).ConfigureAwait(false);
 

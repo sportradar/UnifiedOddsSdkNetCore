@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.IO;
@@ -14,6 +14,7 @@ using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.Replay;
+
 public class ReplayManagerTests
 {
     private readonly Mock<IDataRestful> _mockDataRestful;
@@ -193,7 +194,8 @@ public class ReplayManagerTests
 
     private HttpResponseMessage CreateAddQueueErrorResponse(HttpStatusCode statusCode, Urn eventId)
     {
-        var responseContent = $"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n  <response>\n    <action>Adding event {eventId} to playlist set failed.</action>\n    <message>We do not have data for given event anymore.</message>\n  </response>";
+        var responseContent =
+            $"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n  <response>\n    <action>Adding event {eventId} to playlist set failed.</action>\n    <message>We do not have data for given event anymore.</message>\n  </response>";
 
         return new HttpResponseMessage(statusCode) { Content = new StringContent(responseContent) };
     }
@@ -207,7 +209,8 @@ public class ReplayManagerTests
 
     private Stream CreateQueueListSuccessResponse()
     {
-        var responseContent = $"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n  <replay_set_content>\n    <event id=\"sr:match:10841234\" position=\"1\" />\n    <event id=\"sr:match:10982340\" position=\"2\" />\n    <event id=\"sr:match:10982346\" position=\"3\" />\n    <event id=\"sr:match:11365261\" position=\"4\" />\n    <event id=\"sr:match:11427861\" position=\"5\" />\n  </replay_set_content>";
+        var responseContent =
+            $"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n  <replay_set_content>\n    <event id=\"sr:match:10841234\" position=\"1\" />\n    <event id=\"sr:match:10982340\" position=\"2\" />\n    <event id=\"sr:match:10982346\" position=\"3\" />\n    <event id=\"sr:match:11365261\" position=\"4\" />\n    <event id=\"sr:match:11427861\" position=\"5\" />\n  </replay_set_content>";
 
         var byteArray = Encoding.UTF8.GetBytes(responseContent);
         return new MemoryStream(byteArray);

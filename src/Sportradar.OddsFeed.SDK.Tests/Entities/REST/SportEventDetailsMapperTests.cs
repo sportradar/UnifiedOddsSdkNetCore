@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -141,9 +141,9 @@ public class SportEventDetailsMapperTests
         Assert.Equal(dto.Conditions.WeatherInfo.Wind, record.sport_event_conditions.weather_info.wind);
         Assert.Equal(dto.Conditions.WeatherInfo.WindAdvantage, record.sport_event_conditions.weather_info.wind_advantage);
         Assert.Equal(dto.Conditions.WeatherInfo.TemperatureCelsius,
-            record.sport_event_conditions.weather_info.temperature_celsiusSpecified
-                ? record.sport_event_conditions.weather_info.temperature_celsius
-                : null);
+                     record.sport_event_conditions.weather_info.temperature_celsiusSpecified
+                         ? record.sport_event_conditions.weather_info.temperature_celsius
+                         : null);
 
         MappingVenueTest(dto, record);
     }

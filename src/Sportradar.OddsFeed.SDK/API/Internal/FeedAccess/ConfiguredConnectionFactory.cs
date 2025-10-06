@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -76,13 +76,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             }
 
             var clientProperties = new Dictionary<string, object>
-            {
-                { "SrUfSdkType", SdkInfo.SdkType },
-                { "SrUfSdkVersion", SdkInfo.GetVersion() },
-                { "SrUfSdkInit", SdkInfo.UtcNowString() },
-                { "SrUfSdkConnName", $"RabbitMQ / {SdkInfo.SdkType}" },
-                { "SrUfSdkBId", _config.BookmakerDetails?.BookmakerId.ToString(CultureInfo.InvariantCulture) }
-            };
+                                       {
+                                           { "SrUfSdkType", SdkInfo.SdkType },
+                                           { "SrUfSdkVersion", SdkInfo.GetVersion() },
+                                           { "SrUfSdkInit", SdkInfo.UtcNowString() },
+                                           { "SrUfSdkConnName", $"RabbitMQ / {SdkInfo.SdkType}" },
+                                           { "SrUfSdkBId", _config.BookmakerDetails?.BookmakerId.ToString(CultureInfo.InvariantCulture) }
+                                       };
 
             ConnectionFactory = new ConnectionFactory
             {

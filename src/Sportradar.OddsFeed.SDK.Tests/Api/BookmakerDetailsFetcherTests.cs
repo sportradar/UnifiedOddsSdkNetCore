@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Net;
@@ -37,8 +37,8 @@ public abstract class BookmakerDetailsFetcherTests : AutoMockerUnitTest
         public WhenGetBookmakerDetailsIsSuccessful()
         {
             Mocker.GetMock<IDataProvider<BookmakerDetailsDto>>()
-                .Setup(x => x.GetDataAsync())
-                .ReturnsAsync(new BookmakerDetailsDto(_sourceDetails, TimeSpan.Zero));
+                  .Setup(x => x.GetDataAsync())
+                  .ReturnsAsync(new BookmakerDetailsDto(_sourceDetails, TimeSpan.Zero));
         }
 
         [Fact]

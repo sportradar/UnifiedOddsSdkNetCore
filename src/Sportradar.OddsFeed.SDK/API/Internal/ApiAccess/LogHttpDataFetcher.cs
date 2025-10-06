@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics;
@@ -211,13 +211,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             }
             const string msgTemplate = "TraceId: {TraceId} POST: {PostUri} took {Elapsed} ms. Response: {ResponseStatusCode}-{ResponseReasonPhrase} {ResponseContent}";
             _restLog.Log(wantedLogLevel,
-                msgTemplate,
-                traceId,
-                uri.AbsoluteUri,
-                watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture),
-                ((int)response.StatusCode).ToString(CultureInfo.InvariantCulture),
-                response.ReasonPhrase,
-                responseContent);
+                         msgTemplate,
+                         traceId,
+                         uri.AbsoluteUri,
+                         watch.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture),
+                         ((int)response.StatusCode).ToString(CultureInfo.InvariantCulture),
+                         response.ReasonPhrase,
+                         responseContent);
         }
 
         private static string GetCommunicationExceptionContent(CommunicationException commException)
@@ -231,8 +231,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 return commException.InnerException.Message;
             }
             return commException.Response == null
-                ? commException.Message
-                : commException.Response.Replace("\n", string.Empty);
+                       ? commException.Message
+                       : commException.Response.Replace("\n", string.Empty);
         }
 
         private static string GetTraceId(HttpRequestMessage responseMessage)

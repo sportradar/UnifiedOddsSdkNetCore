@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -41,18 +41,16 @@ public class SportEventCacheTests
         _dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
 
         _timer = new TestTimer(false);
-        _sportEventCache = new SportEventCache(
-            _memoryCache,
-            _dataRouterManager,
-            new SportEventCacheItemFactory(
-                _dataRouterManager,
-                new SemaphorePool(5, ExceptionHandlingStrategy.Throw),
-                testCacheStoreManager.UofConfig,
-                testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
-            _timer,
-            TestData.Cultures,
-            cacheManager,
-            loggerFactory);
+        _sportEventCache = new SportEventCache(_memoryCache,
+                                               _dataRouterManager,
+                                               new SportEventCacheItemFactory(_dataRouterManager,
+                                                                              new SemaphorePool(5, ExceptionHandlingStrategy.Throw),
+                                                                              testCacheStoreManager.UofConfig,
+                                                                              testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache)),
+                                               _timer,
+                                               TestData.Cultures,
+                                               cacheManager,
+                                               loggerFactory);
     }
 
     [Fact]
@@ -269,13 +267,14 @@ public class SportEventCacheTests
         SeasonCacheItem season = null;
 
         Task.Run(async () =>
-            {
-                date = await item.GetScheduledAsync();
-                competitors = (await item.GetCompetitorsIdsAsync(TestData.Cultures)).ToList();
-                round = await item.GetTournamentRoundAsync(TestData.Cultures);
-                season = await item.GetSeasonAsync(TestData.Cultures);
-            })
-            .GetAwaiter().GetResult();
+                 {
+                     date = await item.GetScheduledAsync();
+                     competitors = (await item.GetCompetitorsIdsAsync(TestData.Cultures)).ToList();
+                     round = await item.GetTournamentRoundAsync(TestData.Cultures);
+                     season = await item.GetSeasonAsync(TestData.Cultures);
+                 })
+            .GetAwaiter()
+            .GetResult();
 
         if (!ignoreDate && date != null)
         {

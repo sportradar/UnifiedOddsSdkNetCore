@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -190,14 +190,15 @@ public class LocalizedNamedValueCacheTests
         Setup(ExceptionHandlingStrategy.Catch, SdkTimer.Create(UofSdkBootstrap.TimerForLocalizedNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
 
         var finished = await TestExecutionHelper.WaitToCompleteAsync(() =>
-                                                          {
-                                                              _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
-                                                              _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
-                                                              _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
-                                                              _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
-                                                              return true;
-                                                          },
-                                                          200, 15000);
+                                                                     {
+                                                                         _fetcherMock.Verify(x => x.GetDataAsync(_enMatchStatusUri), Times.Once);
+                                                                         _fetcherMock.Verify(x => x.GetDataAsync(_deMatchStatusUri), Times.Once);
+                                                                         _fetcherMock.Verify(x => x.GetDataAsync(_huMatchStatusUri), Times.Once);
+                                                                         _fetcherMock.Verify(x => x.GetDataAsync(_nlMatchStatusUri), Times.Never);
+                                                                         return true;
+                                                                     },
+                                                                     200,
+                                                                     15000);
 
         finished.ShouldBeTrue();
     }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -55,14 +55,18 @@ public class FeedMessageMapperTests
 
         var sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
 
-        var marketFactory = new MarketFactory(new Mock<IMarketCacheProvider>().Object, nameProviderFactoryMock.Object, new Mock<IMarketMappingProviderFactory>().Object, namedValuesProviderMock.Object, namedValuesCacheMock.Object, ExceptionHandlingStrategy.Throw);
+        var marketFactory = new MarketFactory(new Mock<IMarketCacheProvider>().Object,
+                                              nameProviderFactoryMock.Object,
+                                              new Mock<IMarketMappingProviderFactory>().Object,
+                                              namedValuesProviderMock.Object,
+                                              namedValuesCacheMock.Object,
+                                              ExceptionHandlingStrategy.Throw);
 
-        _mapper = new FeedMessageMapper(
-            sportEntityFactoryBuilder.SportEntityFactory,
-            marketFactory,
-            TestProducerManager.Create(),
-            namedValuesProviderMock.Object,
-            ExceptionHandlingStrategy.Throw);
+        _mapper = new FeedMessageMapper(sportEntityFactoryBuilder.SportEntityFactory,
+                                        marketFactory,
+                                        TestProducerManager.Create(),
+                                        namedValuesProviderMock.Object,
+                                        ExceptionHandlingStrategy.Throw);
 
         _deserializer = new Deserializer<FeedMessage>();
         _validator = new StubFeedMessageValidator();

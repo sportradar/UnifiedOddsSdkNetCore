@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +8,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
     internal static class AbstractFactoryExtension
     {
         public static void AddAbstractFactory<TInterface, TImplementation>(this IServiceCollection services)
-                        where TInterface : class
-                        where TImplementation : class, TInterface
+            where TInterface : class
+            where TImplementation : class, TInterface
         {
             services.AddScoped<TInterface, TImplementation>();
             services.AddSingleton<Func<TInterface>>(x => () => x.GetService<TInterface>());

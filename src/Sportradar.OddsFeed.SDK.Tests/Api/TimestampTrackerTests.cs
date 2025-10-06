@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -206,7 +206,6 @@ public class TimestampTrackerTests
         Assert.False(tracker.IsBehind);
         _timeProvider.AddSeconds(30);
         Assert.False(tracker.IsBehind);
-
     }
 
     [Fact]
@@ -218,7 +217,8 @@ public class TimestampTrackerTests
         Assert.Equal(SdkInfo.ToEpochTime(_timeProvider.Now), tracker.OldestUserAliveTimestamp);
     }
 
-    private static readonly Regex TimestampTrackerStatusRegex = new Regex(@"Ping\((?<ping_state>[a-zA-Z]{2,})\):age=(?<ping_age>\d{2}:\d{2}:\d{2}\.\d{3})\],\[IsBehind\((?<behind_state>[a-zA-Z]{4,5})\):Alive\(s\)\[(?<user_alives>[a-zA-Z0-9:.,=]{2,})\],NonAlives\[(?<non_alives>[a-zA-Z0-9:.,=]{2,})\]");
+    private static readonly Regex TimestampTrackerStatusRegex =
+        new Regex(@"Ping\((?<ping_state>[a-zA-Z]{2,})\):age=(?<ping_age>\d{2}:\d{2}:\d{2}\.\d{3})\],\[IsBehind\((?<behind_state>[a-zA-Z]{4,5})\):Alive\(s\)\[(?<user_alives>[a-zA-Z0-9:.,=]{2,})\],NonAlives\[(?<non_alives>[a-zA-Z0-9:.,=]{2,})\]");
     private static readonly Regex TimingEntryRegex = new Regex(@"(?<interest>[a-zA-Z_]{2,}):[a-z]{2,}=(?<interval>\d{2}:\d{2}:\d{2}\.\d{3})");
 
     // this test seems to be a bit unreliable - sometimes fails
@@ -300,18 +300,17 @@ public class TimestampTrackerTests
             throw new FormatException($"Format of the {nameof(entry)} argument is not correct");
         }
 
-        return new TimestampTrackerState(
-            match.Groups["ping_state"].Value == "Failed",
-            match.Groups["behind_state"].Value == "True",
-            DateTime.ParseExact(match.Groups["ping_age"].Value, "hh:mm:ss.fff", CultureInfo.InvariantCulture).TimeOfDay,
-            GetTimingEntries(match.Groups["user_alives"].Value),
-            GetTimingEntries(match.Groups["non_alives"].Value));
+        return new TimestampTrackerState(match.Groups["ping_state"].Value == "Failed",
+                                         match.Groups["behind_state"].Value == "True",
+                                         DateTime.ParseExact(match.Groups["ping_age"].Value, "hh:mm:ss.fff", CultureInfo.InvariantCulture).TimeOfDay,
+                                         GetTimingEntries(match.Groups["user_alives"].Value),
+                                         GetTimingEntries(match.Groups["non_alives"].Value));
     }
 
     private static IDictionary<MessageInterest, TimeSpan> GetTimingEntries(string timingEntriesString)
     {
         var itemList = from Match aliveEntryMatch
-                in TimingEntryRegex.Matches(timingEntriesString)
+                           in TimingEntryRegex.Matches(timingEntriesString)
                        select new
                        {
                            Interest = MessageInterest.DefinedInterests.FirstOrDefault(i => i.Name == aliveEntryMatch.Groups["interest"].Value),

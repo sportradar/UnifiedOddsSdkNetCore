@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Threading.Tasks;
@@ -25,17 +25,16 @@ public class DemoMethods
     public async Task<int> DemoLongLastingMethodAsync(int seed, int steps)
     {
         return await Task.Run(async () =>
-            {
-                while (steps > 0)
-                {
-                    seed += steps;
-                    steps--;
-                    await Task.Delay(10).ConfigureAwait(false);
-                }
+                              {
+                                  while (steps > 0)
+                                  {
+                                      seed += steps;
+                                      steps--;
+                                      await Task.Delay(10).ConfigureAwait(false);
+                                  }
 
-                return seed;
-            }
-        );
+                                  return seed;
+                              });
     }
 
     public void DemoLongLastingVoidMethod(int sleep)
@@ -52,11 +51,10 @@ public class DemoMethods
     public async Task<int> DemoMethodWithTaskThrowsExceptionAsync(int sleep)
     {
         await Task.Run(async () =>
-            {
-                await Task.Delay(sleep).ConfigureAwait(false);
-                throw new Exception("DemoMethodWithTaskThrowsExceptionAsync exception.");
-            }
-        );
+                       {
+                           await Task.Delay(sleep).ConfigureAwait(false);
+                           throw new Exception("DemoMethodWithTaskThrowsExceptionAsync exception.");
+                       });
         return sleep;
     }
 

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -53,11 +53,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// <param name="rootCompetitionCacheItem">A root <see cref="CompetitionCacheItem" /> to which this competitor belongs to</param>
         [SuppressMessage("CodeQuality", "IDE0058:Expression value is never used", Justification = "Allowed for Guard statements")]
         public Competitor(CompetitorCacheItem ci,
-            IProfileCache profileCache,
-            IReadOnlyCollection<CultureInfo> cultures,
-            ISportEntityFactory sportEntityFactory,
-            ExceptionHandlingStrategy exceptionStrategy,
-            ICompetitionCacheItem rootCompetitionCacheItem)
+                          IProfileCache profileCache,
+                          IReadOnlyCollection<CultureInfo> cultures,
+                          ISportEntityFactory sportEntityFactory,
+                          ExceptionHandlingStrategy exceptionStrategy,
+                          ICompetitionCacheItem rootCompetitionCacheItem)
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
             Guard.Argument(cultures, nameof(cultures)).NotNull();
@@ -91,11 +91,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCacheItem" /> for all competitors</param>
         [SuppressMessage("CodeQuality", "IDE0058:Expression value is never used", Justification = "Allowed for Guard statements")]
         public Competitor(CompetitorCacheItem ci,
-            IProfileCache profileCache,
-            IReadOnlyCollection<CultureInfo> cultures,
-            ISportEntityFactory sportEntityFactory,
-            ExceptionHandlingStrategy exceptionStrategy,
-            IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences)
+                          IProfileCache profileCache,
+                          IReadOnlyCollection<CultureInfo> cultures,
+                          ISportEntityFactory sportEntityFactory,
+                          ExceptionHandlingStrategy exceptionStrategy,
+                          IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences)
             : base(ci.Id, new Dictionary<CultureInfo, string>())
         {
             Guard.Argument(cultures, nameof(cultures)).NotNull().NotEmpty();
@@ -139,11 +139,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// <param name="competitorsReferences">A list of <see cref="ReferenceIdCacheItem" /> for all competitors</param>
         [SuppressMessage("CodeQuality", "IDE0058:Expression value is never used", Justification = "Allowed for Guard statements")]
         public Competitor(Urn competitorId,
-            IProfileCache profileCache,
-            IReadOnlyCollection<CultureInfo> cultures,
-            ISportEntityFactory sportEntityFactory,
-            ExceptionHandlingStrategy exceptionStrategy,
-            IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences)
+                          IProfileCache profileCache,
+                          IReadOnlyCollection<CultureInfo> cultures,
+                          ISportEntityFactory sportEntityFactory,
+                          ExceptionHandlingStrategy exceptionStrategy,
+                          IDictionary<Urn, ReferenceIdCacheItem> competitorsReferences)
             : base(competitorId, new Dictionary<CultureInfo, string>())
         {
             Guard.Argument(competitorId, nameof(competitorId)).NotNull();
@@ -168,7 +168,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 
         public IReadOnlyDictionary<CultureInfo, string> Countries => new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => GetOrLoadCompetitor().GetCountry(c) != null).ToDictionary(c => c, GetOrLoadCompetitor().GetCountry));
 
-        public IReadOnlyDictionary<CultureInfo, string> Abbreviations => new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => GetOrLoadCompetitor().GetAbbreviation(c) != null).ToDictionary(c => c, c => GetOrLoadCompetitor().GetAbbreviation(c)));
+        public IReadOnlyDictionary<CultureInfo, string> Abbreviations =>
+            new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => GetOrLoadCompetitor().GetAbbreviation(c) != null).ToDictionary(c => c, c => GetOrLoadCompetitor().GetAbbreviation(c)));
 
         public bool? IsVirtual => GetOrLoadCompetitor()?.IsVirtual;
 
@@ -238,8 +239,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         }
 
         public IEnumerable<IJersey> Jerseys => GetOrLoadCompetitor().Jerseys != null && GetOrLoadCompetitor().Jerseys.Any()
-            ? (IEnumerable<IJersey>)GetOrLoadCompetitor().Jerseys.Select(s => new Jersey(s))
-            : new List<IJersey>();
+                                                   ? (IEnumerable<IJersey>)GetOrLoadCompetitor().Jerseys.Select(s => new Jersey(s))
+                                                   : new List<IJersey>();
 
         public IManager Manager => GetOrLoadCompetitor().Manager != null ? new Manager(GetOrLoadCompetitor().Manager) : null;
 
@@ -278,18 +279,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         {
             var sportId = GetOrLoadCompetitor()?.SportId;
             return sportId != null
-                ? await _sportEntityFactory.BuildSportAsync(sportId, _cultures, _exceptionStrategy).ConfigureAwait(false)
-                : null;
-
+                       ? await _sportEntityFactory.BuildSportAsync(sportId, _cultures, _exceptionStrategy).ConfigureAwait(false)
+                       : null;
         }
 
         public async Task<ICategorySummary> GetCategoryAsync()
         {
             var categoryId = GetOrLoadCompetitor()?.CategoryId;
             return categoryId != null
-                ? await _sportEntityFactory.BuildCategoryAsync(categoryId, _cultures).ConfigureAwait(false)
-                : null;
-
+                       ? await _sportEntityFactory.BuildCategoryAsync(categoryId, _cultures).ConfigureAwait(false)
+                       : null;
         }
 
         public string ShortName => GetOrLoadCompetitor()?.ShortName;

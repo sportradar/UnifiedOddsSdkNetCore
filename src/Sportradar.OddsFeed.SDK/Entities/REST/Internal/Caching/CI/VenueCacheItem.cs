@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -94,8 +94,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             CountryCode = exportable.CountryCode;
             State = exportable.State;
             Courses = exportable.Courses.IsNullOrEmpty()
-                ? new List<CourseCacheItem>()
-                : exportable.Courses.Select(s => new CourseCacheItem(s)).ToList();
+                          ? new List<CourseCacheItem>()
+                          : exportable.Courses.Select(s => new CourseCacheItem(s)).ToList();
         }
 
         /// <summary>
@@ -158,8 +158,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _names.TryGetValue(culture, out var name)
-                ? name
-                : null;
+                       ? name
+                       : null;
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _cityNames.TryGetValue(culture, out var cityName)
-                ? cityName
-                : null;
+                       ? cityName
+                       : null;
         }
 
         /// <summary>
@@ -186,8 +186,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             return _countryNames.TryGetValue(culture, out var countryName)
-                ? countryName
-                : null;
+                       ? countryName
+                       : null;
         }
 
         /// <summary>

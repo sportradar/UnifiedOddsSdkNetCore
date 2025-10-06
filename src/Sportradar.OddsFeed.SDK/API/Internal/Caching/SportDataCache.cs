@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Concurrent;
@@ -142,8 +142,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             try
             {
                 var missingLanguages = _wasDataAutoFetched
-                    ? _requiredCultures
-                    : _requiredCultures.Where(c => !FetchedCultures.Any()).ToList();
+                                           ? _requiredCultures
+                                           : _requiredCultures.Where(c => !FetchedCultures.Any()).ToList();
 
                 cultureInfos = missingLanguages as IList<CultureInfo> ?? missingLanguages.ToList();
                 if (cultureInfos.Any())
@@ -268,15 +268,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                 return null;
             }
 
-            var category = new CategoryData(
-                                cachedCategory.Id,
-                                cachedCategory.Name.Where(k => cultures.Contains(k.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-                                cachedCategory.CountryCode,
-                                new[] { cachedTournament.Id });
-            return new SportData(
-                                cachedSport.Id,
-                                cachedSport.Name.Where(kvp => cultures.Contains(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-                                new[] { category });
+            var category = new CategoryData(cachedCategory.Id,
+                                            cachedCategory.Name.Where(k => cultures.Contains(k.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                                            cachedCategory.CountryCode,
+                                            new[] { cachedTournament.Id });
+            return new SportData(cachedSport.Id,
+                                 cachedSport.Name.Where(kvp => cultures.Contains(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                                 new[] { category });
         }
 
         /// <summary>
@@ -312,11 +310,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                                 continue;
                             }
 
-                            categories.Add(new CategoryData(
-                                cachedCategory.Id,
-                                cachedCategory.Name.Where(t => cultures.Contains(t.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-                                cachedCategory.CountryCode,
-                                cachedCategory.TournamentIds ?? new List<Urn>()));
+                            categories.Add(new CategoryData(cachedCategory.Id,
+                                                            cachedCategory.Name.Where(t => cultures.Contains(t.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                                                            cachedCategory.CountryCode,
+                                                            cachedCategory.TournamentIds ?? new List<Urn>()));
                         }
                     }
                 }
@@ -325,10 +322,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                     ExecutionLog.LogWarning(e, "An error occurred while retrieving sport from cache. id={SportId} and lang=[{Langs}]", id, string.Join(",", cultures));
                 }
 
-                return new SportData(
-                    cachedSport.Id,
-                    cachedSport.Name.Where(t => cultures.Contains(t.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-                    categories);
+                return new SportData(cachedSport.Id,
+                                     cachedSport.Name.Where(t => cultures.Contains(t.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                                     categories);
             }
         }
 
@@ -398,7 +394,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                                                         var sportFromCacheAsync = GetSportFromCacheAsync(sportId, cultures);
                                                         sportFromCacheAsync.ConfigureAwait(false);
                                                         return sportFromCacheAsync;
-                                                    }).ToList();
+                                                    })
+                                       .ToList();
                     return await Task.WhenAll(sports).ConfigureAwait(false);
                 }
 
@@ -408,7 +405,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                                                                  var sportFromCacheAsync = GetSportFromCacheAsync(sportId, cultures);
                                                                  sportFromCacheAsync.ConfigureAwait(false);
                                                                  return sportFromCacheAsync;
-                                                             }).ToList());
+                                                             })
+                                                .ToList());
             }
             catch (Exception ex)
             {
@@ -500,8 +498,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
 
             return Categories.TryGetValue(id, out categoryCacheItem)
-                ? new CategoryData(id, categoryCacheItem.Name.Where(t => cultures.Contains(t.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value), categoryCacheItem.CountryCode, categoryCacheItem.TournamentIds)
-                : null;
+                       ? new CategoryData(id, categoryCacheItem.Name.Where(t => cultures.Contains(t.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value), categoryCacheItem.CountryCode, categoryCacheItem.TournamentIds)
+                       : null;
         }
 
         /// <summary>
@@ -852,24 +850,24 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         public override void SetDtoTypes()
         {
             RegisteredDtoTypes = new List<DtoType>
-                                 {
-                                     DtoType.Category,
-                                     DtoType.Fixture,
-                                     DtoType.MatchSummary,
-                                     DtoType.MatchTimeline,
-                                     DtoType.RaceSummary,
-                                     DtoType.Sport,
-                                     DtoType.SportCategories,
-                                     DtoType.SportList,
-                                     DtoType.SportEventSummary,
-                                     DtoType.SportEventSummaryList,
-                                     DtoType.Tournament,
-                                     DtoType.TournamentInfo,
-                                     DtoType.TournamentSeasons,
-                                     DtoType.Lottery,
-                                     DtoType.LotteryDraw,
-                                     DtoType.LotteryList
-                                 };
+                                     {
+                                         DtoType.Category,
+                                         DtoType.Fixture,
+                                         DtoType.MatchSummary,
+                                         DtoType.MatchTimeline,
+                                         DtoType.RaceSummary,
+                                         DtoType.Sport,
+                                         DtoType.SportCategories,
+                                         DtoType.SportList,
+                                         DtoType.SportEventSummary,
+                                         DtoType.SportEventSummaryList,
+                                         DtoType.Tournament,
+                                         DtoType.TournamentInfo,
+                                         DtoType.TournamentSeasons,
+                                         DtoType.Lottery,
+                                         DtoType.LotteryDraw,
+                                         DtoType.LotteryList
+                                     };
         }
 
         /// <summary>
@@ -921,7 +919,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
                     if (Sports.ContainsKey(id) && Sports.TryGetValue(id, out var ci))
                     {
                         ci.Merge(new SportCacheItem(item, _dataRouterManager, culture), culture);
-
                     }
                     else
                     {
@@ -1169,10 +1166,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             lock (_mergeLock)
             {
                 return new Dictionary<string, int>
-                {
-                    {typeof(SportCacheItem).Name, Sports.Count},
-                    {typeof(CategoryCacheItem).Name, Categories.Count}
-                };
+                           {
+                               { typeof(SportCacheItem).Name, Sports.Count },
+                               { typeof(CategoryCacheItem).Name, Categories.Count }
+                           };
             }
         }
 

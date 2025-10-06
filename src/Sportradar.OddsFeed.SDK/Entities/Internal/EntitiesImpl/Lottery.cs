@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -47,11 +47,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="cultures">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying languages the current instance supports</param>
         /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the initialized instance will handle potential exceptions</param>
         public Lottery(Urn id,
-                        Urn sportId,
-                        ISportEventCache sportEventCache,
-                        ISportDataCache sportDataCache,
-                        IReadOnlyCollection<CultureInfo> cultures,
-                        ExceptionHandlingStrategy exceptionStrategy)
+                       Urn sportId,
+                       ISportEventCache sportEventCache,
+                       ISportDataCache sportDataCache,
+                       IReadOnlyCollection<CultureInfo> cultures,
+                       ExceptionHandlingStrategy exceptionStrategy)
             : base(id, sportId, ExecutionLogPrivate, sportEventCache, cultures, exceptionStrategy)
         {
             Guard.Argument(sportDataCache, nameof(sportDataCache)).NotNull();
@@ -72,8 +72,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var sportId = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await lotteryCacheItem.GetSportIdAsync().ConfigureAwait(false)
-                : await new Func<Task<Urn>>(lotteryCacheItem.GetSportIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportId")).ConfigureAwait(false);
+                              ? await lotteryCacheItem.GetSportIdAsync().ConfigureAwait(false)
+                              : await new Func<Task<Urn>>(lotteryCacheItem.GetSportIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportId")).ConfigureAwait(false);
 
             if (sportId == null)
             {
@@ -81,12 +81,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var sportData = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false)
-                : await new Func<Urn, IReadOnlyCollection<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
+                                ? await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false)
+                                : await new Func<Urn, IReadOnlyCollection<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
 
             return sportData == null
-                ? null
-                : new SportSummary(sportData.Id, sportData.Names);
+                       ? null
+                       : new SportSummary(sportData.Id, sportData.Names);
         }
 
         /// <summary>
@@ -103,20 +103,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
 
             var categoryId = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await lotteryCacheItem.GetCategoryIdAsync().ConfigureAwait(false)
-                : await new Func<Task<Urn>>(lotteryCacheItem.GetCategoryIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("CategoryId")).ConfigureAwait(false);
+                                 ? await lotteryCacheItem.GetCategoryIdAsync().ConfigureAwait(false)
+                                 : await new Func<Task<Urn>>(lotteryCacheItem.GetCategoryIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("CategoryId")).ConfigureAwait(false);
             if (categoryId == null)
             {
                 ExecutionLog.LogDebug("Missing data. No categoryId for lottery cache item with id={SportEventId}", Id);
                 return null;
             }
             var categoryData = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false)
-                : await new Func<Urn, IReadOnlyCollection<CultureInfo>, Task<CategoryData>>(_sportDataCache.GetCategoryAsync).SafeInvokeAsync(categoryId, Cultures, ExecutionLog, GetFetchErrorMessage("CategoryData")).ConfigureAwait(false);
+                                   ? await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false)
+                                   : await new Func<Urn, IReadOnlyCollection<CultureInfo>, Task<CategoryData>>(_sportDataCache.GetCategoryAsync).SafeInvokeAsync(categoryId, Cultures, ExecutionLog, GetFetchErrorMessage("CategoryData"))
+                                                                                                                                                .ConfigureAwait(false);
 
             return categoryData == null
-                ? null
-                : new CategorySummary(categoryData.Id, categoryData.Names, categoryData.CountryCode);
+                       ? null
+                       : new CategorySummary(categoryData.Id, categoryData.Names, categoryData.CountryCode);
         }
 
         /// <summary>
@@ -141,12 +142,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await lotteryCacheItem.GetBonusInfoAsync().ConfigureAwait(false)
-                : await new Func<Task<BonusInfoCacheItem>>(lotteryCacheItem.GetBonusInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("BonusInfo")).ConfigureAwait(false);
+                           ? await lotteryCacheItem.GetBonusInfoAsync().ConfigureAwait(false)
+                           : await new Func<Task<BonusInfoCacheItem>>(lotteryCacheItem.GetBonusInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("BonusInfo")).ConfigureAwait(false);
 
             return item == null
-                ? null
-                : new BonusInfo(item);
+                       ? null
+                       : new BonusInfo(item);
         }
 
         /// <summary>
@@ -162,12 +163,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await lotteryCacheItem.GetDrawInfoAsync().ConfigureAwait(false)
-                : await new Func<Task<DrawInfoCacheItem>>(lotteryCacheItem.GetDrawInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("DrawInfo")).ConfigureAwait(false);
+                           ? await lotteryCacheItem.GetDrawInfoAsync().ConfigureAwait(false)
+                           : await new Func<Task<DrawInfoCacheItem>>(lotteryCacheItem.GetDrawInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("DrawInfo")).ConfigureAwait(false);
 
             return item == null
-                ? null
-                : new DrawInfo(item);
+                       ? null
+                       : new DrawInfo(item);
         }
 
         /// <summary>
@@ -183,8 +184,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await lotteryCacheItem.GetScheduledDrawsAsync().ConfigureAwait(false)
-                : await new Func<Task<IEnumerable<Urn>>>(lotteryCacheItem.GetScheduledDrawsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ScheduledDraws")).ConfigureAwait(false);
+                           ? await lotteryCacheItem.GetScheduledDrawsAsync().ConfigureAwait(false)
+                           : await new Func<Task<IEnumerable<Urn>>>(lotteryCacheItem.GetScheduledDrawsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ScheduledDraws")).ConfigureAwait(false);
 
             return item;
         }
@@ -202,8 +203,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await lotteryCacheItem.GetScheduledDrawsAsync().ConfigureAwait(false)
-                : await new Func<Task<IEnumerable<Urn>>>(lotteryCacheItem.GetScheduledDrawsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ScheduledDraws")).ConfigureAwait(false);
+                           ? await lotteryCacheItem.GetScheduledDrawsAsync().ConfigureAwait(false)
+                           : await new Func<Task<IEnumerable<Urn>>>(lotteryCacheItem.GetScheduledDrawsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("ScheduledDraws")).ConfigureAwait(false);
 
             return item.Select(selector: s => new Draw(s, SportId, SportEventCache, Cultures.ToList(), ExceptionStrategy));
         }

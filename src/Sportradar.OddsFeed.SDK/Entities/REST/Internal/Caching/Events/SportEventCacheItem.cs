@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -110,10 +110,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public SportEventCacheItem(Urn id,
-                            IDataRouterManager dataRouterManager,
-                            ISemaphorePool semaphorePool,
-                            CultureInfo defaultCulture,
-                            ICacheStore<string> fixtureTimestampCacheStore)
+                                   IDataRouterManager dataRouterManager,
+                                   ISemaphorePool semaphorePool,
+                                   CultureInfo defaultCulture,
+                                   ICacheStore<string> fixtureTimestampCacheStore)
         {
             Guard.Argument(id, nameof(id)).NotNull();
             Guard.Argument(dataRouterManager, nameof(dataRouterManager)).NotNull();
@@ -138,11 +138,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public SportEventCacheItem(SportEventSummaryDto eventSummary,
-                            IDataRouterManager dataRouterManager,
-                            ISemaphorePool semaphorePool,
-                            CultureInfo currentCulture,
-                            CultureInfo defaultCulture,
-                            ICacheStore<string> fixtureTimestampCacheStore)
+                                   IDataRouterManager dataRouterManager,
+                                   ISemaphorePool semaphorePool,
+                                   CultureInfo currentCulture,
+                                   CultureInfo defaultCulture,
+                                   ICacheStore<string> fixtureTimestampCacheStore)
             : this(eventSummary.Id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
             Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
@@ -160,10 +160,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public SportEventCacheItem(ExportableSportEvent exportable,
-            IDataRouterManager dataRouterManager,
-            ISemaphorePool semaphorePool,
-            CultureInfo defaultCulture,
-            ICacheStore<string> fixtureTimestampCacheStore)
+                                   IDataRouterManager dataRouterManager,
+                                   ISemaphorePool semaphorePool,
+                                   CultureInfo defaultCulture,
+                                   ICacheStore<string> fixtureTimestampCacheStore)
             : this(Urn.Parse(exportable.Id), dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
             Names = new Dictionary<CultureInfo, string>(exportable.Names);
@@ -338,8 +338,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
 
                     // make sure there is still some data missing and was not fetched while waiting to acquire the lock
                     missingCultures = forceFetch
-                        ? cultureInfos.ToList()
-                        : LanguageHelper.GetMissingCultures(cultureInfos, LoadedSummaries);
+                                          ? cultureInfos.ToList()
+                                          : LanguageHelper.GetMissingCultures(cultureInfos, LoadedSummaries);
                     if (!missingCultures.Any())
                     {
                         return;
@@ -350,17 +350,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                     if (Id.TypeGroup == ResourceTypeGroup.Draw)
                     {
                         fetchTasks = missingCultures.ToDictionary(missingCulture => missingCulture,
-                            missingCulture => DataRouterManager.GetDrawSummaryAsync(Id, missingCulture, this));
+                                                                  missingCulture => DataRouterManager.GetDrawSummaryAsync(Id, missingCulture, this));
                     }
                     else if (Id.TypeGroup == ResourceTypeGroup.Lottery)
                     {
                         fetchTasks = missingCultures.ToDictionary(missingCulture => missingCulture,
-                            missingCulture => DataRouterManager.GetLotteryScheduleAsync(Id, missingCulture, this));
+                                                                  missingCulture => DataRouterManager.GetLotteryScheduleAsync(Id, missingCulture, this));
                     }
                     else
                     {
                         fetchTasks = missingCultures.ToDictionary(missingCulture => missingCulture,
-                            missingCulture => DataRouterManager.GetSportEventSummaryAsync(Id, missingCulture, this, requestOptions));
+                                                                  missingCulture => DataRouterManager.GetSportEventSummaryAsync(Id, missingCulture, this, requestOptions));
                     }
 
                     await Task.WhenAll(fetchTasks.Values).ConfigureAwait(false);
@@ -460,16 +460,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
                     if (Id.TypeGroup == ResourceTypeGroup.Draw)
                     {
                         fetchTasks = missingCultures.ToDictionary(missingCulture => missingCulture,
-                            missingCulture => DataRouterManager.GetDrawFixtureAsync(Id, missingCulture, this));
+                                                                  missingCulture => DataRouterManager.GetDrawFixtureAsync(Id, missingCulture, this));
                     }
                     else
                     {
-                        fetchTasks = missingCultures.ToDictionary(missingCulture => missingCulture, missingCulture =>
-                            DataRouterManager.GetSportEventFixtureAsync(
-                                Id,
-                                missingCulture,
-                                !FixtureTimestampCacheStore.GetKeys().Contains(Id.ToString()),
-                                this));
+                        fetchTasks = missingCultures.ToDictionary(missingCulture => missingCulture,
+                                                                  missingCulture =>
+                                                                      DataRouterManager.GetSportEventFixtureAsync(Id,
+                                                                                                                  missingCulture,
+                                                                                                                  !FixtureTimestampCacheStore.GetKeys().Contains(Id.ToString()),
+                                                                                                                  this));
                     }
 
                     await Task.WhenAll(fetchTasks.Values).ConfigureAwait(false);

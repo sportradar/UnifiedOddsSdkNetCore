@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Globalization;
@@ -124,10 +124,10 @@ public class EntityDispatcherTests
         var msgIsDispatched = false;
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
         dispatcher.OnOddsChange += (_, _) =>
-        {
-            msgIsDispatched = true;
-            throw new InvalidOperationException();
-        };
+                                   {
+                                       msgIsDispatched = true;
+                                       throw new InvalidOperationException();
+                                   };
         dispatcher.Dispatch(new odds_change(), new byte[1]);
 
         Assert.True(msgIsDispatched);
@@ -164,10 +164,10 @@ public class EntityDispatcherTests
         var msgIsDispatched = false;
         var dispatcher = GetDefaultSpecificEntityDispatcher<ISportEvent>();
         dispatcher.OnClosed += (_, _) =>
-        {
-            msgIsDispatched = true;
-            throw new InvalidOperationException();
-        };
+                               {
+                                   msgIsDispatched = true;
+                                   throw new InvalidOperationException();
+                               };
 
         dispatcher.Open();
         Assert.Throws<InvalidOperationException>(() => dispatcher.Close());
@@ -421,10 +421,10 @@ public class EntityDispatcherTests
         var msgIsDispatched = false;
         var dispatcher = new StubEntityDispatcher();
         dispatcher.OnClosed += (_, _) =>
-        {
-            msgIsDispatched = true;
-            throw new InvalidOperationException();
-        };
+                               {
+                                   msgIsDispatched = true;
+                                   throw new InvalidOperationException();
+                               };
 
         dispatcher.CallCloseEvent(new FeedCloseEventArgs("any"), "OnClose", 1);
 

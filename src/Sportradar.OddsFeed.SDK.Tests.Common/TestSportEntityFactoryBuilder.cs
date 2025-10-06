@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -77,9 +77,9 @@ public class TestSportEntityFactoryBuilder
         var selectedDataRouterManager = useCachedDataRouterManager ? (IDataRouterManager)DataRouterManagerCached : DataRouterManager;
 
         var sportEventCacheItemFactory = new SportEventCacheItemFactory(selectedDataRouterManager,
-            new SemaphorePool(5, ThrowingStrategy),
-            sdkConfig,
-            fixtureTimestampCacheStore);
+                                                                        new SemaphorePool(5, ThrowingStrategy),
+                                                                        sdkConfig,
+                                                                        fixtureTimestampCacheStore);
 
         SportEventCache = new SportEventCache(SportEventMemoryCache, selectedDataRouterManager, sportEventCacheItemFactory, timer, Cultures, CacheManager, LoggerFactory);
         ProfileCache = new ProfileCache(ProfileMemoryCache, selectedDataRouterManager, CacheManager, SportEventCache, LoggerFactory);

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -70,8 +70,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 if (_names.Any())
                 {
                     return _names.TryGetValue(culture, out var name2)
-                        ? name2
-                        : null;
+                               ? name2
+                               : null;
                 }
                 try
                 {

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -139,10 +139,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
         /// <param name="producerManager">The <see cref="IProducerManager"/> with all available <see cref="IProducer"/></param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> to construct <see cref="IFeedSystemSession"/> for processing alive messages</param>
         public FeedRecoveryManager(IProducerRecoveryManagerFactory producerRecoveryManagerFactory,
-            IUofConfiguration config,
-            ISdkTimer timer,
-            IProducerManager producerManager,
-            IServiceProvider serviceProvider)
+                                   IUofConfiguration config,
+                                   ISdkTimer timer,
+                                   IProducerManager producerManager,
+                                   IServiceProvider serviceProvider)
         {
             Guard.Argument(producerRecoveryManagerFactory, nameof(producerRecoveryManagerFactory)).NotNull();
             Guard.Argument(config, nameof(config)).NotNull();
@@ -157,8 +157,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Recovery
             var systemScopeProvider = serviceProvider.CreateScope().ServiceProvider;
 
             _systemSession = new FeedSystemSession(systemScopeProvider.GetRequiredService<IMessageReceiver>(),
-                systemScopeProvider.GetRequiredService<IFeedMessageValidator>(),
-                systemScopeProvider.GetRequiredService<IMessageDataExtractor>());
+                                                   systemScopeProvider.GetRequiredService<IFeedMessageValidator>(),
+                                                   systemScopeProvider.GetRequiredService<IMessageDataExtractor>());
         }
 
         /// <summary>

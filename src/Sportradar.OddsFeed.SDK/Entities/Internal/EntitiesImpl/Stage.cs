@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -32,14 +32,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         private readonly ISportEntityFactory _sportEntityFactory;
 
         public Stage(Urn id,
-                    Urn sportId,
-                    ISportEntityFactory sportEntityFactory,
-                    ISportEventCache sportEventCache,
-                    ISportDataCache sportDataCache,
-                    ISportEventStatusCache sportEventStatusCache,
-                    ILocalizedNamedValueCache matchStatusesCache,
-                    IReadOnlyCollection<CultureInfo> cultures,
-                    ExceptionHandlingStrategy exceptionStrategy)
+                     Urn sportId,
+                     ISportEntityFactory sportEntityFactory,
+                     ISportEventCache sportEventCache,
+                     ISportDataCache sportDataCache,
+                     ISportEventStatusCache sportEventStatusCache,
+                     ILocalizedNamedValueCache matchStatusesCache,
+                     IReadOnlyCollection<CultureInfo> cultures,
+                     ExceptionHandlingStrategy exceptionStrategy)
             : base(ExecutionLogPrivate, id, sportId, sportEntityFactory, sportEventStatusCache, sportEventCache, cultures, exceptionStrategy, matchStatusesCache)
         {
             Guard.Argument(sportDataCache, nameof(sportDataCache)).NotNull();
@@ -83,8 +83,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
             }
             var categoryCacheItem = await _sportDataCache.GetCategoryAsync(categoryId, Cultures).ConfigureAwait(false);
             return categoryCacheItem == null
-                ? null
-                : new CategorySummary(categoryCacheItem.Id, categoryCacheItem.Names, categoryCacheItem.CountryCode);
+                       ? null
+                       : new CategorySummary(categoryCacheItem.Id, categoryCacheItem.Names, categoryCacheItem.CountryCode);
         }
 
         public async Task<IStage> GetParentStageAsync()
@@ -120,9 +120,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await stageCacheItem.GetStagesAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(stageCacheItem.GetStagesAsync)
-                    .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ChildStages")).ConfigureAwait(false);
+                                 ? await stageCacheItem.GetStagesAsync(Cultures).ConfigureAwait(false)
+                                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(stageCacheItem.GetStagesAsync)
+                                        .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("ChildStages"))
+                                        .ConfigureAwait(false);
 
             return cacheItems?.Select(c => new Stage(c, GetSportAsync().GetAwaiter().GetResult().Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, MatchStatusCache, Cultures.ToList(), ExceptionStrategy));
         }
@@ -151,9 +152,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var cacheItems = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await stageCacheItem.GetAdditionalParentStagesAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(stageCacheItem.GetAdditionalParentStagesAsync)
-                    .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("AdditionalParentStages")).ConfigureAwait(false);
+                                 ? await stageCacheItem.GetAdditionalParentStagesAsync(Cultures).ConfigureAwait(false)
+                                 : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(stageCacheItem.GetAdditionalParentStagesAsync)
+                                        .SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("AdditionalParentStages"))
+                                        .ConfigureAwait(false);
 
             return cacheItems?.Select(c => new Stage(c, GetSportAsync().GetAwaiter().GetResult().Id, _sportEntityFactory, SportEventCache, _sportDataCache, SportEventStatusCache, MatchStatusCache, Cultures.ToList(), ExceptionStrategy));
         }

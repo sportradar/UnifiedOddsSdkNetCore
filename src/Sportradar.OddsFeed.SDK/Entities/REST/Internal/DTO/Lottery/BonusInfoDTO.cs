@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Dawn;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
@@ -34,8 +34,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
             Guard.Argument(info, nameof(info)).NotNull();
 
             BonusBalls = info.bonus_ballsSpecified
-                ? info.bonus_balls
-                : (int?)null;
+                             ? info.bonus_balls
+                             : (int?)null;
 
             BonusDrumType = RestMapperHelper.MapBonusDrumType(info.bonus_drum, info.bonus_drumSpecified);
 

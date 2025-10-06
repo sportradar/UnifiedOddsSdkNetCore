@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Globalization;
@@ -92,19 +92,20 @@ namespace Sportradar.OddsFeed.SDK.Api.Extended
 
                     var requestId = e.FeedMessage?.RequestId == null ? null : $" ({e.FeedMessage.RequestId.ToString()})";
                     Log.LogInformation("Dispatching raw feed message [{MessageInterest}]: {FeedMessageType} for event {EventId}{RequestId} took {Elapsed} ms",
-                        e.MessageInterest,
-                        e.FeedMessage?.GetType().Name,
-                        e.FeedMessage?.EventId,
-                        requestId,
-                        telemetryTracker.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+                                       e.MessageInterest,
+                                       e.FeedMessage?.GetType().Name,
+                                       e.FeedMessage?.EventId,
+                                       requestId,
+                                       telemetryTracker.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
                 }
                 catch (Exception ex)
                 {
-                    Log.LogError(ex, "Error dispatching raw feed message [{MessageInterest}] for {RoutingKey} and {EventId}. Took {Elapsed} ms",
-                        e.MessageInterest,
-                        e.RoutingKey,
-                        e.FeedMessage?.EventId,
-                        telemetryTracker.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+                    Log.LogError(ex,
+                                 "Error dispatching raw feed message [{MessageInterest}] for {RoutingKey} and {EventId}. Took {Elapsed} ms",
+                                 e.MessageInterest,
+                                 e.RoutingKey,
+                                 e.FeedMessage?.EventId,
+                                 telemetryTracker.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }

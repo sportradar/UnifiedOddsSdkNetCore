@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -51,17 +51,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
             : base(new sportEvent
             {
                 id = item.draw_fixture == null
-                         ? "wns:draw:1"
-                         : item.draw_fixture.id,
+                                    ? "wns:draw:1"
+                                    : item.draw_fixture.id,
                 name = string.Empty,
                 scheduledSpecified = item.draw_fixture?.draw_dateSpecified ?? false,
                 scheduled = item.draw_fixture?.draw_date ?? DateTime.MinValue,
                 tournament = item.draw_fixture?.lottery == null
-                    ? null
-                    : new tournament
-                    {
-                        sport = item.draw_fixture.lottery.sport
-                    }
+                                            ? null
+                                            : new tournament
+                                            {
+                                                sport = item.draw_fixture.lottery.sport
+                                            }
             })
         {
             Guard.Argument(item, nameof(item)).NotNull();
@@ -77,8 +77,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
                 Status = RestMapperHelper.MapDrawStatus(item.draw_fixture.status, item.draw_fixture.statusSpecified);
 
                 DisplayId = item.draw_fixture.display_idSpecified
-                                    ? item.draw_fixture.display_id
-                                    : (int?)null;
+                                ? item.draw_fixture.display_id
+                                : (int?)null;
             }
 
             ResultsChronological = false;
@@ -105,11 +105,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
                 scheduledSpecified = item?.draw_fixture?.draw_dateSpecified ?? false,
                 scheduled = item?.draw_fixture?.draw_date ?? DateTime.MinValue,
                 tournament = item?.draw_fixture?.lottery == null
-                    ? null
-                    : new tournament
-                    {
-                        sport = item.draw_fixture?.lottery.sport
-                    }
+                                            ? null
+                                            : new tournament
+                                            {
+                                                sport = item.draw_fixture?.lottery.sport
+                                            }
             })
         {
             if (item == null || item.draw_fixture == null)
@@ -149,8 +149,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
             Status = RestMapperHelper.MapDrawStatus(item.status, item.statusSpecified);
 
             DisplayId = item.display_idSpecified
-                        ? item.display_id
-                        : (int?)null;
+                            ? item.display_id
+                            : (int?)null;
         }
     }
 }

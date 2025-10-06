@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -77,8 +77,8 @@ public class TestDataFetcher : IDataRestful
     private string GetPathWithReplacements(string path)
     {
         return UriReplacements == null || !UriReplacements.Any()
-            ? path
-            : UriReplacements.Aggregate(path, (current, replacement) => current.Replace(replacement.Item1, replacement.Item2));
+                   ? path
+                   : UriReplacements.Aggregate(path, (current, replacement) => current.Replace(replacement.Item1, replacement.Item2));
     }
 
     private void FindUriException(string path)

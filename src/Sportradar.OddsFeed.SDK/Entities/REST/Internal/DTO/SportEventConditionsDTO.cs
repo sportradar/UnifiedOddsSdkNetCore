@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +33,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Attendance = conditions.attendance;
             EventMode = conditions.match_mode;
             Referee = conditions.referee == null
-                ? null
-                : new RefereeDto(conditions.referee);
+                          ? null
+                          : new RefereeDto(conditions.referee);
             WeatherInfo = conditions.weather_info == null
-                ? null
-                : new WeatherInfoDto(conditions.weather_info);
+                              ? null
+                              : new WeatherInfoDto(conditions.weather_info);
             Pitchers = conditions.pitchers == null || !conditions.pitchers.Any()
-                ? null
-                : conditions.pitchers.Select(s => new PitcherDto(s));
+                           ? null
+                           : conditions.pitchers.Select(s => new PitcherDto(s));
         }
     }
 }

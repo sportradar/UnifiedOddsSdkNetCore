@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Dawn;
@@ -85,21 +85,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
 
             Type = record.type;
             DateOfBirth = string.IsNullOrEmpty(record.date_of_birth)
-                ? null
-                : (DateTime?)DateTime.ParseExact(record.date_of_birth, "yyyy-MM-dd", null);
+                              ? null
+                              : (DateTime?)DateTime.ParseExact(record.date_of_birth, "yyyy-MM-dd", null);
             Nationality = record.nationality;
             Height = record.heightSpecified
-                ? (int?)record.height
-                : null;
+                         ? (int?)record.height
+                         : null;
             Weight = record.weightSpecified
-                ? (int?)record.weight
-                : null;
+                         ? (int?)record.weight
+                         : null;
             CountryCode = record.country_code;
             FullName = record.full_name;
             Nickname = record.nickname;
             JerseyNumber = record.jersey_numberSpecified
-                ? (int?)record.jersey_number
-                : null;
+                               ? (int?)record.jersey_number
+                               : null;
             Gender = record.gender;
             GeneratedAt = generatedAt;
         }

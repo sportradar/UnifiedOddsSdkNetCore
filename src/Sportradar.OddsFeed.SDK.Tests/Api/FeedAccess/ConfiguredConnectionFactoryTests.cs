@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -11,6 +11,7 @@ using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
+
 public class ConfiguredConnectionFactoryTests
 {
     [Fact]

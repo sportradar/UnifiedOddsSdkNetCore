@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Dawn;
@@ -34,11 +34,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         {
             Guard.Argument(record, nameof(record)).NotNull();
             Hand = record.hand.Equals("l", StringComparison.InvariantCultureIgnoreCase)
-                ? PlayerHand.Left
-                : PlayerHand.Right;
+                       ? PlayerHand.Left
+                       : PlayerHand.Right;
             Competitor = record.competitor.Equals("home", StringComparison.InvariantCultureIgnoreCase)
-                ? HomeAway.Home
-                : HomeAway.Away;
+                             ? HomeAway.Home
+                             : HomeAway.Away;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -60,8 +60,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     }
 
                     return ex.ErrorCode >= 11001 && ex.ErrorCode <= 11004
-                        ? ConnectionValidationResult.NoInternetConnection
-                        : ConnectionValidationResult.Unknown;
+                               ? ConnectionValidationResult.NoInternetConnection
+                               : ConnectionValidationResult.Unknown;
                 }
 
                 return ConnectionValidationResult.Success;

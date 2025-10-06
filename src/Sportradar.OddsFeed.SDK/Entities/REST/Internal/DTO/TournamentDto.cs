@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Dawn;
@@ -52,19 +52,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(tournament, nameof(tournament)).NotNull();
 
             Scheduled = tournament.scheduledSpecified
-                ? (DateTime?)tournament.scheduled
-                : null;
+                            ? (DateTime?)tournament.scheduled
+                            : null;
 
             ScheduledEnd = tournament.scheduled_endSpecified
-                ? (DateTime?)tournament.scheduled_end
-                : null;
+                               ? (DateTime?)tournament.scheduled_end
+                               : null;
 
             Sport = new SportEntityDto(tournament.sport.id, tournament.sport.name);
 
             //TODO: check for 'vf': is it still required?
             Category = tournament.category == null && tournament.id.StartsWith("vf", StringComparison.InvariantCultureIgnoreCase)
-                ? CreateFakeCategory()
-                : new CategorySummaryDto(tournament.category?.id, tournament.category?.name, tournament.category?.country_code);
+                           ? CreateFakeCategory()
+                           : new CategorySummaryDto(tournament.category?.id, tournament.category?.name, tournament.category?.country_code);
 
             CurrentSeason = null;
             SeasonCoverage = null;
@@ -80,26 +80,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(tournament, nameof(tournament)).NotNull();
 
             Scheduled = tournament.scheduledSpecified
-                ? (DateTime?)tournament.scheduled
-                : null;
+                            ? (DateTime?)tournament.scheduled
+                            : null;
 
             ScheduledEnd = tournament.scheduled_endSpecified
-                ? (DateTime?)tournament.scheduled_end
-                : null;
+                               ? (DateTime?)tournament.scheduled_end
+                               : null;
 
             Sport = new SportEntityDto(tournament.sport.id, tournament.sport.name);
 
             Category = tournament.category == null && tournament.id.StartsWith("vf", StringComparison.InvariantCultureIgnoreCase)
-                ? CreateFakeCategory()
-                : new CategorySummaryDto(tournament.category?.id, tournament.category?.name, tournament.category?.country_code);
+                           ? CreateFakeCategory()
+                           : new CategorySummaryDto(tournament.category?.id, tournament.category?.name, tournament.category?.country_code);
 
             CurrentSeason = tournament.current_season == null
-                ? null
-                : new SeasonDto(tournament.current_season);
+                                ? null
+                                : new SeasonDto(tournament.current_season);
 
             SeasonCoverage = tournament.season_coverage_info == null
-                ? null
-                : new SeasonCoverageDto(tournament.season_coverage_info);
+                                 ? null
+                                 : new SeasonCoverageDto(tournament.season_coverage_info);
         }
 
         private CategorySummaryDto CreateFakeCategory()

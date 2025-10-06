@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -86,8 +86,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var sportId = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetSportIdAsync().ConfigureAwait(false)
-                : await new Func<Task<Urn>>(seasonCacheItem.GetSportIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportId")).ConfigureAwait(false);
+                              ? await seasonCacheItem.GetSportIdAsync().ConfigureAwait(false)
+                              : await new Func<Task<Urn>>(seasonCacheItem.GetSportIdAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportId")).ConfigureAwait(false);
 
             if (sportId == null)
             {
@@ -96,12 +96,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             }
 
             var sportData = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false)
-                : await new Func<Urn, IReadOnlyCollection<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
+                                ? await _sportDataCache.GetSportAsync(sportId, Cultures).ConfigureAwait(false)
+                                : await new Func<Urn, IReadOnlyCollection<CultureInfo>, Task<SportData>>(_sportDataCache.GetSportAsync).SafeInvokeAsync(sportId, Cultures, ExecutionLog, GetFetchErrorMessage("SportData")).ConfigureAwait(false);
 
             return sportData == null
-                ? null
-                : new SportSummary(sportData.Id, sportData.Names);
+                       ? null
+                       : new SportSummary(sportData.Id, sportData.Names);
         }
 
         /// <summary>
@@ -118,12 +118,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var tournamentCoverageCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetTournamentCoverageAsync().ConfigureAwait(false)
-                : await new Func<Task<TournamentCoverageCacheItem>>(seasonCacheItem.GetTournamentCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentCoverage")).ConfigureAwait(false);
+                                                  ? await seasonCacheItem.GetTournamentCoverageAsync().ConfigureAwait(false)
+                                                  : await new Func<Task<TournamentCoverageCacheItem>>(seasonCacheItem.GetTournamentCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentCoverage")).ConfigureAwait(false);
 
             return tournamentCoverageCacheItem == null
-                ? null
-                : new TournamentCoverage(tournamentCoverageCacheItem);
+                       ? null
+                       : new TournamentCoverage(tournamentCoverageCacheItem);
         }
 
         /// <summary>
@@ -148,12 +148,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var seasonCoverageCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetSeasonCoverageAsync().ConfigureAwait(false)
-                : await new Func<Task<SeasonCoverageCacheItem>>(seasonCacheItem.GetSeasonCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SeasonCoverage")).ConfigureAwait(false);
+                                              ? await seasonCacheItem.GetSeasonCoverageAsync().ConfigureAwait(false)
+                                              : await new Func<Task<SeasonCoverageCacheItem>>(seasonCacheItem.GetSeasonCoverageAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SeasonCoverage")).ConfigureAwait(false);
 
             return seasonCoverageCacheItem == null
-                ? null
-                : new SeasonCoverage(seasonCoverageCacheItem);
+                       ? null
+                       : new SeasonCoverage(seasonCoverageCacheItem);
         }
 
         /// <summary>
@@ -169,16 +169,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var groupsCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetGroupsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<GroupCacheItem>>>(seasonCacheItem.GetGroupsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Groups")).ConfigureAwait(false);
+                                      ? await seasonCacheItem.GetGroupsAsync(Cultures).ConfigureAwait(false)
+                                      : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<GroupCacheItem>>>(seasonCacheItem.GetGroupsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("Groups")).ConfigureAwait(false);
 
             var competitorsReferences = await seasonCacheItem.GetCompetitorsReferencesAsync().ConfigureAwait(false);
 
             var groupCis = groupsCacheItem as IList<GroupCacheItem>;
 
             return groupCis == null || !groupCis.Any()
-                ? null
-                : new List<IGroup>(groupCis.Select(g => new Group(g, Cultures, _sportEntityFactory, ExceptionStrategy, competitorsReferences)));
+                       ? null
+                       : new List<IGroup>(groupCis.Select(g => new Group(g, Cultures, _sportEntityFactory, ExceptionStrategy, competitorsReferences)));
         }
 
         /// <summary>
@@ -194,12 +194,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var currentRoundCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetCurrentRoundAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<RoundCacheItem>>(seasonCacheItem.GetCurrentRoundAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CurrentRound")).ConfigureAwait(false);
+                                            ? await seasonCacheItem.GetCurrentRoundAsync(Cultures).ConfigureAwait(false)
+                                            : await new Func<IEnumerable<CultureInfo>, Task<RoundCacheItem>>(seasonCacheItem.GetCurrentRoundAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CurrentRound")).ConfigureAwait(false);
 
             return currentRoundCacheItem == null
-                ? null
-                : new Round(currentRoundCacheItem, Cultures);
+                       ? null
+                       : new Round(currentRoundCacheItem, Cultures);
         }
 
         /// <summary>
@@ -214,8 +214,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var year = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetYearAsync().ConfigureAwait(false)
-                : await new Func<Task<string>>(seasonCacheItem.GetYearAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("Year")).ConfigureAwait(false);
+                           ? await seasonCacheItem.GetYearAsync().ConfigureAwait(false)
+                           : await new Func<Task<string>>(seasonCacheItem.GetYearAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("Year")).ConfigureAwait(false);
 
             return year;
         }
@@ -233,8 +233,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var tournamentInfoBasicCacheItem = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetTournamentInfoAsync().ConfigureAwait(false)
-                : await new Func<Task<TournamentInfoBasicCacheItem>>(seasonCacheItem.GetTournamentInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentInfoBasic")).ConfigureAwait(false);
+                                                   ? await seasonCacheItem.GetTournamentInfoAsync().ConfigureAwait(false)
+                                                   : await new Func<Task<TournamentInfoBasicCacheItem>>(seasonCacheItem.GetTournamentInfoAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("TournamentInfoBasic")).ConfigureAwait(false);
 
             if (tournamentInfoBasicCacheItem == null)
             {
@@ -258,8 +258,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             else
             {
                 currentSeasonCacheItem = Id.Equals(tournamentInfoBasicCacheItem.CurrentSeason.Id)
-                    ? seasonCacheItem
-                    : (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(tournamentInfoBasicCacheItem.CurrentSeason.Id);
+                                             ? seasonCacheItem
+                                             : (TournamentInfoCacheItem)SportEventCache.GetEventCacheItem(tournamentInfoBasicCacheItem.CurrentSeason.Id);
             }
 
             // there is no current season - return empty TournamentInfo
@@ -289,8 +289,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await seasonCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(seasonCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+                            ? await seasonCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                            : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(seasonCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
             var competitorsIds = items == null ? new List<Urn>() : items.ToList();
             if (!competitorsIds.Any())

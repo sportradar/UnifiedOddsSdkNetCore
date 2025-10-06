@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -42,8 +42,7 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     private readonly CacheManager _cacheManager;
     private readonly ISportEventCacheItemFactory _sportEventCacheItemFactory;
     private readonly Mock<ISdkTimer> _timerMock = new Mock<ISdkTimer>();
-    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
-    private readonly CultureInfo _culture = CultureInfo.CurrentCulture;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")] private readonly CultureInfo _culture = CultureInfo.CurrentCulture;
     private readonly CultureInfo[] _cultures = { CultureInfo.CurrentCulture };
 
     private readonly Mock<IExecutionPathDataProvider<SportEventSummaryDto>> _sportEventSummaryProviderMock = new();
@@ -58,25 +57,25 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         _cacheManager = testCacheStoreManager.CacheManager;
         IDataRouterManager dataRouterManager = BuildDataRouterManager();
         _sportEventCacheItemFactory = new SportEventCacheItemFactory(dataRouterManager,
-            new SemaphorePool(1, ExceptionHandlingStrategy.Throw),
-            testCacheStoreManager.UofConfig,
-            testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache));
+                                                                     new SemaphorePool(1, ExceptionHandlingStrategy.Throw),
+                                                                     testCacheStoreManager.UofConfig,
+                                                                     testCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache));
 
-        _sportEventCache = new SportEventCache(
-            _sportEventMemoryCache,
-            dataRouterManager,
-            _sportEventCacheItemFactory,
-            _timerMock.Object,
-            _cultures,
-            _cacheManager,
-            loggerFactory);
+        _sportEventCache = new SportEventCache(_sportEventMemoryCache,
+                                               dataRouterManager,
+                                               _sportEventCacheItemFactory,
+                                               _timerMock.Object,
+                                               _cultures,
+                                               _cacheManager,
+                                               loggerFactory);
     }
 
     public class WhenGetEventSportIdAsyncAndNotInCache : SportEventCacheTests
     {
         private readonly Urn _eventId = new Urn("sr", "match", 12345678L);
 
-        public WhenGetEventSportIdAsyncAndNotInCache(ITestOutputHelper outputHelper) : base(outputHelper)
+        public WhenGetEventSportIdAsyncAndNotInCache(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
         }
 
@@ -84,8 +83,8 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         public async Task Then_event_is_retrieved_from_provider_and_added_to_cache()
         {
             _sportEventSummaryProviderMock
-                .Setup(x => x.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(BuildSportEventSummary(_eventId));
+               .Setup(x => x.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
+               .ReturnsAsync(BuildSportEventSummary(_eventId));
 
             var sportId = await _sportEventCache.GetEventSportIdAsync(_eventId);
 
@@ -106,7 +105,8 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     {
         private readonly Urn _eventId = new Urn("sr", "match", 12345678L);
 
-        public WhenGetMatchEventAndNotInCache(ITestOutputHelper outputHelper) : base(outputHelper)
+        public WhenGetMatchEventAndNotInCache(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
         }
 
@@ -114,12 +114,12 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         public async Task Then_event_is_retrieved_from_provider_and_added_to_cache()
         {
             _sportEventSummaryProviderMock
-                .Setup(x => x.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(BuildMatch(_eventId));
+               .Setup(x => x.GetDataAsync(It.IsAny<RequestOptions>(), It.IsAny<string>(), It.IsAny<string>()))
+               .ReturnsAsync(BuildMatch(_eventId));
 
             _fixtureProviderMock
-                .Setup(x => x.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(BuildFixture(GetFixtureId(_eventId.Id)));
+               .Setup(x => x.GetDataAsync(It.IsAny<string>(), It.IsAny<string>()))
+               .ReturnsAsync(BuildFixture(GetFixtureId(_eventId.Id)));
 
             var sportId = await _sportEventCache.GetEventSportIdAsync(_eventId);
             var match = (MatchCacheItem)_sportEventCache.GetEventCacheItem(_eventId);
@@ -145,7 +145,8 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
     {
         private readonly Urn _eventId = new Urn("sr", "match", 12345678L);
 
-        public WhenGetEventSportIdAsyncAndAlreadyInCache(ITestOutputHelper outputHelper) : base(outputHelper)
+        public WhenGetEventSportIdAsyncAndAlreadyInCache(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
         }
 
@@ -221,7 +222,8 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         return new FixtureDto(new fixture
         {
             id = eventId.ToString()
-        }, DateTime.Now);
+        },
+                              DateTime.Now);
     }
 
     private DataRouterManager BuildDataRouterManager()
@@ -231,40 +233,39 @@ public abstract class SportEventCacheTests : AutoMockerUnitTest
         var producerManagerMock = new Mock<IProducerManager>();
         producerManagerMock.Setup(x => x.GetProducer(7)).Returns(producerMock.Object);
 
-        return new DataRouterManager(
-            _cacheManager,
-            producerManagerMock.Object,
-            TestConfiguration.GetConfig(),
-            _sportEventSummaryProviderMock.Object,
-            _fixtureProviderMock.Object,
-            _fixtureProviderMock.Object,
-            new Mock<IDataProvider<EntityList<SportDto>>>().Object,
-            new Mock<IDataProvider<EntityList<SportDto>>>().Object,
-            new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object,
-            new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object,
-            new Mock<IDataProvider<PlayerProfileDto>>().Object,
-            new Mock<IDataProvider<CompetitorProfileDto>>().Object,
-            new Mock<IDataProvider<SimpleTeamProfileDto>>().Object,
-            new Mock<IDataProvider<TournamentSeasonsDto>>().Object,
-            new Mock<IDataProvider<MatchTimelineDto>>().Object,
-            new Mock<IDataProvider<SportCategoriesDto>>().Object,
-            new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>().Object,
-            new Mock<IDataProvider<MarketDescriptionDto>>().Object,
-            new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>().Object,
-            new Mock<IDataProvider<DrawDto>>().Object,
-            new Mock<IDataProvider<DrawDto>>().Object,
-            new Mock<IDataProvider<LotteryDto>>().Object,
-            new Mock<IDataProvider<EntityList<LotteryDto>>>().Object,
-            new Mock<IDataProvider<AvailableSelectionsDto>>().Object,
-            new Mock<ICalculateProbabilityProvider>().Object,
-            new Mock<ICalculateProbabilityFilteredProvider>().Object,
-            new Mock<IDataProvider<EntityList<FixtureChangeDto>>>().Object,
-            new Mock<IDataProvider<EntityList<ResultChangeDto>>>().Object,
-            new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object,
-            new Mock<IDataProvider<EntityList<TournamentInfoDto>>>().Object,
-            new Mock<IDataProvider<TournamentInfoDto>>().Object,
-            new Mock<IDataProvider<TournamentInfoDto>>().Object,
-            new Mock<IDataProvider<PeriodSummaryDto>>().Object,
-            new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object);
+        return new DataRouterManager(_cacheManager,
+                                     producerManagerMock.Object,
+                                     TestConfiguration.GetConfig(),
+                                     _sportEventSummaryProviderMock.Object,
+                                     _fixtureProviderMock.Object,
+                                     _fixtureProviderMock.Object,
+                                     new Mock<IDataProvider<EntityList<SportDto>>>().Object,
+                                     new Mock<IDataProvider<EntityList<SportDto>>>().Object,
+                                     new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object,
+                                     new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object,
+                                     new Mock<IDataProvider<PlayerProfileDto>>().Object,
+                                     new Mock<IDataProvider<CompetitorProfileDto>>().Object,
+                                     new Mock<IDataProvider<SimpleTeamProfileDto>>().Object,
+                                     new Mock<IDataProvider<TournamentSeasonsDto>>().Object,
+                                     new Mock<IDataProvider<MatchTimelineDto>>().Object,
+                                     new Mock<IDataProvider<SportCategoriesDto>>().Object,
+                                     new Mock<IDataProvider<EntityList<MarketDescriptionDto>>>().Object,
+                                     new Mock<IDataProvider<MarketDescriptionDto>>().Object,
+                                     new Mock<IDataProvider<EntityList<VariantDescriptionDto>>>().Object,
+                                     new Mock<IDataProvider<DrawDto>>().Object,
+                                     new Mock<IDataProvider<DrawDto>>().Object,
+                                     new Mock<IDataProvider<LotteryDto>>().Object,
+                                     new Mock<IDataProvider<EntityList<LotteryDto>>>().Object,
+                                     new Mock<IDataProvider<AvailableSelectionsDto>>().Object,
+                                     new Mock<ICalculateProbabilityProvider>().Object,
+                                     new Mock<ICalculateProbabilityFilteredProvider>().Object,
+                                     new Mock<IDataProvider<EntityList<FixtureChangeDto>>>().Object,
+                                     new Mock<IDataProvider<EntityList<ResultChangeDto>>>().Object,
+                                     new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object,
+                                     new Mock<IDataProvider<EntityList<TournamentInfoDto>>>().Object,
+                                     new Mock<IDataProvider<TournamentInfoDto>>().Object,
+                                     new Mock<IDataProvider<TournamentInfoDto>>().Object,
+                                     new Mock<IDataProvider<PeriodSummaryDto>>().Object,
+                                     new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>().Object);
     }
 }

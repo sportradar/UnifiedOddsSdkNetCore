@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Globalization;
@@ -34,11 +34,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <param name="deserializer">A <see cref="IDeserializer{scheduleType}" /> used to deserialize the fetch data</param>
         /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{scheduleType,EntityList}" /> used to construct instances of <see cref="ISingleTypeMapper{ISportEventsSchedule}" /></param>
         public DateScheduleProvider(string name,
-            string liveScheduleUriFormat,
-            string dateScheduleUriFormat,
-            IDataFetcher fetcher,
-            IDeserializer<scheduleEndpoint> deserializer,
-            ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDto>> mapperFactory)
+                                    string liveScheduleUriFormat,
+                                    string dateScheduleUriFormat,
+                                    IDataFetcher fetcher,
+                                    IDeserializer<scheduleEndpoint> deserializer,
+                                    ISingleTypeMapperFactory<scheduleEndpoint, EntityList<SportEventSummaryDto>> mapperFactory)
             : base(name, dateScheduleUriFormat, fetcher, deserializer, mapperFactory)
         {
             Guard.Argument(liveScheduleUriFormat, nameof(liveScheduleUriFormat)).NotNull().NotEmpty();

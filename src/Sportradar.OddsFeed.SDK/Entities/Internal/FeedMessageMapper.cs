@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -139,7 +139,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                     message.end_timeSpecified ? (long?)message.end_time : null,
                                     string.IsNullOrEmpty(message.superceded_by) ? null : Urn.Parse(message.superceded_by),
                                     message.market.Select(m => _marketFactory.GetMarketCancel(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
-                                                                              m, message.ProducerId, message.SportId, culturesList)),
+                                                                                              m,
+                                                                                              message.ProducerId,
+                                                                                              message.SportId,
+                                                                                              culturesList)),
                                     rawMessage);
         }
 
@@ -156,7 +159,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
-            return new RollbackBetCancel<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt,
+            return new RollbackBetCancel<T>(new MessageTimestamp(message.GeneratedAt,
+                                                                 message.SentAt,
+                                                                 message.ReceivedAt,
                                                                  SdkInfo.ToEpochTime(DateTime.Now)),
                                             _producerManager.GetProducer(message.product),
                                             GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
@@ -164,7 +169,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                             message.start_timeSpecified ? (long?)message.start_time : null,
                                             message.end_timeSpecified ? (long?)message.end_time : null,
                                             message.market.Select(m => _marketFactory.GetMarketCancel(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
-                                                                                      m, message.ProducerId, message.SportId, culturesList)),
+                                                                                                      m,
+                                                                                                      message.ProducerId,
+                                                                                                      message.SportId,
+                                                                                                      culturesList)),
                                             rawMessage);
         }
 
@@ -182,13 +190,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             return new BetSettlement<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
-                                 _producerManager.GetProducer(message.product),
-                                 GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
-                                 message.request_idSpecified ? (long?)message.request_id : null,
-                                 message.outcomes.Select(m => _marketFactory.GetMarketWithResults(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
-                                                                                  m, message.ProducerId, message.SportId, culturesList)),
-                                 message.certainty,
-                                 rawMessage);
+                                        _producerManager.GetProducer(message.product),
+                                        GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
+                                        message.request_idSpecified ? (long?)message.request_id : null,
+                                        message.outcomes.Select(m => _marketFactory.GetMarketWithResults(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
+                                                                                                         m,
+                                                                                                         message.ProducerId,
+                                                                                                         message.SportId,
+                                                                                                         culturesList)),
+                                        message.certainty,
+                                        rawMessage);
         }
 
         /// <summary>
@@ -205,11 +216,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var culturesList = cultures as List<CultureInfo> ?? cultures.ToList();
 
             return new RollbackBetSettlement<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
-                _producerManager.GetProducer(message.product),
-                GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
-                message.request_idSpecified ? (long?)message.request_id : null,
-                message.market.Select(m => _marketFactory.GetMarketCancel(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList), m, message.ProducerId, message.SportId, culturesList)),
-                rawMessage);
+                                                _producerManager.GetProducer(message.product),
+                                                GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
+                                                message.request_idSpecified ? (long?)message.request_id : null,
+                                                message.market.Select(m => _marketFactory.GetMarketCancel(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList), m, message.ProducerId, message.SportId, culturesList)),
+                                                rawMessage);
         }
 
         /// <summary>
@@ -230,16 +241,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var markets = message.odds?.market?.Select(m => _marketFactory.GetMarketWithOdds(sportEvent, m, message.ProducerId, message.SportId, culturesList)).ToList();
 
             return new OddsChange<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, message.ReceivedAt, SdkInfo.ToEpochTime(DateTime.Now)),
-                _producerManager.GetProducer(message.product),
-                GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
-                message.request_idSpecified ? (long?)message.request_id : null,
-                MessageMapperHelper.GetEnumValue(message.odds_change_reasonSpecified, message.odds_change_reason, OddsChangeReason.Normal),
-                message.odds?.betstop_reasonSpecified == true ? (int?)message.odds.betstop_reason : null,
-                message.odds?.betting_statusSpecified == true ? (int?)message.odds.betting_status : null,
-                markets,
-                message.odds_generation_properties,
-                _namedValuesProvider,
-                rawMessage);
+                                     _producerManager.GetProducer(message.product),
+                                     GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
+                                     message.request_idSpecified ? (long?)message.request_id : null,
+                                     MessageMapperHelper.GetEnumValue(message.odds_change_reasonSpecified, message.odds_change_reason, OddsChangeReason.Normal),
+                                     message.odds?.betstop_reasonSpecified == true ? (int?)message.odds.betstop_reason : null,
+                                     message.odds?.betting_statusSpecified == true ? (int?)message.odds.betting_status : null,
+                                     markets,
+                                     message.odds_generation_properties,
+                                     _namedValuesProvider,
+                                     rawMessage);
         }
 
         /// <summary>
@@ -259,15 +270,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             var sportId = Urn.Parse("sr:sport:1");
 
             var epochTime = SdkInfo.ToEpochTime(DateTime.Now);
-            return new CashOutProbabilities<T>(
-                new MessageTimestamp(message.GeneratedAt, message.SentAt, epochTime, epochTime),
-                _producerManager.GetProducer(message.product),
-                GetEventForMessage<T>(eventId, sportId, culturesList),
-                message.odds?.betstop_reasonSpecified == true ? (int?)message.odds.betstop_reason : null,
-                message.odds?.betting_statusSpecified == true ? (int?)message.odds.betting_status : null,
-                message.odds?.market?.Select(m => _marketFactory.GetMarketWithProbabilities(GetEventForNameProvider<T>(eventId, sportId, culturesList), m, message.product, sportId, culturesList)).ToList(),
-                _namedValuesProvider,
-                rawMessage);
+            return new CashOutProbabilities<T>(new MessageTimestamp(message.GeneratedAt, message.SentAt, epochTime, epochTime),
+                                               _producerManager.GetProducer(message.product),
+                                               GetEventForMessage<T>(eventId, sportId, culturesList),
+                                               message.odds?.betstop_reasonSpecified == true ? (int?)message.odds.betstop_reason : null,
+                                               message.odds?.betting_statusSpecified == true ? (int?)message.odds.betting_status : null,
+                                               message.odds?.market?.Select(m => _marketFactory.GetMarketWithProbabilities(GetEventForNameProvider<T>(eventId, sportId, culturesList), m, message.product, sportId, culturesList)).ToList(),
+                                               _namedValuesProvider,
+                                               rawMessage);
         }
 
         /// <summary>

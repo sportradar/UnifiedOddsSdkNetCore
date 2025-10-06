@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -100,22 +100,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             TournamentCoverage = null;
 
             Category = sportEvent.tournament.category == null
-                ? null
-                : new CategorySummaryDto(sportEvent.tournament.category);
+                           ? null
+                           : new CategorySummaryDto(sportEvent.tournament.category);
 
             Sport = sportEvent.tournament.sport == null
-                ? null
-                : new SportEntityDto(sportEvent.tournament.sport.id, sportEvent.tournament.sport.name);
+                        ? null
+                        : new SportEntityDto(sportEvent.tournament.sport.id, sportEvent.tournament.sport.name);
 
             Competitors = sportEvent.competitors == null
-                ? null
-                : new ReadOnlyCollection<CompetitorDto>(sportEvent.competitors.Select(c => new CompetitorDto(c)).ToList());
+                              ? null
+                              : new ReadOnlyCollection<CompetitorDto>(sportEvent.competitors.Select(c => new CompetitorDto(c)).ToList());
 
             CurrentSeason = null;
 
             Season = sportEvent.season == null
-                ? null
-                : new CurrentSeasonInfoDto(sportEvent.season);
+                         ? null
+                         : new CurrentSeasonInfoDto(sportEvent.season);
 
             SeasonCoverage = null;
 
@@ -124,14 +124,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Schedule = null;
 
             CurrentRound = sportEvent.tournament_round == null
-                ? null
-                : new RoundDto(sportEvent.tournament_round);
+                               ? null
+                               : new RoundDto(sportEvent.tournament_round);
 
             Year = null;
 
             TournamentInfo = sportEvent.tournament == null
-                ? null
-                : new TournamentInfoDto(sportEvent.tournament);
+                                 ? null
+                                 : new TournamentInfoDto(sportEvent.tournament);
 
             //TODO: missing year
         }
@@ -155,12 +155,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             TournamentCoverage = null;
 
             Category = tournament.category == null
-                ? null
-                : new CategorySummaryDto(tournament.category);
+                           ? null
+                           : new CategorySummaryDto(tournament.category);
 
             Sport = tournament.sport == null
-                ? null
-                : new SportEntityDto(tournament.sport.id, tournament.sport.name);
+                        ? null
+                        : new SportEntityDto(tournament.sport.id, tournament.sport.name);
 
             Competitors = null;
 
@@ -200,48 +200,48 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             })
         {
             TournamentCoverage = tournament.coverage_info == null
-                ? null
-                : new TournamentCoverageDto(tournament.coverage_info);
+                                     ? null
+                                     : new TournamentCoverageDto(tournament.coverage_info);
 
             Category = tournament.tournament.category == null
-                ? null
-                : new CategorySummaryDto(tournament.tournament.category);
+                           ? null
+                           : new CategorySummaryDto(tournament.tournament.category);
 
             Sport = tournament.tournament.sport == null
-                ? null
-                : new SportEntityDto(tournament.tournament.sport.id, tournament.tournament.sport.name);
+                        ? null
+                        : new SportEntityDto(tournament.tournament.sport.id, tournament.tournament.sport.name);
 
             Competitors = tournament.competitors != null
-                ? new ReadOnlyCollection<CompetitorDto>(tournament.competitors.Select(c => new CompetitorDto(c)).ToList())
-                : tournament.tournament?.competitors == null // used for stage events
-                    ? null
-                    : new ReadOnlyCollection<CompetitorDto>(tournament.tournament.competitors.Select(c => new CompetitorDto(c)).ToList());
+                              ? new ReadOnlyCollection<CompetitorDto>(tournament.competitors.Select(c => new CompetitorDto(c)).ToList())
+                              : tournament.tournament?.competitors == null // used for stage events
+                                  ? null
+                                  : new ReadOnlyCollection<CompetitorDto>(tournament.tournament.competitors.Select(c => new CompetitorDto(c)).ToList());
 
             CurrentSeason = tournament.tournament == null || tournament.tournament.current_season == null
-                ? null
-                : new CurrentSeasonInfoDto(tournament.tournament.current_season);
+                                ? null
+                                : new CurrentSeasonInfoDto(tournament.tournament.current_season);
 
             Season = tournament.season == null
-                ? null
-                : new CurrentSeasonInfoDto(tournament.season);
+                         ? null
+                         : new CurrentSeasonInfoDto(tournament.season);
 
             SeasonCoverage = tournament.season_coverage_info == null
-                ? null
-                : new SeasonCoverageDto(tournament.season_coverage_info);
+                                 ? null
+                                 : new SeasonCoverageDto(tournament.season_coverage_info);
 
             Groups = tournament.groups == null
-                ? null
-                : new ReadOnlyCollection<GroupDto>(tournament.groups.Select(g => new GroupDto(g)).ToList());
+                         ? null
+                         : new ReadOnlyCollection<GroupDto>(tournament.groups.Select(g => new GroupDto(g)).ToList());
 
             Schedule = null;
 
             CurrentRound = tournament.round == null
-                ? null
-                : new RoundDto(tournament.round);
+                               ? null
+                               : new RoundDto(tournament.round);
 
             Year = tournament.tournament?.current_season == null
-                ? tournament.season?.year
-                : tournament.tournament.current_season.year;
+                       ? tournament.season?.year
+                       : tournament.tournament.current_season.year;
 
             TournamentInfo = null;
 
@@ -261,16 +261,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
                 {
                     Category = new CategorySummaryDto(tournament.tournament.category.id, tournament.tournament.category.name, tournament.tournament.category.country_code),
                     CurrentSeason = tournament.tournament.current_season == null
-                        ? null
-                        : new CurrentSeasonInfoDto(tournament.tournament.current_season)
+                                                             ? null
+                                                             : new CurrentSeasonInfoDto(tournament.tournament.current_season)
                 };
             }
 
             GeneratedAt = tournament.generated_atSpecified ? tournament.generated_at : (DateTime?)null;
 
             ExhibitionGames = tournament.tournament.exhibition_gamesSpecified
-                ? tournament.tournament.exhibition_games
-                : (bool?)null;
+                                  ? tournament.tournament.exhibition_games
+                                  : (bool?)null;
         }
 
         /// <summary>
@@ -302,14 +302,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Category = tournament.Category;
 
             Sport = tournament.Sport == null
-                ? null
-                : tournament.Sport;
+                        ? null
+                        : tournament.Sport;
 
             Competitors = null;
 
             CurrentSeason = tournament.CurrentSeason == null
-                ? null
-                : new CurrentSeasonInfoDto(tournament.CurrentSeason);
+                                ? null
+                                : new CurrentSeasonInfoDto(tournament.CurrentSeason);
 
             Season = null;
 
@@ -375,29 +375,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
         /// </summary>
         /// <param name="fixture">The fixture</param>
         public TournamentInfoDto(FixtureDto fixture)
-        : base(new sportEvent
-        {
-            id = fixture.Id.ToString(),
-            name = fixture.Name,
-            scheduledSpecified = fixture.Scheduled.HasValue,
-            scheduled = fixture.Scheduled.GetValueOrDefault(DateTime.MinValue),
-            scheduled_endSpecified = fixture.ScheduledEnd.HasValue,
-            scheduled_end = fixture.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
-            tournament = new tournament
+            : base(new sportEvent
             {
-                id = fixture.Tournament?.Id.ToString(),
-                sport = new sport
+                id = fixture.Id.ToString(),
+                name = fixture.Name,
+                scheduledSpecified = fixture.Scheduled.HasValue,
+                scheduled = fixture.Scheduled.GetValueOrDefault(DateTime.MinValue),
+                scheduled_endSpecified = fixture.ScheduledEnd.HasValue,
+                scheduled_end = fixture.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
+                tournament = new tournament
                 {
-                    id = fixture.Tournament?.Sport.Id.ToString(),
-                    name = fixture.Tournament?.Sport.Name
-                }
-            },
-            status = fixture.StatusOnEvent
-        })
+                    id = fixture.Tournament?.Id.ToString(),
+                    sport = new sport
+                    {
+                        id = fixture.Tournament?.Sport.Id.ToString(),
+                        name = fixture.Tournament?.Sport.Name
+                    }
+                },
+                status = fixture.StatusOnEvent
+            })
         {
             TournamentCoverage = fixture.Coverage == null
-                ? null
-                : new TournamentCoverageDto(new tournamentLiveCoverageInfo { live_coverage = fixture.Coverage.IsLive.ToString().ToLowerInvariant() });
+                                     ? null
+                                     : new TournamentCoverageDto(new tournamentLiveCoverageInfo { live_coverage = fixture.Coverage.IsLive.ToString().ToLowerInvariant() });
 
             Category = fixture.Tournament?.Category;
 
@@ -434,35 +434,35 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             : base(new sportEvent
             {
                 id = overwriteSeason
-                    ? tournament.Season.Id.ToString()
-                    : overwriteCurrentSeason
-                        ? tournament.CurrentSeason.Id.ToString()
-                        : tournament.Id.ToString(),
+                                    ? tournament.Season.Id.ToString()
+                                    : overwriteCurrentSeason
+                                        ? tournament.CurrentSeason.Id.ToString()
+                                        : tournament.Id.ToString(),
                 name = overwriteSeason
-                    ? tournament.Season.Name
-                    : overwriteCurrentSeason
-                        ? tournament.CurrentSeason.Name
-                        : tournament.Name,
+                                      ? tournament.Season.Name
+                                      : overwriteCurrentSeason
+                                          ? tournament.CurrentSeason.Name
+                                          : tournament.Name,
                 scheduledSpecified = overwriteSeason
-                    ? tournament.Season.StartDate > DateTime.MinValue
-                    : overwriteCurrentSeason
-                        ? tournament.CurrentSeason.StartDate > DateTime.MinValue
-                        : tournament.Scheduled != null,
+                                                    ? tournament.Season.StartDate > DateTime.MinValue
+                                                    : overwriteCurrentSeason
+                                                        ? tournament.CurrentSeason.StartDate > DateTime.MinValue
+                                                        : tournament.Scheduled != null,
                 scheduled = overwriteSeason
-                    ? tournament.Season.StartDate
-                    : overwriteCurrentSeason
-                        ? tournament.CurrentSeason.StartDate
-                        : tournament.Scheduled.GetValueOrDefault(DateTime.MinValue),
+                                           ? tournament.Season.StartDate
+                                           : overwriteCurrentSeason
+                                               ? tournament.CurrentSeason.StartDate
+                                               : tournament.Scheduled.GetValueOrDefault(DateTime.MinValue),
                 scheduled_endSpecified = overwriteSeason
-                    ? tournament.Season.EndDate > DateTime.MinValue
-                    : overwriteCurrentSeason
-                        ? tournament.CurrentSeason.EndDate > DateTime.MinValue
-                        : tournament.ScheduledEnd != null,
+                                                        ? tournament.Season.EndDate > DateTime.MinValue
+                                                        : overwriteCurrentSeason
+                                                            ? tournament.CurrentSeason.EndDate > DateTime.MinValue
+                                                            : tournament.ScheduledEnd != null,
                 scheduled_end = overwriteSeason
-                    ? tournament.Season.EndDate
-                    : overwriteCurrentSeason
-                        ? tournament.CurrentSeason.EndDate
-                        : tournament.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
+                                               ? tournament.Season.EndDate
+                                               : overwriteCurrentSeason
+                                                   ? tournament.CurrentSeason.EndDate
+                                                   : tournament.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
                 tournament = new tournament
                 {
                     id = tournament.Id.ToString(),
@@ -496,10 +496,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             CurrentRound = tournament.CurrentRound;
 
             Year = overwriteSeason
-                ? tournament.Season.Year
-                : overwriteCurrentSeason
-                    ? tournament.CurrentSeason.Year
-                    : tournament.Year;
+                       ? tournament.Season.Year
+                       : overwriteCurrentSeason
+                           ? tournament.CurrentSeason.Year
+                           : tournament.Year;
 
             TournamentInfo = tournament.TournamentInfo;
 
@@ -522,17 +522,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             if (useStartTime)
             {
                 return tournament.scheduledSpecified
-                    ? tournament.scheduled
-                    : tournament.tournament_length != null && tournament.tournament_length.start_dateSpecified
-                        ? tournament.tournament_length.start_date
-                        : tournament.scheduled;
+                           ? tournament.scheduled
+                           : tournament.tournament_length != null && tournament.tournament_length.start_dateSpecified
+                               ? tournament.tournament_length.start_date
+                               : tournament.scheduled;
             }
 
             return tournament.scheduled_endSpecified
-                ? tournament.scheduled_end
-                : tournament.tournament_length != null && tournament.tournament_length.end_dateSpecified
-                    ? tournament.tournament_length.end_date
-                    : tournament.scheduled;
+                       ? tournament.scheduled_end
+                       : tournament.tournament_length != null && tournament.tournament_length.end_dateSpecified
+                           ? tournament.tournament_length.end_date
+                           : tournament.scheduled;
         }
 
         private static DateTime GetExtendedTournamentSchedule(tournamentExtended tournament, bool useStartTime)
@@ -540,17 +540,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             if (useStartTime)
             {
                 return IsTournamentScheduleSpecified(tournament, true)
-                    ? GetTournamentSchedule(tournament, true)
-                    : tournament.current_season != null
-                        ? tournament.current_season.start_date
-                        : tournament.scheduled;
+                           ? GetTournamentSchedule(tournament, true)
+                           : tournament.current_season != null
+                               ? tournament.current_season.start_date
+                               : tournament.scheduled;
             }
 
             return IsTournamentScheduleSpecified(tournament, false)
-                ? GetTournamentSchedule(tournament, false)
-                : tournament.current_season != null
-                    ? tournament.current_season.end_date
-                    : tournament.scheduled_end;
+                       ? GetTournamentSchedule(tournament, false)
+                       : tournament.current_season != null
+                           ? tournament.current_season.end_date
+                           : tournament.scheduled_end;
         }
     }
 }

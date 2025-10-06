@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -298,8 +298,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             ValidateMessageProducer(message);
 
             return ValidateMessage(message)
-                ? ValidationResult.Success
-                : ValidationResult.Failure;
+                       ? ValidationResult.Success
+                       : ValidationResult.Failure;
         }
 
         /// <summary>

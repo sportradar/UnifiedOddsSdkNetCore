@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -152,8 +152,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             return ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await competitionCacheItem.GetBookingStatusAsync().ConfigureAwait(false)
-                : await new Func<Task<BookingStatus?>>(competitionCacheItem.GetBookingStatusAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("BookingStatus")).ConfigureAwait(false);
+                       ? await competitionCacheItem.GetBookingStatusAsync().ConfigureAwait(false)
+                       : await new Func<Task<BookingStatus?>>(competitionCacheItem.GetBookingStatusAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("BookingStatus")).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -170,12 +170,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await competitionCacheItem.GetVenueAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<VenueCacheItem>>(competitionCacheItem.GetVenueAsync).SafeInvokeAsync(Cultures, ExecutionLog, "Venue").ConfigureAwait(false);
+                           ? await competitionCacheItem.GetVenueAsync(Cultures).ConfigureAwait(false)
+                           : await new Func<IEnumerable<CultureInfo>, Task<VenueCacheItem>>(competitionCacheItem.GetVenueAsync).SafeInvokeAsync(Cultures, ExecutionLog, "Venue").ConfigureAwait(false);
 
             return item == null
-                ? null
-                : new Venue(item, Cultures.ToList());
+                       ? null
+                       : new Venue(item, Cultures.ToList());
         }
 
         /// <summary>
@@ -192,12 +192,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var item = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await competitionCacheItem.GetConditionsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<SportEventConditionsCacheItem>>(competitionCacheItem.GetConditionsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("EventConditions")).ConfigureAwait(false);
+                           ? await competitionCacheItem.GetConditionsAsync(Cultures).ConfigureAwait(false)
+                           : await new Func<IEnumerable<CultureInfo>, Task<SportEventConditionsCacheItem>>(competitionCacheItem.GetConditionsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("EventConditions"))
+                                                                                                                                                   .ConfigureAwait(false);
 
             return item == null
-                ? null
-                : new SportEventConditions(item, Cultures.ToList());
+                       ? null
+                       : new SportEventConditions(item, Cultures.ToList());
         }
 
         /// <summary>
@@ -213,8 +214,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var items = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await competitionCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
-                : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(competitionCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
+                            ? await competitionCacheItem.GetCompetitorsIdsAsync(Cultures).ConfigureAwait(false)
+                            : await new Func<IEnumerable<CultureInfo>, Task<IEnumerable<Urn>>>(competitionCacheItem.GetCompetitorsIdsAsync).SafeInvokeAsync(Cultures, ExecutionLog, GetFetchErrorMessage("CompetitorsIds")).ConfigureAwait(false);
 
             var competitorsIds = items == null ? new List<Urn>() : items.ToList();
             if (!competitorsIds.Any())
@@ -295,8 +296,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await competitionCacheItem.GetSportEventTypeAsync().ConfigureAwait(false)
-                : await new Func<Task<SportEventType?>>(competitionCacheItem.GetSportEventTypeAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportEventType")).ConfigureAwait(false);
+                               ? await competitionCacheItem.GetSportEventTypeAsync().ConfigureAwait(false)
+                               : await new Func<Task<SportEventType?>>(competitionCacheItem.GetSportEventTypeAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("SportEventType")).ConfigureAwait(false);
 
             return liveOdds;
         }
@@ -314,8 +315,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 return null;
             }
             var liveOdds = ExceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await competitionCacheItem.GetLiveOddsAsync().ConfigureAwait(false)
-                : await new Func<Task<string>>(competitionCacheItem.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
+                               ? await competitionCacheItem.GetLiveOddsAsync().ConfigureAwait(false)
+                               : await new Func<Task<string>>(competitionCacheItem.GetLiveOddsAsync).SafeInvokeAsync(ExecutionLog, GetFetchErrorMessage("LiveOdds")).ConfigureAwait(false);
 
             return liveOdds;
         }

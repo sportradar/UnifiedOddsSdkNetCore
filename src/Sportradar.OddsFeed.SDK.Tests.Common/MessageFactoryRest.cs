@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -93,7 +93,7 @@ public static class MessageFactoryRest
                     name = s.Key,
                     value = s.Value
                 })
-                                                                 .ToArray()
+                                                                         .ToArray()
             },
             generated_at = DateTime.Now,
             generated_atSpecified = true,
@@ -119,7 +119,7 @@ public static class MessageFactoryRest
                     name = s.Key,
                     value = s.Value
                 })
-                                                                 .ToArray()
+                                                                         .ToArray()
             },
             generated_at = DateTime.Now,
             generated_atSpecified = true

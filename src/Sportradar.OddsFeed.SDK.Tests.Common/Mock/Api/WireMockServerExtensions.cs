@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -18,9 +18,9 @@ public static class WireMockServerExtensions
         var mappingName = "MyEndpointMapping";
 
         wireMockServer
-            .Given(Request.Create().WithPath("/myapi").UsingGet())
-            .WithTitle(mappingName) // Naming the mapping
-            .RespondWith(Response.Create().WithBody("Initial response"));
+           .Given(Request.Create().WithPath("/myapi").UsingGet())
+           .WithTitle(mappingName) // Naming the mapping
+           .RespondWith(Response.Create().WithBody("Initial response"));
     }
 
     public static void ActivateOnlyLiveProducer(this WireMockServer wireMockServer)

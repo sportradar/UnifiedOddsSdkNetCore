@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -45,17 +45,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
             _names = new ReadOnlyDictionary<CultureInfo, string>(cultures.ToDictionary(c => c, cacheItem.GetName));
             _descriptions = new ReadOnlyDictionary<CultureInfo, string>(cultures.Where(cacheItem.HasTranslationsFor).ToDictionary(c => c, cacheItem.GetDescription));
             Outcomes = cacheItem.Outcomes == null
-                ? null
-                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription)new OutcomeDescription(o, cultures)).ToList());
+                           ? null
+                           : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription)new OutcomeDescription(o, cultures)).ToList());
             Specifiers = cacheItem.Specifiers == null
-                ? null
-                : new ReadOnlyCollection<ISpecifier>(cacheItem.Specifiers.Select(s => (ISpecifier)new Specifier(s)).ToList());
+                             ? null
+                             : new ReadOnlyCollection<ISpecifier>(cacheItem.Specifiers.Select(s => (ISpecifier)new Specifier(s)).ToList());
             Mappings = cacheItem.Mappings == null
-                ? null
-                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData)new MarketMapping(m)).ToList());
+                           ? null
+                           : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData)new MarketMapping(m)).ToList());
             Attributes = cacheItem.Attributes == null
-                ? null
-                : new ReadOnlyCollection<IMarketAttribute>(cacheItem.Attributes.Select(a => (IMarketAttribute)new MarketAttribute(a)).ToList());
+                             ? null
+                             : new ReadOnlyCollection<IMarketAttribute>(cacheItem.Attributes.Select(a => (IMarketAttribute)new MarketAttribute(a)).ToList());
 
             OutcomeType = cacheItem.OutcomeType;
 
@@ -85,15 +85,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
         public string GetName(CultureInfo culture)
         {
             return _names.TryGetValue(culture, out var name)
-                ? name
-                : null;
+                       ? name
+                       : null;
         }
 
         public string GetDescription(CultureInfo culture)
         {
             return _descriptions.TryGetValue(culture, out var description)
-                ? description
-                : null;
+                       ? description
+                       : null;
         }
     }
 }

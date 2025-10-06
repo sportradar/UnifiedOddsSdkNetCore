@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -141,8 +141,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public string GetName(CultureInfo culture)
         {
             return Names.ContainsKey(culture)
-                ? Names[culture]
-                : null;
+                       ? Names[culture]
+                       : null;
         }
 
         /// <summary>
@@ -153,8 +153,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public string GetCity(CultureInfo culture)
         {
             return Cities.ContainsKey(culture)
-                ? Cities[culture]
-                : null;
+                       ? Cities[culture]
+                       : null;
         }
 
         /// <summary>
@@ -165,8 +165,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public string GetCountry(CultureInfo culture)
         {
             return Countries.ContainsKey(culture)
-                ? Countries[culture]
-                : null;
+                       ? Countries[culture]
+                       : null;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using Dawn;
@@ -41,16 +41,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         /// <value>The bet stop reason.</value>
         public INamedValue BetStopReason => _betStopReason == null
-            ? null
-            : _namedValueProvider.BetStopReasons.GetNamedValue(_betStopReason.Value);
+                                                ? null
+                                                : _namedValueProvider.BetStopReasons.GetNamedValue(_betStopReason.Value);
 
         /// <summary>
         /// Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue" /> indicating the odds change was triggered by a possible event
         /// </summary>
         /// <value>The betting status</value>
         public INamedValue BettingStatus => _bettingStatus == null
-            ? null
-            : _namedValueProvider.BettingStatuses.GetNamedValue(_bettingStatus.Value);
+                                                ? null
+                                                : _namedValueProvider.BettingStatuses.GetNamedValue(_bettingStatus.Value);
 
         /// <summary>
         /// Gets the odds generation properties (contains a few key-parameters that can be used in a client’s own special odds model, or even offer spread betting bets based on it)
@@ -70,7 +70,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// <param name="oddsGenerationProperties">Provided by the prematch odds producer only, and contains a few key-parameters that can be used in a client’s own special odds model, or even offer spread betting bets based on it</param>
         /// <param name="namedValuesProvider">The <see cref="INamedValuesProvider"/> used to provide names for betting status and bet stop reason</param>
         /// <param name="rawMessage">The raw message</param>
-        public OddsChange(IMessageTimestamp timestamp, IProducer producer, T @event, long? requestId, OddsChangeReason? changeReason, int? betStopReason, int? bettingStatus, IEnumerable<IMarketWithOdds> markets, oddsGenerationProperties oddsGenerationProperties, INamedValuesProvider namedValuesProvider, byte[] rawMessage)
+        public OddsChange(IMessageTimestamp timestamp,
+                          IProducer producer,
+                          T @event,
+                          long? requestId,
+                          OddsChangeReason? changeReason,
+                          int? betStopReason,
+                          int? bettingStatus,
+                          IEnumerable<IMarketWithOdds> markets,
+                          oddsGenerationProperties oddsGenerationProperties,
+                          INamedValuesProvider namedValuesProvider,
+                          byte[] rawMessage)
             : base(timestamp, producer, @event, requestId, markets, rawMessage)
         {
             Guard.Argument(namedValuesProvider, nameof(namedValuesProvider)).NotNull();

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -79,8 +79,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         /// Gets the timestamp of the oldest (the one that was generated first) alive message received on the user session.
         /// </summary>
         public long OldestUserAliveTimestamp => _aliveMessagesTimingInfo.Count == 0
-            ? SdkInfo.ToEpochTime(TimeProviderAccessor.Current.Now)
-            : SdkInfo.ToEpochTime(_aliveMessagesTimingInfo.Values.Min(t => t.GeneratedAt));
+                                                    ? SdkInfo.ToEpochTime(TimeProviderAccessor.Current.Now)
+                                                    : SdkInfo.ToEpochTime(_aliveMessagesTimingInfo.Values.Min(t => t.GeneratedAt));
 
         /// <summary>
         /// Gets the epoch timestamp specifying when the last system alive message received was generated
@@ -164,8 +164,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
             {
                 var messageDateTime = SdkInfo.FromEpochTime(message.GeneratedAt);
                 var newLatency = TimeProviderAccessor.Current.Now <= messageDateTime
-                    ? TimeSpan.Zero
-                    : TimeProviderAccessor.Current.Now - messageDateTime;
+                                     ? TimeSpan.Zero
+                                     : TimeProviderAccessor.Current.Now - messageDateTime;
                 if (timingInfo.Latency > newLatency)
                 {
                     timingInfo.Update(message.GeneratedAt);
@@ -214,7 +214,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         public override string ToString()
         {
             var aliveInfo = string.Join(",", _aliveMessagesTimingInfo.Select(pair => pair.Key.Name + ":" + "age=" + $"{pair.Value.Age.Hours:D2}:{pair.Value.Age.Minutes:D2}:{pair.Value.Age.Seconds:D2}.{pair.Value.Age.Milliseconds:D3}"));
-            var nonAliveInfo = string.Join(",", _nonAliveMessagesTimingInfo.Select(pair => pair.Key.Name + ":" + "latency=" + $"{pair.Value.Latency.Hours:D2}:{pair.Value.Latency.Minutes:D2}:{pair.Value.Latency.Seconds:D2}.{pair.Value.Latency.Milliseconds:D3}"));
+            var nonAliveInfo = string.Join(",",
+                                           _nonAliveMessagesTimingInfo.Select(pair => pair.Key.Name + ":" + "latency="
+                                                                                      + $"{pair.Value.Latency.Hours:D2}:{pair.Value.Latency.Minutes:D2}:{pair.Value.Latency.Seconds:D2}.{pair.Value.Latency.Milliseconds:D3}"));
             var behindInfo = $"IsBehind({IsBehind}):Alive(s)[{aliveInfo}],NonAlives[{nonAliveInfo}]";
             var pingStatus = IsAliveViolated ? "Failed" : "Ok";
             var violationInfo = $"Ping({pingStatus}):age={_systemAliveTimingInfo.Age.Hours:D2}:{_systemAliveTimingInfo.Age.Minutes:D2}:{_systemAliveTimingInfo.Age.Seconds:D2}.{_systemAliveTimingInfo.Age.Milliseconds:D3}";
@@ -262,8 +264,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
                 var currentTime = TimeProviderAccessor.Current.Now;
                 GeneratedAt = SdkInfo.FromEpochTime(generatedAt);
                 Latency = GeneratedAt >= currentTime
-                    ? TimeSpan.Zero
-                    : currentTime - GeneratedAt;
+                              ? TimeSpan.Zero
+                              : currentTime - GeneratedAt;
             }
         }
     }

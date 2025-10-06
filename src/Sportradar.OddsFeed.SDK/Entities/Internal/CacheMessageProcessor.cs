@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -89,8 +89,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
             _feedMessageHandler = feedMessageHandler;
             _sportEventStatusCache = sportEventStatusCache;
             var ignoredProducerIdsList = producerManager.Producers.Where(w => w.Scope.Contains("virtual", StringComparer.InvariantCultureIgnoreCase))
-                                                      .Select(s => s.Id)
-                                                      .ToList();
+                                                        .Select(s => s.Id)
+                                                        .ToList();
             _ignoredProducersForFixtureEndpoint = new ReadOnlyCollection<int>(ignoredProducerIdsList);
         }
 

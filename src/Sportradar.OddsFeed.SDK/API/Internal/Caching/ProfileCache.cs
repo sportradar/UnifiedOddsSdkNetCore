@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Concurrent;
@@ -101,12 +101,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         public override void SetDtoTypes()
         {
             RegisteredDtoTypes = new List<DtoType>
-                                 {
-                                     DtoType.Fixture, DtoType.MatchTimeline, DtoType.Competitor, DtoType.CompetitorProfile,
-                                     DtoType.SimpleTeamProfile, DtoType.PlayerProfile, DtoType.SportEventSummary, DtoType.TournamentInfo,
-                                     DtoType.RaceSummary, DtoType.MatchSummary, DtoType.TournamentInfoList, DtoType.TournamentSeasons,
-                                     DtoType.SportEventSummaryList
-                                 };
+                                     {
+                                         DtoType.Fixture, DtoType.MatchTimeline, DtoType.Competitor, DtoType.CompetitorProfile,
+                                         DtoType.SimpleTeamProfile, DtoType.PlayerProfile, DtoType.SportEventSummary, DtoType.TournamentInfo,
+                                         DtoType.RaceSummary, DtoType.MatchSummary, DtoType.TournamentInfoList, DtoType.TournamentSeasons,
+                                         DtoType.SportEventSummaryList
+                                     };
         }
 
         public bool IsDisposed()
@@ -1132,10 +1132,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
 
             return new Dictionary<string, int>
-                   {
-                       { nameof(TeamCompetitorCacheItem), items.Count(i => i.GetType() == typeof(TeamCompetitorCacheItem)) }, { nameof(CompetitorCacheItem), items.Count(i => i.GetType() == typeof(CompetitorCacheItem)) },
-                       { nameof(PlayerProfileCacheItem), items.Count(i => i.GetType() == typeof(PlayerProfileCacheItem)) }
-                   };
+                       {
+                           { nameof(TeamCompetitorCacheItem), items.Count(i => i.GetType() == typeof(TeamCompetitorCacheItem)) }, { nameof(CompetitorCacheItem), items.Count(i => i.GetType() == typeof(CompetitorCacheItem)) },
+                           { nameof(PlayerProfileCacheItem), items.Count(i => i.GetType() == typeof(PlayerProfileCacheItem)) }
+                       };
         }
 
         public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())

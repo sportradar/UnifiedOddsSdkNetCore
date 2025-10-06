@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Concurrent;
@@ -101,9 +101,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         public override void SetDtoTypes()
         {
             RegisteredDtoTypes = new List<DtoType>
-            {
-                DtoType.MarketDescription
-            };
+                                     {
+                                         DtoType.MarketDescription
+                                     };
         }
 
         /// <summary>
@@ -333,8 +333,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
             }
 
             return cacheItem == null
-                ? null
-                : new MarketDescription(cacheItem, cultures);
+                       ? null
+                       : new MarketDescription(cacheItem, cultures);
         }
 
         /// <summary>
@@ -527,9 +527,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         }
 
         private static readonly Action<ILogger, string, Exception> LogCacheDeleteItem =
-            LoggerMessage.Define<string>(
-                LogLevel.Debug,
-                new EventId(1),
-                "Delete variant market: {MdId}");
+            LoggerMessage.Define<string>(LogLevel.Debug,
+                                         new EventId(1),
+                                         "Delete variant market: {MdId}");
     }
 }

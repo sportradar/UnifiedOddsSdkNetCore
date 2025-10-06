@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Text;
@@ -82,7 +82,7 @@ public class WireMockLogger : IWireMockLogger
             return responseBody;
         }
         return responseBody.Length <= _limitBodyLength
-            ? responseBody
-            : string.Concat(responseBody.AsSpan(0, _limitBodyLength), "...");
+                   ? responseBody
+                   : string.Concat(responseBody.AsSpan(0, _limitBodyLength), "...");
     }
 }

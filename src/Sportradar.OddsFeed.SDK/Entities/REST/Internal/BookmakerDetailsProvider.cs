@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
@@ -41,9 +41,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// <param name="mapperFactory">A <see cref="ISingleTypeMapperFactory{scheduleType, EntityList}" /> used to construct
         ///     instances of <see cref="ISingleTypeMapper{ISportEventsSchedule}" /></param>
         public BookmakerDetailsProvider(string bookmakerDetailsUriFormat,
-            IDataFetcher fetcher,
-            IDeserializer<bookmaker_details> deserializer,
-            ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto> mapperFactory)
+                                        IDataFetcher fetcher,
+                                        IDeserializer<bookmaker_details> deserializer,
+                                        ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDto> mapperFactory)
             : base(bookmakerDetailsUriFormat, fetcher, deserializer, mapperFactory)
         {
             Guard.Argument(bookmakerDetailsUriFormat, nameof(bookmakerDetailsUriFormat)).NotNull().NotEmpty();

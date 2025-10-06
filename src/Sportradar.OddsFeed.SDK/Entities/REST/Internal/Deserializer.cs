@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -31,10 +31,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
         /// of the specified types can be deserialized by the deserializer
         /// </summary>
         // ReSharper disable StaticFieldInGenericType
-        private static readonly Type[] BaseTypes = {
-                                                       typeof(RestMessage),
-                                                       typeof(FeedMessage)
-                                                   };
+        private static readonly Type[] BaseTypes =
+            {
+                typeof(RestMessage),
+                typeof(FeedMessage)
+            };
         // ReSharper restore StaticFieldInGenericType
 
         /// <summary>
@@ -54,14 +55,14 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             foreach (var baseType in BaseTypes)
             {
                 foreach (var feedMessagesType in baseType.Assembly.GetTypes()
-                    .Where(t => t != baseType && baseType.IsAssignableFrom(t)))
+                                                         .Where(t => t != baseType && baseType.IsAssignableFrom(t)))
                 {
                     var xmlRootAttribute = feedMessagesType.GetCustomAttribute<XmlRootAttribute>(false);
                     var ignoreNamespaceAttribute = feedMessagesType.GetCustomAttribute<OverrideXmlNamespaceAttribute>(false);
 
                     var rootElementName = xmlRootAttribute == null || string.IsNullOrWhiteSpace(xmlRootAttribute.ElementName)
-                            ? ignoreNamespaceAttribute?.RootElementName
-                            : xmlRootAttribute.ElementName;
+                                              ? ignoreNamespaceAttribute?.RootElementName
+                                              : xmlRootAttribute.ElementName;
 
                     if (string.IsNullOrWhiteSpace(rootElementName))
                     {
@@ -159,10 +160,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             }
 
             public override string NamespaceURI => IgnoreNamespace
-                ? string.IsNullOrWhiteSpace(base.NamespaceURI)
-                    ? string.Empty
-                    : DefaultNamespaceUri
-                : base.NamespaceURI;
+                                                       ? string.IsNullOrWhiteSpace(base.NamespaceURI)
+                                                             ? string.Empty
+                                                             : DefaultNamespaceUri
+                                                       : base.NamespaceURI;
         }
 
         private class SerializerWithInfo

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Threading.Tasks;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
@@ -21,11 +21,10 @@ public class TournamentDetailsMapperTests
         var dataFetcher = new TestDataFetcher();
         var mapperFactory = new TournamentInfoMapperFactory();
 
-        var dataProvider = new DataProvider<tournamentInfoEndpoint, TournamentInfoDto>(
-            TestData.RestXmlPath + InputXml,
-            dataFetcher,
-            deserializer,
-            mapperFactory);
+        var dataProvider = new DataProvider<tournamentInfoEndpoint, TournamentInfoDto>(TestData.RestXmlPath + InputXml,
+                                                                                       dataFetcher,
+                                                                                       deserializer,
+                                                                                       mapperFactory);
 
         var entity = await dataProvider.GetDataAsync("en");
 

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -104,8 +104,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             IsVirtual = record.virtualSpecified && record.@virtual;
 
             ReferenceIds = record.reference_ids == null
-                ? null
-                : new ReadOnlyDictionary<string, string>(record.reference_ids.ToDictionary(r => r.name, r => r.value));
+                               ? null
+                               : new ReadOnlyDictionary<string, string>(record.reference_ids.ToDictionary(r => r.name, r => r.value));
             CountryCode = record.country_code;
             State = record.state;
 
@@ -119,11 +119,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             if (record is teamExtended extended)
             {
                 SportId = extended.sport == null
-                    ? null
-                    : Urn.Parse(extended.sport.id);
+                              ? null
+                              : Urn.Parse(extended.sport.id);
                 CategoryId = extended.category == null
-                    ? null
-                    : Urn.Parse(extended.category.id);
+                                 ? null
+                                 : Urn.Parse(extended.category.id);
             }
 
             if (!string.IsNullOrEmpty(record.short_name))

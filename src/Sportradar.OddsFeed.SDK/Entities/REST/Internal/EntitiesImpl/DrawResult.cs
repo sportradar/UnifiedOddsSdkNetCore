@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,8 +34,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public string GetName(CultureInfo culture)
         {
             return Names == null || !Names.ContainsKey(culture)
-                ? null
-                : Names[culture];
+                       ? null
+                       : Names[culture];
         }
 
         /// <summary>
@@ -67,10 +67,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         {
             var defaultCulture = new CultureInfo("en");
             var name = Names == null
-                ? null
-                : Names.ContainsKey(defaultCulture)
-                    ? Names[defaultCulture]
-                    : Names.Values.FirstOrDefault();
+                           ? null
+                           : Names.ContainsKey(defaultCulture)
+                               ? Names[defaultCulture]
+                               : Names.Values.FirstOrDefault();
             return $"Value={Value}, Names={name}";
         }
 
@@ -81,8 +81,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         protected override string PrintF()
         {
             var names = Names == null
-                ? null
-                : string.Join("; ", Names.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
+                            ? null
+                            : string.Join("; ", Names.Select(x => x.Key.TwoLetterISOLanguageName + ":" + x.Value));
             return $"Value={Value}, Names=[{names}]";
         }
 

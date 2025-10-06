@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -49,8 +49,12 @@ public class VariantMarketDescriptionCacheMergeTests
             ExpirationScanFrequency = TimeSpan.FromMinutes(10)
         });
 
-        _variantMarketDescriptionMemoryCache = new CacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache, memoryCache, _testLoggerFactory.CreateLogger(typeof(Cache)), null,
-            TestConfiguration.GetConfig().Cache.VariantMarketDescriptionCacheTimeout, 1);
+        _variantMarketDescriptionMemoryCache = new CacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache,
+                                                                      memoryCache,
+                                                                      _testLoggerFactory.CreateLogger(typeof(Cache)),
+                                                                      null,
+                                                                      TestConfiguration.GetConfig().Cache.VariantMarketDescriptionCacheTimeout,
+                                                                      1);
 
         IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
         var cacheManager = new CacheManager();
@@ -119,8 +123,11 @@ public class VariantMarketDescriptionCacheMergeTests
     [Fact]
     public async Task AddDtoItem()
     {
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, _cultures[0],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoEn,
+                                                                              _cultures[0],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         _ = Assert.Single(_variantMarketDescriptionMemoryCache.GetKeys());
@@ -142,8 +149,11 @@ public class VariantMarketDescriptionCacheMergeTests
     [Fact]
     public async Task AddDtoItemWhenWrongDtoTypeThenDtoIsNotSaved()
     {
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, _cultures[0],
-            DtoType.MarketDescriptionList, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoEn,
+                                                                              _cultures[0],
+                                                                              DtoType.MarketDescriptionList,
+                                                                              null);
 
         Assert.False(isSuccess);
         Assert.Empty(_variantMarketDescriptionMemoryCache.GetKeys());
@@ -152,8 +162,11 @@ public class VariantMarketDescriptionCacheMergeTests
     [Fact]
     public async Task AddDtoItemWhenDtoObjectDoesNotMatchDtoTypeThenDtoIsNotSaved()
     {
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), new[] { _exampleVariantMarketDescriptionDtoEn },
-            _cultures[0], DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                              new[] { _exampleVariantMarketDescriptionDtoEn },
+                                                                              _cultures[0],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.False(isSuccess);
         Assert.Empty(_variantMarketDescriptionMemoryCache.GetKeys());
@@ -164,8 +177,11 @@ public class VariantMarketDescriptionCacheMergeTests
     {
         _apiMdEn.name = null;
         _exampleVariantMarketDescriptionDtoEn = new MarketDescriptionDto(_apiMdEn);
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, _cultures[0],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoEn,
+                                                                              _cultures[0],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         _ = Assert.Single(_variantMarketDescriptionMemoryCache.GetKeys());
@@ -176,8 +192,11 @@ public class VariantMarketDescriptionCacheMergeTests
     {
         _apiMdEn.outcomes[0].name = null;
         _exampleVariantMarketDescriptionDtoEn = new MarketDescriptionDto(_apiMdEn);
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, _cultures[0],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoEn,
+                                                                              _cultures[0],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         _ = Assert.Single(_variantMarketDescriptionMemoryCache.GetKeys());
@@ -188,8 +207,11 @@ public class VariantMarketDescriptionCacheMergeTests
     {
         _apiMdEn.name = string.Empty;
         _exampleVariantMarketDescriptionDtoEn = new MarketDescriptionDto(_apiMdEn);
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, _cultures[0],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoEn,
+                                                                              _cultures[0],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         _ = Assert.Single(_variantMarketDescriptionMemoryCache.GetKeys());
@@ -200,8 +222,11 @@ public class VariantMarketDescriptionCacheMergeTests
     {
         _apiMdEn.outcomes[0].name = string.Empty;
         _exampleVariantMarketDescriptionDtoEn = new MarketDescriptionDto(_apiMdEn);
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, _cultures[0],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoEn,
+                                                                              _cultures[0],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         _ = Assert.Single(_variantMarketDescriptionMemoryCache.GetKeys());
@@ -211,17 +236,28 @@ public class VariantMarketDescriptionCacheMergeTests
     public async Task AddDtoItemWhenCallingWithoutLanguageThenThrow()
     {
         _ = await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, null, DtoType.MarketDescription, null));
+                                                                _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                                                                _exampleVariantMarketDescriptionDtoEn,
+                                                                                                                null,
+                                                                                                                DtoType.MarketDescription,
+                                                                                                                null));
     }
 
     [Fact]
     public async Task AddDtoItemWhenAfterMergingThrowsThenNextRequestSucceed()
     {
         _ = await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, null, DtoType.MarketDescription, null));
+                                                                _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                                                                _exampleVariantMarketDescriptionDtoEn,
+                                                                                                                null,
+                                                                                                                DtoType.MarketDescription,
+                                                                                                                null));
 
-        var success = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"), _exampleVariantMarketDescriptionDtoEn, _cultures[0],
-            DtoType.MarketDescription, null);
+        var success = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoEn.Id}"),
+                                                                            _exampleVariantMarketDescriptionDtoEn,
+                                                                            _cultures[0],
+                                                                            DtoType.MarketDescription,
+                                                                            null);
 
         Assert.True(success);
     }
@@ -231,8 +267,11 @@ public class VariantMarketDescriptionCacheMergeTests
     {
         var mdCacheItem = await LoadDefaultExampleEn();
 
-        _ = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        _ = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                  _exampleVariantMarketDescriptionDtoHu,
+                                                                  _cultures[2],
+                                                                  DtoType.MarketDescription,
+                                                                  null);
 
         Assert.Equal(_exampleVariantMarketDescriptionDtoEn.Id, mdCacheItem.Id);
         Assert.Equal(_exampleVariantMarketDescriptionDtoEn.Outcomes.Count, mdCacheItem.Outcomes.Count);
@@ -245,8 +284,9 @@ public class VariantMarketDescriptionCacheMergeTests
     {
         _variantMarketDescriptionCache.Dispose();
 
-        var mdCacheItem = await _variantMarketDescriptionCache.GetMarketInternalAsync((int)_exampleVariantMarketDescriptionDtoEn.Id, _exampleVariantMarketDescriptionDtoEn.Variant,
-            new[] { _cultures[0] });
+        var mdCacheItem = await _variantMarketDescriptionCache.GetMarketInternalAsync((int)_exampleVariantMarketDescriptionDtoEn.Id,
+                                                                                      _exampleVariantMarketDescriptionDtoEn.Variant,
+                                                                                      new[] { _cultures[0] });
 
         Assert.Null(mdCacheItem);
     }
@@ -258,8 +298,11 @@ public class VariantMarketDescriptionCacheMergeTests
 
         _variantMarketDescriptionCache.Dispose();
 
-        _ = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        _ = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                  _exampleVariantMarketDescriptionDtoHu,
+                                                                  _cultures[2],
+                                                                  DtoType.MarketDescription,
+                                                                  null);
 
         Assert.NotNull(mdCacheItem);
         Assert.Equal(_exampleVariantMarketDescriptionDtoEn.Id, mdCacheItem.Id);
@@ -274,8 +317,11 @@ public class VariantMarketDescriptionCacheMergeTests
         var logCache = _testLoggerFactory.GetOrCreateLogger(typeof(Cache));
         var logExec = _testLoggerFactory.GetOrCreateLogger(typeof(VariantMarketDescriptionCache));
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.Empty(logCache.Messages);
@@ -289,8 +335,11 @@ public class VariantMarketDescriptionCacheMergeTests
         _apiMdHu.name = null;
         _exampleVariantMarketDescriptionDtoHu = new MarketDescriptionDto(_apiMdHu);
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.NotNull(mdCacheItem);
@@ -305,8 +354,11 @@ public class VariantMarketDescriptionCacheMergeTests
         _apiMdHu.outcomes[0].name = null;
         _exampleVariantMarketDescriptionDtoHu = new MarketDescriptionDto(_apiMdHu);
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.NotNull(mdCacheItem);
@@ -321,8 +373,11 @@ public class VariantMarketDescriptionCacheMergeTests
         _apiMdHu.name = string.Empty;
         _exampleVariantMarketDescriptionDtoHu = new MarketDescriptionDto(_apiMdHu);
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.NotNull(mdCacheItem);
@@ -337,8 +392,11 @@ public class VariantMarketDescriptionCacheMergeTests
         _apiMdHu.outcomes[0].name = string.Empty;
         _exampleVariantMarketDescriptionDtoHu = new MarketDescriptionDto(_apiMdHu);
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.NotNull(mdCacheItem);
@@ -353,8 +411,11 @@ public class VariantMarketDescriptionCacheMergeTests
         _apiMdHu.outcomes[0].id += "test";
         _exampleVariantMarketDescriptionDtoHu = new MarketDescriptionDto(_apiMdHu);
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.Equal(_apiMdEn.outcomes.Length, mdCacheItem.Outcomes.Count);
@@ -370,8 +431,11 @@ public class VariantMarketDescriptionCacheMergeTests
         var logCache = _testLoggerFactory.GetOrCreateLogger(typeof(Cache));
         var logExec = _testLoggerFactory.GetOrCreateLogger(typeof(VariantMarketDescriptionCache));
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.Empty(logCache.Messages);
@@ -388,8 +452,11 @@ public class VariantMarketDescriptionCacheMergeTests
         _apiMdHu.mappings = new[] { new mappingsMapping { product_id = 5, product_ids = "5", sport_id = "sr:sport:21", market_id = "61" } };
         _exampleVariantMarketDescriptionDtoHu = new MarketDescriptionDto(_apiMdHu);
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.Null(mdCacheItem.Mappings);
@@ -404,8 +471,11 @@ public class VariantMarketDescriptionCacheMergeTests
         var logCache = _testLoggerFactory.GetOrCreateLogger(typeof(Cache));
         var logExec = _testLoggerFactory.GetOrCreateLogger(typeof(VariantMarketDescriptionCache));
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.Empty(logCache.Messages);
@@ -423,8 +493,11 @@ public class VariantMarketDescriptionCacheMergeTests
         var logCache = _testLoggerFactory.GetOrCreateLogger(typeof(Cache));
         var logExec = _testLoggerFactory.GetOrCreateLogger(typeof(VariantMarketDescriptionCache));
 
-        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"), _exampleVariantMarketDescriptionDtoHu, _cultures[2],
-            DtoType.MarketDescription, null);
+        var isSuccess = await _variantMarketDescriptionCache.CacheAddDtoAsync(Urn.Parse($"sr:markets:{_exampleVariantMarketDescriptionDtoHu.Id}"),
+                                                                              _exampleVariantMarketDescriptionDtoHu,
+                                                                              _cultures[2],
+                                                                              DtoType.MarketDescription,
+                                                                              null);
 
         Assert.True(isSuccess);
         Assert.NotNull(mdCacheItem);

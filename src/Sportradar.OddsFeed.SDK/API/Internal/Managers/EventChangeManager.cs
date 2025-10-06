@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Concurrent;
@@ -17,6 +17,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Enums;
 using DateTime = System.DateTime;
+
 // ReSharper disable InconsistentlySynchronizedField
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
@@ -202,8 +203,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                         {
                             LogExec.LogInformation("Invoking GetFixtureChanges. After={After}", LastFixtureChange);
                             changes = _sportDataProvider
-                                .GetFixtureChangesAsync(LastFixtureChange, null, _config.DefaultLanguage).GetAwaiter()
-                                .GetResult();
+                                     .GetFixtureChangesAsync(LastFixtureChange, null, _config.DefaultLanguage)
+                                     .GetAwaiter()
+                                     .GetResult();
                         }
 
                         changes = changes.OrderBy(o => o.UpdateTime);
@@ -216,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                             }
 
                             var eventUpdate = _eventUpdates.FirstOrDefault(a =>
-                                a.Key.SportEventId.Equals(fixtureChange.SportEventId));
+                                                                               a.Key.SportEventId.Equals(fixtureChange.SportEventId));
                             if (eventUpdate.Key != null)
                             {
                                 if (fixtureChange.UpdateTime > eventUpdate.Key.UpdateTime)
@@ -232,9 +234,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
                             _sportEventCache.CacheDeleteItem(fixtureChange.SportEventId, CacheItemType.All);
                             var sportEvent = _sportDataProvider.GetSportEventForEventChange(fixtureChange.SportEventId);
-                            _eventUpdates.TryAdd(
-                                new EventChangeEventArgs(fixtureChange.SportEventId, fixtureChange.UpdateTime,
-                                    sportEvent), true);
+                            _eventUpdates.TryAdd(new EventChangeEventArgs(fixtureChange.SportEventId,
+                                                                          fixtureChange.UpdateTime,
+                                                                          sportEvent),
+                                                 true);
                             UpdateLastFixtureChange(fixtureChange.UpdateTime);
                         }
 
@@ -279,15 +282,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                         if (LastResultChange < DateTime.Now.AddDays(-1))
                         {
                             LogExec.LogInformation("Invoking GetResultChanges. After=null");
-                            changes = _sportDataProvider.GetResultChangesAsync(_config.DefaultLanguage).GetAwaiter()
-                                .GetResult();
+                            changes = _sportDataProvider.GetResultChangesAsync(_config.DefaultLanguage)
+                                                        .GetAwaiter()
+                                                        .GetResult();
                         }
                         else
                         {
                             LogExec.LogInformation("Invoking GetResultChanges. After={After}", LastResultChange);
                             changes = _sportDataProvider
-                                .GetResultChangesAsync(LastResultChange, null, _config.DefaultLanguage).GetAwaiter()
-                                .GetResult();
+                                     .GetResultChangesAsync(LastResultChange, null, _config.DefaultLanguage)
+                                     .GetAwaiter()
+                                     .GetResult();
                         }
 
                         changes = changes.OrderBy(o => o.UpdateTime);
@@ -300,7 +305,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                             }
 
                             var eventUpdate = _eventUpdates.FirstOrDefault(a =>
-                                a.Key.SportEventId.Equals(resultChange.SportEventId));
+                                                                               a.Key.SportEventId.Equals(resultChange.SportEventId));
                             if (eventUpdate.Key != null)
                             {
                                 if (resultChange.UpdateTime > eventUpdate.Key.UpdateTime)
@@ -316,9 +321,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
 
                             _sportEventCache.CacheDeleteItem(resultChange.SportEventId, CacheItemType.All);
                             var sportEvent = _sportDataProvider.GetSportEventForEventChange(resultChange.SportEventId);
-                            _eventUpdates.TryAdd(
-                                new EventChangeEventArgs(resultChange.SportEventId, resultChange.UpdateTime,
-                                    sportEvent), false);
+                            _eventUpdates.TryAdd(new EventChangeEventArgs(resultChange.SportEventId,
+                                                                          resultChange.UpdateTime,
+                                                                          sportEvent),
+                                                 false);
                             UpdateLastResultChange(resultChange.UpdateTime);
                         }
 
@@ -364,10 +370,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 try
                 {
                     LogInt.LogDebug("Dispatching {ChangeType} change [{UpdatesCount}] for {EventId}. Updated={UpdateTime}",
-                        updateStr,
-                        _eventUpdates.Count.ToString(CultureInfo.InvariantCulture),
-                        eventUpdate.Key.SportEventId,
-                        eventUpdate.Key.UpdateTime.ToString(CultureInfo.InvariantCulture));
+                                    updateStr,
+                                    _eventUpdates.Count.ToString(CultureInfo.InvariantCulture),
+                                    eventUpdate.Key.SportEventId,
+                                    eventUpdate.Key.UpdateTime.ToString(CultureInfo.InvariantCulture));
                     if (eventUpdate.Value)
                     {
                         FixtureChange?.Invoke(this, eventUpdate.Key);

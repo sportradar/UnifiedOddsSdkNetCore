@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest
         /// Gets the timeline event identifier
         /// </summary>
         /// <value>The id of timeline event</value>
-        int Id { get; }
+        long Id { get; }
         /// <summary>
         /// Gets the home score
         /// </summary>

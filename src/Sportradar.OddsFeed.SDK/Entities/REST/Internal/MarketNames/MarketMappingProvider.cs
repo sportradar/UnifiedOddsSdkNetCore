@@ -1,4 +1,3 @@
-﻿
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
@@ -172,7 +171,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
                     }
                 }
 
-                CacheLog.LogInformation("MarketId:{MarketId}, producer:{ProducerId}, sportId:{SportId}, specifiers={MarketSpecifiers} has multiple mappings [{MappingsCount}]", _marketId, _producerId, _sportId.Id, SdkInfo.SpecifiersKeysToString(marketDescription.Specifiers), mappings.Count);
+                CacheLog.LogInformation("MarketId:{MarketId}, producer:{ProducerId}, sportId:{SportId}, specifiers={MarketSpecifiers} has multiple mappings [{MappingsCount}]",
+                                        _marketId,
+                                        _producerId,
+                                        _sportId.Id,
+                                        SdkInfo.SpecifiersKeysToString(marketDescription.Specifiers),
+                                        mappings.Count);
                 var i = 0;
                 foreach (var mapping in mappings)
                 {
@@ -243,8 +247,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             Guard.Argument(message, nameof(message)).NotNull().NotEmpty();
 
             var sb = new StringBuilder("An error occurred while generating the mappedId for item=[");
-            sb.Append(" MarketId=").Append(_marketId)
-              .Append(", Specifiers=[").Append(SpecifiersString).Append("]");
+            sb.Append(" MarketId=")
+              .Append(_marketId)
+              .Append(", Specifiers=[")
+              .Append(SpecifiersString)
+              .Append("]");
 
             if (!string.IsNullOrEmpty(propertyName))
             {
@@ -384,8 +391,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
 
             return !resultMappedOutcomes.Any()
-                ? null
-                : resultMappedOutcomes;
+                       ? null
+                       : resultMappedOutcomes;
         }
     }
 }

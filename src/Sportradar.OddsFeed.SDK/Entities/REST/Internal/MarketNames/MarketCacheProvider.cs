@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -49,9 +49,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <param name="variantDescriptionListCache">A <see cref="IVariantDescriptionsCache"/> used to cache variant descriptions</param>
         /// <param name="logger">The execution logger</param>
         public MarketCacheProvider(IMarketDescriptionsCache invariantMarketsCache,
-            IMarketDescriptionCache variantDescriptionSingleCache,
-            IVariantDescriptionsCache variantDescriptionListCache,
-            ILogger<MarketCacheProvider> logger)
+                                   IMarketDescriptionCache variantDescriptionSingleCache,
+                                   IVariantDescriptionsCache variantDescriptionListCache,
+                                   ILogger<MarketCacheProvider> logger)
         {
             Guard.Argument(invariantMarketsCache, nameof(invariantMarketsCache)).NotNull();
             Guard.Argument(variantDescriptionSingleCache, nameof(variantDescriptionSingleCache)).NotNull();
@@ -74,9 +74,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         /// <returns>A <see cref="IMarketDescription" /> instance describing the specified markets</returns>
         /// <exception cref="CacheItemNotFoundException">The requested key was not found in the cache and could not be loaded</exception>
         public async Task<IMarketDescription> GetMarketDescriptionAsync(int marketId,
-            IReadOnlyDictionary<string, string> specifiers,
-            IReadOnlyCollection<CultureInfo> cultures,
-            bool fetchVariantDescriptions)
+                                                                        IReadOnlyDictionary<string, string> specifiers,
+                                                                        IReadOnlyCollection<CultureInfo> cultures,
+                                                                        bool fetchVariantDescriptions)
         {
             IMarketDescription marketDescriptor;
             try
@@ -127,8 +127,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             return marketDescriptor;
         }
 
-        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription,
-            string variantValue)
+        private async Task<IMarketDescription> ProvideFullVariantListEndpointMarketAsync(int marketId,
+                                                                                         IReadOnlyCollection<CultureInfo> cultures,
+                                                                                         IMarketDescription marketDescription,
+                                                                                         string variantValue)
         {
             var languages = string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
             try
@@ -172,15 +174,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception e)
             {
-                _executionLog.LogWarning(e, "There was an error providing the variant market description -> marketId:{MdId}, variantValue: {MdVariant}, langs: [{Languages}]", marketId, variantValue,
-                    languages);
+                _executionLog.LogWarning(e,
+                                         "There was an error providing the variant market description -> marketId:{MdId}, variantValue: {MdVariant}, langs: [{Languages}]",
+                                         marketId,
+                                         variantValue,
+                                         languages);
             }
 
             return null;
         }
 
-        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId, IReadOnlyCollection<CultureInfo> cultures, IMarketDescription marketDescription,
-            string variantValue)
+        private async Task<IMarketDescription> ProvideDynamicVariantEndpointMarketAsync(int marketId,
+                                                                                        IReadOnlyCollection<CultureInfo> cultures,
+                                                                                        IMarketDescription marketDescription,
+                                                                                        string variantValue)
         {
             IMarketDescription variantDescription = null;
             var languagesString = string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
@@ -190,8 +197,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             }
             catch (Exception e)
             {
-                _executionLog.LogError(e, "There was an error providing the explicit variant market description -> marketId:{MdId}, variantValue: {MdVariant}, langs: [{Languages}]", marketId,
-                    variantValue, languagesString);
+                _executionLog.LogError(e,
+                                       "There was an error providing the explicit variant market description -> marketId:{MdId}, variantValue: {MdVariant}, langs: [{Languages}]",
+                                       marketId,
+                                       variantValue,
+                                       languagesString);
             }
 
             if (variantDescription == null)

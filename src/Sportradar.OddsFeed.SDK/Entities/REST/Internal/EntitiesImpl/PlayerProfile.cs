@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}" /> containing player nationality in different languages
         /// </summary>
-        public IReadOnlyDictionary<CultureInfo, string> Nationalities => new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => _playerProfileCacheItem.GetNationality(c) != null).ToDictionary(c => c, _playerProfileCacheItem.GetNationality));
+        public IReadOnlyDictionary<CultureInfo, string> Nationalities =>
+            new ReadOnlyDictionary<CultureInfo, string>(_cultures.Where(c => _playerProfileCacheItem.GetNationality(c) != null).ToDictionary(c => c, _playerProfileCacheItem.GetNationality));
 
         /// <summary>
         /// Gets the gender
@@ -88,8 +89,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public string GetNationality(CultureInfo culture)
         {
             return Nationalities.ContainsKey(culture)
-                ? Nationalities[culture]
-                : null;
+                       ? Nationalities[culture]
+                       : null;
         }
 
         /// <summary>
@@ -109,8 +110,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         {
             var defaultCulture = new CultureInfo("en");
             var nationality = Nationalities.ContainsKey(defaultCulture)
-                ? Nationalities[defaultCulture]
-                : Nationalities.Values.FirstOrDefault();
+                                  ? Nationalities[defaultCulture]
+                                  : Nationalities.Values.FirstOrDefault();
             return $"{base.PrintC()}, Nationality={nationality}";
         }
 

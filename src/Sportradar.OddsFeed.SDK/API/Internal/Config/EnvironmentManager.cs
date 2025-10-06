@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -27,18 +27,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         static EnvironmentManager()
         {
             var basicRetryList = new List<SdkEnvironment>
-                            {
-                                SdkEnvironment.Integration,
-                                SdkEnvironment.Production
-                            };
+                                     {
+                                         SdkEnvironment.Integration,
+                                         SdkEnvironment.Production
+                                     };
             EnvironmentSettings = new List<EnvironmentSetting>
-                  {
-                      new EnvironmentSetting(SdkEnvironment.Production, "mq.betradar.com", "api.betradar.com", true, new List<SdkEnvironment> {SdkEnvironment.Integration}),
-                      new EnvironmentSetting(SdkEnvironment.Integration, "stgmq.betradar.com", "stgapi.betradar.com", true, new List<SdkEnvironment> {SdkEnvironment.Production}),
-                      new EnvironmentSetting(SdkEnvironment.Replay, "replaymq.betradar.com", "stgapi.betradar.com", true, basicRetryList),
-                      new EnvironmentSetting(SdkEnvironment.GlobalProduction, "global.mq.betradar.com", "global.api.betradar.com", true, basicRetryList),
-                      new EnvironmentSetting(SdkEnvironment.GlobalIntegration, "global.stgmq.betradar.com", "global.stgapi.betradar.com", true, basicRetryList),
-                  };
+                                      {
+                                          new EnvironmentSetting(SdkEnvironment.Production, "mq.betradar.com", "api.betradar.com", true, new List<SdkEnvironment> { SdkEnvironment.Integration }),
+                                          new EnvironmentSetting(SdkEnvironment.Integration, "stgmq.betradar.com", "stgapi.betradar.com", true, new List<SdkEnvironment> { SdkEnvironment.Production }),
+                                          new EnvironmentSetting(SdkEnvironment.Replay, "replaymq.betradar.com", "stgapi.betradar.com", true, basicRetryList),
+                                          new EnvironmentSetting(SdkEnvironment.GlobalProduction, "global.mq.betradar.com", "global.api.betradar.com", true, basicRetryList),
+                                          new EnvironmentSetting(SdkEnvironment.GlobalIntegration, "global.stgmq.betradar.com", "global.stgapi.betradar.com", true, basicRetryList),
+                                      };
         }
 
         /// <summary>

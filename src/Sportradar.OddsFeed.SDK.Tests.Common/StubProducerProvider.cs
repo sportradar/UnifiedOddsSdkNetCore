@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -46,15 +46,15 @@ internal class StubProducerProvider : IDataProvider<producers>
     private static producers GetProducers()
     {
         var producerList = new List<producer>
-        {
-            LoadProducer(1, "LO", "Live Odds", "https://stgapi.betradar.com/v1/liveodds/", true, "live", 600),
-            LoadProducer(3, "Ctrl", "Betradar Ctrl", "https://stgapi.betradar.com/v1/pre/", true, "prematch", 4320),
-            LoadProducer(4, "BetPal", "BetPal", "https://stgapi.betradar.com/v1/betpal/", true, "live", 4320),
-            LoadProducer(5, "PremiumCricket", "Premium Cricket", "https://stgapi.betradar.com/v1/premium_cricket/", true, "live|prematch", 4320),
-            LoadProducer(6, "VF", "Virtual football", "https://stgapi.betradar.com/v1/vf/", true, "virtual", 180),
-            LoadProducer(7, "WNS", "Numbers Betting", "https://stgapi.betradar.com/v1/wns/", true, "prematch", 4320),
-            LoadProducer(8, "VBL", "Virtual Basketball League", "https://stgapi.betradar.com/v1/vbl/", false, "virtual", 180)
-        };
+                               {
+                                   LoadProducer(1, "LO", "Live Odds", "https://stgapi.betradar.com/v1/liveodds/", true, "live", 600),
+                                   LoadProducer(3, "Ctrl", "Betradar Ctrl", "https://stgapi.betradar.com/v1/pre/", true, "prematch", 4320),
+                                   LoadProducer(4, "BetPal", "BetPal", "https://stgapi.betradar.com/v1/betpal/", true, "live", 4320),
+                                   LoadProducer(5, "PremiumCricket", "Premium Cricket", "https://stgapi.betradar.com/v1/premium_cricket/", true, "live|prematch", 4320),
+                                   LoadProducer(6, "VF", "Virtual football", "https://stgapi.betradar.com/v1/vf/", true, "virtual", 180),
+                                   LoadProducer(7, "WNS", "Numbers Betting", "https://stgapi.betradar.com/v1/wns/", true, "prematch", 4320),
+                                   LoadProducer(8, "VBL", "Virtual Basketball League", "https://stgapi.betradar.com/v1/vbl/", false, "virtual", 180)
+                               };
 
         var resultProducers = new producers
         {

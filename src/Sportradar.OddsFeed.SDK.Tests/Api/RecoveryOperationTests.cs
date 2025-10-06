@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Net;
@@ -31,23 +31,23 @@ public class RecoveryOperationTests
 
         _recoveryRequestIssuerMock = new Mock<IRecoveryRequestIssuer>();
         _recoveryRequestIssuerMock.SetupSequence(arg => arg.RequestFullOddsRecoveryAsync(It.IsAny<IProducer>(), It.IsAny<int>()))
-            .ReturnsAsync(1)
-            .ReturnsAsync(2)
-            .ReturnsAsync(3)
-            .ReturnsAsync(4)
-            .ReturnsAsync(5)
-            .ReturnsAsync(6)
-            .ReturnsAsync(7)
-            .ReturnsAsync(8);
+                                  .ReturnsAsync(1)
+                                  .ReturnsAsync(2)
+                                  .ReturnsAsync(3)
+                                  .ReturnsAsync(4)
+                                  .ReturnsAsync(5)
+                                  .ReturnsAsync(6)
+                                  .ReturnsAsync(7)
+                                  .ReturnsAsync(8);
         _recoveryRequestIssuerMock.SetupSequence(arg => arg.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), It.IsAny<int>()))
-            .ReturnsAsync(1)
-            .ReturnsAsync(2)
-            .ReturnsAsync(3)
-            .ReturnsAsync(4)
-            .ReturnsAsync(5)
-            .ReturnsAsync(6)
-            .ReturnsAsync(7)
-            .ReturnsAsync(8);
+                                  .ReturnsAsync(1)
+                                  .ReturnsAsync(2)
+                                  .ReturnsAsync(3)
+                                  .ReturnsAsync(4)
+                                  .ReturnsAsync(5)
+                                  .ReturnsAsync(6)
+                                  .ReturnsAsync(7)
+                                  .ReturnsAsync(8);
     }
 
     [Fact]
@@ -375,8 +375,8 @@ public class RecoveryOperationTests
         var nodeId = 10;
         var recoveryRequestIssuerMock = new Mock<IRecoveryRequestIssuer>();
         recoveryRequestIssuerMock.SetupSequence(arg => arg.RequestRecoveryAfterTimestampAsync(It.IsAny<IProducer>(), It.IsAny<DateTime>(), It.IsAny<int>()))
-            .ThrowsAsync(new CommunicationException("request is forbidden", "some url", HttpStatusCode.Forbidden, null))
-            .ReturnsAsync(2);
+                                 .ThrowsAsync(new CommunicationException("request is forbidden", "some url", HttpStatusCode.Forbidden, null))
+                                 .ReturnsAsync(2);
         var operation = new RecoveryOperation(_liveProducer, recoveryRequestIssuerMock.Object, [MessageInterest.LiveMessagesOnly], nodeId);
 
         //initial fails with Forbidden status code
@@ -386,14 +386,14 @@ public class RecoveryOperationTests
         Assert.False(operation.IsRunning);
 
         var liveProducer = new Producer(_liveProducer.Id,
-            _liveProducer.Name,
-            _liveProducer.Description,
-            _liveProducer.ApiUrl,
-            _liveProducer.IsAvailable,
-            _liveProducer.MaxInactivitySeconds,
-            _liveProducer.MaxRecoveryTime,
-            "live",
-            _liveProducer.StatefulRecoveryWindow);
+                                        _liveProducer.Name,
+                                        _liveProducer.Description,
+                                        _liveProducer.ApiUrl,
+                                        _liveProducer.IsAvailable,
+                                        _liveProducer.MaxInactivitySeconds,
+                                        _liveProducer.MaxRecoveryTime,
+                                        "live",
+                                        _liveProducer.StatefulRecoveryWindow);
         // now it should allow to adjust timestamp
         liveProducer.SetLastTimestampBeforeDisconnect(TimeProviderAccessor.Current.Now - TimeSpan.FromMinutes(3200));
         operation.Start();

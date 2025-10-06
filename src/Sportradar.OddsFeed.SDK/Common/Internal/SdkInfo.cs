@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -359,8 +359,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public static string DictionaryToString(IDictionary<string, string> values)
         {
             return values.IsNullOrEmpty()
-                ? string.Empty
-                : string.Join(", ", values.Select(keyValuePair => keyValuePair.Key + "=" + keyValuePair.Value));
+                       ? string.Empty
+                       : string.Join(", ", values.Select(keyValuePair => keyValuePair.Key + "=" + keyValuePair.Value));
         }
 
         /// <summary>
@@ -650,8 +650,8 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         public static string ConvertCultures(ICollection<CultureInfo> cultures)
         {
             return cultures.IsNullOrEmpty()
-                ? string.Empty
-                : string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
+                       ? string.Empty
+                       : string.Join(",", cultures.Select(s => s.TwoLetterISOLanguageName));
         }
 
         /// <summary>

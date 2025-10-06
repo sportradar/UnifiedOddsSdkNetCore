@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -56,11 +56,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery
                 scheduledSpecified = false,
                 scheduled = DateTime.MinValue,
                 tournament = item?.sport == null
-                    ? null
-                    : new tournament
-                    {
-                        sport = item.sport
-                    }
+                                            ? null
+                                            : new tournament
+                                            {
+                                                sport = item.sport
+                                            }
             })
         {
             if (item == null)

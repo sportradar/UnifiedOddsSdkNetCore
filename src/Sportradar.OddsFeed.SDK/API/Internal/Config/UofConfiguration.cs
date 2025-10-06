@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -145,8 +145,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         {
             var apiConfig = (UofApiConfiguration)Api;
             apiConfig.Host = string.IsNullOrEmpty(section.ApiHost)
-                ? EnvironmentManager.GetApiHost(Environment)
-                : section.ApiHost;
+                                 ? EnvironmentManager.GetApiHost(Environment)
+                                 : section.ApiHost;
             if (section.ApiUseSsl != apiConfig.UseSsl)
             {
                 apiConfig.UseSsl = section.ApiUseSsl;
@@ -158,8 +158,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         {
             var rabbitConfig = (UofRabbitConfiguration)Rabbit;
             rabbitConfig.Host = string.IsNullOrEmpty(section.RabbitHost)
-                ? EnvironmentManager.GetMqHost(Environment)
-                : section.RabbitHost;
+                                    ? EnvironmentManager.GetMqHost(Environment)
+                                    : section.RabbitHost;
             if (section.RabbitPort > 0)
             {
                 rabbitConfig.Port = section.RabbitPort;
@@ -215,7 +215,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
             if (apiConfig.Host.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-                apiConfig.Host = apiConfig.Host.Substring(7);  //remove leading http://
+                apiConfig.Host = apiConfig.Host.Substring(7); //remove leading http://
                 apiConfig.UseSsl = false;
                 Api = apiConfig;
             }
@@ -260,31 +260,37 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         public override string ToString()
         {
             var languagesStr = Languages.IsNullOrEmpty()
-                ? string.Empty
-                : string.Join(",", Languages.Select(s => s.TwoLetterISOLanguageName));
+                                   ? string.Empty
+                                   : string.Join(",", Languages.Select(s => s.TwoLetterISOLanguageName));
             var sanitizedToken = SdkInfo.ClearSensitiveData(AccessToken);
             var bookmakerDetailsId = BookmakerDetails == null
-                ? "0"
-                : string.Intern(BookmakerDetails.BookmakerId.ToString(CultureInfo.InvariantCulture));
+                                         ? "0"
+                                         : string.Intern(BookmakerDetails.BookmakerId.ToString(CultureInfo.InvariantCulture));
 
             var summaryValues = new Dictionary<string, string>
-            {
-                { "AccessToken", sanitizedToken },
-                { "NodeId", NodeId.ToString(CultureInfo.InvariantCulture) },
-                { "DefaultLanguage", DefaultLanguage?.TwoLetterISOLanguageName },
-                { "Languages", languagesStr },
-                { "Environment", string.Intern(Environment.ToString()) },
-                { "ExceptionHandlingStrategy", string.Intern(ExceptionHandlingStrategy.ToString()) },
-                { "BookmakerId", bookmakerDetailsId }
-            };
+                                    {
+                                        { "AccessToken", sanitizedToken },
+                                        { "NodeId", NodeId.ToString(CultureInfo.InvariantCulture) },
+                                        { "DefaultLanguage", DefaultLanguage?.TwoLetterISOLanguageName },
+                                        { "Languages", languagesStr },
+                                        { "Environment", string.Intern(Environment.ToString()) },
+                                        { "ExceptionHandlingStrategy", string.Intern(ExceptionHandlingStrategy.ToString()) },
+                                        { "BookmakerId", bookmakerDetailsId }
+                                    };
 
             var sb = new StringBuilder();
-            sb.Append(", ").Append(Api)
-                .Append(", ").Append(Rabbit)
-                .Append(", ").Append(Cache)
-                .Append(", ").Append(Producer)
-                .Append(", ").Append(Additional)
-                .Append(", ").Append(Usage);
+            sb.Append(", ")
+              .Append(Api)
+              .Append(", ")
+              .Append(Rabbit)
+              .Append(", ")
+              .Append(Cache)
+              .Append(", ")
+              .Append(Producer)
+              .Append(", ")
+              .Append(Additional)
+              .Append(", ")
+              .Append(Usage);
 
             return "UofConfiguration{" + SdkInfo.DictionaryToString(summaryValues) + sb + "}";
         }

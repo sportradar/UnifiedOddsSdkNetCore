@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -38,8 +38,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet
             EventId = Urn.Parse(availableSelections.@event.id);
             var markets = availableSelections.@event.markets;
             Markets = markets != null
-                ? markets.Select(m => new MarketDto(m)).ToList()
-                : new List<MarketDto>();
+                          ? markets.Select(m => new MarketDto(m)).ToList()
+                          : new List<MarketDto>();
             GeneratedAt = availableSelections.generated_at;
         }
 

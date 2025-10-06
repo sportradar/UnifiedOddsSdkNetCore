@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -57,10 +57,10 @@ public class MatchStatisticsTests
         {
             name = "First Half",
             teams = new teamStatistics[]
-                                 {
-                                     new() { id = "sr:team:1", name = "Team A", statistics = new teamStatisticsStatistics { yellow_cards = "2", red_cards = "1", yellow_red_cards = "0", corner_kicks = "4" } },
-                                     new() { id = "sr:team:2", name = "Team B", statistics = new teamStatisticsStatistics { yellow_cards = "3", red_cards = "2", yellow_red_cards = "1", corner_kicks = "6" } }
-                                 }
+                                         {
+                                             new() { id = "sr:team:1", name = "Team A", statistics = new teamStatisticsStatistics { yellow_cards = "2", red_cards = "1", yellow_red_cards = "0", corner_kicks = "4" } },
+                                             new() { id = "sr:team:2", name = "Team B", statistics = new teamStatisticsStatistics { yellow_cards = "3", red_cards = "2", yellow_red_cards = "1", corner_kicks = "6" } }
+                                         }
         };
         var periodStatisticsDto = new List<PeriodStatisticsDto> { new(period, homeAwayCompetitors) };
 

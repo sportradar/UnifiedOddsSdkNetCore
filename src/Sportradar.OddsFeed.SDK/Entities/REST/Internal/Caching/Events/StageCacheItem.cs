@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,10 +52,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixtureDto timestamps</param>
         public StageCacheItem(Urn id,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo defaultCulture,
-                       ICacheStore<string> fixtureTimestampCacheStore)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCacheStore)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
         }
@@ -70,11 +70,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixtureDto timestamps</param>
         public StageCacheItem(StageDto eventSummary,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo currentCulture,
-                       CultureInfo defaultCulture,
-                       ICacheStore<string> fixtureTimestampCache)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo currentCulture,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCache)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(eventSummary, currentCulture, true);
@@ -90,11 +90,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixtureDto timestamps</param>
         public StageCacheItem(FixtureDto fixture,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo currentCulture,
-                       CultureInfo defaultCulture,
-                       ICacheStore<string> fixtureTimestampCache)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo currentCulture,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCache)
             : base(fixture, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(fixture, currentCulture, true);
@@ -110,11 +110,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixtureDto timestamps</param>
         public StageCacheItem(TournamentInfoDto tournamentSummary,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo currentCulture,
-                       CultureInfo defaultCulture,
-                       ICacheStore<string> fixtureTimestampCache)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo currentCulture,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCache)
             : base(tournamentSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(tournamentSummary, currentCulture, true);
@@ -129,20 +129,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixtureDto timestamps</param>
         public StageCacheItem(ExportableStage exportable,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo defaultCulture,
-                       ICacheStore<string> fixtureTimestampCacheStore)
+                              IDataRouterManager dataRouterManager,
+                              ISemaphorePool semaphorePool,
+                              CultureInfo defaultCulture,
+                              ICacheStore<string> fixtureTimestampCacheStore)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCacheStore)
         {
             _categoryId = string.IsNullOrEmpty(exportable.CategoryId) ? null : Urn.Parse(exportable.CategoryId);
             _parentStageId = string.IsNullOrEmpty(exportable.ParentStageId)
-                ? null
-                : Urn.Parse(exportable.ParentStageId);
+                                 ? null
+                                 : Urn.Parse(exportable.ParentStageId);
             _childStages = exportable.ChildStages?.Select(Urn.Parse);
             _additionalParentIds = exportable.AdditionalParentIds.IsNullOrEmpty()
-                ? null
-                : exportable.AdditionalParentIds.Select(Urn.Parse).ToList();
+                                       ? null
+                                       : exportable.AdditionalParentIds.Select(Urn.Parse).ToList();
         }
 
         /// <summary>

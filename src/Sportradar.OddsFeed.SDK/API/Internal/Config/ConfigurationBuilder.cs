@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -16,10 +16,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
         /// <param name="producersProvider">Provider for available producers</param>
         public ConfigurationBuilder(UofConfiguration configuration,
-            IUofConfigurationSectionProvider sectionProvider,
-            SdkEnvironment environment,
-            IBookmakerDetailsProvider bookmakerDetailsProvider,
-            IProducersProvider producersProvider)
+                                    IUofConfigurationSectionProvider sectionProvider,
+                                    SdkEnvironment environment,
+                                    IBookmakerDetailsProvider bookmakerDetailsProvider,
+                                    IProducersProvider producersProvider)
             : base(configuration, sectionProvider, bookmakerDetailsProvider, producersProvider)
         {
             UofConfiguration.UpdateSdkEnvironment(environment);

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -67,8 +67,7 @@ public class ScheduleData
 
     public readonly TestSportEntityFactoryBuilder SportEntityFactoryBuilder;
     public readonly TestCacheStoreManager TestCacheStoreManager;
-    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")]
-    private readonly ITestOutputHelper _outputHelper;
+    [SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Allowed")] private readonly ITestOutputHelper _outputHelper;
     public readonly ExceptionHandlingStrategy ThrowingStrategy;
 
     public readonly IMatch Match;
@@ -100,18 +99,23 @@ public class ScheduleData
         var matchDtoEn = XmlParseSummaryAsync(MatchId, CultureEn).GetAwaiter().GetResult();
         var matchDtoDe = XmlParseSummaryAsync(MatchId, CultureDe).GetAwaiter().GetResult();
         var matchDtoHu = XmlParseSummaryAsync(MatchId, CultureHu).GetAwaiter().GetResult();
-        var matchCi = new MatchCacheItem(matchDtoEn, SportEntityFactoryBuilder.DataRouterManager, new SemaphorePool(SdkInfo.SemaphorePoolSize, ThrowingStrategy), CultureEn, CultureEn, TestCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache));
+        var matchCi = new MatchCacheItem(matchDtoEn,
+                                         SportEntityFactoryBuilder.DataRouterManager,
+                                         new SemaphorePool(SdkInfo.SemaphorePoolSize, ThrowingStrategy),
+                                         CultureEn,
+                                         CultureEn,
+                                         TestCacheStoreManager.ServiceProvider.GetSdkCacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache));
         matchCi.Merge(matchDtoDe, CultureDe, false);
         matchCi.Merge(matchDtoHu, CultureHu, false);
 
         var homeCompetitor = GetTeamCompetitorFromCompetition(matchDtoEn.Competitors.First(),
-            matchDtoDe.Competitors.First(),
-            matchDtoHu.Competitors.First(),
-            matchCi);
+                                                              matchDtoDe.Competitors.First(),
+                                                              matchDtoHu.Competitors.First(),
+                                                              matchCi);
         var awayCompetitor = GetTeamCompetitorFromCompetition(matchDtoEn.Competitors.Skip(1).First(),
-            matchDtoDe.Competitors.Skip(1).First(),
-            matchDtoHu.Competitors.Skip(1).First(),
-            matchCi);
+                                                              matchDtoDe.Competitors.Skip(1).First(),
+                                                              matchDtoHu.Competitors.Skip(1).First(),
+                                                              matchCi);
         var coverageInfo = new CoverageInfo(matchCi.GetCoverageInfoAsync(Cultures3).GetAwaiter().GetResult());
         var delayedInfoCi = matchCi.GetDelayedInfoAsync(Cultures3).GetAwaiter().GetResult();
         var delayedInfo = delayedInfoCi == null ? null : new DelayedInfo(delayedInfoCi);
@@ -137,13 +141,13 @@ public class ScheduleData
         match.Setup(m => m.GetScheduledEndTimeAsync()).ReturnsAsync(matchCi.GetScheduledEndAsync().GetAwaiter().GetResult);
         match.Setup(m => m.GetVenueAsync()).ReturnsAsync(new Venue(matchCi.GetVenueAsync(Cultures3).GetAwaiter().GetResult(), Cultures3));
         match.Setup(s => s.GetTournamentAsync())
-            .ReturnsAsync(new Tournament(matchCi.GetTournamentIdAsync(Cultures3).GetAwaiter().GetResult(),
-                MatchSportId,
-                SportEntityFactoryBuilder.SportEntityFactory,
-                SportEntityFactoryBuilder.SportEventCache,
-                SportEntityFactoryBuilder.SportDataCache,
-                Cultures3,
-                ThrowingStrategy));
+             .ReturnsAsync(new Tournament(matchCi.GetTournamentIdAsync(Cultures3).GetAwaiter().GetResult(),
+                                          MatchSportId,
+                                          SportEntityFactoryBuilder.SportEntityFactory,
+                                          SportEntityFactoryBuilder.SportEventCache,
+                                          SportEntityFactoryBuilder.SportDataCache,
+                                          Cultures3,
+                                          ThrowingStrategy));
         match.Setup(m => m.GetSeasonAsync()).ReturnsAsync(new SeasonInfo(matchCi.GetSeasonAsync(Cultures3).GetAwaiter().GetResult()));
         return match.Object;
     }
@@ -161,9 +165,9 @@ public class ScheduleData
         for (var i = 0; i < competitorProfileDtoEn.Players.Count(); i++)
         {
             var player = GetPlayerFromCompetitorProfile(competitorProfileDtoEn.Players.ToList()[i],
-                competitorProfileDtoDe.Players.ToList()[i],
-                competitorProfileDtoHu.Players.ToList()[i],
-                competitorProfileCi.Id);
+                                                        competitorProfileDtoDe.Players.ToList()[i],
+                                                        competitorProfileDtoHu.Players.ToList()[i],
+                                                        competitorProfileCi.Id);
             players.Add(player);
         }
 

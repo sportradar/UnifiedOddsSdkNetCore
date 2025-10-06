@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -76,17 +76,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
 
             var newScope = _serviceProvider.CreateScope();
             Func<UofSession, IEnumerable<string>> func = GetSessionRoutingKeys;
-            var newSession = new UofSession(
-                newScope.ServiceProvider.GetService<IMessageReceiver>(),
-                newScope.ServiceProvider.GetService<CompositeMessageProcessor>(),
-                newScope.ServiceProvider.GetService<IFeedMessageMapper>(),
-                newScope.ServiceProvider.GetService<IFeedMessageValidator>(),
-                newScope.ServiceProvider.GetService<IMessageDataExtractor>(),
-                newScope.ServiceProvider.GetService<IDispatcherStore>(),
-                _msgInterest,
-                newScope.ServiceProvider.GetRequiredService<IUofConfiguration>().Languages,
-                func
-            );
+            var newSession = new UofSession(newScope.ServiceProvider.GetService<IMessageReceiver>(),
+                                            newScope.ServiceProvider.GetService<CompositeMessageProcessor>(),
+                                            newScope.ServiceProvider.GetService<IFeedMessageMapper>(),
+                                            newScope.ServiceProvider.GetService<IFeedMessageValidator>(),
+                                            newScope.ServiceProvider.GetService<IMessageDataExtractor>(),
+                                            newScope.ServiceProvider.GetService<IDispatcherStore>(),
+                                            _msgInterest,
+                                            newScope.ServiceProvider.GetRequiredService<IUofConfiguration>().Languages,
+                                            func);
             _sessions.Add(newSession);
             return newSession;
         }

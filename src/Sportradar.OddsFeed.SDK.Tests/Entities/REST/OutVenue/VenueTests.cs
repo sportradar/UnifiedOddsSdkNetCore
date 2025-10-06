@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
+using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Entities.CacheItems.InVenue;
 using Xunit;
@@ -18,26 +19,26 @@ public class VenueTests : VenueHelper
     [Fact]
     public void Constructor_CacheItemIsNull_ThrowArgumentNullException()
     {
-        Assert.Throws<ArgumentNullException>(() => new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(null, new List<CultureInfo> { TestData.Culture }));
+        Assert.Throws<ArgumentNullException>(() => new Venue(null, new List<CultureInfo> { TestData.Culture }));
     }
 
     [Fact]
     public void Constructor_CulturesIsNull_ThrowArgumentNullException()
     {
-        Assert.Throws<ArgumentNullException>(() => new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(GetSampleVenueCacheItem(), null));
+        Assert.Throws<ArgumentNullException>(() => new Venue(GetSampleVenueCacheItem(), null));
     }
 
     [Fact]
     public void Constructor_CulturesIsEmpty_ThrowArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(GetSampleVenueCacheItem(), new List<CultureInfo>()));
+        Assert.Throws<ArgumentException>(() => new Venue(GetSampleVenueCacheItem(), new List<CultureInfo>()));
     }
 
     [Fact]
     public void Constructor_ValidBaseParameters_InitializeCorrectly()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.NotNull(venue);
         Assert.Equal(venueCi.Id, venue.Id);
@@ -49,7 +50,7 @@ public class VenueTests : VenueHelper
     public void Constructor_ValidAdditionalParameters_InitializeCorrectly()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.Single(venue.Courses);
         Assert.Equal(9, venue.Courses.First().Holes.Count);
@@ -72,7 +73,7 @@ public class VenueTests : VenueHelper
         sapiVenue2.name = "Second Name";
         venueCi.Merge(new VenueDto(sapiVenue2), TestData.CultureNl);
 
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
 
         Assert.NotNull(venue);
         Assert.Equal(venueCi.Id, venue.Id);
@@ -92,7 +93,7 @@ public class VenueTests : VenueHelper
         sapiVenue2.name = "Second Name";
         venueCi.Merge(new VenueDto(sapiVenue2), TestData.CultureNl);
 
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.CultureNl });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.CultureNl });
 
         Assert.NotNull(venue);
         Assert.Equal(venueCi.Id, venue.Id);
@@ -109,7 +110,7 @@ public class VenueTests : VenueHelper
         sapiVenue.name = null;
         var venueCi = new VenueCacheItem(new VenueDto(sapiVenue), TestData.Culture);
 
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.NotNull(venue);
         Assert.Single(venue.Names);
@@ -123,7 +124,7 @@ public class VenueTests : VenueHelper
         sapiVenue.city_name = null;
         var venueCi = new VenueCacheItem(new VenueDto(sapiVenue), TestData.Culture);
 
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.NotNull(venue);
         Assert.Single(venue.Cities);
@@ -137,7 +138,7 @@ public class VenueTests : VenueHelper
         sapiVenue.country_name = null;
         var venueCi = new VenueCacheItem(new VenueDto(sapiVenue), TestData.Culture);
 
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.NotNull(venue);
         Assert.Single(venue.Countries);
@@ -148,7 +149,7 @@ public class VenueTests : VenueHelper
     public void GetName_CultureExists_ReturnsName()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.Equal(venueCi.GetName(TestData.Culture), venue.GetName(TestData.Culture));
     }
@@ -160,7 +161,7 @@ public class VenueTests : VenueHelper
         var sapiVenue2 = GenerateApiVenue(courseSize: 1);
         sapiVenue2.name = "Second Name";
         venueCi.Merge(new VenueDto(sapiVenue2), TestData.CultureNl);
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
 
         Assert.Equal(venueCi.GetName(TestData.Culture), venue.GetName(TestData.Culture));
         Assert.Equal(venueCi.GetName(TestData.CultureNl), venue.GetName(TestData.CultureNl));
@@ -170,7 +171,7 @@ public class VenueTests : VenueHelper
     [Fact]
     public void GetName_CultureDoesNotExist_ReturnsNull()
     {
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(GetSampleVenueCacheItem(), new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(GetSampleVenueCacheItem(), new List<CultureInfo> { TestData.Culture });
 
         var result = venue.GetName(TestData.CultureNl);
 
@@ -181,7 +182,7 @@ public class VenueTests : VenueHelper
     public void GetCity_CultureExists_ReturnsName()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.Equal(venueCi.GetCity(TestData.Culture), venue.GetCity(TestData.Culture));
     }
@@ -193,7 +194,7 @@ public class VenueTests : VenueHelper
         var sapiVenue2 = GenerateApiVenue(courseSize: 1);
         sapiVenue2.city_name = "Second Name";
         venueCi.Merge(new VenueDto(sapiVenue2), TestData.CultureNl);
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
 
         Assert.Equal(venueCi.GetCity(TestData.Culture), venue.GetCity(TestData.Culture));
         Assert.Equal(venueCi.GetCity(TestData.CultureNl), venue.GetCity(TestData.CultureNl));
@@ -203,7 +204,7 @@ public class VenueTests : VenueHelper
     [Fact]
     public void GetCity_CultureDoesNotExist_ReturnsNull()
     {
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(GetSampleVenueCacheItem(), new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(GetSampleVenueCacheItem(), new List<CultureInfo> { TestData.Culture });
 
         var result = venue.GetCity(TestData.CultureNl);
 
@@ -214,7 +215,7 @@ public class VenueTests : VenueHelper
     public void GetCountry_CultureExists_ReturnsName()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.Equal(venueCi.GetCountry(TestData.Culture), venue.GetCountry(TestData.Culture));
     }
@@ -226,7 +227,7 @@ public class VenueTests : VenueHelper
         var sapiVenue2 = GenerateApiVenue(courseSize: 1);
         sapiVenue2.country_name = "Second Name";
         venueCi.Merge(new VenueDto(sapiVenue2), TestData.CultureNl);
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture, TestData.CultureNl });
 
         Assert.Equal(venueCi.GetCountry(TestData.Culture), venue.GetCountry(TestData.Culture));
         Assert.Equal(venueCi.GetCountry(TestData.CultureNl), venue.GetCountry(TestData.CultureNl));
@@ -236,7 +237,7 @@ public class VenueTests : VenueHelper
     [Fact]
     public void GetCountry_CultureDoesNotExist_ReturnsNull()
     {
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(GetSampleVenueCacheItem(), new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(GetSampleVenueCacheItem(), new List<CultureInfo> { TestData.Culture });
 
         var result = venue.GetCountry(TestData.CultureNl);
 
@@ -247,7 +248,7 @@ public class VenueTests : VenueHelper
     public void PrintI_ReturnsExpectedString()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         var result = venue.ToString("I");
 
@@ -258,7 +259,7 @@ public class VenueTests : VenueHelper
     public void PrintC_ReturnsExpectedString()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         var result = venue.ToString("C");
 
@@ -270,7 +271,7 @@ public class VenueTests : VenueHelper
     public void PrintF_ReturnsExpectedString()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         var result = venue.ToString("F");
 
@@ -283,7 +284,7 @@ public class VenueTests : VenueHelper
     public void PrintJ_ValidCourse_ReturnsCorrectString()
     {
         var venueCi = GetSampleVenueCacheItem();
-        var venue = new SDK.Entities.Rest.Internal.EntitiesImpl.Venue(venueCi, new List<CultureInfo> { TestData.Culture });
+        var venue = new Venue(venueCi, new List<CultureInfo> { TestData.Culture });
 
         Assert.Throws<InvalidDataContractException>(() => venue.ToString("J"));
     }

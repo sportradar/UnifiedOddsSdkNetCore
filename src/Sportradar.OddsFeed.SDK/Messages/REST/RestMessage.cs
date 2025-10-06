@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 // ReSharper disable InconsistentNaming
 
@@ -268,6 +268,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest
     public partial class CalculationResponseType : RestMessage
     {
     }
+
     public partial class FilteredCalculationResponseType : RestMessage
     {
     }

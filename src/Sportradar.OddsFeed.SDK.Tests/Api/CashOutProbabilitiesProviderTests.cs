@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -76,25 +76,24 @@ public abstract class CashOutProbabilitiesProviderTests : AutoMockerUnitTest
         };
 
         private readonly CashOutProbabilities<SportEvent> _cashOutProbabilities =
-            new CashOutProbabilities<SportEvent>(
-                new Mock<IMessageTimestamp>().Object,
-                new Mock<IProducer>().Object,
-                new SportEvent(),
-                0,
-                0,
-                null,
-                new Mock<INamedValuesProvider>().Object,
-                Array.Empty<byte>());
+            new CashOutProbabilities<SportEvent>(new Mock<IMessageTimestamp>().Object,
+                                                 new Mock<IProducer>().Object,
+                                                 new SportEvent(),
+                                                 0,
+                                                 0,
+                                                 null,
+                                                 new Mock<INamedValuesProvider>().Object,
+                                                 Array.Empty<byte>());
 
         public WhenGetCashOutProbabilitiesIsSuccessful()
         {
             Mocker.GetMock<IDataProvider<cashout>>()
-                .Setup(x => x.GetDataAsync(It.IsAny<string>()))
-                .ReturnsAsync(_cashout);
+                  .Setup(x => x.GetDataAsync(It.IsAny<string>()))
+                  .ReturnsAsync(_cashout);
 
             Mocker.GetMock<IFeedMessageMapper>()
-                .Setup(x => x.MapCashOutProbabilities<SportEvent>(_cashout, It.IsAny<IEnumerable<CultureInfo>>(), It.IsAny<byte[]>()))
-                .Returns(_cashOutProbabilities);
+                  .Setup(x => x.MapCashOutProbabilities<SportEvent>(_cashout, It.IsAny<IEnumerable<CultureInfo>>(), It.IsAny<byte[]>()))
+                  .Returns(_cashOutProbabilities);
         }
 
         [Fact]
@@ -112,8 +111,8 @@ public abstract class CashOutProbabilitiesProviderTests : AutoMockerUnitTest
         public WhenGetCashOutProbabilitiesReturnsNull()
         {
             Mocker.GetMock<IDataProvider<cashout>>()
-                .Setup(x => x.GetDataAsync(It.IsAny<string>()))
-                .ReturnsAsync((cashout)null);
+                  .Setup(x => x.GetDataAsync(It.IsAny<string>()))
+                  .ReturnsAsync((cashout)null);
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -133,16 +133,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(matchSummary, nameof(matchSummary)).NotNull();
 
             Conditions = matchSummary.sport_event_conditions == null
-                ? Conditions
-                : new SportEventConditionsDto(matchSummary.sport_event_conditions);
+                             ? Conditions
+                             : new SportEventConditionsDto(matchSummary.sport_event_conditions);
 
             SportEventStatus = matchSummary.sport_event_status == null
-                ? null
-                : new SportEventStatusDto(matchSummary.sport_event_status, matchSummary.statistics, HomeAwayCompetitors);
+                                   ? null
+                                   : new SportEventStatusDto(matchSummary.sport_event_status, matchSummary.statistics, HomeAwayCompetitors);
 
             Venue = matchSummary.sport_event_conditions?.venue == null
-                ? Venue
-                : new VenueDto(matchSummary.sport_event_conditions.venue);
+                        ? Venue
+                        : new VenueDto(matchSummary.sport_event_conditions.venue);
 
             if (Venue == null && matchSummary.venue != null)
             {
@@ -164,8 +164,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(stageSummary, nameof(stageSummary)).NotNull();
 
             SportEventStatus = stageSummary.sport_event_status == null
-                ? null
-                : new SportEventStatusDto(stageSummary.sport_event_status);
+                                   ? null
+                                   : new SportEventStatusDto(stageSummary.sport_event_status);
 
             GeneratedAt = stageSummary.generated_atSpecified
                               ? stageSummary.generated_at.ToLocalTime()

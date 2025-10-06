@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -49,7 +49,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// Initializes a new instance of the <see cref="EventPlayerCacheItem"/> class.
         /// </summary>
         /// <param name="exportable">A <see cref="ExportableBase"/> representing the cache item</param>
-        public EventPlayerCacheItem(ExportableEventPlayer exportable) : base(exportable)
+        public EventPlayerCacheItem(ExportableEventPlayer exportable)
+            : base(exportable)
         {
             Bench = exportable.Bench;
             Method = exportable.Method;
@@ -60,7 +61,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
         /// </summary>
         /// <param name="id">A <see cref="Urn"/> representing the id of the item</param>
         /// <param name="name">The name of the item</param>
-        protected EventPlayerCacheItem(Urn id, IDictionary<CultureInfo, string> name) : base(id, name)
+        protected EventPlayerCacheItem(Urn id, IDictionary<CultureInfo, string> name)
+            : base(id, name)
         {
         }
 

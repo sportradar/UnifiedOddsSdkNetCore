@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -55,10 +55,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public LotteryCacheItem(Urn id,
-                         IDataRouterManager dataRouterManager,
-                         ISemaphorePool semaphorePool,
-                         CultureInfo defaultCulture,
-                         ICacheStore<string> fixtureTimestampCache)
+                                IDataRouterManager dataRouterManager,
+                                ISemaphorePool semaphorePool,
+                                CultureInfo defaultCulture,
+                                ICacheStore<string> fixtureTimestampCache)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _scheduleFetched = false;
@@ -75,11 +75,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">The default culture</param>
         /// <param name="fixtureTimestampCacheStore">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public LotteryCacheItem(LotteryDto eventSummary,
-                         IDataRouterManager dataRouterManager,
-                         ISemaphorePool semaphorePool,
-                         CultureInfo currentCulture,
-                         CultureInfo defaultCulture,
-                         ICacheStore<string> fixtureTimestampCacheStore)
+                                IDataRouterManager dataRouterManager,
+                                ISemaphorePool semaphorePool,
+                                CultureInfo currentCulture,
+                                CultureInfo defaultCulture,
+                                ICacheStore<string> fixtureTimestampCacheStore)
             : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCacheStore)
         {
             Guard.Argument(eventSummary, nameof(eventSummary)).NotNull();
@@ -100,10 +100,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
         /// <param name="fixtureTimestampCache">A <see cref="ICacheStore{T}"/> used to cache the sport events fixture timestamps</param>
         public LotteryCacheItem(ExportableLottery exportable,
-            IDataRouterManager dataRouterManager,
-            ISemaphorePool semaphorePool,
-            CultureInfo defaultCulture,
-            ICacheStore<string> fixtureTimestampCache)
+                                IDataRouterManager dataRouterManager,
+                                ISemaphorePool semaphorePool,
+                                CultureInfo defaultCulture,
+                                ICacheStore<string> fixtureTimestampCache)
             : base(exportable, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
             _scheduleFetched = false;

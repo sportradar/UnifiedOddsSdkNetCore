@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -37,11 +37,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Extensions
 
             foreach (var outcomeProblem in mergeResult.GetOutcomeProblem())
             {
-                logger.LogWarning(
-                    "Could not merge outcome[Id={MdOutcomeId}] for lang={Language} on marketDescription[Id={MdId}] because the specified outcome does not exist on stored market description",
-                    outcomeProblem,
-                    culture.TwoLetterISOLanguageName,
-                    mdDto.Id);
+                logger.LogWarning("Could not merge outcome[Id={MdOutcomeId}] for lang={Language} on marketDescription[Id={MdId}] because the specified outcome does not exist on stored market description",
+                                  outcomeProblem,
+                                  culture.TwoLetterISOLanguageName,
+                                  mdDto.Id);
             }
         }
 
@@ -55,11 +54,10 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Extensions
 
             foreach (var mappingProblem in mergeResult.GetMappingProblem())
             {
-                logger.LogWarning(
-                    "Could not merge mapping[MarketId={MdMappingType}] for lang={Language} on marketDescription[Id={MdId}] because the specified mapping does not exist on stored market description",
-                    mappingProblem,
-                    culture.TwoLetterISOLanguageName,
-                    mdDto.Id);
+                logger.LogWarning("Could not merge mapping[MarketId={MdMappingType}] for lang={Language} on marketDescription[Id={MdId}] because the specified mapping does not exist on stored market description",
+                                  mappingProblem,
+                                  culture.TwoLetterISOLanguageName,
+                                  mdDto.Id);
             }
         }
 
@@ -71,16 +69,27 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Extensions
             var specs = mdCacheItem.Specifiers == null ? null : string.Join(", ", mdCacheItem.Specifiers.Select(s => s.Name));
             var outcomes = mdCacheItem.Outcomes == null ? null : string.Join(",", mdCacheItem.Outcomes.Select(s => s.Id));
             var maps = mdCacheItem.Mappings == null ? null : string.Join(",", mdCacheItem.Mappings.Select(s => s.MarketTypeId));
-            logger.LogDebug(
-                "Original Id={MdId}, Names=[{MdNames}], Descriptions=[{MdDescription}], Variant=[{MdVariant}], Specifiers=[{MdSpecifiers}], Outcomes=[{MdOutcomes}], Mappings=[{MdMappings}]",
-                mdCacheItem.Id, names, desc, mdCacheItem.Variant, specs, outcomes, maps);
+            logger.LogDebug("Original Id={MdId}, Names=[{MdNames}], Descriptions=[{MdDescription}], Variant=[{MdVariant}], Specifiers=[{MdSpecifiers}], Outcomes=[{MdOutcomes}], Mappings=[{MdMappings}]",
+                            mdCacheItem.Id,
+                            names,
+                            desc,
+                            mdCacheItem.Variant,
+                            specs,
+                            outcomes,
+                            maps);
 
             var specsNew = mdDto.Specifiers == null ? null : string.Join(", ", mdDto.Specifiers.Select(s => s.Name));
             var outcomesNew = mdDto.Outcomes == null ? null : string.Join(",", mdDto.Outcomes.Select(s => s.Id));
             var mapsNew = mdDto.Mappings == null ? null : string.Join(",", mdDto.Mappings.Select(s => s.MarketTypeId));
-            logger.LogDebug(
-                "New Id={MdId}, Name=[{Language}-{MdName}], Descriptions=[{MdDescription}], Variant=[{MdVariant}], Specifiers=[{MdSpecifiers}], Outcomes=[{MdOutcomes}], Mappings=[{MdMappings}]",
-                mdDto.Id, culture.TwoLetterISOLanguageName, mdDto.Name, mdDto.Description, mdDto.Variant, specsNew, outcomesNew, mapsNew);
+            logger.LogDebug("New Id={MdId}, Name=[{Language}-{MdName}], Descriptions=[{MdDescription}], Variant=[{MdVariant}], Specifiers=[{MdSpecifiers}], Outcomes=[{MdOutcomes}], Mappings=[{MdMappings}]",
+                            mdDto.Id,
+                            culture.TwoLetterISOLanguageName,
+                            mdDto.Name,
+                            mdDto.Description,
+                            mdDto.Variant,
+                            specsNew,
+                            outcomesNew,
+                            mapsNew);
         }
     }
 }

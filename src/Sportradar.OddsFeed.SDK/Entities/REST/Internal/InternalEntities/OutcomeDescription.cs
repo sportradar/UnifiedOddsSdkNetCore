@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,15 +21,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.InternalEntities
         public string GetName(CultureInfo culture)
         {
             return _names.TryGetValue(culture, out var name)
-                ? name
-                : null;
+                       ? name
+                       : null;
         }
 
         public string GetDescription(CultureInfo culture)
         {
             return _descriptions.TryGetValue(culture, out var description)
-                ? description
-                : null;
+                       ? description
+                       : null;
         }
 
         internal OutcomeDescription(MarketOutcomeCacheItem cacheItem, IReadOnlyCollection<CultureInfo> cultures)

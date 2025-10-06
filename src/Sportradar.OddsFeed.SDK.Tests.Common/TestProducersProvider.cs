@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ public class TestProducersProvider : IProducersProvider
 
         var apiProducers = apiDataProvider.GetData("some-language-code");
 
-        Producers = new List<IProducer>();
+        Producers = [];
         foreach (var producer in apiProducers.producer)
         {
             Producers.Add(new Producer((int)producer.id, producer.name, producer.description, producer.api_url, producer.active, maxInactivitySeconds, maxRecoveryTime, producer.scope, producer.stateful_recovery_window_in_minutes));

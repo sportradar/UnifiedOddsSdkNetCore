@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
     {
         private readonly int _x;
         private readonly int _y;
-        public int Id { get; }
+        public long Id { get; }
         public decimal? HomeScore { get; }
         public decimal? AwayScore { get; }
         public int? MatchTime { get; }

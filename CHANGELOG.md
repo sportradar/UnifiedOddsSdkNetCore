@@ -1,6 +1,9 @@
 # Change Log
 
-## 3.6.0
+## 3.7.0
+- breaking change: Sport Event timeline now uses long event IDs (previously int) to support larger identifiers introduced by the Unified API.
+
+## 2025-08-06 3.6.0
 - Telemetry exports now support bookmaker id, improving metric correlation and issue analysis.
 
 ## 2025-07-31 3.5.0

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -227,9 +227,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 return new List<ICompetition>();
             }
             return ids.Select(item => _sportEntityFactory.BuildSportEvent<ICompetition>(item.Item1,
-                                                                                               item.Item2,
-                                                                                               culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture },
-                                                                                               _exceptionStrategy)).ToList();
+                                                                                        item.Item2,
+                                                                                        culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture },
+                                                                                        _exceptionStrategy))
+                      .ToList();
         }
 
         /// <summary>
@@ -269,7 +270,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             return ids.Select(item => _sportEntityFactory.BuildSportEvent<ICompetition>(item.Item1,
                                                                                         item.Item2,
                                                                                         culture == null ? _defaultCultures.ToList() : new List<CultureInfo> { culture },
-                                                                                        _exceptionStrategy)).ToList();
+                                                                                        _exceptionStrategy))
+                      .ToList();
         }
 
         /// <summary>
@@ -368,9 +370,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         internal ISportEvent GetSportEventForEventChange(Urn id)
         {
             var result = _sportEntityFactory.BuildSportEvent<ISportEvent>(id,
-                id.TypeGroup == ResourceTypeGroup.Match ? _sportEventCache.GetEventSportIdAsync(id).GetAwaiter().GetResult() : null,
-                _defaultCultures.ToList(),
-                _exceptionStrategy);
+                                                                          id.TypeGroup == ResourceTypeGroup.Match ? _sportEventCache.GetEventSportIdAsync(id).GetAwaiter().GetResult() : null,
+                                                                          _defaultCultures.ToList(),
+                                                                          _exceptionStrategy);
 
             return result;
         }
@@ -543,7 +545,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
                 return ids?.Select(item => _sportEntityFactory.BuildSportEvent<ICompetition>(item.Item1,
                                                                                              item.Item2,
                                                                                              cs.ToList(),
-                                                                                             _exceptionStrategy)).ToList();
+                                                                                             _exceptionStrategy))
+                           .ToList();
             }
             catch (Exception e)
             {
@@ -655,11 +658,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
             var cacheItems = items.ToList();
             LogInt.LogInformation("Invoked CacheImportAsync: [items={CacheItemsCount}]", cacheItems.Count);
             var tasks = new List<Task>
-            {
-                _sportDataCache.ImportAsync(cacheItems),
-                _sportEventCache.ImportAsync(cacheItems),
-                _profileCache.ImportAsync(cacheItems)
-            };
+                            {
+                                _sportDataCache.ImportAsync(cacheItems),
+                                _sportEventCache.ImportAsync(cacheItems),
+                                _profileCache.ImportAsync(cacheItems)
+                            };
             tasks.ForEach(t => t.ConfigureAwait(false));
             return Task.WhenAll(tasks);
         }

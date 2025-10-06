@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,8 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             Id = dto.Id;
             Names = new Dictionary<CultureInfo, string> { { culture, dto.Name } };
             _descriptions = string.IsNullOrEmpty(dto.Description)
-                ? new Dictionary<CultureInfo, string>()
-                : new Dictionary<CultureInfo, string> { { culture, dto.Description } };
+                                ? new Dictionary<CultureInfo, string>()
+                                : new Dictionary<CultureInfo, string> { { culture, dto.Description } };
         }
 
         internal string GetName(CultureInfo culture)

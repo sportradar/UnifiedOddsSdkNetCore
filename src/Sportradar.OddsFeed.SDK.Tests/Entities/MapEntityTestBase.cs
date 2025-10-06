@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -36,21 +36,28 @@ public abstract class MapEntityTestBase
         nameProviderFactoryMock.Setup(m => m.BuildNameProvider(It.IsAny<ICompetition>(), It.IsAny<int>(), It.IsAny<IReadOnlyDictionary<string, string>>())).Returns(nameProviderMock.Object);
 
         var nameCacheSdkTimer = SdkTimer.Create(UofSdkBootstrap.TimerForNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero);
-        var voidReasonCache = new NamedValueCache("VoidReasons", ExceptionHandlingStrategy.Throw, new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheVoidReason, TestData.RestXmlPath + @"\void_reasons.xml", new TestDataFetcher(), "void_reason"), nameCacheSdkTimer);
+        var voidReasonCache = new NamedValueCache("VoidReasons",
+                                                  ExceptionHandlingStrategy.Throw,
+                                                  new NamedValueDataProvider(UofSdkBootstrap.DataProviderForNamedValueCacheVoidReason, TestData.RestXmlPath + @"\void_reasons.xml", new TestDataFetcher(), "void_reason"),
+                                                  nameCacheSdkTimer);
 
         var namedValuesProviderMock = new Mock<INamedValuesProvider>();
         namedValuesProviderMock.Setup(x => x.VoidReasons).Returns(voidReasonCache);
 
         var sportEntityFactoryBuilder = new TestSportEntityFactoryBuilder(outputHelper, ScheduleData.Cultures3);
 
-        var marketFactory = new MarketFactory(new Mock<IMarketCacheProvider>().Object, nameProviderFactoryMock.Object, new Mock<IMarketMappingProviderFactory>().Object, namedValuesProviderMock.Object, voidReasonCache, ExceptionHandlingStrategy.Throw);
+        var marketFactory = new MarketFactory(new Mock<IMarketCacheProvider>().Object,
+                                              nameProviderFactoryMock.Object,
+                                              new Mock<IMarketMappingProviderFactory>().Object,
+                                              namedValuesProviderMock.Object,
+                                              voidReasonCache,
+                                              ExceptionHandlingStrategy.Throw);
 
-        Mapper = new FeedMessageMapper(
-            sportEntityFactoryBuilder.SportEntityFactory,
-            marketFactory,
-            TestProducerManager.Create(),
-            namedValuesProviderMock.Object,
-            ExceptionHandlingStrategy.Throw);
+        Mapper = new FeedMessageMapper(sportEntityFactoryBuilder.SportEntityFactory,
+                                       marketFactory,
+                                       TestProducerManager.Create(),
+                                       namedValuesProviderMock.Object,
+                                       ExceptionHandlingStrategy.Throw);
     }
 
     protected static T Load<T>(string fileName, Urn sportId)
@@ -82,15 +89,15 @@ public abstract class MapEntityTestBase
     protected static T FindMarket<T>(IEnumerable<T> markets, int id, string specifiersString) where T : IMarket
     {
         return markets == null
-            ? default
-            : markets.FirstOrDefault(m => m.Id == id && CompareSpecifiers(m.Specifiers, specifiersString));
+                   ? default
+                   : markets.FirstOrDefault(m => m.Id == id && CompareSpecifiers(m.Specifiers, specifiersString));
     }
 
     protected static T FindOutcome<T>(IEnumerable<T> outcomes, string id) where T : IOutcome
     {
         return outcomes == null
-            ? default
-            : outcomes.FirstOrDefault(o => o.Id == id);
+                   ? default
+                   : outcomes.FirstOrDefault(o => o.Id == id);
     }
 
     protected static void TestMessageProperties(IMessage message, long timestamp, int productId)

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -394,7 +394,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 try
                 {
                     result = await _sportEventSummaryProvider
-                        .GetDataAsync(requestOptions, id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                                  .GetDataAsync(requestOptions, id.ToString(), culture.TwoLetterISOLanguageName)
+                                  .ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
@@ -411,7 +412,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 if (result != null)
                 {
                     await _cacheManager.SaveDtoAsync(id, result, culture, DtoType.SportEventSummary, requester)
-                        .ConfigureAwait(false);
+                                       .ConfigureAwait(false);
                 }
 
                 WriteLog($"Executing GetSportEventSummaryAsync for id={id} and language={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
@@ -449,15 +450,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 try
                 {
                     var provider = useCachedProvider
-                        ? _sportEventFixtureProvider // cached endpoint
-                        : _sportEventFixtureChangeFixtureProvider; // not cached endpoint
+                                       ? _sportEventFixtureProvider // cached endpoint
+                                       : _sportEventFixtureChangeFixtureProvider; // not cached endpoint
                     result = await provider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
                 {
                     if (!e.Message.IsNullOrEmpty() && e.Message.Contains("Unable to cast object",
-                            StringComparison.InvariantCultureIgnoreCase))
+                                                                         StringComparison.InvariantCultureIgnoreCase))
                     {
                         try
                         {
@@ -466,8 +467,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                             if (isTournamentFixtureFetched)
                             {
                                 restCallTime = (int)t.Elapsed.TotalMilliseconds;
-                                WriteLog(
-                                    $"Executing GetSportEventFixtureAsync (via tournament) for id={id} and language={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
+                                WriteLog($"Executing GetSportEventFixtureAsync (via tournament) for id={id} and language={culture.TwoLetterISOLanguageName} took {restCallTime} ms.{SavingTook(restCallTime, (int)t.Elapsed.TotalMilliseconds)}");
                                 return;
                             }
                         }
@@ -493,7 +493,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                         catch (Exception exception)
                         {
                             var innerMessage = exception.InnerException?.Message ?? exception.Message;
-                            _executionLog.LogError(exception.InnerException ?? exception, "Error getting sport event fixture for id={EventId} and language:[{Language}]. Message (cached endpoint)={ErrorMessage}", id, culture.TwoLetterISOLanguageName, innerMessage);
+                            _executionLog.LogError(exception.InnerException ?? exception,
+                                                   "Error getting sport event fixture for id={EventId} and language:[{Language}]. Message (cached endpoint)={ErrorMessage}",
+                                                   id,
+                                                   culture.TwoLetterISOLanguageName,
+                                                   innerMessage);
                         }
                     }
 
@@ -518,8 +522,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         private async Task<bool> GetSportEventFixtureForTournamentAsync(Urn id, CultureInfo culture, bool useCachedProvider, ISportEventCacheItem requester)
         {
             var provider = useCachedProvider
-                    ? _sportEventFixtureForTournamentProvider // cached endpoint
-                    : _sportEventFixtureChangeFixtureForTournamentProvider; // not cached endpoint
+                               ? _sportEventFixtureForTournamentProvider // cached endpoint
+                               : _sportEventFixtureChangeFixtureForTournamentProvider; // not cached endpoint
             var result = await provider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
 
             if (result != null)
@@ -582,7 +586,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting sport categories for id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting sport categories for id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                           id,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -649,7 +656,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting live sport events and language:[{Language}]. Message={ErrorMessage}", culture.TwoLetterISOLanguageName, message);
+                                           "Error getting live sport events and language:[{Language}]. Message={ErrorMessage}",
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -695,7 +704,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting sport events for date {Date} and language:[{Language}]. Message={ErrorMessage}", dateId, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting sport events for date {Date} and language:[{Language}]. Message={ErrorMessage}",
+                                           dateId,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -799,7 +811,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting player profile for id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting player profile for id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                           id,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -833,8 +848,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 int restCallTime;
                 try
                 {
-                    if (id.IsSimpleTeam() || id.ToString().StartsWith(SdkInfo.OutcomeTextVariantValue,
-                            StringComparison.InvariantCultureIgnoreCase))
+                    if (id.IsSimpleTeam() || id.ToString()
+                                               .StartsWith(SdkInfo.OutcomeTextVariantValue,
+                                                           StringComparison.InvariantCultureIgnoreCase))
                     {
                         simpleTeamResult = await _simpleTeamProvider.GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
                     }
@@ -850,7 +866,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting competitor profile for id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting competitor profile for id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                           id,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -903,8 +922,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     if (e.Message.Contains("No seasons for tournament") || e.Message.Contains("This is a place-holder tournament.") || e.Message.Contains("NotFound"))
                     {
                         message = message.Contains(".")
-                            ? message.Substring(0, message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
-                            : message;
+                                      ? message.Substring(0, message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
+                                      : message;
                         _executionLog.LogDebug("Error getting seasons for tournament id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
                     }
                     else
@@ -953,7 +972,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 try
                 {
                     result = await _ongoingSportEventProvider
-                        .GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                                  .GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName)
+                                  .ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
@@ -964,15 +984,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     if (e.Message.Contains("NotFound"))
                     {
                         message = message.Contains(".")
-                            ? message.Substring(0,
-                                message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
-                            : message;
+                                      ? message.Substring(0,
+                                                          message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
+                                      : message;
                         _executionLog.LogDebug("Error getting match timeline for id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
                     }
                     else
                     {
                         _executionLog.LogError(e.InnerException ?? e,
-                            "Error getting match timeline for id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
+                                               "Error getting match timeline for id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                               id,
+                                               culture.TwoLetterISOLanguageName,
+                                               message);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                         {
                             throw;
@@ -1014,7 +1037,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting market descriptions for language:[{Language}]. Message={ErrorMessage}", culture.TwoLetterISOLanguageName, message);
+                                           "Error getting market descriptions for language:[{Language}]. Message={ErrorMessage}",
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -1072,25 +1097,35 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                         || e.Message.Contains("Not_Found", StringComparison.InvariantCultureIgnoreCase))
                     {
                         message = message.Contains(".")
-                            ? message.Substring(0,
-                                message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
-                            : message;
-                        _executionLog.LogError(
-                            "Error getting market variant description for market id={MarketId}, variant={MarketVariant} and language:[{Language}]. Not found. Message={ErrorMessage}", id, variant, culture.TwoLetterISOLanguageName, message);
+                                      ? message.Substring(0,
+                                                          message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
+                                      : message;
+                        _executionLog.LogError("Error getting market variant description for market id={MarketId}, variant={MarketVariant} and language:[{Language}]. Not found. Message={ErrorMessage}",
+                                               id,
+                                               variant,
+                                               culture.TwoLetterISOLanguageName,
+                                               message);
                     }
                     else if (e.Message.Contains("name cannot be null"))
                     {
                         message = message.Contains(".")
-                            ? message.Substring(0,
-                                message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
-                            : message;
-                        _executionLog.LogError(
-                            "Error getting market variant description for market id={MarketId}, variant={MarketVariant} and language:[{Language}]. Outcome missing name. Message={ErrorMessage}", id, variant, culture.TwoLetterISOLanguageName, message);
+                                      ? message.Substring(0,
+                                                          message.IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 1)
+                                      : message;
+                        _executionLog.LogError("Error getting market variant description for market id={MarketId}, variant={MarketVariant} and language:[{Language}]. Outcome missing name. Message={ErrorMessage}",
+                                               id,
+                                               variant,
+                                               culture.TwoLetterISOLanguageName,
+                                               message);
                     }
                     else
                     {
                         _executionLog.LogError(e.InnerException ?? e,
-                            "Error getting market variant description for market id={MarketId}, variant={MarketVariant} and language:[{Language}]. Message={ErrorMessage}", id, variant, culture.TwoLetterISOLanguageName, message);
+                                               "Error getting market variant description for market id={MarketId}, variant={MarketVariant} and language:[{Language}]. Message={ErrorMessage}",
+                                               id,
+                                               variant,
+                                               culture.TwoLetterISOLanguageName,
+                                               message);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                         {
                             throw;
@@ -1137,7 +1172,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting variant descriptions for language:[{Language}]. Message={ErrorMessage}", culture.TwoLetterISOLanguageName, message);
+                                           "Error getting variant descriptions for language:[{Language}]. Message={ErrorMessage}",
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -1178,7 +1215,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 try
                 {
                     result = await _lotteryDrawSummaryProvider
-                        .GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName).ConfigureAwait(false);
+                                  .GetDataAsync(id.ToString(), culture.TwoLetterISOLanguageName)
+                                  .ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
@@ -1186,7 +1224,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting draw summary for id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting draw summary for id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                           id,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -1234,7 +1275,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting draw fixture for id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting draw fixture for id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                           id,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -1282,7 +1326,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting lottery schedule for id={EventId} and language:[{Language}]. Message={ErrorMessage}", lotteryId, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting lottery schedule for id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                           lotteryId,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                     {
                         throw;
@@ -1523,8 +1570,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 try
                 {
                     apiData = await _listSportEventProvider
-                        .GetDataAsync(culture.TwoLetterISOLanguageName, startIndex.ToString(CultureInfo.InvariantCulture), limit.ToString(CultureInfo.InvariantCulture))
-                        .ConfigureAwait(false);
+                                   .GetDataAsync(culture.TwoLetterISOLanguageName, startIndex.ToString(CultureInfo.InvariantCulture), limit.ToString(CultureInfo.InvariantCulture))
+                                   .ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
@@ -1534,13 +1581,21 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     {
                         var message = e.InnerException?.Message ?? e.Message;
                         _executionLog.LogDebug(e.InnerException ?? e,
-                            "Error getting list of sport events for startIndex={StartIndex}, limit={lLmit} and language:[{Language}]. Message={ErrorMessage}", startIndex, limit, culture.TwoLetterISOLanguageName, message);
+                                               "Error getting list of sport events for startIndex={StartIndex}, limit={lLmit} and language:[{Language}]. Message={ErrorMessage}",
+                                               startIndex,
+                                               limit,
+                                               culture.TwoLetterISOLanguageName,
+                                               message);
                     }
                     else
                     {
                         var message = e.InnerException?.Message ?? e.Message;
                         _executionLog.LogError(e.InnerException ?? e,
-                            "Error getting list of sport events for startIndex={StartIndex}, limit={Limit} and language:[{Language}]. Message={ErrorMessage}", startIndex, limit, culture.TwoLetterISOLanguageName, message);
+                                               "Error getting list of sport events for startIndex={StartIndex}, limit={Limit} and language:[{Language}]. Message={ErrorMessage}",
+                                               startIndex,
+                                               limit,
+                                               culture.TwoLetterISOLanguageName,
+                                               message);
                         if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw)
                         {
                             throw;
@@ -1627,7 +1682,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 {
                     var query = GetChangesQueryString(after, sportId);
                     result = await _fixtureChangesProvider.GetDataAsync(culture.TwoLetterISOLanguageName, query)
-                        .ConfigureAwait(false);
+                                                          .ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
@@ -1671,7 +1726,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 {
                     var query = GetChangesQueryString(after, sportId);
                     result = await _resultChangesProvider.GetDataAsync(culture.TwoLetterISOLanguageName, query)
-                        .ConfigureAwait(false);
+                                                         .ConfigureAwait(false);
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                 }
                 catch (Exception e)
@@ -1703,7 +1758,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         {
             using (var t = new TelemetryTracker(UofSdkTelemetry.DataRouterManager, "endpoint", "PeriodSummary"))
             {
-
                 var compIds = competitorIds.IsNullOrEmpty() ? "null" : string.Join(", ", competitorIds);
                 var periodIds = periods.IsNullOrEmpty() ? "null" : string.Join(", ", periods);
 
@@ -1745,7 +1799,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                     restCallTime = (int)t.Elapsed.TotalMilliseconds;
                     var message = e.InnerException?.Message ?? e.Message;
                     _executionLog.LogError(e.InnerException ?? e,
-                        "Error getting period summary for event id={EventId} and language:[{Language}]. Message={ErrorMessage}", id, culture.TwoLetterISOLanguageName, message);
+                                           "Error getting period summary for event id={EventId} and language:[{Language}]. Message={ErrorMessage}",
+                                           id,
+                                           culture.TwoLetterISOLanguageName,
+                                           message);
                     if (ExceptionHandlingStrategy == ExceptionHandlingStrategy.Throw && requester != null)
                     {
                         throw;

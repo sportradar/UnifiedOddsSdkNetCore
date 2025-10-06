@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -86,16 +86,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
         /// <param name="messageInterest">Specifies the type of messages handled by this <see cref="UofSession"/></param>
         /// <param name="defaultCultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the default languages as specified in the configuration</param>
         /// <param name="getRoutingKeys">Function to get appropriate routing keys based on the message interest</param>
-        public UofSession(
-            IMessageReceiver messageReceiver,
-            IFeedMessageProcessor messageProcessor,
-            IFeedMessageMapper messageMapper,
-            IFeedMessageValidator messageValidator,
-            IMessageDataExtractor messageDataExtractor,
-            IDispatcherStore dispatcherStore,
-            MessageInterest messageInterest,
-            IEnumerable<CultureInfo> defaultCultures,
-            Func<UofSession, IEnumerable<string>> getRoutingKeys)
+        public UofSession(IMessageReceiver messageReceiver,
+                          IFeedMessageProcessor messageProcessor,
+                          IFeedMessageMapper messageMapper,
+                          IFeedMessageValidator messageValidator,
+                          IMessageDataExtractor messageDataExtractor,
+                          IDispatcherStore dispatcherStore,
+                          MessageInterest messageInterest,
+                          IEnumerable<CultureInfo> defaultCultures,
+                          Func<UofSession, IEnumerable<string>> getRoutingKeys)
             : base(messageMapper, defaultCultures)
         {
             Guard.Argument(messageReceiver, nameof(messageReceiver)).NotNull();
@@ -200,8 +199,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal
 
             var specificDispatcher = _sportSpecificDispatchers.Get(Urn.Parse(message.EventId), message.SportId);
             return specificDispatcher == null
-                ? this
-                : (IEntityDispatcherInternal)specificDispatcher;
+                       ? this
+                       : (IEntityDispatcherInternal)specificDispatcher;
         }
 
         /// <summary>

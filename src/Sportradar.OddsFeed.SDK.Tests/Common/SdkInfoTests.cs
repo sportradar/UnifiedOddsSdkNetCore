@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -381,9 +381,9 @@ public class SdkInfoTests
     {
         const string firstName = "Name 1";
         var inputNames = new Dictionary<CultureInfo, string>
-        {
-            { TestData.Cultures.ElementAt(0), firstName }, { TestData.Cultures.ElementAt(1), firstName }, { TestData.Cultures.ElementAt(2), firstName }
-        };
+                             {
+                                 { TestData.Cultures.ElementAt(0), firstName }, { TestData.Cultures.ElementAt(1), firstName }, { TestData.Cultures.ElementAt(2), firstName }
+                             };
         var wantedCultures = new Collection<CultureInfo> { TestData.Cultures.ElementAt(1) };
 
         var result = SdkInfo.GetOrCreateReadOnlyNames(inputNames, wantedCultures);
@@ -432,7 +432,6 @@ public class SdkInfoTests
     }
 
     [Theory]
-
     [InlineData("2:a")]
     [InlineData("2|123")]
     [InlineData("2-245")]

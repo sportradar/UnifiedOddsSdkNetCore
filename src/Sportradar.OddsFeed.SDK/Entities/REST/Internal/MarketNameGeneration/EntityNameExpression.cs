@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Globalization;
@@ -34,10 +34,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration
         /// Lists the supported operand names
         /// </summary>
         private static readonly string[] SupportedOperands =
-        {
-            "competitor1",
-            "competitor2"
-        };
+            {
+                "competitor1",
+                "competitor2"
+            };
 
         private readonly string _supportedOperandsString;
 

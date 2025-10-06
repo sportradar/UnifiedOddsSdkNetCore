@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -88,12 +88,14 @@ public class MapFixtureChangeTests : MapEntityTestBase
     private void TestEntityValues(IFixtureChange<ICompetition> entity, fixture_change record)
     {
         TestEventMessageProperties(entity, record.timestamp, record.product, record.event_id, record.RequestId);
-        Assert.Equal((int)entity.ChangeType, record.change_typeSpecified
-            ? (int?)record.change_type
-            : (int)FixtureChangeType.Other);
-        Assert.Equal(entity.NextLiveTime, record.next_live_timeSpecified
-            ? record.next_live_time
-            : null);
+        Assert.Equal((int)entity.ChangeType,
+                     record.change_typeSpecified
+                         ? (int?)record.change_type
+                         : (int)FixtureChangeType.Other);
+        Assert.Equal(entity.NextLiveTime,
+                     record.next_live_timeSpecified
+                         ? record.next_live_time
+                         : null);
         Assert.Equal(entity.StartTime, record.start_time);
     }
 

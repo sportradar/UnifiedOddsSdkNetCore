@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -27,12 +27,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
         internal string SourceCache { get; }
 
         // ReSharper disable once TooManyDependencies
-        private VariantDescriptionCacheItem(
-            string id,
-            ICollection<MarketOutcomeCacheItem> outcomes,
-            ICollection<MarketMappingCacheItem> mappings,
-            CultureInfo culture,
-            string source)
+        private VariantDescriptionCacheItem(string id,
+                                            ICollection<MarketOutcomeCacheItem> outcomes,
+                                            ICollection<MarketMappingCacheItem> mappings,
+                                            CultureInfo culture,
+                                            string source)
         {
             Guard.Argument(culture, nameof(culture)).NotNull();
 
@@ -62,12 +61,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames
             Guard.Argument(culture, nameof(culture)).NotNull();
 
             var outcomes = dto.Outcomes == null
-                ? null
-                : new ReadOnlyCollection<MarketOutcomeCacheItem>(dto.Outcomes.Select(o => new MarketOutcomeCacheItem(o, culture)).ToList());
+                               ? null
+                               : new ReadOnlyCollection<MarketOutcomeCacheItem>(dto.Outcomes.Select(o => new MarketOutcomeCacheItem(o, culture)).ToList());
 
             var mappings = dto.Mappings == null
-                ? null
-                : new ReadOnlyCollection<MarketMappingCacheItem>(dto.Mappings.Select(m => MarketMappingCacheItem.Build(m, factory, culture)).ToList());
+                               ? null
+                               : new ReadOnlyCollection<MarketMappingCacheItem>(dto.Mappings.Select(m => MarketMappingCacheItem.Build(m, factory, culture)).ToList());
 
             return new VariantDescriptionCacheItem(dto.Id, outcomes, mappings, culture, source);
         }

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -107,9 +107,9 @@ public class CustomBetManagerTests
         var cbSelectionBuilder = _customBetManagerThrow.CustomBetSelectionBuilder;
         cbSelectionBuilder.Should().NotBeNull();
         cbSelectionBuilder.SetEventId(TestData.EventMatchId)
-            .SetMarketId(1)
-            .SetOutcomeId("123")
-            .SetSpecifiers("value=1");
+                          .SetMarketId(1)
+                          .SetOutcomeId("123")
+                          .SetSpecifiers("value=1");
         if (wantedOdds.HasValue)
         {
             cbSelectionBuilder.SetOdds(wantedOdds.Value);

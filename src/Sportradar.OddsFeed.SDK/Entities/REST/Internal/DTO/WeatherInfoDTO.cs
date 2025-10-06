@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Dawn;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
@@ -29,8 +29,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(weatherInfo, nameof(weatherInfo)).NotNull();
 
             TemperatureCelsius = weatherInfo.temperature_celsiusSpecified
-                ? (int?)weatherInfo.temperature_celsius
-                : null;
+                                     ? (int?)weatherInfo.temperature_celsius
+                                     : null;
             Wind = weatherInfo.wind;
             WindAdvantage = weatherInfo.wind_advantage;
             Pitch = weatherInfo.pitch;

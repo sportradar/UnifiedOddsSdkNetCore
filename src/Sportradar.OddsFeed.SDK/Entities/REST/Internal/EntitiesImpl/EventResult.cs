@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -130,8 +130,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public async Task<ILocalizedNamedValue> GetMatchStatusAsync(CultureInfo culture)
         {
             return _matchStatusesCache == null
-                ? null
-                : await _matchStatusesCache.GetAsync(_matchStatusCode, new List<CultureInfo> { culture }).ConfigureAwait(false);
+                       ? null
+                       : await _matchStatusesCache.GetAsync(_matchStatusCode, new List<CultureInfo> { culture }).ConfigureAwait(false);
         }
 
         internal EventResult(EventResultDto dto, ILocalizedNamedValueCache matchStatusesCache)

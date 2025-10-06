@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,17 +27,17 @@ public class UofSdkBootstrapBase
         UofConfig = TestConfiguration.GetConfig();
         // we need to override initial loading of bookmaker details and producers
         var bookmakerDetailsProviderMock = new Mock<BookmakerDetailsProvider>("bookmakerDetailsUriFormat",
-            new TestDataFetcher(),
-            new Deserializer<bookmaker_details>(),
-            new BookmakerDetailsMapperFactory());
+                                                                              new TestDataFetcher(),
+                                                                              new Deserializer<bookmaker_details>(),
+                                                                              new BookmakerDetailsMapperFactory());
         bookmakerDetailsProviderMock.Setup(x => x.GetData(It.IsAny<string>())).Returns(TestBookmakerDetailsProvider.GetBookmakerDetails());
 
         ServiceCollection = new ServiceCollection();
         ServiceCollection.AddLogging(configure =>
-        {
-            configure.AddDebug();
-            configure.AddConsole();
-        });
+                                     {
+                                         configure.AddDebug();
+                                         configure.AddConsole();
+                                     });
         ServiceCollection.AddUofSdkServices(UofConfig);
 
         var serviceProvider = ServiceCollection.BuildServiceProvider(true);

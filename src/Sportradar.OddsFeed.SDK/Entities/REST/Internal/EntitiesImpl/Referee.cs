@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,8 +41,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
 
             Id = ci.Id;
             Name = ci.Name;
-            Nationalities = new ReadOnlyDictionary<CultureInfo, string>(
-                cultureList.Where(c => ci.GetNationality(c) != null).ToDictionary(c => c, ci.GetNationality));
+            Nationalities = new ReadOnlyDictionary<CultureInfo, string>(cultureList.Where(c => ci.GetNationality(c) != null).ToDictionary(c => c, ci.GetNationality));
         }
 
         protected override string PrintI()
@@ -78,8 +77,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public string GetNationality(CultureInfo culture)
         {
             return Nationalities.ContainsKey(culture)
-                ? Nationalities[culture]
-                : null;
+                       ? Nationalities[culture]
+                       : null;
         }
     }
 }

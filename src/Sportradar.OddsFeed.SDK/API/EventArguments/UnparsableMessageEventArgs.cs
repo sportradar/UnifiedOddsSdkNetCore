@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Text;
@@ -56,8 +56,8 @@ namespace Sportradar.OddsFeed.SDK.Api.EventArguments
         public string GetRawMessage()
         {
             return _rawMessage == null
-                ? null
-                : Encoding.UTF8.GetString(_rawMessage);
+                       ? null
+                       : Encoding.UTF8.GetString(_rawMessage);
         }
     }
 }

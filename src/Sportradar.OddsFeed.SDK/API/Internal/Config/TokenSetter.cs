@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Dawn;
@@ -80,8 +80,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             _configuration.UpdateFromAppConfigSection(true);
 
             return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider)
-                .SelectEnvironment(_configuration.Environment)
-                .Build();
+                  .SelectEnvironment(_configuration.Environment)
+                  .Build();
         }
     }
 }

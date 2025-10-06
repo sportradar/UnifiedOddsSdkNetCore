@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -54,7 +54,12 @@ public class VariantMarketDescriptionCacheTests
             ExpirationScanFrequency = TimeSpan.FromMinutes(10)
         });
 
-        _variantMarketDescriptionMemoryCache = new CacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache, memoryCache, _testLoggerFactory.CreateLogger(typeof(Cache)), null, TestConfiguration.GetConfig().Cache.VariantMarketDescriptionCacheTimeout, 1);
+        _variantMarketDescriptionMemoryCache = new CacheStore<string>(UofSdkBootstrap.CacheStoreNameForVariantMarketDescriptionCache,
+                                                                      memoryCache,
+                                                                      _testLoggerFactory.CreateLogger(typeof(Cache)),
+                                                                      null,
+                                                                      TestConfiguration.GetConfig().Cache.VariantMarketDescriptionCacheTimeout,
+                                                                      1);
 
         IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
         _cacheManager = new CacheManager();
@@ -531,11 +536,11 @@ public class VariantMarketDescriptionCacheTests
         _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(100));
 
         var tasks = new List<Task>
-        {
-            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, new[] { _cultures[0] }),
-            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, new[] { _cultures[0] }),
-            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, new[] { _cultures[0] })
-        };
+                        {
+                            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, new[] { _cultures[0] }),
+                            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, new[] { _cultures[0] }),
+                            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, new[] { _cultures[0] })
+                        };
         await Task.WhenAll(tasks);
 
         Assert.Equal(1, _dataRouterManager.TotalRestCalls);
@@ -550,11 +555,11 @@ public class VariantMarketDescriptionCacheTests
         _dataRouterManager.AddDelay(TimeSpan.FromMilliseconds(100));
 
         var tasks = new List<Task>
-        {
-            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, _cultures),
-            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, _cultures),
-            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, _cultures)
-        };
+                        {
+                            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, _cultures),
+                            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, _cultures),
+                            _variantMarketDescriptionCache.GetMarketDescriptionAsync(MarketIdFor534, VariantValueFor534, _cultures)
+                        };
         await Task.WhenAll(tasks);
 
         Assert.Equal(_cultures.Count, _dataRouterManager.TotalRestCalls);

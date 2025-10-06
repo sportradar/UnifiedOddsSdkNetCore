@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
@@ -14,6 +14,7 @@ using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 using BookmakerDetailsProvider = Sportradar.OddsFeed.SDK.Entities.Rest.Internal.BookmakerDetailsProvider;
+
 // ReSharper disable TooManyChainedReferences
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.Config;
@@ -26,9 +27,9 @@ public class UofConfigurationTests
     public UofConfigurationTests()
     {
         var bookmakerDetailsProviderMock = new Mock<BookmakerDetailsProvider>("bookmakerDetailsUriFormat",
-            new TestDataFetcher(),
-            new Deserializer<bookmaker_details>(),
-            new BookmakerDetailsMapperFactory());
+                                                                              new TestDataFetcher(),
+                                                                              new Deserializer<bookmaker_details>(),
+                                                                              new BookmakerDetailsMapperFactory());
         bookmakerDetailsProviderMock.Setup(x => x.GetData(It.IsAny<string>())).Returns(TestBookmakerDetailsProvider.GetBookmakerDetails());
         _defaultBookmakerDetailsProvider = bookmakerDetailsProviderMock.Object;
     }
@@ -116,10 +117,10 @@ public class UofConfigurationTests
     public void ConfigCanLoadMoreThenOnce()
     {
         var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessToken(TestData.AccessToken)
-            .SelectEnvironment(SdkEnvironment.Integration)
-            .SetDefaultLanguage(ScheduleData.CultureEn)
-            .Build();
+                                      .SetAccessToken(TestData.AccessToken)
+                                      .SelectEnvironment(SdkEnvironment.Integration)
+                                      .SetDefaultLanguage(ScheduleData.CultureEn)
+                                      .Build();
 
         config.UpdateFromAppConfigSection(true);
         config.UpdateFromAppConfigSection(true);
@@ -132,10 +133,10 @@ public class UofConfigurationTests
     {
         var customSection = TestSection.GetCustomSection();
         var config = new TokenSetter(new TestSectionProvider(customSection), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessTokenFromConfigFile()
-            .SelectCustom()
-            .LoadFromConfigFile()
-            .Build();
+                    .SetAccessTokenFromConfigFile()
+                    .SelectCustom()
+                    .LoadFromConfigFile()
+                    .Build();
 
         Assert.Equal(customSection.AccessToken, config.AccessToken);
         Assert.Equal(ConfigLimit.InactivitySecondsDefault, config.Producer.InactivitySeconds.TotalSeconds);
@@ -166,10 +167,10 @@ public class UofConfigurationTests
     public void SettingEnvironmentHasCorrectValue(SdkEnvironment environment)
     {
         var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessToken(TestData.AccessToken)
-            .SelectEnvironment(environment)
-            .SetDefaultLanguage(TestData.Culture)
-            .Build();
+                                      .SetAccessToken(TestData.AccessToken)
+                                      .SelectEnvironment(environment)
+                                      .SetDefaultLanguage(TestData.Culture)
+                                      .Build();
 
         config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
 
@@ -185,10 +186,10 @@ public class UofConfigurationTests
     {
         const SdkEnvironment environment = SdkEnvironment.Replay;
         var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessToken(TestData.AccessToken)
-            .SelectEnvironment(environment)
-            .SetDefaultLanguage(TestData.Culture)
-            .Build();
+                                      .SetAccessToken(TestData.AccessToken)
+                                      .SelectEnvironment(environment)
+                                      .SetDefaultLanguage(TestData.Culture)
+                                      .Build();
 
         config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
 
@@ -204,10 +205,10 @@ public class UofConfigurationTests
     {
         const SdkEnvironment environment = SdkEnvironment.Replay;
         var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessToken(TestData.AccessToken)
-            .SelectReplay()
-            .SetDefaultLanguage(TestData.Culture)
-            .Build();
+                                      .SetAccessToken(TestData.AccessToken)
+                                      .SelectReplay()
+                                      .SetDefaultLanguage(TestData.Culture)
+                                      .Build();
 
         config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
 
@@ -224,18 +225,18 @@ public class UofConfigurationTests
     {
         const SdkEnvironment environment = SdkEnvironment.Custom;
         var config = (UofConfiguration)new TokenSetter(new TestSectionProvider(null), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessToken(TestData.AccessToken)
-            .SelectCustom()
-            .SetDefaultLanguage(TestData.Culture)
-            .UseApiSsl(false)
-            .SetApiHost("custom_api_host")
-            .SetVirtualHost("custom_virtual_host")
-            .UseMessagingSsl(false)
-            .SetMessagingHost("custom_mq_host")
-            .SetMessagingUsername("custom_username")
-            .SetMessagingPassword("custom_password")
-            .SetMessagingPort(222)
-            .Build();
+                                      .SetAccessToken(TestData.AccessToken)
+                                      .SelectCustom()
+                                      .SetDefaultLanguage(TestData.Culture)
+                                      .UseApiSsl(false)
+                                      .SetApiHost("custom_api_host")
+                                      .SetVirtualHost("custom_virtual_host")
+                                      .UseMessagingSsl(false)
+                                      .SetMessagingHost("custom_mq_host")
+                                      .SetMessagingUsername("custom_username")
+                                      .SetMessagingPassword("custom_password")
+                                      .SetMessagingPort(222)
+                                      .Build();
 
         config.UpdateBookmakerDetails(new BookmakerDetails(_defaultBookmakerDetailsProvider.GetData("en")), EnvironmentManager.GetApiHost(config.Environment));
 
@@ -363,10 +364,10 @@ public class UofConfigurationTests
     {
         var section = TestSection.GetDefaultSection();
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
-            .SetAccessTokenFromConfigFile()
-            .SelectEnvironmentFromConfigFile()
-            .LoadFromConfigFile()
-            .Build();
+                    .SetAccessTokenFromConfigFile()
+                    .SelectEnvironmentFromConfigFile()
+                    .LoadFromConfigFile()
+                    .Build();
         var summary = config.ToString();
 
         CheckConfigurationSummaryHasAllValue(summary);

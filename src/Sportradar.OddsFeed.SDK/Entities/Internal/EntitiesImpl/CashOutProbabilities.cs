@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using Dawn;
@@ -34,16 +34,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
         /// </summary>
         /// <value>The bet stop reason.</value>
         public INamedValue BetStopReason => _betStopReason == null
-            ? null
-            : _namedValueProvider.BetStopReasons.GetNamedValue(_betStopReason.Value);
+                                                ? null
+                                                : _namedValueProvider.BetStopReasons.GetNamedValue(_betStopReason.Value);
 
         /// <summary>
         /// Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue" /> indicating the odds change was triggered by a possible event
         /// </summary>
         /// <value>The betting status.</value>
         public INamedValue BettingStatus => _bettingStatus == null
-            ? null
-            : _namedValueProvider.BettingStatuses.GetNamedValue(_bettingStatus.Value);
+                                                ? null
+                                                : _namedValueProvider.BettingStatuses.GetNamedValue(_bettingStatus.Value);
 
         /// <summary>Initializes a new instance of the <see cref="OddsChange{T}" /> class</summary>
         /// <param name="timestamp">The value specifying timestamps related to the message (in the milliseconds since EPOCH UTC)</param>

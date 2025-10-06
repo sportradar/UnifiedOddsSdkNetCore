@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -23,10 +23,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         public override string ToString()
         {
             var summaryValues = new Dictionary<string, string>
-            {
-                { "OmitMarketMappings", OmitMarketMappings.ToString() },
-                { "StatisticsInterval", StatisticsInterval.TotalMinutes.ToString(CultureInfo.InvariantCulture) }
-            };
+                                    {
+                                        { "OmitMarketMappings", OmitMarketMappings.ToString() },
+                                        { "StatisticsInterval", StatisticsInterval.TotalMinutes.ToString(CultureInfo.InvariantCulture) }
+                                    };
             return "AdditionalConfiguration{" + SdkInfo.DictionaryToString(summaryValues) + "}";
         }
     }

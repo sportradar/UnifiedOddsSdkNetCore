@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -104,10 +104,12 @@ public class NamedValueCacheTests
         Setup(ExceptionHandlingStrategy.Catch, SdkTimer.Create(UofSdkBootstrap.TimerForNamedValueCache, TimeSpan.FromMilliseconds(10), TimeSpan.Zero));
 
         var finished = await TestExecutionHelper.WaitToCompleteAsync(() =>
-        {
-            _fetcherMock.Verify(x => x.GetDataAsync(_betStopReasonsUri), Times.Once);
-            return true;
-        }, 100, 15000);
+                                                                     {
+                                                                         _fetcherMock.Verify(x => x.GetDataAsync(_betStopReasonsUri), Times.Once);
+                                                                         return true;
+                                                                     },
+                                                                     100,
+                                                                     15000);
 
         finished.ShouldBeTrue();
     }

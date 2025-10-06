@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -44,8 +44,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
                 throw new FormatException($"Mapping producer_ids '{mapping.product_ids}' is not valid");
             }
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)
-                ? new[] { mapping.product_id }
-                : mapping.product_ids.Split(new[] { SdkInfo.MarketMappingProductsDelimiter }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
+                              ? new[] { mapping.product_id }
+                              : mapping.product_ids.Split(new[] { SdkInfo.MarketMappingProductsDelimiter }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
             SportId = mapping.sport_id == "all" ? null : Urn.Parse(mapping.sport_id);
             OrgMarketId = null;
             if (!SdkInfo.IsMarketMappingMarketIdValid(mapping.market_id))
@@ -89,8 +89,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
                 throw new FormatException($"Mapping producer_market_id '{mapping.product_market_id}' is not valid");
             }
             ProducerIds = string.IsNullOrEmpty(mapping.product_ids)
-                ? new[] { mapping.product_id }
-                : mapping.product_ids.Split(new[] { SdkInfo.MarketMappingProductsDelimiter }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
+                              ? new[] { mapping.product_id }
+                              : mapping.product_ids.Split(new[] { SdkInfo.MarketMappingProductsDelimiter }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
             SportId = mapping.sport_id == "all" ? null : Urn.Parse(mapping.sport_id);
             OrgMarketId = mapping.market_id;
             var marketId = string.IsNullOrEmpty(mapping.product_market_id)

@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using SR = Sportradar.OddsFeed.SDK.Tests.Common.StaticRandom;
+
 // ReSharper disable UnusedMember.Local
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common;

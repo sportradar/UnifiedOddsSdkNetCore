@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -48,17 +48,17 @@ public class WireMockMappingBuilder
     public static ICollection<string> ResetLogIgnoreUri()
     {
         return new List<string>
-        {
-            "/match_status.xml",
-            "/void_reasons.xml",
-            "/betstop_reasons.xml",
-            "/betting_status.xml",
-            "/variants.xml",
-            "/markets.xml",
-            "/schedules/",
-            "/sports.xml",
-            "/tournaments.xml"
-        };
+                   {
+                       "/match_status.xml",
+                       "/void_reasons.xml",
+                       "/betstop_reasons.xml",
+                       "/betting_status.xml",
+                       "/variants.xml",
+                       "/markets.xml",
+                       "/schedules/",
+                       "/sports.xml",
+                       "/tournaments.xml"
+                   };
     }
 
     public WireMockMappingBuilder(WireMockServer server)
@@ -69,9 +69,9 @@ public class WireMockMappingBuilder
     public WireMockMappingBuilder WithDefaultMaps(CultureInfo culture)
     {
         return WithDefaultMaps(new List<CultureInfo>
-        {
-            culture
-        });
+                                   {
+                                       culture
+                                   });
     }
 
     public WireMockMappingBuilder WithDefaultMaps(ICollection<CultureInfo> cultures)
@@ -102,8 +102,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath("/v1/users/whoami.xml").UsingGet())
-            .WithTitle(MappingNameForWhoAmI)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForWhoAmI)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -115,8 +115,8 @@ public class WireMockMappingBuilder
         var responseXmlBody = MsgSerializer.SerializeToXml(endpointResponse);
 
         _server.Given(Request.Create().WithPath("/v1/users/whoami.xml").UsingGet())
-            .WithTitle(MappingNameForWhoAmI)
-            .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForWhoAmI)
+               .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -126,8 +126,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/producers.xml").UsingGet())
-            .WithTitle(MappingNameForProducers)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForProducers)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -139,8 +139,8 @@ public class WireMockMappingBuilder
         var responseXmlBody = MsgSerializer.SerializeToXml(endpointResponse);
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/producers.xml").UsingGet())
-            .WithTitle(MappingNameForProducers)
-            .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForProducers)
+               .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -150,8 +150,8 @@ public class WireMockMappingBuilder
         var responseXmlBody = MsgSerializer.SerializeToXml(endpointResponse);
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/producers.xml").UsingGet())
-            .WithTitle(MappingNameForProducers)
-            .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForProducers)
+               .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -161,8 +161,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/match_status.xml").UsingGet())
-            .WithTitle(MappingNameForMatchStatus)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForMatchStatus)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -172,8 +172,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/void_reasons.xml").UsingGet())
-            .WithTitle(MappingNameForVoidReasons)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForVoidReasons)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -183,8 +183,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/betstop_reasons.xml").UsingGet())
-            .WithTitle(MappingNameForBetstopReasons)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForBetstopReasons)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -194,8 +194,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath("/v1/descriptions/betting_status.xml").UsingGet())
-            .WithTitle(MappingNameForBettingStatus)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForBettingStatus)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -225,8 +225,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets.xml").UsingGet())
-            .WithTitle(MappingNameForInvariantMarketList)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForInvariantMarketList)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -302,8 +302,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/variants.xml").UsingGet())
-            .WithTitle(MappingNameForVariantMarketList)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForVariantMarketList)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -317,8 +317,8 @@ public class WireMockMappingBuilder
         var responseBody = MsgSerializer.SerializeToXml(singleVariantMarketEndpointResponse);
 
         _server.Given(Request.Create().WithPath($"/v1/descriptions/{culture.TwoLetterISOLanguageName}/markets/{marketDescription.id}/variants/{marketDescription.variant}").UsingGet())
-            .WithTitle(MappingNameForSingleVariantMarket)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForSingleVariantMarket)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -328,8 +328,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports.xml").UsingGet())
-            .WithTitle(MappingNameForAllSports)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForAllSports)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -342,8 +342,8 @@ public class WireMockMappingBuilder
         responseBody = DeserializerHelper.SerializeApiMessageToXml(endpoint);
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports/{sportId}/categories.xml").UsingGet())
-            .WithTitle(MappingNameForSportCategory)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForSportCategory)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -352,8 +352,8 @@ public class WireMockMappingBuilder
         var responseBody = DeserializerHelper.SerializeApiMessageToXml(response);
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sports/{response.sport.id}/categories.xml").UsingGet())
-            .WithTitle(MappingNameForSportCategory)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForSportCategory)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -362,8 +362,8 @@ public class WireMockMappingBuilder
         var responseBody = DeserializerHelper.SerializeApiMessageToXml(content);
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/sport_events/{content.sport_event.id}/summary.xml").UsingGet())
-            .WithTitle(MappingNameForMatchSummary)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForMatchSummary)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -372,8 +372,8 @@ public class WireMockMappingBuilder
         var responseBody = DeserializerHelper.SerializeApiMessageToXml(content);
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/competitors/{content.competitor.id}/profile.xml").UsingGet())
-            .WithTitle(MappingNameForCompetitorProfile)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForCompetitorProfile)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -382,8 +382,8 @@ public class WireMockMappingBuilder
         var responseBody = DeserializerHelper.SerializeApiMessageToXml(content);
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/players/{content.player.id}/profile.xml").UsingGet())
-            .WithTitle(MappingNameForPlayerProfile)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForPlayerProfile)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -393,8 +393,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath($"/v1/sports/{culture.TwoLetterISOLanguageName}/tournaments.xml").UsingGet())
-            .WithTitle(MappingNameForAllTournamentsForAllSports)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForAllTournamentsForAllSports)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -408,8 +408,8 @@ public class WireMockMappingBuilder
         var responseBody = FileHelper.GetFileContent(fileNameTemplate);
 
         _server.Given(Request.Create().WithPath(new RegexMatcher(pathPattern)).UsingGet())
-            .WithTitle(MappingNameForScheduleForDate)
-            .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForScheduleForDate)
+               .RespondWith(Response.Create().WithBody(responseBody).WithStatusCode(StatusCodes.Status200OK));
 
         return this;
     }
@@ -421,8 +421,8 @@ public class WireMockMappingBuilder
         var pathPattern = $"/v1/sports/{languagePattern}/schedules/{datePattern}/schedule.xml";
 
         _server.Given(Request.Create().WithPath(new RegexMatcher(pathPattern)).UsingGet())
-            .WithTitle(MappingNameForScheduleForDate)
-            .RespondWith(Response.Create().WithCallback(GenerateResponseForScheduleForDate).WithStatusCode(StatusCodes.Status200OK));
+               .WithTitle(MappingNameForScheduleForDate)
+               .RespondWith(Response.Create().WithCallback(GenerateResponseForScheduleForDate).WithStatusCode(StatusCodes.Status200OK));
 
         return this;
     }
@@ -452,8 +452,8 @@ public class WireMockMappingBuilder
         var pathPattern = $"/v1/{producerPattern}/recovery/initiate_request";
 
         _server.Given(Request.Create().WithPath(new RegexMatcher(pathPattern)).UsingPost())
-            .WithTitle(MappingNameForRecoveryRequest)
-            .RespondWith(Response.Create().WithStatusCode(200));
+               .WithTitle(MappingNameForRecoveryRequest)
+               .RespondWith(Response.Create().WithStatusCode(200));
         return this;
     }
 

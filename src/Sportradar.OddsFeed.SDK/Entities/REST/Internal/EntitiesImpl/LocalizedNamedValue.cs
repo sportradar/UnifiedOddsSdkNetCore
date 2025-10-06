@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
             if (descriptions != null)
             {
                 Descriptions = descriptions as IReadOnlyDictionary<CultureInfo, string>
-                    ?? new ReadOnlyDictionary<CultureInfo, string>(descriptions);
+                               ?? new ReadOnlyDictionary<CultureInfo, string>(descriptions);
                 Description = descriptions[defaultCulture];
             }
             else
@@ -59,8 +59,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         public override string ToString()
         {
             var desc = Descriptions.IsNullOrEmpty()
-                ? string.Empty
-                : string.Join(";", Descriptions.Select(s => $"{s.Key}={s.Value}"));
+                           ? string.Empty
+                           : string.Join(";", Descriptions.Select(s => $"{s.Key}={s.Value}"));
             return $"{Id}:{desc}";
         }
     }

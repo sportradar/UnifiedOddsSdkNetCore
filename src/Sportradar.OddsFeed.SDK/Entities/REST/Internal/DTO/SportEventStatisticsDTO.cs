@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Linq;
@@ -25,28 +25,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Guard.Argument(result, nameof(result)).NotNull();
 
             TotalStatisticsDtos = new List<TeamStatisticsDto>
-                                  {
-                                      new TeamStatisticsDto(
-                                                            null,
-                                                            null,
-                                                            HomeAway.Home,
-                                                            result.yellow_cards?.home,
-                                                            result.red_cards?.home,
-                                                            result.yellow_red_cards?.home,
-                                                            result.corners?.home,
-                                                            result.green_cards?.home
-                                                           ),
-                                      new TeamStatisticsDto(
-                                                            null,
-                                                            null,
-                                                            HomeAway.Away,
-                                                            result.yellow_cards?.away,
-                                                            result.red_cards?.away,
-                                                            result.yellow_red_cards?.away,
-                                                            result.corners?.away,
-                                                            result.green_cards?.away
-                                                           )
-                                  };
+                                      {
+                                          new TeamStatisticsDto(null,
+                                                                null,
+                                                                HomeAway.Home,
+                                                                result.yellow_cards?.home,
+                                                                result.red_cards?.home,
+                                                                result.yellow_red_cards?.home,
+                                                                result.corners?.home,
+                                                                result.green_cards?.home),
+                                          new TeamStatisticsDto(null,
+                                                                null,
+                                                                HomeAway.Away,
+                                                                result.yellow_cards?.away,
+                                                                result.red_cards?.away,
+                                                                result.yellow_red_cards?.away,
+                                                                result.corners?.away,
+                                                                result.green_cards?.away)
+                                      };
 
             PeriodStatisticsDtos = null;
         }

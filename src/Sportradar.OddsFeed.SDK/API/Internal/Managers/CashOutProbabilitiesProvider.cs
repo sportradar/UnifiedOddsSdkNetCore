@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -75,14 +75,14 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Managers
         private async Task<ICashOutProbabilities<T>> GetProbabilitiesInternalAsync<T>(string param, CultureInfo culture = null) where T : ISportEvent
         {
             var data = _exceptionStrategy == ExceptionHandlingStrategy.Throw
-                ? await _dataProvider.GetDataAsync(param).ConfigureAwait(false)
-                : await new Func<string, Task<cashout>>(_dataProvider.GetDataAsync).SafeInvokeAsync(param, ExecutionLog, "Error occurred while fetching probabilities for " + param).ConfigureAwait(false);
+                           ? await _dataProvider.GetDataAsync(param).ConfigureAwait(false)
+                           : await new Func<string, Task<cashout>>(_dataProvider.GetDataAsync).SafeInvokeAsync(param, ExecutionLog, "Error occurred while fetching probabilities for " + param).ConfigureAwait(false);
 
             var cultureResult = culture == null ? _defaultCultures : new[] { culture };
 
             return data == null
-                ? null
-                : _messageMapper.MapCashOutProbabilities<T>(data, cultureResult, null);
+                       ? null
+                       : _messageMapper.MapCashOutProbabilities<T>(data, cultureResult, null);
         }
 
         /// <summary>

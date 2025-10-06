@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl
         /// <param name="categories"> a <see cref="IEnumerable{ICategory}"/> representing categories
         /// which belong to the sport represented by the current instance</param>
         public Sport(Urn id, IReadOnlyDictionary<CultureInfo, string> names, IEnumerable<ICategory> categories)
-           : base(id, names)
+            : base(id, names)
         {
             Guard.Argument(names, nameof(names)).NotNull().NotEmpty();
 

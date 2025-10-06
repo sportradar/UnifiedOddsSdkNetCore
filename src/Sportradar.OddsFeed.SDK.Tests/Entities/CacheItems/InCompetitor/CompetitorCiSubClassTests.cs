@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -456,13 +456,13 @@ public class CompetitorCiSubClassTests : CompetitorSetup
     public void ReferenceIdWhenConstructor()
     {
         var references = new Dictionary<string, string>
-        {
-            { "betradar", "12345" },
-            { "BetradarCtrl", "12345" },
-            { "betfair", "2222" },
-            { "rotation_number", "1111" },
-            { "aams", "9876" }
-        };
+                             {
+                                 { "betradar", "12345" },
+                                 { "BetradarCtrl", "12345" },
+                                 { "betfair", "2222" },
+                                 { "rotation_number", "1111" },
+                                 { "aams", "9876" }
+                             };
 
         var referenceCi = new ReferenceIdCacheItem(references);
 
@@ -504,10 +504,10 @@ public class CompetitorCiSubClassTests : CompetitorSetup
     public void ReferenceIdWhenConstructorWithAdditionalUnknownValue()
     {
         var references = new Dictionary<string, string>
-        {
-            { "betradar", "12345" },
-            { "UnknownKey", "12345" },
-        };
+                             {
+                                 { "betradar", "12345" },
+                                 { "UnknownKey", "12345" },
+                             };
 
         var referenceCi = new ReferenceIdCacheItem(references);
 
@@ -523,21 +523,21 @@ public class CompetitorCiSubClassTests : CompetitorSetup
     public void ReferenceIdWhenMerge()
     {
         var references1 = new Dictionary<string, string>
-        {
-            { "betradar", "11111" },
-            { "BetradarCtrl", "11111" },
-            { "betfair", "11" },
-            { "rotation_number", "111" },
-            { "aams", "1" }
-        };
+                              {
+                                  { "betradar", "11111" },
+                                  { "BetradarCtrl", "11111" },
+                                  { "betfair", "11" },
+                                  { "rotation_number", "111" },
+                                  { "aams", "1" }
+                              };
         var references2 = new Dictionary<string, string>
-        {
-            { "betradar", "22222" },
-            { "BetradarCtrl", "22222" },
-            { "betfair", "22" },
-            { "rotation_number", "222" },
-            { "aams", "2" }
-        };
+                              {
+                                  { "betradar", "22222" },
+                                  { "BetradarCtrl", "22222" },
+                                  { "betfair", "22" },
+                                  { "rotation_number", "222" },
+                                  { "aams", "2" }
+                              };
 
         var referenceCi = new ReferenceIdCacheItem(references1);
         referenceCi.Merge(references2, true);
@@ -554,13 +554,13 @@ public class CompetitorCiSubClassTests : CompetitorSetup
     public void ReferenceIdWhenMergeWithNull()
     {
         var references1 = new Dictionary<string, string>
-        {
-            { "betradar", "11111" },
-            { "BetradarCtrl", "11111" },
-            { "betfair", "11" },
-            { "rotation_number", "111" },
-            { "aams", "1" }
-        };
+                              {
+                                  { "betradar", "11111" },
+                                  { "BetradarCtrl", "11111" },
+                                  { "betfair", "11" },
+                                  { "rotation_number", "111" },
+                                  { "aams", "1" }
+                              };
 
         var referenceCi = new ReferenceIdCacheItem(references1);
         referenceCi.Merge(null, true);

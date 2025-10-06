@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -41,14 +41,14 @@ public class UofSessionTests
     public void Constructor_FullData()
     {
         var uofSession = new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys);
+                                        _stubFeedMessageProcessor,
+                                        _mockFeedMessageMapper.Object,
+                                        _mockFeedMessageValidator.Object,
+                                        _mockMessageDataExtractor.Object,
+                                        _mockDispatcherStore.Object,
+                                        MessageInterest.AllMessages,
+                                        new[] { new CultureInfo("en") },
+                                        GetRoutingKeys);
 
         Assert.NotNull(uofSession);
         Assert.False(uofSession.Name.IsNullOrEmpty());
@@ -59,24 +59,24 @@ public class UofSessionTests
     public void Constructor_SessionsHasUniqueName()
     {
         var session1 = new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.LiveMessagesOnly,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys);
+                                      _stubFeedMessageProcessor,
+                                      _mockFeedMessageMapper.Object,
+                                      _mockFeedMessageValidator.Object,
+                                      _mockMessageDataExtractor.Object,
+                                      _mockDispatcherStore.Object,
+                                      MessageInterest.LiveMessagesOnly,
+                                      new[] { new CultureInfo("en") },
+                                      GetRoutingKeys);
 
         var session2 = new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.PrematchMessagesOnly,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys);
+                                      _stubFeedMessageProcessor,
+                                      _mockFeedMessageMapper.Object,
+                                      _mockFeedMessageValidator.Object,
+                                      _mockMessageDataExtractor.Object,
+                                      _mockDispatcherStore.Object,
+                                      MessageInterest.PrematchMessagesOnly,
+                                      new[] { new CultureInfo("en") },
+                                      GetRoutingKeys);
 
         Assert.NotNull(session1);
         Assert.False(session1.Name.IsNullOrEmpty());
@@ -89,140 +89,140 @@ public class UofSessionTests
     public void Constructor_MissingMessageReceiver_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(null,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys));
+                                                                  _stubFeedMessageProcessor,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  _mockDispatcherStore.Object,
+                                                                  MessageInterest.AllMessages,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingFeedMessageProcessor_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            null,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys));
+                                                                  null,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  _mockDispatcherStore.Object,
+                                                                  MessageInterest.AllMessages,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingFeedMessageMapper_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            null,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys));
+                                                                  _stubFeedMessageProcessor,
+                                                                  null,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  _mockDispatcherStore.Object,
+                                                                  MessageInterest.AllMessages,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingMessageValidator_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            null,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys));
+                                                                  _stubFeedMessageProcessor,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  null,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  _mockDispatcherStore.Object,
+                                                                  MessageInterest.AllMessages,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingMessageDataExtractor_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            null,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys));
+                                                                  _stubFeedMessageProcessor,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  null,
+                                                                  _mockDispatcherStore.Object,
+                                                                  MessageInterest.AllMessages,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingDispatcherStore_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            null,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys));
+                                                                  _stubFeedMessageProcessor,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  null,
+                                                                  MessageInterest.AllMessages,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingMessageInterest_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            null,
-            new[] { new CultureInfo("en") },
-            GetRoutingKeys));
+                                                                  _stubFeedMessageProcessor,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  _mockDispatcherStore.Object,
+                                                                  null,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingDefaultCulture_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            null,
-            GetRoutingKeys));
+                                                                  _stubFeedMessageProcessor,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  _mockDispatcherStore.Object,
+                                                                  MessageInterest.AllMessages,
+                                                                  null,
+                                                                  GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_EmptyDefaultCulture_Throws()
     {
         Assert.Throws<ArgumentException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new List<CultureInfo>(),
-            GetRoutingKeys));
+                                                              _stubFeedMessageProcessor,
+                                                              _mockFeedMessageMapper.Object,
+                                                              _mockFeedMessageValidator.Object,
+                                                              _mockMessageDataExtractor.Object,
+                                                              _mockDispatcherStore.Object,
+                                                              MessageInterest.AllMessages,
+                                                              new List<CultureInfo>(),
+                                                              GetRoutingKeys));
     }
 
     [Fact]
     public void Constructor_MissingRoutingKeysFunction_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new UofSession(_stubMessageReceiver,
-            _stubFeedMessageProcessor,
-            _mockFeedMessageMapper.Object,
-            _mockFeedMessageValidator.Object,
-            _mockMessageDataExtractor.Object,
-            _mockDispatcherStore.Object,
-            MessageInterest.AllMessages,
-            new[] { new CultureInfo("en") },
-            null));
+                                                                  _stubFeedMessageProcessor,
+                                                                  _mockFeedMessageMapper.Object,
+                                                                  _mockFeedMessageValidator.Object,
+                                                                  _mockMessageDataExtractor.Object,
+                                                                  _mockDispatcherStore.Object,
+                                                                  MessageInterest.AllMessages,
+                                                                  new[] { new CultureInfo("en") },
+                                                                  null));
     }
 
     [Fact]
@@ -286,10 +286,10 @@ public class UofSessionTests
         var messageIsDispatched = false;
         var session = GetDefaultSession();
         session.OnUnparsableMessageReceived += (_, _) =>
-        {
-            messageIsDispatched = true;
-            throw new InvalidOperationException();
-        };
+                                               {
+                                                   messageIsDispatched = true;
+                                                   throw new InvalidOperationException();
+                                               };
         _mockMessageDataExtractor.Setup(x => x.GetBasicMessageData(It.IsAny<byte[]>())).Returns(new BasicMessageData(MessageType.OddsChange, "1", "sr:match:1234"));
 
         session.Open();
@@ -383,10 +383,10 @@ public class UofSessionTests
         var messageBytes = JsonSerializer.SerializeToUtf8Bytes(feedMessage);
         var session = GetDefaultSession();
         session.OnOddsChange += (_, _) =>
-        {
-            messageIsDispatched = true;
-            throw new InvalidOperationException();
-        };
+                                {
+                                    messageIsDispatched = true;
+                                    throw new InvalidOperationException();
+                                };
 
         session.Dispatch(feedMessage, messageBytes);
 
@@ -480,14 +480,14 @@ public class UofSessionTests
     private UofSession GetDefaultSession()
     {
         return new UofSession(_stubMessageReceiver,
-                _stubFeedMessageProcessor,
-                _mockFeedMessageMapper.Object,
-                _mockFeedMessageValidator.Object,
-                _mockMessageDataExtractor.Object,
-                _mockDispatcherStore.Object,
-                MessageInterest.AllMessages,
-                new[] { new CultureInfo("en") },
-                GetRoutingKeys);
+                              _stubFeedMessageProcessor,
+                              _mockFeedMessageMapper.Object,
+                              _mockFeedMessageValidator.Object,
+                              _mockMessageDataExtractor.Object,
+                              _mockDispatcherStore.Object,
+                              MessageInterest.AllMessages,
+                              new[] { new CultureInfo("en") },
+                              GetRoutingKeys);
     }
 
     private IEnumerable<string> GetRoutingKeys(UofSession session)

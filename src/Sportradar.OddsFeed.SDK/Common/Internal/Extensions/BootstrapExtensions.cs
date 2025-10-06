@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Linq;
@@ -24,11 +24,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Extensions
             };
 
             services.AddSingleton<ICacheStore<T>>(serviceProvider =>
-            {
-                var storeMemoryCache = new MemoryCache(memoryCacheOptions);
-                var logger = serviceProvider.GetRequiredService<ILogger<Cache>>();
-                return new CacheStore<T>(cacheStoreName, storeMemoryCache, logger, absoluteExpiration, cacheItemSlidingExpiration, expirationVariance);
-            });
+                                                  {
+                                                      var storeMemoryCache = new MemoryCache(memoryCacheOptions);
+                                                      var logger = serviceProvider.GetRequiredService<ILogger<Cache>>();
+                                                      return new CacheStore<T>(cacheStoreName, storeMemoryCache, logger, absoluteExpiration, cacheItemSlidingExpiration, expirationVariance);
+                                                  });
         }
 
         public static ICacheStore<T> GetSdkCacheStore<T>(this IServiceProvider serviceProvider, string cacheStoreName)

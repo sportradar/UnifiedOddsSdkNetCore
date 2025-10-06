@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
 using System.Globalization;
@@ -39,8 +39,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.CI
             }
             Names = exportableCourse.Names ?? new Dictionary<CultureInfo, string>();
             Holes = exportableCourse.Holes.IsNullOrEmpty()
-                ? new List<HoleCacheItem>()
-                : exportableCourse.Holes.Select(s => new HoleCacheItem(s)).ToList();
+                        ? new List<HoleCacheItem>()
+                        : exportableCourse.Holes.Select(s => new HoleCacheItem(s)).ToList();
         }
 
         public void Merge(CourseDto courseDto, CultureInfo culture)

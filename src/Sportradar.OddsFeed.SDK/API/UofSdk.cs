@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -376,11 +376,11 @@ namespace Sportradar.OddsFeed.SDK.Api
 
             var all = CultureInfo.GetCultures(CultureTypes.AllCultures);
             var cultures =
-                 all.Where(a => codes2.Contains(a.TwoLetterISOLanguageName))
-                    .Union(all.Where(a => codes3.Contains(a.ThreeLetterISOLanguageName) && !a.Name.Contains("-")))
-                    .Where(c => (c.CultureTypes & CultureTypes.NeutralCultures) != 0)
-                    .OrderBy(c => c.Name)
-                    .ToList();
+                all.Where(a => codes2.Contains(a.TwoLetterISOLanguageName))
+                   .Union(all.Where(a => codes3.Contains(a.ThreeLetterISOLanguageName) && !a.Name.Contains("-")))
+                   .Where(c => (c.CultureTypes & CultureTypes.NeutralCultures) != 0)
+                   .OrderBy(c => c.Name)
+                   .ToList();
             return cultures;
         }
 
@@ -485,10 +485,10 @@ namespace Sportradar.OddsFeed.SDK.Api
             foreach (var p in ProducerManager.Producers.OrderBy(o => o.Id))
             {
                 _log.LogInformation("Producer {ProducerId}-{ProducerName}  IsAvailable={ProducerIsAvailable} IsEnabled={ProducerIsEnabled}",
-                    p.Id.ToString(CultureInfo.InvariantCulture),
-                    p.Name.FixedLength(15),
-                    p.IsAvailable.ToString(CultureInfo.InvariantCulture),
-                    (!p.IsDisabled).ToString(CultureInfo.InvariantCulture));
+                                    p.Id.ToString(CultureInfo.InvariantCulture),
+                                    p.Name.FixedLength(15),
+                                    p.IsAvailable.ToString(CultureInfo.InvariantCulture),
+                                    (!p.IsDisabled).ToString(CultureInfo.InvariantCulture));
             }
         }
 

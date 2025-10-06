@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -19,9 +19,9 @@ public class OperandFactoryTests
     private static IReadOnlyDictionary<string, string> BuildSpecifiers(string name, string value)
     {
         return new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
-        {
-            {name, value}
-        });
+                                                          {
+                                                              { name, value }
+                                                          });
     }
 
     [Theory]

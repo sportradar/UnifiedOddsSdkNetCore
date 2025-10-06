@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Diagnostics;
@@ -237,7 +237,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal
             }
 
             return identifiers[0];
-
         }
 
         private string GetRequestedLanguage(params string[] identifiers)

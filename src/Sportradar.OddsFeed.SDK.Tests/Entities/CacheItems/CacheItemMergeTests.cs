@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Globalization;
@@ -75,11 +75,11 @@ public class CacheItemMergeTests
             level = "first",
             live_coverage = true,
             coverage = new[]
-            {
-                new coverage { includes = "coverage includes 1" },
-                new coverage { includes = "coverage includes 2" },
-                new coverage { includes = "coverage includes 3" }
-            },
+                                                      {
+                                                          new coverage { includes = "coverage includes 1" },
+                                                          new coverage { includes = "coverage includes 2" },
+                                                          new coverage { includes = "coverage includes 3" }
+                                                      },
             covered_from = "tv"
         };
         var coverageInfoDto = new CoverageInfoDto(coverageInfoType);
@@ -177,18 +177,18 @@ public class CacheItemMergeTests
             is_in_live_match_tracker = new productInfoItem(),
             is_in_live_score = new productInfoItem(),
             links = new[]
-            {
-                new productInfoLink {name = "info link 1", @ref = "ref 1"},
-                new productInfoLink {name = "info link 2", @ref = "ref 2"},
-                new productInfoLink {name = "info link 3", @ref = "ref 3"}
-            },
+                                                  {
+                                                      new productInfoLink { name = "info link 1", @ref = "ref 1" },
+                                                      new productInfoLink { name = "info link 2", @ref = "ref 2" },
+                                                      new productInfoLink { name = "info link 3", @ref = "ref 3" }
+                                                  },
             streaming = new[]
-            {
-                new streamingChannel {id = 1, name = "streaming channel 1"},
-                new streamingChannel {id = 2, name = "streaming channel 2"},
-                new streamingChannel {id = 3, name = "streaming channel 3"},
-                new streamingChannel {id = 4, name = "streaming channel 4"}
-            }
+                                                      {
+                                                          new streamingChannel { id = 1, name = "streaming channel 1" },
+                                                          new streamingChannel { id = 2, name = "streaming channel 2" },
+                                                          new streamingChannel { id = 3, name = "streaming channel 3" },
+                                                          new streamingChannel { id = 4, name = "streaming channel 4" }
+                                                      }
         };
         var productInfoDto = new ProductInfoDto(productInfoType);
         var productInfo = new ProductInfo(productInfoDto);

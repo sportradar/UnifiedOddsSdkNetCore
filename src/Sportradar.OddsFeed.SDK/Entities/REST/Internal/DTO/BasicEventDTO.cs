@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
     /// </summary>
     internal class BasicEventDto
     {
-        public readonly int Id;
+        public readonly long Id;
         public decimal? HomeScore;
         public decimal? AwayScore;
         public int? MatchTime;
@@ -48,10 +48,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             Points = item.points;
             StoppageTime = item.stoppage_time;
             Team = item.team == null
-                ? (HomeAway?)null
-                : item.team.Equals("home", StringComparison.InvariantCultureIgnoreCase)
-                    ? HomeAway.Home
-                    : HomeAway.Away;
+                       ? (HomeAway?)null
+                       : item.team.Equals("home", StringComparison.InvariantCultureIgnoreCase)
+                           ? HomeAway.Home
+                           : HomeAway.Away;
             Type = item.type;
             Value = item.value;
             X = item.xSpecified ? (int?)item.x : null;

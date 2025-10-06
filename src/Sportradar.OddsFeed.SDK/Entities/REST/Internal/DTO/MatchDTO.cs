@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Linq;
 using Dawn;
@@ -125,7 +125,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
                         division = t.division,
                         divisionSpecified = t.divisionSpecified,
                         state = t.state
-                    }).ToArray(),
+                    })
+                                                                      .ToArray(),
                     parent = fixture.parent,
                     races = fixture.races,
                     status = fixture.status,
@@ -138,8 +139,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto
             })
         {
             Venue = fixture.venue == null
-                ? null
-                : new VenueDto(fixture.venue);
+                        ? null
+                        : new VenueDto(fixture.venue);
 
             if (fixture.coverage_info != null)
             {

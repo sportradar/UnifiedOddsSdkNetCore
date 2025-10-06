@@ -1,4 +1,4 @@
-﻿// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
 using Dawn;
@@ -22,9 +22,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <param name="bookmakerDetailsProvider">Provider for bookmaker details</param>
         /// <param name="producersProvider">Provider for available producers</param>
         internal CustomConfigurationBuilder(UofConfiguration configuration,
-            IUofConfigurationSectionProvider sectionProvider,
-            IBookmakerDetailsProvider bookmakerDetailsProvider,
-            IProducersProvider producersProvider)
+                                            IUofConfigurationSectionProvider sectionProvider,
+                                            IBookmakerDetailsProvider bookmakerDetailsProvider,
+                                            IProducersProvider producersProvider)
             : base(configuration, sectionProvider, bookmakerDetailsProvider, producersProvider)
         {
             //populate connection settings and then override only needed
@@ -151,11 +151,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         }
 
         /// <summary>
-        /// Sets the custom configuration properties to values read from configuration file. Only value which can be set
-        /// through <see cref="ICustomConfigurationBuilder" /> methods are set.
-        /// Any values already set by methods on the current instance are overridden
+        /// Sets the custom configuration properties to values read from the configuration file.
+        /// Only value which can be set through <see cref="ICustomConfigurationBuilder" /> methods are set.
+        /// Any values already set by methods on the current instance are overridden.
         /// </summary>
-        /// <returns>T.</returns>
+        /// <returns>Returns <see cref="ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         public override ICustomConfigurationBuilder LoadFromConfigFile()
         {
             var section = SectionProvider.GetSection();
@@ -192,7 +192,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         }
 
         /// <summary>
-        /// Check the properties values before build the configuration and throws an exception is invalid values are found
+        /// Check the properties values before build the configuration and throws an exception if invalid values are found
         /// </summary>
         /// <exception cref="InvalidOperationException">The value of one or more properties is not correct</exception>
         protected override void PreBuildCheck()
