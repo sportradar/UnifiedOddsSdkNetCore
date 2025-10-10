@@ -62,5 +62,26 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// <param name="useMessagingSsl">The value specifying whether SSL should be used to communicate with the messaging server</param>
         /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         ICustomConfigurationBuilder UseMessagingSsl(bool useMessagingSsl);
+
+        /// <summary>
+        /// Sets the host name of the authentication server.
+        /// </summary>
+        /// <param name="authenticationHost">The host name of the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        ICustomConfigurationBuilder SetClientAuthenticationHost(string authenticationHost);
+
+        /// <summary>
+        /// Sets the port used to connect to the authentication server.
+        /// </summary>
+        /// <param name="port">The port used to connect to the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        ICustomConfigurationBuilder SetClientAuthenticationPort(int port);
+
+        /// <summary>
+        /// Sets the value specifying whether SSL should be used to communicate with the authentication server.
+        /// </summary>
+        /// <param name="useSsl">The value specifying whether SSL should be used to communicate with the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        ICustomConfigurationBuilder SetClientAuthenticationUseSsl(bool useSsl);
     }
 }

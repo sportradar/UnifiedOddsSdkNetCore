@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
@@ -20,6 +22,7 @@ public class UofConfigurationBuilder
     private readonly ProducerConfigBuilder _producerBuilder = new();
     private readonly RabbitConfigBuilder _rabbitBuilder = new();
     private readonly UsageConfigBuilder _usageBuilder = new();
+    private readonly AuthConfigBuilder _authBuilder = new();
 
     public UofConfigurationBuilder WithAccessToken(string token)
     {
@@ -99,6 +102,12 @@ public class UofConfigurationBuilder
         return this;
     }
 
+    public UofConfigurationBuilder WithAuthenticationConfiguration(Action<AuthConfigBuilder> config)
+    {
+        config(_authBuilder);
+        return this;
+    }
+
     public IUofConfiguration Build()
     {
         _configMock.SetupGet(x => x.Api).Returns(_apiBuilder.Build());
@@ -107,6 +116,7 @@ public class UofConfigurationBuilder
         _configMock.SetupGet(x => x.Producer).Returns(_producerBuilder.Build());
         _configMock.SetupGet(x => x.Usage).Returns(_usageBuilder.Build());
         _configMock.SetupGet(x => x.Additional).Returns(_additionalBuilder.Build());
+        _configMock.SetupGet(x => x.Authentication).Returns(_authBuilder.Build());
 
         return _configMock.Object;
     }
@@ -236,6 +246,58 @@ public class UofConfigurationBuilder
         private UsageConfigBuilder Set<T>(Expression<Func<IUofUsageConfiguration, T>> prop, T value)
         {
             _usageMock.SetupGet(prop).Returns(value);
+            return this;
+        }
+    }
+
+    public class AuthConfigBuilder
+    {
+        private readonly Mock<UofClientAuthentication.IPrivateKeyJwt> _authMock = new();
+
+        public AuthConfigBuilder WithHost(string host)
+        {
+            return Set(x => x.Host, host);
+        }
+
+        public AuthConfigBuilder WithPort(int port)
+        {
+            return Set(x => x.Port, port);
+        }
+
+        public AuthConfigBuilder WithSsl(bool value)
+        {
+            return Set(x => x.UseSsl, value);
+        }
+
+        public AuthConfigBuilder WithClientId(string clientId)
+        {
+            return Set(x => x.ClientId, clientId);
+        }
+
+        public AuthConfigBuilder WithSigningKeyId(string signingKeyId)
+        {
+            return Set(x => x.SigningKeyId, signingKeyId);
+        }
+
+        public AuthConfigBuilder WithPrivateKey(AsymmetricSecurityKey privateKey)
+        {
+            return Set(x => x.PrivateKey, privateKey);
+        }
+
+        public AuthConfigBuilder WithAnyPrivateKey()
+        {
+            AsymmetricSecurityKey testPrivateKey = new RsaSecurityKey(RSA.Create(2056));
+            return Set(x => x.PrivateKey, testPrivateKey);
+        }
+
+        public UofClientAuthentication.IPrivateKeyJwt Build()
+        {
+            return _authMock.Object;
+        }
+
+        private AuthConfigBuilder Set<T>(Expression<Func<UofClientAuthentication.IPrivateKeyJwt, T>> prop, T value)
+        {
+            _authMock.SetupGet(prop).Returns(value);
             return this;
         }
     }

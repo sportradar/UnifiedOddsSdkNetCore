@@ -27,10 +27,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
             {
                 throw new InvalidOperationException("Missing DefaultRequestHeaders");
             }
-            if (!httpClient.DefaultRequestHeaders.Contains("x-access-token"))
-            {
-                throw new InvalidOperationException("Missing x-access-token");
-            }
             if (!httpClient.DefaultRequestHeaders.Contains("User-Agent"))
             {
                 throw new InvalidOperationException("User-Agent");

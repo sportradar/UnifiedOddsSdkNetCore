@@ -33,6 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         public IUofCacheConfiguration Cache { get; internal set; }
         public IUofAdditionalConfiguration Additional { get; internal set; }
         public IUofUsageConfiguration Usage { get; internal set; }
+        public UofClientAuthentication.IPrivateKeyJwt Authentication { get; internal set; }
         public int NodeId { get; internal set; }
         public SdkEnvironment Environment { get; internal set; }
         public ExceptionHandlingStrategy ExceptionHandlingStrategy { get; internal set; }
@@ -49,6 +50,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             Rabbit = new UofRabbitConfiguration();
             Additional = new UofAdditionalConfiguration();
             Usage = new UofUsageConfiguration();
+            Authentication = null;
             ExceptionHandlingStrategy = ExceptionHandlingStrategy.Throw;
         }
 
@@ -73,6 +75,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 var apiConfig = (UofApiConfiguration)Api;
                 apiConfig.Host = EnvironmentManager.GetApiHost(Environment);
                 Api = apiConfig;
+            }
+
+            if (Authentication != null && (Environment != SdkEnvironment.Custom || Authentication.Host.IsNullOrEmpty()))
+            {
+                var authenticationConfig = (PrivateKeyJwt)Authentication;
+                authenticationConfig.SetHost(EnvironmentManager.GetAuthenticationHost(Environment));
+                authenticationConfig.SetUseSsl(true);
+                authenticationConfig.SetPort(EnvironmentManager.DefaultApiSslPort);
+                Authentication = authenticationConfig;
             }
 
             CheckAndUpdateConnectionSettings();
@@ -251,10 +262,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             {
                 throw new InvalidOperationException("Missing default language");
             }
-            if (string.IsNullOrEmpty(AccessToken))
-            {
-                throw new InvalidOperationException("Missing access token");
-            }
         }
 
         public override string ToString()
@@ -290,7 +297,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
               .Append(", ")
               .Append(Additional)
               .Append(", ")
-              .Append(Usage);
+              .Append(Usage)
+              .Append(", ")
+              .Append(Authentication?.ToString() ?? $"{nameof(Authentication)}=null");
 
             return "UofConfiguration{" + SdkInfo.DictionaryToString(summaryValues) + sb + "}";
         }

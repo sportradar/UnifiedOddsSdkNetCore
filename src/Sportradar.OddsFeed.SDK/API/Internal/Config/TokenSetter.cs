@@ -23,6 +23,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private readonly UofConfiguration _configuration;
 
+        private UofClientAuthentication.IPrivateKeyJwtData _privateKeyJwtData;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenSetter"/> class
         /// </summary>
@@ -52,21 +54,33 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                 throw new ArgumentException("Value cannot be a null reference or empty string", nameof(accessToken));
             }
             _configuration.AccessToken = accessToken;
-            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider);
+            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider, _privateKeyJwtData);
         }
 
         /// <summary>
-        /// Sets the access token used to access feed resources (AMQP broker, Sports API, ...) to value read from configuration file
+        /// Sets the authentication configuration used to access feed resources.
+        /// </summary>
+        /// <param name="privateKeyJwtData">The authentication configuration containing credentials.</param>
+        /// <returns>
+        /// The <see cref="ITokenSetter"/> instance allowing chaining of calls.
+        /// </returns>
+        public ITokenSetter SetClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData privateKeyJwtData)
+        {
+            _privateKeyJwtData = privateKeyJwtData ?? throw new ArgumentNullException(nameof(privateKeyJwtData));
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the access token used to access feed resources (AMQP broker, Sports API, ...) to value read from a configuration file
         /// </summary>
         /// <returns>The <see cref="IEnvironmentSelector" /> instance allowing the selection of target environment</returns>
         public IEnvironmentSelector SetAccessTokenFromConfigFile()
         {
             var section = _uofConfigurationSectionProvider.GetSection();
-            if (section == null)
-            {
-                throw new InvalidOperationException("Missing configuration section");
-            }
-            return SetAccessToken(section.AccessToken);
+
+            return section == null
+                       ? throw new InvalidOperationException("Missing configuration section")
+                       : SetAccessToken(section.AccessToken);
         }
 
         /// <inheritdoc />
@@ -79,7 +93,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
             _configuration.UpdateFromAppConfigSection(true);
 
-            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider)
+            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider, _privateKeyJwtData)
                   .SelectEnvironment(_configuration.Environment)
                   .Build();
         }

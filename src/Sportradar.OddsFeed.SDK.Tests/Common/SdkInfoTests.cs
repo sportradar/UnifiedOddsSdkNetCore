@@ -175,7 +175,7 @@ public class SdkInfoTests
     [SuppressMessage("Style", "IDE0047:Remove unnecessary parentheses", Justification = "Readability")]
     public void AddVariableNumberForProfileCacheTimeoutReturnsVariableBetweenMinMax()
     {
-        var baseValue = TestConfiguration.GetConfig().Cache.ProfileCacheTimeout;
+        var baseValue = TestConfiguration.GetConfigWithCiam().Cache.ProfileCacheTimeout;
         const int variablePercent = 10;
         var max = ((100 + (double)variablePercent) / 100) * baseValue.TotalSeconds;
         for (var i = 0; i < 100; i++)

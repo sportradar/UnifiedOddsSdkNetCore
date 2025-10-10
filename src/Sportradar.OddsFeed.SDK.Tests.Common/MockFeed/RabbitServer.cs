@@ -32,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.MockFeed;
 internal class RabbitServer
 {
     //private const string LocalRabbitIp = "192.168.0.151";  //home
-    private const string LocalRabbitIp = "10.27.121.90"; //office
+    private const string LocalRabbitIp = "10.27.143.58"; //office
     public const string SdkRabbitUsername = "testuser";
     public const string SdkRabbitPassword = "testpass";
     private const string UfExchange = "unifiedfeed";

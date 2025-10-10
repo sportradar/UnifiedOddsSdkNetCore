@@ -2,11 +2,15 @@
 
 using System;
 using System.Linq;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
@@ -22,6 +26,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Api.Config;
 // Ignore Spelling: Uof
 public class UofConfigurationTests
 {
+    private const SdkEnvironment AnyEnvironment = SdkEnvironment.Integration;
     private readonly BookmakerDetailsProvider _defaultBookmakerDetailsProvider;
 
     public UofConfigurationTests()
@@ -356,40 +361,88 @@ public class UofConfigurationTests
     {
         var summary = new UofConfiguration(new TestSectionProvider(null)).ToString();
 
-        CheckConfigurationSummaryHasAllValue(summary);
+        summary.ShouldNotBeNull();
+        summary.ShouldContain("UofConfiguration{");
+        summary.ShouldContain("ApiConfiguration{");
+        summary.ShouldContain("CacheConfiguration{");
+        summary.ShouldContain("ProducerConfiguration{");
+        summary.ShouldContain("RabbitConfiguration{");
+        summary.ShouldContain("AdditionalConfiguration{");
+        summary.ShouldContain("UsageConfiguration{");
+        summary.ShouldContain("Authentication");
+        summary.ShouldContain("BookmakerId=");
+        summary.ShouldContain("AccessToken=");
+        summary.ShouldContain("NodeId=");
+        summary.ShouldContain("DefaultLanguage=");
+        summary.ShouldContain("Languages=");
+        summary.ShouldContain("Environment=");
+        summary.ShouldContain("ExceptionHandlingStrategy=");
     }
 
     [Fact]
     public void UofConfigurationWithFullValuesToStringHasAllTheValues()
     {
         var section = TestSection.GetDefaultSection();
+        var uofAuthenticationConfiguration = UofClientAuthentication.PrivateKeyJwt().
+                                                                     SetSigningKeyId("test-value-kid")
+                                                                    .SetClientId("test-value-service-id")
+                                                                    .SetPrivateKey(new RsaSecurityKey(RSA.Create()))
+                                                                    .Build();
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+                    .SetClientAuthentication(uofAuthenticationConfiguration)
                     .SetAccessTokenFromConfigFile()
                     .SelectEnvironmentFromConfigFile()
                     .LoadFromConfigFile()
                     .Build();
         var summary = config.ToString();
 
-        CheckConfigurationSummaryHasAllValue(summary);
+        summary.ShouldNotBeNull();
+        summary.ShouldContain("UofConfiguration{");
+        summary.ShouldContain("ApiConfiguration{");
+        summary.ShouldContain("CacheConfiguration{");
+        summary.ShouldContain("ProducerConfiguration{");
+        summary.ShouldContain("RabbitConfiguration{");
+        summary.ShouldContain("AdditionalConfiguration{");
+        summary.ShouldContain("UsageConfiguration{");
+        summary.ShouldContain("Authentication");
+        summary.ShouldContain("BookmakerId=");
+        summary.ShouldContain("AccessToken=");
+        summary.ShouldContain("NodeId=");
+        summary.ShouldContain("DefaultLanguage=");
+        summary.ShouldContain("Languages=");
+        summary.ShouldContain("Environment=");
+        summary.ShouldContain("ExceptionHandlingStrategy=");
     }
 
-    private static void CheckConfigurationSummaryHasAllValue(string summary)
+    [Fact]
+    public void WhenCallToStringWithUofConfigurationWithoutAuthenticationThenEmptyAuthenticationStringIsReturned()
     {
+        var section = TestSection.GetDefaultSection();
+        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+                    .SetAccessToken("test-value-token")
+                    .SelectEnvironment(AnyEnvironment)
+                    .SetDefaultLanguage(TestConsts.CultureEn)
+                    .Build();
+
+        config.ToString()!.ShouldContain($"{nameof(config.Authentication)}=null");
+    }
+
+    [Fact]
+    public void AuthenticationConfigurationToStringHasAllTheValues()
+    {
+        var uofAuthenticationConfiguration = UofClientAuthentication.PrivateKeyJwt().
+                                                                     SetSigningKeyId("test-value-kid")
+                                                                    .SetClientId("test-value-service-id")
+                                                                    .SetPrivateKey(new RsaSecurityKey(RSA.Create()))
+                                                                    .Build();
+        var summary = uofAuthenticationConfiguration.ToString();
+
         Assert.NotNull(summary);
-        Assert.Contains("UofConfiguration{", summary);
-        Assert.Contains("ApiConfiguration{", summary);
-        Assert.Contains("CacheConfiguration{", summary);
-        Assert.Contains("ProducerConfiguration{", summary);
-        Assert.Contains("RabbitConfiguration{", summary);
-        Assert.Contains("AdditionalConfiguration{", summary);
-        Assert.Contains("UsageConfiguration{", summary);
-        Assert.Contains("BookmakerId=", summary);
-        Assert.Contains("AccessToken=", summary);
-        Assert.Contains("NodeId=", summary);
-        Assert.Contains("DefaultLanguage=", summary);
-        Assert.Contains("Languages=", summary);
-        Assert.Contains("Environment=", summary);
-        Assert.Contains("ExceptionHandlingStrategy=", summary);
+        Assert.Contains("Authentication{", summary);
+        Assert.Contains("SigningKeyId=", summary);
+        Assert.Contains(SdkInfo.ClearSensitiveData(uofAuthenticationConfiguration.SigningKeyId), summary);
+        Assert.Contains("ClientId=", summary);
+        Assert.Contains(SdkInfo.ClearSensitiveData(uofAuthenticationConfiguration.ClientId), summary);
     }
 
     private static void ValidateDefaultConfig(IUofConfiguration config, SdkEnvironment environment)

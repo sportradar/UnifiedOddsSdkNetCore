@@ -11,11 +11,13 @@ public class XunitLoggerFactory : ILoggerFactory
 {
     public ILogger LastLogger { get; private set; }
     private readonly ITestOutputHelper _outputHelper;
+    private readonly LogLevel _minimumLogLevel;
     private readonly ConcurrentDictionary<string, ILogger> _registeredLoggers;
 
-    public XunitLoggerFactory(ITestOutputHelper outputHelper)
+    public XunitLoggerFactory(ITestOutputHelper outputHelper, LogLevel minimumLogLevel = LogLevel.Trace)
     {
         _outputHelper = outputHelper;
+        _minimumLogLevel = minimumLogLevel;
         _registeredLoggers = new ConcurrentDictionary<string, ILogger>();
     }
 
@@ -33,7 +35,7 @@ public class XunitLoggerFactory : ILoggerFactory
             return existingLogger;
         }
 
-        var logger = new XUnitLogger(categoryName, _outputHelper);
+        var logger = new XUnitLogger(categoryName, _outputHelper, _minimumLogLevel);
         LastLogger = logger;
         _registeredLoggers[categoryName] = logger;
         return logger;
@@ -47,6 +49,12 @@ public class XunitLoggerFactory : ILoggerFactory
     public XUnitLogger GetOrCreateLogger(Type loggerType)
     {
         return (XUnitLogger)CreateLogger(loggerType);
+    }
+
+    public XUnitLogger GetRegisteredLogger(string categoryName)
+    {
+        categoryName = FormatLoggerName(categoryName);
+        return _registeredLoggers.TryGetValue(categoryName, out var logger) ? (XUnitLogger)logger : null;
     }
 
     public void AddProvider(ILoggerProvider provider)

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils;

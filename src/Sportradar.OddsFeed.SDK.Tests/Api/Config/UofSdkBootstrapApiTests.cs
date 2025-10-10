@@ -3,7 +3,9 @@
 using System.Linq;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Replay;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -15,6 +17,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping.Lottery;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
+using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
 using ISdkHttpClientFastFailing = Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.ISdkHttpClientFastFailing;
 
@@ -75,21 +78,38 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
     }
 
     [Fact]
+    public void HttpClientAuthenticationIsRegistered()
+    {
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
+        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
+        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
+        Assert.NotNull(service1);
+        Assert.NotNull(service1A);
+        Assert.NotNull(service2);
+        Assert.NotSame(service1, service1A);
+        Assert.NotSame(service1, service2);
+    }
+
+    [Fact]
     public void HttpClientsHaveDifferentTimeouts()
     {
         var httpClientNormal = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForNormal);
         var httpClientRecovery = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForRecovery);
-        var httpClientFastFailing = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForFastFailing);
+        var httpClientFastFailing = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForFastFailing);
+        var httpClientAuthentication = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
         Assert.NotNull(httpClientNormal);
         Assert.NotNull(httpClientRecovery);
         Assert.NotNull(httpClientFastFailing);
+        Assert.NotNull(httpClientAuthentication);
         Assert.NotSame(httpClientNormal, httpClientRecovery);
         Assert.NotSame(httpClientNormal, httpClientFastFailing);
         Assert.NotSame(httpClientRecovery, httpClientFastFailing);
+        Assert.NotSame(httpClientAuthentication, httpClientFastFailing);
 
         Assert.Equal(UofConfig.Api.HttpClientTimeout, httpClientNormal.Timeout);
         Assert.Equal(UofConfig.Api.HttpClientRecoveryTimeout, httpClientRecovery.Timeout);
         Assert.Equal(UofConfig.Api.HttpClientFastFailingTimeout, httpClientFastFailing.Timeout);
+        Assert.Equal(UofConfig.Api.HttpClientFastFailingTimeout, httpClientAuthentication.Timeout);
     }
 
     [Fact]
@@ -137,12 +157,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
         Assert.NotNull(sdkHttpClient.DefaultRequestHeaders);
         Assert.NotEmpty(sdkHttpClient.DefaultRequestHeaders);
         Assert.NotNull(sdkHttpClient.DefaultRequestHeaders.UserAgent);
-        Assert.True(sdkHttpClient.DefaultRequestHeaders.TryGetValues(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, out var accessToken));
         Assert.True(sdkHttpClient.DefaultRequestHeaders.TryGetValues(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, out var userAgent));
-        var accessTokens = accessToken.ToList();
-        Assert.Single(accessTokens);
-        Assert.False(string.IsNullOrEmpty(accessTokens.First()));
-        Assert.Equal(UofConfig.AccessToken, accessTokens.First());
         var userAgents = userAgent.ToList();
         Assert.Equal(2, userAgents.Count);
         Assert.False(string.IsNullOrEmpty(userAgents.First()));
@@ -1037,4 +1052,31 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
         Assert.IsType<NamedValueDataProvider>(service1, false);
         Assert.Equal(UofSdkBootstrap.DataProviderForNamedValueCacheMatchStatus, service1.DataProviderName);
     }
+
+    [Fact]
+    public void HttpClientsForAuthenticationWhenAuthenticationConfigurationIsMissingThenNoBaseAddress()
+    {
+        var httpClientForAuthentication = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
+
+        httpClientForAuthentication.BaseAddress.ShouldBeNull();
+    }
+
+    [Fact]
+    public void HttpClientsForAuthenticationWhenAuthenticationConfigurationIsPresentThenValidBaseAddress()
+    {
+        var configWithAuth = TestConfiguration.GetConfigWithCiam();
+
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddUofSdkServices(configWithAuth);
+
+        var serviceProvider = serviceCollection.BuildServiceProvider(true);
+        var httpClientForAuthentication = serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
+
+        httpClientForAuthentication.BaseAddress.ShouldNotBeNull();
+        var address = httpClientForAuthentication.BaseAddress.ToString();
+
+        address.ShouldStartWith("http");
+        address.ShouldBe(configWithAuth.Authentication.GetAudienceForLocalToken());
+    }
 }
+

@@ -1,5 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Xunit;
@@ -38,6 +39,25 @@ public class EnvironmentManagerTests
     {
         Assert.NotNull(FindReplayEnvironmentSetting().EnvironmentRetryList);
         Assert.NotNull(EnvironmentManager.GetSetting(SdkEnvironment.Replay).EnvironmentRetryList);
+    }
+
+    [Theory]
+    [InlineData(SdkEnvironment.Production, "auth.sportradar.com")]
+    [InlineData(SdkEnvironment.GlobalProduction, "auth.sportradar.com")]
+    [InlineData(SdkEnvironment.Integration, "stg-auth.sportradar.com")]
+    [InlineData(SdkEnvironment.GlobalIntegration, "stg-auth.sportradar.com")]
+    public void GetAuthenticationHostShouldReturnCorrectHostForValidEnvironments(SdkEnvironment environment, string expectedHost)
+    {
+        var result = EnvironmentManager.GetAuthenticationHost(environment);
+        Assert.Equal(expectedHost, result);
+    }
+
+    [Theory]
+    [InlineData(SdkEnvironment.Custom)]
+    [InlineData(SdkEnvironment.Replay)]
+    public void GetAuthenticationHostShouldThrowArgumentOutOfRangeExceptionForUnsupportedEnvironments(SdkEnvironment environment)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => EnvironmentManager.GetAuthenticationHost(environment));
     }
 
     private EnvironmentSetting FindReplayEnvironmentSetting()

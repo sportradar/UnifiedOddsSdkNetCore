@@ -571,6 +571,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.yml\" sourcestartlinenumber=\"1\">Authentication configuration for the UOF SDK using the Private Key JWT method.\nThis corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder.yml\" sourcestartlinenumber=\"1\">Builder for creating <xref href=\"Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt\" data-throw-if-not-resolved=\"false\"></xref> instances.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtData.yml\" sourcestartlinenumber=\"1\">Authentication configuration for the UOF SDK using the Private Key JWT method.\nThis corresponds to OAuth 2.0 Client Credentials with a JWT assertion signed by a private key.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.yml\" sourcestartlinenumber=\"1\">Static factory and contracts for UOF client authentication.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Config.yml",
       "output": {
         ".html": {

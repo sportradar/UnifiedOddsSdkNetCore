@@ -1,4 +1,4 @@
-﻿using Sportradar.OddsFeed.SDK.Api;
+using Sportradar.OddsFeed.SDK.Api;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Utils;
 

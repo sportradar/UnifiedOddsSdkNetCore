@@ -25,6 +25,8 @@ public class UofSdkBuilder
     private string _apiUrl;
     private ITestOutputHelper _outputHelper;
     private ExceptionHandlingStrategy _exceptionHandlingStrategy;
+    private UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
+    private string _authenticationUrl;
 
     public static UofSdkBuilder Create()
     {
@@ -67,6 +69,18 @@ public class UofSdkBuilder
         return this;
     }
 
+    public UofSdkBuilder WithClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    {
+        _clientAuthentication = clientAuthentication;
+        return this;
+    }
+
+    public UofSdkBuilder WithAuthenticationUrl(string authenticationUrl)
+    {
+        _authenticationUrl = authenticationUrl;
+        return this;
+    }
+
     public UofSdkBuilder WithOutputHelper(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
@@ -79,7 +93,7 @@ public class UofSdkBuilder
         return this;
     }
 
-    public UofSdkWrapper Build()
+    private void ValidateRequiredFields()
     {
         if (_enabledProducers.IsNullOrEmpty())
         {
@@ -97,6 +111,10 @@ public class UofSdkBuilder
         {
             throw new InvalidOperationException("TestOutputHelper must be set");
         }
+    }
+
+    private List<int> GetDisabledProducers()
+    {
         var allProducers = new List<int>
                            {
                                1, 2, 3, 4,
@@ -105,64 +123,11 @@ public class UofSdkBuilder
                                13, 14, 15, 16,
                                17
                            };
-
-        var projectConfiguration = new ProjectConfiguration();
-        var disabledProducers = allProducers.Where(x => !_enabledProducers.Contains(x)).ToList();
-        var sdkConfig = UofSdk.GetConfigurationBuilder()
-                              .SetAccessToken(projectConfiguration.SdkRabbitUsername)
-                              .SelectCustom()
-                              .SetMessagingUsername(projectConfiguration.SdkRabbitUsername)
-                              .SetMessagingPassword(projectConfiguration.SdkRabbitPassword)
-                              .SetMessagingHost(projectConfiguration.GetRabbitIp())
-                              .UseMessagingSsl(false)
-                              .SetMessagingPort(projectConfiguration.DefaultRabbitPort)
-                              .SetApiHost(UrlUtils.ExtractDomainName(_apiUrl))
-                              .UseApiSsl(false)
-                              .SetDesiredLanguages(_cultures)
-                              .SetMinIntervalBetweenRecoveryRequests(20)
-                              .SetDisabledProducers(disabledProducers)
-                              .SetExceptionHandlingStrategy(_exceptionHandlingStrategy)
-                              .EnableUsageExport(false)
-                              .Build();
-
-        var serviceCollection = new ServiceCollection();
-        if (_useSdkLogging)
-        {
-            var xLoggerFactory = new XunitLoggerFactory(_outputHelper);
-            serviceCollection.AddSingleton(projectConfiguration.Configuration);
-            serviceCollection.AddLogging(options =>
-                                         {
-                                             options.AddConfiguration(projectConfiguration.Configuration.GetSection("Logging"));
-                                             options.SetMinimumLevel(LogLevel.Information);
-                                             options.AddProvider(new XUnitLoggerProvider(xLoggerFactory));
-                                         });
-        }
-        serviceCollection.AddUofSdk(sdkConfig);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-
-        return new UofSdkWrapper(serviceProvider, _messageInterests, _outputHelper, _openSdk);
+        return allProducers.Where(x => !_enabledProducers.Contains(x)).ToList();
     }
 
-    public UofSdkWrapper BuildWithCustomConfig(IUofConfiguration sdkConfig)
+    private IServiceCollection ConfigureServices(ProjectConfiguration projectConfiguration)
     {
-        if (_enabledProducers.IsNullOrEmpty())
-        {
-            throw new InvalidOperationException("At least one producer must be enabled");
-        }
-        if (_messageInterests.IsNullOrEmpty())
-        {
-            throw new InvalidOperationException("At least one message interest must be set");
-        }
-        if (_cultures.IsNullOrEmpty())
-        {
-            throw new InvalidOperationException("At least one language must be set");
-        }
-        if (_outputHelper == null)
-        {
-            throw new InvalidOperationException("TestOutputHelper must be set");
-        }
-
-        var projectConfiguration = new ProjectConfiguration();
         var serviceCollection = new ServiceCollection();
         if (_useSdkLogging)
         {
@@ -175,6 +140,97 @@ public class UofSdkBuilder
                 options.AddProvider(new XUnitLoggerProvider(xLoggerFactory));
             });
         }
+        return serviceCollection;
+    }
+
+    private ICustomConfigurationBuilder GetConfigurationBuilderForTokenSetter(ITokenSetter tokenSetter, ProjectConfiguration projectConfiguration)
+    {
+        return tokenSetter
+                    .SetAccessToken(projectConfiguration.SdkRabbitUsername)
+                    .SelectCustom()
+                    .SetMessagingUsername(projectConfiguration.SdkRabbitUsername)
+                    .SetMessagingPassword(projectConfiguration.SdkRabbitPassword)
+                    .SetMessagingHost(projectConfiguration.GetRabbitIp())
+                    .UseMessagingSsl(false)
+                    .SetMessagingPort(projectConfiguration.DefaultRabbitPort)
+                    .SetApiHost(UrlUtils.ExtractDomainName(_apiUrl))
+                    .UseApiSsl(false)
+                    .SetDesiredLanguages(_cultures)
+                    .SetMinIntervalBetweenRecoveryRequests(20)
+                    .SetDisabledProducers(GetDisabledProducers())
+                    .SetExceptionHandlingStrategy(_exceptionHandlingStrategy)
+                    .EnableUsageExport(false);
+    }
+
+    public UofSdkWrapper BuildWithClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    {
+        ValidateRequiredFields();
+
+        var projectConfiguration = new ProjectConfiguration();
+        var tokenSetterWithClientAuthentication = UofSdk.GetConfigurationBuilder().SetClientAuthentication(clientAuthentication);
+        var sdkConfig = GetConfigurationBuilderForTokenSetter(tokenSetterWithClientAuthentication, projectConfiguration)
+                       .SetClientAuthenticationHost(GetUrlHostName(_authenticationUrl))
+                       .SetClientAuthenticationPort(GetUrlPort(_authenticationUrl))
+                       .SetClientAuthenticationUseSsl(UrlSchemaIsHttps(_authenticationUrl))
+                       .Build();
+
+        var serviceCollection = ConfigureServices(projectConfiguration);
+        serviceCollection.AddUofSdk(sdkConfig);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        return new UofSdkWrapper(serviceProvider, _messageInterests, _outputHelper, _openSdk);
+    }
+
+    public UofSdkWrapper Build()
+    {
+        ValidateRequiredFields();
+
+        var projectConfiguration = new ProjectConfiguration();
+        var tokenSetter = UofSdk.GetConfigurationBuilder();
+        if (_clientAuthentication != null)
+        {
+            tokenSetter.SetClientAuthentication(_clientAuthentication);
+        }
+
+        var configurationBuilder = GetConfigurationBuilderForTokenSetter(tokenSetter, projectConfiguration);
+        if (!string.IsNullOrEmpty(_authenticationUrl))
+        {
+            configurationBuilder.SetClientAuthenticationHost(GetUrlHostName(_authenticationUrl))
+                                .SetClientAuthenticationPort(GetUrlPort(_authenticationUrl))
+                                .SetClientAuthenticationUseSsl(UrlSchemaIsHttps(_authenticationUrl));
+
+        }
+
+        var sdkConfig = configurationBuilder.Build();
+
+        var serviceCollection = ConfigureServices(projectConfiguration);
+        serviceCollection.AddUofSdk(sdkConfig);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        return new UofSdkWrapper(serviceProvider, _messageInterests, _outputHelper, _openSdk);
+    }
+
+    private static string GetUrlHostName(string url)
+    {
+        return new UriBuilder(url).Host;
+    }
+
+    private static int GetUrlPort(string url)
+    {
+        return new UriBuilder(url).Port;
+    }
+
+    private static bool UrlSchemaIsHttps(string url)
+    {
+        return url.StartsWith("https", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public UofSdkWrapper BuildWithCustomConfig(IUofConfiguration sdkConfig)
+    {
+        ValidateRequiredFields();
+
+        var projectConfiguration = new ProjectConfiguration();
+        var serviceCollection = ConfigureServices(projectConfiguration);
         serviceCollection.AddUofSdk(sdkConfig);
         var serviceProvider = serviceCollection.BuildServiceProvider();
 

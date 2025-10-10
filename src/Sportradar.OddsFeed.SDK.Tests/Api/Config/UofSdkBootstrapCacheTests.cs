@@ -1,6 +1,8 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
@@ -11,6 +13,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNameGeneration;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Xunit;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.Config;
 
@@ -194,5 +197,66 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IProfileCache>();
         Assert.NotNull(service1);
         Assert.IsType<ProfileCache>(service1, false);
+    }
+
+    [Fact]
+    public void AuthenticationTokenCacheIsSingleton()
+    {
+        CheckSingletonType<IAuthenticationTokenCache>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IAuthenticationTokenCache>();
+        Assert.NotNull(service1);
+        Assert.IsType<AuthenticationTokenCache>(service1, false);
+    }
+
+    [Fact]
+    public void JsonWebTokenFactoryIsSingleton()
+    {
+        CheckSingletonType<IJsonWebTokenFactory>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IJsonWebTokenFactory>();
+        Assert.NotNull(service1);
+        Assert.IsType<JsonWebTokenFactory>(service1, false);
+    }
+
+    [Fact]
+    public void AuthenticationClientIsSingleton()
+    {
+        CheckSingletonType<IAuthenticationClient>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IAuthenticationClient>();
+        Assert.NotNull(service1);
+        Assert.IsType<AuthenticationClient>(service1, false);
+    }
+
+    [Fact]
+    public void AuthenticationDelegatingHandlerIsTransient()
+    {
+        CheckTransientType<AuthenticationDelegatingHandler>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<AuthenticationDelegatingHandler>();
+        Assert.NotNull(service1);
+        Assert.IsType<AuthenticationDelegatingHandler>(service1, false);
+    }
+
+    [Fact]
+    public void FusionCacheProviderIsSingleton()
+    {
+        CheckSingletonType<IFusionCacheProvider>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IFusionCacheProvider>();
+        Assert.NotNull(service1);
+        Assert.IsType<IFusionCacheProvider>(service1, false);
+    }
+
+    [Fact]
+    public void FusionCacheForAuthenticationCacheIsRegistered()
+    {
+        var fusionCacheProvider = ServiceScope1.ServiceProvider.GetRequiredService<IFusionCacheProvider>();
+
+        var fusionCache = fusionCacheProvider.GetCache(AuthenticationTokenCache.FusionCacheInstanceName);
+
+        fusionCache.ShouldNotBeNull();
+        fusionCache.ShouldBeAssignableTo<IFusionCache>();
     }
 }

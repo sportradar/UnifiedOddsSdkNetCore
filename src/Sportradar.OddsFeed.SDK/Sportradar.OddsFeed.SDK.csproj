@@ -14,9 +14,9 @@
 	<RepositoryUrl>https://github.com/sportradar/UnifiedOddsSdkNetCore</RepositoryUrl>
 	<PackageTags>SportRadar OddsFeed UnifiedFeed SDK NETCore NETStandard</PackageTags>
 	<PackageProjectUrl>https://sdk.sportradar.com</PackageProjectUrl>
-	  <AssemblyVersion>3.7.0</AssemblyVersion>
-	  <FileVersion>3.7.0</FileVersion>
-	  <Version>3.7.0</Version>
+	  <AssemblyVersion>4.0.0</AssemblyVersion>
+	  <FileVersion>4.0.0</FileVersion>
+	  <Version>4.0.0-rc1</Version>
 	<UserSecretsId>27ef2334-e9fc-4f05-b88a-a33259c908c3</UserSecretsId>
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	<EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -52,6 +52,8 @@
 	  <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.11.1"/>
 	  <PackageReference Include="RabbitMQ.Client" Version="6.8.1"/>
 	  <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0"/>
+      <PackageReference Include="ZiggyCreatures.FusionCache" Version="2.4.0"/>
   </ItemGroup>
 
   <ItemGroup>

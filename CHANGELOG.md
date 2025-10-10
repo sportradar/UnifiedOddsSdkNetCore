@@ -1,6 +1,11 @@
 # Change Log
 
-## 3.7.0
+## 4.0.0-rc1
+- Introduced ClientAuthentication configuration as a more secure and recommended alternative to access tokens (only UF API calls are supported at the moment). Check the migration guide for more details.
+- Added a dependency to System.IdentityModel.Tokens.Jwt
+- Added a dependency to ZiggyCreatures.FusionCache
+
+## 2025-10-07 3.7.0
 - breaking change: Sport Event timeline now uses long event IDs (previously int) to support larger identifiers introduced by the Unified API.
 
 ## 2025-08-06 3.6.0

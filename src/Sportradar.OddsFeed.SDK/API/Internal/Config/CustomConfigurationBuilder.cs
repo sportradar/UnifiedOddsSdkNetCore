@@ -123,6 +123,63 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         }
 
         /// <summary>
+        /// Sets the host name of the authentication server.
+        /// </summary>
+        /// <param name="authenticationHost">Host name of the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+        /// <exception cref="ArgumentException">Thrown when client authentication is not configured</exception>
+        public ICustomConfigurationBuilder SetClientAuthenticationHost(string authenticationHost)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set authentication host when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetHost(authenticationHost);
+            UofConfiguration.Authentication = authConfig;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the port used to connect to the authentication server.
+        /// </summary>
+        /// <param name="port">Port used to connect to the authentication server.</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+        /// <exception cref="ArgumentException">Thrown when client authentication is not configured</exception>
+        public ICustomConfigurationBuilder SetClientAuthenticationPort(int port)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set authentication port when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetPort(port);
+            UofConfiguration.Authentication = authConfig;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the value specifying whether SSL should be used to communicate with the authentication server
+        /// </summary>
+        /// <param name="useSsl">The value specifying whether SSL should be used to communicate with the authentication server</param>
+        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
+        /// <exception cref="ArgumentException">Thrown when client authentication is not configured</exception>
+        public ICustomConfigurationBuilder SetClientAuthenticationUseSsl(bool useSsl)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set authentication SSL settings when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetUseSsl(useSsl);
+            UofConfiguration.Authentication = authConfig;
+            return this;
+        }
+
+        /// <summary>
         /// Set the host name of the Sports API server
         /// </summary>
         /// <param name="apiHost">The host name of the Sports API server</param>
@@ -214,6 +271,23 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             if (UofConfiguration.Api.Host.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || UofConfiguration.Api.Host.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException($"apiHost must not contain protocol specification. Value={UofConfiguration.Api.Host}");
+            }
+
+            if (UofConfiguration.Authentication != null)
+            {
+                ValidateAuthenticationHost();
+            }
+        }
+
+        private void ValidateAuthenticationHost()
+        {
+            if (UofConfiguration.Authentication.Host.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || UofConfiguration.Authentication.Host.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException($"Authentication Host must not contain protocol specification. Value={UofConfiguration.Authentication.Host}");
+            }
+            if (UofConfiguration.Authentication.Host.Contains(":"))
+            {
+                throw new InvalidOperationException($"Authentication Host must not contain port. Value={UofConfiguration.Authentication.Host}");
             }
         }
 

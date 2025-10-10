@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Sportradar.OddsFeed.SDK.Common;
@@ -26,6 +27,7 @@ public class WireMockMappingBuilder
 {
     private readonly WireMockServer _server;
     private const string MappingNameForWhoAmI = "WhoAmIMapping";
+    private const string MappingNameForCommonIAm = "CommonIAmMapping";
     private const string MappingNameForProducers = "ProducersMapping";
     private const string MappingNameForMatchStatus = "MatchStatusMapping";
     private const string MappingNameForVoidReasons = "VoidReasonsMapping";
@@ -42,6 +44,8 @@ public class WireMockMappingBuilder
     private const string MappingNameForCompetitorProfile = "CompetitorProfileRequestMapping";
     private const string MappingNameForPlayerProfile = "PlayerProfileRequestMapping";
     private const string MappingNameForMatchSummary = "MatchSummaryMapping";
+
+    private const string CommonIamUriPath = "/oauth/token";
 
     public static ICollection<string> LogIgnoreUris { get; } = ResetLogIgnoreUri();
 
@@ -117,6 +121,17 @@ public class WireMockMappingBuilder
         _server.Given(Request.Create().WithPath("/v1/users/whoami.xml").UsingGet())
                .WithTitle(MappingNameForWhoAmI)
                .RespondWith(Response.Create().WithBody(responseXmlBody).WithStatusCode(StatusCodes.Status200OK));
+        return this;
+    }
+
+    public WireMockMappingBuilder WithCommonIAmStubbedWithToken(string commonIAmJwtToken, int tokenExpiryInSeconds)
+    {
+        var commonIamResponse = GetCommonIamResponseForToken(commonIAmJwtToken, tokenExpiryInSeconds);
+        var commonIamResponseBody = JsonSerializer.Serialize(commonIamResponse);
+
+        _server.Given(Request.Create().WithPath(CommonIamUriPath).UsingPost())
+               .WithTitle(MappingNameForCommonIAm)
+               .RespondWith(Response.Create().WithBody(commonIamResponseBody).WithStatusCode(StatusCodes.Status200OK));
         return this;
     }
 
@@ -462,5 +477,15 @@ public class WireMockMappingBuilder
         // TODO
         _server.ResetMappings();
         return this;
+    }
+
+    private static CommonIamResponse GetCommonIamResponseForToken(string commonIAmJwtToken, int expiresInSeconds)
+    {
+        return new CommonIamResponse
+        {
+            AccessToken = commonIAmJwtToken,
+            TokenType = "bearer",
+            ExpiresIn = expiresInSeconds
+        };
     }
 }
