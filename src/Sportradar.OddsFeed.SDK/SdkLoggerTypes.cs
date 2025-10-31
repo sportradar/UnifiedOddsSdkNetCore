@@ -18,7 +18,6 @@ namespace Sportradar.OddsFeed.SDK
     }
 
     // ReSharper disable once UnusedType.Global
-    // ReSharper disable once ClassNeverInstantiated.Global
     internal class RestTraffic
     {
     }

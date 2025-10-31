@@ -149,7 +149,8 @@ Interface IEventMessage&lt;T&gt;
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">T Event { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[SuppressMessage(&quot;Naming&quot;, &quot;CA1716:Identifiers should not match keywords&quot;, Justification = &quot;Allowed - not to introduce breaking change&quot;)]
+T Event { get; }</code></pre>
   </div>
 
 

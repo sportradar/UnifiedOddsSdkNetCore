@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Microsoft.IdentityModel.Tokens;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
@@ -209,6 +210,6 @@ internal static class TimelineAssertions
 
     private static HomeAway? ParseTeam(string team)
     {
-        return string.IsNullOrEmpty(team) ? null : Enum.Parse<HomeAway>(team, true);
+        return team.IsNullOrEmpty() ? null : Enum.Parse<HomeAway>(team, true);
     }
 }

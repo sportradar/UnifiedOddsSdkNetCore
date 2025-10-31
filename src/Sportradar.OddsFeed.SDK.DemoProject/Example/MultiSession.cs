@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
@@ -16,19 +16,16 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// </summary>
 public class MultiSession : ExampleBase
 {
-    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
-
-    public MultiSession(ILogger<MultiSession> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    public MultiSession(ILogger<MultiSession> logger)
         : base(logger)
     {
-        _clientAuthentication = clientAuthentication;
     }
 
     public override void Run()
     {
         Log.LogInformation("Running the Multi-Session example");
 
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 

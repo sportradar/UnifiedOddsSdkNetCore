@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
@@ -76,7 +75,7 @@ public class LogHttpDataFetcherTests
     }
 
     [Fact]
-    public void SdkHttpClientWhenWithoutAccessTokenThenDoesNotThrow()
+    public void SdkHttpClientWhenWithoutAccessTokenThenThrow()
     {
         var services = new ServiceCollection();
         services.AddHttpClient(HttpClientDefaultName)
@@ -88,9 +87,7 @@ public class LogHttpDataFetcherTests
                 .ConfigurePrimaryHttpMessageHandler(() => _stubMessageHandler);
         var serviceProvider = services.BuildServiceProvider();
 
-        var sdkHttpClient = new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName);
-
-        sdkHttpClient.ShouldNotBeNull();
+        Assert.Throws<InvalidOperationException>(() => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientDefaultName));
     }
 
     [Fact]

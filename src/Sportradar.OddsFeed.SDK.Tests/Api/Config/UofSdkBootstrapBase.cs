@@ -22,7 +22,7 @@ public class UofSdkBootstrapBase
     protected readonly IServiceScope ServiceScope1;
     protected readonly IServiceScope ServiceScope2;
 
-    protected UofSdkBootstrapBase()
+    public UofSdkBootstrapBase()
     {
         UofConfig = TestConfiguration.GetConfig();
         // we need to override initial loading of bookmaker details and producers

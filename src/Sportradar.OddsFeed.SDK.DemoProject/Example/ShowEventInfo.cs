@@ -1,7 +1,8 @@
-/*
+﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
@@ -15,12 +16,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// </summary>
 public class ShowEventInfo : ExampleBase
 {
-    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
+    private readonly CultureInfo _culture;
 
-    public ShowEventInfo(ILogger<ShowEventInfo> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    public ShowEventInfo(ILogger<ShowEventInfo> logger, CultureInfo culture)
         : base(logger)
     {
-        _clientAuthentication = clientAuthentication;
+        _culture = culture;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -28,7 +29,7 @@ public class ShowEventInfo : ExampleBase
         Console.WriteLine(string.Empty);
         Log.LogInformation("Running the SportEvent Info example");
 
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 
@@ -37,7 +38,7 @@ public class ShowEventInfo : ExampleBase
                             .SetMessageInterest(messageInterest)
                             .Build();
 
-        var sportEntityWriter = new SportEntityWriter(TaskProcessor, configuration.DefaultLanguage, false, Log);
+        var sportEntityWriter = new SportEntityWriter(TaskProcessor, _culture, false, Log);
 
         Log.LogInformation("Creating entity specific dispatchers");
         var matchDispatcher = session.CreateSportSpecificMessageDispatcher<IMatch>();

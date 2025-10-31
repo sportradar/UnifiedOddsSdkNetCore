@@ -1,7 +1,8 @@
-/*
+﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
@@ -16,13 +17,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// <seealso cref="MarketWriter"/>
 public class ShowMarketNames : ExampleBase
 {
-    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
+    private readonly CultureInfo _culture;
     private MarketWriter _marketWriter;
 
-    public ShowMarketNames(ILogger<ShowMarketNames> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    public ShowMarketNames(ILogger<ShowMarketNames> logger, CultureInfo culture)
         : base(logger)
     {
-        _clientAuthentication = clientAuthentication;
+        _culture = culture;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -30,7 +31,7 @@ public class ShowMarketNames : ExampleBase
         Log.LogInformation("Running the Display Markets Names example");
 
         Log.LogInformation("Retrieving configuration from application configuration file");
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 
@@ -39,7 +40,7 @@ public class ShowMarketNames : ExampleBase
                             .SetMessageInterest(messageInterest)
                             .Build();
 
-        _marketWriter = new MarketWriter(TaskProcessor, configuration.DefaultLanguage, Log);
+        _marketWriter = new MarketWriter(TaskProcessor, _culture, Log);
 
         var defaultEventsProcessor = new EntityProcessor<ISportEvent>(session, null, _marketWriter, Log);
 

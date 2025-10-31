@@ -186,13 +186,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events
         /// Get names as an asynchronous operation
         /// </summary>
         /// <param name="cultures">The cultures</param>
-        /// <returns>Return a name of the race, or match</returns>
+        /// <returns>Return a name of the race or match</returns>
         public async Task<IReadOnlyDictionary<CultureInfo, string>> GetNamesAsync(IEnumerable<CultureInfo> cultures)
         {
             var cultureInfos = cultures as IList<CultureInfo> ?? cultures.ToList();
             if (HasTranslationsFor(cultureInfos))
             {
-                return Names;
+                return Names.Where(w => cultureInfos.Contains(w.Key)).ToDictionary(k => k.Key, v => v.Value);
             }
             await FetchMissingSummary(cultureInfos, false).ConfigureAwait(false);
             return new ReadOnlyDictionary<CultureInfo, string>(Names);

@@ -116,7 +116,7 @@ public class HttpDataFetcherTests
         Assert.Null(result);
 
         _stubMessageHandler.SetWantedResponse(GetSuccessResponseMessage());
-        await Task.Delay(TimeSpan.FromSeconds(1));
+        await Task.Delay(TimeSpan.FromSeconds(2));
 
         result = await httpDataFetcher.GetDataAsync(_getUri);
         Assert.NotNull(result);

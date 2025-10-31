@@ -1,7 +1,8 @@
-/*
+﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Globalization;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
@@ -18,13 +19,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// <seealso cref="MarketWriter"/>
 public class ShowMarketMappings : ExampleBase
 {
-    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
+    private readonly CultureInfo _culture;
     private MarketMappingsWriter _marketMappingsWriter;
 
-    public ShowMarketMappings(ILogger<ShowMarketMappings> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    public ShowMarketMappings(ILogger<ShowMarketMappings> logger, CultureInfo culture)
         : base(logger)
     {
-        _clientAuthentication = clientAuthentication;
+        _culture = culture;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -32,7 +33,7 @@ public class ShowMarketMappings : ExampleBase
         Log.LogInformation("Running the Markets Names example");
 
         Log.LogInformation("Retrieving configuration from application configuration file");
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 
@@ -41,7 +42,7 @@ public class ShowMarketMappings : ExampleBase
                             .SetMessageInterest(messageInterest)
                             .Build();
 
-        _marketMappingsWriter = new MarketMappingsWriter(TaskProcessor, configuration.DefaultLanguage, Log);
+        _marketMappingsWriter = new MarketMappingsWriter(TaskProcessor, _culture, Log);
 
         AttachToGlobalEvents(uofSdk);
         AttachToSessionEvents(session);

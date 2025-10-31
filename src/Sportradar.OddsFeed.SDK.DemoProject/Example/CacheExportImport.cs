@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,12 +18,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// </summary>
 public class CacheExportImport : ExampleBase
 {
-    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
-
-    public CacheExportImport(ILogger<CacheExportImport> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    public CacheExportImport(ILogger<CacheExportImport> logger)
         : base(logger)
     {
-        _clientAuthentication = clientAuthentication;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -31,7 +28,7 @@ public class CacheExportImport : ExampleBase
         Log.LogInformation("Running the Cache export/import example");
 
         Log.LogInformation("Retrieving configuration from application configuration file");
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
 
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
 

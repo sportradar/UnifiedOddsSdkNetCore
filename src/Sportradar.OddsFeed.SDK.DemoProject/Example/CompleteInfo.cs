@@ -1,7 +1,8 @@
-/*
+﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
 using System;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
@@ -15,12 +16,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
 /// </summary>
 public class CompleteInfo : ExampleBase
 {
-    private readonly UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
+    private readonly CultureInfo _culture;
 
-    public CompleteInfo(ILogger<CompleteInfo> logger, UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
+    public CompleteInfo(ILogger<CompleteInfo> logger, CultureInfo culture)
         : base(logger)
     {
-        _clientAuthentication = clientAuthentication;
+        _culture = culture;
     }
 
     public override void Run(MessageInterest messageInterest)
@@ -28,7 +29,7 @@ public class CompleteInfo : ExampleBase
         Console.WriteLine(string.Empty);
         Log.LogInformation("Running the Complete example");
 
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
 
         LimitRecoveryRequests(uofSdk);
@@ -40,8 +41,8 @@ public class CompleteInfo : ExampleBase
                             .SetMessageInterest(messageInterest)
                             .Build();
 
-        var marketWriter = new MarketWriter(TaskProcessor, configuration.DefaultLanguage, Log);
-        var sportEntityWriter = new SportEntityWriter(TaskProcessor, configuration.DefaultLanguage, false, Log);
+        var marketWriter = new MarketWriter(TaskProcessor, _culture, Log);
+        var sportEntityWriter = new SportEntityWriter(TaskProcessor, _culture, false, Log);
 
         Log.LogInformation("Creating entity specific dispatchers");
         var matchDispatcher = session.CreateSportSpecificMessageDispatcher<IMatch>();

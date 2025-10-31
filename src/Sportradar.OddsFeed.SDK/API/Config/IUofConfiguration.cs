@@ -78,10 +78,5 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// Gets the settings for usage exporter
         /// </summary>
         IUofUsageConfiguration Usage { get; }
-
-        /// <summary>
-        /// Provides the authentication configuration
-        /// </summary>
-        UofClientAuthentication.IPrivateKeyJwt Authentication { get; }
     }
 }

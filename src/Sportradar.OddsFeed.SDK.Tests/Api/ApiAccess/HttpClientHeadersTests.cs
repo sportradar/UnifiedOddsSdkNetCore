@@ -2,66 +2,50 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
-using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Handlers;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
-using Sportradar.OddsFeed.SDK.Tests.Common;
-using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
-using WireMock.RequestBuilders;
-using WireMock.ResponseBuilders;
-using WireMock.Server;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.ApiAccess;
 
-[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class HttpClientHeadersTests
 {
     private const string TraceIdHeaderName = HttpApiConstants.TraceIdHeaderName;
-    private const string AnyUrlPath = "/any/path";
 
     private readonly IServiceCollection _serviceCollection;
     private readonly Mock<IRequestDecorator> _requestDecoratorMock;
     private readonly Mock<ILoggerFactory> _loggerFactoryMock;
+    private readonly Mock<IRequestHeaderInspector> _requestHeaderInspectorMock;
     private readonly ITestOutputHelper _testOutputHelper;
-    private readonly WireMockServer _wireMockServer;
 
     public HttpClientHeadersTests(ITestOutputHelper outputHelper)
     {
         _testOutputHelper = outputHelper;
-        _wireMockServer = WireMockServer.Start();
         _serviceCollection = new ServiceCollection();
+        _requestDecoratorMock = new Mock<IRequestDecorator>();
         _loggerFactoryMock = new Mock<ILoggerFactory>();
+        _requestHeaderInspectorMock = new Mock<IRequestHeaderInspector>();
 
         var uofConfigMock = new Mock<IUofConfiguration>();
         ConfigureCacheConfig(uofConfigMock);
-        ConfigureApiConfigTo2SecTimeout(uofConfigMock, _wireMockServer.Url);
-        ConfigureAuthConfig(uofConfigMock, _wireMockServer.Url, _wireMockServer.Port);
+        ConfigureApiConfig(uofConfigMock);
 
         _serviceCollection.AddSingleton(_ => _loggerFactoryMock.Object);
         _serviceCollection.AddUofSdkServices(uofConfigMock.Object);
-
-        // replace production implementation with mocks
-        _requestDecoratorMock = new Mock<IRequestDecorator>();
-        _serviceCollection.AddSingleton(_ => _requestDecoratorMock.Object);
-
-        var authTokenCacheMock = new Mock<IAuthenticationTokenCache>();
-        authTokenCacheMock.Setup(c => c.GetTokenForApi()).ReturnsAsync("any-valid-jwt-token");
-        _serviceCollection.AddSingleton(_ => authTokenCacheMock.Object);
     }
 
     [Theory]
@@ -70,25 +54,23 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public async Task HttpFastFailingClientDecoratesEachRequestWithTraceIdWhenCalledGetDataAsync(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForFastFailing;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForGetAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        _ = await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"));
+        _ = await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Theory]
@@ -97,25 +79,23 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public void HttpFastFailingClientDecoratesEachRequestWithTraceIdWhenCalledGetData(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForFastFailing;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForGetAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        _ = logHttpFetcher.GetData(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"));
+        _ = logHttpFetcher.GetData(new Uri("http://localhost/"));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Theory]
@@ -124,25 +104,23 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public async Task HttpNormalClientDecoratesEachRequestWithTraceIdWhenCalledGetDataAsync(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("14965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForNormal;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForGetAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcher>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        _ = await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"));
+        _ = await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Theory]
@@ -151,25 +129,23 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public void HttpNormalClientDecoratesEachRequestWithTraceIdWhenCalledGetData(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("14965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForNormal;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForGetAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcher>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        _ = logHttpFetcher.GetData(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"));
+        _ = logHttpFetcher.GetData(new Uri("http://localhost/"));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Theory]
@@ -178,25 +154,23 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public async Task HttpRecoveryClientDecoratesEachRequestWithTraceIdWhenCalledGetDataAsync(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("24965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForRecovery;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForGetAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherRecovery>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        _ = await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"));
+        _ = await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Theory]
@@ -205,111 +179,108 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public void HttpRecoveryClientDecoratesEachRequestWithTraceIdWhenCalledGetData(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("24965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForRecovery;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForGetAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherRecovery>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        _ = logHttpFetcher.GetData(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"));
+        _ = logHttpFetcher.GetData(new Uri("http://localhost/"));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Fact]
     public async Task HttpFastFailingRequestHasTraceIdWhenExceptionIsThrownInGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e81");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForFastFailing;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseBadRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnNotFoundOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task HttpFastFailingRequestHasTraceIdWhenNotFoundIsReturnedByGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e81");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForFastFailing;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseNotFoundRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnNotFoundOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
-    public async Task HttpFastFailingRequestHasTraceIdWhenRequestTriggeredTimeoutInGetDataAsync()
+    public async Task HttpFastFailingRequestHasTraceIdWhenRequestTriggeredTimoutInGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e81");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForFastFailing;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupTimeoutHttpClientDependencyInjection(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerWithDelayOnAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        TestExecutionHelper.WaitToComplete(() => _wireMockServer.LogEntries.ShouldBeOfSize(1));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
         exception.ShouldNotBeNull();
-        exception.InnerException.ShouldNotBeNull();
-        exception.InnerException.ShouldBeOfType<TaskCanceledException>();
-
-        StopWireMockServer();
     }
 
     [Fact]
-    public async Task HttpRequestHasTraceIdWhenRequestTriggeredTimeoutInGetDataAsync()
+    public async Task HttpRequestHasTraceIdWhenRequestTriggeredTimoutInGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3843");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForNormal;
+
         SetupLoggerFactory(LogLevel.Trace);
-        SetupWireMockServerWithDelayOnAnyRequest();
+        SetupTimeoutHttpClientDependencyInjection(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
@@ -317,25 +288,24 @@ public class HttpClientHeadersTests
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        TestExecutionHelper.WaitToComplete(() => _wireMockServer.LogEntries.ShouldBeOfSize(1));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
         exception.ShouldNotBeNull();
-        exception.InnerException.ShouldNotBeNull();
-        exception.InnerException.ShouldBeOfType<TaskCanceledException>();
-
-        StopWireMockServer();
     }
 
     [Fact]
-    public async Task HttpRecoveryRequestHasTraceIdWhenRequestTriggeredTimeoutInPostDataAsync()
+    public async Task HttpRecoveryRequestHasTraceIdWhenRequestTriggeredTimoutInPostDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3843");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForRecovery;
+
         SetupLoggerFactory(LogLevel.Trace);
-        SetupWireMockServerWithDelayOnAnyRequest();
+        SetupTimeoutHttpClientDependencyInjection(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
@@ -343,206 +313,183 @@ public class HttpClientHeadersTests
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.PostDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.PostDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        TestExecutionHelper.WaitToComplete(() => _wireMockServer.LogEntries.ShouldBeOfSize(1));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
         exception.ShouldNotBeNull();
-        exception.InnerException.ShouldNotBeNull();
-        exception.InnerException.ShouldBeOfType<TaskCanceledException>();
-
-        StopWireMockServer();
     }
 
     [Fact]
     public async Task HttpRequestHasTraceIdWhenNotFoundIsReturnedByGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e81");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForNormal;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseNotFoundRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnNotFoundOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcher>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task HttpRecoveryRequestHasTraceIdWhenNotFoundIsReturnedByGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e81");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForRecovery;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseNotFoundRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnNotFoundOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherRecovery>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
     public void HttpFastFailingRequestHasTraceIdWhenExceptionIsThrownInGetData()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e82");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForFastFailing;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseBadRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnBadRequestOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = Should.Throw<CommunicationException>(() => logHttpFetcher.GetData(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = Should.Throw<CommunicationException>(() => logHttpFetcher.GetData(new Uri("http://localhost/")));
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task HttpNormalRequestHasTraceIdWhenExceptionIsThrownInGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e83");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForNormal;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseBadRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnBadRequestOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcher>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
     public void HttpNormalRequestHasTraceIdWhenExceptionIsThrownInGetData()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForNormal;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseBadRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnBadRequestOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcher>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = Should.Throw<CommunicationException>(() => logHttpFetcher.GetData(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = Should.Throw<CommunicationException>(() => logHttpFetcher.GetData(new Uri("http://localhost/")));
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task HttpRecoveryRequestHasTraceIdWhenExceptionIsThrownInGetDataAsync()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e85");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForRecovery;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseBadRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnBadRequestOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherRecovery>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = await Should.ThrowAsync<CommunicationException>(async () => await logHttpFetcher.GetDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = await Should.ThrowAsync<CommunicationException>(
+                                                                        async () => await logHttpFetcher.GetDataAsync(new Uri("http://localhost/"))
+                                                                       );
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Fact]
     public void HttpRecoveryRequestHasTraceIdWhenExceptionIsThrownInGetData()
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("34965490-d4ab-4374-a8f9-b2a3740c3e86");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForRecovery;
+
         SetupLoggerFactory(LogLevel.Trace);
+        SetupHttpClientWithResponseBadRequest(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerToReturnNotFoundOnGetRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherRecovery>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var exception = Should.Throw<CommunicationException>(() => logHttpFetcher.GetData(new Uri($"{_wireMockServer.Url}{AnyUrlPath}")));
+        var exception = Should.Throw<CommunicationException>(() => logHttpFetcher.GetData(new Uri("http://localhost/")));
 
-        exception.ShouldNotBeNull();
-
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
-
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
+        exception.ShouldNotBeNull();
     }
 
     [Theory]
@@ -551,26 +498,26 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public async Task HttpFastFailingClientDecoratesEachRequestWithTraceIdWhenCallPostAsync(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("55965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForFastFailing;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForPostAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherFastFailing>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var response = await logHttpFetcher.PostDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"), new StringContent(string.Empty));
+        var response = await logHttpFetcher.PostDataAsync(new Uri("http://localhost/"), new StringContent(string.Empty));
 
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         response.RequestMessage.ShouldNotBeNull();
         response.RequestMessage.Headers.ShouldContain(h => string.Equals(h.Key, HttpApiConstants.TraceIdHeaderName, StringComparison.OrdinalIgnoreCase));
         response.RequestMessage.Headers.GetValues(HttpApiConstants.TraceIdHeaderName).First().ShouldBe(requestHeaderId.ToString());
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Theory]
@@ -579,27 +526,26 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public async Task HttpNormalClientDecoratesEachRequestWithTraceIdWhenCallPostAsync(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("80965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForNormal;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForPostAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcher>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var response = await logHttpFetcher.PostDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"), new StringContent(string.Empty));
+        var response = await logHttpFetcher.PostDataAsync(new Uri("http://localhost/"), new StringContent(string.Empty));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         response.RequestMessage.ShouldNotBeNull();
         response.RequestMessage.Headers.ShouldContain(h => string.Equals(h.Key, HttpApiConstants.TraceIdHeaderName, StringComparison.OrdinalIgnoreCase));
         response.RequestMessage.Headers.GetValues(HttpApiConstants.TraceIdHeaderName).First().ShouldBe(requestHeaderId.ToString());
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
     }
 
     [Theory]
@@ -608,85 +554,26 @@ public class HttpClientHeadersTests
     [InlineData(LogLevel.Critical)]
     public async Task HttpRecoveryClientDecoratesEachRequestWithTraceIdWhenCallPostAsync(LogLevel logLevel)
     {
-        var requestHeaderId = Guid.NewGuid();
+        var requestHeaderId = Guid.Parse("75965490-d4ab-4374-a8f9-b2a3740c3e84");
+        const string httpClientName = UofSdkBootstrap.HttpClientNameForRecovery;
+
         SetupLoggerFactory(logLevel);
+        SetupHttpClientWithResponseOk(httpClientName);
         SetupRequestDecoratorWithHeader(TraceIdHeaderName, requestHeaderId.ToString());
-        SetupWireMockServerForPostAnyRequest();
 
         var serviceProvider = _serviceCollection.BuildServiceProvider(true);
         var logHttpFetcher = serviceProvider.GetRequiredService<ILogHttpDataFetcherRecovery>();
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var restLogger = (XUnitLogger)loggerFactory.CreateLogger(It.IsAny<string>());
 
-        var response = await logHttpFetcher.PostDataAsync(new Uri($"{_wireMockServer.Url}{AnyUrlPath}"), new StringContent(string.Empty));
+        var response = await logHttpFetcher.PostDataAsync(new Uri("http://localhost/"), new StringContent(string.Empty));
 
-        _wireMockServer.LogEntries.ShouldBeOfSize(1);
-        ValidateRequestLogEntriesHasTraceId(requestHeaderId);
+        _requestHeaderInspectorMock.Verify(d => d.VerifyRequestHeader(requestHeaderId.ToString()), Times.Once);
         response.RequestMessage.ShouldNotBeNull();
         response.RequestMessage.Headers.ShouldContain(h => string.Equals(h.Key, HttpApiConstants.TraceIdHeaderName, StringComparison.OrdinalIgnoreCase));
         response.RequestMessage.Headers.GetValues(HttpApiConstants.TraceIdHeaderName).First().ShouldBe(requestHeaderId.ToString());
         restLogger.Messages.ShouldNotBeEmpty();
         restLogger.Messages.ShouldContain(m => m.Contains(requestHeaderId.ToString()));
-
-        StopWireMockServer();
-    }
-
-    [Fact]
-    public void GetTraceIdWhenNullMessageThenReturnsEmpty()
-    {
-        var traceId = ((HttpRequestMessage)null).GetTraceId();
-
-        traceId.ShouldBeEmpty();
-    }
-
-    [Fact]
-    public void GetTraceIdWhenNoHeadersThenReturnsEmpty()
-    {
-        var requestMessage = new HttpRequestMessage();
-
-        var traceId = requestMessage.GetTraceId();
-
-        traceId.ShouldBeEmpty();
-        requestMessage.Headers.ShouldNotBeNull();
-        requestMessage.Headers.ShouldBeEmpty();
-    }
-
-    [Fact]
-    public void GetTraceIdWhenNoTraceHeaderThenReturnsEmpty()
-    {
-        var requestMessage = new HttpRequestMessage();
-        requestMessage.Headers.Add("any-header", "any-value");
-
-        var traceId = requestMessage.GetTraceId();
-
-        traceId.ShouldBeEmpty();
-        requestMessage.Headers.ShouldNotBeNull();
-        requestMessage.Headers.ShouldNotBeEmpty();
-    }
-
-    [Fact]
-    public void GetTraceIdWhenHasTraceHeaderThenReturnsTraceId()
-    {
-        const string traceGuid = "any-value";
-        var requestMessage = new HttpRequestMessage();
-        requestMessage.Headers.Add(HttpApiConstants.TraceIdHeaderName, traceGuid);
-
-        var traceId = requestMessage.GetTraceId();
-
-        traceId.ShouldBe(traceGuid);
-    }
-
-    [Fact]
-    public void GetTraceIdWhenNoTraceValueInHeaderThenReturnsEmpty()
-    {
-        var requestMessage = new HttpRequestMessage();
-        requestMessage.Headers.Add(HttpApiConstants.TraceIdHeaderName, string.Empty);
-
-        var traceId = requestMessage.GetTraceId();
-
-        traceId.ShouldBeEmpty();
-        requestMessage.Headers.ShouldNotBeNull();
-        requestMessage.Headers.ShouldNotBeEmpty();
     }
 
     private void SetupLoggerFactory(LogLevel logLevel)
@@ -703,17 +590,66 @@ public class HttpClientHeadersTests
                                                            });
     }
 
-    private static void ConfigureApiConfigTo2SecTimeout(Mock<IUofConfiguration> uofConfigMock, string wiremockUrl)
+    private void SetupHttpClientWithResponseBadRequest(string httpClientName)
+    {
+        SetupHttpClientDependencyInjection(httpClientName, HttpStatusCode.BadRequest);
+    }
+
+    private void SetupHttpClientWithResponseNotFoundRequest(string httpClientName)
+    {
+        SetupHttpClientDependencyInjection(httpClientName, HttpStatusCode.NotFound);
+    }
+
+    private void SetupHttpClientWithResponseOk(string httpClientName)
+    {
+        SetupHttpClientDependencyInjection(httpClientName, HttpStatusCode.OK);
+    }
+
+    private void SetupHttpClientDependencyInjection(string httpClientName, HttpStatusCode httpStatusCode)
+    {
+        _serviceCollection.AddHttpClient(httpClientName)
+                          .ConfigureHttpClient(configureClient =>
+                                               {
+                                                   configureClient.Timeout = TimeSpan.FromMinutes(1);
+                                                   configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "token");
+                                                   configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "User Agent");
+                                               })
+                          .ConfigurePrimaryHttpMessageHandler(() =>
+                                                                  new HttpRequestDecoratorHandler(_requestDecoratorMock.Object, new StubHttpClientHandler(_requestHeaderInspectorMock.Object, httpStatusCode)
+                                                                  {
+                                                                      MaxConnectionsPerServer = 100,
+                                                                      AllowAutoRedirect = true
+                                                                  }));
+    }
+
+    private void SetupTimeoutHttpClientDependencyInjection(string httpClientName)
+    {
+        _serviceCollection.AddHttpClient(httpClientName)
+                          .ConfigureHttpClient(configureClient =>
+                                               {
+                                                   configureClient.Timeout = TimeSpan.FromMinutes(1);
+                                                   configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForAccessToken, "token");
+                                                   configureClient.DefaultRequestHeaders.Add(UofSdkBootstrap.HttpClientDefaultRequestHeaderForUserAgent, "User Agent");
+                                               })
+                          .ConfigurePrimaryHttpMessageHandler(() =>
+                                                                  new HttpRequestDecoratorHandler(_requestDecoratorMock.Object, new StubHttpClientTimeoutHandler(_requestHeaderInspectorMock.Object)
+                                                                  {
+                                                                      MaxConnectionsPerServer = 100,
+                                                                      AllowAutoRedirect = true
+                                                                  }));
+    }
+
+    private static void ConfigureApiConfig(Mock<IUofConfiguration> uofConfigMock)
     {
         uofConfigMock.Setup(config => config.Api)
                      .Returns(new UofApiConfiguration
                      {
                          MaxConnectionsPerServer = 100,
-                         Host = GetDomainFromUrl(wiremockUrl),
+                         Host = "localhost",
                          UseSsl = false,
-                         HttpClientTimeout = TimeSpan.FromSeconds(2),
-                         HttpClientRecoveryTimeout = TimeSpan.FromSeconds(2),
-                         HttpClientFastFailingTimeout = TimeSpan.FromSeconds(2)
+                         HttpClientTimeout = TimeSpan.FromMinutes(1),
+                         HttpClientRecoveryTimeout = TimeSpan.FromMinutes(1),
+                         HttpClientFastFailingTimeout = TimeSpan.FromMinutes(1),
                      });
     }
 
@@ -727,67 +663,63 @@ public class HttpClientHeadersTests
                          SportEventStatusCacheTimeout = TimeSpan.FromMinutes(1),
                          VariantMarketDescriptionCacheTimeout = TimeSpan.FromMinutes(1),
                          IgnoreBetPalTimelineSportEventStatus = true,
-                         IgnoreBetPalTimelineSportEventStatusCacheTimeout = TimeSpan.FromMinutes(1)
+                         IgnoreBetPalTimelineSportEventStatusCacheTimeout = TimeSpan.FromMinutes(1),
                      });
     }
 
-    private static void ConfigureAuthConfig(Mock<IUofConfiguration> uofConfigMock, string wiremockUrl, int wiremockPort)
+    private class StubHttpClientHandler : HttpClientHandler
     {
-        uofConfigMock.Setup(s => s.AccessToken).Returns(TestConsts.AnyAccessToken);
+        private readonly IRequestHeaderInspector _headerInspector;
+        private readonly HttpStatusCode _statusCode;
+        private readonly string _responseContent;
 
-        AsymmetricSecurityKey testPrivateKey = new RsaSecurityKey(RSA.Create(2056));
-        var privateKeyJwt = new PrivateKeyJwt("signing-key-id", "client-id", testPrivateKey);
-        privateKeyJwt.SetHost(GetDomainFromUrl(wiremockUrl));
-        privateKeyJwt.SetUseSsl(false);
-        privateKeyJwt.SetPort(wiremockPort);
+        public StubHttpClientHandler(IRequestHeaderInspector headerInspector,
+            HttpStatusCode statusCode = HttpStatusCode.OK,
+            string responseContent = "")
+        {
+            _headerInspector = headerInspector;
+            _statusCode = statusCode;
+            _responseContent = responseContent;
+        }
 
-        uofConfigMock.Setup(config => config.Authentication).Returns(privateKeyJwt);
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            foreach (var header in request.Headers)
+            {
+                foreach (var headerValue in header.Value)
+                {
+                    _headerInspector.VerifyRequestHeader(headerValue);
+                }
+            }
+
+            return await Task.FromResult(new HttpResponseMessage(_statusCode)
+            {
+                RequestMessage = request,
+                Content = new StringContent(_responseContent),
+            });
+        }
     }
 
-    private static string GetDomainFromUrl(string url)
+    private class StubHttpClientTimeoutHandler : HttpClientHandler
     {
-        var uri = new Uri(url);
-        return uri.DnsSafeHost;
-    }
+        private readonly IRequestHeaderInspector _headerInspector;
 
-    private void SetupWireMockServerForGetAnyRequest()
-    {
-        _wireMockServer.Given(Request.Create().UsingGet()).RespondWith(Response.Create().WithBody("api-request-received").WithStatusCode(StatusCodes.Status200OK));
-    }
+        public StubHttpClientTimeoutHandler(IRequestHeaderInspector headerInspector)
+        {
+            _headerInspector = headerInspector;
+        }
 
-    private void SetupWireMockServerForPostAnyRequest()
-    {
-        _wireMockServer.Given(Request.Create().UsingPost()).RespondWith(Response.Create().WithBody("api-request-received").WithStatusCode(StatusCodes.Status200OK));
-    }
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            foreach (var header in request.Headers)
+            {
+                foreach (var headerValue in header.Value)
+                {
+                    _headerInspector.VerifyRequestHeader(headerValue);
+                }
+            }
 
-    private void SetupWireMockServerToReturnNotFoundOnGetRequest()
-    {
-        _wireMockServer.Given(Request.Create().UsingGet()).RespondWith(Response.Create().WithBody("api-request-received").WithStatusCode(StatusCodes.Status404NotFound));
-    }
-
-    private void SetupWireMockServerToReturnBadRequestOnGetRequest()
-    {
-        _wireMockServer.Given(Request.Create().UsingGet()).RespondWith(Response.Create().WithBody("api-request-received").WithStatusCode(StatusCodes.Status400BadRequest));
-    }
-
-    private void SetupWireMockServerWithDelayOnAnyRequest()
-    {
-        _wireMockServer.Given(Request.Create().UsingGet()).RespondWith(Response.Create().WithDelay(2200).WithBody("api-request-received").WithStatusCode(StatusCodes.Status200OK));
-        _wireMockServer.Given(Request.Create().UsingPost()).RespondWith(Response.Create().WithDelay(2200).WithBody("api-request-received").WithStatusCode(StatusCodes.Status200OK));
-    }
-
-    private void ValidateRequestLogEntriesHasTraceId(Guid requestHeaderId)
-    {
-        _wireMockServer.LogEntries.ShouldContain(e => e.RequestMessage.Path.Contains(AnyUrlPath));
-        var logEntry = _wireMockServer.LogEntries.FirstOrDefault(f => f.RequestMessage.Headers.ContainsKey(HttpApiConstants.TraceIdHeaderName));
-        logEntry.ShouldNotBeNull();
-        logEntry.RequestMessage.Headers.ShouldNotBeNull();
-        logEntry.RequestMessage.Headers.ShouldContain(h => h.Key.Equals(HttpApiConstants.TraceIdHeaderName, StringComparison.OrdinalIgnoreCase));
-        logEntry.RequestMessage.Headers[HttpApiConstants.TraceIdHeaderName].First().ShouldBe(requestHeaderId.ToString());
-    }
-
-    private void StopWireMockServer()
-    {
-        _wireMockServer.Stop();
+            throw new TaskCanceledException("Timeout");
+        }
     }
 }
