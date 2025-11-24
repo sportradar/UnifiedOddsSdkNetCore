@@ -1,6 +1,10 @@
 # Change Log
 
-## 4.0.0-rc1
+## 4.0.0-rc2
+- UoF API call is retried once if the response has a status code 401 (Unauthorized).
+- Internal resiliency improvements for Common IAM communication.
+
+## 2025-11-10 4.0.0-rc1
 - Introduced ClientAuthentication configuration as a more secure and recommended alternative to access tokens (only UF API calls are supported at the moment). Check the migration guide for more details.
 - Added a dependency to System.IdentityModel.Tokens.Jwt
 - Added a dependency to ZiggyCreatures.FusionCache

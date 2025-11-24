@@ -22115,7 +22115,7 @@
             Get names as an asynchronous operation
             </summary>
             <param name="cultures">The cultures</param>
-            <returns>Return a name of the race, or match</returns>
+            <returns>Return a name of the race or match</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.SportEventCacheItem.GetSportIdAsync">
             <summary>

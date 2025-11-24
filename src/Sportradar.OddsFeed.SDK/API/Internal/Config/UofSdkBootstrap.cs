@@ -10,6 +10,7 @@ using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
+using Sportradar.OddsFeed.SDK.Api.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Handlers;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
@@ -93,8 +94,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private const string BookmakerDetailsProviderUrl = "{0}/v1/users/whoami.xml";
 
-        private const string NonTimeCriticalDataProviderServiceKey = "NonTimeCriticalDataProvider";
-        private const string TimeCriticalDataProviderServiceKey = "TimeCriticalDataProvider";
+        internal const string NonTimeCriticalDataProviderServiceKey = "NonTimeCriticalDataProvider";
+        internal const string TimeCriticalDataProviderServiceKey = "TimeCriticalDataProvider";
 
         public static void AddUofSdkServices(this IServiceCollection services, IUofConfiguration configuration)
         {
@@ -150,6 +151,13 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                       serviceProvider.GetRequiredService<ISportEventStatusCache>(),
                                                                                                       serviceProvider.GetLocalizedNamedValueCache(NamedValueCacheNameForMatchStatus),
                                                                                                       serviceProvider.GetRequiredService<IProfileCache>()));
+            services.AddSingleton(TimeProvider.System);
+            services.AddSingleton<IRequestCircuitBreaker, RequestCircuitBreaker>();
+            services.AddSingleton<ICircuitTimeTracker>(sp =>
+                                                        new CircuitTimeTracker(
+                                                                            shortOpenDuration: TimeSpan.FromSeconds(5),
+                                                                            longOpenDuration: TimeSpan.FromMinutes(5),
+                                                                            longThreshold: 10));
         }
 
         private static void RegisterAuthentication(IServiceCollection services)
@@ -171,6 +179,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                             serviceProvider.GetRequiredService<ILoggerFactory>()));
             services.AddSingleton<IAuthenticationTokenCache, AuthenticationTokenCache>();
             services.AddTransient<AuthenticationDelegatingHandler>();
+            services.AddTransient<RetryUnauthorizedDelegatingHandler>();
+            services.AddTransient<RequestCircuitHandler>();
         }
 
         private static void RegisterHttpClients(IServiceCollection services, IUofConfiguration configuration)
@@ -191,6 +201,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                 AllowAutoRedirect = true
                                                                                             }))
                     .SetHandlerLifetime(TimeSpan.FromMinutes(10))
+                    .AddHttpMessageHandlerIf<RetryUnauthorizedDelegatingHandler>(configuration.AuthenticationIsConfigured)
                     .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
             services.AddHttpClient(HttpClientNameForRecovery)
@@ -223,6 +234,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                 AllowAutoRedirect = true
                                                                                             }))
                     .SetHandlerLifetime(TimeSpan.FromMinutes(10))
+                    .AddHttpMessageHandlerIf<RetryUnauthorizedDelegatingHandler>(configuration.AuthenticationIsConfigured)
                     .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
             services.AddHttpClient(HttpClientNameForAuthentication)
@@ -235,6 +247,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                              }
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
+                    .AddHttpMessageHandler<RequestCircuitHandler>()
                     .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
                                                             new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
                                                                                             new HttpClientHandler

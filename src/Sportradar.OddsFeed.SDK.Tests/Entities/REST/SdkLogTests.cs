@@ -3,12 +3,12 @@
 using System;
 using System.IO;
 using log4net;
-using log4net.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Xunit;
+using Xunit.Abstractions;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
@@ -16,8 +16,11 @@ namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest;
 [Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class SdkLogTests : IDisposable
 {
-    public SdkLogTests()
+    public ITestOutputHelper OutputHelper { get; set; }
+
+    public SdkLogTests(ITestOutputHelper outputHelper)
     {
+        OutputHelper = outputHelper;
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddLog4Net("log4net.sdk.config").SetMinimumLevel(LogLevel.Debug));
         var servicesProvider = services.BuildServiceProvider();
@@ -31,24 +34,24 @@ public class SdkLogTests : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private static void PrintLogManagerStatus()
+    private void PrintLogManagerStatus()
     {
-        Console.WriteLine($"Number of repositories: {LogManager.GetAllRepositories().Length}");
+        OutputHelper.WriteLine($"Number of repositories: {LogManager.GetAllRepositories().Length}");
         foreach (var r in LogManager.GetAllRepositories())
         {
-            Console.WriteLine($"\tRepository: {r.Name}");
-            Console.WriteLine($"Number of loggers: {LogManager.GetCurrentLoggers(r.Name).Length}");
+            OutputHelper.WriteLine($"\tRepository: {r.Name}");
+            OutputHelper.WriteLine($"Number of loggers: {LogManager.GetCurrentLoggers(r.Name).Length}");
             foreach (var l in LogManager.GetCurrentLoggers(r.Name))
             {
-                Console.WriteLine($"\tLogger: {l.Logger.Name}");
+                OutputHelper.WriteLine($"\tLogger: {l.Logger.Name}");
                 foreach (var a in l.Logger.Repository.GetAppenders())
                 {
-                    Console.WriteLine($"\t\t Appender: {a.Name}");
+                    OutputHelper.WriteLine($"\t\t Appender: {a.Name}");
                 }
             }
         }
 
-        Console.WriteLine(Environment.NewLine);
+        OutputHelper.WriteLine(Environment.NewLine);
 
         var logDefault = SdkLoggerFactory.GetLogger(typeof(SdkLogTests), TestData.SdkTestLogRepositoryName);
         var logCache = SdkLoggerFactory.GetLoggerForCache(typeof(SdkLogTests), TestData.SdkTestLogRepositoryName);
@@ -90,7 +93,6 @@ public class SdkLogTests : IDisposable
             foreach (var currentLogger in loggerRepository.GetCurrentLoggers())
             {
                 Assert.NotNull(currentLogger);
-                currentLogger.Log(typeof(SdkLogTests), Level.Info, "some message", null);
             }
         }
     }

@@ -1,5 +1,9 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using WireMock;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -26,5 +30,12 @@ public static class WireMockServerExtensions
     public static void ActivateOnlyLiveProducer(this WireMockServer wireMockServer)
     {
         wireMockServer.GetMappingBuilder().WithProducers(options => options.WithProducer(1));
+    }
+
+    public static IReadOnlyCollection<IRequestMessage> RequestsMatching(this WireMockServer wireMockServer, Predicate<string> predicate)
+    {
+        return wireMockServer.LogEntries.Where(e => predicate.Invoke(e.RequestMessage.Url))
+                             .Select(l => l.RequestMessage)
+                             .ToArray();
     }
 }

@@ -9,5 +9,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
         Task<string> GetTokenForApi();
 
         Task<string> GetTokenForFeed();
+
+        Task RefreshApiTokenAsync(string oldToken);
     }
 }

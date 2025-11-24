@@ -15,6 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
         private const string UofFeedTokenAudience = "UF-RabbitMQ";
         private const float EagerRefreshThreshold = 0.9f; // cache refresh in the background when 90% of duration elapsed
 
+        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly IFusionCache _cache;
         private readonly IAuthenticationClient _authenticationClient;
         private readonly IJsonWebTokenFactory _jsonWebTokenFactory;
@@ -43,6 +44,31 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
             var token = await GetAuthTokenAsync(UofFeedTokenAudience).ConfigureAwait(false);
 
             return token?.AccessToken;
+        }
+
+        public async Task RefreshApiTokenAsync(string oldToken)
+        {
+            var currentToken = await GetTokenForApi();
+            if (currentToken != null && !string.Equals(currentToken, oldToken, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            await _semaphoreSlim.WaitAsync();
+
+            try
+            {
+                currentToken = await GetTokenForApi();
+                if (currentToken == null || string.Equals(currentToken, oldToken, StringComparison.Ordinal))
+                {
+                    await _cache.ExpireAsync(UofApiTokenAudience).ConfigureAwait(false);
+                    await GetTokenForApi();
+                }
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
         }
 
         private async Task<AuthenticationToken> GetAuthTokenAsync(string audience)

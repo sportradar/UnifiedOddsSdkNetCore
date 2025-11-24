@@ -16,7 +16,9 @@ internal static class TestConfiguration
     {
         var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
                            .SetAccessTokenFromConfigFile()
-                           .SelectEnvironment(SdkEnvironment.Integration)
+                           .SelectCustom()
+                           .SetApiHost("localhost")
+                           .SetMessagingHost("localhost")
                            .LoadFromConfigFile()
                            .SetInactivitySeconds(30)
                            .SetHttpClientTimeout(30)

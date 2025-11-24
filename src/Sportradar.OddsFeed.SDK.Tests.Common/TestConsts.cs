@@ -14,6 +14,7 @@ public static class TestConsts
     public const int AnyBookmakerId = 1;
     public const int AnyProducerId = 1;
     public const string AnyAccessToken = "token";
+    public const string LocalApiHost = "http://localhost";
     public const string AnyVirtualHost = "/virtualhost";
     public const string AnyApiHost = "custom_api_host";
     public const string AnyRabbitHost = "custom_mq_host";
@@ -31,7 +32,6 @@ public static class TestConsts
     public static readonly CultureInfo CultureHu = new("hu");
     public static readonly CultureInfo CultureNl = new("nl");
 
-    public static IReadOnlyCollection<CultureInfo> Cultures => Cultures3;
     public static IReadOnlyCollection<CultureInfo> Cultures1 => new Collection<CultureInfo> { CultureEn };
     public static readonly IReadOnlyCollection<CultureInfo> Cultures2 = new Collection<CultureInfo>([CultureEn, CultureDe]);
     public static readonly IReadOnlyCollection<CultureInfo> Cultures3 = new Collection<CultureInfo>([CultureEn, CultureDe, CultureHu]);

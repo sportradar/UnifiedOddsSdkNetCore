@@ -6,11 +6,13 @@ This guide offers practical advice to ensure your transition is not only efficie
 
 ## 1. Upgrade Dependencies
 
-The following new dependency has been added:
+The following new dependencies have been added:
 
 * **System.IdentityModel.Tokens.Jwt 6.34.0** - required for the new client authentication feature
+* **Polly 8.6.4** - standardizes transient-error handling via retries, circuit breakers, and additional resilience patterns
+* **Microsoft.Bcl.TimeProvider 9.0.1** - provides TimeProvider abstraction for time-based operations, enabling better testability and time control
 
-Make sure to update your project's dependency management to include this new library.
+Make sure to update your project's dependency management to include these new libraries.
 
 ## 2. New Features
 
