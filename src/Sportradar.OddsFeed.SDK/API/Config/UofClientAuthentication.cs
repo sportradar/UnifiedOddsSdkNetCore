@@ -60,6 +60,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
             /// Indicates whether SSL (HTTPS) is used to communicate with the authentication server.
             /// </summary>
             bool UseSsl { get; }
+
+            /// <summary>
+            /// Custom tenant value.
+            /// </summary>
+            string Tenant { get; }
         }
 
         /// <summary>

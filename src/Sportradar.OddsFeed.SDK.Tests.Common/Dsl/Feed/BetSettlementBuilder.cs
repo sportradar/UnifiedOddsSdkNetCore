@@ -11,7 +11,7 @@ public sealed class BetSettlementBuilder
 {
     private readonly bet_settlement _betSettlement;
     private readonly List<betSettlementMarket> _outcomes = [];
-    private betSettlementMarket _currentOutcome;
+    private betSettlementMarket _currentMarket;
 
     private BetSettlementBuilder(string eventId)
     {
@@ -28,7 +28,7 @@ public sealed class BetSettlementBuilder
 
     public BetSettlementBuilder AddMarket(int id, string specifiers, string extendedSpecifiers = null)
     {
-        _currentOutcome = new betSettlementMarket
+        _currentMarket = new betSettlementMarket
         {
             id = id,
             specifiers = specifiers,
@@ -36,7 +36,7 @@ public sealed class BetSettlementBuilder
             Specifiers = ParseSpecifiers(specifiers)
         };
 
-        _outcomes.Add(_currentOutcome);
+        _outcomes.Add(_currentMarket);
         return this;
     }
 
@@ -67,17 +67,17 @@ public sealed class BetSettlementBuilder
 
     public BetSettlementBuilder AddOutcome(int id, int result)
     {
-        if (_currentOutcome == null)
+        if (_currentMarket == null)
         {
             throw new InvalidOperationException("AddOutcome must follow AddMarket.");
         }
 
-        var list = _currentOutcome.Items != null
-                       ? new List<betSettlementMarketOutcome>(_currentOutcome.Items)
+        var list = _currentMarket.Items != null
+                       ? new List<betSettlementMarketOutcome>(_currentMarket.Items)
                        : new List<betSettlementMarketOutcome>();
 
         list.Add(new betSettlementMarketOutcome { id = id.ToString(), result = result });
-        _currentOutcome.Items = list.ToArray();
+        _currentMarket.Items = list.ToArray();
         return this;
     }
 

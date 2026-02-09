@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
@@ -47,6 +48,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         internal const string HttpClientNameForRecovery = "HttpClientRecovery";
         internal const string HttpClientNameForNormal = "HttpClientNormal";
         internal const string HttpClientNameForAuthentication = "HttpClientAuthentication";
+        internal const string HttpClientNameForUsageExporter = "HttpClientUsageExporter";
 
         internal const string CacheStoreNameForInvariantMarketDescriptionsCache = "MemoryCacheForInvariantMarketDescriptionsCache";
         internal const string CacheStoreNameForVariantMarketDescriptionCache = "MemoryCacheForVariantMarketDescriptionCache";
@@ -181,6 +183,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             services.AddTransient<AuthenticationDelegatingHandler>();
             services.AddTransient<RetryUnauthorizedDelegatingHandler>();
             services.AddTransient<RequestCircuitHandler>();
+            services.AddTransient<IUsageAuthenticationTokenProvider, UsageAuthenticationTokenProvider>();
+            services.AddTransient<UsageDelegatingHandler>();
         }
 
         private static void RegisterHttpClients(IServiceCollection services, IUofConfiguration configuration)
@@ -243,7 +247,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                              configureClient.Timeout = configuration.Api.HttpClientFastFailingTimeout;
                                              if (configuration.Authentication != null)
                                              {
-                                                 configureClient.BaseAddress = new Uri(configuration.Authentication.GetAudienceForLocalToken());
+                                                 configureClient.BaseAddress = new Uri(configuration.Authentication.GetCommonIAmUri());
                                              }
                                              configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
                                          })
@@ -256,6 +260,26 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                 AllowAutoRedirect = true
                                                                                             }))
                     .SetHandlerLifetime(TimeSpan.FromMinutes(10));
+
+            services.AddHttpClient(HttpClientNameForUsageExporter)
+                    .ConfigureHttpClient(configureClient =>
+                                         {
+                                             configureClient.Timeout = configuration.Api.HttpClientFastFailingTimeout;
+                                             configureClient.DefaultRequestHeaders.Add(HttpClientDefaultRequestHeaderForUserAgent, userAgentData);
+                                             configureClient.DefaultRequestHeaders.Add("x-environment", configuration.Environment.ToString().ToLowerInvariant());
+                                             configureClient.DefaultRequestHeaders.Add("x-node-id", configuration.NodeId.ToString());
+                                             configureClient.DefaultRequestHeaders.Add("x-sdk-version", SdkInfo.GetVersion());
+                                         })
+                    .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
+                                                            new HttpRequestDecoratorHandler(serviceProvider.GetRequiredService<IRequestDecorator>(),
+                                                                                            new HttpClientHandler
+                                                                                            {
+                                                                                                MaxConnectionsPerServer = configuration.Api.MaxConnectionsPerServer,
+                                                                                                AllowAutoRedirect = true
+                                                                                            }))
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(10))
+                    .AddHttpMessageHandlerIf<RetryUnauthorizedDelegatingHandler>(configuration.AuthenticationIsConfigured)
+                    .AddHttpMessageHandler<UsageDelegatingHandler>();
 
             services.AddTransient<ISdkHttpClient, SdkHttpClient>(serviceProvider => new SdkHttpClient(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForNormal));
             services.AddTransient<ISdkHttpClientRecovery, SdkHttpClientRecovery>(serviceProvider => new SdkHttpClientRecovery(serviceProvider.GetRequiredService<IHttpClientFactory>(), HttpClientNameForRecovery));
@@ -403,7 +427,11 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private static void RegisterBaseRabbitClasses(IServiceCollection services)
         {
-            services.AddSingleton<ConfiguredConnectionFactory, ConfiguredConnectionFactory>();
+            services.AddSingleton<IConnectionFactory>(serviceProvider =>
+                                                          ConfiguredConnectionFactory.CreateConnectionFactoryWithImmutableFields(serviceProvider.GetRequiredService<IUofConfiguration>(),
+                                                                                                                                 serviceProvider.GetRequiredService<IAuthenticationTokenCache>(),
+                                                                                                                                 serviceProvider.GetRequiredService<ILogger<ConfiguredConnectionFactory>>()));
+            services.AddSingleton<ConfiguredConnectionFactory>();
             services.AddSingleton<IChannelFactory, ChannelFactory>();
             services.AddSingleton<ConnectionValidator, ConnectionValidator>();
             services.AddSingleton<IDeserializer<FeedMessage>, Deserializer<FeedMessage>>();
@@ -436,7 +464,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                       new RabbitMqChannel(serviceProvider.GetRequiredService<IChannelFactory>(),
                                                                                           serviceProvider.GetSdkTimer(TimerForRabbitChannel),
                                                                                           TimeSpan.FromSeconds(ConfigLimit.RabbitMaxTimeBetweenMessages),
-                                                                                          serviceProvider.GetRequiredService<IUofConfiguration>().AccessToken));
+                                                                                          serviceProvider.GetRequiredService<IUofConfiguration>().AccessToken,
+                                                                                          serviceProvider.GetRequiredService<ILogger<RabbitMqChannel>>()));
 
             services.AddScoped<IMessageReceiver, RabbitMqMessageReceiver>();
 

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
@@ -22,7 +23,7 @@ public class UofConfigurationBuilder
     private readonly ProducerConfigBuilder _producerBuilder = new();
     private readonly RabbitConfigBuilder _rabbitBuilder = new();
     private readonly UsageConfigBuilder _usageBuilder = new();
-    private readonly AuthConfigBuilder _authBuilder = new();
+    private AuthConfigBuilder _authBuilder;
 
     public UofConfigurationBuilder WithAccessToken(string token)
     {
@@ -72,6 +73,12 @@ public class UofConfigurationBuilder
         return this;
     }
 
+    public UofConfigurationBuilder WithApiConfiguration(IUofApiConfiguration config)
+    {
+        _configMock.SetupGet(x => x.Api).Returns(config);
+        return this;
+    }
+
     public UofConfigurationBuilder WithCacheConfiguration(Action<CacheConfigBuilder> config)
     {
         config(_cacheBuilder);
@@ -104,19 +111,33 @@ public class UofConfigurationBuilder
 
     public UofConfigurationBuilder WithAuthenticationConfiguration(Action<AuthConfigBuilder> config)
     {
+        _authBuilder = new AuthConfigBuilder();
         config(_authBuilder);
+        return this;
+    }
+
+    public UofConfigurationBuilder WithAuthenticationConfiguration(UofClientAuthentication.IPrivateKeyJwt authConfig)
+    {
+        _configMock.SetupGet(x => x.Authentication).Returns(authConfig);
         return this;
     }
 
     public IUofConfiguration Build()
     {
+        if (!_configMock.Setups.Any(s => s.Expression.ToString().Contains("x => x.Api")))
+        {
+            _configMock.SetupGet(x => x.Api).Returns(_apiBuilder.Build());
+        }
         _configMock.SetupGet(x => x.Api).Returns(_apiBuilder.Build());
         _configMock.SetupGet(x => x.Cache).Returns(_cacheBuilder.Build());
         _configMock.SetupGet(x => x.Rabbit).Returns(_rabbitBuilder.Build());
         _configMock.SetupGet(x => x.Producer).Returns(_producerBuilder.Build());
         _configMock.SetupGet(x => x.Usage).Returns(_usageBuilder.Build());
         _configMock.SetupGet(x => x.Additional).Returns(_additionalBuilder.Build());
-        _configMock.SetupGet(x => x.Authentication).Returns(_authBuilder.Build());
+        if (_authBuilder != null)
+        {
+            _configMock.SetupGet(x => x.Authentication).Returns(_authBuilder.Build());
+        }
 
         return _configMock.Object;
     }
@@ -192,9 +213,57 @@ public class UofConfigurationBuilder
 
     public class RabbitConfigBuilder
     {
+        private readonly Mock<IUofRabbitConfiguration> _rabbitMock = new Mock<IUofRabbitConfiguration>();
+
+        public RabbitConfigBuilder WithUsername(string username)
+        {
+            return Set(x => x.Username, username);
+        }
+
+        public RabbitConfigBuilder WithPassword(string password)
+        {
+            return Set(x => x.Password, password);
+        }
+
+        public RabbitConfigBuilder WithHost(string host)
+        {
+            return Set(x => x.Host, host);
+        }
+
+        public RabbitConfigBuilder WithUseSsl(bool useSsl)
+        {
+            return Set(x => x.UseSsl, useSsl);
+        }
+
+        public RabbitConfigBuilder WithConnectionTimeout(TimeSpan timeout)
+        {
+            return Set(x => x.ConnectionTimeout, timeout);
+        }
+
+        public RabbitConfigBuilder WithHeartbeat(TimeSpan timeout)
+        {
+            return Set(x => x.Heartbeat, timeout);
+        }
+
+        public RabbitConfigBuilder WithPort(int port)
+        {
+            return Set(x => x.Port, port);
+        }
+
+        public RabbitConfigBuilder WithVirtualHost(string virtualHost)
+        {
+            return Set(x => x.VirtualHost, virtualHost);
+        }
+
         public IUofRabbitConfiguration Build()
         {
-            return new Mock<IUofRabbitConfiguration>().Object;
+            return _rabbitMock.Object;
+        }
+
+        private RabbitConfigBuilder Set<T>(Expression<Func<IUofRabbitConfiguration, T>> prop, T value)
+        {
+            _rabbitMock.SetupGet(prop).Returns(value);
+            return this;
         }
     }
 

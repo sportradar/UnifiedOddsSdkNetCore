@@ -204,6 +204,22 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationPort
   nameWithType: ICustomConfigurationBuilder.SetClientAuthenticationPort
+- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant(System.String)
+  name: SetClientAuthenticationTenant(string)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetClientAuthenticationTenant_System_String_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant(System.String)
+  name.vb: SetClientAuthenticationTenant(String)
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant(string)
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant(String)
+  nameWithType: ICustomConfigurationBuilder.SetClientAuthenticationTenant(string)
+  nameWithType.vb: ICustomConfigurationBuilder.SetClientAuthenticationTenant(String)
+- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant*
+  name: SetClientAuthenticationTenant
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetClientAuthenticationTenant_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant
+  nameWithType: ICustomConfigurationBuilder.SetClientAuthenticationTenant
 - uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationUseSsl(System.Boolean)
   name: SetClientAuthenticationUseSsl(bool)
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetClientAuthenticationUseSsl_System_Boolean_
@@ -220,6 +236,22 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationUseSsl
   nameWithType: ICustomConfigurationBuilder.SetClientAuthenticationUseSsl
+- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials(System.String,System.String)
+  name: SetMessagingCredentials(string, string)
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingCredentials_System_String_System_String_
+  commentId: M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials(System.String,System.String)
+  name.vb: SetMessagingCredentials(String, String)
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials(string, string)
+  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials(String, String)
+  nameWithType: ICustomConfigurationBuilder.SetMessagingCredentials(string, string)
+  nameWithType.vb: ICustomConfigurationBuilder.SetMessagingCredentials(String, String)
+- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials*
+  name: SetMessagingCredentials
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingCredentials_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials
+  nameWithType: ICustomConfigurationBuilder.SetMessagingCredentials
 - uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingHost(System.String)
   name: SetMessagingHost(string)
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingHost_System_String_
@@ -236,22 +268,6 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingHost
   nameWithType: ICustomConfigurationBuilder.SetMessagingHost
-- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword(System.String)
-  name: SetMessagingPassword(string)
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingPassword_System_String_
-  commentId: M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword(System.String)
-  name.vb: SetMessagingPassword(String)
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword(string)
-  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword(String)
-  nameWithType: ICustomConfigurationBuilder.SetMessagingPassword(string)
-  nameWithType.vb: ICustomConfigurationBuilder.SetMessagingPassword(String)
-- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword*
-  name: SetMessagingPassword
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingPassword_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword
-  nameWithType: ICustomConfigurationBuilder.SetMessagingPassword
 - uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPort(System.Int32)
   name: SetMessagingPort(int)
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingPort_System_Int32_
@@ -268,22 +284,6 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPort
   nameWithType: ICustomConfigurationBuilder.SetMessagingPort
-- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername(System.String)
-  name: SetMessagingUsername(string)
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingUsername_System_String_
-  commentId: M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername(System.String)
-  name.vb: SetMessagingUsername(String)
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername(string)
-  fullName.vb: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername(String)
-  nameWithType: ICustomConfigurationBuilder.SetMessagingUsername(string)
-  nameWithType.vb: ICustomConfigurationBuilder.SetMessagingUsername(String)
-- uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername*
-  name: SetMessagingUsername
-  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetMessagingUsername_
-  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername
-  isSpec: "True"
-  fullName: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername
-  nameWithType: ICustomConfigurationBuilder.SetMessagingUsername
 - uid: Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetVirtualHost(System.String)
   name: SetVirtualHost(string)
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.html#Sportradar_OddsFeed_SDK_Api_Config_ICustomConfigurationBuilder_SetVirtualHost_System_String_
@@ -1673,6 +1673,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Port
   nameWithType: UofClientAuthentication.IPrivateKeyJwt.Port
+- uid: Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant
+  name: Tenant
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.html#Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Tenant
+  commentId: P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant
+  nameWithType: UofClientAuthentication.IPrivateKeyJwt.Tenant
+- uid: Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant*
+  name: Tenant
+  href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.html#Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_Tenant_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant
+  nameWithType: UofClientAuthentication.IPrivateKeyJwt.Tenant
 - uid: Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.UseSsl
   name: UseSsl
   href: sdkapi/Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.html#Sportradar_OddsFeed_SDK_Api_Config_UofClientAuthentication_IPrivateKeyJwt_UseSsl

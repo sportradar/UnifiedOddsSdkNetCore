@@ -1,10 +1,11 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.DemoProject.Utils;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
@@ -30,7 +31,12 @@ public class ShowMarketNames : ExampleBase
         Log.LogInformation("Running the Display Markets Names example");
 
         Log.LogInformation("Retrieving configuration from application configuration file");
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication)
+                                  .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                                  .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+                                  .SetNodeId(457)
+                                  .Build();
+
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 

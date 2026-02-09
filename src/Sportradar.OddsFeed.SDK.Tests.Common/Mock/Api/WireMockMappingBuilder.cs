@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
@@ -27,7 +29,8 @@ public class WireMockMappingBuilder
 {
     private readonly WireMockServer _server;
     private const string MappingNameForWhoAmI = "WhoAmIMapping";
-    private const string MappingNameForCommonIAm = "CommonIAmMapping";
+    private const string MappingNameForCommonIAmForApi = "CommonIAmForApiMapping";
+    private const string MappingNameForCommonIAmForFeed = "CommonIAmForfeedMapping";
     private const string MappingNameForProducers = "ProducersMapping";
     private const string MappingNameForMatchStatus = "MatchStatusMapping";
     private const string MappingNameForVoidReasons = "VoidReasonsMapping";
@@ -124,15 +127,29 @@ public class WireMockMappingBuilder
         return this;
     }
 
-    public WireMockMappingBuilder WithCommonIAmStubbedWithToken(string commonIAmJwtToken, int tokenExpiryInSeconds)
+    public WireMockMappingBuilder WithCommonIAmStubbedWithTokenForApi(string commonIAmJwtToken, int tokenExpiryInSeconds)
     {
+        SetCommonIAmStubbedWithToken(commonIAmJwtToken, tokenExpiryInSeconds, AuthenticationTokenCache.UofApiTokenAudience, MappingNameForCommonIAmForApi, HttpStatusCode.OK);
+
+        return this;
+    }
+
+    public WireMockMappingBuilder WithCommonIAmStubbedWithTokenForFeed(string commonIAmJwtToken, int tokenExpiryInSeconds)
+    {
+        SetCommonIAmStubbedWithToken(commonIAmJwtToken, tokenExpiryInSeconds, AuthenticationTokenCache.UofFeedTokenAudience, MappingNameForCommonIAmForFeed, HttpStatusCode.OK);
+
+        return this;
+    }
+
+    public void SetCommonIAmStubbedWithToken(string commonIAmJwtToken, int tokenExpiryInSeconds, string audience, string title, HttpStatusCode statusCode)
+    {
+        var wildCardAudience = $"*audience={audience}*";
         var commonIamResponse = GetCommonIamResponseForToken(commonIAmJwtToken, tokenExpiryInSeconds);
         var commonIamResponseBody = JsonSerializer.Serialize(commonIamResponse);
 
-        _server.Given(Request.Create().WithPath(CommonIamUriPath).UsingPost())
-               .WithTitle(MappingNameForCommonIAm)
-               .RespondWith(Response.Create().WithBody(commonIamResponseBody).WithStatusCode(StatusCodes.Status200OK));
-        return this;
+        _server.Given(Request.Create().WithPath(CommonIamUriPath).UsingPost().WithBody(new WildcardMatcher(wildCardAudience)))
+               .WithTitle(title)
+               .RespondWith(Response.Create().WithBody(commonIamResponseBody).WithStatusCode(statusCode));
     }
 
     public WireMockMappingBuilder MapProducers()

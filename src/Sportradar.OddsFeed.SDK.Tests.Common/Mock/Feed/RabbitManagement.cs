@@ -13,13 +13,12 @@ using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
@@ -39,31 +38,32 @@ public class RabbitManagement
     private ISdkTimer _timer;
 
     /// <summary>
-    ///     Gets the management client for getting and managing connections and channels
+    /// Gets the management client for getting and managing connections and channels
     /// </summary>
     /// <value>The management client.</value>
     public ManagementClient ManagementClient { get; }
 
     /// <summary>
-    ///     Gets the messages to be sent
+    /// Gets the messages to be sent
     /// </summary>
     public ConcurrentQueue<RabbitMessage> Messages { get; }
 
     /// <summary>
-    ///     Gets the list of producers for which alive messages should be periodically send
+    /// Gets the list of producers for which alive messages should be periodically sent
     /// </summary>
     public ConcurrentDictionary<int, DateTime> ProducersAlive { get; }
 
-    public RabbitManagement(ITestOutputHelper outputHelper)
+    public RabbitManagement(ITestOutputHelper outputHelper, ProjectConfiguration projConfig = null)
     {
         _outputHelper = outputHelper;
         Messages = new ConcurrentQueue<RabbitMessage>();
         ProducersAlive = new ConcurrentDictionary<int, DateTime>();
         _isRunning = false;
 
-        _projConfig = new ProjectConfiguration();
-
-        ManagementClient = new ManagementClient(new Uri($"http://{_projConfig.GetRabbitIp()}:15672"),
+        _projConfig = projConfig ?? ProjectConfigurationBuilder.Create()
+                                                               .UseTestRabbitConfiguration()
+                                                               .Build();
+        ManagementClient = new ManagementClient(new Uri($"http://{_projConfig.RabbitHost}:15672"),
                                                 _projConfig.DefaultAdminRabbitUserName,
                                                 _projConfig.DefaultAdminRabbitPassword,
                                                 TimeSpan.FromMinutes(1));
@@ -71,7 +71,7 @@ public class RabbitManagement
 
     public void ResetRabbit()
     {
-        var _ = ManagementClient.GetExchanges();
+        _ = ManagementClient.GetExchanges();
         var rabbitUsers = ManagementClient.GetUsers();
         if (!rabbitUsers.Any(a => a.Name.Equals(_projConfig.SdkRabbitUsername, StringComparison.OrdinalIgnoreCase)))
         {
@@ -103,8 +103,8 @@ public class RabbitManagement
             ManagementClient.CloseConnection(connection);
         }
 
-        _outputHelper.WriteLine($"Starting connection with HostName={_projConfig.GetRabbitIp()}");
-        var factory = new ConnectionFactory { HostName = _projConfig.GetRabbitIp(), UserName = _projConfig.DefaultAdminRabbitUserName, Password = _projConfig.DefaultAdminRabbitPassword, VirtualHost = _projConfig.VirtualHostName };
+        _outputHelper.WriteLine($"Starting connection with HostName={_projConfig.RabbitHost}");
+        var factory = new ConnectionFactory { HostName = _projConfig.RabbitHost, UserName = _projConfig.DefaultAdminRabbitUserName, Password = _projConfig.DefaultAdminRabbitPassword, VirtualHost = _projConfig.VirtualHostName };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.ExchangeDeclare(_projConfig.UfExchange, ExchangeType.Topic, true);
@@ -115,14 +115,89 @@ public class RabbitManagement
         _isRunning = true;
     }
 
+    public void ResetAndStart()
+    {
+        ResetRabbit();
+        Start();
+    }
+
+    public void CreateVirtualHost(string vhost)
+    {
+        var virtualHosts = ManagementClient.GetVhosts();
+        if (!virtualHosts.Any(a => a.Name.Equals(vhost, StringComparison.OrdinalIgnoreCase)))
+        {
+            ManagementClient.CreateVhost(vhost);
+        }
+    }
+
+    public async Task DeleteVirtualHostAsync()
+    {
+        var virtualHosts = await ManagementClient.GetVhostsAsync().ConfigureAwait(false);
+        if (!virtualHosts.Any(a => a.Name.Equals(_projConfig.VirtualHostName, StringComparison.OrdinalIgnoreCase)))
+        {
+            await ManagementClient.DeleteVhostAsync(_projConfig.VirtualHostName).ConfigureAwait(false);
+        }
+    }
+
+    public void CreateUser(string username, string password, string vhost)
+    {
+        var rabbitUsers = ManagementClient.GetUsers();
+        if (rabbitUsers.Any(c => c.Name.Equals(username, StringComparison.OrdinalIgnoreCase)))
+        {
+            var existingUser = ManagementClient.GetUser(username);
+            ManagementClient.DeleteUser(existingUser);
+        }
+        ManagementClient.CreateUser(UserInfo.ByPassword(username, password).AddTag("administrator"));
+
+        var testUser = ManagementClient.GetUser(username);
+
+        CreateVirtualHost(vhost);
+
+        var virtualHost = ManagementClient.GetVhost(vhost);
+        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(testUser.Name));
+        ManagementClient.CreatePermission(virtualHost, new PermissionInfo(_projConfig.DefaultAdminRabbitUserName));
+    }
+
+    public async Task<bool> IsUserConnected(string username)
+    {
+        var connections = await ManagementClient.GetConnectionsAsync();
+        return connections.Any(a => a.User.Equals(username, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public async Task DeleteUserAsync(int bookmakerId)
+    {
+        await DeleteUserAsync(bookmakerId.ToString()).ConfigureAwait(false);
+    }
+
+    public async Task DeleteUserAsync(string username)
+    {
+        var users = await ManagementClient.GetVhostsAsync().ConfigureAwait(false);
+        if (!users.Any(a => a.Name.Equals(username, StringComparison.OrdinalIgnoreCase)))
+        {
+            await ManagementClient.DeleteUserAsync(username).ConfigureAwait(false);
+        }
+    }
+
     // stop the connection for sending messages
-    public void Stop()
+    private void Stop()
     {
         _timer.Stop();
         _channel.Close();
         _channel.Dispose();
         _connection.Close();
         _connection.Dispose();
+    }
+
+    public void SafeStop()
+    {
+        try
+        {
+            Stop();
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
     }
 
     /// <summary>
@@ -133,11 +208,11 @@ public class RabbitManagement
     /// <param name="timestamp">The timestamp  to be applied or Now</param>
     public void Send(FeedMessage message, string routingKey = null, long timestamp = 0)
     {
-        var msgBody = BuildMessageBody(message);
+        var msgBody = FeedMessageBuilder.BuildMessageBody(message);
 
         if (routingKey.IsNullOrEmpty())
         {
-            routingKey = BuildRoutingKey(message);
+            routingKey = FeedMessageBuilder.BuildRoutingKey(message);
         }
 
         Send(msgBody, routingKey, timestamp);
@@ -246,7 +321,7 @@ public class RabbitManagement
     public bool RabbitChangeUserPassword(string username, string newPassword)
     {
         // Set MQ server credentials
-        var networkCredential = new NetworkCredential("consumer", "consumer");
+        var networkCredential = new NetworkCredential(_projConfig.DefaultAdminRabbitUserName, _projConfig.DefaultAdminRabbitPassword);
 
         // Instantiate HttpClientHandler, passing in the NetworkCredential
         var httpClientHandler = new HttpClientHandler { Credentials = networkCredential };
@@ -260,7 +335,7 @@ public class RabbitManagement
         var content = new StringContent(info, Encoding.UTF8, "application/json");
 
         //var httpContent = new StringContent($"{{\"password\":\"{newPassword}\",\"tags\":\"administrator\"}}}}", Encoding.UTF8, "application/json");
-        var httpResponseMessage = httpClient.PutAsync($"http://{_projConfig.GetRabbitIp()}:15672/api/users/{username}", content).GetAwaiter().GetResult();
+        var httpResponseMessage = httpClient.PutAsync($"http://{_projConfig.RabbitHost}:15672/api/users/{username}", content).GetAwaiter().GetResult();
         if (httpResponseMessage != null)
         {
             var responseContent = httpResponseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -273,122 +348,81 @@ public class RabbitManagement
         return false;
     }
 
-    /// <summary>
-    ///     Builds the xml message body from the raw feed message (instance)
-    /// </summary>
-    /// <param name="message">The message to be serialized</param>
-    /// <returns>Returns xml message body</returns>
-    private static string BuildMessageBody(FeedMessage message)
+    public async Task CloseConnection(string connectionName, string closingReason)
     {
-        if (message is alive aliveMsg)
+        if (string.IsNullOrWhiteSpace(connectionName))
         {
-            return MsgSerializer.SerializeToXml(aliveMsg);
+            throw new ArgumentException("Connection name must be provided.", nameof(connectionName));
         }
 
-        if (message is odds_change oddsChange)
-        {
-            return MsgSerializer.SerializeToXml(oddsChange);
-        }
+        var credentials = new NetworkCredential(
+                                                _projConfig.DefaultAdminRabbitUserName,
+                                                _projConfig.DefaultAdminRabbitPassword);
 
-        if (message is bet_stop betStop)
-        {
-            return MsgSerializer.SerializeToXml(betStop);
-        }
+        using var handler = new HttpClientHandler();
+        handler.Credentials = credentials;
 
-        if (message is fixture_change fixtureChange)
-        {
-            return MsgSerializer.SerializeToXml(fixtureChange);
-        }
+        using var client = new HttpClient(handler);
+        var encodedConnectionName = Uri.EscapeDataString(connectionName);
 
-        if (message is snapshot_complete snapshotComplete)
-        {
-            return MsgSerializer.SerializeToXml(snapshotComplete);
-        }
+        var url =
+            $"http://{_projConfig.RabbitHost}:15672/api/connections/{encodedConnectionName}";
 
-        if (message is bet_settlement betSettlement)
+        var payload = new
         {
-            return MsgSerializer.SerializeToXml(betSettlement);
-        }
+            name = encodedConnectionName,
+            reason = closingReason
+        };
+        var request = new HttpRequestMessage(HttpMethod.Delete, url);
+        var content = new StringContent(
+                                        JsonConvert.SerializeObject(payload),
+                                        Encoding.UTF8,
+                                        "application/json");
+        request.Content = content;
+        request.Headers.TryAddWithoutValidation("X-Reason", closingReason);
 
-        return MsgSerializer.SerializeToXml(message);
+        var response = await client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        var responseBody = await response.Content.ReadAsStringAsync();
+        _outputHelper.WriteLine($"Rabbit ApiCall -> force close connection: " +
+                                $"StatusCode={response.StatusCode}, Reason='{closingReason}', Response={responseBody}");
     }
 
-    /// <summary>
-    ///     Builds the routing key from the message type
-    /// </summary>
-    /// <param name="message">The message</param>
-    /// <returns>Returns the appropriate routing key</returns>
-    private static string BuildRoutingKey(FeedMessage message)
+    public IReadOnlyList<string> GetAllConnectionNames(string rabbitUsername)
     {
-        if (message.GetType() == typeof(alive))
+        var credentials = new NetworkCredential(
+                                                _projConfig.DefaultAdminRabbitUserName,
+                                                _projConfig.DefaultAdminRabbitPassword);
+
+        using var handler = new HttpClientHandler
         {
-            return "-.-.-.alive.-.-.-.-";
+            Credentials = credentials
+        };
+
+        using var client = new HttpClient(handler);
+
+        var url = $"http://{_projConfig.RabbitHost}:15672/api/connections";
+
+        var response = client
+                      .GetAsync(url)
+                      .GetAwaiter()
+                      .GetResult();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            throw new InvalidOperationException(
+                                                $"Failed to get RabbitMQ connections. Status={response.StatusCode}, Response={error}");
         }
 
-        if (message.GetType() == typeof(odds_change))
-        {
-            var oddsChange = (odds_change)message;
-            var sportId = 1; //oddsChange
-            var urn = Urn.Parse(oddsChange.event_id);
-            return $"hi.{BuildSessionPartOfRoutingKey(oddsChange.product)}.odds_change.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
+        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        if (message.GetType() == typeof(bet_stop))
-        {
-            var betStop = (bet_stop)message;
-            var sportId = 1;
-            var urn = Urn.Parse(betStop.event_id);
-            return $"hi.{BuildSessionPartOfRoutingKey(betStop.product)}.bet_stop.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
+        var connections = JsonConvert.DeserializeObject<List<RabbitConnectionDto>>(json);
 
-        if (message.GetType() == typeof(fixture_change))
-        {
-            var fixtureChange = (fixture_change)message;
-            var sportId = 1;
-            var urn = Urn.Parse(fixtureChange.event_id);
-            return $"hi.pre.live.fixture_change.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
-
-        if (message.GetType() == typeof(snapshot_complete))
-        {
-            return "-.-.-.snapshot_complete.-.-.-.-";
-        }
-
-        if (message.GetType() == typeof(bet_settlement))
-        {
-            var betSettlement = (bet_settlement)message;
-            var sportId = 1;
-            var urn = Urn.Parse(betSettlement.event_id);
-            return $"lo.{BuildSessionPartOfRoutingKey(betSettlement.product)}.bet_settlement.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
-
-        return string.Empty;
-    }
-
-    private static string BuildSessionPartOfRoutingKey(int producerId)
-    {
-        var allProducers = ProducersEndpoint.BuildAll();
-        var producer = allProducers.producer.FirstOrDefault(f => f.id == producerId);
-        if (producer == null)
-        {
-            return "missing.missing";
-        }
-
-        if (producer.scope.Contains("live", StringComparison.InvariantCultureIgnoreCase))
-        {
-            return "-.live";
-        }
-
-        if (producer.scope.Contains("prematch", StringComparison.InvariantCultureIgnoreCase))
-        {
-            return "pre.-";
-        }
-
-        if (producer.scope.Contains("virtual", StringComparison.InvariantCultureIgnoreCase))
-        {
-            return "virt.-";
-        }
-
-        return "na.na";
+        return connections
+              .Where(c => rabbitUsername == c.User && !string.IsNullOrWhiteSpace(c.Name))
+              .Select(c => c.Name)
+              .ToList();
     }
 }

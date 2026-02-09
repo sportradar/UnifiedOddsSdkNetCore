@@ -195,18 +195,22 @@ internal class MarketWriter
         if (playerOutcome != null)
         {
             var competitor = _taskProcessor.GetTaskResult(playerOutcome.GetCompetitorAsync());
-            return $"\tOutcomeForPlayer:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{playerOutcome.Active?.ToString().ToLower()}, Odds:{playerOutcome.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{playerOutcome.GetOdds(OddsDisplayType.American)}, Probabilities:{playerOutcome.Probabilities}, AdditionalProbabilities[PO]={GetAdditionalProbabilities(playerOutcome.AdditionalProbabilities)}, HomeOrAwayTeam:{playerOutcome.HomeOrAwayTeam}, Competitor:{competitor?.Id}, OutcomeDefinition:[{WriteOutcomeDefinition(playerOutcome.OutcomeDefinition, culture)}]";
+            return $"\tOutcomeForPlayer:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{playerOutcome.Active?.ToString().ToLowerInvariant()}, Odds:{playerOutcome.GetOdds(OddsDisplayType.Decimal)}, " +
+                $"OddsUs:{playerOutcome
+                .GetOdds(OddsDisplayType.American)}, Probabilities:{playerOutcome.Probabilities}, AdditionalProbabilities[PO]={GetAdditionalProbabilities(playerOutcome.AdditionalProbabilities)}, HomeOrAwayTeam:{playerOutcome.HomeOrAwayTeam}, Competitor:{competitor?.Id}, OutcomeDefinition:[{WriteOutcomeDefinition(playerOutcome.OutcomeDefinition, culture)}]";
         }
         var outcomeOdds = outcome as IOutcomeOdds;
         if (outcomeOdds != null)
         {
-            return $"\tOutcomeWithOdds:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeOdds.Active?.ToString().ToLower()}, Odds:{outcomeOdds.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{outcomeOdds.GetOdds(OddsDisplayType.American)}, Probabilities:{outcomeOdds.Probabilities}, AdditionalProbabilities[OO]={GetAdditionalProbabilities(outcomeOdds.AdditionalProbabilities)}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeOdds.OutcomeDefinition, culture)}]";
+            return $"\tOutcomeWithOdds:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeOdds.Active?.ToString().ToLowerInvariant()}, Odds:{outcomeOdds.GetOdds(OddsDisplayType.Decimal)}, OddsUs:{outcomeOdds.GetOdds
+                (OddsDisplayType.American)}, Probabilities:{outcomeOdds.Probabilities}, AdditionalProbabilities[OO]={GetAdditionalProbabilities(outcomeOdds.AdditionalProbabilities)}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeOdds.OutcomeDefinition, culture)}]";
         }
 
         var outcomeProbabilities = outcome as IOutcomeProbabilities;
         if (outcomeProbabilities != null)
         {
-            return $"\tOutcomeWithProbabilities:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeProbabilities.Active?.ToString().ToLower()}, Probabilities:{outcomeProbabilities.Probabilities}, AdditionalProbabilities[OP]={GetAdditionalProbabilities(null)}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeProbabilities.OutcomeDefinition, culture)}]";
+            return $"\tOutcomeWithProbabilities:{outcome.Id}, Name[{culture.TwoLetterISOLanguageName}]:'{outcomeName}', Active:{outcomeProbabilities.Active?.ToString().ToLowerInvariant()}, Probabilities:{outcomeProbabilities.Probabilities}, " +
+                $"AdditionalProbabilities[OP]={GetAdditionalProbabilities(null)}, OutcomeDefinition:[{WriteOutcomeDefinition(outcomeProbabilities.OutcomeDefinition, culture)}]";
         }
 
         var outcomeSettlement = outcome as IOutcomeSettlement;

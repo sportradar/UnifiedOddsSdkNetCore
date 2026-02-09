@@ -6,11 +6,21 @@ This guide offers practical advice to ensure your transition is not only efficie
 
 ## 1. Upgrade Dependencies
 
-The following new dependencies have been added:
+The following new dependencies have been added/updated:
 
-* **System.IdentityModel.Tokens.Jwt 6.34.0** - required for the new client authentication feature
-* **Polly 8.6.4** - standardizes transient-error handling via retries, circuit breakers, and additional resilience patterns
-* **Microsoft.Bcl.TimeProvider 9.0.1** - provides TimeProvider abstraction for time-based operations, enabling better testability and time control
+* **System.IdentityModel.Tokens.Jwt 8.15.0** - required for the new client authentication feature
+* **Polly 8.6.5** - standardizes transient-error handling via retries, circuit breakers, and additional resilience patterns
+* **Microsoft.Bcl.TimeProvider 10.0.2** - provides TimeProvider abstraction for time-based operations, enabling better testability and time control
+* Microsoft.Extensions.Caching.Memory 10.0.2
+* Microsoft.Extensions.Configuration 10.0.2
+* Microsoft.Extensions.DependencyInjection 10.0.2
+* Microsoft.Extensions.Diagnostics.HealthChecks 10.0.2
+* Microsoft.Extensions.Http 10.0.2
+* System.Configuration.ConfigurationManager 10.0.2
+* OpenTelemetry 1.15.0
+* OpenTelemetry.Exporter.OpenTelemetryProtocol 1.15.0
+* OpenTelemetry.Extensions.Hosting 1.15.0
+* OpenTelemetry.Instrumentation.Runtime 1.15.0
 
 Make sure to update your project's dependency management to include these new libraries.
 
@@ -86,7 +96,7 @@ Configuration via configuration files is not supported for client authentication
 
 - Access token is mandatory to be configured along with optional client authentication configuration.
 - SetClientAuthentication must be set before SetAccessToken when configuring SDK.
-- Client authentication only affects API calls, RabbitMQ still uses access token for authentication.
+- Rabbit credentials cannot be overridden when using Client Authentication.
 - SDK integrations via SSL-terminating proxies is not supported. This is because custom Client Authentication server fields (e.g.`.SetClientAuthenticationHost()`) works correctly only for staging and production URLs.
 - Replay does not support Client Authentication.
 

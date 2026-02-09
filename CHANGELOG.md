@@ -1,29 +1,42 @@
 # Change Log
 
-## 4.0.0-rc2
-- UoF API call is retried once if the response has a status code 401 (Unauthorized).
-- Internal resiliency improvements for Common IAM communication.
+## 4.0.0-rc3
+- Client Authentication is supported for Rabbit MQ connections
+- Configurable Authentication Tenant
+- When using custom configuration builder replaced SetUsername and SetPassword with SetAuthenticationCredentials
+- Expanded sdk library target framework to netstandard 2.0 and net8.0
+- Upgraded dependencies to latest versions
+
+## 2025-11-24 4.0.0-rc2
+- UoF API call is retried once if the response has a status code 401 (Unauthorized)
+- Internal resiliency improvements for Common IAM communication
 
 ## 2025-11-10 4.0.0-rc1
 - Introduced ClientAuthentication configuration as a more secure and recommended alternative to access tokens (only UF API calls are supported at the moment). Check the migration guide for more details.
 - Added a dependency to System.IdentityModel.Tokens.Jwt
 - Added a dependency to ZiggyCreatures.FusionCache
 
-## 2025-10-07 3.7.0
-- breaking change: Sport Event timeline now uses long event IDs (previously int) to support larger identifiers introduced by the Unified API.
+## 2015-X-Y 3.8.0
+- TBD
+
+## 2025-10-31 3.7.1
+- Season object obtained from SportDataProvider properly returns sport information when `Season.GetSportAsync()` is called
+
+## 2025-10-07 3.7.0 (breaking change)
+- Sport Event timeline now uses long event IDs (previously int) to support larger identifiers introduced by the Unified API (breaking change)
 
 ## 2025-08-06 3.6.0
-- Telemetry exports now support bookmaker id, improving metric correlation and issue analysis.
+- Telemetry exports now support bookmaker id, improving metric correlation and issue analysis
 
 ## 2025-07-31 3.5.0
 - Enabling player and competitor URNs to support varied prefixes
 
 ## 2025-07-07 3.4.0
-- Soccer tournaments 86 and 853 (Club Friendly Games) with increased amount of data are preloaded using a longer timeout.
+- Soccer tournaments 86 and 853 (Club Friendly Games) with increased amount of data are preloaded using a longer timeout
 
 ## 2025-05-08 3.3.0
-- Added Lugas property to sport event fixture references (implemented in the IReferenceV1 interface). It is currently in preview mode until supported by the UF API. 
-- Start and end times of seasons with start_time and end_time attributes are now correctly calculated as UTC date-time values.
+- Added Lugas property to sport event fixture references (implemented in the IReferenceV1 interface). It is currently in preview mode until supported by the UF API
+- Start and end times of seasons with start_time and end_time attributes are now correctly calculated as UTC date-time values
 
 
 ## 2025-04-07 3.2.0
@@ -34,11 +47,11 @@
 - Updated OpenTelemetry dependent libraries to the latest versions (removed security vulnerability)
 
 ## 2025-02-11  3.0.0 (breaking change)
-- ExceptionHandlingStrategy default value is changed to Throw (before Catch).
-- Code is cleaned up. Outdated classes are removed. Affected classes are - SoccerEvent, SoccerStatistics, SoccerStatus.
-- Asian proxy environments are no longer supported; therefore, they are removed from enum SdkEnvironment.
-- Removed interfaces ICustomBetSelectionBuilderV1, ICalculationFilterV1, ICalculationV1, ISelectionV1, and IMatchStatusV1. Properties from these interfaces have been consolidated into ICustomBetSelectionBuilder, ICalculationFilter, ICalculation, ISelection, and IMatchStatus respectively.
-- ExportableCompetitor.IsVirtual is null if the competitor's virtual flag was not retrieved initially.
+- ExceptionHandlingStrategy default value is changed to Throw (before Catch)
+- Code is cleaned up. Outdated classes are removed. Affected classes are - SoccerEvent, SoccerStatistics, SoccerStatus
+- Asian proxy environments are no longer supported; therefore, they are removed from enum SdkEnvironment
+- Removed interfaces ICustomBetSelectionBuilderV1, ICalculationFilterV1, ICalculationV1, ISelectionV1, and IMatchStatusV1. Properties from these interfaces have been consolidated into ICustomBetSelectionBuilder, ICalculationFilter, ICalculation, ISelection, and IMatchStatus respectively
+- ExportableCompetitor.IsVirtual is null if the competitor's virtual flag was not retrieved initially
 - Removed configuration option for settings AdjustAfterAge for producer recoveries (now always true)
 - Updated all dependencies to the latest versions (check a migration guide)
 - Renamed IAvailableSelections.Event to EventId

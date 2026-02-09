@@ -83,6 +83,21 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
         var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
         var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
         var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
+
+        Assert.NotNull(service1);
+        Assert.NotNull(service1A);
+        Assert.NotNull(service2);
+        Assert.NotSame(service1, service1A);
+        Assert.NotSame(service1, service2);
+    }
+
+    [Fact]
+    public void HttpClientForUsageIsRegistered()
+    {
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForUsageExporter);
+        var service1A = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForUsageExporter);
+        var service2 = ServiceScope2.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForUsageExporter);
+
         Assert.NotNull(service1);
         Assert.NotNull(service1A);
         Assert.NotNull(service2);
@@ -97,19 +112,23 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
         var httpClientRecovery = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForRecovery);
         var httpClientFastFailing = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForFastFailing);
         var httpClientAuthentication = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForAuthentication);
+        var httpClientUsageExporter = ServiceScope1.ServiceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(UofSdkBootstrap.HttpClientNameForUsageExporter);
         Assert.NotNull(httpClientNormal);
         Assert.NotNull(httpClientRecovery);
         Assert.NotNull(httpClientFastFailing);
         Assert.NotNull(httpClientAuthentication);
+        Assert.NotNull(httpClientUsageExporter);
         Assert.NotSame(httpClientNormal, httpClientRecovery);
         Assert.NotSame(httpClientNormal, httpClientFastFailing);
         Assert.NotSame(httpClientRecovery, httpClientFastFailing);
         Assert.NotSame(httpClientAuthentication, httpClientFastFailing);
+        Assert.NotSame(httpClientAuthentication, httpClientUsageExporter);
 
         Assert.Equal(UofConfig.Api.HttpClientTimeout, httpClientNormal.Timeout);
         Assert.Equal(UofConfig.Api.HttpClientRecoveryTimeout, httpClientRecovery.Timeout);
         Assert.Equal(UofConfig.Api.HttpClientFastFailingTimeout, httpClientFastFailing.Timeout);
         Assert.Equal(UofConfig.Api.HttpClientFastFailingTimeout, httpClientAuthentication.Timeout);
+        Assert.Equal(UofConfig.Api.HttpClientFastFailingTimeout, httpClientUsageExporter.Timeout);
     }
 
     [Fact]
@@ -1076,7 +1095,7 @@ public class UofSdkBootstrapApiTests : UofSdkBootstrapBase
         var address = httpClientForAuthentication.BaseAddress.ToString();
 
         address.ShouldStartWith("http");
-        address.ShouldBe(configWithAuth.Authentication.GetAudienceForLocalToken());
+        address.ShouldBe(configWithAuth.Authentication.GetCommonIAmUri());
     }
 }
 

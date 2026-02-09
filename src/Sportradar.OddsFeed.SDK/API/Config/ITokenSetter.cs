@@ -19,9 +19,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Config
         /// </summary>
         /// <param name="privateKeyJwtData">The authentication configuration containing credentials.</param>
         /// <returns>
-        /// The <see cref="ITokenSetter"/> instance allowing chaining of calls.
+        /// The <see cref="IEnvironmentSelector"/>instance allowing the selection of target environment.
         /// </returns>
-        ITokenSetter SetClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData privateKeyJwtData);
+        IEnvironmentSelector SetClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData privateKeyJwtData);
 
         /// <summary>
         /// Sets the access token used to access feed resources (AMQP broker, Sports API, ...) to value read from configuration file

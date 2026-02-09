@@ -1,6 +1,5 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +16,9 @@ namespace Sportradar.OddsFeed.SDK.DemoProject;
 internal class UofSdkExample
 {
     private static ILoggerFactory LoggerFactory;
+    private static string ClientId;
+    private static string SigningKeyId;
+    private static string PrivateKeyPath;
 
     /// <summary>
     /// Main entry point
@@ -27,25 +29,14 @@ internal class UofSdkExample
         services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddLog4Net("log4net.config"));
         var serviceProvider = services.BuildServiceProvider();
         LoggerFactory = serviceProvider.GetService<ILoggerFactory>();
-        var log = LoggerFactory.CreateLogger(typeof(UofSdkExample));
+        var log = LoggerFactory.CreateLogger<UofSdkExample>();
         log.LogInformation("UofSdk example");
-
-        var clientId = ReadNonEmpty("Enter Client ID: ");
-        var signingKeyId = ReadNonEmpty("Enter Signing Key ID: ");
-        var privateKeyPath = ReadExistingPemPath("Enter path to Private Key (.pem): ");
-        var privateKey = RsaPkcs8Loader.LoadPkcs8RsaKey(privateKeyPath);
-        var clientAuthentication = UofClientAuthentication
-                                  .PrivateKeyJwt()
-                                  .SetSigningKeyId(signingKeyId)
-                                  .SetClientId(clientId)
-                                  .SetPrivateKey(privateKey)
-                                  .Build();
 
         var key = 'y';
         while (key.Equals('y'))
         {
             WriteExampleSelections();
-            DoExampleSelection(clientAuthentication);
+            DoExampleSelection();
 
             Console.WriteLine(string.Empty);
             Console.Write(" Want to run another example? (y|n): ");
@@ -54,80 +45,102 @@ internal class UofSdkExample
         }
     }
 
-private static void DoExampleSelection(UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
-{
-    var k = Console.ReadLine();
-    Console.WriteLine(string.Empty);
-
-    switch (k)
+    private static void DoExampleSelection()
     {
-        case "1":
+        var selectedExample = Console.ReadLine();
+        Console.WriteLine(string.Empty);
+
+        UofClientAuthentication.IPrivateKeyJwtData clientAuthentication = null;
+        if (selectedExample is not ("1a" or "8"))
         {
-            new Basic(LoggerFactory.CreateLogger<Basic>(), clientAuthentication)
-                .Run(MessageInterest.AllMessages);
-            break;
+            ClientId ??= ReadNonEmpty("Enter Client ID: ");
+            SigningKeyId ??= ReadNonEmpty("Enter Signing Key ID: ");
+            PrivateKeyPath ??= ReadExistingPemPath("Enter path to Private Key (.pem): ");
+            var privateKey = RsaPkcs8Loader.LoadPkcs8RsaKey(PrivateKeyPath);
+            clientAuthentication = UofClientAuthentication
+                                  .PrivateKeyJwt()
+                                  .SetSigningKeyId(SigningKeyId)
+                                  .SetClientId(ClientId)
+                                  .SetPrivateKey(privateKey)
+                                  .Build();
         }
-        case "2":
+
+        switch (selectedExample)
         {
-            new MultiSession(LoggerFactory.CreateLogger<MultiSession>(), clientAuthentication)
-                .Run();
-            break;
-        }
-        case "3":
-        {
-            new SpecificDispatchers(LoggerFactory.CreateLogger<SpecificDispatchers>(), clientAuthentication)
-                .Run(MessageInterest.AllMessages);
-            break;
-        }
-        case "4":
-        {
-            new ShowMarketNames(LoggerFactory.CreateLogger<ShowMarketNames>(), clientAuthentication)
-                .Run(MessageInterest.AllMessages);
-            break;
-        }
-        case "5":
-        {
-            new ShowEventInfo(LoggerFactory.CreateLogger<ShowEventInfo>(), clientAuthentication)
-                .Run(MessageInterest.AllMessages);
-            break;
-        }
-        case "6":
-        {
-            new CompleteInfo(LoggerFactory.CreateLogger<CompleteInfo>(), clientAuthentication)
-                .Run(MessageInterest.AllMessages);
-            break;
-        }
-        case "7":
-        {
-            new ShowMarketMappings(LoggerFactory.CreateLogger<ShowMarketMappings>(), clientAuthentication)
-                .Run(MessageInterest.AllMessages);
-            break;
-        }
-        case "8":
-        {
-            new ReplayServer(LoggerFactory.CreateLogger<ReplayServer>())
-                .Run(MessageInterest.AllMessages);
-            break;
-        }
-        case "9":
-        {
-            new CacheExportImport(LoggerFactory.CreateLogger<CacheExportImport>(), clientAuthentication)
-                .Run(MessageInterest.AllMessages);
-            break;
-        }
-        default:
-        {
-            DoExampleSelection(clientAuthentication);
-            break;
+            case "1a":
+                {
+                    new Basic(LoggerFactory.CreateLogger<Basic>())
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "1b":
+                {
+                    new Basic(LoggerFactory.CreateLogger<Basic>(), clientAuthentication)
+                       .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "2":
+                {
+                    new MultiSession(LoggerFactory.CreateLogger<MultiSession>(), clientAuthentication)
+                        .Run();
+                    break;
+                }
+            case "3":
+                {
+                    new SpecificDispatchers(LoggerFactory.CreateLogger<SpecificDispatchers>(), clientAuthentication)
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "4":
+                {
+                    new ShowMarketNames(LoggerFactory.CreateLogger<ShowMarketNames>(), clientAuthentication)
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "5":
+                {
+                    new ShowEventInfo(LoggerFactory.CreateLogger<ShowEventInfo>(), clientAuthentication)
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "6":
+                {
+                    new CompleteInfo(LoggerFactory.CreateLogger<CompleteInfo>(), clientAuthentication)
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "7":
+                {
+                    new ShowMarketMappings(LoggerFactory.CreateLogger<ShowMarketMappings>(), clientAuthentication)
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "8":
+                {
+                    new ReplayServer(LoggerFactory.CreateLogger<ReplayServer>())
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            case "9":
+                {
+                    new CacheExportImport(LoggerFactory.CreateLogger<CacheExportImport>(), clientAuthentication)
+                        .Run(MessageInterest.AllMessages);
+                    break;
+                }
+            default:
+                {
+                    DoExampleSelection();
+                    break;
+                }
         }
     }
-}
 
     private static void WriteExampleSelections()
     {
         Console.WriteLine(string.Empty);
         Console.WriteLine("Select which example you want to run:");
-        Console.WriteLine("  1 - Basic \t\t\t(single session, generic dispatcher, basic output)");
+        Console.WriteLine("  1a - Basic (SSO token) \t\t\t(single session, generic dispatcher, basic output)");
+        Console.WriteLine("  1b - Basic (Client Authentication) \t\t\t(single session, generic dispatcher, basic output)");
         Console.WriteLine("  2 - Multi-Session \t\t(has Low and High priority sessions)");
         Console.WriteLine("  3 - Use specific dispatchers \t(uses specific message dispatchers)");
         Console.WriteLine("  4 - Display Market info \t(generates and displays market/outcomes names)");

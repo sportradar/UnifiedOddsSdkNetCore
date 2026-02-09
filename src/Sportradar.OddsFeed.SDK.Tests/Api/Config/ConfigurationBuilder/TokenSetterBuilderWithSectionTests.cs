@@ -3,6 +3,7 @@
 using System;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Sdk.Config;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
@@ -10,21 +11,31 @@ namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
 public class TokenSetterBuilderWithSectionTests : ConfigurationBuilderWithSectionSetup
 {
     [Fact]
-    public void DirectSettingMinimalProperties()
+    public void DirectSettingOnlyRequiredProperties()
     {
-        Assert.Equal(TestAccessToken, GetTokenSetter().SetAccessToken(TestAccessToken).SelectEnvironment(SdkEnvironment.Integration).SetDefaultLanguage(TestData.Culture).Build().AccessToken);
+        const string accessToken = "any-access-token";
+
+        var config = GetTokenSetter()
+                    .SetAccessToken(accessToken)
+                    .SelectEnvironment(SdkEnvironment.Integration)
+                    .SetDefaultLanguage(TestConsts.CultureEn)
+                    .Build();
+
+        Assert.Equal(accessToken, config.AccessToken);
+        Assert.Equal(SdkEnvironment.Integration, config.Environment);
+        Assert.Equal(TestConsts.CultureEn, config.DefaultLanguage);
     }
 
     [Fact]
     public void DirectSettingMinimalPropertiesWithoutAccessTokenFails()
     {
-        Assert.Throws<InvalidOperationException>(() => GetTokenSetter().SetAccessTokenFromConfigFile().SelectEnvironment(SdkEnvironment.Integration).Build());
+        Assert.Throws<InvalidOperationException>(() => GetTokenSetter().SetAccessTokenFromConfigFile());
     }
 
     [Fact]
     public void DirectSettingMinimalPropertiesWithoutLanguageFails()
     {
-        Assert.Throws<InvalidOperationException>(() => GetTokenSetter().SetAccessToken(TestAccessToken).SelectEnvironment(SdkEnvironment.Integration).Build());
+        Assert.Throws<InvalidOperationException>(() => GetTokenSetter().SetAccessToken(TestConsts.AnyAccessToken).SelectEnvironment(SdkEnvironment.Integration).Build());
     }
 
     [Fact]
@@ -42,16 +53,17 @@ public class TokenSetterBuilderWithSectionTests : ConfigurationBuilderWithSectio
     [Fact]
     public void TokenFromConfigurationSectionIsConfigured()
     {
-        Assert.Equal(SdkEnvironment.Integration, BaseSection.Environment);
-        var config = GetTokenSetter(BaseSection).BuildFromConfigFile();
-        Assert.Equal(BaseSection.AccessToken, config.AccessToken);
-        Assert.Equal(BaseSection.Environment, config.Environment);
+        var section = UofConfigurationSections.OnlyRequiredFields();
 
-        ValidateDefaultConfig(config, BaseSection.Environment);
+        var config = GetTokenSetter(section).BuildFromConfigFile();
+
+        Assert.Equal(section.AccessToken, config.AccessToken);
+        Assert.Equal(section.Environment, config.Environment);
+        ValidateDefaultConfig(config, section.Environment);
         ValidateDefaultProducerConfig(config.Producer);
         ValidateDefaultCacheConfig(config.Cache);
-        ValidateApiConfigForEnvironment(config.Api, BaseSection.Environment);
-        ValidateRabbitConfigForEnvironment(config, BaseSection.Environment);
+        ValidateApiConfigForEnvironment(config.Api, section.Environment);
+        ValidateRabbitConfigForEnvironment(config, section.Environment);
         ValidateDefaultAdditionalConfig(config.Additional);
         ValidateDefaultUsageConfig(config);
     }
@@ -59,11 +71,12 @@ public class TokenSetterBuilderWithSectionTests : ConfigurationBuilderWithSectio
     [Fact]
     public void EnvironmentFromConfigurationSectionCanBeOverridden()
     {
-        Assert.Equal(SdkEnvironment.Integration, BaseSection.Environment);
-        var config = GetTokenSetter(BaseSection).SetAccessTokenFromConfigFile().SelectEnvironment(SdkEnvironment.GlobalProduction).LoadFromConfigFile().Build();
-        Assert.Equal(BaseSection.AccessToken, config.AccessToken);
-        Assert.Equal(SdkEnvironment.GlobalProduction, config.Environment);
+        var section = UofConfigurationSections.OnlyRequiredFields();
 
+        var config = GetTokenSetter(section).SetAccessTokenFromConfigFile().SelectEnvironment(SdkEnvironment.GlobalProduction).LoadFromConfigFile().Build();
+
+        Assert.Equal(section.AccessToken, config.AccessToken);
+        Assert.Equal(SdkEnvironment.GlobalProduction, config.Environment);
         ValidateDefaultConfig(config, SdkEnvironment.GlobalProduction);
         ValidateDefaultProducerConfig(config.Producer);
         ValidateDefaultCacheConfig(config.Cache);
@@ -76,14 +89,16 @@ public class TokenSetterBuilderWithSectionTests : ConfigurationBuilderWithSectio
     [Fact]
     public void TokenFromConfigurationSectionCanNotBeOverridden()
     {
-        var config = GetTokenSetter(BaseSection).SetAccessTokenFromConfigFile().SelectEnvironmentFromConfigFile().LoadFromConfigFile().Build();
-        Assert.Equal(BaseSection.AccessToken, config.AccessToken);
+        var section = UofConfigurationSections.OnlyRequiredFields();
 
-        ValidateDefaultConfig(config, BaseSection.Environment);
+        var config = GetTokenSetter(section).SetAccessTokenFromConfigFile().SelectEnvironmentFromConfigFile().LoadFromConfigFile().Build();
+
+        Assert.Equal(section.AccessToken, config.AccessToken);
+        ValidateDefaultConfig(config, section.Environment);
         ValidateDefaultProducerConfig(config.Producer);
         ValidateDefaultCacheConfig(config.Cache);
-        ValidateApiConfigForEnvironment(config.Api, BaseSection.Environment);
-        ValidateRabbitConfigForEnvironment(config, BaseSection.Environment);
+        ValidateApiConfigForEnvironment(config.Api, section.Environment);
+        ValidateRabbitConfigForEnvironment(config, section.Environment);
         ValidateDefaultAdditionalConfig(config.Additional);
         ValidateDefaultUsageConfig(config);
     }

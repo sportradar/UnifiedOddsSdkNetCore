@@ -53,6 +53,10 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             {
                 throw new ArgumentException("Value cannot be a null reference or empty string", nameof(accessToken));
             }
+            if (_privateKeyJwtData != null)
+            {
+                throw new ArgumentException("Cannot set access token when client authentication is configured");
+            }
             _configuration.AccessToken = accessToken;
             return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider, _privateKeyJwtData);
         }
@@ -62,12 +66,16 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// </summary>
         /// <param name="privateKeyJwtData">The authentication configuration containing credentials.</param>
         /// <returns>
-        /// The <see cref="ITokenSetter"/> instance allowing chaining of calls.
+        /// The <see cref="IEnvironmentSelector"/>instance allowing the selection of target environment.
         /// </returns>
-        public ITokenSetter SetClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData privateKeyJwtData)
+        public IEnvironmentSelector SetClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData privateKeyJwtData)
         {
+            if (!string.IsNullOrEmpty(_configuration.AccessToken))
+            {
+                throw new ArgumentException("Cannot set client authentication when access token is configured");
+            }
             _privateKeyJwtData = privateKeyJwtData ?? throw new ArgumentNullException(nameof(privateKeyJwtData));
-            return this;
+            return new EnvironmentSelector(_configuration, _uofConfigurationSectionProvider, _bookmakerDetailsProvider, _producersProvider, _privateKeyJwtData);
         }
 
         /// <summary>

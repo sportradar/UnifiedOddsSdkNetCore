@@ -9,16 +9,18 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
 {
-    /// <summary>
-    /// A <see cref="IConnectionFactory"/> implementations which properly configures it self before first <see cref="IConnection"/> is created
-    /// </summary>
-    internal class ConfiguredConnectionFactory : IDisposable
+    internal sealed class ConfiguredConnectionFactory : IDisposable
     {
+        private readonly ILogger<ConfiguredConnectionFactory> _logger;
+
         internal IConnectionFactory ConnectionFactory;
+
         public DateTime ConnectionCreated { get; private set; }
 
         public event EventHandler<CallbackExceptionEventArgs> CallbackException;
@@ -29,75 +31,23 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
 
         public event EventHandler<EventArgs> ConnectionUnblocked;
 
-        private readonly IUofConfiguration _config;
-
-        private readonly ILogger<ConfiguredConnectionFactory> _logger;
-
-        /// <summary>
-        /// A singleton instance of <see cref="IConnection"/> class created by current factory.
-        /// </summary>
         private IConnection _connectionSingleton;
 
-        /// <summary>
-        /// A <see cref="object"/> used to ensure thread safety when creating the connection singleton
-        /// </summary>
         private readonly object _syncLock = new object();
 
-        /// <summary>
-        /// Value indicating whether the current instance has been disposed
-        /// </summary>
         private bool _disposed;
 
-        public ConfiguredConnectionFactory(IUofConfiguration config, ILogger<ConfiguredConnectionFactory> logger)
+        public ConfiguredConnectionFactory(IConnectionFactory connectionFactory, IUofConfiguration config, ILogger<ConfiguredConnectionFactory> logger)
         {
-            Guard.Argument(config, nameof(config)).NotNull();
-            Guard.Argument(logger, nameof(logger)).NotNull();
+            _ = Guard.Argument(connectionFactory, nameof(connectionFactory)).NotNull();
+            _ = Guard.Argument(config, nameof(config)).NotNull();
+            _ = Guard.Argument(logger, nameof(logger)).NotNull();
 
-            _config = config;
             _logger = logger;
             ConnectionCreated = DateTime.MinValue;
 
-            CreateAndConfigureConnectionFactory();
-        }
-
-        /// <summary>
-        /// Configures the current <see cref="IConnectionFactory"/> based on config options read from <c>_config</c> field
-        /// </summary>
-        private void CreateAndConfigureConnectionFactory()
-        {
-            var sslOption = new SslOption
-            {
-                Enabled = _config.Rabbit.UseSsl
-            };
-
-            if (_config.Rabbit.UseSsl)
-            {
-                sslOption.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
-            }
-
-            var clientProperties = new Dictionary<string, object>
-                                       {
-                                           { "SrUfSdkType", SdkInfo.SdkType },
-                                           { "SrUfSdkVersion", SdkInfo.GetVersion() },
-                                           { "SrUfSdkInit", SdkInfo.UtcNowString() },
-                                           { "SrUfSdkConnName", $"RabbitMQ / {SdkInfo.SdkType}" },
-                                           { "SrUfSdkBId", _config.BookmakerDetails?.BookmakerId.ToString(CultureInfo.InvariantCulture) }
-                                       };
-
-            ConnectionFactory = new ConnectionFactory
-            {
-                ClientProvidedName = $"UofSdk / {SdkInfo.SdkType}",
-                HostName = _config.Rabbit.Host,
-                Port = _config.Rabbit.Port,
-                UserName = _config.Rabbit.Username,
-                Password = _config.Rabbit.Password ?? string.Empty,
-                VirtualHost = _config.Rabbit.VirtualHost,
-                AutomaticRecoveryEnabled = true,
-                RequestedHeartbeat = _config.Rabbit.Heartbeat,
-                RequestedConnectionTimeout = _config.Rabbit.ConnectionTimeout,
-                Ssl = sslOption,
-                ClientProperties = clientProperties
-            };
+            ValidateConnectionFactory(connectionFactory);
+            ConnectionFactory = connectionFactory;
         }
 
         public bool IsConnected()
@@ -108,10 +58,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             }
         }
 
-        /// <summary>
-        /// Create a connection to the specified endpoint or return existing one
-        /// </summary>
-        /// <exception cref="RabbitMQ.Client.Exceptions.BrokerUnreachableException">When the configured host name was not reachable</exception>
         public IConnection CreateConnection()
         {
             lock (_syncLock)
@@ -159,31 +105,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
             }
         }
 
-        private void ReleaseConnectionEventsAndClose()
-        {
-            if (_connectionSingleton != null)
-            {
-                _connectionSingleton.ConnectionBlocked -= OnConnectionBlocked;
-                _connectionSingleton.ConnectionUnblocked -= OnConnectionUnblocked;
-                _connectionSingleton.CallbackException -= OnCallbackException;
-                _connectionSingleton.ConnectionShutdown -= OnConnectionShutdown;
-                _connectionSingleton.Close(TimeSpan.FromSeconds(10));
-            }
-        }
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
-        /// <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (_disposed || !disposing)
             {
@@ -213,6 +140,79 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         private void OnConnectionShutdown(object sender, ShutdownEventArgs e)
         {
             ConnectionShutdown?.Invoke(sender, e);
+        }
+
+        internal static ConnectionFactory CreateConnectionFactoryWithImmutableFields(IUofConfiguration config, IAuthenticationTokenCache tokenCache, ILogger<ConfiguredConnectionFactory> logger)
+        {
+            var credentialsProvider = SelectCredentialProvider(config, tokenCache, logger);
+
+            return new ConnectionFactory
+            {
+                ClientProvidedName = $"UofSdk / {SdkInfo.SdkType}",
+                HostName = config.Rabbit.Host,
+                Port = config.Rabbit.Port,
+                VirtualHost = config.Rabbit.VirtualHost,
+                AutomaticRecoveryEnabled = true,
+                RequestedHeartbeat = config.Rabbit.Heartbeat,
+                RequestedConnectionTimeout = config.Rabbit.ConnectionTimeout,
+                Ssl = GetRabbitSslOptions(config),
+                ClientProperties = GetClientPropertiesWithSdkInfo(config),
+                CredentialsProvider = credentialsProvider
+            };
+        }
+
+        internal static Dictionary<string, object> GetClientPropertiesWithSdkInfo(IUofConfiguration config)
+        {
+            return new Dictionary<string, object>
+                       {
+                           { "SrUfSdkType", SdkInfo.SdkType },
+                           { "SrUfSdkVersion", SdkInfo.GetVersion() },
+                           { "SrUfSdkInit", SdkInfo.UtcNowString() },
+                           { "SrUfSdkConnName", $"RabbitMQ / {SdkInfo.SdkType}" },
+                           { "SrUfSdkBId", config.BookmakerDetails?.BookmakerId.ToString(CultureInfo.InvariantCulture) }
+                       };
+        }
+
+        private static void ValidateConnectionFactory(IConnectionFactory connectionFactory)
+        {
+            if (connectionFactory.ClientProvidedName.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException(nameof(connectionFactory), "ClientProvidedName cannot be null or empty");
+            }
+            if (connectionFactory.ClientProperties.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException(nameof(connectionFactory), "ClientProperties cannot be null or empty");
+            }
+        }
+
+        private void ReleaseConnectionEventsAndClose()
+        {
+            _connectionSingleton.ConnectionBlocked -= OnConnectionBlocked;
+            _connectionSingleton.ConnectionUnblocked -= OnConnectionUnblocked;
+            _connectionSingleton.CallbackException -= OnCallbackException;
+            _connectionSingleton.ConnectionShutdown -= OnConnectionShutdown;
+            _connectionSingleton.Close(TimeSpan.FromSeconds(10));
+        }
+
+        private static SslOption GetRabbitSslOptions(IUofConfiguration config)
+        {
+            var sslOption = new SslOption { Enabled = config.Rabbit.UseSsl };
+
+            if (config.Rabbit.UseSsl)
+            {
+                sslOption.AcceptablePolicyErrors = SslPolicyErrors.RemoteCertificateChainErrors | SslPolicyErrors.RemoteCertificateNameMismatch | SslPolicyErrors.RemoteCertificateNotAvailable;
+            }
+
+            return sslOption;
+        }
+
+        private static ICredentialsProvider SelectCredentialProvider(IUofConfiguration config, IAuthenticationTokenCache tokenCache, ILogger<ConfiguredConnectionFactory> logger)
+        {
+            if (config.Authentication != null)
+            {
+                return new CredentialProviderCommonIam(config, tokenCache, logger);
+            }
+            return new CredentialProviderSso(config);
         }
     }
 }

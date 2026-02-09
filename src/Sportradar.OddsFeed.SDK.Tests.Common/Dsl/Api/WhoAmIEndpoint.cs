@@ -2,7 +2,6 @@
 
 using System;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
-using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
 
@@ -13,12 +12,6 @@ public class WhoAmIEndpoint
     public static WhoAmIEndpoint Create()
     {
         return new WhoAmIEndpoint().WithExpiration(DateTime.Now.AddDays(1)).WithResponseCode(response_code.OK);
-    }
-
-    public static bookmaker_details CreateForAT()
-    {
-        var projConfig = new ProjectConfiguration();
-        return new WhoAmIEndpoint().WithBookmakerId(1).WithVirtualHost(projConfig.VirtualHostName).WithExpiration(DateTime.Now.AddDays(1)).Build();
     }
 
     public WhoAmIEndpoint WithBookmakerDetails(Action<bookmaker_details> options)

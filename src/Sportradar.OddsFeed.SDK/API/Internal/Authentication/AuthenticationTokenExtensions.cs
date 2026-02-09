@@ -24,7 +24,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
             return token.RefetchStartAt < TimeProviderAccessor.Current.Now;
         }
 
-        public static string GetAudienceForLocalToken(this UofClientAuthentication.IPrivateKeyJwt privateKeyJwt)
+        public static string GetCommonIAmUri(this UofClientAuthentication.IPrivateKeyJwt privateKeyJwt)
+        {
+            return BuildCommonIAmUri(privateKeyJwt);
+        }
+
+        public static string GetCommonIamTenant(this UofClientAuthentication.IPrivateKeyJwt privateKeyJwt)
+        {
+            return string.IsNullOrWhiteSpace(privateKeyJwt?.Tenant) ? BuildCommonIAmUri(privateKeyJwt) : privateKeyJwt.Tenant;
+        }
+
+        private static string BuildCommonIAmUri(UofClientAuthentication.IPrivateKeyJwt privateKeyJwt)
         {
             if (privateKeyJwt == null)
             {

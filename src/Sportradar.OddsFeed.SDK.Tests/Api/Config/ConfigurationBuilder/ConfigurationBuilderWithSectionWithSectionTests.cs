@@ -1,12 +1,12 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Sdk.Config;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
@@ -19,220 +19,220 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
     [Fact]
     public void AccessTokenHasCorrectValue()
     {
-        BaseSection.AccessToken = "my_token";
-        Assert.Equal(BaseSection.AccessToken, IntegrationBuilder(BaseSection).Build().AccessToken);
-        Assert.Equal(BaseSection.AccessToken, ProductionBuilder(BaseSection).Build().AccessToken);
-        Assert.Equal(BaseSection.AccessToken, ReplayBuilder(BaseSection).Build().AccessToken);
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithAccessToken("my_token").Build();
+
+        Assert.Equal(baseSection.AccessToken, IntegrationBuilder(baseSection).Build().AccessToken);
+        Assert.Equal(baseSection.AccessToken, ProductionBuilder(baseSection).Build().AccessToken);
+        Assert.Equal(baseSection.AccessToken, ReplayBuilder(baseSection).Build().AccessToken);
     }
 
     [Fact]
     public void DefaultLanguageFromSectionHasCorrectValue()
     {
-        BaseSection.DefaultLanguage = "de";
-        var cultureEn = new CultureInfo("en");
-        var cultureDe = new CultureInfo("de");
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage(TestConsts.CultureDe.TwoLetterISOLanguageName).Build();
 
-        Assert.Equal(cultureDe, IntegrationBuilder(BaseSection).Build().DefaultLanguage);
-        Assert.Equal(cultureDe, ProductionBuilder(BaseSection).Build().DefaultLanguage);
-        Assert.Equal(cultureDe, ReplayBuilder(BaseSection).Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureDe, IntegrationBuilder(baseSection).Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureDe, ProductionBuilder(baseSection).Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureDe, ReplayBuilder(baseSection).Build().DefaultLanguage);
 
-        Assert.Equal(2, IntegrationBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
-        Assert.Equal(2, ProductionBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
-        Assert.Equal(2, ReplayBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
+        Assert.Single(IntegrationBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
+        Assert.Single(ProductionBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
+        Assert.Single(ReplayBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
     }
 
     [Fact]
     public void DefaultLanguageFromSectionCanOverrideManually()
     {
-        BaseSection.DefaultLanguage = "de";
-        var cultureEn = new CultureInfo("en");
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage("de").Build();
 
-        Assert.Equal(cultureEn, IntegrationBuilder(BaseSection).SetDefaultLanguage(cultureEn).Build().DefaultLanguage);
-        Assert.Equal(cultureEn, ProductionBuilder(BaseSection).SetDefaultLanguage(cultureEn).Build().DefaultLanguage);
-        Assert.Equal(cultureEn, ReplayBuilder(BaseSection).SetDefaultLanguage(cultureEn).Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureEn, IntegrationBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureEn, ProductionBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureEn, ReplayBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).Build().DefaultLanguage);
 
-        Assert.Equal(2, IntegrationBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
-        Assert.Equal(2, ProductionBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
-        Assert.Equal(2, ReplayBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
+        Assert.Single(IntegrationBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
+        Assert.Single(ProductionBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
+        Assert.Single(ReplayBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
     }
 
     [Fact]
     public void DefaultLanguageFromSectionCanOverrideManuallyAndBack()
     {
-        BaseSection.DefaultLanguage = "de";
-        var cultureEn = new CultureInfo("en");
-        var cultureDe = new CultureInfo("de");
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage(TestConsts.CultureDe.TwoLetterISOLanguageName).Build();
 
-        Assert.Equal(cultureDe, IntegrationBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().DefaultLanguage);
-        Assert.Equal(cultureDe, ProductionBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().DefaultLanguage);
-        Assert.Equal(cultureDe, ReplayBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureDe, IntegrationBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureDe, ProductionBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().DefaultLanguage);
+        Assert.Equal(TestConsts.CultureDe, ReplayBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().DefaultLanguage);
 
-        Assert.Equal(2, IntegrationBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
-        Assert.Equal(2, ProductionBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
-        Assert.Equal(2, ReplayBuilder(BaseSection).SetDefaultLanguage(cultureEn).LoadFromConfigFile().Build().Languages.Count);
+        Assert.Single(IntegrationBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
+        Assert.Single(ProductionBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
+        Assert.Single(ReplayBuilder(baseSection).SetDefaultLanguage(TestConsts.CultureEn).LoadFromConfigFile().Build().Languages);
     }
 
     [Fact]
     public void LanguagesHasCorrectValue()
     {
-        BaseSection.DefaultLanguage = "it";
-        BaseSection.Languages = "it,de,en";
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage("it").WithLanguages("it,de,en").Build();
 
-        Assert.True(GetCultureList(BaseSection.Languages).SequenceEqual(IntegrationBuilder(BaseSection).Build().Languages));
-        Assert.True(GetCultureList(BaseSection.Languages).SequenceEqual(ProductionBuilder(BaseSection).Build().Languages));
-        Assert.True(GetCultureList(BaseSection.Languages).SequenceEqual(ReplayBuilder(BaseSection).Build().Languages));
+        Assert.True(GetCultureList(baseSection.Languages).SequenceEqual(IntegrationBuilder(baseSection).Build().Languages));
+        Assert.True(GetCultureList(baseSection.Languages).SequenceEqual(ProductionBuilder(baseSection).Build().Languages));
+        Assert.True(GetCultureList(baseSection.Languages).SequenceEqual(ReplayBuilder(baseSection).Build().Languages));
 
-        Assert.True(GetCultureList(BaseSection.DefaultLanguage).SequenceEqual(IntegrationBuilder(BaseSection).SetDesiredLanguages(null).Build().Languages));
-        Assert.True(GetCultureList(BaseSection.DefaultLanguage).SequenceEqual(ProductionBuilder(BaseSection).SetDesiredLanguages(null).Build().Languages));
-        Assert.True(GetCultureList(BaseSection.DefaultLanguage).SequenceEqual(ReplayBuilder(BaseSection).SetDesiredLanguages(null).Build().Languages));
+        Assert.True(GetCultureList(baseSection.DefaultLanguage).SequenceEqual(IntegrationBuilder(baseSection).SetDesiredLanguages(null).Build().Languages));
+        Assert.True(GetCultureList(baseSection.DefaultLanguage).SequenceEqual(ProductionBuilder(baseSection).SetDesiredLanguages(null).Build().Languages));
+        Assert.True(GetCultureList(baseSection.DefaultLanguage).SequenceEqual(ReplayBuilder(baseSection).SetDesiredLanguages(null).Build().Languages));
 
-        BaseSection.DefaultLanguage = "sl";
-        var langString = "sl," + BaseSection.Languages;
-        Assert.True(GetCultureList(langString).SequenceEqual(IntegrationBuilder(BaseSection).Build().Languages));
-        Assert.True(GetCultureList(langString).SequenceEqual(ProductionBuilder(BaseSection).Build().Languages));
-        Assert.True(GetCultureList(langString).SequenceEqual(ReplayBuilder(BaseSection).Build().Languages));
+        var langString = "sl," + baseSection.Languages;
+        baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDefaultLanguage("sl").WithLanguages("sl,it,de,en").Build();
+        Assert.True(GetCultureList(langString).SequenceEqual(IntegrationBuilder(baseSection).Build().Languages));
+        Assert.True(GetCultureList(langString).SequenceEqual(ProductionBuilder(baseSection).Build().Languages));
+        Assert.True(GetCultureList(langString).SequenceEqual(ReplayBuilder(baseSection).Build().Languages));
     }
 
     [Fact]
     public void DisabledProducersHasCorrectValue()
     {
-        BaseSection.DisabledProducers = "1,3";
-        Assert.True(GetIntList(BaseSection.DisabledProducers).SequenceEqual(IntegrationBuilder(BaseSection).Build().Producer.DisabledProducers));
-        Assert.True(GetIntList(BaseSection.DisabledProducers).SequenceEqual(ProductionBuilder(BaseSection).Build().Producer.DisabledProducers));
-        Assert.True(GetIntList(BaseSection.DisabledProducers).SequenceEqual(ReplayBuilder(BaseSection).Build().Producer.DisabledProducers));
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithDisabledProducers("1,3").Build();
 
-        Assert.Empty(IntegrationBuilder(BaseSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
-        Assert.Empty(ProductionBuilder(BaseSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
-        Assert.Empty(ReplayBuilder(BaseSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
+        Assert.True(GetIntList(baseSection.DisabledProducers).SequenceEqual(IntegrationBuilder(baseSection).Build().Producer.DisabledProducers));
+        Assert.True(GetIntList(baseSection.DisabledProducers).SequenceEqual(ProductionBuilder(baseSection).Build().Producer.DisabledProducers));
+        Assert.True(GetIntList(baseSection.DisabledProducers).SequenceEqual(ReplayBuilder(baseSection).Build().Producer.DisabledProducers));
+
+        Assert.Empty(IntegrationBuilder(baseSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
+        Assert.Empty(ProductionBuilder(baseSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
+        Assert.Empty(ReplayBuilder(baseSection).SetDisabledProducers(null).Build().Producer.DisabledProducers);
     }
 
     [Fact]
     public void NodeIdHasCorrectValue()
     {
-        BaseSection.NodeId = 15;
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithNodeId(15).Build();
 
-        Assert.Equal(BaseSection.NodeId, IntegrationBuilder(BaseSection).Build().NodeId);
-        Assert.Equal(BaseSection.NodeId, ProductionBuilder(BaseSection).Build().NodeId);
-        Assert.Equal(BaseSection.NodeId, ReplayBuilder(BaseSection).Build().NodeId);
+        Assert.Equal(baseSection.NodeId, IntegrationBuilder(baseSection).Build().NodeId);
+        Assert.Equal(baseSection.NodeId, ProductionBuilder(baseSection).Build().NodeId);
+        Assert.Equal(baseSection.NodeId, ReplayBuilder(baseSection).Build().NodeId);
 
-        Assert.Equal(0, IntegrationBuilder(BaseSection).SetNodeId(0).Build().NodeId);
-        Assert.Equal(0, ProductionBuilder(BaseSection).SetNodeId(0).Build().NodeId);
-        Assert.Equal(0, ReplayBuilder(BaseSection).SetNodeId(0).Build().NodeId);
+        Assert.Equal(0, IntegrationBuilder(baseSection).SetNodeId(0).Build().NodeId);
+        Assert.Equal(0, ProductionBuilder(baseSection).SetNodeId(0).Build().NodeId);
+        Assert.Equal(0, ReplayBuilder(baseSection).SetNodeId(0).Build().NodeId);
 
-        Assert.Equal(BaseSection.NodeId, IntegrationBuilder(BaseSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
-        Assert.Equal(BaseSection.NodeId, ProductionBuilder(BaseSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
-        Assert.Equal(BaseSection.NodeId, ReplayBuilder(BaseSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
+        Assert.Equal(baseSection.NodeId, IntegrationBuilder(baseSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
+        Assert.Equal(baseSection.NodeId, ProductionBuilder(baseSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
+        Assert.Equal(baseSection.NodeId, ReplayBuilder(baseSection).SetNodeId(0).LoadFromConfigFile().Build().NodeId);
     }
 
     [Fact]
     public void EnvironmentHasCorrectValue()
     {
-        BaseSection.Environment = SdkEnvironment.Integration;
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithEnvironment(SdkEnvironment.Integration).Build();
 
-        Assert.Equal(SdkEnvironment.Integration, IntegrationBuilder(BaseSection).Build().Environment);
-        Assert.Equal(SdkEnvironment.Production, ProductionBuilder(BaseSection).Build().Environment);
-        Assert.Equal(SdkEnvironment.Replay, ReplayBuilder(BaseSection).Build().Environment);
+        Assert.Equal(SdkEnvironment.Integration, IntegrationBuilder(baseSection).Build().Environment);
+        Assert.Equal(SdkEnvironment.Production, ProductionBuilder(baseSection).Build().Environment);
+        Assert.Equal(SdkEnvironment.Replay, ReplayBuilder(baseSection).Build().Environment);
     }
 
     [Fact]
     public void ExceptionHandlingStrategyHasCorrectValue()
     {
-        BaseSection.ExceptionHandlingStrategy = ExceptionHandlingStrategy.Throw;
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithExceptionHandlingStrategy(ExceptionHandlingStrategy.Throw).Build();
 
-        Assert.Equal(BaseSection.ExceptionHandlingStrategy, IntegrationBuilder(BaseSection).Build().ExceptionHandlingStrategy);
-        Assert.Equal(BaseSection.ExceptionHandlingStrategy, ProductionBuilder(BaseSection).Build().ExceptionHandlingStrategy);
-        Assert.Equal(BaseSection.ExceptionHandlingStrategy, ReplayBuilder(BaseSection).Build().ExceptionHandlingStrategy);
+        Assert.Equal(baseSection.ExceptionHandlingStrategy, IntegrationBuilder(baseSection).Build().ExceptionHandlingStrategy);
+        Assert.Equal(baseSection.ExceptionHandlingStrategy, ProductionBuilder(baseSection).Build().ExceptionHandlingStrategy);
+        Assert.Equal(baseSection.ExceptionHandlingStrategy, ReplayBuilder(baseSection).Build().ExceptionHandlingStrategy);
 
-        Assert.Equal(ExceptionHandlingStrategy.Catch, IntegrationBuilder(BaseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
-        Assert.Equal(ExceptionHandlingStrategy.Catch, ProductionBuilder(BaseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
-        Assert.Equal(ExceptionHandlingStrategy.Catch, ReplayBuilder(BaseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
+        Assert.Equal(ExceptionHandlingStrategy.Catch, IntegrationBuilder(baseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
+        Assert.Equal(ExceptionHandlingStrategy.Catch, ProductionBuilder(baseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
+        Assert.Equal(ExceptionHandlingStrategy.Catch, ReplayBuilder(baseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).Build().ExceptionHandlingStrategy);
 
-        Assert.Equal(BaseSection.ExceptionHandlingStrategy, IntegrationBuilder(BaseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
-        Assert.Equal(BaseSection.ExceptionHandlingStrategy, ProductionBuilder(BaseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
-        Assert.Equal(BaseSection.ExceptionHandlingStrategy, ReplayBuilder(BaseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
+        Assert.Equal(baseSection.ExceptionHandlingStrategy, IntegrationBuilder(baseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
+        Assert.Equal(baseSection.ExceptionHandlingStrategy, ProductionBuilder(baseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
+        Assert.Equal(baseSection.ExceptionHandlingStrategy, ReplayBuilder(baseSection).SetExceptionHandlingStrategy(ExceptionHandlingStrategy.Catch).LoadFromConfigFile().Build().ExceptionHandlingStrategy);
     }
 
     [Fact]
     public void MessagingHostIsIgnored()
     {
-        BaseSection.RabbitHost = "mq.localhost.local";
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitHost("mq.localhost.local").Build();
 
-        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Integration), IntegrationBuilder(BaseSection).Build().Rabbit.Host);
-        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Production), ProductionBuilder(BaseSection).Build().Rabbit.Host);
-        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), ReplayBuilder(BaseSection).Build().Rabbit.Host);
+        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Integration), IntegrationBuilder(baseSection).Build().Rabbit.Host);
+        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Production), ProductionBuilder(baseSection).Build().Rabbit.Host);
+        Assert.Equal(EnvironmentManager.GetMqHost(SdkEnvironment.Replay), ReplayBuilder(baseSection).Build().Rabbit.Host);
     }
 
     [Fact]
     public void PortHasCorrectValue()
     {
-        BaseSection.RabbitPort = 2250;
-        BaseSection.RabbitUseSsl = true;
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitPort(2250).WithRabbitUseSsl(true).Build();
 
-        Assert.Equal(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(BaseSection).Build().Rabbit.Port);
-        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ProductionBuilder(BaseSection).Build().Rabbit.Port);
-        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ReplayBuilder(BaseSection).Build().Rabbit.Port);
+        Assert.Equal(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(baseSection).Build().Rabbit.Port);
+        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ProductionBuilder(baseSection).Build().Rabbit.Port);
+        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ReplayBuilder(baseSection).Build().Rabbit.Port);
 
-        BaseSection.RabbitUseSsl = false;
-        Assert.Equal(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(BaseSection).Build().Rabbit.Port);
-        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ProductionBuilder(BaseSection).Build().Rabbit.Port);
-        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ReplayBuilder(BaseSection).Build().Rabbit.Port);
+        baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitPort(2250).WithRabbitUseSsl(false).Build();
+        Assert.Equal(EnvironmentManager.DefaultMqHostPort, IntegrationBuilder(baseSection).Build().Rabbit.Port);
+        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ProductionBuilder(baseSection).Build().Rabbit.Port);
+        Assert.Equal(EnvironmentManager.DefaultMqHostPort, ReplayBuilder(baseSection).Build().Rabbit.Port);
     }
 
     [Fact]
     public void UsernameHasCorrectValue()
     {
-        BaseSection.RabbitUsername = "username";
-        BaseSection.AccessToken = "token";
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithAccessToken("token").WithRabbitUsername("username").Build();
 
-        Assert.Equal(BaseSection.AccessToken, IntegrationBuilder(BaseSection).Build().Rabbit.Username);
-        Assert.Equal(BaseSection.AccessToken, ProductionBuilder(BaseSection).Build().Rabbit.Username);
-        Assert.Equal(BaseSection.AccessToken, ReplayBuilder(BaseSection).Build().Rabbit.Username);
+        Assert.Equal(baseSection.AccessToken, IntegrationBuilder(baseSection).Build().Rabbit.Username);
+        Assert.Equal(baseSection.AccessToken, ProductionBuilder(baseSection).Build().Rabbit.Username);
+        Assert.Equal(baseSection.AccessToken, ReplayBuilder(baseSection).Build().Rabbit.Username);
     }
 
     [Fact]
     public void PasswordHasDefaultValue()
     {
-        BaseSection.RabbitPassword = null;
-        Assert.Null(IntegrationBuilder(BaseSection).Build().Rabbit.Password);
-        Assert.Null(ProductionBuilder(BaseSection).Build().Rabbit.Password);
-        Assert.Null(ReplayBuilder(BaseSection).Build().Rabbit.Password);
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitPassword(null).Build();
 
-        BaseSection.RabbitPassword = "myPassword";
-        Assert.Null(IntegrationBuilder(BaseSection).Build().Rabbit.Password);
-        Assert.Null(ProductionBuilder(BaseSection).Build().Rabbit.Password);
-        Assert.Null(ReplayBuilder(BaseSection).Build().Rabbit.Password);
+        Assert.Null(IntegrationBuilder(baseSection).Build().Rabbit.Password);
+        Assert.Null(ProductionBuilder(baseSection).Build().Rabbit.Password);
+        Assert.Null(ReplayBuilder(baseSection).Build().Rabbit.Password);
+
+        baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitPassword("SecretPassword").Build();
+
+        Assert.Null(IntegrationBuilder(baseSection).Build().Rabbit.Password);
+        Assert.Null(ProductionBuilder(baseSection).Build().Rabbit.Password);
+        Assert.Null(ReplayBuilder(baseSection).Build().Rabbit.Password);
     }
 
     [Fact]
     public void VirtualHostHasDefaultValue()
     {
-        BaseSection.RabbitVirtualHost = null;
-        Assert.Equal(TestData.VirtualHost, IntegrationBuilder(BaseSection).Build().Rabbit.VirtualHost);
-        Assert.Equal(TestData.VirtualHost, ProductionBuilder(BaseSection).Build().Rabbit.VirtualHost);
-        Assert.Equal(TestData.VirtualHost, ReplayBuilder(BaseSection).Build().Rabbit.VirtualHost);
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitVirtualHost(null).Build();
 
-        BaseSection.RabbitVirtualHost = "my_virtual_host";
-        Assert.Equal(TestData.VirtualHost, IntegrationBuilder(BaseSection).Build().Rabbit.VirtualHost);
-        Assert.Equal(TestData.VirtualHost, ProductionBuilder(BaseSection).Build().Rabbit.VirtualHost);
-        Assert.Equal(TestData.VirtualHost, ReplayBuilder(BaseSection).Build().Rabbit.VirtualHost);
+        Assert.Equal(TestData.VirtualHost, IntegrationBuilder(baseSection).Build().Rabbit.VirtualHost);
+        Assert.Equal(TestData.VirtualHost, ProductionBuilder(baseSection).Build().Rabbit.VirtualHost);
+        Assert.Equal(TestData.VirtualHost, ReplayBuilder(baseSection).Build().Rabbit.VirtualHost);
+
+        baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitVirtualHost("my-virtual-host").Build();
+
+        Assert.Equal(TestData.VirtualHost, IntegrationBuilder(baseSection).Build().Rabbit.VirtualHost);
+        Assert.Equal(TestData.VirtualHost, ProductionBuilder(baseSection).Build().Rabbit.VirtualHost);
+        Assert.Equal(TestData.VirtualHost, ReplayBuilder(baseSection).Build().Rabbit.VirtualHost);
     }
 
     [Fact]
     public void UseMessagingSslHasCorrectValue()
     {
-        BaseSection.RabbitUseSsl = false;
-        Assert.True(IntegrationBuilder(BaseSection).Build().Rabbit.UseSsl);
-        Assert.True(ProductionBuilder(BaseSection).Build().Rabbit.UseSsl);
-        Assert.True(ReplayBuilder(BaseSection).Build().Rabbit.UseSsl);
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithRabbitUseSsl(false).Build();
+
+        Assert.True(IntegrationBuilder(baseSection).Build().Rabbit.UseSsl);
+        Assert.True(ProductionBuilder(baseSection).Build().Rabbit.UseSsl);
+        Assert.True(ReplayBuilder(baseSection).Build().Rabbit.UseSsl);
     }
 
     [Fact]
     public void ApiHostHasDefaultValue()
     {
-        BaseSection.ApiHost = "api.localhost.local";
-        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder(BaseSection).Build().Api.Host);
-        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Production), ProductionBuilder(BaseSection).Build().Api.Host);
-        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Replay), ReplayBuilder(BaseSection).Build().Api.Host);
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithApiHost("api.localhost.local").Build();
+
+        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder(baseSection).Build().Api.Host);
+        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Production), ProductionBuilder(baseSection).Build().Api.Host);
+        Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Replay), ReplayBuilder(baseSection).Build().Api.Host);
 
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Integration), IntegrationBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Api.Host);
         Assert.Equal(EnvironmentManager.GetApiHost(SdkEnvironment.Production), ProductionBuilder("token").SetDefaultLanguage(TestData.Culture).Build().Api.Host);
@@ -242,10 +242,11 @@ public class ConfigurationBuilderWithSectionWithSectionTests : ConfigurationBuil
     [Fact]
     public void UseApiSslHasCorrectValue()
     {
-        BaseSection.ApiUseSsl = false;
-        Assert.True(IntegrationBuilder(BaseSection).Build().Api.UseSsl);
-        Assert.True(ProductionBuilder(BaseSection).Build().Api.UseSsl);
-        Assert.True(ReplayBuilder(BaseSection).Build().Api.UseSsl);
+        var baseSection = UofConfigurationSections.GetBuilderWithOnlyRequiredFields().WithApiUseSsl(false).Build();
+
+        Assert.True(IntegrationBuilder(baseSection).Build().Api.UseSsl);
+        Assert.True(ProductionBuilder(baseSection).Build().Api.UseSsl);
+        Assert.True(ReplayBuilder(baseSection).Build().Api.UseSsl);
     }
 
     [Fact]

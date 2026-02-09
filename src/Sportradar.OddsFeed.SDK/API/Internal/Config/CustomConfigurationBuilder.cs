@@ -65,30 +65,18 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         }
 
         /// <summary>
-        /// Sets the username used to authenticate with the messaging server
+        /// Sets the credentials used to authenticate with the messaging server
         /// </summary>
         /// <param name="username">The username used to authenticate with the messaging server</param>
-        /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
-        public ICustomConfigurationBuilder SetMessagingUsername(string username)
-        {
-            Guard.Argument(username, nameof(username)).NotNull().NotEmpty();
-
-            var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
-            rabbitConfig.Username = username;
-            UofConfiguration.Rabbit = rabbitConfig;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the password used to authenticate with the messaging server
-        /// </summary>
         /// <param name="password">The password used to authenticate with the messaging server</param>
         /// <returns>The <see cref="ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
-        public ICustomConfigurationBuilder SetMessagingPassword(string password)
+        public ICustomConfigurationBuilder SetMessagingCredentials(string username, string password)
         {
+            Guard.Argument(username, nameof(username)).NotNull().NotEmpty();
             Guard.Argument(password, nameof(password)).NotNull().NotEmpty();
 
             var rabbitConfig = (UofRabbitConfiguration)UofConfiguration.Rabbit;
+            rabbitConfig.Username = username;
             rabbitConfig.Password = password;
             UofConfiguration.Rabbit = rabbitConfig;
             return this;
@@ -179,6 +167,19 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             return this;
         }
 
+        public ICustomConfigurationBuilder SetClientAuthenticationTenant(string tenant)
+        {
+            if (UofConfiguration.Authentication == null)
+            {
+                throw new ArgumentException("Cannot set client authentication tenant when client authentication is not configured");
+            }
+
+            var authConfig = (PrivateKeyJwt)UofConfiguration.Authentication;
+            authConfig.SetTenant(tenant);
+            UofConfiguration.Authentication = authConfig;
+            return this;
+        }
+
         /// <summary>
         /// Set the host name of the Sports API server
         /// </summary>
@@ -226,13 +227,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
             {
                 SetMessagingPort(section.RabbitPort);
             }
-            if (!string.IsNullOrEmpty(section.RabbitUsername))
+            if (!string.IsNullOrEmpty(section.RabbitUsername) || !string.IsNullOrEmpty(section.RabbitPassword))
             {
-                SetMessagingUsername(section.RabbitUsername);
-            }
-            if (!string.IsNullOrEmpty(section.RabbitPassword))
-            {
-                SetMessagingPassword(section.RabbitPassword);
+                SetMessagingCredentials(section.RabbitUsername, section.RabbitPassword);
             }
             if (!string.IsNullOrEmpty(section.RabbitVirtualHost))
             {

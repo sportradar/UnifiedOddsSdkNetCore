@@ -3,6 +3,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
+using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 
@@ -36,4 +39,14 @@ public static class TestConsts
     public static readonly IReadOnlyCollection<CultureInfo> Cultures2 = new Collection<CultureInfo>([CultureEn, CultureDe]);
     public static readonly IReadOnlyCollection<CultureInfo> Cultures3 = new Collection<CultureInfo>([CultureEn, CultureDe, CultureHu]);
     public static readonly IReadOnlyCollection<CultureInfo> Cultures4 = new Collection<CultureInfo>([CultureEn, CultureDe, CultureHu, CultureNl]);
+
+    private const string TestSigningKeyId = "test-key-id";
+    private const string TestClientId = "test-client-id";
+    private static readonly AsymmetricSecurityKey TestPrivateKey = new RsaSecurityKey(RSA.Create(2056));
+    public static readonly UofClientAuthentication.IPrivateKeyJwtData AnyPrivateKeyJwt = UofClientAuthentication
+                                                                                        .PrivateKeyJwt()
+                                                                                        .SetSigningKeyId(TestSigningKeyId)
+                                                                                        .SetClientId(TestClientId)
+                                                                                        .SetPrivateKey(TestPrivateKey)
+                                                                                        .Build();
 }

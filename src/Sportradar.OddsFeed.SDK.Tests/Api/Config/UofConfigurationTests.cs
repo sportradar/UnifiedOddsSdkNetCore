@@ -238,8 +238,7 @@ public class UofConfigurationTests
                                       .SetVirtualHost("custom_virtual_host")
                                       .UseMessagingSsl(false)
                                       .SetMessagingHost("custom_mq_host")
-                                      .SetMessagingUsername("custom_username")
-                                      .SetMessagingPassword("custom_password")
+                                      .SetMessagingCredentials("custom_username", "custom_password")
                                       .SetMessagingPort(222)
                                       .Build();
 
@@ -380,7 +379,7 @@ public class UofConfigurationTests
     }
 
     [Fact]
-    public void UofConfigurationWithFullValuesToStringHasAllTheValues()
+    public void UofConfigurationForClientAuthenticationToStringHasAllTheValues()
     {
         var section = TestSection.GetDefaultSection();
         var uofAuthenticationConfiguration = UofClientAuthentication.PrivateKeyJwt().
@@ -390,7 +389,35 @@ public class UofConfigurationTests
                                                                     .Build();
         var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
                     .SetClientAuthentication(uofAuthenticationConfiguration)
-                    .SetAccessTokenFromConfigFile()
+                    .SelectEnvironmentFromConfigFile()
+                    .LoadFromConfigFile()
+                    .Build();
+        var summary = config.ToString();
+
+        summary.ShouldNotBeNull();
+        summary.ShouldContain("UofConfiguration{");
+        summary.ShouldContain("ApiConfiguration{");
+        summary.ShouldContain("CacheConfiguration{");
+        summary.ShouldContain("ProducerConfiguration{");
+        summary.ShouldContain("RabbitConfiguration{");
+        summary.ShouldContain("AdditionalConfiguration{");
+        summary.ShouldContain("UsageConfiguration{");
+        summary.ShouldContain("Authentication");
+        summary.ShouldContain("BookmakerId=");
+        summary.ShouldContain("AccessToken=");
+        summary.ShouldContain("NodeId=");
+        summary.ShouldContain("DefaultLanguage=");
+        summary.ShouldContain("Languages=");
+        summary.ShouldContain("Environment=");
+        summary.ShouldContain("ExceptionHandlingStrategy=");
+    }
+
+    [Fact]
+    public void UofConfigurationForAccessTokenToStringHasAllTheValues()
+    {
+        var section = TestSection.GetDefaultSection();
+        var config = new TokenSetter(new TestSectionProvider(section), new TestBookmakerDetailsProvider(), new TestProducersProvider())
+                    .SetAccessToken("test-access-token")
                     .SelectEnvironmentFromConfigFile()
                     .LoadFromConfigFile()
                     .Build();

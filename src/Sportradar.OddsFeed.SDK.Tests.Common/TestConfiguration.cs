@@ -48,7 +48,6 @@ internal static class TestConfiguration
 
         var configBuilder = new TokenSetter(new TestSectionProvider(TestSection.GetDefaultSection()), new TestBookmakerDetailsProvider(), new TestProducersProvider())
                            .SetClientAuthentication(privateKeyJwt)
-                           .SetAccessToken(TestConsts.AnyAccessToken)
                            .SelectEnvironment(SdkEnvironment.Integration)
                            .SetInactivitySeconds(30)
                            .SetHttpClientTimeout(30)

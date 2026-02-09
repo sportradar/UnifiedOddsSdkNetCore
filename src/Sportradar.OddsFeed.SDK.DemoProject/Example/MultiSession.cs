@@ -1,12 +1,13 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
+using System.Globalization;
 using Dawn;
 using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.EventArguments;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
 
 namespace Sportradar.OddsFeed.SDK.DemoProject.Example;
@@ -28,7 +29,12 @@ public class MultiSession : ExampleBase
     {
         Log.LogInformation("Running the Multi-Session example");
 
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication)
+                                  .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                                  .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+                                  .SetNodeId(457)
+                                  .Build();
+
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
         AttachToGlobalEvents(uofSdk);
 

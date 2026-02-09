@@ -11,6 +11,7 @@ using Sportradar.OddsFeed.SDK.Api.Internal.Recovery;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.API.Managers;

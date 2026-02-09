@@ -1,6 +1,5 @@
-/*
-* Copyright (C) Sportradar AG. See LICENSE for full license governing this code
-*/
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +31,7 @@ public class ReplayServer : ExampleBase
 
         Log.LogInformation("Retrieving configuration from application configuration file");
         var configuration = UofSdk.GetConfigurationBuilder().BuildFromConfigFile();
+
         var host = Host.CreateDefaultBuilder()
                        .ConfigureLogging((context, logging) =>
                                          {

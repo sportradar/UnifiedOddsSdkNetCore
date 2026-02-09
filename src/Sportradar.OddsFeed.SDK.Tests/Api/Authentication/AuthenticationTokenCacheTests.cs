@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -21,17 +22,21 @@ using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Handlers;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Tests.Common.Helpers;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 using ZiggyCreatures.Caching.Fusion;
+using static Sportradar.OddsFeed.SDK.Tests.Common.Helpers.CommonIAmRequestBodyHelper;
 using FakeTimeProvider = Microsoft.Extensions.Time.Testing.FakeTimeProvider;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.Authentication;
 
+[Collection(NonParallelCollectionFixture.NonParallelTestCollection)]
 public class AuthenticationTokenCacheTests : IAsyncLifetime
 {
     private const int MaxConnectionsPerServer = 100;
@@ -136,7 +141,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
 
         var token = await _authenticationTokenCache.GetTokenForFeed();
 
-        token.ShouldNotBeNullOrEmpty();
+        token.AccessToken.ShouldNotBeNullOrEmpty();
     }
 
     [Fact]
@@ -157,8 +162,8 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         var token1 = await _authenticationTokenCache.GetTokenForFeed();
         var token2 = await _authenticationTokenCache.GetTokenForFeed();
 
-        token1.ShouldNotBeNullOrEmpty();
-        token2.ShouldNotBeNullOrEmpty();
+        token1.AccessToken.ShouldNotBeNullOrEmpty();
+        token2.AccessToken.ShouldNotBeNullOrEmpty();
         token1.ShouldBe(token2);
 
         VerifyApiCallWasMade(Times.Once());
@@ -353,7 +358,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         SetupInfrastructureWithLogging(_outputHelper, LogLevel.Debug);
         SetupHttpClientMockWithAuthorizedToken(delayInMs: 500);
 
-        var tokens = new string[10];
+        var tokens = new AuthenticationToken[10];
 
         var tasks = Enumerable.Range(0, 10)
                               .Select(async i => tokens[i] = await _authenticationTokenCache.GetTokenForFeed())
@@ -371,15 +376,16 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         SetupHttpClientMockWithAuthorizedToken(delayInMs: 500);
 
         var tokensForApi = new string[10];
-        var tokensForFeed = new string[10];
+        var tokensForFeed = new AuthenticationToken[10];
 
-        var tasks = Enumerable.Range(0, 10)
-                              .Select(async i => tokensForApi[i] = await _authenticationTokenCache.GetTokenForApi())
-                              .ToArray();
-        tasks = tasks.Concat(Enumerable.Range(0, 10)
-                                       .Select(async i => tokensForFeed[i] = await _authenticationTokenCache.GetTokenForFeed()))
-                     .ToArray();
-        await Task.WhenAll(tasks);
+        var tasks1 = Enumerable.Range(0, 10)
+                               .Select(async i => tokensForApi[i] = await _authenticationTokenCache.GetTokenForApi())
+                               .ToArray();
+        var tasks2 = Enumerable.Range(0, 10)
+                               .Select(async i => tokensForFeed[i] = await _authenticationTokenCache.GetTokenForFeed())
+                               .ToArray();
+        await Task.WhenAll(tasks1);
+        await Task.WhenAll(tasks2);
 
         tokensForApi.All(t => t == tokensForApi[0]).ShouldBeTrue();
         tokensForFeed.All(t => t == tokensForFeed[0]).ShouldBeTrue();
@@ -417,12 +423,11 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         const string validToken = "recovered-access-token";
         StubAuthenticationWithResponse500ThenWithResponseReturning(validToken);
 
-        var fakeTimeProvider = new FakeTimeProvider();
         var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddUofSdkServices(configuration);
+        var fakeTimeProvider = new FakeTimeProvider();
         serviceCollection.AddSingleton<TimeProvider>(fakeTimeProvider);
-
         await using var serviceProvider = serviceCollection.BuildServiceProvider();
         using var scope = serviceProvider.CreateScope();
 
@@ -442,7 +447,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
     [Fact]
     public async Task GetTokenForApiWhenCiamKeepsFailingThenRequestsTokenEvery5Seconds()
     {
-        StubAuthenticationWithResponse500(_wireMockServer);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
 
         var fakeTimeProvider = new FakeTimeProvider();
         var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
@@ -471,7 +476,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         const string recoveredToken = "recovered-token-after-5-minutes";
         var validTokenResponse = CreateAuthenticationApiResponseFor(recoveredToken);
 
-        StubAuthenticationWithResponse500(_wireMockServer);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
 
         var fakeTimeProvider = new FakeTimeProvider();
         var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
@@ -490,7 +495,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
 
         fakeTimeProvider.Advance(TimeSpan.FromMinutes(5));
 
-        StubAuthenticationWithValidResponse(_wireMockServer, validTokenResponse);
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, validTokenResponse);
 
         var recoveredTokenResult = await authenticationTokenCache.GetTokenForApi();
 
@@ -504,7 +509,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         const string recoveredToken = "recovered-token-after-5-minutes";
         var validTokenResponse = CreateAuthenticationApiResponseFor(recoveredToken);
 
-        StubAuthenticationWithResponse500(_wireMockServer);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
 
         var fakeTimeProvider = new FakeTimeProvider();
         var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
@@ -523,7 +528,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
 
         fakeTimeProvider.Advance(TimeSpan.FromMinutes(4));
 
-        StubAuthenticationWithValidResponse(_wireMockServer, validTokenResponse);
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, validTokenResponse);
 
         var tokenAfter4Minutes = await authenticationTokenCache.GetTokenForApi();
 
@@ -534,7 +539,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
     [Fact]
     public async Task GetTokenForApiWhenCiamKeepsFailingThenCircuitBreakerOpen10TimesFor5SecondsThenAfter10FailuresOpensFor5Minutes()
     {
-        StubAuthenticationWithResponse500(_wireMockServer);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
 
         var fakeTimeProvider = new FakeTimeProvider();
         var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
@@ -566,7 +571,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
     {
         const string recoveredToken = "recovered-token-after-5-failures";
 
-        StubAuthenticationWithResponse500(_wireMockServer);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
 
         var fakeTimeProvider = new FakeTimeProvider();
         var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
@@ -588,7 +593,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
 
         const int tokenExpiryTimeInSeconds = 1;
         var validTokenResponse = CreateAuthenticationApiResponseFor(recoveredToken, tokenExpiryTimeInSeconds);
-        StubAuthenticationWithValidResponse(_wireMockServer, validTokenResponse);
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, validTokenResponse);
 
         _wireMockServer.ResetLogEntries();
         var recoveredTokenResult = await authenticationTokenCache.GetTokenForApi();
@@ -599,7 +604,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         var requestsAfterRecovery = _wireMockServer.LogEntries.Count;
         requestsAfterRecovery.ShouldBe(1, "Should have made a request after recovery");
 
-        StubAuthenticationWithResponse500(_wireMockServer);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
         _wireMockServer.ResetLogEntries();
         const int additionalRequestsCount = 10;
         failedTokens = await RequestAuthenticationTokenEvery5Seconds(authenticationTokenCache, fakeTimeProvider, additionalRequestsCount);
@@ -611,7 +616,7 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
     [Fact]
     public async Task GetTokenForApiWhenCiamKeepsFailingAndMultipleThreadsTryToGetNewTokenThenCircuitBreakerOpenOnlyOnce()
     {
-        StubAuthenticationWithResponse500(_wireMockServer);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
 
         var fakeTimeProvider = new FakeTimeProvider();
         var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
@@ -633,6 +638,249 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         await Task.WhenAll(tasks);
 
         _wireMockServer.LogEntries.ShouldBeOfSize(2);
+    }
+
+    [Fact]
+    public async Task GetTokenForApiWhenCustomTenantIsConfiguredThenThatTenantIsUsedToRequestTokenFromCommonIAm()
+    {
+        const string customTenant = "custom-tenant";
+        const string validToken = "valid-token-with-custom-tenant";
+        var tokenApiResponse = CreateAuthenticationApiResponseFor(validToken);
+
+        var configuration = GetValidAuthenticationConfigurationWithCustomTenantFor(_authenticationServerUri,
+                                                                                   FastFailingTimeout,
+                                                                                   MaxConnectionsPerServer,
+                                                                                   customTenant);
+        StubWiremockAuthenticationWithOkResponseWhenClientAssertionAudienceIs(customTenant, _wireMockServer, tokenApiResponse);
+
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddUofSdkServices(configuration);
+
+        await using var serviceProvider = serviceCollection.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+
+        var authenticationTokenCache = scope.ServiceProvider.GetRequiredService<IAuthenticationTokenCache>();
+
+        var token = await authenticationTokenCache.GetTokenForApi();
+        token.ShouldBe(validToken, $"Expected token to be '{validToken}' but got '{token}'.");
+    }
+
+    [Fact]
+    public async Task GetTokenForApiWhenCustomTenantIsNotConfiguredThenCommonIAmUrlIsUsedAsTenant()
+    {
+        const string validToken = "valid-token-with-custom-tenant";
+        var tokenApiResponse = CreateAuthenticationApiResponseFor(validToken);
+
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri,
+                                                                                   FastFailingTimeout,
+                                                                                   MaxConnectionsPerServer);
+        var tenant = configuration.Authentication.GetCommonIAmUri();
+        StubWiremockAuthenticationWithOkResponseWhenClientAssertionAudienceIs(tenant, _wireMockServer, tokenApiResponse);
+
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddUofSdkServices(configuration);
+
+        await using var serviceProvider = serviceCollection.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+
+        var authenticationTokenCache = scope.ServiceProvider.GetRequiredService<IAuthenticationTokenCache>();
+
+        var token = await authenticationTokenCache.GetTokenForApi();
+        token.ShouldBe(validToken, $"Expected token to be '{validToken}' but got '{token}'.");
+    }
+
+    [Fact]
+    public async Task GetTokenForApiWhenNotEligibleForRefreshThenNoCallIsMade()
+    {
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor("any-access-token", 5));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+                                                          return TryVerifyWiremockWasCalled(2);
+                                                      },
+                                                      100,
+                                                      4000);
+        stopWatch.Stop();
+
+        VerifyWiremockWasCalled(1);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(4000);
+    }
+
+    [RetryFact(maxRetries: 3, Timeout = 5000)]
+    public async Task GetTokenForApiWhenReachedEagerRefreshThresholdThenNewCallIsMade()
+    {
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor("any-access-token", 5));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+                                                          return TryVerifyWiremockWasCalled(2);
+                                                      });
+        stopWatch.Stop();
+
+        VerifyWiremockWasCalled(2);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(4500);
+        stopWatch.ElapsedMilliseconds.ShouldBeLessThan(5000);
+    }
+
+    [Fact]
+    public async Task GetTokenForFeedWhenNotEligibleForRefreshThenNoCallIsMade()
+    {
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor("any-access-token", 5));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+                                                          return TryVerifyWiremockWasCalled(2);
+                                                      },
+                                                      100,
+                                                      4000);
+        stopWatch.Stop();
+
+        VerifyWiremockWasCalled(1);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(4000);
+    }
+
+    [RetryFact(maxRetries: 3, Timeout = 5000)]
+    public async Task GetTokenForFeedWhenReachedEagerRefreshThresholdThenNewCallIsMade()
+    {
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor("any-access-token", 5));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+                                                          return TryVerifyWiremockWasCalled(2);
+                                                      });
+        stopWatch.Stop();
+
+        VerifyWiremockWasCalled(2);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(4500);
+        stopWatch.ElapsedMilliseconds.ShouldBeLessThan(5000);
+    }
+
+    [RetryFact(maxRetries: 3, Timeout = 5000)]
+    public async Task GetTokenForApiWhenReachedEagerRefreshThresholdAndCanNotGetNewTokenThenOldValueIsReturned()
+    {
+        const string jwtToken = "any-jwt-token";
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor(jwtToken, 5));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        _ = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
+
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+                                                          return TryVerifyWiremockWasCalled(2);
+                                                      });
+        stopWatch.Stop();
+
+        var latestToken = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+        latestToken.ShouldBe(jwtToken);
+        VerifyWiremockWasCalled(2);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(4500);
+        stopWatch.ElapsedMilliseconds.ShouldBeLessThan(5000);
+    }
+
+    [RetryFact(maxRetries: 3, Timeout = 5000)]
+    public async Task GetTokenForFeedWhenReachedEagerRefreshThresholdAndCanNotGetNewTokenThenOldValueIsReturned()
+    {
+        const string jwtToken = "any-jwt-token";
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor(jwtToken, 5));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        _ = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
+
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+                                                          return TryVerifyWiremockWasCalled(2);
+                                                      });
+        stopWatch.Stop();
+
+        var latestToken = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+        latestToken.AccessToken.ShouldBe(jwtToken);
+        VerifyWiremockWasCalled(2);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(4500);
+        stopWatch.ElapsedMilliseconds.ShouldBeLessThan(5000);
+    }
+
+    [RetryFact(maxRetries: 3, Timeout = 30000)]
+    public async Task GetTokenForApiWhenReachedEagerRefreshThresholdAndCanNotGetNewTokenThenDoNotHammerApi()
+    {
+        const string jwtToken = "any-jwt-token";
+        const int tokenExpiryInSeconds = 15;
+        const int retrieveTokenTimeoutInMs = 200;
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor(jwtToken, tokenExpiryInSeconds));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        _ = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
+
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+                                                          return false;
+                                                      },
+                                                      retrieveTokenTimeoutInMs,
+                                                      Get95PercentOfExecutionTimeoutInMs(tokenExpiryInSeconds));
+        stopWatch.Stop();
+
+        var latestToken = await authenticationTokenCache.GetTokenForApi().ConfigureAwait(false);
+        latestToken.ShouldBe(jwtToken);
+        VerifyWiremockWasCalled(2);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(tokenExpiryInSeconds * 900);
+        stopWatch.ElapsedMilliseconds.ShouldBeLessThan((tokenExpiryInSeconds * 1000) + retrieveTokenTimeoutInMs);
+    }
+
+    [RetryFact(maxRetries: 3, Timeout = 30000)]
+    public async Task GetTokenForFeedWhenReachedEagerRefreshThresholdAndCanNotGetNewTokenThenDoNotHammerApi()
+    {
+        const string jwtToken = "any-jwt-token";
+        const int tokenExpiryInSeconds = 15;
+        const int retrieveTokenTimeoutInMs = 200;
+        StubWiremockAuthenticationWithValidResponse(_wireMockServer, CreateAuthenticationApiResponseFor(jwtToken, tokenExpiryInSeconds));
+        var configuration = GetValidAuthenticationConfigurationFor(_authenticationServerUri, FastFailingTimeout, MaxConnectionsPerServer);
+        var authenticationTokenCache = SetupAuthenticationTokenCacheFromDi(configuration);
+
+        var stopWatch = Stopwatch.StartNew();
+        _ = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+        StubWiremockAuthenticationWithResponse500(_wireMockServer);
+
+        await TestExecutionHelper.WaitToCompleteAsync(async () =>
+                                                      {
+                                                          _ = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+                                                          return false;
+                                                      },
+                                                      retrieveTokenTimeoutInMs,
+                                                      Get95PercentOfExecutionTimeoutInMs(tokenExpiryInSeconds));
+        stopWatch.Stop();
+
+        var latestToken = await authenticationTokenCache.GetTokenForFeed().ConfigureAwait(false);
+        latestToken.AccessToken.ShouldBe(jwtToken);
+        VerifyWiremockWasCalled(2);
+        stopWatch.ElapsedMilliseconds.ShouldBeGreaterThan(tokenExpiryInSeconds * 900);
+        stopWatch.ElapsedMilliseconds.ShouldBeLessThan((tokenExpiryInSeconds * 1000) + retrieveTokenTimeoutInMs);
     }
 
     private void SetupHttpClientMockWithAuthorizedToken(string token = "any-response-token", int delayInMs = 10)
@@ -676,9 +924,39 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         };
     }
 
+    private IAuthenticationTokenCache SetupAuthenticationTokenCacheFromDi(IUofConfiguration configuration)
+    {
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddUofSdkServices(configuration);
+        _loggerFactory = new XunitLoggerFactory(_outputHelper, LogLevel.Information);
+        serviceCollection.AddSingleton<ILoggerFactory>(_loggerFactory);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var authenticationTokenCache = serviceProvider.GetRequiredService<IAuthenticationTokenCache>();
+        return authenticationTokenCache;
+    }
+
     private void VerifyApiCallWasMade(Times times)
     {
         _httpMessageHandlerMock.Protected().Verify("SendAsync", times, ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>());
+    }
+
+    private void VerifyWiremockWasCalled(int times)
+    {
+        _wireMockServer.LogEntries.Where(w => w.RequestMessage.Path == "/oauth/token").ToList().Count.ShouldBe(times);
+    }
+
+    private bool TryVerifyWiremockWasCalled(int times)
+    {
+        try
+        {
+            _wireMockServer.LogEntries.Where(w => w.RequestMessage.Path == "/oauth/token").ToList().ShouldBeOfSize(times);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     private void SetupInfrastructureWithLogging(ITestOutputHelper outputHelper, LogLevel logLevel)
@@ -775,7 +1053,33 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         return mockConfiguration.Object;
     }
 
-    private static void StubAuthenticationWithValidResponse(WireMockServer wireMockServer, AuthenticationTokenApiResponse validTokenResponse)
+    private static IUofConfiguration GetValidAuthenticationConfigurationWithCustomTenantFor(Uri authenticationServerUri, TimeSpan fastFailingTimeout, int maxConnectionsPerServer, string customTenant)
+    {
+        var mockConfiguration = new Mock<IUofConfiguration>();
+        var mockApiConfiguration = new Mock<IUofApiConfiguration>();
+
+        mockApiConfiguration.SetupGet(x => x.HttpClientFastFailingTimeout).Returns(fastFailingTimeout);
+        mockApiConfiguration.SetupGet(x => x.MaxConnectionsPerServer).Returns(maxConnectionsPerServer);
+
+        var cache = new Mock<IUofCacheConfiguration>();
+
+        var mockAuth = new Mock<UofClientAuthentication.IPrivateKeyJwt>();
+        mockAuth.Setup(x => x.ClientId).Returns("test-client-id");
+        mockAuth.Setup(x => x.SigningKeyId).Returns("test-signing-key-id");
+        mockAuth.Setup(x => x.PrivateKey).Returns(new RsaSecurityKey(RSA.Create()));
+        mockAuth.Setup(x => x.Host).Returns(authenticationServerUri.Host);
+        mockAuth.Setup(x => x.Port).Returns(authenticationServerUri.Port);
+        mockAuth.Setup(x => x.UseSsl).Returns(false);
+        mockAuth.Setup(x => x.Tenant).Returns(customTenant);
+
+        mockConfiguration.SetupGet(x => x.Api).Returns(mockApiConfiguration.Object);
+        mockConfiguration.SetupGet(x => x.Cache).Returns(cache.Object);
+        mockConfiguration.SetupGet(x => x.Authentication).Returns(mockAuth.Object);
+
+        return mockConfiguration.Object;
+    }
+
+    private static void StubWiremockAuthenticationWithValidResponse(WireMockServer wireMockServer, AuthenticationTokenApiResponse validTokenResponse)
     {
         wireMockServer.Given(Request.Create()
                                     .UsingPost()
@@ -786,7 +1090,19 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
                                            .WithBody(JsonSerializer.Serialize(validTokenResponse)));
     }
 
-    private static void StubAuthenticationWithResponse500(WireMockServer wireMockServer)
+    private static void StubWiremockAuthenticationWithOkResponseWhenClientAssertionAudienceIs(string customTenant, WireMockServer wireMockServer, AuthenticationTokenApiResponse tokenResponse)
+    {
+        wireMockServer.Given(Request.Create()
+                                    .UsingPost()
+                                    .WithPath("/oauth/token")
+                                    .WithBody(commonIAmBody => ContainingTenant(customTenant, commonIAmBody)))
+                      .RespondWith(Response.Create()
+                                           .WithStatusCode(200)
+                                           .WithHeader("Content-Type", "application/json")
+                                           .WithBody(JsonSerializer.Serialize(tokenResponse)));
+    }
+
+    private static void StubWiremockAuthenticationWithResponse500(WireMockServer wireMockServer)
     {
         wireMockServer.Given(Request.Create()
                                     .UsingPost()
@@ -828,5 +1144,27 @@ public class AuthenticationTokenCacheTests : IAsyncLifetime
         }
 
         return tokens;
+    }
+
+    private static bool ContainingTenant(string customTenant, string commonIAmBody)
+    {
+        var token = ExtractClientAssertionFrom(commonIAmBody);
+        if (token == null)
+        {
+            return false;
+        }
+
+        var aud = CommonIAmJwtHelper.GetOnlyAudience(token);
+        if (aud == null)
+        {
+            return false;
+        }
+
+        return aud == customTenant;
+    }
+
+    private static int Get95PercentOfExecutionTimeoutInMs(int executionTimeoutInSec)
+    {
+        return (int)(executionTimeoutInSec * 1000 * 0.95);
     }
 }

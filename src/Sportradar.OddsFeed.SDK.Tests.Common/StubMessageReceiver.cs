@@ -13,7 +13,7 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common;
 
 internal class StubMessageReceiver : IMessageReceiver
 {
-    public bool IsOpened { get; set; }
+    public bool IsChannelOpened { get; set; }
     public event EventHandler<FeedMessageReceivedEventArgs> FeedMessageReceived;
     public event EventHandler<MessageDeserializationFailedEventArgs> FeedMessageDeserializationFailed;
     public event EventHandler<RawFeedMessageEventArgs> RawFeedMessageReceived;
@@ -22,7 +22,7 @@ internal class StubMessageReceiver : IMessageReceiver
 
     public StubMessageReceiver(MessageInterest messageInterest = null)
     {
-        IsOpened = false;
+        IsChannelOpened = false;
         _messageInterest = messageInterest;
     }
 
@@ -45,12 +45,12 @@ internal class StubMessageReceiver : IMessageReceiver
 
     public void Open(MessageInterest interest, IEnumerable<string> routingKeys)
     {
-        IsOpened = true;
+        IsChannelOpened = true;
         _messageInterest = interest;
     }
 
     public void Close()
     {
-        IsOpened = false;
+        IsChannelOpened = false;
     }
 }

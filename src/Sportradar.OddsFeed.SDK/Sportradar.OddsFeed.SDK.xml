@@ -102,17 +102,11 @@
             <param name="port">The port used to connect to the AMQP server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingUsername(System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingCredentials(System.String,System.String)">
             <summary>
-            Sets the username used to authenticate with the messaging server
+            Sets the credentials used to authenticate with the messaging server
             </summary>
             <param name="username">The username used to authenticate with the messaging server</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetMessagingPassword(System.String)">
-            <summary>
-            Sets the password used to authenticate with the messaging server
-            </summary>
             <param name="password">The password used to authenticate with the messaging server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set custom config values</returns>
         </member>
@@ -149,6 +143,13 @@
             Sets the value specifying whether SSL should be used to communicate with the authentication server.
             </summary>
             <param name="useSsl">The value specifying whether SSL should be used to communicate with the authentication server.</param>
+            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder.SetClientAuthenticationTenant(System.String)">
+            <summary>
+            Sets the tenant to be used in client authentication.
+            </summary>
+            <param name="tenant">The tenant to be used in client authentication.</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder"/> instance used to set authentication config values.</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector">
@@ -345,7 +346,7 @@
             </summary>
             <param name="privateKeyJwtData">The authentication configuration containing credentials.</param>
             <returns>
-            The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter"/> instance allowing chaining of calls.
+            The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector"/>instance allowing the selection of target environment.
             </returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter.SetAccessTokenFromConfigFile">
@@ -830,6 +831,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.UseSsl">
             <summary>
             Indicates whether SSL (HTTPS) is used to communicate with the authentication server.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwt.Tenant">
+            <summary>
+            Custom tenant value.
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Config.UofClientAuthentication.IPrivateKeyJwtBuilder">
@@ -2759,6 +2765,11 @@
             Creates a JSON Web Token (JWT) using the provided authentication configuration.
             </summary>
             <returns>JSON Web Token (JWT) as a string</returns>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Authentication.UsageDelegatingHandler">
+            <summary>
+            Ensures each request carries an access token
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.BookmakerDetailsFetcher">
             <summary>
@@ -4927,17 +4938,11 @@
             <param name="port">The port used to connect to the AMQP server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetMessagingUsername(System.String)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetMessagingCredentials(System.String,System.String)">
             <summary>
-            Sets the username used to authenticate with the messaging server
+            Sets the credentials used to authenticate with the messaging server
             </summary>
             <param name="username">The username used to authenticate with the messaging server</param>
-            <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.CustomConfigurationBuilder.SetMessagingPassword(System.String)">
-            <summary>
-            Sets the password used to authenticate with the messaging server
-            </summary>
             <param name="password">The password used to authenticate with the messaging server</param>
             <returns>The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ICustomConfigurationBuilder" /> instance used to set custom config values</returns>
         </member>
@@ -5263,6 +5268,9 @@
         <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.UseSsl">
             <inheritdoc />
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.Tenant">
+            <inheritdoc />
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.SetHost(System.String)">
             <summary>
             Sets the authentication server host.
@@ -5283,6 +5291,13 @@
             Intended to be called by your custom configuration builder.
             </summary>
             <param name="useSsl">True to use HTTPS.</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.SetTenant(System.String)">
+            <summary>
+            Sets tenant value.
+            Intended to be called by your custom configuration builder.
+            </summary>
+            <param name="tenant">Custom tenant value.</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.PrivateKeyJwt.ToString">
             <summary>
@@ -5599,7 +5614,7 @@
             </summary>
             <param name="privateKeyJwtData">The authentication configuration containing credentials.</param>
             <returns>
-            The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.ITokenSetter"/> instance allowing chaining of calls.
+            The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.IEnvironmentSelector"/>instance allowing the selection of target environment.
             </returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Config.TokenSetter.SetAccessTokenFromConfigFile">
@@ -6026,47 +6041,6 @@
             <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
             <c>false</c> to release only unmanaged resources.</param>
         </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory">
-            <summary>
-            A <see cref="T:RabbitMQ.Client.IConnectionFactory"/> implementations which properly configures it self before first <see cref="T:RabbitMQ.Client.IConnection"/> is created
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory._connectionSingleton">
-            <summary>
-            A singleton instance of <see cref="T:RabbitMQ.Client.IConnection"/> class created by current factory.
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory._syncLock">
-            <summary>
-            A <see cref="T:System.Object"/> used to ensure thread safety when creating the connection singleton
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory._disposed">
-            <summary>
-            Value indicating whether the current instance has been disposed
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory.CreateAndConfigureConnectionFactory">
-            <summary>
-            Configures the current <see cref="T:RabbitMQ.Client.IConnectionFactory"/> based on config options read from <c>_config</c> field
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory.CreateConnection">
-            <summary>
-            Create a connection to the specified endpoint or return existing one
-            </summary>
-            <exception cref="T:RabbitMQ.Client.Exceptions.BrokerUnreachableException">When the configured host name was not reachable</exception>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory.Dispose">
-            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.ConfiguredConnectionFactory.Dispose(System.Boolean)">
-            <summary>
-            Releases unmanaged and - optionally - managed resources.
-            </summary>
-            <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
-            <c>false</c> to release only unmanaged resources.</param>
-        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IChannelFactory">
             <summary>
             Represents a factory used to construct Rabbit MQ channels / models
@@ -6103,7 +6077,7 @@
             Defines a contract implemented by classes capable of delivering messages from the feed
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IMessageReceiver.IsOpened">
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IMessageReceiver.IsChannelOpened">
             <summary>
             Gets a value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IMessageReceiver"/> is currently opened;
             </summary>
@@ -6191,26 +6165,6 @@
             </summary>
             <seealso cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IRabbitMqChannel" />
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel.ExecutionLog">
-            <summary>
-            The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> used execution logging
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel._channelFactory">
-            <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IChannelFactory"/> used to construct the <see cref="T:RabbitMQ.Client.IModel"/> representing Rabbit MQ channel
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel._channel">
-            <summary>
-            The <see cref="T:RabbitMQ.Client.IModel"/> representing the channel to the broker
-            </summary>
-        </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel._consumer">
-            <summary>
-            The <see cref="T:RabbitMQ.Client.Events.EventingBasicConsumer"/> used to consume the broker data
-            </summary>
-        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel._isOpened">
             <summary>
             Value indicating whether the current instance is opened. 1 means opened, 0 means closed
@@ -6231,20 +6185,6 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Common.Internal.ISdkTimer"/> instance used to trigger periodic connection test
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel._timerSemaphoreSlim">
-            <summary>
-            The timer semaphore slim used reduce concurrency within timer calls
-            </summary>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IChannelFactory,Sportradar.OddsFeed.SDK.Common.Internal.ISdkTimer,System.TimeSpan,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel"/> class.
-            </summary>
-            <param name="channelFactory">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IChannelFactory"/> used to construct the <see cref="T:RabbitMQ.Client.IModel"/> representing Rabbit MQ channel.</param>
-            <param name="timer">Timer used to check if there is connection</param>
-            <param name="maxTimeBetweenMessages">Max timeout between messages to check if connection is ok</param>
-            <param name="accessToken">The access token to filter from logs</param>
-        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel.Open(Sportradar.OddsFeed.SDK.Api.Config.MessageInterest,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Opens the current channel and binds the created queue to provided routing keys
@@ -6258,7 +6198,7 @@
             </summary>
             <exception cref="T:System.InvalidOperationException">The instance is already closed</exception>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel.ConsumerOnDataReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqChannel.BasicConsumerOnDataReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
             <summary>
             Handles the <see cref="E:RabbitMQ.Client.Events.EventingBasicConsumer.Received"/> event
             </summary>
@@ -6275,19 +6215,19 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IMessageReceiver"/> implementation using RabbitMQ broker to deliver feed messages
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.ExecutionLog">
+        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver._executionLog">
             <summary>
             A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> used for execution logging
             </summary>
         </member>
-        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.FeedLog">
+        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver._feedLog">
             <summary>
             A <see cref="T:Microsoft.Extensions.Logging.ILogger"/> used for feed traffic logging
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver._interest">
             <summary>
-            The message interest associated by the session using this instance
+            The message interest associated with the session using this instance
             </summary>
         </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver._channel">
@@ -6310,9 +6250,9 @@
             A <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager"/> used to get <see cref="T:Sportradar.OddsFeed.SDK.Api.IProducer"/>
             </summary>
         </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.IsOpened">
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.IsChannelOpened">
             <summary>
-            Gets a value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> is currently opened;
+            Gets a value indicating whether the current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IRabbitMqChannel"/> is currently opened;
             </summary>
         </member>
         <member name="E:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.FeedMessageReceived">
@@ -6335,7 +6275,7 @@
             Is connected to the replay server
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IRabbitMqChannel,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage},Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IRoutingKeyParser,Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager,Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IRabbitMqChannel,Sportradar.OddsFeed.SDK.Common.Internal.IDeserializer{Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage},Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IRoutingKeyParser,Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager,Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Microsoft.Extensions.Logging.ILoggerFactory)">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> class
             </summary>
@@ -6344,13 +6284,51 @@
             <param name="keyParser">A <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.IRoutingKeyParser"/> used to parse the rabbit's routing key</param>
             <param name="producerManager">An <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager"/> used to get <see cref="T:Sportradar.OddsFeed.SDK.Api.IProducer"/></param>
             <param name="configuration">Used to check if it should connect to the replay server</param>
+            <param name="loggerFactory">The logger factory</param>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.Consumer_OnReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.Open(Sportradar.OddsFeed.SDK.Api.Config.MessageInterest,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Opens the current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> instance so it starts receiving messages
+            </summary>
+            <param name="routingKeys">A list of routing keys specifying which messages should the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> deliver</param>
+            <param name="interest">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.MessageInterest"/> of the session using this instance</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.Close">
+            <summary>
+            Closes the current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> so it will no longer receive messages
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.OnChannelMessageReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
             <summary>
             Handles the message received event
             </summary>
-            <param name="sender">The <see cref="T:System.Object"/> representation of the event sender</param>
+            <param name="sender">The <see cref="T:System.Object"/> representation of the event sender - not used in the method</param>
             <param name="eventArgs">A <see cref="T:RabbitMQ.Client.Events.BasicDeliverEventArgs"/> containing event information</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.TryDeserializeMessage(RabbitMQ.Client.Events.BasicDeliverEventArgs,System.Int64)">
+            <summary>
+            Attempts to deserialize the message from the event args
+            </summary>
+            <param name="eventArgs">The event arguments containing the message data</param>
+            <param name="receivedAt">The timestamp when the message was received</param>
+            <returns>A tuple containing the deserialized message, producer, message name, and body, or null if deserialization failed</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.TryEnrichFeedMessageWithEventUrnAndSportId(Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage,System.String,System.String)">
+            <summary>
+            Enriches the feed message with EventUrn and SportId during deserialization
+            </summary>
+            <param name="feedMessage">The feed message to enrich</param>
+            <param name="routingKey">The routing key from the message</param>
+            <param name="messageName">The name of the message type</param>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.LogFeedTraffic(System.String,System.String,System.String,Sportradar.OddsFeed.SDK.Api.IProducer)">
+            <summary>
+            Logs the feed traffic based on producer status
+            </summary>
+            <param name="sessionName">The name of the session</param>
+            <param name="routingKey">The routing key of the message</param>
+            <param name="messageBody">The message body</param>
+            <param name="producer">The producer</param>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.RaiseDeserializationFailed(System.Byte[])">
             <summary>
@@ -6364,18 +6342,6 @@
             </summary>
             <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.FeedMessage"/> instance used to construct the event args</param>
             <param name="rawMessage">A raw message received from the broker</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.Open(Sportradar.OddsFeed.SDK.Api.Config.MessageInterest,System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Opens the current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> instance so it starts receiving messages
-            </summary>
-            <param name="routingKeys">A list of routing keys specifying which messages should the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> deliver</param>
-            <param name="interest">The <see cref="T:Sportradar.OddsFeed.SDK.Api.Config.MessageInterest"/> of the session using this instance</param>
-        </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver.Close">
-            <summary>
-            Closes the current <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RabbitMqMessageReceiver"/> so it will no longer receive messages
-            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess.RegexRoutingKeyParser">
             <summary>

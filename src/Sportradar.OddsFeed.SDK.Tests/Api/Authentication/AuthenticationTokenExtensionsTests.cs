@@ -146,7 +146,7 @@ public class AuthenticationTokenExtensionsTests
     [Fact]
     public void GetAudienceForLocalTokenWhenPrivateKeyJwtIsNullThenReturnsNull()
     {
-        var result = ((UofClientAuthentication.IPrivateKeyJwt)null).GetAudienceForLocalToken();
+        var result = ((UofClientAuthentication.IPrivateKeyJwt)null).GetCommonIAmUri();
 
         result.ShouldBeNull();
     }
@@ -158,7 +158,7 @@ public class AuthenticationTokenExtensionsTests
         jwt.SetUseSsl(true);
         jwt.SetHost("localhost");
 
-        var result = jwt.GetAudienceForLocalToken();
+        var result = jwt.GetCommonIAmUri();
 
         result.ShouldBe("https://localhost/");
     }
@@ -170,7 +170,7 @@ public class AuthenticationTokenExtensionsTests
         jwt.SetUseSsl(false);
         jwt.SetHost("localhost");
 
-        var result = jwt.GetAudienceForLocalToken();
+        var result = jwt.GetCommonIAmUri();
 
         result.ShouldBe("http://localhost/");
     }
@@ -182,7 +182,7 @@ public class AuthenticationTokenExtensionsTests
         jwt.SetUseSsl(false);
 
         jwt.Host.ShouldBeNull();
-        var exception = Should.Throw<ArgumentException>(() => jwt.GetAudienceForLocalToken());
+        var exception = Should.Throw<ArgumentException>(() => jwt.GetCommonIAmUri());
 
         exception.Message.ShouldContain("Host is not configured");
     }
@@ -198,7 +198,7 @@ public class AuthenticationTokenExtensionsTests
         jwt.SetHost("localhost");
         jwt.SetPort(port);
 
-        var result = jwt.GetAudienceForLocalToken();
+        var result = jwt.GetCommonIAmUri();
 
         result.ShouldBe(expectedAudience);
     }
@@ -210,7 +210,7 @@ public class AuthenticationTokenExtensionsTests
         jwt.SetUseSsl(false);
         jwt.SetHost("localhost");
 
-        var result = jwt.GetAudienceForLocalToken();
+        var result = jwt.GetCommonIAmUri();
 
         result.ShouldBe("http://localhost/");
     }

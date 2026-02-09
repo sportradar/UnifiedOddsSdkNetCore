@@ -22,7 +22,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
                 throw new ArgumentNullException(nameof(uofConfiguration));
             }
             _privateKeyJwt = uofConfiguration.Authentication;
-            _audienceForLocalToken = uofConfiguration.Authentication.GetAudienceForLocalToken();
+            _audienceForLocalToken = uofConfiguration.Authentication.GetCommonIamTenant();
         }
 
         public string CreateJsonWebToken()

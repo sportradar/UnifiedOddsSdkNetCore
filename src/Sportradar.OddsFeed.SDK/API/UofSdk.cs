@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using Dawn;
 using Microsoft.Extensions.DependencyInjection;
@@ -212,7 +213,7 @@ namespace Sportradar.OddsFeed.SDK.Api
             _feedRecoveryManager = ServiceProvider.GetRequiredService<IAbstractFactory<IFeedRecoveryManager>>().Create();
             _connectionValidator = ServiceProvider.GetRequiredService<ConnectionValidator>();
 
-            _ = UsageTelemetry.SetupUsageTelemetry(UofConfig);
+            _ = UsageTelemetry.SetupUsageTelemetry(UofConfig, ServiceProvider.GetRequiredService<IHttpClientFactory>());
         }
 
         /// <summary>

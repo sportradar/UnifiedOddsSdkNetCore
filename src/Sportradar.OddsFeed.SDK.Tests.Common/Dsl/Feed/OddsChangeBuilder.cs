@@ -11,8 +11,8 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 
 public class OddsChangeBuilder
 {
-    private readonly odds_change _oddsChange = new odds_change();
-    private readonly List<oddsChangeMarket> _markets = new List<oddsChangeMarket>();
+    private readonly odds_change _oddsChange = new();
+    private readonly List<oddsChangeMarket> _markets = [];
 
     public static OddsChangeBuilder Create()
     {

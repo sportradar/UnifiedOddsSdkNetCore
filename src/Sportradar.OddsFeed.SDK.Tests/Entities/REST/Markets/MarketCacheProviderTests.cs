@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
@@ -86,7 +87,7 @@ public class MarketCacheProviderTests
     [Fact]
     public void ConstructorWhenAllPresentThenSucceed()
     {
-        var marketCacheProvider = new MarketCacheProvider(new Mock<IMarketDescriptionsCache>().Object, new Mock<IMarketDescriptionCache>().Object, new Mock<IVariantDescriptionsCache>().Object, _loggerFactory.CreateLogger<MarketCacheProvider>());
+        var marketCacheProvider = new MarketCacheProvider(new Mock<IMarketDescriptionsCache>().Object, new Mock<IMarketDescriptionCache>().Object, new Mock<IVariantDescriptionsCache>().Object, NullLogger<MarketCacheProvider>.Instance);
 
         Assert.NotNull(marketCacheProvider);
     }
@@ -94,19 +95,19 @@ public class MarketCacheProviderTests
     [Fact]
     public void ConstructorWhenNullInvariantMarketDescriptionCacheThenThrow()
     {
-        _ = Assert.Throws<ArgumentNullException>(() => new MarketCacheProvider(null, new Mock<IMarketDescriptionCache>().Object, new Mock<IVariantDescriptionsCache>().Object, _loggerFactory.CreateLogger<MarketCacheProvider>()));
+        _ = Assert.Throws<ArgumentNullException>(() => new MarketCacheProvider(null, new Mock<IMarketDescriptionCache>().Object, new Mock<IVariantDescriptionsCache>().Object, NullLogger<MarketCacheProvider>.Instance));
     }
 
     [Fact]
     public void ConstructorWhenNullSingleVariantMarketDescriptionCacheThenThrow()
     {
-        _ = Assert.Throws<ArgumentNullException>(() => new MarketCacheProvider(new Mock<IMarketDescriptionsCache>().Object, null, new Mock<IVariantDescriptionsCache>().Object, _loggerFactory.CreateLogger<MarketCacheProvider>()));
+        _ = Assert.Throws<ArgumentNullException>(() => new MarketCacheProvider(new Mock<IMarketDescriptionsCache>().Object, null, new Mock<IVariantDescriptionsCache>().Object, NullLogger<MarketCacheProvider>.Instance));
     }
 
     [Fact]
     public void ConstructorWhenNullVariantMarketDescriptionListCacheThenThrow()
     {
-        _ = Assert.Throws<ArgumentNullException>(() => new MarketCacheProvider(new Mock<IMarketDescriptionsCache>().Object, new Mock<IMarketDescriptionCache>().Object, null, _loggerFactory.CreateLogger<MarketCacheProvider>()));
+        _ = Assert.Throws<ArgumentNullException>(() => new MarketCacheProvider(new Mock<IMarketDescriptionsCache>().Object, new Mock<IMarketDescriptionCache>().Object, null, NullLogger<MarketCacheProvider>.Instance));
     }
 
     [Fact]

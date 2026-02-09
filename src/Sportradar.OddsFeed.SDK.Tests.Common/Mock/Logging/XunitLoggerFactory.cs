@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 
+[SuppressMessage("ReSharper", "ConvertToPrimaryConstructor", Justification = "Pipeline format fails with primary constructor")]
 public class XunitLoggerFactory : ILoggerFactory
 {
     public ILogger LastLogger { get; private set; }
@@ -55,6 +57,29 @@ public class XunitLoggerFactory : ILoggerFactory
     {
         categoryName = FormatLoggerName(categoryName);
         return _registeredLoggers.TryGetValue(categoryName, out var logger) ? (XUnitLogger)logger : null;
+    }
+
+    public XUnitLogger GetOrCreateLogger(string loggerTypeName)
+    {
+        return (XUnitLogger)CreateLogger(loggerTypeName);
+    }
+
+    public XUnitLogger<T> GetOrCreateLogger<T>()
+    {
+        var key = typeof(T).FullName;
+        if (_registeredLoggers.TryGetValue(key!, out var existingLogger))
+        {
+            return (XUnitLogger<T>)existingLogger;
+        }
+        var logger = new XUnitLogger<T>(_outputHelper);
+        LastLogger = logger;
+        _registeredLoggers[key] = logger;
+        return logger;
+    }
+
+    public XUnitLogger<T> CreateLogger<T>()
+    {
+        return GetOrCreateLogger<T>();
     }
 
     public void AddProvider(ILoggerProvider provider)

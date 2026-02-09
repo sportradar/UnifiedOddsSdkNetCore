@@ -38,7 +38,7 @@ public class TestCacheStoreManager
     {
         var authTokenCacheMock = new Mock<IAuthenticationTokenCache>();
         authTokenCacheMock.Setup(c => c.GetTokenForApi()).ReturnsAsync("valid-jwt-token-for-api");
-        authTokenCacheMock.Setup(c => c.GetTokenForFeed()).ReturnsAsync("valid-jwt-token-for-feed");
+        authTokenCacheMock.Setup(c => c.GetTokenForFeed()).ReturnsAsync((AuthenticationToken)null);
         return authTokenCacheMock.Object;
     }
 }

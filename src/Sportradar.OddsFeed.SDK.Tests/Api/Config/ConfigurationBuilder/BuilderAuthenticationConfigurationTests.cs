@@ -31,6 +31,13 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
 
     private static readonly AsymmetricSecurityKey TestPrivateKey = new RsaSecurityKey(RSA.Create(2056));
 
+    private static readonly UofClientAuthentication.IPrivateKeyJwtData DefaultPrivateKeyJwt = UofClientAuthentication
+                                                                                             .PrivateKeyJwt()
+                                                                                             .SetSigningKeyId(TestSigningKeyId)
+                                                                                             .SetClientId(TestClientId)
+                                                                                             .SetPrivateKey(TestPrivateKey)
+                                                                                             .Build();
+
     public static IEnumerable<object[]> NonRsaKeys()
     {
         yield return [new ECDsaSecurityKey(ECDsa.Create(ECCurve.NamedCurves.nistP256))];
@@ -46,13 +53,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForPredefinedEnvironmentThenAuthenticationCredentialsAreSet(SdkEnvironment environment)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(UofClientAuthentication
-                                            .PrivateKeyJwt()
-                                            .SetSigningKeyId(TestSigningKeyId)
-                                            .SetClientId(TestClientId)
-                                            .SetPrivateKey(TestPrivateKey)
-                                            .Build())
-                    .SetAccessToken(AnyAccessToken)
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
@@ -70,13 +71,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForPredefinedEnvironmentThenAuthenticationHostIsSet(SdkEnvironment environment)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(UofClientAuthentication
-                                            .PrivateKeyJwt()
-                                            .SetSigningKeyId(TestSigningKeyId)
-                                            .SetClientId(TestClientId)
-                                            .SetPrivateKey(TestPrivateKey)
-                                            .Build())
-                    .SetAccessToken(AnyAccessToken)
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectEnvironment(environment)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
@@ -99,7 +94,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetPrivateKey(TestPrivateKey)
                                                  .SetClientId(TestClientId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectEnvironment(environment)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -120,7 +114,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetSigningKeyId(TestSigningKeyId)
                                                  .SetPrivateKey(TestPrivateKey)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectEnvironment(environment)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -141,7 +134,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetClientId(TestClientId)
                                                  .SetSigningKeyId(TestSigningKeyId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectEnvironment(environment)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -162,7 +154,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetPrivateKey(TestPrivateKey)
                                                  .SetClientId(TestClientId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectEnvironment(AnyEnvironment)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -183,7 +174,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetPrivateKey(TestPrivateKey)
                                                  .SetClientId(invalidClientId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectEnvironment(AnyEnvironment)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -201,7 +191,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetPrivateKey(null)
                                                  .SetClientId(TestClientId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectEnvironment(AnyEnvironment)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -218,7 +207,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetPrivateKey(TestPrivateKey)
                                                  .SetClientId(TestClientId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectCustom()
                          .SetClientAuthenticationHost(AuthenticationHost)
                          .SetClientAuthenticationPort(AuthenticationPort)
@@ -238,7 +226,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetSigningKeyId(TestSigningKeyId)
                                                  .SetPrivateKey(TestPrivateKey)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectCustom()
                          .SetClientAuthenticationHost(AuthenticationHost)
                          .SetClientAuthenticationPort(AuthenticationPort)
@@ -258,7 +245,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetClientId(TestClientId)
                                                  .SetSigningKeyId(TestSigningKeyId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectCustom()
                          .SetClientAuthenticationHost(AuthenticationHost)
                          .SetClientAuthenticationPort(AuthenticationPort)
@@ -278,13 +264,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForCustomEnvironmentAndAuthenticationHostIsIncorrectThenThrowsException(string incorrectHost)
     {
         var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                         .SetClientAuthentication(UofClientAuthentication
-                                                 .PrivateKeyJwt()
-                                                 .SetClientId(TestClientId)
-                                                 .SetSigningKeyId(TestSigningKeyId)
-                                                 .SetPrivateKey(TestPrivateKey)
-                                                 .Build())
-                         .SetAccessToken(AnyAccessToken)
+                         .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetClientAuthenticationHost(incorrectHost)
                          .SetClientAuthenticationPort(AuthenticationPort)
@@ -299,13 +279,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForCustomEnvironmentThenAuthenticationEndpointIncludesHostPortAndSsl()
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(UofClientAuthentication
-                                            .PrivateKeyJwt()
-                                            .SetSigningKeyId(TestSigningKeyId)
-                                            .SetClientId(TestClientId)
-                                            .SetPrivateKey(TestPrivateKey)
-                                            .Build())
-                    .SetAccessToken(AnyAccessToken)
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .SetClientAuthenticationHost(AuthenticationHost)
                     .SetClientAuthenticationPort(AuthenticationPort)
@@ -328,13 +302,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForCustomEnvironmentThenThrowIfAuthenticationPortIsNonPositive(int invalidPort)
     {
         var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                         .SetClientAuthentication(UofClientAuthentication
-                                                 .PrivateKeyJwt()
-                                                 .SetSigningKeyId(TestSigningKeyId)
-                                                 .SetPrivateKey(TestPrivateKey)
-                                                 .SetClientId(TestClientId)
-                                                 .Build())
-                         .SetAccessToken(AnyAccessToken)
+                         .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetClientAuthenticationHost(AuthenticationHost)
                          .SetClientAuthenticationPort(invalidPort)
@@ -352,13 +320,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForCustomEnvironmentThenThrowIfAuthenticationHostIsEmptyOrWhitespace(string invalidHost)
     {
         var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                         .SetClientAuthentication(UofClientAuthentication
-                                                 .PrivateKeyJwt()
-                                                 .SetSigningKeyId(TestSigningKeyId)
-                                                 .SetPrivateKey(TestPrivateKey)
-                                                 .SetClientId(TestClientId)
-                                                 .Build())
-                         .SetAccessToken(AnyAccessToken)
+                         .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectCustom()
                          .SetClientAuthenticationHost(invalidHost)
                          .SetClientAuthenticationPort(AuthenticationPort)
@@ -374,7 +336,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     {
         var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
                          .SetClientAuthentication(null)
-                         .SetAccessToken(AnyAccessToken)
                          .SelectCustom()
                          .SetClientAuthenticationHost(AuthenticationHost)
                          .SetClientAuthenticationPort(AuthenticationPort)
@@ -389,13 +350,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForReplayEnvironmentWithSelectReplayThenThrow()
     {
         var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                         .SetClientAuthentication(UofClientAuthentication
-                                                 .PrivateKeyJwt()
-                                                 .SetSigningKeyId(TestSigningKeyId)
-                                                 .SetPrivateKey(TestPrivateKey)
-                                                 .SetClientId(TestClientId)
-                                                 .Build())
-                         .SetAccessToken(AnyAccessToken)
+                         .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectReplay()
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -407,13 +362,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     public void WhenBuiltForReplayEnvironmentWithSelectEnvironmentThenThrow()
     {
         var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                         .SetClientAuthentication(UofClientAuthentication
-                                                 .PrivateKeyJwt()
-                                                 .SetSigningKeyId(TestSigningKeyId)
-                                                 .SetPrivateKey(TestPrivateKey)
-                                                 .SetClientId(TestClientId)
-                                                 .Build())
-                         .SetAccessToken(AnyAccessToken)
+                         .SetClientAuthentication(DefaultPrivateKeyJwt)
                          .SelectEnvironment(SdkEnvironment.Replay)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -422,28 +371,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void WhenClientAuthenticationAndAccessTokenIsConfiguredThenConfigurationContainsBoth()
-    {
-        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(UofClientAuthentication
-                                            .PrivateKeyJwt()
-                                            .SetSigningKeyId(TestSigningKeyId)
-                                            .SetClientId(TestClientId)
-                                            .SetPrivateKey(TestPrivateKey)
-                                            .Build())
-                    .SetAccessToken(AnyAccessToken)
-                    .SelectEnvironment(AnyEnvironment)
-                    .SetDefaultLanguage(TestConsts.CultureEn)
-                    .Build();
-
-        config.Authentication.SigningKeyId.ShouldBe(TestSigningKeyId);
-        config.Authentication.PrivateKey.ShouldBe(TestPrivateKey);
-        config.Authentication.ClientId.ShouldBe(TestClientId);
-        config.AccessToken.ShouldBe(AnyAccessToken);
-    }
-
-    [Fact]
-    public void WhenClientAuthenticationIsNotConfiguredForCustomEnvironmentThenAuthenticationConfigurationContainsEmptyValue()
+    public void WhenClientAuthenticationIsNotConfiguredForCustomEnvironmentThenAuthenticationConfigurationIsNull()
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
                     .SetAccessToken(AnyAccessToken)
@@ -460,7 +388,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
-    public void WhenClientAuthenticationIsNotConfiguredForPredefinedEnvironmentThenAuthenticationConfigurationContainsEmptyValue(SdkEnvironment sdkEnvironment)
+    public void WhenClientAuthenticationIsNotConfiguredForPredefinedEnvironmentThenAuthenticationConfigurationIsNull(SdkEnvironment sdkEnvironment)
     {
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
                     .SetAccessToken(AnyAccessToken)
@@ -483,7 +411,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                                  .SetPrivateKey(nonRsaKey)
                                                  .SetClientId(TestClientId)
                                                  .Build())
-                         .SetAccessToken(AnyAccessToken)
                          .SelectEnvironment(AnyEnvironment)
                          .SetDefaultLanguage(TestConsts.CultureEn)
                          .Build();
@@ -492,7 +419,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void WhenCustomEnvironmentNoClientAuthSettingAuthHostThrowsArgumentException()
+    public void WhenCustomEnvironmentAndClientAuthIsNotConfiguredSettingAuthHostThrowsArgumentException()
     {
         Should.Throw<ArgumentException>(() =>
                                         {
@@ -506,7 +433,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void WhenCustomEnvironmentNoClientAuthSettingAuthPortThrowsArgumentException()
+    public void WhenCustomEnvironmentAndClientAuthIsNotConfiguredSettingAuthPortThrowsArgumentException()
     {
         Should.Throw<ArgumentException>(() =>
                                         {
@@ -520,7 +447,7 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     }
 
     [Fact]
-    public void WhenCustomEnvironmentNoClientAuthSettingAuthUseSslThrowsArgumentException()
+    public void WhenCustomEnvironmentAndClientAuthIsNotConfiguredSettingAuthUseSslThrowsArgumentException()
     {
         Should.Throw<ArgumentException>(() =>
                                         {
@@ -536,22 +463,14 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentThenDefaultAuthenticationHostIsIntegration()
     {
-        var clientAuthentication = UofClientAuthentication
-                               .PrivateKeyJwt()
-                               .SetSigningKeyId(TestSigningKeyId)
-                               .SetClientId(TestClientId)
-                               .SetPrivateKey(TestPrivateKey)
-                               .Build();
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(clientAuthentication)
-                    .SetAccessToken(AnyAccessToken)
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectCustom()
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
 
         var configForIntegration = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(clientAuthentication)
-                    .SetAccessToken(AnyAccessToken)
+                                  .SetClientAuthentication(DefaultPrivateKeyJwt)
                     .SelectEnvironment(SdkEnvironment.Integration)
                     .SetDefaultLanguage(TestConsts.CultureEn)
                     .Build();
@@ -562,18 +481,66 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     }
 
     [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentAndTenantIsEmptyOrWhitespaceThenThrows(string invalidTenant)
+    {
+        var build = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+                         .SetClientAuthentication(DefaultPrivateKeyJwt)
+                         .SelectCustom()
+                         .SetClientAuthenticationTenant(invalidTenant)
+                         .SetDefaultLanguage(TestConsts.CultureEn)
+                         .Build();
+
+        build.ShouldThrow<ArgumentException>().Message.ShouldContain(nameof(UofClientAuthentication.IPrivateKeyJwt.Tenant));
+    }
+
+    [Fact]
+    public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentAndTenantIsConfiguredThenTenantUsesConfiguredValue()
+    {
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
+                    .SelectCustom()
+                    .SetClientAuthenticationTenant("custom-tenant")
+                    .SetDefaultLanguage(TestConsts.CultureEn)
+                    .Build();
+
+        config.Authentication.Tenant.ShouldBe("custom-tenant");
+    }
+
+    [Fact]
+    public void WhenClientAuthenticationIsConfiguredForCustomEnvironmentAndTenantIsNotConfiguredThenTenantIsNull()
+    {
+        var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
+                    .SelectCustom()
+                    .SetDefaultLanguage(TestConsts.CultureEn)
+                    .Build();
+
+        config.Authentication.Tenant.ShouldBeNull();
+    }
+
+    [Fact]
+    public void WhenClientAuthenticationIsNotConfiguredForCustomEnvironmentAndTenantIsConfiguredThenExceptionIsThrown()
+    {
+        var act = () => new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
+                    .SetAccessToken(AnyAccessToken)
+                    .SelectCustom()
+                    .SetClientAuthenticationTenant("anyTenantValue")
+                    .SetDefaultLanguage(TestConsts.CultureEn)
+                    .Build();
+
+        act.ShouldThrow<ArgumentException>().Message.ShouldContain(nameof(UofClientAuthentication.IPrivateKeyJwt.Tenant));
+    }
+
+    [Theory]
     [InlineData(SdkEnvironment.Integration)]
     [InlineData(SdkEnvironment.GlobalIntegration)]
     [InlineData(SdkEnvironment.Production)]
     [InlineData(SdkEnvironment.GlobalProduction)]
     public void WhenClientAuthenticationIsConfiguredAndRestIsLoadedFromConfigFileForNonCustomAndNonReplayEnvironmentThenAuthenticationShouldBeConfigured(SdkEnvironment nonCustomNonReplayEnvironment)
     {
-        var clientAuthentication = UofClientAuthentication
-                                  .PrivateKeyJwt()
-                                  .SetSigningKeyId(TestSigningKeyId)
-                                  .SetClientId(TestClientId)
-                                  .SetPrivateKey(TestPrivateKey)
-                                  .Build();
         var configurationSectionMock = new Mock<IUofConfigurationSection>();
         configurationSectionMock.Setup(sectionMock => sectionMock.Environment).Returns(nonCustomNonReplayEnvironment);
         configurationSectionMock.Setup(sectionMock => sectionMock.AccessToken).Returns(AnyAccessToken);
@@ -584,8 +551,10 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                            .Returns(configurationSectionMock.Object);
 
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(clientAuthentication)
-                    .BuildFromConfigFile();
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
+                    .SelectEnvironment(nonCustomNonReplayEnvironment)
+                    .LoadFromConfigFile()
+                    .Build();
 
         config.Authentication.ShouldNotBeNull();
         config.Authentication.SigningKeyId.ShouldBe(TestSigningKeyId);
@@ -596,12 +565,6 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
     [Fact]
     public void WhenClientAuthenticationIsConfiguredAndRestIsLoadedFromConfigFileForCustomEnvironmentThenAuthenticationShouldBeConfigured()
     {
-        var clientAuthentication = UofClientAuthentication
-                                  .PrivateKeyJwt()
-                                  .SetSigningKeyId(TestSigningKeyId)
-                                  .SetClientId(TestClientId)
-                                  .SetPrivateKey(TestPrivateKey)
-                                  .Build();
         var configurationSectionMock = new Mock<IUofConfigurationSection>();
         configurationSectionMock.Setup(sectionMock => sectionMock.Environment).Returns(SdkEnvironment.Custom);
         configurationSectionMock.Setup(sectionMock => sectionMock.AccessToken).Returns(AnyAccessToken);
@@ -612,12 +575,100 @@ public class BuilderAuthenticationConfigurationTests : ConfigurationBuilderSetup
                                            .Returns(configurationSectionMock.Object);
 
         var config = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider)
-                    .SetClientAuthentication(clientAuthentication)
-                    .BuildFromConfigFile();
+                    .SetClientAuthentication(DefaultPrivateKeyJwt)
+                    .SelectCustom()
+                    .LoadFromConfigFile()
+                    .Build();
 
         config.Authentication.ShouldNotBeNull();
         config.Authentication.SigningKeyId.ShouldBe(TestSigningKeyId);
         config.Authentication.ClientId.ShouldBe(TestClientId);
         config.Authentication.PrivateKey.ShouldBe(TestPrivateKey);
+    }
+
+    [Fact]
+    public void ForbidsSettingAccessTokenWhenClientAuthenticationIsConfigured()
+    {
+        var build = () =>
+                    {
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+                        tokenSetter
+                           .SetClientAuthentication(DefaultPrivateKeyJwt);
+                        tokenSetter.SetAccessToken(AnyAccessToken)
+                                          .SelectEnvironment(SdkEnvironment.Integration)
+                                          .SetDefaultLanguage(TestConsts.CultureEn)
+                                          .SetNodeId(AnyNodeId)
+                                          .Build();
+                    };
+
+        Should.Throw<ArgumentException>(() => build()).Message.ShouldBe("Cannot set access token when client authentication is configured");
+    }
+
+    [Fact]
+    public void ForbidsSettingAccessTokenFromConfigFileWhenClientAuthenticationIsConfigured()
+    {
+        var configurationSectionMock = new Mock<IUofConfigurationSection>();
+        configurationSectionMock.Setup(sectionMock => sectionMock.AccessToken).Returns(AnyAccessToken);
+
+        UofConfigurationSectionProviderMock.Setup(sectionProvider => sectionProvider.GetSection())
+                                           .Returns(configurationSectionMock.Object);
+
+        var build = () =>
+                    {
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+                        tokenSetter
+                           .SetClientAuthentication(DefaultPrivateKeyJwt);
+                        tokenSetter.SetAccessTokenFromConfigFile()
+                                         .SelectEnvironment(SdkEnvironment.Integration)
+                                         .SetDefaultLanguage(TestConsts.CultureEn)
+                                         .SetNodeId(AnyNodeId)
+                                         .Build();
+                    };
+
+        Should.Throw<ArgumentException>(() => build()).Message.ShouldBe("Cannot set access token when client authentication is configured");
+    }
+
+    [Fact]
+    public void ForbidsSettingClientAuthenticationWhenAccessTokenIsConfigured()
+    {
+        var build = () =>
+                    {
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+
+                        tokenSetter.SetAccessToken(AnyAccessToken);
+                        tokenSetter
+                           .SetClientAuthentication(DefaultPrivateKeyJwt)
+                                         .SelectEnvironment(SdkEnvironment.Integration)
+                                         .SetDefaultLanguage(TestConsts.CultureEn)
+                                         .SetNodeId(AnyNodeId)
+                                         .Build();
+                    };
+
+        Should.Throw<ArgumentException>(() => build()).Message.ShouldBe("Cannot set client authentication when access token is configured");
+    }
+
+    [Fact]
+    public void ForbidsSettingClientAuthenticationWhenAccessTokenIsConfiguredFromConfigFile()
+    {
+        var configurationSectionMock = new Mock<IUofConfigurationSection>();
+        configurationSectionMock.Setup(sectionMock => sectionMock.AccessToken).Returns(AnyAccessToken);
+
+        UofConfigurationSectionProviderMock.Setup(sectionProvider => sectionProvider.GetSection())
+                                           .Returns(configurationSectionMock.Object);
+
+        var build = () =>
+                    {
+                        var tokenSetter = new TokenSetter(UofConfigurationSectionProviderMock.Object, BookmakerDetailsProvider, ProducersProvider);
+
+                        tokenSetter.SetAccessTokenFromConfigFile();
+                        tokenSetter
+                           .SetClientAuthentication(DefaultPrivateKeyJwt)
+                           .SelectEnvironment(SdkEnvironment.Integration)
+                           .SetDefaultLanguage(TestConsts.CultureEn)
+                           .SetNodeId(AnyNodeId)
+                           .Build();
+                    };
+
+        Should.Throw<ArgumentException>(() => build()).Message.ShouldBe("Cannot set client authentication when access token is configured");
     }
 }

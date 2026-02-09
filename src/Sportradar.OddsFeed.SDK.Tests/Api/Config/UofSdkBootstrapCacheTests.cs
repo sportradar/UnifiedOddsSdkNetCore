@@ -5,6 +5,7 @@ using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Handlers;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto;
@@ -258,5 +259,45 @@ public class UofSdkBootstrapCacheTests : UofSdkBootstrapBase
 
         fusionCache.ShouldNotBeNull();
         fusionCache.ShouldBeAssignableTo<IFusionCache>();
+    }
+
+    [Fact]
+    public void RetryUnauthorizedDelegatingHandlerIsTransient()
+    {
+        CheckTransientType<RetryUnauthorizedDelegatingHandler>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<RetryUnauthorizedDelegatingHandler>();
+        Assert.NotNull(service1);
+        Assert.IsType<RetryUnauthorizedDelegatingHandler>(service1, false);
+    }
+
+    [Fact]
+    public void RequestCircuitHandlerIsTransient()
+    {
+        CheckTransientType<RequestCircuitHandler>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<RequestCircuitHandler>();
+        Assert.NotNull(service1);
+        Assert.IsType<RequestCircuitHandler>(service1, false);
+    }
+
+    [Fact]
+    public void UsageAuthenticationTokenProviderIsTransient()
+    {
+        CheckTransientType<IUsageAuthenticationTokenProvider>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<IUsageAuthenticationTokenProvider>();
+        Assert.NotNull(service1);
+        Assert.IsType<UsageAuthenticationTokenProvider>(service1, false);
+    }
+
+    [Fact]
+    public void UsageDelegatingHandlerIsTransient()
+    {
+        CheckTransientType<UsageDelegatingHandler>();
+
+        var service1 = ServiceScope1.ServiceProvider.GetRequiredService<UsageDelegatingHandler>();
+        Assert.NotNull(service1);
+        Assert.IsType<UsageDelegatingHandler>(service1, false);
     }
 }

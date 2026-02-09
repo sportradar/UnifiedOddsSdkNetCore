@@ -41,6 +41,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         /// <inheritdoc />
         public bool UseSsl { get; private set; }
 
+        /// <inheritdoc />
+        public string Tenant { get; private set; }
+
         /// <summary>
         /// Sets the authentication server host.
         /// Intended to be called by your custom configuration builder.
@@ -79,6 +82,21 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
         internal void SetUseSsl(bool useSsl)
         {
             UseSsl = useSsl;
+        }
+
+        /// <summary>
+        /// Sets tenant value.
+        /// Intended to be called by your custom configuration builder.
+        /// </summary>
+        /// <param name="tenant">Custom tenant value.</param>
+        internal void SetTenant(string tenant)
+        {
+            if (string.IsNullOrWhiteSpace(tenant))
+            {
+                throw new ArgumentException("Tenant can not be null or empty.", nameof(tenant));
+            }
+
+            Tenant = tenant;
         }
 
         /// <summary>

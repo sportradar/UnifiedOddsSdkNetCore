@@ -11,8 +11,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
     internal sealed class AuthenticationTokenCache : IAuthenticationTokenCache
     {
         public const string FusionCacheInstanceName = "AuthFusionCache";
-        private const string UofApiTokenAudience = "UF-RestAPI";
-        private const string UofFeedTokenAudience = "UF-RabbitMQ";
+        public const string UofApiTokenAudience = "UF-RestAPI";
+        public const string UofFeedTokenAudience = "UF-RabbitMQ";
         private const float EagerRefreshThreshold = 0.9f; // cache refresh in the background when 90% of duration elapsed
 
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
@@ -39,11 +39,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Authentication
             return token?.AccessToken;
         }
 
-        public async Task<string> GetTokenForFeed()
+        public async Task<AuthenticationToken> GetTokenForFeed()
         {
-            var token = await GetAuthTokenAsync(UofFeedTokenAudience).ConfigureAwait(false);
-
-            return token?.AccessToken;
+            return await GetAuthTokenAsync(UofFeedTokenAudience).ConfigureAwait(false);
         }
 
         public async Task RefreshApiTokenAsync(string oldToken)

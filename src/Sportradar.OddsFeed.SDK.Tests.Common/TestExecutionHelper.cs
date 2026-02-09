@@ -109,4 +109,26 @@ public static class TestExecutionHelper
         }
         return finished;
     }
+
+    public static async Task<bool> WaitToCompleteAsync(Func<Task<bool>> action, int delayMs = 100, int timeoutMs = 10000)
+    {
+        var stopWatch = Stopwatch.StartNew();
+        var finished = false;
+        while (!finished && stopWatch.ElapsedMilliseconds < timeoutMs)
+        {
+            try
+            {
+                finished = await action();
+            }
+            catch
+            {
+                // ignored
+            }
+            if (!finished)
+            {
+                await Task.Delay(delayMs).ConfigureAwait(false);
+            }
+        }
+        return finished;
+    }
 }

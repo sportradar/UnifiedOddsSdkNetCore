@@ -10,6 +10,7 @@ using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit.Abstractions;
 
@@ -25,6 +26,7 @@ public class UofSdkBuilder
     private string _apiUrl;
     private ITestOutputHelper _outputHelper;
     private ExceptionHandlingStrategy _exceptionHandlingStrategy;
+    private ProjectConfiguration _projectConfiguration;
     private UofClientAuthentication.IPrivateKeyJwtData _clientAuthentication;
     private string _authenticationUrl;
 
@@ -93,6 +95,12 @@ public class UofSdkBuilder
         return this;
     }
 
+    public UofSdkBuilder WithConfiguration(ProjectConfiguration projectConfiguration)
+    {
+        _projectConfiguration = projectConfiguration;
+        return this;
+    }
+
     private void ValidateRequiredFields()
     {
         if (_enabledProducers.IsNullOrEmpty())
@@ -143,16 +151,13 @@ public class UofSdkBuilder
         return serviceCollection;
     }
 
-    private ICustomConfigurationBuilder GetConfigurationBuilderForTokenSetter(ITokenSetter tokenSetter, ProjectConfiguration projectConfiguration)
+    private ICustomConfigurationBuilder GetConfigurationBuilderFor(IEnvironmentSelector environmentSelector, ProjectConfiguration projectConfiguration)
     {
-        return tokenSetter
-                    .SetAccessToken(projectConfiguration.SdkRabbitUsername)
+        return environmentSelector
                     .SelectCustom()
-                    .SetMessagingUsername(projectConfiguration.SdkRabbitUsername)
-                    .SetMessagingPassword(projectConfiguration.SdkRabbitPassword)
-                    .SetMessagingHost(projectConfiguration.GetRabbitIp())
+                    .SetMessagingHost(projectConfiguration.RabbitHost)
                     .UseMessagingSsl(false)
-                    .SetMessagingPort(projectConfiguration.DefaultRabbitPort)
+                    .SetMessagingPort(projectConfiguration.RabbitPort)
                     .SetApiHost(UrlUtils.ExtractDomainName(_apiUrl))
                     .UseApiSsl(false)
                     .SetDesiredLanguages(_cultures)
@@ -162,37 +167,20 @@ public class UofSdkBuilder
                     .EnableUsageExport(false);
     }
 
-    public UofSdkWrapper BuildWithClientAuthentication(UofClientAuthentication.IPrivateKeyJwtData clientAuthentication)
-    {
-        ValidateRequiredFields();
-
-        var projectConfiguration = new ProjectConfiguration();
-        var tokenSetterWithClientAuthentication = UofSdk.GetConfigurationBuilder().SetClientAuthentication(clientAuthentication);
-        var sdkConfig = GetConfigurationBuilderForTokenSetter(tokenSetterWithClientAuthentication, projectConfiguration)
-                       .SetClientAuthenticationHost(GetUrlHostName(_authenticationUrl))
-                       .SetClientAuthenticationPort(GetUrlPort(_authenticationUrl))
-                       .SetClientAuthenticationUseSsl(UrlSchemaIsHttps(_authenticationUrl))
-                       .Build();
-
-        var serviceCollection = ConfigureServices(projectConfiguration);
-        serviceCollection.AddUofSdk(sdkConfig);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-
-        return new UofSdkWrapper(serviceProvider, _messageInterests, _outputHelper, _openSdk);
-    }
-
     public UofSdkWrapper Build()
     {
         ValidateRequiredFields();
 
-        var projectConfiguration = new ProjectConfiguration();
         var tokenSetter = UofSdk.GetConfigurationBuilder();
-        if (_clientAuthentication != null)
-        {
-            tokenSetter.SetClientAuthentication(_clientAuthentication);
-        }
+        var environmentSelector = _clientAuthentication != null
+                                      ? tokenSetter.SetClientAuthentication(_clientAuthentication)
+                                      : tokenSetter.SetAccessToken(_projectConfiguration.SdkRabbitUsername);
 
-        var configurationBuilder = GetConfigurationBuilderForTokenSetter(tokenSetter, projectConfiguration);
+        var configurationBuilder = GetConfigurationBuilderFor(environmentSelector, _projectConfiguration);
+        if (_clientAuthentication == null)
+        {
+            configurationBuilder.SetMessagingCredentials(_projectConfiguration.SdkRabbitUsername, _projectConfiguration.SdkRabbitPassword);
+        }
         if (!string.IsNullOrEmpty(_authenticationUrl))
         {
             configurationBuilder.SetClientAuthenticationHost(GetUrlHostName(_authenticationUrl))
@@ -203,8 +191,10 @@ public class UofSdkBuilder
 
         var sdkConfig = configurationBuilder.Build();
 
-        var serviceCollection = ConfigureServices(projectConfiguration);
+        var serviceCollection = ConfigureServices(_projectConfiguration);
         serviceCollection.AddUofSdk(sdkConfig);
+        var xUnitLoggerFactory = new XunitLoggerFactory(_outputHelper, LogLevel.Information);
+        serviceCollection.AddSingleton<ILoggerFactory>(xUnitLoggerFactory);
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
         return new UofSdkWrapper(serviceProvider, _messageInterests, _outputHelper, _openSdk);
@@ -229,7 +219,10 @@ public class UofSdkBuilder
     {
         ValidateRequiredFields();
 
-        var projectConfiguration = new ProjectConfiguration();
+        var projectConfiguration = ProjectConfigurationBuilder.Create()
+                                                              .UseTestRabbitConfiguration()
+                                                              .LoadConfigurationFromAppSettingsFile()
+                                                              .Build();
         var serviceCollection = ConfigureServices(projectConfiguration);
         serviceCollection.AddUofSdk(sdkConfig);
         var serviceProvider = serviceCollection.BuildServiceProvider();

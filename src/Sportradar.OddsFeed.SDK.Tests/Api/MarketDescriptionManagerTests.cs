@@ -2,7 +2,6 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
@@ -16,7 +15,7 @@ using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api;
 
-public class MarketDescriptionManagerTest
+public class MarketDescriptionManagerTests
 {
     private readonly IMarketDescriptionCache _variantMarketDescriptionCache;
     private readonly IVariantDescriptionsCache _variantDescriptionListCache;
@@ -27,7 +26,7 @@ public class MarketDescriptionManagerTest
     private readonly TestProducersProvider _producersProvider;
 
     //TODO move to integration tests
-    public MarketDescriptionManagerTest(ITestOutputHelper outputHelper)
+    public MarketDescriptionManagerTests(ITestOutputHelper outputHelper)
     {
         var loggerFactory = new XunitLoggerFactory(outputHelper);
         var testCacheStoreManager = new TestCacheStoreManager();

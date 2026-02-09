@@ -1,14 +1,23 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
+using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 using OpenTelemetry.Metrics;
 using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
+using Sportradar.OddsFeed.SDK.Api.Internal.Authentication;
+using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Managers;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Telemetry;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
@@ -28,6 +37,10 @@ public class UsageTelemetryTests
     private const int BookmakerId = 1111;
     private const int NodeId = 2222;
     private const string AccessToken = "my-access-token";
+    private const string ResponseJwtToken = "any-jwt-token";
+
+    private IServiceProvider _serviceProvider;
+    private Mock<IAuthenticationTokenCache> _mockTokenCache;
 
     [Fact]
     public void WhenSetupIsNotRunThenMeterIsInitialized()
@@ -39,10 +52,10 @@ public class UsageTelemetryTests
     public void WhenExportEndpointReachableThenCanExport()
     {
         var wireMockServer = SetupWireMockServerWithEndpoint();
+        var mockConfig = MockUofConfigurationWithAccessToken(wireMockServer, true);
+        SetupServiceProvider(mockConfig.Object);
 
-        var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, true);
-
-        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object, GetHttpClientFactory());
         var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
         testHistogram.Record(AnyRecordedValue);
 
@@ -58,10 +71,10 @@ public class UsageTelemetryTests
     public void WhenExportEndpointNotReachableThenCanNotExport()
     {
         var wireMockServer = SetupWireMockServerWithEndpoint("/non-existing-endpoint");
+        var mockConfig = MockUofConfigurationWithAccessToken(wireMockServer, true);
+        SetupServiceProvider(mockConfig.Object);
 
-        var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, true);
-
-        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object, GetHttpClientFactory());
         var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
         testHistogram.Record(AnyRecordedValue);
 
@@ -77,9 +90,10 @@ public class UsageTelemetryTests
     public void WhenMetricsExportDisabledThenMeterIsNotConfigured()
     {
         var wireMockServer = SetupWireMockServerWithEndpoint();
-        var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, false);
+        var mockConfig = MockUofConfigurationWithAccessToken(wireMockServer, false);
+        SetupServiceProvider(mockConfig.Object);
 
-        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object, GetHttpClientFactory());
 
         meterProvider.ShouldBeNull();
     }
@@ -88,9 +102,10 @@ public class UsageTelemetryTests
     public void WhenMetricsExportDisabledThenMeterObjectCanStillBeUsed()
     {
         var wireMockServer = SetupWireMockServerWithEndpoint();
-        var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, false);
+        var mockConfig = MockUofConfigurationWithAccessToken(wireMockServer, false);
+        SetupServiceProvider(mockConfig.Object);
 
-        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object, GetHttpClientFactory());
         var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
         testHistogram.Record(AnyRecordedValue);
 
@@ -212,20 +227,80 @@ public class UsageTelemetryTests
         var flushSucceeded = meterProvider.ForceFlush();
         flushSucceeded.ShouldBeTrue();
 
-        EnsureAttributeInUsageRequestHeader("x-access-token", AccessToken, wireMockServer);
         EnsureAttributeInUsageRequestHeader("x-environment", "integration", wireMockServer);
         EnsureAttributeInUsageRequestHeader("x-node-id", NodeId.ToString(), wireMockServer);
         EnsureAttributeInUsageRequestHeader("x-sdk-version", SdkInfo.GetVersion(), wireMockServer);
+        EnsureAttributeInUsageRequestHeader("x-access-token", AccessToken, wireMockServer);
     }
 
-    private static MeterProvider PrepareMeterProviderWithProducerManager(WireMockServer wireMockServer)
+    [RetryFact(3, 5000)]
+    public void WithCiamWhenExportEndpointReachableThenCanExport()
     {
-        var mockConfig = MockUofConfigurationWithStatisticsInterval(wireMockServer, true);
+        var wireMockServer = ExportMetricUsingCiamAuthentication();
+
+        var logEntries = wireMockServer.LogEntries.ToList();
+        logEntries.ShouldHaveSingleItem();
+        logEntries.First().ResponseMessage.StatusCode.ShouldBe(202);
+    }
+
+    [RetryFact(3, 5000)]
+    public void WithCiamWhenExportEndpointReachableThenAccessTokenWereObtainedFromTokenCache()
+    {
+        _ = ExportMetricUsingCiamAuthentication();
+
+        _mockTokenCache.Verify(v => v.GetTokenForApi(), Times.Once);
+    }
+
+    [RetryFact(3, 5000)]
+    public void WithCiamWhenExportEndpointReachableThenHeaderHasAllRequiredKeyValues()
+    {
+        var wireMockServer = ExportMetricUsingCiamAuthentication();
+
+        EnsureAttributeInUsageRequestHeader("x-environment", "integration", wireMockServer);
+        EnsureAttributeInUsageRequestHeader("x-node-id", NodeId.ToString(), wireMockServer);
+        EnsureAttributeInUsageRequestHeader("x-sdk-version", SdkInfo.GetVersion(), wireMockServer);
+        EnsureAttributeInUsageRequestHeader("x-access-token", ResponseJwtToken, wireMockServer);
+    }
+
+    [RetryFact(3, 5000)]
+    public async Task WithCiamWhenExportTriggeredSecondTimeThenAccessTokenIsAgainObtainedFromTokenCache()
+    {
+        var wireMockServer = ExportMetricUsingCiamAuthentication(false);
+
+        await TestExecutionHelper.WaitToCompleteAsync(() => wireMockServer.LogEntries.Count > 1).ConfigureAwait(false);
+
+        wireMockServer.LogEntries.Count.ShouldBe(2);
+        _mockTokenCache.Verify(v => v.GetTokenForApi(), Times.Exactly(2));
+    }
+
+    private WireMockServer ExportMetricUsingCiamAuthentication(bool forceFlush = true)
+    {
+        var wireMockServer = SetupWireMockServerWithEndpoint();
+        var mockConfig = MockUofConfigurationWithCiam(wireMockServer, true);
+        SetupServiceProvider(mockConfig.Object);
+
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object, GetHttpClientFactory());
+        var testHistogram = UofSdkTelemetry.DefaultMeter.CreateHistogram<long>(MetricNameForTestHistogram);
+        testHistogram.Record(AnyRecordedValue);
+
+        if (forceFlush)
+        {
+            var flushSucceeded = meterProvider.ForceFlush();
+            flushSucceeded.ShouldBeTrue();
+        }
+
+        return wireMockServer;
+    }
+
+    private MeterProvider PrepareMeterProviderWithProducerManager(WireMockServer wireMockServer)
+    {
+        var mockConfig = MockUofConfigurationWithAccessToken(wireMockServer, true);
         var mockProducerConfig = new Mock<IUofProducerConfiguration>();
         mockProducerConfig.Setup(s => s.DisabledProducers).Returns([]);
         mockProducerConfig.Setup(s => s.Producers).Returns(TestConfiguration.GetConfig().Producer.Producers);
         mockConfig.Setup(s => s.Producer).Returns(mockProducerConfig.Object);
-        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object);
+        SetupServiceProvider(mockConfig.Object);
+        var meterProvider = UsageTelemetry.SetupUsageTelemetry(mockConfig.Object, GetHttpClientFactory());
         _ = new ProducerManager(mockConfig.Object);
         return meterProvider;
     }
@@ -238,15 +313,18 @@ public class UsageTelemetryTests
         return wireMockServer;
     }
 
-    private static Mock<IUofConfiguration> MockUofConfigurationWithStatisticsInterval(WireMockServer wireMockServer, bool enableUsageExport)
+    private static Mock<IUofConfiguration> MockUofConfigurationWithAccessToken(WireMockServer wireMockServer, bool enableUsageExport)
     {
-        var mockApiConfig = new Mock<IUofApiConfiguration>();
-        mockApiConfig.Setup(s => s.Host).Returns(wireMockServer.Urls[0]);
+        var apiConfig = new UofApiConfiguration
+        {
+            Host = wireMockServer.Urls[0],
+            UseSsl = false
+        };
 
         var mockUsageConfig = new Mock<IUofUsageConfiguration>();
         mockUsageConfig.Setup(s => s.IsExportEnabled).Returns(enableUsageExport);
         mockUsageConfig.Setup(s => s.Host).Returns(wireMockServer.Urls[0]);
-        mockUsageConfig.Setup(s => s.ExportIntervalInSec).Returns(10);
+        mockUsageConfig.Setup(s => s.ExportIntervalInSec).Returns(3);
         mockUsageConfig.Setup(s => s.ExportTimeoutInSec).Returns(5);
 
         var mockBookmakerDetails = new Mock<IBookmakerDetails>();
@@ -256,9 +334,27 @@ public class UsageTelemetryTests
         mockConfig.Setup(s => s.AccessToken).Returns(AccessToken);
         mockConfig.Setup(s => s.NodeId).Returns(NodeId);
         mockConfig.Setup(s => s.Environment).Returns(SdkEnvironment.Integration);
-        mockConfig.Setup(s => s.Api).Returns(mockApiConfig.Object);
+        mockConfig.Setup(s => s.Api).Returns(apiConfig);
         mockConfig.Setup(s => s.Usage).Returns(mockUsageConfig.Object);
         mockConfig.Setup(s => s.BookmakerDetails).Returns(mockBookmakerDetails.Object);
+        mockConfig.Setup(s => s.Cache).Returns(new UofCacheConfiguration());
+        return mockConfig;
+    }
+
+    private static Mock<IUofConfiguration> MockUofConfigurationWithCiam(WireMockServer wireMockServer, bool enableUsageExport)
+    {
+        var userPrivateKey = new Mock<UofClientAuthentication.IPrivateKeyJwt>();
+        userPrivateKey.SetupGet(x => x.ClientId).Returns("client-id");
+        userPrivateKey.SetupGet(x => x.SigningKeyId).Returns("signing-key-id");
+        userPrivateKey.SetupGet(x => x.PrivateKey).Returns(new RsaSecurityKey(RSA.Create()));
+        userPrivateKey.SetupGet(x => x.Host).Returns("localhost");
+        userPrivateKey.SetupGet(x => x.Port).Returns(80);
+        userPrivateKey.SetupGet(x => x.UseSsl).Returns(false);
+
+        var mockConfig = MockUofConfigurationWithAccessToken(wireMockServer, enableUsageExport);
+        mockConfig.Setup(s => s.AccessToken).Returns((string)null);
+        mockConfig.Setup(s => s.Authentication).Returns(userPrivateKey.Object);
+
         return mockConfig;
     }
 
@@ -289,5 +385,20 @@ public class UsageTelemetryTests
 
         var usageRequestBody = Encoding.UTF8.GetString(logEntries.First().RequestMessage.BodyAsBytes!);
         usageRequestBody.ShouldNotContain(attributeName);
+    }
+
+    private void SetupServiceProvider(IUofConfiguration uofConfig)
+    {
+        _mockTokenCache = new Mock<IAuthenticationTokenCache>();
+        _mockTokenCache.Setup(s => s.GetTokenForApi()).ReturnsAsync(ResponseJwtToken);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddUofSdk(uofConfig);
+        serviceCollection.AddSingleton(_mockTokenCache.Object);
+        _serviceProvider = serviceCollection.BuildServiceProvider();
+    }
+
+    private IHttpClientFactory GetHttpClientFactory()
+    {
+        return _serviceProvider.GetRequiredService<IHttpClientFactory>();
     }
 }

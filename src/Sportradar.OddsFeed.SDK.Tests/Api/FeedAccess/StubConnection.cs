@@ -9,10 +9,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
 
 internal class StubConnection : IConnection
 {
-    private bool _onCloseThrow = false;
+    private const int DefaultChannelNumber = 10;
+
+    private bool _onCloseThrow;
 
     public int LocalPort { get; }
+
     public int RemotePort { get; }
+
     public void Dispose()
     {
     }
@@ -77,7 +81,7 @@ internal class StubConnection : IConnection
 
     public IModel CreateModel()
     {
-        return new StubChannel();
+        return new StubChannel(DefaultChannelNumber);
     }
 
     public void HandleConnectionBlocked(string reason)

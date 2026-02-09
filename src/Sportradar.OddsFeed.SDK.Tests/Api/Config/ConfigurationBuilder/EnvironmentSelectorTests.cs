@@ -7,6 +7,7 @@ using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Sdk.Config;
 using Xunit;
 
 // ReSharper disable TooManyChainedReferences
@@ -15,14 +16,14 @@ namespace Sportradar.OddsFeed.SDK.Tests.API.Config.ConfigurationBuilder;
 
 public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
 {
-    private readonly UofConfiguration _configuration = new(new TestSectionProvider(null));
+    private readonly UofConfiguration _configuration = new UofConfiguration(UofConfigurationSectionProviderBuilder.CreateWithoutSection());
     private readonly IBookmakerDetailsProvider _bookmakerDetailsProvider = new TestBookmakerDetailsProvider();
     private readonly IProducersProvider _producersProvider = new TestProducersProvider();
 
     [Fact]
     public void EnvironmentSelectorConstructWithMissingConfiguration()
     {
-        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(null, new TestSectionProvider(BaseSection), _bookmakerDetailsProvider, _producersProvider));
+        Assert.Throws<ArgumentNullException>(() => new EnvironmentSelector(null, UofConfigurationSectionProviderBuilder.CreateWithBase(), _bookmakerDetailsProvider, _producersProvider));
     }
 
     [Fact]
@@ -34,7 +35,7 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void EnvironmentSelectorConstructWithMissingBookmakerDetailsProvider()
     {
-        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), null, _producersProvider);
+        var selector = new EnvironmentSelector(_configuration, UofConfigurationSectionProviderBuilder.CreateWithBase(), null, _producersProvider);
 
         Assert.NotNull(selector);
     }
@@ -42,7 +43,7 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     [Fact]
     public void EnvironmentSelectorConstructWithMissingProducersProvider()
     {
-        var selector = new EnvironmentSelector(_configuration, new TestSectionProvider(BaseSection), _bookmakerDetailsProvider, null);
+        var selector = new EnvironmentSelector(_configuration, UofConfigurationSectionProviderBuilder.CreateWithBase(), _bookmakerDetailsProvider, null);
 
         Assert.NotNull(selector);
     }
@@ -171,7 +172,7 @@ public class EnvironmentSelectorTests : ConfigurationBuilderWithSectionSetup
     // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
     private static void VerifyConfig(IUofConfiguration config, SdkEnvironment environment, CultureInfo baseLanguage)
     {
-        Assert.Equal(TestAccessToken, config.AccessToken);
+        Assert.Equal(TestConsts.AnyAccessToken, config.AccessToken);
         Assert.Equal(baseLanguage, config.DefaultLanguage);
         Assert.Single(config.Languages);
         Assert.Equal(baseLanguage, config.Languages[0]);

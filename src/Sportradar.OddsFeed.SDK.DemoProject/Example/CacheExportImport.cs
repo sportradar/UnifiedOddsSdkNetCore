@@ -1,5 +1,8 @@
+// Copyright (C) Sportradar AG.See LICENSE for full license governing this code
+
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +34,11 @@ public class CacheExportImport : ExampleBase
         Log.LogInformation("Running the Cache export/import example");
 
         Log.LogInformation("Retrieving configuration from application configuration file");
-        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication).BuildFromConfigFile();
+        var configuration = UofSdk.GetConfigurationBuilder().SetClientAuthentication(_clientAuthentication)
+                                  .SelectEnvironment(SdkEnvironment.GlobalIntegration)
+                                  .SetDefaultLanguage(CultureInfo.GetCultureInfo("en"))
+                                  .SetNodeId(457)
+                                  .Build();
 
         var uofSdk = RegisterServicesAndGetUofSdk(configuration);
 
