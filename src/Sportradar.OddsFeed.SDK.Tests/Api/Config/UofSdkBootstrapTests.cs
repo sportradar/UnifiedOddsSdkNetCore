@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry.Metrics;
+using RabbitMQ.Client;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Extended;
@@ -235,6 +237,31 @@ public class UofSdkBootstrapTests : UofSdkBootstrapBase
         Assert.NotNull(sdkTimer2);
         Assert.NotSame(sdkTimer1, sdkTimer2);
         Assert.NotStrictEqual(sdkTimer1, sdkTimer2);
+    }
+
+    [Fact]
+    public void ConnectionFactoryIsSingleton()
+    {
+        CheckSingletonType<IConnectionFactory>();
+    }
+
+    [Fact]
+    public void ConnectionFactoryIsConfigured()
+    {
+        var configuredConnectionFactory = ServiceScope1.ServiceProvider.GetService<ConfiguredConnectionFactory>();
+        var connectionFactory = configuredConnectionFactory.ConnectionFactory;
+
+        connectionFactory.ShouldNotBeNull();
+        connectionFactory.UserName.ShouldBe(UofConfig.Rabbit.Username);
+        connectionFactory.Password.ShouldBe(UofConfig.Rabbit.Password ?? string.Empty);
+        connectionFactory.VirtualHost.ShouldBe(UofConfig.Rabbit.VirtualHost);
+        connectionFactory.ClientProperties.ShouldNotBeNull();
+        connectionFactory.ClientProperties.ShouldNotBeEmpty();
+        connectionFactory.ClientProperties.ContainsKey("SrUfSdkType").ShouldBeTrue();
+        connectionFactory.ClientProperties.ContainsKey("SrUfSdkVersion").ShouldBeTrue();
+        connectionFactory.ClientProperties.ContainsKey("SrUfSdkInit").ShouldBeTrue();
+        connectionFactory.ClientProperties.ContainsKey("SrUfSdkConnName").ShouldBeTrue();
+        connectionFactory.ClientProperties.ContainsKey("SrUfSdkBId").ShouldBeTrue();
     }
 
     [Fact]

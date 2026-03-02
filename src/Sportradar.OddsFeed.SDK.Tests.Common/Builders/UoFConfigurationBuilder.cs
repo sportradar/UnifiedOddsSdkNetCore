@@ -182,9 +182,57 @@ public class UofConfigurationBuilder
 
     public class RabbitConfigBuilder
     {
+        private readonly Mock<IUofRabbitConfiguration> _rabbitMock = new Mock<IUofRabbitConfiguration>();
+
+        public RabbitConfigBuilder WithUsername(string username)
+        {
+            return Set(x => x.Username, username);
+        }
+
+        public RabbitConfigBuilder WithPassword(string password)
+        {
+            return Set(x => x.Password, password);
+        }
+
+        public RabbitConfigBuilder WithHost(string host)
+        {
+            return Set(x => x.Host, host);
+        }
+
+        public RabbitConfigBuilder WithUseSsl(bool useSsl)
+        {
+            return Set(x => x.UseSsl, useSsl);
+        }
+
+        public RabbitConfigBuilder WithConnectionTimeout(TimeSpan timeout)
+        {
+            return Set(x => x.ConnectionTimeout, timeout);
+        }
+
+        public RabbitConfigBuilder WithHeartbeat(TimeSpan timeout)
+        {
+            return Set(x => x.Heartbeat, timeout);
+        }
+
+        public RabbitConfigBuilder WithPort(int port)
+        {
+            return Set(x => x.Port, port);
+        }
+
+        public RabbitConfigBuilder WithVirtualHost(string virtualHost)
+        {
+            return Set(x => x.VirtualHost, virtualHost);
+        }
+
         public IUofRabbitConfiguration Build()
         {
-            return new Mock<IUofRabbitConfiguration>().Object;
+            return _rabbitMock.Object;
+        }
+
+        private RabbitConfigBuilder Set<T>(Expression<Func<IUofRabbitConfiguration, T>> prop, T value)
+        {
+            _rabbitMock.SetupGet(prop).Returns(value);
+            return this;
         }
     }
 

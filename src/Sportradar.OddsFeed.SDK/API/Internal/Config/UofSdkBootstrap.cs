@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
@@ -344,7 +345,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
         private static void RegisterBaseRabbitClasses(IServiceCollection services)
         {
-            services.AddSingleton<ConfiguredConnectionFactory, ConfiguredConnectionFactory>();
+            services.AddSingleton<IConnectionFactory>(serviceProvider => ConfiguredConnectionFactory.CreateConnectionFactoryWithImmutableFields(serviceProvider.GetRequiredService<IUofConfiguration>()));
+            services.AddSingleton<ConfiguredConnectionFactory>();
             services.AddSingleton<IChannelFactory, ChannelFactory>();
             services.AddSingleton<ConnectionValidator, ConnectionValidator>();
             services.AddSingleton<IDeserializer<FeedMessage>, Deserializer<FeedMessage>>();
@@ -377,7 +379,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                       new RabbitMqChannel(serviceProvider.GetRequiredService<IChannelFactory>(),
                                                                                           serviceProvider.GetSdkTimer(TimerForRabbitChannel),
                                                                                           TimeSpan.FromSeconds(ConfigLimit.RabbitMaxTimeBetweenMessages),
-                                                                                          serviceProvider.GetRequiredService<IUofConfiguration>().AccessToken));
+                                                                                          serviceProvider.GetRequiredService<IUofConfiguration>().AccessToken,
+                                                                                          serviceProvider.GetRequiredService<ILogger<RabbitMqChannel>>()));
 
             services.AddScoped<IMessageReceiver, RabbitMqMessageReceiver>();
 

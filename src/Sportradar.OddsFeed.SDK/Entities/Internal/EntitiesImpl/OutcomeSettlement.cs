@@ -42,8 +42,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl
                 case 1:
                     OutcomeResult = OutcomeResult.Won;
                     break;
-                default:
+                case -1:
                     OutcomeResult = OutcomeResult.UndecidedYet;
+                    break;
+                default:
+                    OutcomeResult = OutcomeResult.UnsupportedBySdk;
                     break;
             }
         }

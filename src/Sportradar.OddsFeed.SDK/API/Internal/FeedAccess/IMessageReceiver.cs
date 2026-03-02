@@ -16,7 +16,7 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess
         /// <summary>
         /// Gets a value indicating whether the current <see cref="IMessageReceiver"/> is currently opened;
         /// </summary>
-        bool IsOpened { get; }
+        bool IsChannelOpened { get; }
 
         /// <summary>
         /// Event raised when the <see cref="IMessageReceiver"/> receives the message

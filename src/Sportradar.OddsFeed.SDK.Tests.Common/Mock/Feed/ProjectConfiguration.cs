@@ -16,7 +16,7 @@ public class ProjectConfiguration
     public string SdkRabbitPassword { get; }
     public string DefaultAdminRabbitUserName { get; }
     public string DefaultAdminRabbitPassword { get; }
-    public string VirtualHostName { get; }
+    public string VirtualHostName { get; private set; }
     public string UfExchange { get; }
     public IConfiguration Configuration { get; }
 
@@ -37,12 +37,20 @@ public class ProjectConfiguration
         UfExchange = Configuration["Rabbit::ExchangeName"] ?? "unifiedfeed";
     }
 
+    public static ProjectConfiguration CreateWithRandomVirtualHost()
+    {
+        var projectConfig = new ProjectConfiguration
+        {
+            VirtualHostName = $"/virtualhost_{Guid.NewGuid().ToString()[..8]}"
+        };
+        return projectConfig;
+    }
+
     public string GetRabbitIp()
     {
         var envRabbitIp = Environment.GetEnvironmentVariable("RABBITMQ_IP");
 
         return envRabbitIp ?? LocalRabbitIp ?? GetLocalIpAddress();
-        //return envRabbitIp ?? GetLocalIpAddress() ?? LocalRabbitIp;
     }
 
     private static string GetLocalIpAddress()

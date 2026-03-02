@@ -1,13 +1,13 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Api.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Enums;
 using Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl;
 using Sportradar.OddsFeed.SDK.Entities.Rest;
@@ -186,6 +186,39 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 cultures);
         }
 
+        public IMarketCancel GetMarketForRollbackSettlement(ISportEvent sportEvent, market market, int producerId, Urn sportId, IReadOnlyCollection<CultureInfo> cultures)
+        {
+            _ = Guard.Argument(sportEvent, nameof(sportEvent)).NotNull();
+            _ = Guard.Argument(market, nameof(market)).NotNull();
+
+            var specifiers = SdkInfo.SpecifiersStringToDictionary(market.specifiers);
+
+            var additionalInfo = SdkInfo.SpecifiersStringToDictionary(market.extended_specifiers);
+
+            var marketDefinition = new MarketDefinition(market.id, _marketCacheProvider, sportId, producerId, specifiers, cultures, _externalExceptionStrategy);
+
+            var nameProvider = _nameProviderFactory.BuildNameProvider(sportEvent, market.id, specifiers);
+            var mappingProvider = _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, market.id, specifiers, producerId, sportId);
+
+            var outcomes = market.outcome?.Select(outcome => new OutcomeRollbackSettlement(outcome.id,
+                                                                                              nameProvider,
+                                                                                              mappingProvider,
+                                                                                              cultures,
+                                                                                              new OutcomeDefinition(market.id, outcome.id, _marketCacheProvider, specifiers, cultures, _externalExceptionStrategy)))
+                                 .ToList();
+
+            return new MarketRollbackSettlement(market.id,
+                                                   specifiers,
+                                                   additionalInfo,
+                                                   _nameProviderFactory.BuildNameProvider(sportEvent, market.id, specifiers),
+                                                   _mappingProviderFactory.BuildMarketMappingProvider(sportEvent, market.id, specifiers, producerId, sportId),
+                                                   marketDefinition,
+                                                   market.void_reasonSpecified ? market.void_reason : (int?)null,
+                                                   _voidReasonCache,
+                                                   cultures,
+                                                   outcomes);
+        }
+
         private static IOutcomeOdds GetOutcomeWithOdds(ISportEvent sportEvent,
                                                        INameProvider nameProvider,
                                                        IMarketMappingProvider mappingProvider,
@@ -262,10 +295,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                 outcome.refund_probabilitiesSpecified ? outcome.refund_probabilities : (double?)null);
         }
 
-        [SuppressMessage("ReSharper", "ArrangeRedundantParentheses")]
         private static MarketMetadata GetMarketMetadata(marketMetadata marketMetadata)
         {
             return marketMetadata == null ||
+                   // ReSharper disable once ArrangeRedundantParentheses
                    (!marketMetadata.aams_idSpecified
                     && !marketMetadata.start_timeSpecified
                     && !marketMetadata.end_timeSpecified

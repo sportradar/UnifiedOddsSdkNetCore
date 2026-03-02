@@ -2,40 +2,48 @@
 
 using System;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 using Sportradar.OddsFeed.SDK.Common.Internal;
-using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
 using Xunit;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
 
 public class ConfiguredConnectionFactoryTests
 {
+    private readonly IUofConfiguration _defaultConfig = UofConfigurations.SingleLanguage;
+
+    [Fact]
+    public void ConstructorWithoutConnectionFactoryThrows()
+    {
+        Assert.Throws<ArgumentNullException>(() => new ConfiguredConnectionFactory(null, _defaultConfig, new NullLogger<ConfiguredConnectionFactory>()));
+    }
+
     [Fact]
     public void ConstructorWithoutConfigurationThrows()
     {
-        Assert.Throws<ArgumentNullException>(() => new ConfiguredConnectionFactory(null, new NullLogger<ConfiguredConnectionFactory>()));
+        Assert.Throws<ArgumentNullException>(() => new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), null, new NullLogger<ConfiguredConnectionFactory>()));
     }
 
     [Fact]
     public void ConstructorWithoutLoggerThrows()
     {
-        Assert.Throws<ArgumentNullException>(() => new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), null));
+        Assert.Throws<ArgumentNullException>(() => new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, null));
     }
 
     [Fact]
     public void ConstructorCreatesConnectionFactory()
     {
-        var config = TestConfiguration.GetConfig();
-        if (config.Rabbit is UofRabbitConfiguration rabbitConfig)
+        if (_defaultConfig.Rabbit is UofRabbitConfiguration rabbitConfig)
         {
             rabbitConfig.ConnectionTimeout = TimeSpan.FromSeconds(27);
             rabbitConfig.Heartbeat = TimeSpan.FromSeconds(17);
         }
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(config, new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
 
         Assert.NotNull(configuredConnectionFactory);
         Assert.NotNull(configuredConnectionFactory.ConnectionFactory);
@@ -43,13 +51,13 @@ public class ConfiguredConnectionFactoryTests
         Assert.False(configuredConnectionFactory.IsConnected());
 
         ValidateBaseConfigurationFactory(configuredConnectionFactory.ConnectionFactory);
-        ValidateConfigurationFactoryWithUofConfiguration(configuredConnectionFactory.ConnectionFactory, config);
+        ValidateConfigurationFactoryWithUofConfiguration(configuredConnectionFactory.ConnectionFactory, _defaultConfig);
     }
 
     [Fact]
     public void CreatingConnectionSucceeds()
     {
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         var stubConnection = GetEmptyStubConnection(configuredConnectionFactory);
 
         Assert.NotNull(stubConnection);
@@ -60,7 +68,7 @@ public class ConfiguredConnectionFactoryTests
     [Fact]
     public void CreatingConnectionMultipleTimesReturnsFirstInstance()
     {
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         var stubConnection1 = GetEmptyStubConnection(configuredConnectionFactory);
         var stubConnection2 = GetEmptyStubConnection(configuredConnectionFactory);
 
@@ -74,7 +82,7 @@ public class ConfiguredConnectionFactoryTests
     public void CreatingConnectionAttachesTheBlockEvent()
     {
         var isConnectionBlocked = false;
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         configuredConnectionFactory.ConnectionBlocked += (_, _) => isConnectionBlocked = true;
         var stubConnection = GetEmptyStubConnection(configuredConnectionFactory);
 
@@ -87,7 +95,7 @@ public class ConfiguredConnectionFactoryTests
     public void CreatingConnectionAttachesTheUnblockEvent()
     {
         var isConnectionUnblocked = false;
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         configuredConnectionFactory.ConnectionUnblocked += (_, _) => isConnectionUnblocked = true;
         var stubConnection = GetEmptyStubConnection(configuredConnectionFactory);
 
@@ -100,7 +108,7 @@ public class ConfiguredConnectionFactoryTests
     public void CreatingConnectionAttachesTheShutdownEvent()
     {
         var isConnectionShutdown = false;
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         configuredConnectionFactory.ConnectionShutdown += (_, _) => isConnectionShutdown = true;
         var stubConnection = GetEmptyStubConnection(configuredConnectionFactory);
 
@@ -113,7 +121,7 @@ public class ConfiguredConnectionFactoryTests
     public void CreatingConnectionAttachesTheCallbackEvent()
     {
         var callbackExceptionInvoked = false;
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         configuredConnectionFactory.CallbackException += (_, _) => callbackExceptionInvoked = true;
         var stubConnection = GetEmptyStubConnection(configuredConnectionFactory);
 
@@ -125,7 +133,7 @@ public class ConfiguredConnectionFactoryTests
     [Fact]
     public void ClosingExistingConnectionSucceeds()
     {
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         GetEmptyStubConnection(configuredConnectionFactory);
 
         Assert.True(configuredConnectionFactory.IsConnected());
@@ -139,7 +147,7 @@ public class ConfiguredConnectionFactoryTests
     [Fact]
     public void ClosingNonExistingConnectionSucceeds()
     {
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
 
         Assert.False(configuredConnectionFactory.IsConnected());
 
@@ -152,7 +160,7 @@ public class ConfiguredConnectionFactoryTests
     [Fact]
     public void DisposeClosesConnection()
     {
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         GetEmptyStubConnection(configuredConnectionFactory);
 
         Assert.True(configuredConnectionFactory.IsConnected());
@@ -166,7 +174,7 @@ public class ConfiguredConnectionFactoryTests
     [Fact]
     public void DisposeMultipleTimesDisposesJustOnce()
     {
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         GetEmptyStubConnection(configuredConnectionFactory);
 
         Assert.True(configuredConnectionFactory.IsConnected());
@@ -182,7 +190,7 @@ public class ConfiguredConnectionFactoryTests
     public void ExceptionDuringReleasingConnectionIsHandled()
     {
         var shutdownInvoked = false;
-        var configuredConnectionFactory = new ConfiguredConnectionFactory(TestConfiguration.GetConfig(), new NullLogger<ConfiguredConnectionFactory>());
+        var configuredConnectionFactory = new ConfiguredConnectionFactory(SetupMockConnectionFactoryWith(_defaultConfig), _defaultConfig, new NullLogger<ConfiguredConnectionFactory>());
         configuredConnectionFactory.ConnectionShutdown += (_, _) => shutdownInvoked = true;
         var stubConnection = GetEmptyStubConnection(configuredConnectionFactory);
 
@@ -194,13 +202,13 @@ public class ConfiguredConnectionFactoryTests
         Assert.False(configuredConnectionFactory.IsConnected());
     }
 
-    private StubConnection GetEmptyStubConnection(ConfiguredConnectionFactory configuredConnectionFactory)
+    private static StubConnection GetEmptyStubConnection(ConfiguredConnectionFactory configuredConnectionFactory)
     {
         configuredConnectionFactory.ConnectionFactory = new StubConnectionFactory();
         return (StubConnection)configuredConnectionFactory.CreateConnection();
     }
 
-    private void ValidateBaseConfigurationFactory(IConnectionFactory connectionFactory)
+    private static void ValidateBaseConfigurationFactory(IConnectionFactory connectionFactory)
     {
         Assert.NotNull(connectionFactory);
         Assert.NotNull(connectionFactory.ClientProperties);
@@ -213,7 +221,7 @@ public class ConfiguredConnectionFactoryTests
         Assert.Contains("SrUfSdkBId", connectionFactory.ClientProperties);
     }
 
-    private void ValidateConfigurationFactoryWithUofConfiguration(IConnectionFactory connectionFactory, IUofConfiguration configuration)
+    private static void ValidateConfigurationFactoryWithUofConfiguration(IConnectionFactory connectionFactory, IUofConfiguration configuration)
     {
         Assert.NotNull(connectionFactory);
         Assert.NotNull(configuration);
@@ -229,5 +237,18 @@ public class ConfiguredConnectionFactoryTests
         }
         Assert.Equal(configuration.Rabbit.VirtualHost, connectionFactory.VirtualHost);
         Assert.Equal(configuration.Rabbit.Heartbeat, connectionFactory.RequestedHeartbeat);
+    }
+
+    private static IConnectionFactory SetupMockConnectionFactoryWith(IUofConfiguration uofConfig)
+    {
+        var mockConnectionFactory = new Mock<IConnectionFactory>();
+        mockConnectionFactory.SetupGet(g => g.ClientProperties).Returns(ConfiguredConnectionFactory.GetClientPropertiesWithSdkInfo(uofConfig));
+        mockConnectionFactory.SetupGet(g => g.ClientProvidedName).Returns($"UofSdk / {SdkInfo.SdkType}");
+        mockConnectionFactory.SetupGet(g => g.UserName).Returns(uofConfig.Rabbit.Username);
+        mockConnectionFactory.SetupGet(g => g.Password).Returns(uofConfig.Rabbit.Password ?? string.Empty);
+        mockConnectionFactory.SetupGet(g => g.VirtualHost).Returns(uofConfig.Rabbit.VirtualHost);
+        mockConnectionFactory.SetupGet(g => g.RequestedHeartbeat).Returns(uofConfig.Rabbit.Heartbeat);
+
+        return mockConnectionFactory.Object;
     }
 }

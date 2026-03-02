@@ -2,76 +2,109 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using Moq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Shouldly;
 using Sportradar.OddsFeed.SDK.Api.Config;
 using Sportradar.OddsFeed.SDK.Api.Internal.FeedAccess;
 using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed.Messages;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed.Messages;
+using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
 
 public class RabbitMqMessageReceiverTests
 {
+    private const int UnknownProducerId = 9999;
     private readonly IMessageReceiver _messageReceiver;
-    private readonly Mock<IRabbitMqChannel> _mock;
+    private readonly Mock<IRabbitMqChannel> _mockRabbitChannel;
+    private readonly XunitLoggerFactory _loggerFactory;
 
-    public RabbitMqMessageReceiverTests()
+    public RabbitMqMessageReceiverTests(ITestOutputHelper testOutputHelper)
     {
         var deserializer = new Deserializer<FeedMessage>();
         var keyParser = new RegexRoutingKeyParser();
-        _mock = new Mock<IRabbitMqChannel>();
+        _mockRabbitChannel = new Mock<IRabbitMqChannel>();
+        _loggerFactory = new XunitLoggerFactory(testOutputHelper);
 
-        _messageReceiver = new RabbitMqMessageReceiver(_mock.Object, deserializer, keyParser, TestProducerManager.Create(), TestConfiguration.GetConfig());
-    }
-
-    private static byte[] GetFileContent(string fileName)
-    {
-        var stream = FileHelper.OpenFile(TestData.FeedXmlPath, fileName);
-        using (var ms = new MemoryStream())
-        {
-            stream.CopyTo(ms);
-            return ms.ToArray();
-        }
+        _messageReceiver = new RabbitMqMessageReceiver(_mockRabbitChannel.Object, deserializer, keyParser, TestProducerManager.Create(), TestConfiguration.GetConfig(), _loggerFactory);
     }
 
     [Fact]
-    public void NullOrEmptyDataDoesNotRaiseDeserializationFailedEvent()
+    public void WhenReceiverIsOpenedAndChannelIsOpenedThenItIndicatesViaOpenedProperty()
     {
+        var isOpened = false;
+        _mockRabbitChannel.Setup(x => x.Open(It.IsAny<MessageInterest>(), It.IsAny<IEnumerable<string>>()))
+            .Callback(() => isOpened = true);
+        _mockRabbitChannel.Setup(x => x.IsOpened).Returns(() => isOpened);
+
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
 
-        var deserializationFailed = false;
-
-        _messageReceiver.FeedMessageDeserializationFailed += (sender, args) => { deserializationFailed = true; };
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, null));
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, Array.Empty<byte>()));
-
-        Assert.False(deserializationFailed, "deserializationFailed should be false");
+        _messageReceiver.IsChannelOpened.ShouldBeTrue();
     }
 
     [Fact]
-    public void EventsAreNotRaisedBeforeTheReceiverIsOpened()
+    public void NullBodyDataDoesNotRaiseDeserializationFailedEvent()
+    {
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+        var deserializationFailed = false;
+        _messageReceiver.FeedMessageDeserializationFailed += (_, _) => { deserializationFailed = true; };
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, null));
+
+        deserializationFailed.ShouldBeFalse("deserializationFailed should be false");
+    }
+
+    [Fact]
+    public void EmptyBodyDataDoesNotRaiseDeserializationFailedEvent()
+    {
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+        var deserializationFailed = false;
+        _messageReceiver.FeedMessageDeserializationFailed += (_, _) => { deserializationFailed = true; };
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, Array.Empty<byte>()));
+
+        deserializationFailed.ShouldBeFalse("deserializationFailed should be false");
+    }
+
+    [Fact]
+    public void ReceivedEventCanNotBeRaisedBeforeTheReceiverIsOpened()
     {
         var messageReceived = false;
+        var messageData = GetFeedMessageBodyForOddsChange();
+        _messageReceiver.FeedMessageReceived += (_, _) => { messageReceived = true; };
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, messageData));
+
+        messageReceived.ShouldBeFalse("messageReceived should be false");
+    }
+
+    [Fact]
+    public void DeserializationFailedEventCanNotBeRaisedBeforeTheReceiverIsOpened()
+    {
         var deserializationFailed = false;
+        _messageReceiver.FeedMessageDeserializationFailed += (_, _) => { deserializationFailed = false; };
 
-        var messageData = GetFileContent("odds_change.xml");
-        _messageReceiver.FeedMessageReceived += (sender, args) => { messageReceived = true; };
-        _messageReceiver.FeedMessageDeserializationFailed += (sender, args) => { deserializationFailed = false; };
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, new[] { (byte)1 }));
 
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, messageData));
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, new[] { (byte)1 }));
-
-        Assert.False(messageReceived, "messageReceived should be false");
-        Assert.False(deserializationFailed, "deserializationFailed should be false");
+        deserializationFailed.ShouldBeFalse("deserializationFailed should be false");
     }
 
     [Fact]
@@ -79,26 +112,35 @@ public class RabbitMqMessageReceiverTests
     {
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
         _messageReceiver.Close();
-        EventsAreNotRaisedBeforeTheReceiverIsOpened();
+        ReceivedEventCanNotBeRaisedBeforeTheReceiverIsOpened();
+        DeserializationFailedEventCanNotBeRaisedBeforeTheReceiverIsOpened();
     }
 
     [Fact]
-    public void EventsAreRaisedWhenTheReceiverIsOpened()
+    public void ReceivedEventCanBeRaisedWhenTheReceiverIsOpened()
     {
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
 
         var messageReceived = false;
+        var messageData = GetFeedMessageBodyForOddsChange();
+        _messageReceiver.FeedMessageReceived += (_, _) => { messageReceived = true; };
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, messageData));
+
+        messageReceived.ShouldBeTrue("messageReceived should be true");
+    }
+
+    [Fact]
+    public void DeserializationEventCanBeRaisedWhenTheReceiverIsOpened()
+    {
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
         var deserializationFailed = false;
+        _messageReceiver.FeedMessageDeserializationFailed += (_, _) => { deserializationFailed = true; };
 
-        var messageData = GetFileContent("odds_change.xml");
-        _messageReceiver.FeedMessageReceived += (sender, args) => { messageReceived = true; };
-        _messageReceiver.FeedMessageDeserializationFailed += (sender, args) => { deserializationFailed = true; };
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, new[] { (byte)1 }));
 
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, messageData));
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, new[] { (byte)1 }));
-
-        Assert.True(messageReceived, "messageReceived should be true");
-        Assert.True(deserializationFailed, "deserializationFailed should be true");
+        deserializationFailed.ShouldBeTrue("deserializationFailed should be true");
     }
 
     [Fact]
@@ -106,34 +148,35 @@ public class RabbitMqMessageReceiverTests
     {
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
         _messageReceiver.Close();
-        EventsAreRaisedWhenTheReceiverIsOpened();
+        ReceivedEventCanBeRaisedWhenTheReceiverIsOpened();
     }
 
     [Fact]
-    public void MessageReceivedEventIsRaisedForOddsChange()
+    public void MessageSportIdIsExtractedFromRoutingKey()
     {
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
         const string routingKey = "hi.-.live.odds_change.2.sr:match.9900415";
+        var expectedSportId = Urn.Parse("sr:sport:2");
         FeedMessage message = null;
 
-        _messageReceiver.FeedMessageReceived += (sender, args) => { message = args.Message; };
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", routingKey, null, GetFileContent("odds_change.xml")));
+        _messageReceiver.FeedMessageReceived += (_, args) => { message = args.Message; };
+        _mockRabbitChannel.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", routingKey, null, GetFeedMessageBodyForOddsChange()));
 
-        Assert.NotNull(message);
-        var expectedSportId = Urn.Parse("sr:sport:2");
-        Assert.Equal(expectedSportId, message.SportId);
+        message.ShouldNotBeNull();
+        message.SportId.ShouldBe(expectedSportId);
     }
 
     [Fact]
-    public void MessageReceivedEventIsRaisedForNullRoutingKey()
+    public void WhenNullRoutingKeyThenMessageIsStillReceivedAndSportIdIsNull()
     {
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
-        var eventRaised = false;
+        FeedMessage message = null;
 
-        _messageReceiver.FeedMessageReceived += (sender, args) => { eventRaised = true; };
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, GetFileContent("odds_change.xml")));
+        _messageReceiver.FeedMessageReceived += (_, args) => { message = args.Message; };
+        _mockRabbitChannel.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, GetFeedMessageBodyForOddsChange()));
 
-        Assert.True(eventRaised, "eventRaised flag should be set to true");
+        message.ShouldNotBeNull();
+        message.SportId.ShouldBeNull();
     }
 
     [Fact]
@@ -142,10 +185,10 @@ public class RabbitMqMessageReceiverTests
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
         var eventRaised = false;
 
-        _messageReceiver.FeedMessageReceived += (sender, args) => { eventRaised = true; };
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", "routing_key", null, GetFileContent("odds_change.xml")));
+        _messageReceiver.FeedMessageReceived += (_, _) => { eventRaised = true; };
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, GetFeedMessageBodyForOddsChange()));
 
-        Assert.True(eventRaised, "eventRaised flag should be set to true");
+        eventRaised.ShouldBeTrue("eventRaised flag should be set to true");
     }
 
     [Fact]
@@ -156,11 +199,10 @@ public class RabbitMqMessageReceiverTests
         byte[] data = null;
         var messageData = new byte[] { 1, 2, 3, 4, 100, 99 };
 
-        _messageReceiver.FeedMessageDeserializationFailed += (sender, args) => { data = args.RawData.ToArray(); };
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, null, messageData));
+        _messageReceiver.FeedMessageDeserializationFailed += (_, args) => { data = args.RawData.ToArray(); };
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(null, messageData));
 
-        var areEqual = messageData.SequenceEqual(data);
-        Assert.True(areEqual, "both arrays should be equal");
+        data.ShouldBe(messageData);
     }
 
     [Fact]
@@ -168,16 +210,18 @@ public class RabbitMqMessageReceiverTests
     {
         FeedMessage receivedMessage = null;
         var sentTimestamp = DateTime.Now.Ticks;
-        var messageData = GetFileContent("odds_change.xml");
-        var basicProperties = GetBasicProperties(new Dictionary<string, object> { { "timestamp_in_ms", sentTimestamp } });
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        var xmlBody = FeedMessageBuilder.BuildMessageBody(oddsChange);
+        var messageData = Encoding.UTF8.GetBytes(xmlBody);
+        var basicProperties = GetBasicPropertiesWithHeader(new Dictionary<string, object> { { "timestamp_in_ms", sentTimestamp } });
         _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
 
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
 
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, basicProperties, messageData));
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(basicProperties, messageData));
 
-        Assert.Equal(1487254396715, receivedMessage.GeneratedAt);
-        Assert.Equal(sentTimestamp, receivedMessage.SentAt);
+        receivedMessage.GeneratedAt.ShouldBe(oddsChange.GeneratedAt);
+        receivedMessage.SentAt.ShouldBe(sentTimestamp);
     }
 
     [Fact]
@@ -185,16 +229,16 @@ public class RabbitMqMessageReceiverTests
     {
         FeedMessage receivedMessage = null;
         var sentTimestamp = DateTime.Now.Ticks;
-        var messageData = GetFileContent("odds_change.xml");
-        var basicProperties = GetBasicProperties(new Dictionary<string, object> { { "time_in_ms", sentTimestamp } });
+        var messageData = GetFeedMessageBodyForOddsChange();
+        var basicProperties = GetBasicPropertiesWithHeader(new Dictionary<string, object> { { "time_in_ms", sentTimestamp } });
         _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
 
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
 
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, basicProperties, messageData));
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(basicProperties, messageData));
 
-        Assert.NotNull(receivedMessage);
-        Assert.Equal(receivedMessage.GeneratedAt + 1, receivedMessage.SentAt);
+        receivedMessage.ShouldNotBeNull();
+        receivedMessage.SentAt.ShouldBe(receivedMessage.GeneratedAt + 1);
     }
 
     [Fact]
@@ -202,19 +246,425 @@ public class RabbitMqMessageReceiverTests
     {
         FeedMessage receivedMessage = null;
         var sentTimestamp = "some-sent-timestamp";
-        var messageData = GetFileContent("odds_change.xml");
-        var basicProperties = GetBasicProperties(new Dictionary<string, object> { { "timestamp_in_ms", sentTimestamp } });
+        var messageData = GetFeedMessageBodyForOddsChange();
+        var basicProperties = GetBasicPropertiesWithHeader(new Dictionary<string, object> { { "timestamp_in_ms", sentTimestamp } });
         _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
 
         _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
 
-        _mock.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", null, basicProperties, messageData));
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(basicProperties, messageData));
 
-        Assert.NotNull(receivedMessage);
-        Assert.Equal(receivedMessage.GeneratedAt + 1, receivedMessage.SentAt);
+        receivedMessage.ShouldNotBeNull();
+        receivedMessage.SentAt.ShouldBe(receivedMessage.GeneratedAt + 1);
     }
 
-    private IBasicProperties GetBasicProperties(IDictionary<string, object> headers = null)
+    [Fact]
+    public void WhenReceiverIsOpenedWithoutMessageInterestThenIsSystem()
+    {
+        FeedMessage receivedMessage = null;
+        var aliveMessage = FeedMessageBuilder.Create(1).BuildAlive(1);
+        _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _messageReceiver.Open(null, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(aliveMessage));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(FeedTraffic));
+        execLogger.Messages.ShouldBeOfSize(1);
+        execLogger.Messages.Count(m => m.Contains("<~> system <~>")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenBetStopProcessingIsLongThenIsLogged()
+    {
+        FeedMessage receivedMessage = null;
+        var betStop = FeedMessageBuilder.Create(1).BuildBetStop(1);
+        var messageReceiver = OpenMessageReceiverWithLongProcessing();
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(betStop));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Deserialization of")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Markets=0")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Outcomes=0")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenOddsChangeProcessingIsLongThenIsLoggedWithMarkets()
+    {
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        var messageReceiver = OpenMessageReceiverWithLongProcessing();
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Deserialization of")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Markets=1")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Outcomes=2")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenOddsChangeProcessingIsLongAndHasNoMarketsThenIsLoggedWithMarkets()
+    {
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        oddsChange.odds.market = null;
+        var messageReceiver = OpenMessageReceiverWithLongProcessing();
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Deserialization of")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Markets=0")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Outcomes=0")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenOddsChangeProcessingIsLongAndHasNoOddsThenIsLoggedWithMarkets()
+    {
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        oddsChange.odds = null;
+        var messageReceiver = OpenMessageReceiverWithLongProcessing();
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Deserialization of")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Markets=0")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Outcomes=0")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenBetSettlementProcessingIsLongThenIsLoggedWithMarkets()
+    {
+        FeedMessage receivedMessage = null;
+        var betSettlement = BetSettlementBuilder.CreateForSportEvent("sr:match:12345")
+                                                .WithSportId(UrnCreate.SportId(1))
+                                                .WithProducerId(1)
+                                                .WithTimestamp(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
+                                                .AddMarket(1, "type=correct_score")
+                                                .AddOutcome(1, 1)
+                                                .AddOutcome(2, 2)
+                                                .AddOutcome(3, 5)
+                                                .Build();
+        var messageReceiver = OpenMessageReceiverWithLongProcessing();
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(betSettlement));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Deserialization of")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Markets=1")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Outcomes=3")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenBetSettlementProcessingIsLongAndHasNoMarketsThenIsLoggedWithMarkets()
+    {
+        FeedMessage receivedMessage = null;
+        var betSettlement = BetSettlementBuilder.CreateForSportEvent("sr:match:12345")
+                                                .WithSportId(UrnCreate.SportId(1))
+                                                .WithProducerId(1)
+                                                .WithTimestamp(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
+                                                .Build();
+        var messageReceiver = OpenMessageReceiverWithLongProcessing();
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(betSettlement));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Deserialization of")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Markets=0")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Outcomes=0")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenBetSettlementProcessingIsLongAndHasNoOutcomesThenIsLoggedWithMarkets()
+    {
+        FeedMessage receivedMessage = null;
+        var betSettlement = BetSettlementBuilder.CreateForSportEvent("sr:match:12345")
+                                                .WithSportId(UrnCreate.SportId(1))
+                                                .WithProducerId(1)
+                                                .WithTimestamp(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
+                                                .Build();
+        betSettlement.outcomes = null;
+        var messageReceiver = OpenMessageReceiverWithLongProcessing();
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(betSettlement));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Deserialization of")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Markets=0")).ShouldBe(1);
+        execLogger.Messages.Count(m => m.Contains("Outcomes=0")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenOddsChangeComeForUnavailableProducerThenIsLoggedAndNotDispatched()
+    {
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        oddsChange.product = TestProducerManager.Create().Producers.First(f => !f.IsAvailable).Id;
+        _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(1);
+        execLogger.Messages.Count(m => m.Contains("A message for producer which is disabled was received.")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenOddsChangeComeForUnknownProducerThenIsLoggedAndNotDispatched()
+    {
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        oddsChange.product = UnknownProducerId;
+        _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(1);
+        execLogger.Messages.Count(m => m.Contains("A message for producer which is not defined was received.")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenOddsChangeComeForUnavailableProducerAndEnvironmentIsReplayThenIsDispatched()
+    {
+        var mockConfig = new Mock<IUofConfiguration>();
+        mockConfig.Setup(c => c.Environment).Returns(SdkEnvironment.Replay);
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        oddsChange.product = TestProducerManager.Create().Producers.First(f => !f.IsAvailable).Id;
+
+        var messageReceiver = new RabbitMqMessageReceiver(_mockRabbitChannel.Object, new Deserializer<FeedMessage>(), new RegexRoutingKeyParser(), TestProducerManager.Create(), mockConfig.Object, _loggerFactory);
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldNotBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(1);
+    }
+
+    [Fact]
+    public void WhenOddsChangeComeForUnknownProducerIsReceivedAndEnvironmentIsReplayThenIsNotDispatched()
+    {
+        var mockConfig = new Mock<IUofConfiguration>();
+        mockConfig.Setup(c => c.Environment).Returns(SdkEnvironment.Replay);
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        oddsChange.product = UnknownProducerId;
+
+        var messageReceiver = new RabbitMqMessageReceiver(_mockRabbitChannel.Object, new Deserializer<FeedMessage>(), new RegexRoutingKeyParser(), TestProducerManager.Create(), mockConfig.Object, _loggerFactory);
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(1);
+        execLogger.Messages.Count(m => m.Contains("A message for producer which is not defined was received.")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenNonDeserializableExceptionHappensThenErrorIsLoggedAndDeserializationFailedEventIsInvoked()
+    {
+        FeedMessage receivedMessage = null;
+        var deserializationFailed = false;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        var mockRoutingKeyParser = new Mock<IRoutingKeyParser>();
+        var sportId = UrnCreate.SportId(1);
+        mockRoutingKeyParser.Setup(s => s.TryGetSportId(It.IsAny<string>(), It.IsAny<string>(), out sportId))
+                            .Throws<InvalidOperationException>();
+
+        var messageReceiver = new RabbitMqMessageReceiver(_mockRabbitChannel.Object, new Deserializer<FeedMessage>(), mockRoutingKeyParser.Object, TestProducerManager.Create(), TestConfiguration.GetConfig(), _loggerFactory);
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+        messageReceiver.FeedMessageDeserializationFailed += (_, _) => deserializationFailed = true;
+
+        messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldBeNull();
+        deserializationFailed.ShouldBeTrue();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(1);
+        execLogger.Messages.Count(m => m.Contains("Error consuming feed message.")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenNonDeserializableExceptionHappensAndDeserializationEventIsNotHandledThenErrorIsLoggedAndDeserializationFailedEventIsNotInvoked()
+    {
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        var mockRoutingKeyParser = new Mock<IRoutingKeyParser>();
+        var sportId = UrnCreate.SportId(1);
+        mockRoutingKeyParser.Setup(s => s.TryGetSportId(It.IsAny<string>(), It.IsAny<string>(), out sportId))
+                            .Throws<InvalidOperationException>();
+
+        var messageReceiver = new RabbitMqMessageReceiver(_mockRabbitChannel.Object, new Deserializer<FeedMessage>(), mockRoutingKeyParser.Object, TestProducerManager.Create(), TestConfiguration.GetConfig(), _loggerFactory);
+        messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+
+        messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldBeNull();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(1);
+        execLogger.Messages.Count(m => m.Contains("Error consuming feed message.")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenReceivedIsNotSubscribedToThenReceivedEventIsNotInvoked()
+    {
+        var rawEventInvoked = false;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        _messageReceiver.RawFeedMessageReceived += (_, _) => rawEventInvoked = true;
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        rawEventInvoked.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void WhenRawEventIsSubscribedToThenRawAndReceivedEventAreInvoked()
+    {
+        var receivedEventInvoked = false;
+        var rawEventInvoked = false;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        _messageReceiver.FeedMessageReceived += (_, _) => receivedEventInvoked = true;
+        _messageReceiver.RawFeedMessageReceived += (_, _) => rawEventInvoked = true;
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedEventInvoked.ShouldBeTrue();
+        rawEventInvoked.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void WhenRawEventIsSubscribedToAndUserProcessingThrowsThenReceivedEventIsStillInvoked()
+    {
+        var receivedEventInvoked = false;
+        var rawEventInvoked = false;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        _messageReceiver.FeedMessageReceived += (_, _) => receivedEventInvoked = true;
+        _messageReceiver.RawFeedMessageReceived += (_, _) =>
+                                                   {
+                                                       rawEventInvoked = true;
+                                                       throw new InvalidOperationException();
+                                                   };
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedEventInvoked.ShouldBeTrue();
+        rawEventInvoked.ShouldBeTrue();
+        var execLogger = _loggerFactory.GetOrCreateLogger(typeof(RabbitMqMessageReceiver));
+        execLogger.Messages.ShouldBeOfSize(2);
+        execLogger.Messages.Count(m => m.Contains("Error dispatching raw message for")).ShouldBe(1);
+    }
+
+    [Fact]
+    public void WhenMessageAssociatedWithEventThenEventUrnIsPopulated()
+    {
+        FeedMessage receivedMessage = null;
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(oddsChange));
+
+        receivedMessage.ShouldNotBeNull();
+        receivedMessage.EventUrn.ShouldNotBeNull();
+        receivedMessage.IsEventRelated.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void WhenMessageNotAssociatedWithEventThenEventUrnIsNotPopulated()
+    {
+        FeedMessage receivedMessage = null;
+        var alive = FeedMessageBuilder.Create(1).BuildAlive(1);
+        _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, GetValidBasicDeliverEventArgsForFeedMessage(alive));
+
+        receivedMessage.ShouldNotBeNull();
+        receivedMessage.EventUrn.ShouldBeNull();
+        receivedMessage.IsEventRelated.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void WhenMessageAssociatedWithEmptyEventIdThenEventUrnIsNoyPopulated()
+    {
+        FeedMessage receivedMessage = null;
+        const string routingKey = "hi.-.live.odds_change.2.sr:match.9900415";
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        oddsChange.event_id = string.Empty;
+        var xmlBody = FeedMessageBuilder.BuildMessageBody(oddsChange);
+        var messageBody = Encoding.UTF8.GetBytes(xmlBody);
+        _messageReceiver.FeedMessageReceived += (_, args) => receivedMessage = args.Message;
+        _messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+
+        _mockRabbitChannel.Raise(mock => mock.Received += null, new BasicDeliverEventArgs("", 1, false, ",", routingKey, null, messageBody));
+
+        receivedMessage.ShouldNotBeNull();
+        receivedMessage.EventUrn.ShouldBeNull();
+        receivedMessage.IsEventRelated.ShouldBeTrue();
+    }
+
+    private static odds_change GetOddsChangeWithSingleMarket()
+    {
+        return OddsChangeBuilder.Create()
+                                .WithProduct(1)
+                                .ForEventId(TestConsts.AnyMatchId)
+                                .AddMarket(market => market.WithMarketId(1).WithOutcome("1", 1.5).WithOutcome("2", 2.5))
+                                .Build();
+    }
+
+    private static byte[] GetFeedMessageBodyForOddsChange()
+    {
+        var oddsChange = GetOddsChangeWithSingleMarket();
+        var xmlBody = FeedMessageBuilder.BuildMessageBody(oddsChange);
+
+        return Encoding.UTF8.GetBytes(xmlBody);
+    }
+
+    private static IBasicProperties GetBasicPropertiesWithHeader(IDictionary<string, object> headers = null)
     {
         var basicPropertiesMock = new Mock<IBasicProperties>();
 
@@ -225,5 +675,37 @@ public class RabbitMqMessageReceiverTests
         }
 
         return basicPropertiesMock.Object;
+    }
+
+    private static BasicDeliverEventArgs GetBasicDeliverEventArgsWithBodyAndNullRoutingKey(IBasicProperties basicProperties, ReadOnlyMemory<byte> body)
+    {
+        return new BasicDeliverEventArgs("", 1, false, ",", null, basicProperties, body);
+    }
+
+    private static BasicDeliverEventArgs GetValidBasicDeliverEventArgsForFeedMessage(FeedMessage message)
+    {
+        var xmlBody = FeedMessageBuilder.BuildMessageBody(message);
+        var messageData = Encoding.UTF8.GetBytes(xmlBody);
+        var sentTimestamp = DateTime.Now.Ticks;
+        var basicProperties = GetBasicPropertiesWithHeader(new Dictionary<string, object> { { "timestamp_in_ms", sentTimestamp } });
+        var routingKey = FeedMessageBuilder.BuildRoutingKey(message);
+        return new BasicDeliverEventArgs("", 1, false, ",", routingKey, basicProperties, messageData);
+    }
+
+    private RabbitMqMessageReceiver OpenMessageReceiverWithLongProcessing()
+    {
+        var sportId = UrnCreate.SportId(1);
+        var mockRoutingKeyParser = new Mock<IRoutingKeyParser>();
+        mockRoutingKeyParser.Setup(s => s.TryGetSportId(It.IsAny<string>(), It.IsAny<string>(), out sportId))
+                            .Returns(() =>
+                                     {
+                                         Thread.Sleep(TimeSpan.FromMilliseconds(300));
+                                         return true;
+                                     });
+
+        var messageReceiver = new RabbitMqMessageReceiver(_mockRabbitChannel.Object, new Deserializer<FeedMessage>(), mockRoutingKeyParser.Object, TestProducerManager.Create(), TestConfiguration.GetConfig(), _loggerFactory);
+
+        messageReceiver.Open(MessageInterest.AllMessages, FeedRoutingKeyBuilder.GetStandardKeys());
+        return messageReceiver;
     }
 }

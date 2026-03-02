@@ -49,6 +49,29 @@ public class XunitLoggerFactory : ILoggerFactory
         return (XUnitLogger)CreateLogger(loggerType);
     }
 
+    public XUnitLogger GetOrCreateLogger(string loggerTypeName)
+    {
+        return (XUnitLogger)CreateLogger(loggerTypeName);
+    }
+
+    public XUnitLogger<T> GetOrCreateLogger<T>()
+    {
+        var key = typeof(T).FullName;
+        if (_registeredLoggers.TryGetValue(key, out var existingLogger))
+        {
+            return (XUnitLogger<T>)existingLogger;
+        }
+        var logger = new XUnitLogger<T>(_outputHelper);
+        LastLogger = logger;
+        _registeredLoggers[key] = logger;
+        return logger;
+    }
+
+    public XUnitLogger<T> CreateLogger<T>()
+    {
+        return GetOrCreateLogger<T>();
+    }
+
     public void AddProvider(ILoggerProvider provider)
     {
     }

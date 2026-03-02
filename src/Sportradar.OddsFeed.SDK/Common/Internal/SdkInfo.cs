@@ -335,12 +335,12 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal
         /// </summary>
         /// <param name="specifiers">The specifiers.</param>
         /// <returns>Dictionary of specifiers</returns>
-        public static IDictionary<string, string> SpecifiersStringToDictionary(string specifiers)
+        public static IReadOnlyDictionary<string, string> SpecifiersStringToDictionary(string specifiers)
         {
             var result = new Dictionary<string, string>();
             if (specifiers.IsNullOrEmpty())
             {
-                return result;
+                return null;
             }
             var specs = specifiers.Split('|');
             foreach (var spec in specs)

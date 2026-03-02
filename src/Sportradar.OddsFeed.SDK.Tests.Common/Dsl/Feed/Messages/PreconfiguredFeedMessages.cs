@@ -3,6 +3,7 @@
 using System;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed.Messages;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed.Messages;
@@ -13,6 +14,15 @@ public static class PreconfiguredFeedMessages
     private static readonly Urn SoccerId = "sr:sport:1".ToUrn();
     private static readonly Urn VolleyballId = "sr:sport:23".ToUrn();
     private static readonly Urn TennisId = "sr:sport:5".ToUrn();
+
+    public static odds_change AnyOddsChange()
+    {
+        return OddsChangeBuilder.Create()
+                                .WithProduct(1)
+                                .WithMatchId(1)
+                                .AddMarket(market => market.WithMarketId(1).WithOutcome("1", 1.5).WithOutcome("2", 2.5))
+                                .Build();
+    }
 
     public static rollback_bet_cancel GsApollonVsAeGravasBetCancelRollback()
     {

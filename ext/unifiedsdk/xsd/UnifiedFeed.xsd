@@ -373,6 +373,13 @@
   </xs:attributeGroup>
 
   <xs:complexType name="market">
+    <xs:sequence>
+      <xs:element name="outcome" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="id" type="outcomeId" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
     <xs:attributeGroup ref="marketAttributes"/>
     <xs:attribute name="void_reason" type="xs:int"/>
   </xs:complexType>

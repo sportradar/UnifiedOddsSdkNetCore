@@ -20,7 +20,6 @@ public class SportEventCacheAddTournamentTests : SportEventCacheSetup
     {
     }
 
-
     [Fact]
     public async Task WhenAddingTournamentInfoMergeIsInvokedOnTheRequesterAndTournamentIsUpdated()
     {
@@ -116,7 +115,6 @@ public class SportEventCacheAddTournamentTests : SportEventCacheSetup
         tournament.Scheduled.Should().Be(tournamentInfoDto.Scheduled);
     }
 
-
     [Fact]
     public async Task WhenAddingTournamentInfoWithoutSeasonAsSportEventSummaryListMergeIsInvokedOnTheRequesterAndTournamentIsUpdated()
     {
@@ -170,5 +168,4 @@ public class SportEventCacheAddTournamentTests : SportEventCacheSetup
 
         sportEvent.Scheduled.Should().Be(tournamentInfoDto.Scheduled);
     }
-
 }

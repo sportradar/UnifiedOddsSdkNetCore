@@ -18,7 +18,6 @@ public class MarketDescriptionCacheTests
     private readonly ICacheStore<string> _invariantMemoryCache;
     private readonly IMarketDescriptionCache _variantMdCache;
     private readonly IMarketDescriptionsCache _inVariantMdCache;
-    private readonly IMappingValidatorFactory _mappingValidatorFactory;
     private readonly TestDataRouterManager _dataRouterManager;
 
     public MarketDescriptionCacheTests(ITestOutputHelper outputHelper)
@@ -31,11 +30,11 @@ public class MarketDescriptionCacheTests
         var cacheManager = new CacheManager();
         _dataRouterManager = new TestDataRouterManager(cacheManager, outputHelper);
 
-        _mappingValidatorFactory = new MappingValidatorFactory();
+        IMappingValidatorFactory mappingValidatorFactory = new MappingValidatorFactory();
 
         var timer = new TestTimer(true);
-        _variantMdCache = new VariantMarketDescriptionCache(_variantMemoryCache, _dataRouterManager, _mappingValidatorFactory, cacheManager, loggerFactory);
-        _inVariantMdCache = new InvariantMarketDescriptionCache(_invariantMemoryCache, _dataRouterManager, _mappingValidatorFactory, timer, TestData.Cultures, cacheManager, loggerFactory);
+        _variantMdCache = new VariantMarketDescriptionCache(_variantMemoryCache, _dataRouterManager, mappingValidatorFactory, cacheManager, loggerFactory);
+        _inVariantMdCache = new InvariantMarketDescriptionCache(_invariantMemoryCache, _dataRouterManager, mappingValidatorFactory, timer, TestData.Cultures, cacheManager, loggerFactory);
     }
 
     [Fact]

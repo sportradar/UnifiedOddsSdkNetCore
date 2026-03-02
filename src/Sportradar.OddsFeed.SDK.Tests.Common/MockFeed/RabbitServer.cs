@@ -19,6 +19,7 @@ using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
 using Xunit.Abstractions;
@@ -43,7 +44,7 @@ internal class RabbitServer
     private IModel _channel;
     private bool _isRunning;
     private ISdkTimer _timer;
-    private readonly Dsl.Feed.FeedMessageBuilder _fMessageBuilder;
+    private readonly FeedMessageBuilder _fMessageBuilder;
     private readonly TestProducersProvider _producersProvider;
     private readonly ITestOutputHelper _outputHelper;
 
@@ -69,7 +70,7 @@ internal class RabbitServer
         _outputHelper = outputHelper;
         Messages = new ConcurrentQueue<RabbitMessage>();
         ProducersAlive = new ConcurrentDictionary<int, DateTime>();
-        _fMessageBuilder = new Dsl.Feed.FeedMessageBuilder(1);
+        _fMessageBuilder = new FeedMessageBuilder(1);
         _isRunning = false;
 
         ManagementClient = new ManagementClient(new Uri($"http://{GetRabbitIp()}:15672"), DefaultRabbitUserName, DefaultRabbitPassword);

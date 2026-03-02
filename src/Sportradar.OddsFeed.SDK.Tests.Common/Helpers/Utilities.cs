@@ -15,7 +15,7 @@ public static class Utilities
     /// <returns>Dictionary of specifiers</returns>
     public static IReadOnlyDictionary<string, string> SpecifiersStringToReadOnlyDictionary(string specifiers)
     {
-        return new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
+        return SdkInfo.SpecifiersStringToDictionary(specifiers);
     }
 
     /// <summary>

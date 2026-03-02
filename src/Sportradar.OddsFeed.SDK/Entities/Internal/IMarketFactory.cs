@@ -16,6 +16,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
 
         IMarketCancel GetMarketCancel(ISportEvent sportEvent, market market, int producerId, Urn sportId, IReadOnlyCollection<CultureInfo> cultures);
 
+        IMarketCancel GetMarketForRollbackSettlement(ISportEvent sportEvent, market market, int producerId, Urn sportId, IReadOnlyCollection<CultureInfo> cultures);
+
         IMarketWithSettlement GetMarketWithResults(ISportEvent sportEvent, betSettlementMarket marketSettlement, int producerId, Urn sportId, IReadOnlyCollection<CultureInfo> cultures);
     }
 }

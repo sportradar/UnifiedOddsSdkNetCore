@@ -2,13 +2,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Api.FeedAccess;
 
+[SuppressMessage("ReSharper", "ConvertToPrimaryConstructor", Justification = "Pipeline format fails with primary constructor")]
 internal class StubChannel : IModel
 {
+    public StubChannel(int channelNumber)
+    {
+        ChannelNumber = channelNumber;
+    }
+
     public void Dispose()
     {
         throw new NotImplementedException();

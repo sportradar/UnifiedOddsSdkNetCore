@@ -20,6 +20,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.Rest.Enums
         /// <summary>
         /// Undecided yet
         /// </summary>
-        UndecidedYet
+        UndecidedYet,
+
+        /// <summary>
+        /// Outcome result is not supported by the SDK
+        /// </summary>
+        UnsupportedBySdk
     }
 }

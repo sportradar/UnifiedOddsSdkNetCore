@@ -13,13 +13,12 @@ using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;
@@ -39,29 +38,29 @@ public class RabbitManagement
     private ISdkTimer _timer;
 
     /// <summary>
-    ///     Gets the management client for getting and managing connections and channels
+    /// Gets the management client for getting and managing connections and channels
     /// </summary>
     /// <value>The management client.</value>
     public ManagementClient ManagementClient { get; }
 
     /// <summary>
-    ///     Gets the messages to be sent
+    /// Gets the messages to be sent
     /// </summary>
     public ConcurrentQueue<RabbitMessage> Messages { get; }
 
     /// <summary>
-    ///     Gets the list of producers for which alive messages should be periodically send
+    /// Gets the list of producers for which alive messages should be periodically sent
     /// </summary>
     public ConcurrentDictionary<int, DateTime> ProducersAlive { get; }
 
-    public RabbitManagement(ITestOutputHelper outputHelper)
+    public RabbitManagement(ITestOutputHelper outputHelper, ProjectConfiguration projConfig = null)
     {
         _outputHelper = outputHelper;
         Messages = new ConcurrentQueue<RabbitMessage>();
         ProducersAlive = new ConcurrentDictionary<int, DateTime>();
         _isRunning = false;
 
-        _projConfig = new ProjectConfiguration();
+        _projConfig = projConfig ?? new ProjectConfiguration();
 
         ManagementClient = new ManagementClient(new Uri($"http://{_projConfig.GetRabbitIp()}:15672"),
                                                 _projConfig.DefaultAdminRabbitUserName,
@@ -115,6 +114,21 @@ public class RabbitManagement
         _isRunning = true;
     }
 
+    public void ResetAndStart()
+    {
+        ResetRabbit();
+        Start();
+    }
+
+    public async Task DeleteVirtualHostAsync()
+    {
+        var virtualHosts = ManagementClient.GetVhosts();
+        if (!virtualHosts.Any(a => a.Name.Equals(_projConfig.VirtualHostName, StringComparison.OrdinalIgnoreCase)))
+        {
+            await ManagementClient.DeleteVhostAsync(_projConfig.VirtualHostName).ConfigureAwait(false);
+        }
+    }
+
     // stop the connection for sending messages
     public void Stop()
     {
@@ -133,11 +147,11 @@ public class RabbitManagement
     /// <param name="timestamp">The timestamp  to be applied or Now</param>
     public void Send(FeedMessage message, string routingKey = null, long timestamp = 0)
     {
-        var msgBody = BuildMessageBody(message);
+        var msgBody = FeedMessageBuilder.BuildMessageBody(message);
 
         if (routingKey.IsNullOrEmpty())
         {
-            routingKey = BuildRoutingKey(message);
+            routingKey = FeedMessageBuilder.BuildRoutingKey(message);
         }
 
         Send(msgBody, routingKey, timestamp);
@@ -271,124 +285,5 @@ public class RabbitManagement
         }
 
         return false;
-    }
-
-    /// <summary>
-    ///     Builds the xml message body from the raw feed message (instance)
-    /// </summary>
-    /// <param name="message">The message to be serialized</param>
-    /// <returns>Returns xml message body</returns>
-    private static string BuildMessageBody(FeedMessage message)
-    {
-        if (message is alive aliveMsg)
-        {
-            return MsgSerializer.SerializeToXml(aliveMsg);
-        }
-
-        if (message is odds_change oddsChange)
-        {
-            return MsgSerializer.SerializeToXml(oddsChange);
-        }
-
-        if (message is bet_stop betStop)
-        {
-            return MsgSerializer.SerializeToXml(betStop);
-        }
-
-        if (message is fixture_change fixtureChange)
-        {
-            return MsgSerializer.SerializeToXml(fixtureChange);
-        }
-
-        if (message is snapshot_complete snapshotComplete)
-        {
-            return MsgSerializer.SerializeToXml(snapshotComplete);
-        }
-
-        if (message is bet_settlement betSettlement)
-        {
-            return MsgSerializer.SerializeToXml(betSettlement);
-        }
-
-        return MsgSerializer.SerializeToXml(message);
-    }
-
-    /// <summary>
-    ///     Builds the routing key from the message type
-    /// </summary>
-    /// <param name="message">The message</param>
-    /// <returns>Returns the appropriate routing key</returns>
-    private static string BuildRoutingKey(FeedMessage message)
-    {
-        if (message.GetType() == typeof(alive))
-        {
-            return "-.-.-.alive.-.-.-.-";
-        }
-
-        if (message.GetType() == typeof(odds_change))
-        {
-            var oddsChange = (odds_change)message;
-            var sportId = 1; //oddsChange
-            var urn = Urn.Parse(oddsChange.event_id);
-            return $"hi.{BuildSessionPartOfRoutingKey(oddsChange.product)}.odds_change.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
-
-        if (message.GetType() == typeof(bet_stop))
-        {
-            var betStop = (bet_stop)message;
-            var sportId = 1;
-            var urn = Urn.Parse(betStop.event_id);
-            return $"hi.{BuildSessionPartOfRoutingKey(betStop.product)}.bet_stop.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
-
-        if (message.GetType() == typeof(fixture_change))
-        {
-            var fixtureChange = (fixture_change)message;
-            var sportId = 1;
-            var urn = Urn.Parse(fixtureChange.event_id);
-            return $"hi.pre.live.fixture_change.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
-
-        if (message.GetType() == typeof(snapshot_complete))
-        {
-            return "-.-.-.snapshot_complete.-.-.-.-";
-        }
-
-        if (message.GetType() == typeof(bet_settlement))
-        {
-            var betSettlement = (bet_settlement)message;
-            var sportId = 1;
-            var urn = Urn.Parse(betSettlement.event_id);
-            return $"lo.{BuildSessionPartOfRoutingKey(betSettlement.product)}.bet_settlement.{sportId}.{urn.Prefix}:{urn.Type}.{urn.Id}.-";
-        }
-
-        return string.Empty;
-    }
-
-    private static string BuildSessionPartOfRoutingKey(int producerId)
-    {
-        var allProducers = ProducersEndpoint.BuildAll();
-        var producer = allProducers.producer.FirstOrDefault(f => f.id == producerId);
-        if (producer == null)
-        {
-            return "missing.missing";
-        }
-
-        if (producer.scope.Contains("live", StringComparison.InvariantCultureIgnoreCase))
-        {
-            return "-.live";
-        }
-
-        if (producer.scope.Contains("prematch", StringComparison.InvariantCultureIgnoreCase))
-        {
-            return "pre.-";
-        }
-
-        if (producer.scope.Contains("virtual", StringComparison.InvariantCultureIgnoreCase))
-        {
-            return "virt.-";
-        }
-
-        return "na.na";
     }
 }

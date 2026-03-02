@@ -1981,7 +1981,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Entities.IMarketCancel",
-      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketCancel.yml\" sourcestartlinenumber=\"1\">Represents information for a market with void reason</p>\n"
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketCancel.yml\" sourcestartlinenumber=\"1\">Represents information for a market with a void reason</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2024,6 +2024,20 @@
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Entities.IMarketMetadata",
       "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.yml\" sourcestartlinenumber=\"1\">Defines a contract for classes implementing additional market information</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.yml\" sourcestartlinenumber=\"1\">Represents information for a market in <xref href=\"Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement%601\" data-throw-if-not-resolved=\"false\"></xref> message</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2178,6 +2192,20 @@
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities",
       "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.yml\" sourcestartlinenumber=\"1\">Represents a selection with probabilities information</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement.yml\" sourcestartlinenumber=\"1\">Represent an outcome in <xref href=\"Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement%601\" data-throw-if-not-resolved=\"false\"></xref> message</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4739,6 +4767,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome",
       "Summary": null
     },
     {
