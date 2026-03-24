@@ -97,6 +97,11 @@ internal class NullSportEventCache : ISportEventCache
         throw new NotImplementedException();
     }
 
+    public Task GetEventIdsAsync(Urn tournamentId, IEnumerable<CultureInfo> cultures)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<IEnumerable<TournamentInfoCacheItem>> GetActiveTournamentsAsync(CultureInfo culture = null)
     {
         throw new NotImplementedException();

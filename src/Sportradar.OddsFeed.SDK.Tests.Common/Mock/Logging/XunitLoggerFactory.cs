@@ -71,7 +71,7 @@ public class XunitLoggerFactory : ILoggerFactory
         {
             return (XUnitLogger<T>)existingLogger;
         }
-        var logger = new XUnitLogger<T>(_outputHelper);
+        var logger = new XUnitLogger<T>(_outputHelper, _minimumLogLevel);
         LastLogger = logger;
         _registeredLoggers[key] = logger;
         return logger;

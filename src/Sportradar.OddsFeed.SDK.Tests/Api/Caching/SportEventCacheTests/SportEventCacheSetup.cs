@@ -26,18 +26,19 @@ public class SportEventCacheSetup
 {
     internal readonly UofConfiguration TestConfig = (UofConfiguration)TestConfiguration.GetConfig();
 
+    internal readonly ILoggerFactory LoggerFactory;
     internal readonly Mock<IDataFetcher> SummaryFetcherMock;
     internal readonly Mock<IDataFetcher> FixtureFetcherMock;
     internal readonly ICacheStore<string> SportEventCacheStore;
 
-    internal readonly SportEventCache SportEventCache;
+    internal SportEventCache SportEventCache;
 
     internal readonly ISportEventCacheItemFactory SportEventCacheItemFactory;
 
     protected SportEventCacheSetup(ITestOutputHelper outputHelper)
     {
         var converter = new OutputConverter(outputHelper);
-        ILoggerFactory loggerFactory = new XunitLoggerFactory(outputHelper);
+        LoggerFactory = new XunitLoggerFactory(outputHelper);
         Console.SetOut(converter);
 
         SummaryFetcherMock = new Mock<IDataFetcher>();
@@ -45,10 +46,10 @@ public class SportEventCacheSetup
 
         var cacheManager = new CacheManager();
         var dataRouterManager = CreateMockDataRouterManager(cacheManager, SummaryFetcherMock.Object, FixtureFetcherMock.Object);
-        SportEventCacheItemFactory = CreateSportEventCacheItemFactory(loggerFactory, dataRouterManager, TestConfig);
+        SportEventCacheItemFactory = CreateSportEventCacheItemFactory(LoggerFactory, dataRouterManager, TestConfig);
 
-        SportEventCacheStore = CreateCacheStore<string>(loggerFactory, UofSdkBootstrap.CacheStoreNameForSportEventCache);
-        SportEventCache = CreateSportEventCache(loggerFactory, dataRouterManager, cacheManager, TestConfig, SportEventCacheStore);
+        SportEventCacheStore = CreateCacheStore<string>(LoggerFactory, UofSdkBootstrap.CacheStoreNameForSportEventCache);
+        SportEventCache = CreateSportEventCache(LoggerFactory, dataRouterManager, cacheManager, TestConfig, SportEventCacheStore);
     }
 
     private static CacheStore<T> CreateCacheStore<T>(ILoggerFactory loggerFactory, string cacheStoreName)
@@ -56,7 +57,7 @@ public class SportEventCacheSetup
         return new CacheStore<T>(cacheStoreName, new MemoryCache(new MemoryCacheOptions()), loggerFactory.CreateLogger(cacheStoreName), TimeSpan.FromMinutes(10));
     }
 
-    private static SportEventCache CreateSportEventCache(ILoggerFactory loggerFactory, IDataRouterManager dataRouterManager, ICacheManager cacheManager, UofConfiguration config, ICacheStore<string> sportEventCacheStore)
+    internal static SportEventCache CreateSportEventCache(ILoggerFactory loggerFactory, IDataRouterManager dataRouterManager, ICacheManager cacheManager, UofConfiguration config, ICacheStore<string> sportEventCacheStore)
     {
         var fixturesCacheStore = new CacheStore<string>(UofSdkBootstrap.CacheStoreNameForSportEventCacheFixtureTimestampCache,
                                                         new MemoryCache(new MemoryCacheOptions()),

@@ -3,6 +3,7 @@
 using System;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed.Messages;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed.Messages;

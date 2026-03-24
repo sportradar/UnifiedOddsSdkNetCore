@@ -102,7 +102,7 @@ Interface IRollbackBetSettlement&lt;T&gt;
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IRollbackBetSettlement&lt;out T&gt; : IMarketMessage&lt;IMarketCancel, T&gt;, IEventMessage&lt;T&gt;, IMessage where T : ISportEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IRollbackBetSettlement&lt;out T&gt; : IMarketMessage&lt;IMarketRollbackSettlement, T&gt;, IEventMessage&lt;T&gt;, IMessage where T : ISportEvent</code></pre>
   </div>
 
 
@@ -121,7 +121,7 @@ Interface IRollbackBetSettlement&lt;T&gt;
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMarketMessage-2.html#Sportradar_OddsFeed_SDK_Entities_IMarketMessage_2_Markets">IMarketMessage&lt;IMarketCancel, T&gt;.Markets</a>
+      <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IMarketMessage-2.html#Sportradar_OddsFeed_SDK_Entities_IMarketMessage_2_Markets">IMarketMessage&lt;IMarketRollbackSettlement, T&gt;.Markets</a>
     </div>
     <div>
       <a class="xref" href="Sportradar.OddsFeed.SDK.Entities.IEventMessage-1.html#Sportradar_OddsFeed_SDK_Entities_IEventMessage_1_Event">IEventMessage&lt;T&gt;.Event</a>

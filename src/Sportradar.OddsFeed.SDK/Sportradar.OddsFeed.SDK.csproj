@@ -16,7 +16,7 @@
         <PackageProjectUrl>https://sdk.sportradar.com</PackageProjectUrl>
         <AssemblyVersion>4.0.0</AssemblyVersion>
         <FileVersion>4.0.0</FileVersion>
-        <Version>4.0.0-rc3</Version>
+        <Version>4.0.0-rc4</Version>
         <UserSecretsId>27ef2334-e9fc-4f05-b88a-a33259c908c3</UserSecretsId>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>

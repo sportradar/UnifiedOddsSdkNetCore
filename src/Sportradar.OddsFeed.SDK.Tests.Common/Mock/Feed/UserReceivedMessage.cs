@@ -43,6 +43,12 @@ public class UserReceivedMessage
         InitializeMarkets(markets);
     }
 
+    public UserReceivedMessage(long timestamp, ISportEvent sportEvent, string msgType, List<IMarketRollbackSettlement> markets)
+        : this(timestamp, sportEvent, msgType)
+    {
+        InitializeMarkets(markets);
+    }
+
     private void InitializeMarkets<T>(List<T> markets) where T : IMarket
     {
         if (markets.IsNullOrEmpty())

@@ -18,6 +18,7 @@ using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Common.Internal.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Xunit.Abstractions;
 

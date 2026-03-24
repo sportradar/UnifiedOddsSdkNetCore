@@ -7423,6 +7423,25 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.IMarketMetadata.StartTimeDate
   nameWithType: IMarketMetadata.StartTimeDate
+- uid: Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement
+  name: IMarketRollbackSettlement
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement
+  fullName: Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement
+  nameWithType: IMarketRollbackSettlement
+- uid: Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.Outcomes
+  name: Outcomes
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.html#Sportradar_OddsFeed_SDK_Entities_IMarketRollbackSettlement_Outcomes
+  commentId: P:Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.Outcomes
+  fullName: Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.Outcomes
+  nameWithType: IMarketRollbackSettlement.Outcomes
+- uid: Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.Outcomes*
+  name: Outcomes
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.html#Sportradar_OddsFeed_SDK_Entities_IMarketRollbackSettlement_Outcomes_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.Outcomes
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.Outcomes
+  nameWithType: IMarketRollbackSettlement.Outcomes
 - uid: Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds
   name: IMarketWithOdds
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds.html
@@ -7911,6 +7930,12 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.Probabilities
   nameWithType: IOutcomeProbabilities.Probabilities
+- uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement
+  name: IOutcomeRollbackSettlement
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement.html
+  commentId: T:Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement
+  fullName: Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement
+  nameWithType: IOutcomeRollbackSettlement
 - uid: Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement
   name: IOutcomeSettlement
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement.html
@@ -12214,6 +12239,12 @@ references:
   commentId: F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.UndecidedYet
   fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.UndecidedYet
   nameWithType: OutcomeResult.UndecidedYet
+- uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.UnsupportedBySdk
+  name: UnsupportedBySdk
+  href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.html#Sportradar_OddsFeed_SDK_Entities_Rest_Enums_OutcomeResult_UnsupportedBySdk
+  commentId: F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.UnsupportedBySdk
+  fullName: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.UnsupportedBySdk
+  nameWithType: OutcomeResult.UnsupportedBySdk
 - uid: Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.Won
   name: Won
   href: sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.html#Sportradar_OddsFeed_SDK_Entities_Rest_Enums_OutcomeResult_Won
@@ -20359,6 +20390,19 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Messages.Feed.market.id
   nameWithType: market.id
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.market.outcome
+  name: outcome
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.market.html#Sportradar_OddsFeed_SDK_Messages_Feed_market_outcome
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.market.outcome
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.market.outcome
+  nameWithType: market.outcome
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.market.outcome*
+  name: outcome
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.market.html#Sportradar_OddsFeed_SDK_Messages_Feed_market_outcome_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.market.outcome
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.market.outcome
+  nameWithType: market.outcome
 - uid: Sportradar.OddsFeed.SDK.Messages.Feed.market.specifiers
   name: specifiers
   href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.market.html#Sportradar_OddsFeed_SDK_Messages_Feed_market_specifiers
@@ -20508,6 +20552,25 @@ references:
   isSpec: "True"
   fullName: Sportradar.OddsFeed.SDK.Messages.Feed.marketMetadata.start_timeSpecified
   nameWithType: marketMetadata.start_timeSpecified
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome
+  name: marketOutcome
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.html
+  commentId: T:Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome
+  nameWithType: marketOutcome
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.id
+  name: id
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_marketOutcome_id
+  commentId: P:Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.id
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.id
+  nameWithType: marketOutcome.id
+- uid: Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.id*
+  name: id
+  href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.html#Sportradar_OddsFeed_SDK_Messages_Feed_marketOutcome_id_
+  commentId: Overload:Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.id
+  isSpec: "True"
+  fullName: Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.id
+  nameWithType: marketOutcome.id
 - uid: Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarket
   name: oddsChangeMarket
   href: sdkapi/Sportradar.OddsFeed.SDK.Messages.Feed.oddsChangeMarket.html

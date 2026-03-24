@@ -20,15 +20,15 @@ using cashout = Sportradar.OddsFeed.SDK.Messages.Rest.cashout;
 namespace Sportradar.OddsFeed.SDK.Entities.Internal
 {
     /// <summary>
-    /// A <see cref="IFeedMessageMapper"/> implementation which maps feed messages to non-specific feed messages
+    ///     A <see cref="IFeedMessageMapper" /> implementation which maps feed messages to non-specific feed messages
     /// </summary>
     internal class FeedMessageMapper : IFeedMessageMapper
     {
-        private readonly ISportEntityFactory _sportEntityFactory;
-        private readonly IMarketFactory _marketFactory;
-        private readonly IProducerManager _producerManager;
-        private readonly INamedValuesProvider _namedValuesProvider;
         private readonly ExceptionHandlingStrategy _externalExceptionStrategy;
+        private readonly IMarketFactory _marketFactory;
+        private readonly INamedValuesProvider _namedValuesProvider;
+        private readonly IProducerManager _producerManager;
+        private readonly ISportEntityFactory _sportEntityFactory;
 
         public FeedMessageMapper(ISportEntityFactory sportEntityFactory,
                                  IMarketFactory marketFactory,
@@ -49,10 +49,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="alive"/> instance to the <see cref="IAlive"/> instance
+        ///     Maps (converts) the provided <see cref="alive" /> instance to the <see cref="IAlive" /> instance
         /// </summary>
-        /// <param name="message">A <see cref="alive"/> instance to be mapped (converted)</param>
-        /// <returns>A <see cref="IAlive"/> instance constructed from information in the provided <see cref="alive"/></returns>
+        /// <param name="message">A <see cref="alive" /> instance to be mapped (converted)</param>
+        /// <returns>A <see cref="IAlive" /> instance constructed from information in the provided <see cref="alive" /></returns>
         public IAlive MapAlive(alive message)
         {
             _ = Guard.Argument(message, nameof(message)).NotNull();
@@ -61,10 +61,10 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="snapshot_complete"/> instance to the <see cref="ISnapshotCompleted"/> instance
+        ///     Maps (converts) the provided <see cref="snapshot_complete" /> instance to the <see cref="ISnapshotCompleted" /> instance
         /// </summary>
-        /// <param name="message">A <see cref="snapshot_complete"/> instance to be mapped (converted)</param>
-        /// <returns>A <see cref="ISnapshotCompleted"/> instance constructed from information in the provided <see cref="snapshot_complete"/></returns>
+        /// <param name="message">A <see cref="snapshot_complete" /> instance to be mapped (converted)</param>
+        /// <returns>A <see cref="ISnapshotCompleted" /> instance constructed from information in the provided <see cref="snapshot_complete" /></returns>
         public ISnapshotCompleted MapSnapShotCompleted(snapshot_complete message)
         {
             _ = Guard.Argument(message, nameof(message)).NotNull();
@@ -73,7 +73,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="fixture_change" /> instance to the <see cref="IFixtureChange{T}" /> instance
+        ///     Maps (converts) the provided <see cref="fixture_change" /> instance to the <see cref="IFixtureChange{T}" /> instance
         /// </summary>
         /// <param name="message">A <see cref="fixture_change" /> instance to be mapped (converted)</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
@@ -96,7 +96,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="bet_stop" /> instance to the <see cref="IBetStop{T}" /> instance
+        ///     Maps (converts) the provided <see cref="bet_stop" /> instance to the <see cref="IBetStop{T}" /> instance
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="message">A <see cref="bet_stop" /> instance to be mapped (converted)</param>
@@ -119,12 +119,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="bet_cancel"/> instance to the <see cref="IBetCancel{T}"/> instance
+        ///     Maps (converts) the provided <see cref="bet_cancel" /> instance to the <see cref="IBetCancel{T}" /> instance
         /// </summary>
-        /// <param name="message">A <see cref="bet_cancel"/> instance to be mapped (converted)</param>
+        /// <param name="message">A <see cref="bet_cancel" /> instance to be mapped (converted)</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <param name="rawMessage">The raw message</param>
-        /// <returns>A <see cref="IBetCancel{T}"/> instance constructed from information in the provided <see cref="bet_cancel"/></returns>
+        /// <returns>A <see cref="IBetCancel{T}" /> instance constructed from information in the provided <see cref="bet_cancel" /></returns>
         public IBetCancel<T> MapBetCancel<T>(bet_cancel message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
             _ = Guard.Argument(message, nameof(message)).NotNull();
@@ -147,12 +147,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="rollback_bet_cancel"/> instance to the <see cref="IRollbackBetCancel{T}"/> instance
+        ///     Maps (converts) the provided <see cref="rollback_bet_cancel" /> instance to the <see cref="IRollbackBetCancel{T}" /> instance
         /// </summary>
-        /// <param name="message">A <see cref="rollback_bet_cancel"/> instance to be mapped (converted)</param>
+        /// <param name="message">A <see cref="rollback_bet_cancel" /> instance to be mapped (converted)</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <param name="rawMessage">The raw message</param>
-        /// <returns>A <see cref="IRollbackBetCancel{T}"/> instance constructed from information in the provided <see cref="rollback_bet_cancel"/></returns>
+        /// <returns>A <see cref="IRollbackBetCancel{T}" /> instance constructed from information in the provided <see cref="rollback_bet_cancel" /></returns>
         public IRollbackBetCancel<T> MapRollbackBetCancel<T>(rollback_bet_cancel message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
             _ = Guard.Argument(message, nameof(message)).NotNull();
@@ -177,12 +177,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="bet_settlement"/> instance to the <see cref="IBetSettlement{T}"/> instance
+        ///     Maps (converts) the provided <see cref="bet_settlement" /> instance to the <see cref="IBetSettlement{T}" /> instance
         /// </summary>
-        /// <param name="message">A <see cref="bet_settlement"/> instance to be mapped (converted)</param>
+        /// <param name="message">A <see cref="bet_settlement" /> instance to be mapped (converted)</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <param name="rawMessage">The raw message</param>
-        /// <returns>A <see cref="IBetSettlement{T}"/> instance constructed from information in the provided <see cref="bet_settlement"/></returns>
+        /// <returns>A <see cref="IBetSettlement{T}" /> instance constructed from information in the provided <see cref="bet_settlement" /></returns>
         public IBetSettlement<T> MapBetSettlement<T>(bet_settlement message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
             _ = Guard.Argument(message, nameof(message)).NotNull();
@@ -203,12 +203,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="rollback_bet_settlement"/> instance to the <see cref="IRollbackBetSettlement{T}"/> instance
+        ///     Maps (converts) the provided <see cref="rollback_bet_settlement" /> instance to the <see cref="IRollbackBetSettlement{T}" /> instance
         /// </summary>
-        /// <param name="message">A <see cref="rollback_bet_settlement"/> instance to be mapped (converted)</param>
+        /// <param name="message">A <see cref="rollback_bet_settlement" /> instance to be mapped (converted)</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <param name="rawMessage">The raw message</param>
-        /// <returns>A <see cref="IRollbackBetSettlement{T}"/> instance constructed from information in the provided <see cref="rollback_bet_settlement"/></returns>
+        /// <returns>A <see cref="IRollbackBetSettlement{T}" /> instance constructed from information in the provided <see cref="rollback_bet_settlement" /></returns>
         public IRollbackBetSettlement<T> MapRollbackBetSettlement<T>(rollback_bet_settlement message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
             _ = Guard.Argument(message, nameof(message)).NotNull();
@@ -219,17 +219,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
                                                 _producerManager.GetProducer(message.product),
                                                 GetEventForMessage<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
                                                 message.request_idSpecified ? (long?)message.request_id : null,
-                                                message.market.Select(m => _marketFactory.GetMarketCancel(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList), m, message.ProducerId, message.SportId, culturesList)),
+                                                message.market.Select(m => _marketFactory.GetMarketForRollbackSettlement(GetEventForNameProvider<T>(Urn.Parse(message.event_id), message.SportId, culturesList),
+                                                                                                                            m,
+                                                                                                                            message.ProducerId,
+                                                                                                                            message
+                                                                                                                               .SportId,
+                                                                                                                            culturesList)),
                                                 rawMessage);
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="odds_change"/> instance to the <see cref="IOddsChange{T}"/> instance
+        ///     Maps (converts) the provided <see cref="odds_change" /> instance to the <see cref="IOddsChange{T}" /> instance
         /// </summary>
-        /// <param name="message">A <see cref="odds_change"/> instance to be mapped (converted)</param>
+        /// <param name="message">A <see cref="odds_change" /> instance to be mapped (converted)</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
         /// <param name="rawMessage">The raw message</param>
-        /// <returns>A <see cref="IOddsChange{T}"/> instance constructed from information in the provided <see cref="odds_change"/></returns>
+        /// <returns>A <see cref="IOddsChange{T}" /> instance constructed from information in the provided <see cref="odds_change" /></returns>
         public IOddsChange<T> MapOddsChange<T>(odds_change message, IEnumerable<CultureInfo> cultures, byte[] rawMessage) where T : ISportEvent
         {
             _ = Guard.Argument(message, nameof(message)).NotNull();
@@ -254,7 +259,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Maps (converts) the provided <see cref="cashout" /> instance to the <see cref="ICashOutProbabilities{T}" /> instance
+        ///     Maps (converts) the provided <see cref="cashout" /> instance to the <see cref="ICashOutProbabilities{T}" /> instance
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="message">A <see cref="cashout" /> instance to be mapped (converted)</param>
@@ -281,13 +286,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Builds and returns a <see cref="ISportEvent"/> derived instance
+        ///     Builds and returns a <see cref="ISportEvent" /> derived instance
         /// </summary>
-        /// <param name="eventId">A <see cref="string"/> representation of the event id</param>
+        /// <param name="eventId">A <see cref="string" /> representation of the event id</param>
         /// <param name="sportId">The sport identifier</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
-        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy"/> enum member specifying how the constructed instance should handle potential exceptions</param>
-        /// <returns>A <see cref="ISportEvent"/> derived constructed instance</returns>
+        /// <param name="exceptionStrategy">A <see cref="ExceptionHandlingStrategy" /> enum member specifying how the constructed instance should handle potential exceptions</param>
+        /// <returns>A <see cref="ISportEvent" /> derived constructed instance</returns>
         private T BuildEvent<T>(Urn eventId, Urn sportId, List<CultureInfo> cultures, ExceptionHandlingStrategy exceptionStrategy) where T : ISportEvent
         {
             _ = Guard.Argument(eventId, nameof(eventId)).NotNull();
@@ -318,12 +323,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Gets the new <see cref="ICompetition"/> instance
+        ///     Gets the new <see cref="ICompetition" /> instance
         /// </summary>
-        /// <param name="eventId">A <see cref="string"/> representation of the event id</param>
+        /// <param name="eventId">A <see cref="string" /> representation of the event id</param>
         /// <param name="sportId">The sport identifier</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
-        /// <returns>Returns the new <see cref="ICompetition"/> instance</returns>
+        /// <returns>Returns the new <see cref="ICompetition" /> instance</returns>
         private T GetEventForMessage<T>(Urn eventId, Urn sportId, List<CultureInfo> cultures) where T : ISportEvent
         {
             _ = Guard.Argument(eventId, nameof(eventId)).NotNull();
@@ -334,12 +339,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.Internal
         }
 
         /// <summary>
-        /// Gets the new <see cref="ICompetition"/> instance
+        ///     Gets the new <see cref="ICompetition" /> instance
         /// </summary>
-        /// <param name="eventId">A <see cref="string"/> representation of the event id</param>
+        /// <param name="eventId">A <see cref="string" /> representation of the event id</param>
         /// <param name="sportId">The sport identifier</param>
         /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the mapped message will be translated</param>
-        /// <returns>Returns the new <see cref="ICompetition"/> instance</returns>
+        /// <returns>Returns the new <see cref="ICompetition" /> instance</returns>
         private T GetEventForNameProvider<T>(Urn eventId, Urn sportId, List<CultureInfo> cultures) where T : ISportEvent
         {
             _ = Guard.Argument(eventId, nameof(eventId)).NotNull();

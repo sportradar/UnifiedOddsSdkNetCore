@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -431,7 +430,7 @@ public class MarketCacheProviderTests
     {
         const int marketId = 679;
         const string specifiers = "maxovers=20|type=live|inningnr=1";
-        var specifiersCollection = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
+        var specifiersCollection = SdkInfo.SpecifiersStringToDictionary(specifiers);
 
         var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiersCollection, _languages, true);
 
@@ -452,7 +451,7 @@ public class MarketCacheProviderTests
         const string specifiers = "maxovers=20|type=live|inningnr=1";
         await PreloadMarketListAndClearInvocations();
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, SdkInfo.SpecifiersStringToDictionary(specifiers), _languages, true);
 
         marketDescription.ShouldNotBeNull();
         VerifyNoAdditionalMarkerApiCallsWasMade();
@@ -463,7 +462,7 @@ public class MarketCacheProviderTests
     {
         const int marketId = 1109;
         const string specifiers = "lapnr=5";
-        var specifiersCollection = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
+        var specifiersCollection = SdkInfo.SpecifiersStringToDictionary(specifiers);
 
         var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiersCollection, _languages, true);
 
@@ -481,7 +480,7 @@ public class MarketCacheProviderTests
         const string specifiers = "lapnr=5";
         await PreloadMarketListAndClearInvocations();
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, SdkInfo.SpecifiersStringToDictionary(specifiers), _languages, true);
 
         marketDescription.ShouldNotBeNull();
         VerifyNoAdditionalMarkerApiCallsWasMade();
@@ -512,7 +511,7 @@ public class MarketCacheProviderTests
         const string specifiers = "quarternr=4|hcp=-3.5";
         await PreloadMarketListAndClearInvocations();
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, SdkInfo.SpecifiersStringToDictionary(specifiers), _languages, true);
 
         marketDescription.ShouldNotBeNull();
         VerifyNoAdditionalMarkerApiCallsWasMade();
@@ -543,7 +542,7 @@ public class MarketCacheProviderTests
         const string specifiers = "score=2:0";
         await PreloadMarketListAndClearInvocations();
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, SdkInfo.SpecifiersStringToDictionary(specifiers), _languages, true);
 
         marketDescription.ShouldNotBeNull();
         VerifyNoAdditionalMarkerApiCallsWasMade();
@@ -604,7 +603,7 @@ public class MarketCacheProviderTests
     {
         const int marketId = 679;
         const string specifiers = "variant=null";
-        var specifiersCollection = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
+        var specifiersCollection = SdkInfo.SpecifiersStringToDictionary(specifiers);
 
         var marketDescription = (MarketDescription)await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiersCollection, _languages, true);
 
@@ -621,7 +620,7 @@ public class MarketCacheProviderTests
         const string specifiers = "variant=null";
         var marketCacheProviderLogger = _loggerFactory.GetOrCreateLogger(typeof(MarketCacheProvider));
 
-        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        _ = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, SdkInfo.SpecifiersStringToDictionary(specifiers), _languages, true);
 
         Assert.Equal(1, marketCacheProviderLogger.CountByLevel(LogLevel.Error));
     }
@@ -631,7 +630,7 @@ public class MarketCacheProviderTests
     {
         const int marketId = 679;
         const string specifiers = "variant=null";
-        var specifiersCollection = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
+        var specifiersCollection = SdkInfo.SpecifiersStringToDictionary(specifiers);
 
         var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiersCollection, _languages, true);
 
@@ -643,7 +642,7 @@ public class MarketCacheProviderTests
     {
         const int marketId = 110900;
         const string specifiers = "lapnr=5";
-        var specifiersCollection = new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
+        var specifiersCollection = SdkInfo.SpecifiersStringToDictionary(specifiers);
 
         var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, specifiersCollection, _languages, true);
 
@@ -657,7 +656,7 @@ public class MarketCacheProviderTests
         const string specifiers = "lapnr=5";
         await PreloadMarketListAndClearInvocations();
 
-        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers)), _languages, true);
+        var marketDescription = await _marketCacheProvider.GetMarketDescriptionAsync(marketId, SdkInfo.SpecifiersStringToDictionary(specifiers), _languages, true);
 
         marketDescription.ShouldBeNull();
         VerifyNoAdditionalMarkerApiCallsWasMade();

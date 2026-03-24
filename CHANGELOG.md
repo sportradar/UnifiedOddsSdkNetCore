@@ -1,6 +1,9 @@
 # Change Log
 
-## 4.0.0-rc3
+## 4.0.0-rc4
+- Added support for In-Play bet settlements, see release notes for v.3.8.0 for more details.
+
+## 2026-02-09 4.0.0-rc3
 - Client Authentication is supported for Rabbit MQ connections
 - Configurable Authentication Tenant
 - When using custom configuration builder replaced SetUsername and SetPassword with SetAuthenticationCredentials
@@ -16,8 +19,13 @@
 - Added a dependency to System.IdentityModel.Tokens.Jwt
 - Added a dependency to ZiggyCreatures.FusionCache
 
-## 2015-X-Y 3.8.0
-- TBD
+## 2026-03-02 3.8.0
+- Added support for In-Play bet settlements
+    - added support for RollbackBetSettlement message with markets with outcomes (market needs to be casted to `IMarketRollbackSettlement`)
+      ```
+      var marketRollbackSettlement = rollbackBetSettlementMessage.Markets.First() as IMarketRollbackSettlement;
+      var outcome = marketRollbackSettlement.Outcomes.First();
+      ```
 
 ## 2025-10-31 3.7.1
 - Season object obtained from SportDataProvider properly returns sport information when `Season.GetSportAsync()` is called
@@ -497,4 +505,3 @@ to
 - Upgraded Unity to 5.11.3
 - Removed obsolete methods and properties
 - Merged V1, V2, ... extended interfaces into base one
-

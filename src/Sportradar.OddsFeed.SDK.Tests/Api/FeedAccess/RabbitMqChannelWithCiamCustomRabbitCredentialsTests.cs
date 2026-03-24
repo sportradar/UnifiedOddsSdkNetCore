@@ -22,6 +22,7 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed.Messages;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Feed;

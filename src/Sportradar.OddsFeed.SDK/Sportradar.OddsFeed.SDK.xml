@@ -3403,6 +3403,14 @@
             <param name="culture">The culture to fetch the data</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an asynchronous operation</returns>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache.GetEventIdsAsync(Sportradar.OddsFeed.SDK.Common.Urn,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+            <summary>
+            Asynchronous gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing id's of sport events, which belong to the specified tournament
+            </summary>
+            <param name="tournamentId">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> representing the tournament identifier</param>
+            <param name="cultures">A list of <see cref="T:System.Globalization.CultureInfo"/> used to fetch schedules</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an asynchronous operation</returns>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache.GetActiveTournamentsAsync(System.Globalization.CultureInfo)">
             <summary>
             Asynchronously gets a list of active <see cref="T:System.Collections.Generic.IEnumerable`1"/>
@@ -12748,12 +12756,12 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IMarketCancel">
             <summary>
-            Represents information for a market with void reason
+                Represents information for a market with a void reason
             </summary>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketCancel.VoidReason">
             <summary>
-            Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue"/> specifying the void reason, or a null reference if no void reason is specified
+                Gets a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.INamedValue" /> specifying the void reason, or a null reference if no void reason is specified
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IMarketDefinition">
@@ -12850,6 +12858,16 @@
             Gets the Italian AAMS id for this outright
             </summary>
             <value>The Italian AAMS id for this outright</value>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement">
+            <summary>
+                Represents information for a market in <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1" /> message
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement.Outcomes">
+            <summary>
+                An outcome for a market in <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1" /> message
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IMarketWithOdds">
             <summary>
@@ -14412,7 +14430,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1.#ctor(Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp,Sportradar.OddsFeed.SDK.Api.IProducer,`0,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IMarketCancel},System.Byte[])">
+        <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1.#ctor(Sportradar.OddsFeed.SDK.Entities.IMessageTimestamp,Sportradar.OddsFeed.SDK.Api.IProducer,`0,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.IMarketRollbackSettlement},System.Byte[])">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.EntitiesImpl.RollbackBetSettlement`1" /> message
             </summary>
@@ -14511,26 +14529,26 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper">
             <summary>
-            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageMapper"/> implementation which maps feed messages to non-specific feed messages
+                A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IFeedMessageMapper" /> implementation which maps feed messages to non-specific feed messages
             </summary>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapAlive(Sportradar.OddsFeed.SDK.Messages.Feed.alive)">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive"/> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IAlive"/> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IAlive" /> instance
             </summary>
-            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive"/> instance to be mapped (converted)</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IAlive"/> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive"/></returns>
+            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive" /> instance to be mapped (converted)</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Internal.IAlive" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.alive" /></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapSnapShotCompleted(Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete)">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete"/> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted"/> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted" /> instance
             </summary>
-            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete"/> instance to be mapped (converted)</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted"/> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete"/></returns>
+            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete" /> instance to be mapped (converted)</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.ISnapshotCompleted" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete" /></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapFixtureChange``1(Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IFixtureChange`1" /> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IFixtureChange`1" /> instance
             </summary>
             <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.fixture_change" /> instance to be mapped (converted)</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
@@ -14539,7 +14557,7 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapBetStop``1(Sportradar.OddsFeed.SDK.Messages.Feed.bet_stop,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_stop" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetStop`1" /> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_stop" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetStop`1" /> instance
             </summary>
             <typeparam name="T"></typeparam>
             <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_stop" /> instance to be mapped (converted)</param>
@@ -14549,52 +14567,52 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapBetCancel``1(Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel"/> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetCancel`1"/> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetCancel`1" /> instance
             </summary>
-            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel"/> instance to be mapped (converted)</param>
+            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel" /> instance to be mapped (converted)</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
             <param name="rawMessage">The raw message</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetCancel`1"/> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel"/></returns>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetCancel`1" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_cancel" /></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapRollbackBetCancel``1(Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel"/> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1"/> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1" /> instance
             </summary>
-            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel"/> instance to be mapped (converted)</param>
+            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel" /> instance to be mapped (converted)</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
             <param name="rawMessage">The raw message</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1"/> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel"/></returns>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetCancel`1" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_cancel" /></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapBetSettlement``1(Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement"/> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetSettlement`1"/> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetSettlement`1" /> instance
             </summary>
-            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement"/> instance to be mapped (converted)</param>
+            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement" /> instance to be mapped (converted)</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
             <param name="rawMessage">The raw message</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetSettlement`1"/> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement"/></returns>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IBetSettlement`1" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.bet_settlement" /></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapRollbackBetSettlement``1(Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement"/> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1"/> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1" /> instance
             </summary>
-            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement"/> instance to be mapped (converted)</param>
+            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement" /> instance to be mapped (converted)</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
             <param name="rawMessage">The raw message</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1"/> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement"/></returns>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.rollback_bet_settlement" /></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapOddsChange``1(Sportradar.OddsFeed.SDK.Messages.Feed.odds_change,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change"/> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOddsChange`1"/> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOddsChange`1" /> instance
             </summary>
-            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change"/> instance to be mapped (converted)</param>
+            <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change" /> instance to be mapped (converted)</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
             <param name="rawMessage">The raw message</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOddsChange`1"/> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change"/></returns>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.IOddsChange`1" /> instance constructed from information in the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change" /></returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.MapCashOutProbabilities``1(Sportradar.OddsFeed.SDK.Messages.Rest.cashout,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo},System.Byte[])">
             <summary>
-            Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Rest.cashout" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.ICashOutProbabilities`1" /> instance
+                Maps (converts) the provided <see cref="T:Sportradar.OddsFeed.SDK.Messages.Rest.cashout" /> instance to the <see cref="T:Sportradar.OddsFeed.SDK.Entities.ICashOutProbabilities`1" /> instance
             </summary>
             <typeparam name="T"></typeparam>
             <param name="message">A <see cref="T:Sportradar.OddsFeed.SDK.Messages.Rest.cashout" /> instance to be mapped (converted)</param>
@@ -14604,31 +14622,31 @@
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.BuildEvent``1(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Common.Urn,System.Collections.Generic.List{System.Globalization.CultureInfo},Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy)">
             <summary>
-            Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent"/> derived instance
+                Builds and returns a <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent" /> derived instance
             </summary>
-            <param name="eventId">A <see cref="T:System.String"/> representation of the event id</param>
+            <param name="eventId">A <see cref="T:System.String" /> representation of the event id</param>
             <param name="sportId">The sport identifier</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
-            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy"/> enum member specifying how the constructed instance should handle potential exceptions</param>
-            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent"/> derived constructed instance</returns>
+            <param name="exceptionStrategy">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Enums.ExceptionHandlingStrategy" /> enum member specifying how the constructed instance should handle potential exceptions</param>
+            <returns>A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ISportEvent" /> derived constructed instance</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.GetEventForMessage``1(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Common.Urn,System.Collections.Generic.List{System.Globalization.CultureInfo})">
             <summary>
-            Gets the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition"/> instance
+                Gets the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition" /> instance
             </summary>
-            <param name="eventId">A <see cref="T:System.String"/> representation of the event id</param>
+            <param name="eventId">A <see cref="T:System.String" /> representation of the event id</param>
             <param name="sportId">The sport identifier</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
-            <returns>Returns the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition"/> instance</returns>
+            <returns>Returns the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition" /> instance</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageMapper.GetEventForNameProvider``1(Sportradar.OddsFeed.SDK.Common.Urn,Sportradar.OddsFeed.SDK.Common.Urn,System.Collections.Generic.List{System.Globalization.CultureInfo})">
             <summary>
-            Gets the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition"/> instance
+                Gets the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition" /> instance
             </summary>
-            <param name="eventId">A <see cref="T:System.String"/> representation of the event id</param>
+            <param name="eventId">A <see cref="T:System.String" /> representation of the event id</param>
             <param name="sportId">The sport identifier</param>
             <param name="cultures">A <see cref="T:System.Collections.Generic.IEnumerable`1" /> specifying the languages to which the mapped message will be translated</param>
-            <returns>Returns the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition"/> instance</returns>
+            <returns>Returns the new <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.ICompetition" /> instance</returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Internal.FeedMessageValidator">
             <summary>
@@ -15333,6 +15351,11 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.IOutcomeProbabilities.AdditionalProbabilities">
             <summary>
             Additional probability attributes for markets which potentially will be (partly) refunded
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeRollbackSettlement">
+            <summary>
+                Represent an outcome in <see cref="T:Sportradar.OddsFeed.SDK.Entities.IRollbackBetSettlement`1" /> message
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.IOutcomeSettlement">
@@ -17311,6 +17334,11 @@
         <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.UndecidedYet">
             <summary>
             Undecided yet
+            </summary>
+        </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.OutcomeResult.UnsupportedBySdk">
+            <summary>
+            Outcome result is not supported by the SDK
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Enums.PeriodType">
@@ -33920,6 +33948,9 @@
             Gets or sets a <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> representing parsed specifiers
             </summary>
         </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.market.outcome">
+            <remarks/>
+        </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.market.id">
             <remarks/>
         </member>
@@ -34104,6 +34135,9 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.snapshot_complete.timestamp">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change">
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.odds_change.sport_event_status">
@@ -34638,6 +34672,12 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.clockType.stoppedSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Feed.marketOutcome.id">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Feed.betSettlementMarketOutcome">

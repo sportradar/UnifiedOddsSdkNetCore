@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Sportradar.OddsFeed.SDKCore" Version="4.0.0-rc3" />
+    <PackageReference Include="Sportradar.OddsFeed.SDKCore" Version="4.0.0-rc4" />
   </ItemGroup>
 
   <ItemGroup>

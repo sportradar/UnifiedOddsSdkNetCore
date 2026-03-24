@@ -1,7 +1,6 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Helpers;
@@ -15,7 +14,7 @@ public static class Utilities
     /// <returns>Dictionary of specifiers</returns>
     public static IReadOnlyDictionary<string, string> SpecifiersStringToReadOnlyDictionary(string specifiers)
     {
-        return new ReadOnlyDictionary<string, string>(SdkInfo.SpecifiersStringToDictionary(specifiers));
+        return SdkInfo.SpecifiersStringToDictionary(specifiers);
     }
 
     /// <summary>
