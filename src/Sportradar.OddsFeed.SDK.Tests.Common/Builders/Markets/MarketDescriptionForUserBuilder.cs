@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.IdentityModel.Tokens;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Market;
 using Sportradar.OddsFeed.SDK.Entities.Rest.MarketMapping;
@@ -10,7 +11,7 @@ using Sportradar.OddsFeed.SDK.Messages.Rest;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders.Markets;
 
-public class MarketDescriptionBuilder
+public class MarketDescriptionForUserBuilder
 {
     private long _id;
     private ICollection<IOutcomeDescription> _outcomes = new List<IOutcomeDescription>();
@@ -22,55 +23,55 @@ public class MarketDescriptionBuilder
     private readonly Dictionary<CultureInfo, string> _names = new Dictionary<CultureInfo, string>();
     private readonly Dictionary<CultureInfo, string> _descriptions = new Dictionary<CultureInfo, string>();
 
-    public MarketDescriptionBuilder WithId(long id)
+    public MarketDescriptionForUserBuilder WithId(long id)
     {
         _id = id;
         return this;
     }
 
-    public MarketDescriptionBuilder WithOutcomes(ICollection<IOutcomeDescription> outcomes)
+    public MarketDescriptionForUserBuilder WithOutcomes(ICollection<IOutcomeDescription> outcomes)
     {
         _outcomes = outcomes;
         return this;
     }
 
-    public MarketDescriptionBuilder WithSpecifiers(ICollection<ISpecifier> specifiers)
+    public MarketDescriptionForUserBuilder WithSpecifiers(ICollection<ISpecifier> specifiers)
     {
         _specifiers = specifiers;
         return this;
     }
 
-    public MarketDescriptionBuilder WithMappings(ICollection<IMarketMappingData> mappings)
+    public MarketDescriptionForUserBuilder WithMappings(ICollection<IMarketMappingData> mappings)
     {
         _mappings = mappings;
         return this;
     }
 
-    public MarketDescriptionBuilder WithAttributes(ICollection<IMarketAttribute> attributes)
+    public MarketDescriptionForUserBuilder WithAttributes(ICollection<IMarketAttribute> attributes)
     {
         _attributes = attributes;
         return this;
     }
 
-    public MarketDescriptionBuilder WithOutcomeType(string outcomeType)
+    public MarketDescriptionForUserBuilder WithOutcomeType(string outcomeType)
     {
         _outcomeType = outcomeType;
         return this;
     }
 
-    public MarketDescriptionBuilder WithGroups(ICollection<string> groups)
+    public MarketDescriptionForUserBuilder WithGroups(ICollection<string> groups)
     {
         _groups = groups;
         return this;
     }
 
-    public MarketDescriptionBuilder WithName(string name, CultureInfo language)
+    public MarketDescriptionForUserBuilder WithName(string name, CultureInfo language)
     {
         _names[language] = name;
         return this;
     }
 
-    public MarketDescriptionBuilder WithDescription(string description, CultureInfo language)
+    public MarketDescriptionForUserBuilder WithDescription(string description, CultureInfo language)
     {
         _descriptions[language] = description;
         return this;
@@ -96,15 +97,21 @@ public class MarketDescriptionBuilder
         }
 
         var mappings = new List<IMarketMappingData>();
-        foreach (var mapping in apiMarketDescription.mappings)
+        if (!apiMarketDescription.mappings.IsNullOrEmpty())
         {
-            mappings.Add(new MarketMapping(apiMarketDescription.id.ToString(), mapping, culture));
+            foreach (var mapping in apiMarketDescription.mappings)
+            {
+                mappings.Add(new MarketMapping(apiMarketDescription.id.ToString(), mapping, culture));
+            }
         }
 
         var attributes = new List<IMarketAttribute>();
-        foreach (var attribute in apiMarketDescription.attributes)
+        if (!apiMarketDescription.attributes.IsNullOrEmpty())
         {
-            attributes.Add(new MarketAttribute(attribute));
+            foreach (var attribute in apiMarketDescription.attributes)
+            {
+                attributes.Add(new MarketAttribute(attribute));
+            }
         }
 
         var groups = apiMarketDescription.groups?.Split([SdkInfo.MarketGroupsDelimiter], StringSplitOptions.RemoveEmptyEntries);

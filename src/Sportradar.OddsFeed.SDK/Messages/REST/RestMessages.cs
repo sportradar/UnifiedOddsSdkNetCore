@@ -8660,6 +8660,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
 
         private int requested_recommendationsField;
 
+        private string generated_atField;
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("event")]
         public EventRecommendationsType[] @event {
@@ -8679,6 +8681,17 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
             }
             set {
                 this.requested_recommendationsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string generated_at {
+            get {
+                return this.generated_atField;
+            }
+            set {
+                this.generated_atField = value;
             }
         }
     }
@@ -8754,9 +8767,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
 
         private PreBuiltBetsSelectionType[] selectionField;
 
-        private decimal oddsField;
+        private double oddsField;
 
-        private decimal probabilityField;
+        private double probabilityField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("selection")]
@@ -8771,7 +8784,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal odds {
+        public double odds {
             get {
                 return this.oddsField;
             }
@@ -8782,7 +8795,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal probability {
+        public double probability {
             get {
                 return this.probabilityField;
             }
@@ -8800,7 +8813,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.sportradar.com/custombet/v1/endpoints")]
     public partial class PreBuiltBetsSelectionType {
 
-        private string market_idField;
+        private int market_idField;
 
         private string outcome_idField;
 
@@ -8808,7 +8821,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest {
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string market_id {
+        public int market_id {
             get {
                 return this.market_idField;
             }

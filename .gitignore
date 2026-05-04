@@ -51,12 +51,18 @@ XsdSchemaFetcher/SchemaFetcher/packages/*
 packages/**
 **/Logs
 **/Help
+**/StrykerOutput
+**/TestResults
 
 UpgradeLog.htm
 
 coverage.opencover.xml
 coverage.xml
+**/junit-test-result.xml
 
 # dotCover output
 dotCover.Output.*
 /dotCover.Output
+
+*.feature.cs
+**/Sportradar.OddsFeed.SDK.Tests.Acceptance/**/*.feature.cs

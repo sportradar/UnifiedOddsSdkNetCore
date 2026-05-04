@@ -265,6 +265,11 @@ namespace Sportradar.OddsFeed.SDK.Messages.Rest
     }
 
     [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "RestMessages defaults")]
+    public partial class PreBuiltBetsType : RestMessage
+    {
+    }
+
+    [SuppressMessage("Style", "IDE1006: Naming rule violation", Justification = "RestMessages defaults")]
     public partial class CalculationResponseType : RestMessage
     {
     }

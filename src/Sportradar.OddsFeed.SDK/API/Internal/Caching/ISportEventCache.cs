@@ -40,6 +40,14 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Caching
         Task<IEnumerable<Tuple<Urn, Urn>>> GetEventIdsAsync(DateTime? date, CultureInfo culture);
 
         /// <summary>
+        /// Asynchronous gets a <see cref="IEnumerable{Urn}"/> containing id's of sport events, which belong to the specified tournament
+        /// </summary>
+        /// <param name="tournamentId">A <see cref="Urn"/> representing the tournament identifier</param>
+        /// <param name="cultures">A list of <see cref="CultureInfo"/> used to fetch schedules</param>
+        /// <returns>A <see cref="Task{T}"/> representing an asynchronous operation</returns>
+        Task GetEventIdsAsync(Urn tournamentId, IEnumerable<CultureInfo> cultures);
+
+        /// <summary>
         /// Asynchronously gets a list of active <see cref="IEnumerable{TournamentInfoCacheItem}"/>
         /// </summary>
         /// <remarks>Lists all <see cref="TournamentInfoCacheItem"/> that are cached (once schedule is loaded)</remarks>

@@ -12,9 +12,9 @@ public class XUnitLogger<T> : ILogger<T>
 {
     public XUnitLogger InnerLogger { get; }
 
-    public XUnitLogger(ITestOutputHelper outputHelper)
+    public XUnitLogger(ITestOutputHelper outputHelper, LogLevel logLevel)
     {
-        InnerLogger = new XUnitLogger(typeof(T).FullName, outputHelper);
+        InnerLogger = new XUnitLogger(typeof(T).FullName, outputHelper, logLevel);
     }
 
     public IDisposable BeginScope<TState>(TState state)

@@ -96,6 +96,11 @@ public class TestDataFetcher : IDataRestful
         return Task.FromResult(FileHelper.OpenFile(GetPathWithReplacements(uri.LocalPath)));
     }
 
+    public Task<Stream> GetDataAsync(Uri uri, IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual Stream GetData(Uri uri)
     {
         CalledUrls.Add(uri.PathAndQuery);

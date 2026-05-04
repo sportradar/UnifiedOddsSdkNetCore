@@ -428,7 +428,12 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
 
             services.AddSingleton<ICustomBetSelectionBuilderFactory, CustomBetSelectionBuilderFactory>();
 
-            services.AddSingleton<ICustomBetManager, CustomBetManager>();
+            services.AddSingleton<ICustomBetManager, CustomBetManager>(serviceProvider =>
+                                                                          new CustomBetManager(serviceProvider.GetRequiredService<IDataRouterManager>(),
+                                                                                               serviceProvider.GetRequiredService<IUofConfiguration>(),
+                                                                                               serviceProvider.GetRequiredService<ICustomBetSelectionBuilderFactory>(),
+                                                                                               SdkLoggerFactory.GetLoggerForClientInteraction(typeof(CustomBetManager)),
+                                                                                               SdkLoggerFactory.GetLoggerForExecution(typeof(CustomBetManager))));
 
             services.AddSingleton<IEventChangeManager, EventChangeManager>(serviceProvider =>
                                                                                new EventChangeManager(TimeSpan.FromMinutes(60),
@@ -940,6 +945,16 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                                                                                                                                           AvailableSelectionsType,
                                                                                                                                                                                                                           AvailableSelectionsDto>>()));
 
+            // custom bet prebuilt bets provider
+            var customBetPrebuiltBetsEndpoint = configuration.Api.BaseUrl + "/v1/custombet/prebuilt";
+            services.AddSingleton<IDeserializer<PreBuiltBetsType>, Deserializer<PreBuiltBetsType>>();
+            services.AddSingleton<ISingleTypeMapperFactory<PreBuiltBetsType, PrebuiltBetsDto>, PrebuiltBetsMapperFactory>();
+            services.AddSingleton<IDataProviderWithQuery<PrebuiltBetsDto>, DataProvider<PreBuiltBetsType, PrebuiltBetsDto>>(serviceProvider =>
+                                                                                                                                new DataProvider<PreBuiltBetsType, PrebuiltBetsDto>(customBetPrebuiltBetsEndpoint,
+                                                                                                                                                                                    serviceProvider.GetRequiredService<ILogHttpDataFetcher>(),
+                                                                                                                                                                                    serviceProvider.GetRequiredService<IDeserializer<PreBuiltBetsType>>(),
+                                                                                                                                                                                    serviceProvider.GetRequiredService<ISingleTypeMapperFactory<PreBuiltBetsType, PrebuiltBetsDto>>()));
+
             // custom bet calculate provider
             var customBetCalculateEndpoint = configuration.Api.BaseUrl + "/v1/custombet/calculate";
             services.AddSingleton<IDeserializer<CalculationResponseType>, Deserializer<CalculationResponseType>>();
@@ -996,7 +1011,8 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.Config
                                                                                                    serviceProvider.GetRequiredService<IDataProvider<TournamentInfoDto>>(),
                                                                                                    serviceProvider.GetDataProviderNamed<TournamentInfoDto>(DataProviderForFixtureChangeFixtureEndpointForTournamentInfo),
                                                                                                    serviceProvider.GetRequiredService<IDataProvider<PeriodSummaryDto>>(),
-                                                                                                   serviceProvider.GetDataProviderNamed<EntityList<SportEventSummaryDto>>(DataProviderForStageTournamentSchedule)));
+                                                                                                   serviceProvider.GetDataProviderNamed<EntityList<SportEventSummaryDto>>(DataProviderForStageTournamentSchedule),
+                                                                                                   serviceProvider.GetRequiredService<IDataProviderWithQuery<PrebuiltBetsDto>>()));
         }
 
         private static void RegisterMarketCaches(IServiceCollection services)

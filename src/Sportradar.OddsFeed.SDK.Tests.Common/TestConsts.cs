@@ -18,6 +18,8 @@ public static class TestConsts
     public const string AnyVirtualHost = "/virtualhost";
     public const string AnyApiHost = "custom_api_host";
     public const string AnyRabbitHost = "custom_mq_host";
+    public const string AnyConsumerTag = "consumer_tag";
+    public const string DefaultRabbitExchange = "unifiedfeed";
 
     public static readonly Urn AnyMatchId = UrnCreate.MatchId(1);
     public static readonly Urn AnyStageId = UrnCreate.StageId(2);

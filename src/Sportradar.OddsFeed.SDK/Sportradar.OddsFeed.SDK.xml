@@ -1778,6 +1778,11 @@
             The available selections provider
             </summary>
         </member>
+        <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.DataRouterManager._prebuiltBetsProvider">
+            <summary>
+            The prebuilt bets provider
+            </summary>
+        </member>
         <member name="F:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.DataRouterManager._calculateProbabilityProvider">
             <summary>
             The calculate probability provider
@@ -1843,7 +1848,7 @@
             The exception handling strategy
             </summary>
         </member>
-        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.DataRouterManager.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheManager,Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager,Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.IExecutionPathDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.FixtureDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.FixtureDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.PlayerProfileDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CompetitorProfileDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SimpleTeamProfileDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentSeasonsDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.MatchTimelineDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportCategoriesDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.MarketDescriptionDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.MarketDescriptionDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.VariantDescriptionDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.DrawDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.DrawDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.LotteryDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.LotteryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.AvailableSelectionsDto},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityProvider,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityFilteredProvider,Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.FixtureChangeDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.ResultChangeDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentInfoDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentInfoDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentInfoDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.PeriodSummaryDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}})">
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.DataRouterManager.#ctor(Sportradar.OddsFeed.SDK.Api.Internal.Caching.ICacheManager,Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager,Sportradar.OddsFeed.SDK.Api.Config.IUofConfiguration,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.IExecutionPathDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.FixtureDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.FixtureDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.PlayerProfileDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CompetitorProfileDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SimpleTeamProfileDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentSeasonsDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.MatchTimelineDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportCategoriesDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.MarketDescriptionDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.MarketDescriptionDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.VariantDescriptionDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.DrawDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.DrawDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.LotteryDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.Lottery.LotteryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.AvailableSelectionsDto},Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityProvider,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.ICalculateProbabilityFilteredProvider,Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.FixtureChangeDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.ResultChangeDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentInfoDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentInfoDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.TournamentInfoDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.PeriodSummaryDto},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProvider{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.EntityList{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.SportEventSummaryDto}},Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataProviderWithQuery{Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.PrebuiltBetsDto})">
             <summary>
             Initializes a new instance of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.DataRouterManager"/> class
             </summary>
@@ -1881,6 +1886,7 @@
             <param name="sportEventFixtureChangeFixtureForTournamentProvider">The sport event fixture provider without cache for when tournamentInfo is returned</param>
             <param name="stagePeriodSummaryProvider">Stage period summary provider</param>
             <param name="sportEventsForRaceTournamentProvider">The sport events for race schedule tournament provider</param>
+            <param name="prebuiltBetsProvider">Prebuilt bets provider</param>
             <remarks>Ignored _availableSelectionsProvider.RawApiDataReceived += OnRawApiDataReceived; _calculateProbabilityProvider.RawApiDataReceived += OnRawApiDataReceived;</remarks>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.DataRouterManager.GetSportEventSummaryAsync(Sportradar.OddsFeed.SDK.Common.Urn,System.Globalization.CultureInfo,Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Caching.Events.ISportEventCacheItem,Sportradar.OddsFeed.SDK.Api.Internal.RequestOptions)">
@@ -2198,6 +2204,17 @@
             <returns>A <see cref="T:System.Threading.Tasks.Task"/> which, when completed will return a <see cref="T:System.IO.Stream"/> containing fetched data</returns>
             <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException">Failed to execute http get</exception>
         </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher.GetDataAsync(System.Uri,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>
+            Asynchronously gets a <see cref="T:System.IO.Stream" /> containing data fetched from the provided <see cref="T:System.Uri" />
+            using custom query parameters and request headers.
+            </summary>
+            <param name="uri">The <see cref="T:System.Uri" /> of the resource to be fetched</param>
+            <param name="queryParameters">The query parameters to include</param>
+            <param name="headers">The request headers to include</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> which, when completed will return a <see cref="T:System.IO.Stream" /> containing fetched data</returns>
+            <exception cref="T:Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException">Failed to execute http get</exception>
+        </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataFetcher.GetData(System.Uri)">
             <summary>
             Gets a <see cref="T:System.IO.Stream"/> containing data fetched from the provided <see cref="T:System.Uri"/>
@@ -2465,6 +2482,17 @@
             </summary>
             <param name="id">The id of the event</param>
             <returns>The available selections for event</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager.RequestCustomBetPrebuiltBets(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest)">
+            <summary>
+            Requests a list of prebuilt Custom Bet combinations for the specified request parameters.
+            </summary>
+            <param name="prebuiltBetsRequest">
+            The request payload describing the event and constraints used to generate prebuilt bets.
+            </param>
+            <returns>
+            Available prebuilt bets for the given request.
+            </returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess.IDataRouterManager.CalculateProbabilityAsync(System.Collections.Generic.IEnumerable{Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection})">
             <summary>
@@ -3250,6 +3278,14 @@
             </summary>
             <param name="date">The date for which to retrieve the schedule, or a null reference to get currently live events</param>
             <param name="culture">The culture to fetch the data</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an asynchronous operation</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache.GetEventIdsAsync(Sportradar.OddsFeed.SDK.Common.Urn,System.Collections.Generic.IEnumerable{System.Globalization.CultureInfo})">
+            <summary>
+            Asynchronous gets a <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing id's of sport events, which belong to the specified tournament
+            </summary>
+            <param name="tournamentId">A <see cref="T:Sportradar.OddsFeed.SDK.Common.Urn"/> representing the tournament identifier</param>
+            <param name="cultures">A list of <see cref="T:System.Globalization.CultureInfo"/> used to fetch schedules</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing an asynchronous operation</returns>
         </member>
         <member name="M:Sportradar.OddsFeed.SDK.Api.Internal.Caching.ISportEventCache.GetActiveTournamentsAsync(System.Globalization.CultureInfo)">
@@ -6403,7 +6439,7 @@
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CustomBetManager">
             <summary>
-            The run-time implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> interface
+            The run-time implementation of the <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> and <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2"/> interfaces
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Internal.Managers.CustomBetSelectionBuilder">
@@ -9189,6 +9225,29 @@
             <param name="selections">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing selections for which the probability should be calculated</param>
             <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ICalculationFilter"/> providing the probability for the specified selections</returns>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2">
+            <summary>
+            Extends <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/> with additional methods for prebuilt bets functionality.
+            This interface provides a safe upgrade path for clients with custom implementations of <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager"/>.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.PrebuiltBetsRequestBuilder">
+            <summary>
+            Returns an <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder"/> instance used to build request for prebuilt bets
+            </summary>
+            <returns>An <see cref="T:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder"/> instance used to build request for  prebuilt bets</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.GetPrebuiltBets(Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest)">
+            <summary>
+            Returns prebuilt bet recommendations for the specified request.
+            </summary>
+            <param name="prebuiltBetsRequest">
+            The <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest"/> containing the event identifier and optional parameters.
+            </param>
+            <returns>
+            A <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets"/> object for the given request
+            </returns>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder">
             <summary>
             Defines methods used to build selections
@@ -9390,6 +9449,56 @@
             </summary>
             <param name="marketId">The market identifier</param>
             <param name="variantValue">The variant value</param>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder">
+            <summary>
+            Builder for creating <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest"/> instances
+            used to request prebuilt bets from the Custom Bet API.
+            </summary>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.WithCount(System.Int32)">
+            <summary>
+            Sets the number of recommendations to request.
+            </summary>
+            <param name="count">The requested recommendation count</param>
+            <returns>The same builder instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.WithLength(System.Int32)">
+            <summary>
+            Sets the length of selections in requested recommendations.
+            </summary>
+            <param name="length">The requested length</param>
+            <returns>The same builder instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.WithUser(System.String)">
+            <summary>
+            Sets the user value.
+            </summary>
+            <param name="user">The user identifier</param>
+            <returns>The same builder instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.WithEvent(Sportradar.OddsFeed.SDK.Common.Urn)">
+            <summary>
+            Sets the event identifier for which the prebuilt bets should be requested.
+            </summary>
+            <param name="eventId">The event identifier</param>
+            <returns>The same builder instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.WithSubBookmakerId(System.Int32)">
+            <summary>
+            Sets the sub-bookmaker identifier for which the prebuilt bets should be requested.
+            </summary>
+            <param name="subBookmakerId">The sub-bookmaker identifier</param>
+            <returns>The same builder instance</returns>
+        </member>
+        <member name="M:Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.Build">
+            <summary>
+            Builds an immutable <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest"/> instance
+            using the values provided to this builder.
+            </summary>
+            <returns>
+            A fully constructed <see cref="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest"/> instance.
+            </returns>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Api.Managers.IProducerManager">
             <summary>
@@ -16765,6 +16874,31 @@
             Get the value specifying if the calculation used harmonized method
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations">
+            <summary>
+            Represents a single event recommendations entry in prebuilt bets response.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations.EventId">
+            <summary>
+            Returns the event URN
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations.ProvidedRecommendations">
+            <summary>
+            Returns the number of provided recommendations
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations.Source">
+            <summary>
+            Returns the source of the recommendations
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations.Recommendations">
+            <summary>
+            Returns the list of recommendations
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket">
             <summary>
             Provides an available selections for a particular market
@@ -16823,6 +16957,97 @@
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IOutcomeFilter.IsConflict">
             <summary>
             Value indicating if this outcome is in conflict
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets">
+            <summary>
+            Represents a prebuilt bets response returned by the Custom Bet API.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.Events">
+            <summary>
+            Returns the list of event recommendations
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.RequestedRecommendations">
+            <summary>
+            Returns the number of requested recommendations
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.GeneratedAt">
+            <summary>
+            Returns the date and time when the response was generated by the server, in ISO 8601 format
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection">
+            <summary>
+            Represents a single selection entry in recommendation.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection.MarketId">
+            <summary>
+            Returns the market ID
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection.OutcomeId">
+            <summary>
+            Returns the outcome ID
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection.Specifiers">
+            <summary>
+            Returns the specifiers
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest">
+            <summary>
+            Represents a request for prebuilt bet recommendations
+            from the Custom Bet API.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.EventId">
+            <summary>
+            Gets the event id for which prebuilt bets should be returned.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.SubBookmakerId">
+            <summary>
+            Gets the sub-bookmaker id.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.Count">
+            <summary>
+            Gets the number of recommendations to request.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.Length">
+            <summary>
+            Gets the requested selections length.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.User">
+            <summary>
+            Gets the user identifier.
+            </summary>
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation">
+            <summary>
+            Represents a single recommendation entry in prebuilt bets response.
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation.Selections">
+            <summary>
+            Returns the list of selections for this recommendation
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation.Odds">
+            <summary>
+            Returns the odds for this recommendation
+            </summary>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation.Probability">
+            <summary>
+            Returns the probability for this recommendation
             </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.ISelection">
@@ -23645,6 +23870,11 @@
             Gets the outcomes for this market
             </summary>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet.PrebuiltBetsDto">
+            <summary>
+            Defines a data-transfer-object for prebuilt bets response
+            </summary>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.DelayedInfoDto">
             <summary>
             Represents a delayed info for sport event
@@ -26132,6 +26362,11 @@
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.OutcomeFilter.IsConflict">
             <inheritdoc />
+        </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.PrebuiltBets">
+            <summary>
+            Implements methods used to access prebuilt bets recommendations
+            </summary>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Entities.Rest.Internal.EntitiesImpl.CustomBet.Selection">
             <summary>
@@ -35665,6 +35900,18 @@
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.AvailableSelectionsType.generated_at">
             <remarks/>
         </member>
+        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.event">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.requested_recommendations">
+            <remarks/>
+        </member>
+        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.generated_at">
+            <remarks/>
+        </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.CalculationResponseType">
             <remarks/>
         </member>
@@ -37403,15 +37650,6 @@
             <remarks/>
         </member>
         <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.FilterSelectionMarketType.oddsSpecified">
-            <remarks/>
-        </member>
-        <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.event">
-            <remarks/>
-        </member>
-        <member name="P:Sportradar.OddsFeed.SDK.Messages.Rest.PreBuiltBetsType.requested_recommendations">
             <remarks/>
         </member>
         <member name="T:Sportradar.OddsFeed.SDK.Messages.Rest.EventRecommendationsType">

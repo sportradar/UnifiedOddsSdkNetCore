@@ -1145,6 +1145,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManagerV2.yml\" sourcestartlinenumber=\"1\">Extends <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref> with additional methods for prebuilt bets functionality.\nThis interface provides a safe upgrade path for clients with custom implementations of <xref href=\"Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetManager\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.ICustomBetSelectionBuilder.yml",
       "output": {
         ".html": {
@@ -1198,6 +1212,20 @@
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Api.Managers.IMarketDescriptionManager",
       "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IMarketDescriptionManager.yml\" sourcestartlinenumber=\"1\">Used to obtain information about available markets and get translations for markets and outcomes including outrights</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Api.Managers.IPrebuiltBetsRequestBuilder.yml\" sourcestartlinenumber=\"1\">Builder for creating <xref href=\"Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest\" data-throw-if-not-resolved=\"false\"></xref> instances\nused to request prebuilt bets from the Custom Bet API.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3021,6 +3049,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IEventRecommendations.yml\" sourcestartlinenumber=\"1\">Represents a single event recommendations entry in prebuilt bets response.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IMarket.yml",
       "output": {
         ".html": {
@@ -3060,6 +3102,62 @@
       "IsMRef": true,
       "Title": "Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IOutcomeFilter",
       "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IOutcomeFilter.yml\" sourcestartlinenumber=\"1\">Provides an outcomes</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetSelection.yml\" sourcestartlinenumber=\"1\">Represents a single selection entry in recommendation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBets.yml\" sourcestartlinenumber=\"1\">Represents a prebuilt bets response returned by the Custom Bet API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IPrebuiltBetsRequest.yml\" sourcestartlinenumber=\"1\">Represents a request for prebuilt bet recommendations\nfrom the Custom Bet API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation",
+      "Summary": "<p sourcefile=\"sdkapi/Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet.IRecommendation.yml\" sourcestartlinenumber=\"1\">Represents a single recommendation entry in prebuilt bets response.</p>\n"
     },
     {
       "type": "ManagedReference",

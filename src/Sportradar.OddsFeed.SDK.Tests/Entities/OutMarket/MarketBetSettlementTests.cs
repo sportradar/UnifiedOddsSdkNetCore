@@ -10,7 +10,6 @@ using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Enums;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Markets;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 using Xunit;
 

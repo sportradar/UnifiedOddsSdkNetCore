@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using Dawn;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Common.Internal;
@@ -25,6 +26,9 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
     /// <seealso cref="IDataFetcher" />
     internal class HttpDataFetcher : MarshalByRefObject, IDataFetcher, IDataPoster
     {
+        protected static readonly IReadOnlyDictionary<string, string> EmptyHeaders = new Dictionary<string, string>();
+        protected static readonly IReadOnlyDictionary<string, string> EmptyQueryParameters = new Dictionary<string, string>();
+
         /// <summary>
         /// A sdk wrapper around <see cref="HttpClient"/> used to invoke HTTP requests
         /// </summary>
@@ -86,11 +90,35 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <exception cref="CommunicationException">Failed to execute http get</exception>
         public virtual async Task<Stream> GetDataAsync(Uri uri)
         {
+            return await GetDataAsyncInternal(uri, EmptyQueryParameters, EmptyHeaders).ConfigureAwait(false);
+        }
+
+        public virtual async Task<Stream> GetDataAsync(Uri uri, IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+        {
+            ValidateUriDoesNotContainQueryParameters(uri);
+            return await GetDataAsyncInternal(uri, queryParameters ?? EmptyQueryParameters, headers ?? EmptyHeaders).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Stream" /> containing data fetched from the provided <see cref="Uri" />
+        /// </summary>
+        /// <param name="uri">The <see cref="Uri" /> of the resource to be fetched</param>
+        /// <returns>A <see cref="Task" /> which, when completed will return a <see cref="Stream" /> containing fetched data</returns>
+        /// <exception cref="CommunicationException">Failed to execute http get</exception>
+        public virtual Stream GetData(Uri uri)
+        {
+            return GetDataAsync(uri).GetAwaiter().GetResult();
+        }
+
+        private async Task<Stream> GetDataAsyncInternal(Uri uri, IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+        {
             ValidateConnection(uri);
             HttpResponseMessage responseMessage = null;
             try
             {
-                responseMessage = await SdkHttpClient.GetAsync(uri).ConfigureAwait(false);
+                var requestMessage = CreateGetRequestMessageWith(uri, queryParameters, headers);
+                responseMessage = await SendRequestAsync(requestMessage).ConfigureAwait(false);
+
                 return await GetResponseStreamAsync(uri, responseMessage);
             }
             catch (CommunicationException)
@@ -108,17 +136,6 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
                 RecordFailure();
                 throw new CommunicationException("Failed to execute http get", uri.ToString(), responseMessage?.StatusCode ?? HttpStatusCode.OK, ex);
             }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Stream" /> containing data fetched from the provided <see cref="Uri" />
-        /// </summary>
-        /// <param name="uri">The <see cref="Uri" /> of the resource to be fetched</param>
-        /// <returns>A <see cref="Task" /> which, when completed will return a <see cref="Stream" /> containing fetched data</returns>
-        /// <exception cref="CommunicationException">Failed to execute http get</exception>
-        public virtual Stream GetData(Uri uri)
-        {
-            return GetDataAsync(uri).GetAwaiter().GetResult();
         }
 
         [SuppressMessage("Roslynator", "RCS1075:Avoid empty catch clause that catches System.Exception.", Justification = "Ignore all deserialization issues")]
@@ -164,13 +181,15 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
 
         private async Task<string> DeserializeResponseContent(string responseContent)
         {
-            var memoryStream = new MemoryStream();
-            var writer = new StreamWriter(memoryStream);
-            await writer.WriteAsync(responseContent);
-            await writer.FlushAsync();
-            memoryStream.Position = 0;
-            var response = _responseDeserializer.Deserialize(memoryStream);
-            return response.action;
+            using (var memoryStream = new MemoryStream())
+            {
+                var writer = new StreamWriter(memoryStream);
+                await writer.WriteAsync(responseContent);
+                await writer.FlushAsync();
+                memoryStream.Position = 0;
+                var response = _responseDeserializer.Deserialize(memoryStream);
+                return response.action;
+            }
         }
 
         /// <summary>
@@ -276,6 +295,45 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         protected async Task<Stream> GetResponseStreamAsync(Uri uri, HttpResponseMessage responseMessage)
         {
             return await ProcessGetDataAsync(responseMessage, uri).ConfigureAwait(false);
+        }
+
+        protected HttpRequestMessage CreateGetRequestMessageWith(Uri uri, IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+        {
+            var requestUri = BuildUriWithQueryParameters(uri, queryParameters);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            foreach (var header in headers)
+            {
+                requestMessage.Headers.Add(header.Key, header.Value);
+            }
+
+            return requestMessage;
+        }
+
+        protected void ValidateUriDoesNotContainQueryParameters(Uri uri)
+        {
+            if (!string.IsNullOrEmpty(uri.Query))
+            {
+                throw new ArgumentException("Query parameters must be provided via queryParameters argument.", nameof(uri));
+            }
+        }
+
+        private static Uri BuildUriWithQueryParameters(Uri uri, IReadOnlyDictionary<string, string> queryParameters)
+        {
+            if (queryParameters.Count == 0)
+            {
+                return uri;
+            }
+
+            var builder = new UriBuilder(uri);
+            var query = HttpUtility.ParseQueryString(builder.Query);
+
+            foreach (var parameter in queryParameters)
+            {
+                query[parameter.Key] = parameter.Value;
+            }
+
+            builder.Query = query.ToString();
+            return builder.Uri;
         }
     }
 }

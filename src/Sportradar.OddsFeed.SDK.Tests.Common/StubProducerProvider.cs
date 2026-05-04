@@ -33,6 +33,11 @@ internal class StubProducerProvider : IDataProvider<producers>
         return Task.FromResult(Producers);
     }
 
+    public Task<producers> GetDataAsync(IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+    {
+        return Task.FromResult(Producers);
+    }
+
     public producers GetData(string languageCode)
     {
         return Producers;

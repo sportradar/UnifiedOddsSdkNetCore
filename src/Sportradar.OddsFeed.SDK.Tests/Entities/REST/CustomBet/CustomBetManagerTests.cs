@@ -15,6 +15,7 @@ using Sportradar.OddsFeed.SDK.Api.Managers;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Enums;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
+using Sportradar.OddsFeed.SDK.Entities.Rest;
 using Sportradar.OddsFeed.SDK.Entities.Rest.CustomBet;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal;
 using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Dto.CustomBet;
@@ -23,10 +24,13 @@ using Sportradar.OddsFeed.SDK.Entities.Rest.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.Rest;
 using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
+using Sportradar.OddsFeed.SDK.Tests.Common.Builders.CustomBet;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api;
+using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Entities.Rest.CustomBet;
 
@@ -41,16 +45,23 @@ public class CustomBetManagerTests
     private readonly Mock<IDataPoster> _dataPosterMock;
     private readonly Mock<IDataFetcher> _dataFetcherMock;
 
-    public CustomBetManagerTests()
+    public CustomBetManagerTests(ITestOutputHelper testOutputHelper)
     {
+        var bookmakerDetailsMock = new Mock<IBookmakerDetails>();
+        bookmakerDetailsMock.SetupGet(b => b.BookmakerId).Returns(TestConsts.AnyBookmakerId);
+
         _dataPosterMock = new Mock<IDataPoster>();
         _dataFetcherMock = new Mock<IDataFetcher>();
+
         var uofConfigurationThrow = new Mock<IUofConfiguration>();
         uofConfigurationThrow.Setup(x => x.ExceptionHandlingStrategy).Returns(ExceptionHandlingStrategy.Throw);
         uofConfigurationThrow.Setup(x => x.DefaultLanguage).Returns(TestData.Culture);
+        uofConfigurationThrow.SetupGet(x => x.BookmakerDetails).Returns(bookmakerDetailsMock.Object);
+
         var uofConfigurationCatch = new Mock<IUofConfiguration>();
         uofConfigurationCatch.Setup(x => x.ExceptionHandlingStrategy).Returns(ExceptionHandlingStrategy.Catch);
         uofConfigurationCatch.Setup(x => x.DefaultLanguage).Returns(TestData.Culture);
+        uofConfigurationCatch.SetupGet(x => x.BookmakerDetails).Returns(bookmakerDetailsMock.Object);
 
         var availableSelectionsProvider =
             new DataProvider<AvailableSelectionsType, AvailableSelectionsDto>("/v1/custombet/available-selections", _dataFetcherMock.Object, new Deserializer<AvailableSelectionsType>(), new AvailableSelectionsMapperFactory());
@@ -75,8 +86,11 @@ public class CustomBetManagerTests
                                     .WithCalculateProbabilityFilteredProvider(calculateFilterProbabilityProvider)
                                     .Build();
 
-        _customBetManagerThrow = new CustomBetManager(dataRouterManagerThrow, uofConfigurationThrow.Object, new CustomBetSelectionBuilderFactory());
-        _customBetManagerCatch = new CustomBetManager(dataRouterManagerCatch, uofConfigurationCatch.Object, new CustomBetSelectionBuilderFactory());
+        var loggerFactory = new XunitLoggerFactory(testOutputHelper);
+        _customBetManagerThrow = new CustomBetManager(dataRouterManagerThrow, uofConfigurationThrow.Object, new CustomBetSelectionBuilderFactory(), loggerFactory.CreateLogger<CustomBetManager>(),
+                                                      loggerFactory.CreateLogger<CustomBetManager>());
+        _customBetManagerCatch = new CustomBetManager(dataRouterManagerCatch, uofConfigurationCatch.Object, new CustomBetSelectionBuilderFactory(), loggerFactory.CreateLogger<CustomBetManager>(),
+                                                      loggerFactory.CreateLogger<CustomBetManager>());
     }
 
     [Fact]
@@ -392,7 +406,7 @@ public class CustomBetManagerTests
 
     private static string GetCapiCalculationResponse()
     {
-        var calculateEndpoint = CustomBetEndpoint.CalculateEndpoint.Create()
+        var calculateEndpoint = CalculationResponseBuilder.Create()
                                                  .WithEventId(TestData.EventMatchId)
                                                  .WithOdds(2.345678d)
                                                  .WithProbability(0.123456d)
@@ -402,11 +416,11 @@ public class CustomBetManagerTests
 
     private static string GetCapiCalculationFilterResponse()
     {
-        var calculateEndpoint = CustomBetEndpoint.CalculateFilterEndpoint.Create()
-                                                 .WithEventId(TestData.EventMatchId)
-                                                 .WithOdds(2.345678d)
-                                                 .WithProbability(0.123456d)
-                                                 .WithHarmonization(true);
+        var calculateEndpoint = FilteredCalculationResponseBuilder.Create()
+                                                       .WithEventId(TestData.EventMatchId)
+                                                       .WithOdds(2.345678d)
+                                                       .WithProbability(0.123456d)
+                                                       .WithHarmonization(true);
         return MsgSerializer.SerializeToXml(calculateEndpoint.Build());
     }
 

@@ -47,6 +47,7 @@ internal class DataRouterManagerBuilder
     private IDataProvider<TournamentSeasonsDto> _tournamentSeasonsProvider;
     private IDataProvider<EntityList<VariantDescriptionDto>> _variantDescriptionsProvider;
     private IDataProvider<MarketDescriptionDto> _variantMarketDescriptionProvider;
+    private IDataProviderWithQuery<PrebuiltBetsDto> _prebuiltBetsProvider;
 
     public DataRouterManagerBuilder WithCacheManager(ICacheManager cacheManager)
     {
@@ -252,6 +253,12 @@ internal class DataRouterManagerBuilder
         return this;
     }
 
+    public DataRouterManagerBuilder WithPrebuiltBetsDataProvider(IDataProviderWithQuery<PrebuiltBetsDto> provider)
+    {
+        _prebuiltBetsProvider = provider;
+        return this;
+    }
+
     public DataRouterManager Build()
     {
         return new DataRouterManager(_cacheManager,
@@ -287,6 +294,7 @@ internal class DataRouterManagerBuilder
                                      _sportEventFixtureForTournamentProvider,
                                      _sportEventFixtureChangeFixtureForTournamentProvider,
                                      _stagePeriodSummaryProvider,
-                                     _sportEventsForRaceTournamentProvider);
+                                     _sportEventsForRaceTournamentProvider,
+                                     _prebuiltBetsProvider);
     }
 }

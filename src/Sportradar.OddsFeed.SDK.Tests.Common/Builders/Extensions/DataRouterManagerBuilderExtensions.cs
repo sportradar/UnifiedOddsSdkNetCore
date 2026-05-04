@@ -53,7 +53,7 @@ internal static class DataRouterManagerBuilderExtensions
         return builder.WithCalculateProbabilityFilteredProvider(mockCalculateProbabilityFilteredProvider.Object);
     }
 
-    public static DataRouterManagerBuilder WithAllMockedDataProviders(this DataRouterManagerBuilder builder)
+    private static DataRouterManagerBuilder WithAllMockedDataProviders(this DataRouterManagerBuilder builder)
     {
         var mockSportEventSummaryProvider = new Mock<IExecutionPathDataProvider<SportEventSummaryDto>>();
         var mockSportEventFixtureProvider = new Mock<IDataProvider<FixtureDto>>();
@@ -84,6 +84,7 @@ internal static class DataRouterManagerBuilderExtensions
         var mockSportEventFixtureChangeFixtureForTournamentProvider = new Mock<IDataProvider<TournamentInfoDto>>();
         var mockStagePeriodSummaryProvider = new Mock<IDataProvider<PeriodSummaryDto>>();
         var mockSportEventsForRaceTournamentProvider = new Mock<IDataProvider<EntityList<SportEventSummaryDto>>>();
+        var mockPrebuiltBetsDataProvider = new Mock<IDataProviderWithQuery<PrebuiltBetsDto>>();
 
         return builder
               .WithSportEventSummaryProvider(mockSportEventSummaryProvider.Object)
@@ -114,7 +115,8 @@ internal static class DataRouterManagerBuilderExtensions
               .WithSportEventFixtureForTournamentProvider(mockSportEventFixtureForTournamentProvider.Object)
               .WithSportEventFixtureChangeFixtureForTournamentProvider(mockSportEventFixtureChangeFixtureForTournamentProvider.Object)
               .WithStagePeriodSummaryProvider(mockStagePeriodSummaryProvider.Object)
-              .WithSportEventsForRaceTournamentProvider(mockSportEventsForRaceTournamentProvider.Object);
+              .WithSportEventsForRaceTournamentProvider(mockSportEventsForRaceTournamentProvider.Object)
+              .WithPrebuiltBetsDataProvider(mockPrebuiltBetsDataProvider.Object);
     }
 
     public static DataRouterManagerBuilder AddMockedDependencies(this DataRouterManagerBuilder builder)

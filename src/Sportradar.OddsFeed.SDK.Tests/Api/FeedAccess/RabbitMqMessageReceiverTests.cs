@@ -21,8 +21,6 @@ using Sportradar.OddsFeed.SDK.Tests.Common;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed.Messages;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed.Messages;
 using Sportradar.OddsFeed.SDK.Tests.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 using Xunit;

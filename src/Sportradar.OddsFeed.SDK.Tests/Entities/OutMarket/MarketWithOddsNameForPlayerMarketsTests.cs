@@ -10,7 +10,6 @@ using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Markets;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Endpoints;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.Markets;
 using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Api.SportEventBlock;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 using Xunit;
 using Xunit.Abstractions;
 

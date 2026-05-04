@@ -7,7 +7,6 @@ using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Extensions;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Tests.Common.Builders.Markets;
-using Sportradar.OddsFeed.SDK.Tests.Common.Dsl.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Tests.Common.Builders.Feed.Messages;
 

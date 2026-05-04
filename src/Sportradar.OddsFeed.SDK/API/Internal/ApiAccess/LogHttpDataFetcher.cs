@@ -1,6 +1,7 @@
 // Copyright (C) Sportradar AG.See LICENSE for full license governing this code
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -49,13 +50,24 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         /// <exception cref="CommunicationException">Failed to execute http get</exception>
         public override async Task<Stream> GetDataAsync(Uri uri)
         {
+            return await GetDataAsyncInternal(uri, EmptyQueryParameters, EmptyHeaders).ConfigureAwait(false);
+        }
+
+        public override async Task<Stream> GetDataAsync(Uri uri, IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+        {
+            ValidateUriDoesNotContainQueryParameters(uri);
+            return await GetDataAsyncInternal(uri, queryParameters ?? EmptyQueryParameters, headers ?? EmptyHeaders).ConfigureAwait(false);
+        }
+
+        private async Task<Stream> GetDataAsyncInternal(Uri uri, IReadOnlyDictionary<string, string> queryParameters, IReadOnlyDictionary<string, string> headers)
+        {
             var watch = Stopwatch.StartNew();
             Stream responseStream;
             HttpRequestMessage requestMessage = null;
             string traceId;
             try
             {
-                requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                requestMessage = CreateGetRequestMessageWith(uri, queryParameters, headers);
                 var responseMessage = await SendRequestAsync(requestMessage);
                 responseStream = await GetResponseStreamAsync(uri, responseMessage);
             }

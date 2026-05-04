@@ -10,13 +10,15 @@ namespace Sportradar.OddsFeed.SDK.Tests.Common.Mock.Logging;
 public class XunitLoggerFactory : ILoggerFactory
 {
     public ILogger LastLogger { get; private set; }
+    private LogLevel LoggerLevel { get; }
     private readonly ITestOutputHelper _outputHelper;
     private readonly ConcurrentDictionary<string, ILogger> _registeredLoggers;
 
-    public XunitLoggerFactory(ITestOutputHelper outputHelper)
+    public XunitLoggerFactory(ITestOutputHelper outputHelper, LogLevel logLevel = LogLevel.Trace)
     {
         _outputHelper = outputHelper;
         _registeredLoggers = new ConcurrentDictionary<string, ILogger>();
+        LoggerLevel = logLevel;
     }
 
     public void Dispose()
@@ -33,7 +35,7 @@ public class XunitLoggerFactory : ILoggerFactory
             return existingLogger;
         }
 
-        var logger = new XUnitLogger(categoryName, _outputHelper);
+        var logger = new XUnitLogger(categoryName, _outputHelper, LoggerLevel);
         LastLogger = logger;
         _registeredLoggers[categoryName] = logger;
         return logger;
@@ -61,7 +63,7 @@ public class XunitLoggerFactory : ILoggerFactory
         {
             return (XUnitLogger<T>)existingLogger;
         }
-        var logger = new XUnitLogger<T>(_outputHelper);
+        var logger = new XUnitLogger<T>(_outputHelper, LoggerLevel);
         LastLogger = logger;
         _registeredLoggers[key] = logger;
         return logger;

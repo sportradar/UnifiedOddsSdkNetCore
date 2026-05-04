@@ -195,6 +195,17 @@ namespace Sportradar.OddsFeed.SDK.Api.Internal.ApiAccess
         Task<IAvailableSelections> GetAvailableSelectionsAsync(Urn id);
 
         /// <summary>
+        /// Requests a list of prebuilt Custom Bet combinations for the specified request parameters.
+        /// </summary>
+        /// <param name="prebuiltBetsRequest">
+        /// The request payload describing the event and constraints used to generate prebuilt bets.
+        /// </param>
+        /// <returns>
+        /// Available prebuilt bets for the given request.
+        /// </returns>
+        Task<IPrebuiltBets> RequestCustomBetPrebuiltBets(IPrebuiltBetsRequest prebuiltBetsRequest);
+
+        /// <summary>
         /// Gets the probability calculation for the specified selections
         /// </summary>
         /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>

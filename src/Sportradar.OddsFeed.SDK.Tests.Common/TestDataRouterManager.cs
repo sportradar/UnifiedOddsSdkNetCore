@@ -951,6 +951,11 @@ internal class TestDataRouterManager : IDataRouterManager
         return null;
     }
 
+    public Task<IPrebuiltBets> RequestCustomBetPrebuiltBets(IPrebuiltBetsRequest prebuiltBetsRequest)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<ICalculation> CalculateProbabilityAsync(IEnumerable<ISelection> selections)
     {
         RecordMethodCall(EndpointCalculateProbability);

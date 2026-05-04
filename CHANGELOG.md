@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.9.0
+- Added support for prebuilt bet recommendations via the new `ICustomBetManagerV2` interface, providing event-based bet suggestions without breaking existing `ICustomBetManager` usage.
+
 ## 2026-03-02 3.8.0
 - Added support for In-Play bet settlements
   - added support for RollbackBetSettlement message with markets with outcomes (market needs to be casted to `IMarketRollbackSettlement`)
